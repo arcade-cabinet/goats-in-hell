@@ -24,6 +24,7 @@ import {getActiveLevel} from '../levels/activeLevelRef';
 import {CELL_SIZE, MapCell} from '../levels/LevelGenerator';
 import {useGameStore, DIFFICULTY_PRESETS, getLevelBonuses} from '../../state/GameStore';
 import type {Entity, WeaponId} from '../entities/components';
+import {getGameTime} from '../systems/GameClock';
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -881,7 +882,7 @@ export class BabylonHUD {
     this.vignette.isVisible = isLow;
     if (isLow) {
       // Pulse by oscillating alpha
-      const pulse = 0.15 + Math.sin(Date.now() * 0.008) * 0.1;
+      const pulse = 0.15 + Math.sin(getGameTime() * 0.008) * 0.1;
       this.vignette.color = `rgba(200, 0, 0, ${pulse.toFixed(2)})`;
     }
   }
@@ -896,7 +897,7 @@ export class BabylonHUD {
     if (isReloading) {
       this.ammoContainer.isVisible = false;
       this.reloadContainer.isVisible = true;
-      const progress = Math.min(1, (Date.now() - reloadStart) / reloadTime);
+      const progress = Math.min(1, (getGameTime() - reloadStart) / reloadTime);
       this.reloadBarInner.width = progress;
     } else {
       this.ammoContainer.isVisible = true;
@@ -1117,7 +1118,7 @@ export class BabylonHUD {
 
   private updateKillFeedback(state: ReturnType<typeof useGameStore.getState>): void {
     const kills = state.kills;
-    const now = Date.now();
+    const now = getGameTime();
 
     // Detect new kills
     if (kills > this.lastKills) {

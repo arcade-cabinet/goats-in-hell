@@ -7,6 +7,7 @@ import {
   Scene,
 } from '@babylonjs/core';
 import {GameState} from '../../state/GameState';
+import {useGameStore} from '../../state/GameStore';
 
 let pipeline: DefaultRenderingPipeline | null = null;
 let glowLayer: GlowLayer | null = null;
@@ -89,8 +90,8 @@ export function updateScreenEffects(scene: Scene, deltaMs: number): void {
     (camera as FreeCamera).rotation.y -= shakeRotY;
 
     // Apply new random rotation offset (small angles in radians)
-    shakeRotX = (Math.random() - 0.5) * intensity * 0.004;
-    shakeRotY = (Math.random() - 0.5) * intensity * 0.004;
+    shakeRotX = (useGameStore.getState().rng() - 0.5) * intensity * 0.004;
+    shakeRotY = (useGameStore.getState().rng() - 0.5) * intensity * 0.004;
 
     (camera as FreeCamera).rotation.x += shakeRotX;
     (camera as FreeCamera).rotation.y += shakeRotY;

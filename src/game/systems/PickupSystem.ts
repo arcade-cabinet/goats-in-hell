@@ -56,7 +56,7 @@ export function pickupSystemUpdate(): void {
     } else if (pickup.pickupType === 'ammo') {
       const weaponId = player.player.currentWeapon;
       const ammoSlot = player.ammo[weaponId];
-      ammoSlot.reserve += pickup.value;
+      ammoSlot.reserve = Math.min(ammoSlot.reserve + pickup.value, 999);
     } else if (pickup.pickupType === 'weapon' && pickup.weaponId) {
       const weaponId = pickup.weaponId;
 
@@ -67,7 +67,7 @@ export function pickupSystemUpdate(): void {
 
       // Grant reserve ammo for the picked-up weapon
       const ammoSlot = player.ammo[weaponId];
-      ammoSlot.reserve += WEAPON_PICKUP_RESERVE[weaponId];
+      ammoSlot.reserve = Math.min(ammoSlot.reserve + WEAPON_PICKUP_RESERVE[weaponId], 999);
     }
 
     playSound('pickup');

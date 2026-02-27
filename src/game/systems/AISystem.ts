@@ -23,7 +23,14 @@ import {Vector3} from '@babylonjs/core';
 import type {Entity} from '../entities/components';
 import {world} from '../entities/world';
 import {GameState} from '../../state/GameState';
+import {useGameStore} from '../../state/GameStore';
 import {playSound} from './AudioSystem';
+import {getGameTime} from './GameClock';
+
+/** Shorthand for the store's seeded PRNG. */
+function rng(): number {
+  return useGameStore.getState().rng();
+}
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -142,7 +149,7 @@ function spawnProjectile(
 ): void {
   const vel = direction.scale(speed);
   world.add({
-    id: `eproj-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+    id: `eproj-${getGameTime().toFixed(0)}-${rng().toString(36).slice(2, 6)}`,
     type: 'projectile',
     position: origin.clone(),
     velocity: new Vector3(vel.x, vel.y, vel.z),
@@ -286,7 +293,7 @@ function postSteeringVoidGoat(
 
   // Visibility: flicker faster in phase 2
   const flickerSpeed = isPhase2 ? 0.012 : 0.005;
-  const flickerPhase = Math.sin(Date.now() * flickerSpeed);
+  const flickerPhase = Math.sin(getGameTime() * flickerSpeed);
   enemy.visibilityAlpha = isPhase2
     ? 0.1 + Math.abs(flickerPhase) * 0.5
     : 0.3 + Math.abs(flickerPhase) * 0.7;
@@ -296,8 +303,8 @@ function postSteeringVoidGoat(
   if (enemy.shootCooldown === undefined) enemy.shootCooldown = teleportCd;
   enemy.shootCooldown -= dtScale;
   if (enemy.shootCooldown <= 0 && dist > 3) {
-    const angle = Math.random() * Math.PI * 2;
-    const teleportDist = 3 + Math.random() * 3;
+    const angle = rng() * Math.PI * 2;
+    const teleportDist = 3 + rng() * 3;
     const nx = player.position!.x + Math.cos(angle) * teleportDist;
     const nz = player.position!.z + Math.sin(angle) * teleportDist;
     entity.position!.x = nx;
@@ -315,11 +322,11 @@ function postSteeringVoidGoat(
 
   // Phase 2: spawn shadow clones (weak shadowGoats) occasionally — capped at 6
   const voidCloneCount = world.entities.filter(e => e.id?.startsWith('voidClone')).length;
-  if (isPhase2 && voidCloneCount < 6 && Math.random() < 0.003) {
-    const ox = (Math.random() - 0.5) * 5;
-    const oz = (Math.random() - 0.5) * 5;
+  if (isPhase2 && voidCloneCount < 6 && rng() < 0.003) {
+    const ox = (rng() - 0.5) * 5;
+    const oz = (rng() - 0.5) * 5;
     world.add({
-      id: `voidClone-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+      id: `voidClone-${getGameTime().toFixed(0)}-${rng().toString(36).slice(2, 6)}`,
       type: 'shadowGoat',
       position: new Vector3(
         entity.position!.x + ox,
@@ -434,13 +441,13 @@ function postSteeringArchGoat(
   // Minion spawn: more frequent in phase 3 — capped at 8
   const archMinionCount = world.entities.filter(e => e.id?.startsWith('archMinion')).length;
   const spawnChance = isPhase3 ? 0.005 : isPhase2 ? 0.002 : 0;
-  if (spawnChance > 0 && archMinionCount < 8 && Math.random() < spawnChance) {
-    const ox = (Math.random() - 0.5) * 6;
-    const oz = (Math.random() - 0.5) * 6;
-    const minionType = isPhase3 && Math.random() < 0.3 ? 'hellgoat' : 'goat';
+  if (spawnChance > 0 && archMinionCount < 8 && rng() < spawnChance) {
+    const ox = (rng() - 0.5) * 6;
+    const oz = (rng() - 0.5) * 6;
+    const minionType = isPhase3 && rng() < 0.3 ? 'hellgoat' : 'goat';
     const minionHp = minionType === 'hellgoat' ? 30 : 20;
     world.add({
-      id: `archMinion-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+      id: `archMinion-${getGameTime().toFixed(0)}-${rng().toString(36).slice(2, 6)}`,
       type: minionType,
       position: new Vector3(
         entity.position!.x + ox,

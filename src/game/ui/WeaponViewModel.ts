@@ -17,6 +17,7 @@ import {
 
 import {world} from '../entities/world';
 import {useGameStore} from '../../state/GameStore';
+import {getGameTime} from '../systems/GameClock';
 import type {Entity, WeaponId} from '../entities/components';
 import {loadWeaponModel, cloneModelHierarchy} from '../systems/AssetLoader';
 import type {WeaponModelKey} from '../systems/AssetRegistry';
@@ -148,9 +149,9 @@ export class WeaponViewModel {
 
     // Fire kick
     const gunFlash = useGameStore.getState().gunFlash ?? 0;
-    if (gunFlash > 0.8 && Date.now() - this.lastFireTime > 100) {
+    if (gunFlash > 0.8 && getGameTime() - this.lastFireTime > 100) {
       this.kickOffset = KICK_AMOUNT;
-      this.lastFireTime = Date.now();
+      this.lastFireTime = getGameTime();
     }
     this.kickOffset *= KICK_DECAY;
 

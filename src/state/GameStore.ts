@@ -601,6 +601,6 @@ export const GameState = {
     useGameStore.getState().resetToMenu();
   },
   subscribe(listener: (state: any) => void) {
-    return useGameStore.subscribe((state) => listener(GameState.get()));
+    return useGameStore.subscribe(() => listener(GameState.get()));
   },
 };

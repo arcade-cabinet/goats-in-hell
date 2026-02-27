@@ -7,6 +7,7 @@ import {
   ShadowGenerator,
 } from '@babylonjs/core';
 import {MapCell} from '../levels/LevelGenerator';
+import {useGameStore} from '../../state/GameStore';
 
 export interface DynamicLight {
   light: PointLight;
@@ -29,7 +30,7 @@ export function createLavaLights(
       }
 
       // Skip ~50% randomly for performance
-      if (Math.random() < 0.5) {
+      if (useGameStore.getState().rng() < 0.5) {
         continue;
       }
 
@@ -48,8 +49,8 @@ export function createLavaLights(
       light.intensity = 0.6;
       light.range = 6;
 
-      const flickerSpeed = 2 + Math.random() * 3;
-      const flickerAmount = 0.2 + Math.random() * 0.2;
+      const flickerSpeed = 2 + useGameStore.getState().rng() * 3;
+      const flickerAmount = 0.2 + useGameStore.getState().rng() * 0.2;
 
       lights.push({
         light,

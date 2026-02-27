@@ -4,6 +4,12 @@ import {world} from '../entities/world';
 import {GameState} from '../../state/GameState';
 import {useGameStore, DIFFICULTY_PRESETS} from '../../state/GameStore';
 import {getEnemyStats} from '../entities/enemyStats';
+import {getGameTime} from './GameClock';
+
+/** Shorthand for the store's seeded PRNG — deterministic per-seed. */
+function rng(): number {
+  return useGameStore.getState().rng();
+}
 
 // ---------------------------------------------------------------------------
 // Module state
@@ -76,11 +82,11 @@ export function getEnemyTypeForWave(wave: number): EntityType {
   }
 
   // Every 5th wave has a 10% chance for an archGoat
-  if (wave % 5 === 0 && Math.random() < 0.1) {
+  if (wave % 5 === 0 && rng() < 0.1) {
     return 'archGoat';
   }
 
-  return pool[Math.floor(Math.random() * pool.length)];
+  return pool[Math.floor(rng() * pool.length)];
 }
 
 // ---------------------------------------------------------------------------
@@ -98,10 +104,10 @@ function spawnArenaPickups(arenaSize: number): void {
   const isNightmare = storeState.nightmareFlags.nightmare || storeState.nightmareFlags.ultraNightmare;
 
   // Spawn 2-3 ammo pickups
-  const ammoCount = 2 + Math.floor(Math.random() * 2);
+  const ammoCount = 2 + Math.floor(rng() * 2);
   for (let i = 0; i < ammoCount; i++) {
-    const sx = 3 + Math.floor(Math.random() * (arenaSize - 6));
-    const sz = 3 + Math.floor(Math.random() * (arenaSize - 6));
+    const sx = 3 + Math.floor(rng() * (arenaSize - 6));
+    const sz = 3 + Math.floor(rng() * (arenaSize - 6));
     arenaPickupCounter++;
     world.add({
       id: `arena-pickup-${arenaPickupCounter}`,
@@ -117,8 +123,8 @@ function spawnArenaPickups(arenaSize: number): void {
 
   // Spawn 1 health pickup (reduced in nightmare mode)
   if (!isNightmare) {
-    const hx = 3 + Math.floor(Math.random() * (arenaSize - 6));
-    const hz = 3 + Math.floor(Math.random() * (arenaSize - 6));
+    const hx = 3 + Math.floor(rng() * (arenaSize - 6));
+    const hz = 3 + Math.floor(rng() * (arenaSize - 6));
     arenaPickupCounter++;
     world.add({
       id: `arena-pickup-${arenaPickupCounter}`,
@@ -132,8 +138,8 @@ function spawnArenaPickups(arenaSize: number): void {
     });
   } else if (currentWave % 3 === 0) {
     // Nightmare: trickle 1 small health pickup every 3 waves (brutal but survivable)
-    const hx = 3 + Math.floor(Math.random() * (arenaSize - 6));
-    const hz = 3 + Math.floor(Math.random() * (arenaSize - 6));
+    const hx = 3 + Math.floor(rng() * (arenaSize - 6));
+    const hz = 3 + Math.floor(rng() * (arenaSize - 6));
     arenaPickupCounter++;
     world.add({
       id: `arena-pickup-${arenaPickupCounter}`,
@@ -150,9 +156,9 @@ function spawnArenaPickups(arenaSize: number): void {
 
 function spawnArenaWeaponPickup(arenaSize: number): void {
   const weaponPool: WeaponId[] = ['brimShotgun', 'hellfireCannon', 'goatsBane'];
-  const weaponId = weaponPool[Math.floor(Math.random() * weaponPool.length)];
-  const wx = 3 + Math.floor(Math.random() * (arenaSize - 6));
-  const wz = 3 + Math.floor(Math.random() * (arenaSize - 6));
+  const weaponId = weaponPool[Math.floor(rng() * weaponPool.length)];
+  const wx = 3 + Math.floor(rng() * (arenaSize - 6));
+  const wz = 3 + Math.floor(rng() * (arenaSize - 6));
   arenaPickupCounter++;
   world.add({
     id: `arena-pickup-${arenaPickupCounter}`,
@@ -209,26 +215,26 @@ export function waveSystemUpdate(deltaTime: number, arenaSize: number): void {
 
     if (spawnTimer <= 0) {
       // Pick a random edge spawn point
-      const edge = Math.floor(Math.random() * 4);
+      const edge = Math.floor(rng() * 4);
       let sx: number;
       let sz: number;
 
       switch (edge) {
         case 0: // top edge
-          sx = 2 + Math.floor(Math.random() * (arenaSize - 4));
+          sx = 2 + Math.floor(rng() * (arenaSize - 4));
           sz = 1;
           break;
         case 1: // bottom edge
-          sx = 2 + Math.floor(Math.random() * (arenaSize - 4));
+          sx = 2 + Math.floor(rng() * (arenaSize - 4));
           sz = arenaSize - 2;
           break;
         case 2: // left edge
           sx = 1;
-          sz = 2 + Math.floor(Math.random() * (arenaSize - 4));
+          sz = 2 + Math.floor(rng() * (arenaSize - 4));
           break;
         default: // right edge
           sx = arenaSize - 2;
-          sz = 2 + Math.floor(Math.random() * (arenaSize - 4));
+          sz = 2 + Math.floor(rng() * (arenaSize - 4));
           break;
       }
 
@@ -273,12 +279,12 @@ export function waveSystemUpdate(deltaTime: number, arenaSize: number): void {
   // Kill streak tracking
   // ------------------------------------------------------------------
   const currentKills = state.kills;
-  const now = Date.now();
+  const gameTime = getGameTime();
 
   if (currentKills > lastKnownKills) {
     // A kill just happened
     const newKills = currentKills - lastKnownKills;
-    if (now - lastKillTime < 3000) {
+    if (gameTime - lastKillTime < 3000) {
       // Within 3 seconds of last kill - extend the streak
       killStreak += newKills;
       scoreMultiplier = Math.min(3, 1 + killStreak * 0.1);
@@ -296,9 +302,9 @@ export function waveSystemUpdate(deltaTime: number, arenaSize: number): void {
       }
     }
 
-    lastKillTime = now;
+    lastKillTime = gameTime;
     lastKnownKills = currentKills;
-  } else if (now - lastKillTime >= 3000 && killStreak > 0) {
+  } else if (gameTime - lastKillTime >= 3000 && killStreak > 0) {
     // No kills for 3 seconds - reset streak
     killStreak = 0;
     scoreMultiplier = 1;

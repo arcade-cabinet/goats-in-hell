@@ -1,7 +1,8 @@
-// MapCell values from LevelGenerator.ts
-const EMPTY = 0;
-const WALL_OBSIDIAN = 4;
-const WALL_LAVA = 3;
+import {MapCell} from './LevelGenerator';
+
+const EMPTY = MapCell.EMPTY;
+const WALL_OBSIDIAN = MapCell.WALL_OBSIDIAN;
+const WALL_LAVA = MapCell.WALL_LAVA;
 
 const ARENA_SIZE = 15;
 

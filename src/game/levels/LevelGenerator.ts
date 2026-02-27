@@ -1,6 +1,12 @@
 import {Vector3} from '@babylonjs/core';
 import {getThemeForFloor, type FloorTheme} from './FloorThemes';
 import {generateBossArena} from './BossArenas';
+import {useGameStore} from '../../state/GameStore';
+
+/** Shorthand for the store's seeded PRNG — deterministic per-seed. */
+function rng(): number {
+  return useGameStore.getState().rng();
+}
 
 export const CELL_SIZE = 2; // matches BLOCK_SIZE
 export const WALL_HEIGHT = 3;
@@ -62,8 +68,8 @@ export class LevelGenerator {
       this.grid[z][x] = MapCell.EMPTY;
 
       // Randomly create a room (modulated by enemy density)
-      if (Math.random() > 0.95) {
-        const roomSize = Math.floor(Math.random() * 3) + 2;
+      if (rng() > 0.95) {
+        const roomSize = Math.floor(rng() * 3) + 2;
         for (let rz = -roomSize; rz <= roomSize; rz++) {
           for (let rx = -roomSize; rx <= roomSize; rx++) {
             const nx = Math.max(1, Math.min(this.width - 2, x + rx));
@@ -75,18 +81,18 @@ export class LevelGenerator {
         // Min 8 cells Manhattan distance from spawn (16 world units > ALERT_RADIUS)
         const distFromSpawn = Math.abs(x - playerCellX) + Math.abs(z - playerCellZ);
         if (
-          Math.random() < theme.enemyDensity &&
+          rng() < theme.enemyDensity &&
           distFromSpawn >= 8
         ) {
           const type =
             theme.enemyTypes[
-              Math.floor(Math.random() * theme.enemyTypes.length)
+              Math.floor(rng() * theme.enemyTypes.length)
             ];
           this.spawns.push({x: x * CELL_SIZE, z: z * CELL_SIZE, type});
         }
         // Maybe spawn pickup (frequency scaled by theme.pickupDensity)
-        if (Math.random() < theme.pickupDensity) {
-          const type = Math.random() > 0.5 ? 'health' : 'ammo';
+        if (rng() < theme.pickupDensity) {
+          const type = rng() > 0.5 ? 'health' : 'ammo';
           this.spawns.push({
             x: (x + 1) * CELL_SIZE,
             z: (z + 1) * CELL_SIZE,
@@ -97,17 +103,17 @@ export class LevelGenerator {
         // Corridor cell carving — spawn enemies along corridors
         const distFromPlayer = Math.abs(x - playerCellX) + Math.abs(z - playerCellZ);
         const corridorEnemyChance = 0.03 * (1 + (this.floor - 1) * 0.15);
-        if (distFromPlayer >= 8 && Math.random() < corridorEnemyChance) {
+        if (distFromPlayer >= 8 && rng() < corridorEnemyChance) {
           const type =
             theme.enemyTypes[
-              Math.floor(Math.random() * theme.enemyTypes.length)
+              Math.floor(rng() * theme.enemyTypes.length)
             ];
           this.spawns.push({x: x * CELL_SIZE, z: z * CELL_SIZE, type});
         }
       }
 
       // Move
-      const dir = Math.floor(Math.random() * 4);
+      const dir = Math.floor(rng() * 4);
       if (dir === 0) {
         x = Math.max(1, x - 1);
       } else if (dir === 1) {
@@ -124,11 +130,11 @@ export class LevelGenerator {
       for (let c = 1; c < this.width - 1; c++) {
         if (
           this.grid[r][c] === (theme.primaryWall as MapCell) &&
-          Math.random() > 0.8
+          rng() > 0.8
         ) {
           const accentWalls = theme.accentWalls;
           this.grid[r][c] = accentWalls[
-            Math.floor(Math.random() * accentWalls.length)
+            Math.floor(rng() * accentWalls.length)
           ] as MapCell;
         }
       }
@@ -143,7 +149,7 @@ export class LevelGenerator {
           // Don't place lava near player spawn (5 cell radius)
           const distFromSpawn = Math.abs(rx - playerCellX) + Math.abs(rz - playerCellZ);
           if (distFromSpawn < 5) continue;
-          if (Math.random() < lavaChance) {
+          if (rng() < lavaChance) {
             this.grid[rz][rx] = MapCell.FLOOR_LAVA;
           }
         }
@@ -315,9 +321,9 @@ export class LevelGenerator {
         );
         const type =
           eliteTypes.length > 0
-            ? eliteTypes[Math.floor(Math.random() * eliteTypes.length)]
+            ? eliteTypes[Math.floor(rng() * eliteTypes.length)]
             : theme.enemyTypes[
-                Math.floor(Math.random() * theme.enemyTypes.length)
+                Math.floor(rng() * theme.enemyTypes.length)
               ];
         this.spawns.push({x: pos.x * CELL_SIZE, z: pos.z * CELL_SIZE, type});
       }
@@ -345,7 +351,7 @@ export class LevelGenerator {
         const verticalChoke =
           wallLeft && wallRight && !wallAbove && !wallBelow;
 
-        if ((horizontalChoke || verticalChoke) && Math.random() < 0.15) {
+        if ((horizontalChoke || verticalChoke) && rng() < 0.15) {
           this.grid[z][x] = MapCell.DOOR;
         }
       }
@@ -377,7 +383,7 @@ export class LevelGenerator {
 
     // Shuffle candidates using Fisher-Yates
     for (let i = candidates.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
+      const j = Math.floor(rng() * (i + 1));
       [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
     }
 
@@ -440,13 +446,13 @@ export class LevelGenerator {
           (this.isWall(x + 1, z) ? 1 : 0) +
           (this.isWall(x, z - 1) ? 1 : 0) +
           (this.isWall(x, z + 1) ? 1 : 0);
-        const rotation = Math.random() * Math.PI * 2;
+        const rotation = rng() * Math.PI * 2;
 
         // Wall-adjacent cells: fire-baskets or candles
-        if (wallNeighbors === 1 && Math.random() < wallPropChance) {
+        if (wallNeighbors === 1 && rng() < wallPropChance) {
           const type = isFireTheme
-            ? (Math.random() > 0.4 ? 'prop_firebasket' : 'prop_candle')
-            : (Math.random() > 0.6 ? 'prop_candle_multi' : 'prop_candle');
+            ? (rng() > 0.4 ? 'prop_firebasket' : 'prop_candle')
+            : (rng() > 0.6 ? 'prop_candle_multi' : 'prop_candle');
           this.spawns.push({
             x: x * CELL_SIZE,
             z: z * CELL_SIZE,
@@ -457,8 +463,8 @@ export class LevelGenerator {
         }
 
         // Corner cells (2+ wall neighbors): coffins or columns
-        if (wallNeighbors >= 2 && Math.random() < cornerPropChance) {
-          const type = Math.random() > 0.5 ? 'prop_coffin' : 'prop_column';
+        if (wallNeighbors >= 2 && rng() < cornerPropChance) {
+          const type = rng() > 0.5 ? 'prop_coffin' : 'prop_column';
           this.spawns.push({
             x: x * CELL_SIZE,
             z: z * CELL_SIZE,
@@ -469,8 +475,8 @@ export class LevelGenerator {
         }
 
         // Scattered floor decoration far from spawn
-        if (distFromSpawn >= 10 && Math.random() < scatterChance) {
-          const type = Math.random() > 0.5 ? 'prop_chalice' : 'prop_bowl';
+        if (distFromSpawn >= 10 && rng() < scatterChance) {
+          const type = rng() > 0.5 ? 'prop_chalice' : 'prop_bowl';
           this.spawns.push({
             x: x * CELL_SIZE,
             z: z * CELL_SIZE,

@@ -8,6 +8,12 @@ import type {SoundType} from '../systems/AudioSystem';
 import {damageEnemy, handleEnemyKill} from '../systems/CombatSystem';
 import {useGameStore, getLevelBonuses} from '../../state/GameStore';
 import {physicsRaycast} from '../systems/PhysicsSetup';
+import {getGameTime} from '../systems/GameClock';
+
+/** Shorthand for the store's seeded PRNG. */
+function rng(): number {
+  return useGameStore.getState().rng();
+}
 
 // Track last fire time per weapon to enforce fire rate cooldown
 const lastFireTime: Record<string, number> = {};
@@ -65,8 +71,8 @@ export function tryShoot(scene: Scene, player: Entity): boolean {
     return false;
   }
 
-  // Enforce fire-rate cooldown
-  const now = performance.now();
+  // Enforce fire-rate cooldown (game time, not wall clock)
+  const now = getGameTime();
   const lastFired = lastFireTime[weaponId] ?? 0;
   if (now - lastFired < def.fireRate) {
     return false;
@@ -134,7 +140,7 @@ export function tryReload(player: Entity): void {
   }
 
   player.player.isReloading = true;
-  player.player.reloadStart = performance.now();
+  player.player.reloadStart = getGameTime();
   playSound('reload');
 }
 
@@ -153,7 +159,7 @@ export function updateReload(player: Entity): void {
 
   const weaponId = player.player.currentWeapon;
   const def = weapons[weaponId];
-  const elapsed = performance.now() - player.player.reloadStart;
+  const elapsed = getGameTime() - player.player.reloadStart;
 
   if (elapsed >= def.reloadTime) {
     const ammo = player.ammo[weaponId];
@@ -207,9 +213,9 @@ function applySpread(direction: Vector3, spread: number): Vector3 {
   }
 
   const spreadDir = direction.clone();
-  spreadDir.x += (Math.random() - 0.5) * spread;
-  spreadDir.y += (Math.random() - 0.5) * spread;
-  spreadDir.z += (Math.random() - 0.5) * spread;
+  spreadDir.x += (rng() - 0.5) * spread;
+  spreadDir.y += (rng() - 0.5) * spread;
+  spreadDir.z += (rng() - 0.5) * spread;
 
   return spreadDir.normalize();
 }
@@ -247,7 +253,7 @@ function spawnProjectile(
   const scaledDmg = Math.ceil(def.damage * bonuses.damageMult);
 
   world.add({
-    id: `proj-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+    id: `proj-${getGameTime().toFixed(0)}-${rng().toString(36).slice(2, 6)}`,
     type: 'projectile',
     position: player.position!.clone(),
     velocity,

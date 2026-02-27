@@ -43,6 +43,7 @@ import {
   getWaveInfo,
 } from './systems/WaveSystem';
 import {doorSystemUpdate, resetDoorSystem} from './systems/DoorSystem';
+import {tickGameClock, resetGameClock, getGameTime} from './systems/GameClock';
 import {initPhysics, disposeAllEnemyColliders} from './systems/PhysicsSetup';
 import {
   tryShoot,
@@ -274,9 +275,9 @@ export function GameEngine() {
     initMusic();
     setMusicMasterVolume(useGameStore.getState().masterVolume);
 
-    const gs = GameState.get();
+    const initState = GameState.get();
     const storeState = useGameStore.getState();
-    const floor = gs.floor;
+    const floor = initState.floor;
     const encounterType = storeState.stage.encounterType;
     const diffMods = DIFFICULTY_PRESETS[storeState.difficulty];
     const nightmareDmgMult =
@@ -331,6 +332,9 @@ export function GameEngine() {
 
     setLevel(levelData);
     setActiveLevel(levelData.grid, levelData.width, levelData.depth);
+
+    // Reset game chronometer for each floor (game time is per-floor)
+    resetGameClock();
 
     // Reset wave system for arena encounters
     if (encounterType === 'arena') {
@@ -414,7 +418,7 @@ export function GameEngine() {
         });
       } else if (spawn.type === 'health' || spawn.type === 'ammo') {
         // Apply pickup density multiplier — skip some pickups on lower density
-        if (diffMods.pickupDensityMult < 1 && Math.random() > diffMods.pickupDensityMult) return;
+        if (diffMods.pickupDensityMult < 1 && useGameStore.getState().rng() > diffMods.pickupDensityMult) return;
         const baseValue = spawn.type === 'health' ? 25 : 8;
         // On easy, pickups give more; on hard, less
         const scaledValue = Math.max(1, Math.round(baseValue * Math.min(1.5, diffMods.pickupDensityMult)));
@@ -480,20 +484,25 @@ export function GameEngine() {
         },
       });
 
-      // Spawn initial pickups in boss arena (3 ammo + 1 health at corner positions)
+      // Spawn initial pickups in boss arena at corner positions
+      const bossPickups: {type: 'ammo' | 'health'; value: number}[] = [
+        {type: 'ammo', value: 18},
+        {type: 'ammo', value: 18},
+        {type: 'ammo', value: 18},
+        {type: 'health', value: 30},
+      ];
       BOSS_ARENA_PICKUP_POSITIONS.forEach((pos, i) => {
         const [px, pz] = pos;
-        const pickupType = i < 3 ? 'ammo' : 'health';
+        const spec = bossPickups[i];
         // Skip health pickup in nightmare mode
-        if (pickupType === 'health' && isNightmare) return;
-        const value = pickupType === 'ammo' ? 18 : 30;
+        if (spec.type === 'health' && isNightmare) return;
         world.add({
           id: `boss-pickup-${i}`,
-          type: pickupType as EntityType,
+          type: spec.type as EntityType,
           position: new Vector3(px * CELL_SIZE, 0.5, pz * CELL_SIZE),
           pickup: {
-            pickupType: pickupType as 'health' | 'ammo',
-            value,
+            pickupType: spec.type,
+            value: spec.value,
             active: true,
           },
         });
@@ -569,6 +578,9 @@ export function GameEngine() {
       const now = performance.now();
       const dt = now - lastTime;
       lastTime = now;
+
+      // Advance the game chronometer (only ticks during active gameplay)
+      tickGameClock(dt);
 
       // Find player
       const player = world.entities.find((e: Entity) => e.type === 'player');
@@ -685,10 +697,11 @@ export function GameEngine() {
             if (bossEntity.enemy.hp <= bossEntity.enemy.maxHp * 0.5) {
               bossResupplyTriggered = true;
               for (let ri = 0; ri < 2; ri++) {
-                const rx = 3 + Math.floor(Math.random() * (levelData.width - 6));
-                const rz = 3 + Math.floor(Math.random() * (levelData.depth - 6));
+                const seededRng = useGameStore.getState().rng;
+                const rx = 3 + Math.floor(seededRng() * (levelData.width - 6));
+                const rz = 3 + Math.floor(seededRng() * (levelData.depth - 6));
                 world.add({
-                  id: `boss-resupply-${Date.now()}-${ri}`,
+                  id: `boss-resupply-${getGameTime().toFixed(0)}-${ri}`,
                   type: 'ammo',
                   position: new Vector3(rx * CELL_SIZE, 0.5, rz * CELL_SIZE),
                   pickup: {pickupType: 'ammo', value: 18, active: true},
@@ -1147,12 +1160,13 @@ const EnemyRenderer = () => {
   const meshMapRef = useRef<Map<string, Mesh>>(new Map());
 
   useEffect(() => {
+    const meshMap = meshMapRef.current;
+
     const update = () => {
       const currentEnemies = world.entities.filter(
         (e: Entity) => !!e.enemy,
       );
       const currentIds = new Set(currentEnemies.map(e => e.id));
-      const meshMap = meshMapRef.current;
 
       // Remove meshes for dead enemies
       for (const [id, mesh] of meshMap) {
@@ -1200,10 +1214,10 @@ const EnemyRenderer = () => {
 
     return () => {
       scene.onBeforeRenderObservable.remove(obs);
-      for (const mesh of meshMapRef.current.values()) {
+      for (const mesh of meshMap.values()) {
         disposeGoatMesh(mesh);
       }
-      meshMapRef.current.clear();
+      meshMap.clear();
       disposeGoatCache();
       disposeAllEnemyColliders();
     };
@@ -1221,6 +1235,8 @@ const ProjectileRenderer = () => {
   const meshMapRef = useRef<Map<string, Mesh>>(new Map());
 
   useEffect(() => {
+    const meshMap = meshMapRef.current;
+
     // Shared materials: create once, reuse for all projectiles
     const playerMat = new StandardMaterial('projMat-player', scene);
     playerMat.emissiveColor = Color3.FromHexString('#ff8800');
@@ -1239,7 +1255,6 @@ const ProjectileRenderer = () => {
       const currentIds = new Set(
         projectiles.map(e => e.id).filter(Boolean),
       );
-      const meshMap = meshMapRef.current;
 
       // Remove meshes for expired projectiles
       for (const [id, mesh] of meshMap) {
@@ -1275,10 +1290,10 @@ const ProjectileRenderer = () => {
 
     return () => {
       scene.onBeforeRenderObservable.remove(obs);
-      for (const mesh of meshMapRef.current.values()) {
+      for (const mesh of meshMap.values()) {
         mesh.dispose();
       }
-      meshMapRef.current.clear();
+      meshMap.clear();
       playerMat.dispose();
       enemyMat.dispose();
     };
@@ -1297,14 +1312,14 @@ const PickupRenderer = () => {
 
   useEffect(() => {
     if (!scene) return;
+    const meshMap = meshMapRef.current;
 
     const interval = setInterval(() => {
       const activePickups = world.entities.filter(
         (e: Entity) => e.pickup?.active,
       );
-      const bobOffset = Math.sin(Date.now() * 0.003) * 0.15;
+      const bobOffset = Math.sin(getGameTime() * 0.003) * 0.15;
       const activeIds = new Set(activePickups.map(p => p.id).filter(Boolean));
-      const meshMap = meshMapRef.current;
 
       // Remove meshes for despawned pickups
       for (const [id, mesh] of meshMap) {
@@ -1348,11 +1363,11 @@ const PickupRenderer = () => {
 
     return () => {
       clearInterval(interval);
-      for (const mesh of meshMapRef.current.values()) {
+      for (const mesh of meshMap.values()) {
         mesh.material?.dispose();
         mesh.dispose();
       }
-      meshMapRef.current.clear();
+      meshMap.clear();
     };
   }, [scene]);
 

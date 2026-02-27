@@ -1,3 +1,5 @@
+import {useGameStore} from '../../state/GameStore';
+
 export type SoundType =
   | 'shoot'
   | 'shotgun'
@@ -63,7 +65,8 @@ function playBufferSound(groupKey: string, gain: number = 1.0): void {
   const buffers = sfxBuffers.get(groupKey);
   if (!buffers || buffers.length === 0) return;
 
-  const buffer = buffers[Math.floor(Math.random() * buffers.length)];
+  const r = useGameStore.getState().rng;
+  const buffer = buffers[Math.floor(r() * buffers.length)];
   const source = audioCtx.createBufferSource();
   source.buffer = buffer;
 
@@ -80,10 +83,11 @@ function playBufferVaried(groupKey: string, gain: number = 1.0, pitchRange = 0.1
   const buffers = sfxBuffers.get(groupKey);
   if (!buffers || buffers.length === 0) return;
 
-  const buffer = buffers[Math.floor(Math.random() * buffers.length)];
+  const r = useGameStore.getState().rng;
+  const buffer = buffers[Math.floor(r() * buffers.length)];
   const source = audioCtx.createBufferSource();
   source.buffer = buffer;
-  source.playbackRate.value = 1 + (Math.random() - 0.5) * 2 * pitchRange;
+  source.playbackRate.value = 1 + (r() - 0.5) * 2 * pitchRange;
 
   const gainNode = audioCtx.createGain();
   gainNode.gain.value = gain;
@@ -139,7 +143,7 @@ function scheduleNoise(
   const data = buffer.getChannelData(0);
   for (let i = 0; i < length; i++) {
     const t = i / sampleRate;
-    data[i] = (Math.random() * 2 - 1) * Math.exp(-decayRate * t);
+    data[i] = (useGameStore.getState().rng() * 2 - 1) * Math.exp(-decayRate * t);
   }
 
   const source = ctx.createBufferSource();

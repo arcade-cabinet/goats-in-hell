@@ -1,8 +1,15 @@
-// MapCell values from LevelGenerator.ts
-const EMPTY = 0;
-const WALL_STONE = 1;
-const WALL_LAVA = 3;
-const WALL_OBSIDIAN = 4;
+import {MapCell} from './LevelGenerator';
+import {useGameStore} from '../../state/GameStore';
+
+const EMPTY = MapCell.EMPTY;
+const WALL_STONE = MapCell.WALL_STONE;
+const WALL_LAVA = MapCell.WALL_LAVA;
+const WALL_OBSIDIAN = MapCell.WALL_OBSIDIAN;
+
+/** Shorthand for the store's seeded PRNG. */
+function rng(): number {
+  return useGameStore.getState().rng();
+}
 
 /**
  * Generates a simple open arena with scattered cover pillars for survival mode.
@@ -27,7 +34,7 @@ export function generateArena(size: number = 20): number[][] {
   }
 
   // Place 6-10 random 2x2 cover pillars
-  const pillarCount = 6 + Math.floor(Math.random() * 5); // 6..10 inclusive
+  const pillarCount = 6 + Math.floor(rng() * 5); // 6..10 inclusive
   const placedPillars: {x: number; z: number}[] = [];
 
   let attempts = 0;
@@ -39,8 +46,8 @@ export function generateArena(size: number = 20): number[][] {
     // Random position at least 3 cells from each edge.
     // The pillar is 2x2, occupying (px, pz) to (px+1, pz+1),
     // so the bottom-right corner must also be at least 3 from the far edge.
-    const px = 3 + Math.floor(Math.random() * (size - 7)); // 3 .. size-5
-    const pz = 3 + Math.floor(Math.random() * (size - 7));
+    const px = 3 + Math.floor(rng() * (size - 7)); // 3 .. size-5
+    const pz = 3 + Math.floor(rng() * (size - 7));
 
     // Ensure at least 3 cells apart from every other placed pillar
     let tooClose = false;
@@ -58,7 +65,7 @@ export function generateArena(size: number = 20): number[][] {
     }
 
     // Choose pillar wall type: WALL_LAVA or WALL_STONE
-    const wallType = Math.random() < 0.5 ? WALL_LAVA : WALL_STONE;
+    const wallType = rng() < 0.5 ? WALL_LAVA : WALL_STONE;
 
     // Place 2x2 block
     grid[pz][px] = wallType;

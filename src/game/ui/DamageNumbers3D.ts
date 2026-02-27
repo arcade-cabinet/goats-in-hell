@@ -15,6 +15,8 @@ import {
 } from '@babylonjs/core';
 import {consumeDamageEvents} from '../systems/damageEvents';
 import type {DamageEvent} from '../systems/damageEvents';
+import {getGameTime} from '../systems/GameClock';
+import {useGameStore} from '../../state/GameStore';
 
 // ---------------------------------------------------------------------------
 // Configuration
@@ -53,7 +55,7 @@ export class DamageNumbers3D {
 
   update(): void {
     const events = consumeDamageEvents();
-    const now = Date.now();
+    const now = getGameTime();
 
     // Spawn new damage numbers for events we haven't processed
     for (const ev of events) {
@@ -107,8 +109,9 @@ export class DamageNumbers3D {
     plane.isPickable = false;
 
     // Slight random offset so overlapping numbers don't stack perfectly
-    const offsetX = (Math.random() - 0.5) * 0.6;
-    const offsetZ = (Math.random() - 0.5) * 0.6;
+    const r = useGameStore.getState().rng;
+    const offsetX = (r() - 0.5) * 0.6;
+    const offsetZ = (r() - 0.5) * 0.6;
     plane.position = new Vector3(
       ev.position.x + offsetX,
       ev.position.y + 1.5,

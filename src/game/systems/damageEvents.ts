@@ -1,10 +1,11 @@
 import {Vector3} from '@babylonjs/core';
+import {getGameTime} from './GameClock';
 
 export interface DamageEvent {
   id: number;
   amount: number;
   position: Vector3;
-  /** Timestamp when the damage occurred (Date.now()). */
+  /** Game-time timestamp when the damage occurred (ms from GameClock). */
   time: number;
   isCrit?: boolean;
 }
@@ -12,7 +13,7 @@ export interface DamageEvent {
 let nextId = 0;
 const events: DamageEvent[] = [];
 
-/** Max age before events are automatically pruned (ms). */
+/** Max age before events are automatically pruned (ms of game time). */
 const MAX_AGE = 1200;
 
 /** Record a new damage event. Call from CombatSystem when damage is dealt. */
@@ -21,17 +22,17 @@ export function pushDamageEvent(amount: number, position: Vector3, isCrit?: bool
     id: nextId++,
     amount,
     position: position.clone(),
-    time: Date.now(),
+    time: getGameTime(),
     isCrit,
   });
 }
 
 /** Return current events and prune expired ones. Called by HUD each tick. */
 export function consumeDamageEvents(): DamageEvent[] {
-  const now = Date.now();
+  const gameTime = getGameTime();
   // Remove expired
   for (let i = events.length - 1; i >= 0; i--) {
-    if (now - events[i].time > MAX_AGE) {
+    if (gameTime - events[i].time > MAX_AGE) {
       events.splice(i, 1);
     }
   }
