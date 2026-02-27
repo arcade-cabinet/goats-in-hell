@@ -317,11 +317,30 @@ function writeSave(state: GameStoreState): void {
   }
 }
 
+function isValidSave(data: unknown): data is SaveData {
+  if (!data || typeof data !== 'object') return false;
+  const d = data as Record<string, unknown>;
+  return (
+    typeof d.difficulty === 'string' &&
+    ['easy', 'normal', 'hard'].includes(d.difficulty) &&
+    typeof d.seed === 'string' &&
+    typeof d.score === 'number' && Number.isFinite(d.score) &&
+    typeof d.totalKills === 'number' && Number.isFinite(d.totalKills) &&
+    typeof d.elapsedMs === 'number' && Number.isFinite(d.elapsedMs) &&
+    d.stage !== null && typeof d.stage === 'object' &&
+    d.leveling !== null && typeof d.leveling === 'object' &&
+    d.nightmareFlags !== null && typeof d.nightmareFlags === 'object' &&
+    Array.isArray(d.bossesDefeated)
+  );
+}
+
 function readSave(): SaveData | null {
   try {
     const raw = localStorage.getItem(SAVE_KEY);
     if (!raw) return null;
-    return JSON.parse(raw) as SaveData;
+    const parsed = JSON.parse(raw);
+    if (!isValidSave(parsed)) return null;
+    return parsed;
   } catch {
     return null;
   }

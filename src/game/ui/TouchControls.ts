@@ -9,7 +9,6 @@ import {
   AdvancedDynamicTexture,
   Ellipse,
   Rectangle,
-  TextBlock,
   Control,
   Button,
 } from '@babylonjs/gui';

@@ -20,7 +20,6 @@ let scoreMultiplier = 1;
 let lastKnownKills = 0;
 let waveSpawnCounter = 0;
 let arenaPickupCounter = 0;
-let cachedArenaSize = 0;
 
 // ---------------------------------------------------------------------------
 // Reset
@@ -39,7 +38,6 @@ export function resetWaveSystem(): void {
   lastKnownKills = 0;
   waveSpawnCounter = 0;
   arenaPickupCounter = 0;
-  cachedArenaSize = 0;
 }
 
 // ---------------------------------------------------------------------------
@@ -90,6 +88,12 @@ export function getEnemyTypeForWave(wave: number): EntityType {
 // ---------------------------------------------------------------------------
 
 function spawnArenaPickups(arenaSize: number): void {
+  // Remove uncollected arena pickups from previous wave to prevent entity accumulation
+  const stalePickups = world.entities.filter(e => e.id?.startsWith('arena-pickup-'));
+  for (const p of stalePickups) {
+    world.remove(p);
+  }
+
   const storeState = useGameStore.getState();
   const isNightmare = storeState.nightmareFlags.nightmare || storeState.nightmareFlags.ultraNightmare;
 
@@ -170,7 +174,6 @@ function spawnArenaWeaponPickup(arenaSize: number): void {
 /** Call once per frame to drive wave spawning and kill-streak tracking. */
 export function waveSystemUpdate(deltaTime: number, arenaSize: number): void {
   const state = GameState.get();
-  cachedArenaSize = arenaSize;
 
   // ------------------------------------------------------------------
   // Count remaining enemies

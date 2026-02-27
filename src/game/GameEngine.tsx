@@ -1,18 +1,16 @@
 import {
   Color3,
-  Color4,
   Mesh,
   MeshBuilder,
   StandardMaterial,
   UniversalCamera,
   Vector3,
 } from '@babylonjs/core';
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useScene} from 'reactylon';
 import type {Entity, EntityType, WeaponId} from './entities/components';
 import {world} from './entities/world';
 import {getEnemyStats} from './entities/enemyStats';
-import {COLORS} from '../constants';
 import {
   CELL_SIZE,
   LevelGenerator,
@@ -82,14 +80,13 @@ import {
 import {
   createProp,
   loadAllProps,
-  disposePropCache,
 } from './rendering/DungeonProps';
 import type {PropType} from './rendering/DungeonProps';
 import {AIGovernor} from './systems/AIGovernor';
 import {BabylonHUD} from './ui/BabylonHUD';
 import {BabylonScreens} from './ui/BabylonScreens';
 import {DamageNumbers3D} from './ui/DamageNumbers3D';
-import {WeaponViewModel, loadAllWeapons, disposeWeaponCache} from './ui/WeaponViewModel';
+import {WeaponViewModel, loadAllWeapons} from './ui/WeaponViewModel';
 import {LoadingScreen} from './ui/LoadingScreen';
 import {TouchControls, touchInput, resetTouchInput, isTouchDevice} from './ui/TouchControls';
 import {useGameStore, DIFFICULTY_PRESETS, getLevelBonuses} from '../state/GameStore';
@@ -691,7 +688,7 @@ export function GameEngine() {
                 const rx = 3 + Math.floor(Math.random() * (levelData.width - 6));
                 const rz = 3 + Math.floor(Math.random() * (levelData.depth - 6));
                 world.add({
-                  id: `boss-resupply-${ri}`,
+                  id: `boss-resupply-${Date.now()}-${ri}`,
                   type: 'ammo',
                   position: new Vector3(rx * CELL_SIZE, 0.5, rz * CELL_SIZE),
                   pickup: {pickupType: 'ammo', value: 18, active: true},
@@ -701,7 +698,7 @@ export function GameEngine() {
           }
           const bossAlive = !!bossEntity;
           if (!bossAlive && checkFloorComplete()) {
-            const bossId = storeState.stage.bossId;
+            const bossId = useGameStore.getState().stage.bossId;
             if (bossId) {
               useGameStore.getState().defeatBoss(bossId);
               playSfx('boss_defeat');
@@ -903,7 +900,7 @@ const PlayerController = ({level}: {level: LevelData}) => {
       // Camera setup (shared between manual and autoplay)
       camera.position = playerEntity.position.clone();
       camera.minZ = 0.1;
-      camera.checkCollisions = !autoplay; // AI handles its own collision
+      camera.checkCollisions = !autoplay;
       camera.applyGravity = !autoplay;
       camera.ellipsoid = new Vector3(0.5, 1, 0.5);
       camera.speed = 0.3;
@@ -981,7 +978,12 @@ const PlayerController = ({level}: {level: LevelData}) => {
           if (gs.screen === 'playing') {
             touchControls.update();
 
-            // Movement: apply joystick to camera position via forward/right vectors
+            // NaN guard: corrupt touch coords could freeze player movement
+            if (Number.isNaN(touchInput.moveX)) touchInput.moveX = 0;
+            if (Number.isNaN(touchInput.moveZ)) touchInput.moveZ = 0;
+
+            // Movement: feed joystick into cameraDirection so Babylon's
+            // collision pipeline handles wall clipping (same as keyboard mode)
             if (Math.abs(touchInput.moveX) > 0.05 || Math.abs(touchInput.moveZ) > 0.05) {
               const forward = camera.getForwardRay().direction;
               forward.y = 0;
@@ -990,7 +992,7 @@ const PlayerController = ({level}: {level: LevelData}) => {
               const moveSpeed = 0.15;
               const move = forward.scale(touchInput.moveZ * moveSpeed)
                 .add(right.scale(-touchInput.moveX * moveSpeed));
-              camera.position.addInPlace(move);
+              camera.cameraDirection.addInPlace(move);
             }
 
             // Look: apply touch drag to camera rotation

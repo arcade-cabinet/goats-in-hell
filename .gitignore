@@ -89,3 +89,6 @@ dist/
 console-debug*.log
 console-warnings.log
 vm-debug.log
+
+# Environment files
+.env*

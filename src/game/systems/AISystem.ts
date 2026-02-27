@@ -313,8 +313,9 @@ function postSteeringVoidGoat(
     enemy.attackCooldown = ATTACK_COOLDOWN_FRAMES;
   }
 
-  // Phase 2: spawn shadow clones (weak shadowGoats) occasionally
-  if (isPhase2 && Math.random() < 0.003) {
+  // Phase 2: spawn shadow clones (weak shadowGoats) occasionally — capped at 6
+  const voidCloneCount = world.entities.filter(e => e.id?.startsWith('voidClone')).length;
+  if (isPhase2 && voidCloneCount < 6 && Math.random() < 0.003) {
     const ox = (Math.random() - 0.5) * 5;
     const oz = (Math.random() - 0.5) * 5;
     world.add({
@@ -430,9 +431,10 @@ function postSteeringArchGoat(
     enemy.shootCooldown = isPhase3 ? 40 : isPhase2 ? 60 : 120;
   }
 
-  // Minion spawn: more frequent in phase 3
+  // Minion spawn: more frequent in phase 3 — capped at 8
+  const archMinionCount = world.entities.filter(e => e.id?.startsWith('archMinion')).length;
   const spawnChance = isPhase3 ? 0.005 : isPhase2 ? 0.002 : 0;
-  if (spawnChance > 0 && Math.random() < spawnChance) {
+  if (spawnChance > 0 && archMinionCount < 8 && Math.random() < spawnChance) {
     const ox = (Math.random() - 0.5) * 6;
     const oz = (Math.random() - 0.5) * 6;
     const minionType = isPhase3 && Math.random() < 0.3 ? 'hellgoat' : 'goat';
