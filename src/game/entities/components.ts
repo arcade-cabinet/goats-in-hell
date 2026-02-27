@@ -2,7 +2,8 @@ import {Mesh, Vector3, ParticleSystem} from '@babylonjs/core';
 
 export type EntityType =
   | 'player'
-  | 'goat' | 'hellgoat' | 'fireGoat' | 'shadowGoat' | 'goatKnight' | 'archGoat'
+  | 'goat' | 'hellgoat' | 'fireGoat' | 'shadowGoat' | 'goatKnight'
+  | 'archGoat' | 'infernoGoat' | 'voidGoat' | 'ironGoat'
   | 'projectile'
   | 'health' | 'ammo' | 'weaponPickup'
   | 'door' | 'decoration';
@@ -50,8 +51,12 @@ export type Entity = {
     shootCooldown?: number;
     isArmored?: boolean;
     armorHp?: number;
+    armorMaxHp?: number;
     isInvisible?: boolean;
     visibilityAlpha?: number;
+    // Boss-specific ability cooldowns
+    _fireRingCd?: number;
+    _slamCd?: number;
   };
 
   // Weapon ammo (per-weapon)

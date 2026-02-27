@@ -11,39 +11,91 @@ export type SoundType =
   | 'door'
   | 'empty'
   | 'reload'
+  | 'reload_complete'
+  | 'weapon_switch'
   | 'boss_hit'
-  | 'explosion';
+  | 'explosion'
+  | 'death_sting'
+  | 'victory_sting'
+  | 'boss_defeat'
+  | 'game_complete'
+  | 'footstep';
 
 let audioCtx: AudioContext | null = null;
+let masterGain: GainNode | null = null;
+
+/** Pre-loaded SFX buffer groups, keyed by prefix (e.g. 'sfx-pistol'). */
+let sfxBuffers: Map<string, AudioBuffer[]> | null = null;
 
 export function initAudio(): void {
   if (!audioCtx) {
     audioCtx = new AudioContext();
+    masterGain = audioCtx.createGain();
+    masterGain.connect(audioCtx.destination);
+    masterGain.gain.value = 0.7;
   }
 }
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-/** Create a noise buffer filled with random samples that decay exponentially. */
-function createNoiseBuffer(
-  ctx: AudioContext,
-  duration: number,
-  decayRate: number = 4,
-): AudioBuffer {
-  const sampleRate = ctx.sampleRate;
-  const length = Math.floor(sampleRate * duration);
-  const buffer = ctx.createBuffer(1, length, sampleRate);
-  const data = buffer.getChannelData(0);
-  for (let i = 0; i < length; i++) {
-    const t = i / sampleRate;
-    data[i] = (Math.random() * 2 - 1) * Math.exp(-decayRate * t);
+export function setMasterVolume(volume: number): void {
+  if (masterGain) {
+    masterGain.gain.value = Math.max(0, Math.min(1, volume));
   }
-  return buffer;
 }
 
-/** Schedule an oscillator that sweeps from startFreq to endFreq over duration. */
+/**
+ * Provide the pre-loaded SFX audio buffers from the asset loading phase.
+ */
+export function setSfxBuffers(buffers: Map<string, AudioBuffer[]>): void {
+  sfxBuffers = buffers;
+}
+
+// ---------------------------------------------------------------------------
+// Buffer-based playback
+// ---------------------------------------------------------------------------
+
+function getOutput(ctx: AudioContext): AudioNode {
+  return masterGain ?? ctx.destination;
+}
+
+/** Play a random variant from a buffer group. */
+function playBufferSound(groupKey: string, gain: number = 1.0): void {
+  if (!audioCtx || !sfxBuffers) return;
+  const buffers = sfxBuffers.get(groupKey);
+  if (!buffers || buffers.length === 0) return;
+
+  const buffer = buffers[Math.floor(Math.random() * buffers.length)];
+  const source = audioCtx.createBufferSource();
+  source.buffer = buffer;
+
+  const gainNode = audioCtx.createGain();
+  gainNode.gain.value = gain;
+  source.connect(gainNode);
+  gainNode.connect(getOutput(audioCtx));
+  source.start();
+}
+
+/** Play a buffer with pitch variation for natural feel. */
+function playBufferVaried(groupKey: string, gain: number = 1.0, pitchRange = 0.1): void {
+  if (!audioCtx || !sfxBuffers) return;
+  const buffers = sfxBuffers.get(groupKey);
+  if (!buffers || buffers.length === 0) return;
+
+  const buffer = buffers[Math.floor(Math.random() * buffers.length)];
+  const source = audioCtx.createBufferSource();
+  source.buffer = buffer;
+  source.playbackRate.value = 1 + (Math.random() - 0.5) * 2 * pitchRange;
+
+  const gainNode = audioCtx.createGain();
+  gainNode.gain.value = gain;
+  source.connect(gainNode);
+  gainNode.connect(getOutput(audioCtx));
+  source.start();
+}
+
+// ---------------------------------------------------------------------------
+// Procedural helpers (kept for stings)
+// ---------------------------------------------------------------------------
+
 function scheduleOsc(
   ctx: AudioContext,
   type: OscillatorType,
@@ -73,7 +125,6 @@ function scheduleOsc(
   osc.stop(startTime + duration);
 }
 
-/** Play a noise burst through a gain envelope. */
 function scheduleNoise(
   ctx: AudioContext,
   duration: number,
@@ -82,7 +133,15 @@ function scheduleNoise(
   destination: AudioNode,
   startTime: number,
 ): void {
-  const buffer = createNoiseBuffer(ctx, duration, decayRate);
+  const sampleRate = ctx.sampleRate;
+  const length = Math.floor(sampleRate * duration);
+  const buffer = ctx.createBuffer(1, length, sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < length; i++) {
+    const t = i / sampleRate;
+    data[i] = (Math.random() * 2 - 1) * Math.exp(-decayRate * t);
+  }
+
   const source = ctx.createBufferSource();
   source.buffer = buffer;
 
@@ -98,62 +157,18 @@ function scheduleNoise(
 }
 
 // ---------------------------------------------------------------------------
-// Sound designs
+// Procedural stings (kept — these are distinctive and excellent)
 // ---------------------------------------------------------------------------
-
-function playShoot(ctx: AudioContext): void {
-  const t = ctx.currentTime;
-  const dest = ctx.destination;
-  // Sawtooth 150->40Hz over 150ms
-  scheduleOsc(ctx, 'sawtooth', 150, 40, 0.15, 0.3, dest, t);
-  // Noise burst for gunshot crack
-  scheduleNoise(ctx, 0.15, 0.4, 15, dest, t);
-}
-
-function playShotgun(ctx: AudioContext): void {
-  const t = ctx.currentTime;
-  const dest = ctx.destination;
-  // Sawtooth 80->25Hz over 250ms (louder than shoot)
-  scheduleOsc(ctx, 'sawtooth', 80, 25, 0.25, 0.5, dest, t);
-  // Heavy noise burst
-  scheduleNoise(ctx, 0.25, 0.6, 8, dest, t);
-}
-
-function playRapid(ctx: AudioContext): void {
-  const t = ctx.currentTime;
-  const dest = ctx.destination;
-  // Similar to shoot but shorter (80ms), quieter
-  scheduleOsc(ctx, 'sawtooth', 150, 40, 0.08, 0.15, dest, t);
-  scheduleNoise(ctx, 0.08, 0.2, 20, dest, t);
-}
-
-function playBigshot(ctx: AudioContext): void {
-  const t = ctx.currentTime;
-  const dest = ctx.destination;
-  // Deep sawtooth 60->15Hz over 500ms
-  scheduleOsc(ctx, 'sawtooth', 60, 15, 0.5, 0.5, dest, t);
-  // Heavy rumble noise
-  scheduleNoise(ctx, 0.5, 0.5, 4, dest, t);
-}
-
-function playHit(ctx: AudioContext): void {
-  const t = ctx.currentTime;
-  const dest = ctx.destination;
-  // Square 200->80Hz over 100ms
-  scheduleOsc(ctx, 'square', 200, 80, 0.1, 0.25, dest, t);
-}
 
 function playGoatDie(ctx: AudioContext): void {
   const t = ctx.currentTime;
-  const dest = ctx.destination;
-  // Sawtooth 400->60Hz over 400ms (dying screech)
+  const dest = getOutput(ctx);
   scheduleOsc(ctx, 'sawtooth', 400, 60, 0.4, 0.35, dest, t);
 }
 
 function playGoatAlert(ctx: AudioContext): void {
   const t = ctx.currentTime;
-  const dest = ctx.destination;
-  // Sawtooth 200->350->200Hz (alerting bleat) - two segments
+  const dest = getOutput(ctx);
   const osc = ctx.createOscillator();
   osc.type = 'sawtooth';
   osc.frequency.setValueAtTime(200, t);
@@ -173,75 +188,85 @@ function playGoatAlert(ctx: AudioContext): void {
 
 function playPickup(ctx: AudioContext): void {
   const t = ctx.currentTime;
-  const dest = ctx.destination;
-  // Sine 440->660->880Hz ascending arpeggio (reward chime)
+  const dest = getOutput(ctx);
   const noteDuration = 0.1;
-
   scheduleOsc(ctx, 'sine', 440, 440, noteDuration, 0.2, dest, t);
-  scheduleOsc(
-    ctx,
-    'sine',
-    660,
-    660,
-    noteDuration,
-    0.2,
-    dest,
-    t + noteDuration,
-  );
-  scheduleOsc(
-    ctx,
-    'sine',
-    880,
-    880,
-    noteDuration,
-    0.2,
-    dest,
-    t + noteDuration * 2,
-  );
+  scheduleOsc(ctx, 'sine', 660, 660, noteDuration, 0.2, dest, t + noteDuration);
+  scheduleOsc(ctx, 'sine', 880, 880, noteDuration, 0.2, dest, t + noteDuration * 2);
 }
 
 function playHurt(ctx: AudioContext): void {
   const t = ctx.currentTime;
-  const dest = ctx.destination;
-  // Square 100->40Hz over 200ms
+  const dest = getOutput(ctx);
   scheduleOsc(ctx, 'square', 100, 40, 0.2, 0.3, dest, t);
-}
-
-function playDoor(ctx: AudioContext): void {
-  const t = ctx.currentTime;
-  const dest = ctx.destination;
-  // Triangle 80->120Hz over 400ms (creaking)
-  scheduleOsc(ctx, 'triangle', 80, 120, 0.4, 0.2, dest, t);
 }
 
 function playEmpty(ctx: AudioContext): void {
   const t = ctx.currentTime;
-  const dest = ctx.destination;
-  // Triangle 80Hz, 50ms (dry click)
+  const dest = getOutput(ctx);
   scheduleOsc(ctx, 'triangle', 80, 80, 0.05, 0.15, dest, t);
 }
 
 function playReload(ctx: AudioContext): void {
   const t = ctx.currentTime;
-  const dest = ctx.destination;
-  // Triangle 300->500Hz over 150ms (mechanical click)
+  const dest = getOutput(ctx);
   scheduleOsc(ctx, 'triangle', 300, 500, 0.15, 0.2, dest, t);
 }
 
-function playBossHit(ctx: AudioContext): void {
+function playReloadComplete(ctx: AudioContext): void {
   const t = ctx.currentTime;
-  const dest = ctx.destination;
-  // Square 60->30Hz over 300ms (deep impact)
-  scheduleOsc(ctx, 'square', 60, 30, 0.3, 0.4, dest, t);
+  const dest = getOutput(ctx);
+  scheduleOsc(ctx, 'triangle', 500, 800, 0.08, 0.2, dest, t);
+  scheduleOsc(ctx, 'triangle', 700, 1000, 0.06, 0.15, dest, t + 0.08);
 }
 
-function playExplosion(ctx: AudioContext): void {
+function playWeaponSwitch(ctx: AudioContext): void {
   const t = ctx.currentTime;
-  const dest = ctx.destination;
-  // Sawtooth 60->15Hz over 500ms
-  scheduleOsc(ctx, 'sawtooth', 60, 15, 0.5, 0.5, dest, t);
-  // Long rumble noise buffer
-  scheduleNoise(ctx, 0.8, 0.6, 3, dest, t);
+  const dest = getOutput(ctx);
+  scheduleOsc(ctx, 'square', 200, 400, 0.08, 0.12, dest, t);
+  scheduleNoise(ctx, 0.05, 0.1, 25, dest, t);
+}
+
+function playDeathSting(ctx: AudioContext): void {
+  const t = ctx.currentTime;
+  const dest = getOutput(ctx);
+  scheduleOsc(ctx, 'sawtooth', 200, 30, 1.5, 0.4, dest, t);
+  scheduleOsc(ctx, 'square', 150, 20, 1.5, 0.25, dest, t + 0.1);
+  scheduleNoise(ctx, 1.5, 0.3, 2, dest, t);
+}
+
+function playVictorySting(ctx: AudioContext): void {
+  const t = ctx.currentTime;
+  const dest = getOutput(ctx);
+  scheduleOsc(ctx, 'sine', 440, 440, 0.3, 0.2, dest, t);
+  scheduleOsc(ctx, 'sine', 554, 554, 0.3, 0.2, dest, t + 0.15);
+  scheduleOsc(ctx, 'sine', 659, 659, 0.3, 0.2, dest, t + 0.3);
+  scheduleOsc(ctx, 'sine', 880, 880, 0.4, 0.25, dest, t + 0.45);
+}
+
+function playBossDefeat(ctx: AudioContext): void {
+  const t = ctx.currentTime;
+  const dest = getOutput(ctx);
+  scheduleOsc(ctx, 'sawtooth', 110, 110, 0.5, 0.3, dest, t);
+  scheduleOsc(ctx, 'sawtooth', 165, 165, 0.5, 0.25, dest, t);
+  scheduleOsc(ctx, 'sine', 330, 330, 0.2, 0.2, dest, t + 0.3);
+  scheduleOsc(ctx, 'sine', 440, 440, 0.2, 0.2, dest, t + 0.5);
+  scheduleOsc(ctx, 'sine', 550, 550, 0.2, 0.2, dest, t + 0.7);
+  scheduleOsc(ctx, 'sine', 660, 660, 0.4, 0.3, dest, t + 0.9);
+  scheduleOsc(ctx, 'sine', 880, 880, 0.6, 0.3, dest, t + 1.1);
+}
+
+function playGameComplete(ctx: AudioContext): void {
+  const t = ctx.currentTime;
+  const dest = getOutput(ctx);
+  const notes = [220, 262, 330, 392, 440, 523, 659, 880];
+  notes.forEach((freq, i) => {
+    scheduleOsc(ctx, 'sine', freq, freq, 0.4, 0.2, dest, t + i * 0.2);
+  });
+  scheduleOsc(ctx, 'sine', 440, 440, 1.5, 0.15, dest, t + 1.6);
+  scheduleOsc(ctx, 'sine', 554, 554, 1.5, 0.12, dest, t + 1.6);
+  scheduleOsc(ctx, 'sine', 659, 659, 1.5, 0.12, dest, t + 1.6);
+  scheduleOsc(ctx, 'sine', 880, 880, 1.5, 0.1, dest, t + 1.6);
 }
 
 // ---------------------------------------------------------------------------
@@ -254,27 +279,41 @@ export function playSound(type: SoundType): void {
   }
   const ctx = audioCtx!;
 
-  // Resume context if it was suspended (browser autoplay policy)
   if (ctx.state === 'suspended') {
     ctx.resume();
   }
 
   switch (type) {
+    // File-based sounds
     case 'shoot':
-      playShoot(ctx);
+      playBufferSound('sfx-pistol', 0.6);
       break;
     case 'shotgun':
-      playShotgun(ctx);
+      playBufferSound('sfx-shotgun', 0.7);
       break;
     case 'rapid':
-      playRapid(ctx);
+      playBufferSound('sfx-pistol', 0.4);
       break;
     case 'bigshot':
-      playBigshot(ctx);
+      playBufferSound('sfx-cannon', 0.8);
       break;
     case 'hit':
-      playHit(ctx);
+      playBufferSound('sfx-impact', 0.5);
       break;
+    case 'boss_hit':
+      playBufferSound('sfx-impact', 0.7);
+      break;
+    case 'door':
+      playBufferSound('sfx-doorOpen', 0.5);
+      break;
+    case 'explosion':
+      playBufferSound('sfx-explosion', 0.7);
+      break;
+    case 'footstep':
+      playBufferVaried('sfx-footstep', 0.3, 0.1);
+      break;
+
+    // Procedural stings (kept)
     case 'goat_die':
       playGoatDie(ctx);
       break;
@@ -287,20 +326,29 @@ export function playSound(type: SoundType): void {
     case 'hurt':
       playHurt(ctx);
       break;
-    case 'door':
-      playDoor(ctx);
-      break;
     case 'empty':
       playEmpty(ctx);
       break;
     case 'reload':
       playReload(ctx);
       break;
-    case 'boss_hit':
-      playBossHit(ctx);
+    case 'reload_complete':
+      playReloadComplete(ctx);
       break;
-    case 'explosion':
-      playExplosion(ctx);
+    case 'weapon_switch':
+      playWeaponSwitch(ctx);
+      break;
+    case 'death_sting':
+      playDeathSting(ctx);
+      break;
+    case 'victory_sting':
+      playVictorySting(ctx);
+      break;
+    case 'boss_defeat':
+      playBossDefeat(ctx);
+      break;
+    case 'game_complete':
+      playGameComplete(ctx);
       break;
   }
 }

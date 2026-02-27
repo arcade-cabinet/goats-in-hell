@@ -5,10 +5,10 @@ import {playSound} from './AudioSystem';
 
 // Default reserve ammo granted when picking up a new weapon
 const WEAPON_PICKUP_RESERVE: Record<WeaponId, number> = {
-  hellPistol: 32,
+  hellPistol: 48,
   brimShotgun: 16,
-  hellfireCannon: 80,
-  goatsBane: 6,
+  hellfireCannon: 120,
+  goatsBane: 12,
 };
 
 // ---------------------------------------------------------------------------
@@ -47,6 +47,8 @@ export function pickupSystemUpdate(): void {
     // ----- Apply pickup effect -----
 
     if (pickup.pickupType === 'health') {
+      // Health pickup collection — nightmare filtering is handled at spawn time
+      // (explore floors skip health spawns; arenas/bosses spawn reduced trickle)
       player.player.hp = Math.min(
         player.player.hp + pickup.value,
         player.player.maxHp,

@@ -28,12 +28,14 @@ export function createLavaLights(
         continue;
       }
 
-      // Skip ~30% randomly for performance
-      if (Math.random() < 0.3) {
+      // Skip ~50% randomly for performance
+      if (Math.random() < 0.5) {
         continue;
       }
 
-      if (lights.length >= 20) {
+      // Cap at 6 — with hemispheric + spotlight = 8 total scene lights.
+      // Materials set maxSimultaneousLights=8 to match.
+      if (lights.length >= 6) {
         break;
       }
 
@@ -57,7 +59,7 @@ export function createLavaLights(
       });
     }
 
-    if (lights.length >= 20) {
+    if (lights.length >= 6) {
       break;
     }
   }

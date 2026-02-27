@@ -1,5 +1,5 @@
 import {Vector3} from '@babylonjs/core';
-import type {Entity, EntityType} from '../entities/components';
+import type {Entity, EntityType, WeaponId} from '../entities/components';
 import {world} from '../entities/world';
 import {GameState} from '../../state/GameState';
 import {useGameStore, DIFFICULTY_PRESETS} from '../../state/GameStore';
@@ -105,13 +105,13 @@ function spawnArenaPickups(arenaSize: number): void {
       position: new Vector3(sx * 2, 0.5, sz * 2),
       pickup: {
         pickupType: 'ammo',
-        value: 12,
+        value: 18,
         active: true,
       },
     });
   }
 
-  // Spawn 1 health pickup (unless nightmare mode)
+  // Spawn 1 health pickup (reduced in nightmare mode)
   if (!isNightmare) {
     const hx = 3 + Math.floor(Math.random() * (arenaSize - 6));
     const hz = 3 + Math.floor(Math.random() * (arenaSize - 6));
@@ -126,7 +126,41 @@ function spawnArenaPickups(arenaSize: number): void {
         active: true,
       },
     });
+  } else if (currentWave % 3 === 0) {
+    // Nightmare: trickle 1 small health pickup every 3 waves (brutal but survivable)
+    const hx = 3 + Math.floor(Math.random() * (arenaSize - 6));
+    const hz = 3 + Math.floor(Math.random() * (arenaSize - 6));
+    arenaPickupCounter++;
+    world.add({
+      id: `arena-pickup-${arenaPickupCounter}`,
+      type: 'health',
+      position: new Vector3(hx * 2, 0.5, hz * 2),
+      pickup: {
+        pickupType: 'health',
+        value: 15,
+        active: true,
+      },
+    });
   }
+}
+
+function spawnArenaWeaponPickup(arenaSize: number): void {
+  const weaponPool: WeaponId[] = ['brimShotgun', 'hellfireCannon', 'goatsBane'];
+  const weaponId = weaponPool[Math.floor(Math.random() * weaponPool.length)];
+  const wx = 3 + Math.floor(Math.random() * (arenaSize - 6));
+  const wz = 3 + Math.floor(Math.random() * (arenaSize - 6));
+  arenaPickupCounter++;
+  world.add({
+    id: `arena-pickup-${arenaPickupCounter}`,
+    type: 'weaponPickup',
+    position: new Vector3(wx * 2, 0.5, wz * 2),
+    pickup: {
+      pickupType: 'weapon',
+      value: 0,
+      active: true,
+      weaponId,
+    },
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -152,9 +186,13 @@ export function waveSystemUpdate(deltaTime: number, arenaSize: number): void {
   // If no enemies remain and the wave is not actively spawning, start next
   // ------------------------------------------------------------------
   if (enemyCount === 0 && !waveActive) {
-    // Drop pickups between waves (every other wave)
-    if (currentWave > 0 && currentWave % 2 === 0) {
+    // Drop pickups between waves (every wave after the first)
+    if (currentWave > 0) {
       spawnArenaPickups(arenaSize);
+    }
+    // Drop a weapon pickup every 3rd wave for arsenal diversity
+    if (currentWave > 0 && currentWave % 3 === 0) {
+      spawnArenaWeaponPickup(arenaSize);
     }
     startNextWave();
   }

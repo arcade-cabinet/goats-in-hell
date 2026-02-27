@@ -7,6 +7,9 @@ import {
   DIFFICULTY_PRESETS,
 } from '../state/GameStore';
 import type {Difficulty, NightmareFlags} from '../state/GameStore';
+import {setMasterVolume} from '../game/systems/AudioSystem';
+import {setMusicMasterVolume} from '../game/systems/MusicSystem';
+import {writeSettings} from '../state/GameStore';
 
 // ---------------------------------------------------------------------------
 // Main Menu (New Game / Continue / Settings)
@@ -24,16 +27,25 @@ export const MainMenu: React.FC = () => {
 // Title Screen
 // ---------------------------------------------------------------------------
 
-const SKULL_ART = `     ___
-    /   \\
-   | x x |
-   |  ^  |
-    \\___/
-   /|   |\\`;
+const GOAT_ART = `        ╱╲     ╱╲
+       ╱  ╲   ╱  ╲
+      ╱    ╲_╱    ╲
+     │  ◈        ◈  │
+     │       ▼       │
+      ╲    ┌───┐    ╱
+       ╲   │ ▲ │   ╱
+        ╲  └───┘  ╱
+         ╲_______╱
+          │ ║║║ │
+          │ ║║║ │
+         ╱│     │╲
+        ╱ └─────┘ ╲`;
 
 const TitleScreen: React.FC = () => {
   const pulseAnim = useRef(new Animated.Value(0.4)).current;
   const patch = useGameStore(s => s.patch);
+  const hasSave = useGameStore(s => s.hasSave);
+  const continueGame = useGameStore(s => s.continueGame);
 
   useEffect(() => {
     const loop = Animated.loop(
@@ -50,12 +62,26 @@ const TitleScreen: React.FC = () => {
     <View style={s.container}>
       <View style={s.bgLayer} />
 
+      {/* Decorative border lines */}
+      <View style={s.borderTop} />
+      <View style={s.borderBottom} />
+
+      {/* Pentagram hint — subtle decorative lines */}
+      <Text style={s.pentagram}>{'⛧'}</Text>
+
+      {/* Goat skull art */}
+      <Animated.Text style={[s.goatArt, {opacity: pulseAnim}]}>
+        {GOAT_ART}
+      </Animated.Text>
+
       {/* Title */}
       <View style={s.titleWrap}>
         <Text style={s.titleGlow}>GOATS IN HELL</Text>
         <Text style={s.title}>GOATS IN HELL</Text>
       </View>
       <Text style={s.subtitle}>A DESCENT INTO MADNESS</Text>
+
+      <Text style={s.divider}>{'━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'}</Text>
 
       <Animated.Text style={[s.pulse, {opacity: pulseAnim}]}>
         {'— CHOOSE YOUR FATE —'}
@@ -70,13 +96,20 @@ const TitleScreen: React.FC = () => {
           <Text style={s.primaryBtnText}>NEW GAME</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={s.secondaryBtn}
-          onPress={() => {/* TODO: load save */}}
-          activeOpacity={0.7}>
-          <Text style={s.secondaryBtnText}>CONTINUE</Text>
-          <Text style={s.btnHint}>No save found</Text>
-        </TouchableOpacity>
+        {hasSave ? (
+          <TouchableOpacity
+            style={s.secondaryBtn}
+            onPress={continueGame}
+            activeOpacity={0.7}>
+            <Text style={s.secondaryBtnText}>CONTINUE</Text>
+            <Text style={s.btnHint}>Resume saved run</Text>
+          </TouchableOpacity>
+        ) : (
+          <View style={[s.secondaryBtn, s.disabledBtn]}>
+            <Text style={[s.secondaryBtnText, s.disabledBtnText]}>CONTINUE</Text>
+            <Text style={s.btnHint}>No save found</Text>
+          </View>
+        )}
 
         <TouchableOpacity
           style={s.secondaryBtn}
@@ -86,8 +119,8 @@ const TitleScreen: React.FC = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Decorative skull */}
-      <Text style={s.skullArt}>{SKULL_ART}</Text>
+      {/* Bottom decorative elements */}
+      <Text style={s.bottomDecor}>{'⛧  ☠  ⛧'}</Text>
 
       <Text style={s.footer}>v0.6.6.6</Text>
     </View>
@@ -256,11 +289,31 @@ const NewGameScreen: React.FC = () => {
 };
 
 // ---------------------------------------------------------------------------
-// Settings Screen (placeholder)
+// Settings Screen
 // ---------------------------------------------------------------------------
 
 const SettingsScreen: React.FC = () => {
   const patch = useGameStore(s => s.patch);
+  const masterVolume = useGameStore(s => s.masterVolume);
+  const mouseSensitivity = useGameStore(s => s.mouseSensitivity);
+
+  const volumePercent = Math.round(masterVolume * 100);
+  const sensitivityPercent = Math.round(mouseSensitivity * 100);
+
+  const adjustVolume = (delta: number) => {
+    const newVol = Math.max(0, Math.min(1, masterVolume + delta));
+    patch({masterVolume: newVol});
+    setMasterVolume(newVol);
+    setMusicMasterVolume(newVol);
+    writeSettings(newVol, mouseSensitivity);
+  };
+
+  const adjustSensitivity = (delta: number) => {
+    const newSens = Math.max(0.1, Math.min(1, mouseSensitivity + delta));
+    patch({mouseSensitivity: newSens});
+    writeSettings(masterVolume, newSens);
+  };
+
   return (
     <View style={s.container}>
       <View style={s.bgLayer} />
@@ -269,6 +322,41 @@ const SettingsScreen: React.FC = () => {
       </TouchableOpacity>
       <Text style={s.sectionTitle}>SETTINGS</Text>
 
+      {/* Volume slider */}
+      <View style={s.settingRow}>
+        <Text style={s.settingLabel}>VOLUME</Text>
+        <View style={s.sliderRow}>
+          <TouchableOpacity onPress={() => adjustVolume(-0.1)} style={s.sliderBtn}>
+            <Text style={s.sliderBtnText}>-</Text>
+          </TouchableOpacity>
+          <View style={s.sliderTrack}>
+            <View style={[s.sliderFill, {width: `${volumePercent}%` as any}]} />
+          </View>
+          <TouchableOpacity onPress={() => adjustVolume(0.1)} style={s.sliderBtn}>
+            <Text style={s.sliderBtnText}>+</Text>
+          </TouchableOpacity>
+          <Text style={s.sliderValue}>{volumePercent}%</Text>
+        </View>
+      </View>
+
+      {/* Sensitivity slider */}
+      <View style={s.settingRow}>
+        <Text style={s.settingLabel}>MOUSE SENSITIVITY</Text>
+        <View style={s.sliderRow}>
+          <TouchableOpacity onPress={() => adjustSensitivity(-0.1)} style={s.sliderBtn}>
+            <Text style={s.sliderBtnText}>-</Text>
+          </TouchableOpacity>
+          <View style={s.sliderTrack}>
+            <View style={[s.sliderFill, {width: `${sensitivityPercent}%` as any}]} />
+          </View>
+          <TouchableOpacity onPress={() => adjustSensitivity(0.1)} style={s.sliderBtn}>
+            <Text style={s.sliderBtnText}>+</Text>
+          </TouchableOpacity>
+          <Text style={s.sliderValue}>{sensitivityPercent}%</Text>
+        </View>
+      </View>
+
+      {/* Controls reference */}
       <View style={s.settingsGroup}>
         <Text style={s.settingsLabel}>CONTROLS</Text>
         <View style={s.controlsGrid}>
@@ -306,44 +394,89 @@ const s = StyleSheet.create({
     backgroundColor: '#110000',
   },
 
+  // Decorative borders
+  borderTop: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 3,
+    backgroundColor: '#440000',
+  },
+  borderBottom: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 3,
+    backgroundColor: '#440000',
+  },
+  pentagram: {
+    fontSize: 30,
+    color: '#330000',
+    marginBottom: 8,
+    opacity: 0.4,
+  },
+
+  // Goat art
+  goatArt: {
+    fontFamily: 'Courier',
+    fontSize: 14,
+    color: '#cc2200',
+    lineHeight: 17,
+    marginBottom: 16,
+    textAlign: 'center' as const,
+    textShadowColor: 'rgba(255, 68, 0, 0.6)',
+    textShadowOffset: {width: 0, height: 0},
+    textShadowRadius: 8,
+  },
+
   // Title
-  titleWrap: {alignItems: 'center', justifyContent: 'center', height: 70, marginBottom: 4},
+  titleWrap: {alignItems: 'center', justifyContent: 'center', height: 50, marginBottom: 4, width: '100%' as any},
   title: {
     position: 'absolute',
-    fontSize: 48,
+    fontSize: 36,
     fontWeight: 'bold',
     fontFamily: 'Courier',
     color: '#cc0000',
-    letterSpacing: 6,
+    letterSpacing: 10,
   },
   titleGlow: {
     position: 'absolute',
-    fontSize: 48,
+    fontSize: 36,
     fontWeight: 'bold',
     fontFamily: 'Courier',
     color: 'transparent',
-    letterSpacing: 6,
-    textShadowColor: 'rgba(204, 0, 0, 0.8)',
+    letterSpacing: 10,
+    textShadowColor: 'rgba(255, 0, 0, 0.9)',
     textShadowOffset: {width: 0, height: 0},
-    textShadowRadius: 20,
+    textShadowRadius: 30,
   },
   subtitle: {
     fontSize: 13,
     fontFamily: 'Courier',
     color: '#884422',
     letterSpacing: 8,
-    marginBottom: 16,
+    marginBottom: 8,
+  },
+  divider: {
+    fontFamily: 'Courier',
+    fontSize: 10,
+    color: '#440000',
+    letterSpacing: 2,
+    marginBottom: 8,
+    opacity: 0.5,
   },
   pulse: {
     fontSize: 14,
     fontFamily: 'Courier',
     color: '#cc0000',
     letterSpacing: 4,
-    marginBottom: 20,
+    marginBottom: 16,
   },
 
   // Menu buttons
-  menuButtons: {alignItems: 'center', gap: 12, marginBottom: 24},
+  menuButtons: {alignItems: 'center', gap: 12, marginBottom: 16},
   primaryBtn: {
     borderWidth: 2,
     borderColor: '#cc0000',
@@ -380,14 +513,20 @@ const s = StyleSheet.create({
     fontFamily: 'Courier',
     marginTop: 2,
   },
+  disabledBtn: {
+    opacity: 0.35,
+  },
+  disabledBtnText: {
+    color: '#553333',
+  },
 
-  skullArt: {
+  bottomDecor: {
     fontFamily: 'Courier',
-    fontSize: 10,
-    color: '#330000',
-    lineHeight: 12,
-    marginTop: 10,
-    opacity: 0.3,
+    fontSize: 16,
+    color: '#440000',
+    letterSpacing: 8,
+    marginTop: 8,
+    opacity: 0.5,
   },
 
   footer: {
@@ -569,6 +708,57 @@ const s = StyleSheet.create({
   },
 
   // Settings
+  settingRow: {
+    marginBottom: 20,
+    width: 320,
+  },
+  settingLabel: {
+    fontFamily: 'Courier',
+    fontSize: 11,
+    color: '#884433',
+    letterSpacing: 4,
+    marginBottom: 8,
+  },
+  sliderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  sliderBtn: {
+    width: 30,
+    height: 30,
+    borderWidth: 1,
+    borderColor: '#660000',
+    backgroundColor: 'rgba(102, 0, 0, 0.15)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  sliderBtnText: {
+    fontFamily: 'Courier',
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#cc0000',
+  },
+  sliderTrack: {
+    flex: 1,
+    height: 12,
+    backgroundColor: '#1a0505',
+    borderWidth: 1,
+    borderColor: 'rgba(204, 0, 0, 0.25)',
+    overflow: 'hidden' as const,
+  },
+  sliderFill: {
+    height: '100%' as any,
+    backgroundColor: '#cc0000',
+  },
+  sliderValue: {
+    fontFamily: 'Courier',
+    fontSize: 12,
+    color: '#cc0000',
+    fontWeight: 'bold',
+    width: 40,
+    textAlign: 'right' as const,
+  },
   settingsGroup: {
     alignItems: 'center',
     marginTop: 20,

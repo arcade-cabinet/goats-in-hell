@@ -1,6 +1,7 @@
 import type {Entity} from '../entities/components';
 import {world} from '../entities/world';
 import {GameState} from '../../state/GameState';
+import {useGameStore} from '../../state/GameStore';
 
 // ---------------------------------------------------------------------------
 // Floor completion
@@ -21,18 +22,12 @@ export function checkFloorComplete(): boolean {
 
 /**
  * Advance the player to the next floor.
- * Increments the floor counter, resets per-floor kills, and transitions
- * to the victory screen so the UI can show an interstitial before loading
- * the next level.
+ * Transitions to the victory screen so the UI can show an interstitial
+ * before loading the next level. Floor number is advanced by advanceStage()
+ * when the player clicks DESCEND on the VictoryScreen.
  */
 export function advanceFloor(): void {
-  const state = GameState.get();
-  // Don't reset kills here — VictoryScreen needs them.
-  // kills are reset when the player clicks DESCEND (via advanceStage()).
-  GameState.set({
-    floor: state.floor + 1,
-    screen: 'victory',
-  });
+  GameState.set({screen: 'victory'});
 }
 
 // ---------------------------------------------------------------------------
@@ -60,4 +55,10 @@ export function checkPlayerDeath(): boolean {
  */
 export function triggerDeath(): void {
   GameState.set({screen: 'dead'});
+
+  // Permadeath: delete save on death
+  const {nightmareFlags, deleteSave} = useGameStore.getState();
+  if (nightmareFlags.permadeath) {
+    deleteSave();
+  }
 }

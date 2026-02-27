@@ -1,10 +1,13 @@
-import {Ray, Scene, Vector3} from '@babylonjs/core';
+import {Scene, Vector3} from '@babylonjs/core';
 import type {Entity, WeaponId} from '../entities/components';
 import {world} from '../entities/world';
 import {GameState} from '../../state/GameState';
 import {weapons} from './weapons';
 import {playSound} from '../systems/AudioSystem';
 import type {SoundType} from '../systems/AudioSystem';
+import {damageEnemy, handleEnemyKill} from '../systems/CombatSystem';
+import {useGameStore, getLevelBonuses} from '../../state/GameStore';
+import {physicsRaycast} from '../systems/PhysicsSetup';
 
 // Track last fire time per weapon to enforce fire rate cooldown
 const lastFireTime: Record<string, number> = {};
@@ -28,7 +31,7 @@ export function initPlayerAmmo(): Record<
   return {
     hellPistol: {
       current: weapons.hellPistol.magSize,
-      reserve: 32,
+      reserve: 48,
       magSize: weapons.hellPistol.magSize,
     },
     brimShotgun: {current: 0, reserve: 0, magSize: weapons.brimShotgun.magSize},
@@ -39,7 +42,7 @@ export function initPlayerAmmo(): Record<
 
 /**
  * Attempt to fire the player's current weapon.
- * Checks cooldown and ammo, then performs hitscan or spawns a projectile.
+ * Checks cooldown and ammo, then performs physics hitscan or spawns a projectile.
  * Returns true if a shot was fired.
  */
 export function tryShoot(scene: Scene, player: Entity): boolean {
@@ -83,17 +86,18 @@ export function tryShoot(scene: Scene, player: Entity): boolean {
     return false;
   }
 
-  // Camera forward vector (the direction the player is looking)
+  // Camera position and forward vector
+  const origin = camera.position.clone();
   const cameraForward = camera.getForwardRay().direction.clone();
 
   if (def.isProjectile) {
     // --- Projectile weapon: spawn a projectile entity ---
     spawnProjectile(player, cameraForward, def);
   } else {
-    // --- Hitscan weapon: cast ray(s) from camera ---
+    // --- Hitscan weapon: Havok physics raycast from camera ---
     for (let i = 0; i < def.pellets; i++) {
       const direction = applySpread(cameraForward, def.spread);
-      performHitscan(scene, player.position, direction, def);
+      performHitscan(scene, origin, direction, def);
     }
   }
 
@@ -160,7 +164,7 @@ export function updateReload(player: Entity): void {
     ammo.reserve -= transfer;
 
     player.player.isReloading = false;
-    playSound('reload');
+    playSound('reload_complete');
   }
 }
 
@@ -186,6 +190,7 @@ export function switchWeapon(player: Entity, weaponId: WeaponId): void {
   player.player.isReloading = false;
 
   player.player.currentWeapon = weaponId;
+  playSound('weapon_switch');
 }
 
 // ---------------------------------------------------------------------------
@@ -210,8 +215,8 @@ function applySpread(direction: Vector3, spread: number): Vector3 {
 }
 
 /**
- * Cast a single hitscan ray from the player's position along `direction`,
- * checking for enemy meshes within weapon range.
+ * Cast a Havok physics raycast from origin along direction.
+ * Hits enemy capsule colliders and applies damage via entity metadata.
  */
 function performHitscan(
   scene: Scene,
@@ -219,14 +224,9 @@ function performHitscan(
   direction: Vector3,
   def: (typeof weapons)[WeaponId],
 ): void {
-  const ray = new Ray(origin.clone(), direction.clone(), def.range);
-
-  const hit = scene.pickWithRay(ray, mesh => {
-    return mesh.name.startsWith('mesh-enemy-');
-  });
-
-  if (hit?.hit && hit.pickedMesh) {
-    applyDamageToEnemy(hit.pickedMesh.name, def.damage);
+  const hit = physicsRaycast(scene, origin, direction, def.range);
+  if (hit) {
+    applyDamageToEnemy(hit.entityId, def.damage);
   }
 }
 
@@ -239,16 +239,21 @@ function spawnProjectile(
   def: (typeof weapons)[WeaponId],
 ): void {
   const spreadDir = applySpread(direction, def.spread);
-
   const velocity = spreadDir.scale(def.projectileSpeed ?? 0.5);
 
+  // Apply level-based damage multiplier to projectile damage
+  const level = useGameStore.getState().leveling.level;
+  const bonuses = getLevelBonuses(level);
+  const scaledDmg = Math.ceil(def.damage * bonuses.damageMult);
+
   world.add({
+    id: `proj-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
     type: 'projectile',
     position: player.position!.clone(),
     velocity,
     projectile: {
       life: def.range / (def.projectileSpeed ?? 0.5),
-      damage: def.damage,
+      damage: scaledDmg,
       speed: def.projectileSpeed ?? 0.5,
       owner: 'player',
       aoe: def.aoe,
@@ -257,37 +262,37 @@ function spawnProjectile(
 }
 
 /**
- * Find an enemy entity by its mesh name and apply damage.
- * If the enemy's hp drops to 0 or below, remove it and update score.
- *
- * The EnemyRenderer names meshes as "mesh-enemy-{entity.id}", so we extract
- * the entity ID from the mesh name rather than looking up a `.mesh` property
- * that doesn't exist on enemy entities.
+ * Find an enemy entity by ID (from physics raycast metadata) and apply damage.
+ * Uses shared damageEnemy() for armor absorption and handleEnemyKill()
+ * for score/XP/sound on kill.
  */
-function applyDamageToEnemy(meshName: string, damage: number): void {
-  // Extract entity ID from mesh name format: "mesh-enemy-{id}"
-  const entityId = meshName.replace('mesh-enemy-', '');
+function applyDamageToEnemy(entityId: string, damage: number): void {
   const entity = world.entities.find(e => e.id === entityId && e.enemy);
 
   if (!entity || !entity.enemy) {
     return;
   }
 
-  entity.enemy.hp -= damage;
+  // Apply level-based damage multiplier
+  const level = useGameStore.getState().leveling.level;
+  const bonuses = getLevelBonuses(level);
+  const scaled = Math.ceil(damage * bonuses.damageMult);
 
-  // Play boss_hit sound when damaging the arch-goat boss
-  if (entity.type === 'archGoat') {
+  // Apply damage with armor absorption
+  damageEnemy(entity, scaled);
+
+  // Hit marker feedback
+  GameState.set({hitMarker: 6});
+
+  // Play boss_hit sound when damaging a boss
+  const bossTypes = ['archGoat', 'infernoGoat', 'voidGoat', 'ironGoat'];
+  if (bossTypes.includes(entity.type ?? '')) {
     playSound('boss_hit');
   }
 
   if (entity.enemy.hp <= 0) {
-    const state = GameState.get();
-    GameState.set({
-      score: state.score + entity.enemy.scoreValue,
-      kills: state.kills + 1,
-      totalKills: state.totalKills + 1,
-    });
-
-    world.remove(entity);
+    handleEnemyKill(entity);
+  } else {
+    playSound('hit');
   }
 }

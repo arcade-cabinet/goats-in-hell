@@ -68,16 +68,11 @@ export function setupPostProcessing(scene: Scene, camera: Camera): void {
 }
 
 export function updateScreenEffects(scene: Scene, deltaMs: number): void {
-  // Fallback: if pipeline was never set up (race condition from setTimeout),
-  // attempt to create it now.
   if (!pipeline) {
-    const cam = scene.activeCamera;
-    if (cam) {
-      setupPostProcessing(scene, cam);
-    }
-    if (!pipeline) {
-      return;
-    }
+    throw new Error(
+      'PostProcessing pipeline not initialized. ' +
+      'Call setupPostProcessing() before updateScreenEffects().'
+    );
   }
 
   const state = GameState.get();
@@ -182,7 +177,14 @@ export function updateScreenEffects(scene: Scene, deltaMs: number): void {
     }
 
     GameState.set({gunFlash: Math.max(0, flash - 1)});
-  } else {
+  }
+
+  // Decay hit marker
+  if (state.hitMarker > 0) {
+    GameState.set({hitMarker: Math.max(0, state.hitMarker - 1)});
+  }
+
+  if (state.gunFlash <= 0) {
     // Return to baseline
     pipeline.bloomWeight = BASE_BLOOM_WEIGHT;
 

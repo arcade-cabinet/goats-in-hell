@@ -12,9 +12,10 @@ export enum MapCell {
   WALL_LAVA = 3,
   WALL_OBSIDIAN = 4,
   DOOR = 5,
+  FLOOR_LAVA = 6,
 }
 
-export type SpawnData = {x: number; z: number; type: string; weaponId?: string};
+export type SpawnData = {x: number; z: number; type: string; weaponId?: string; rotation?: number};
 
 export class LevelGenerator {
   width: number;
@@ -133,6 +134,22 @@ export class LevelGenerator {
       }
     }
 
+    // Scatter lava floor hazards in fire-themed areas
+    if (theme.accentWalls.includes(MapCell.WALL_LAVA) || theme.primaryWall === MapCell.WALL_LAVA) {
+      const lavaChance = theme.name === 'firePits' ? 0.08 : 0.04;
+      for (let rz = 1; rz < this.depth - 1; rz++) {
+        for (let rx = 1; rx < this.width - 1; rx++) {
+          if (this.grid[rz][rx] !== MapCell.EMPTY) continue;
+          // Don't place lava near player spawn (5 cell radius)
+          const distFromSpawn = Math.abs(rx - playerCellX) + Math.abs(rz - playerCellZ);
+          if (distFromSpawn < 5) continue;
+          if (Math.random() < lavaChance) {
+            this.grid[rz][rx] = MapCell.FLOOR_LAVA;
+          }
+        }
+      }
+    }
+
     // Every 5th floor: embed boss arena and spawn archGoat
     if (this.floor % 5 === 0) {
       this.embedBossArena();
@@ -143,6 +160,9 @@ export class LevelGenerator {
 
     // Place weapon pickups
     this.placeWeaponPickups(playerCellX, playerCellZ);
+
+    // Place decorative props
+    this.placeProps(playerCellX, playerCellZ);
   }
 
   private embedBossArena() {
@@ -391,5 +411,74 @@ export class LevelGenerator {
       cell === MapCell.WALL_LAVA ||
       cell === MapCell.WALL_OBSIDIAN
     );
+  }
+
+  /**
+   * Place decorative prop spawn points based on cell adjacency to walls.
+   * Prop density varies by floor theme.
+   */
+  private placeProps(playerCellX: number, playerCellZ: number) {
+    const theme = this.theme;
+    const isFireTheme = theme.name === 'firePits';
+    const isFleshTheme = theme.name === 'fleshCaverns';
+
+    // Base chances per category
+    const wallPropChance = isFireTheme ? 0.15 : isFleshTheme ? 0.08 : 0.1;
+    const cornerPropChance = 0.15;
+    const scatterChance = 0.02;
+
+    for (let z = 1; z < this.depth - 1; z++) {
+      for (let x = 1; x < this.width - 1; x++) {
+        if (this.grid[z][x] !== MapCell.EMPTY) continue;
+
+        // Skip cells near player spawn (5 cell radius)
+        const distFromSpawn = Math.abs(x - playerCellX) + Math.abs(z - playerCellZ);
+        if (distFromSpawn < 5) continue;
+
+        const wallNeighbors =
+          (this.isWall(x - 1, z) ? 1 : 0) +
+          (this.isWall(x + 1, z) ? 1 : 0) +
+          (this.isWall(x, z - 1) ? 1 : 0) +
+          (this.isWall(x, z + 1) ? 1 : 0);
+        const rotation = Math.random() * Math.PI * 2;
+
+        // Wall-adjacent cells: fire-baskets or candles
+        if (wallNeighbors === 1 && Math.random() < wallPropChance) {
+          const type = isFireTheme
+            ? (Math.random() > 0.4 ? 'prop_firebasket' : 'prop_candle')
+            : (Math.random() > 0.6 ? 'prop_candle_multi' : 'prop_candle');
+          this.spawns.push({
+            x: x * CELL_SIZE,
+            z: z * CELL_SIZE,
+            type,
+            rotation,
+          });
+          continue;
+        }
+
+        // Corner cells (2+ wall neighbors): coffins or columns
+        if (wallNeighbors >= 2 && Math.random() < cornerPropChance) {
+          const type = Math.random() > 0.5 ? 'prop_coffin' : 'prop_column';
+          this.spawns.push({
+            x: x * CELL_SIZE,
+            z: z * CELL_SIZE,
+            type,
+            rotation,
+          });
+          continue;
+        }
+
+        // Scattered floor decoration far from spawn
+        if (distFromSpawn >= 10 && Math.random() < scatterChance) {
+          const type = Math.random() > 0.5 ? 'prop_chalice' : 'prop_bowl';
+          this.spawns.push({
+            x: x * CELL_SIZE,
+            z: z * CELL_SIZE,
+            type,
+            rotation,
+          });
+        }
+      }
+    }
   }
 }

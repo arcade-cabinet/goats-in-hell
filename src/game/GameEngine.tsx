@@ -22,7 +22,7 @@ import {
 import type {FloorTheme} from './levels/FloorThemes';
 import {getThemeForFloor} from './levels/FloorThemes';
 import {generateArena, getArenaPlayerSpawn} from './levels/ArenaGenerator';
-import {generateBossArena} from './levels/BossArenas';
+import {generateBossArena, BOSS_ARENA_PICKUP_POSITIONS} from './levels/BossArenas';
 import {setActiveLevel, clearActiveLevel} from './levels/activeLevelRef';
 import {GameState} from '../state/GameState';
 
@@ -45,6 +45,7 @@ import {
   getWaveInfo,
 } from './systems/WaveSystem';
 import {doorSystemUpdate, resetDoorSystem} from './systems/DoorSystem';
+import {initPhysics, disposeAllEnemyColliders} from './systems/PhysicsSetup';
 import {
   tryShoot,
   tryReload,
@@ -90,6 +91,7 @@ import {BabylonScreens} from './ui/BabylonScreens';
 import {DamageNumbers3D} from './ui/DamageNumbers3D';
 import {WeaponViewModel, loadAllWeapons, disposeWeaponCache} from './ui/WeaponViewModel';
 import {LoadingScreen} from './ui/LoadingScreen';
+import {TouchControls, touchInput, resetTouchInput, isTouchDevice} from './ui/TouchControls';
 import {useGameStore, DIFFICULTY_PRESETS, getLevelBonuses} from '../state/GameStore';
 
 // ---------------------------------------------------------------------------
@@ -171,6 +173,7 @@ export function GameEngine() {
   const footstepAccum = useRef(0);
   const lastFootstepPos = useRef(Vector3.Zero());
   const propMeshesRef = useRef<Mesh[]>([]);
+  const levelMeshesRef = useRef<Mesh[]>([]);
   const assetsLoadedRef = useRef(false);
   const [reinitCounter, setReinitCounter] = useState(0);
   const [assetsReady, setAssetsReady] = useState(false);
@@ -222,17 +225,21 @@ export function GameEngine() {
     (async () => {
       try {
         let loaded = 0;
-        const total = 5;
+        const total = 6;
         const tick = (label: string) => {
           loaded++;
           setLoadProgress(loaded / total);
           setLoadLabel(label);
         };
 
+        // Initialize Havok physics engine (WASM load)
+        setLoadLabel('Initializing physics...');
+        await initPhysics(scene);
+        tick('Forging weapons...');
+
         // Load asset categories sequentially so progress bar advances visibly
         const audioCtx = new AudioContext();
 
-        setLoadLabel('Forging weapons...');
         await loadAllWeapons(scene);
         tick('Summoning enemies...');
 
@@ -475,6 +482,25 @@ export function GameEngine() {
           attackCooldown: 0,
         },
       });
+
+      // Spawn initial pickups in boss arena (3 ammo + 1 health at corner positions)
+      BOSS_ARENA_PICKUP_POSITIONS.forEach((pos, i) => {
+        const [px, pz] = pos;
+        const pickupType = i < 3 ? 'ammo' : 'health';
+        // Skip health pickup in nightmare mode
+        if (pickupType === 'health' && isNightmare) return;
+        const value = pickupType === 'ammo' ? 18 : 30;
+        world.add({
+          id: `boss-pickup-${i}`,
+          type: pickupType as EntityType,
+          position: new Vector3(px * CELL_SIZE, 0.5, pz * CELL_SIZE),
+          pickup: {
+            pickupType: pickupType as 'health' | 'ammo',
+            value,
+            active: true,
+          },
+        });
+      });
     }
 
     // Set up post-processing - retry until camera exists
@@ -522,6 +548,13 @@ export function GameEngine() {
     // Grace period: 2 seconds of invulnerability at floor start
     const GRACE_PERIOD_MS = 2000;
     const graceEnd = performance.now() + GRACE_PERIOD_MS;
+
+    // Boss mid-fight resupply flag (spawn extra ammo when boss hits 50% HP)
+    // Declared here in the effect closure — resets on each floor init which is correct.
+    // Using a closure variable is fine because reinitCounter triggers a full cleanup + re-run.
+    let bossResupplyTriggered = false;
+    // Note: if the effect re-runs mid-boss (shouldn't happen, but guard anyway),
+    // the old game loop is unsubscribed by the cleanup return, so no double-spawns.
 
     // Main game loop
     let lastTime = performance.now();
@@ -647,9 +680,26 @@ export function GameEngine() {
         } else if (encounterType === 'boss') {
           // Boss: complete when no boss entity remains
           const bossTypes: EntityType[] = ['archGoat', 'infernoGoat', 'voidGoat', 'ironGoat'];
-          const bossAlive = world.entities.some(
+          const bossEntity = world.entities.find(
             e => bossTypes.includes(e.type as EntityType) && e.enemy,
           );
+          // Mid-fight resupply: spawn 2 ammo pickups when boss drops to 50% HP
+          if (bossEntity?.enemy && !bossResupplyTriggered) {
+            if (bossEntity.enemy.hp <= bossEntity.enemy.maxHp * 0.5) {
+              bossResupplyTriggered = true;
+              for (let ri = 0; ri < 2; ri++) {
+                const rx = 3 + Math.floor(Math.random() * (levelData.width - 6));
+                const rz = 3 + Math.floor(Math.random() * (levelData.depth - 6));
+                world.add({
+                  id: `boss-resupply-${ri}`,
+                  type: 'ammo',
+                  position: new Vector3(rx * CELL_SIZE, 0.5, rz * CELL_SIZE),
+                  pickup: {pickupType: 'ammo', value: 18, active: true},
+                });
+              }
+            }
+          }
+          const bossAlive = !!bossEntity;
           if (!bossAlive && checkFloorComplete()) {
             const bossId = storeState.stage.bossId;
             if (bossId) {
@@ -712,53 +762,84 @@ export function GameEngine() {
     };
   }, [scene]);
 
-  // Build wall meshes with shared materials + enable collision for AI
-  const wallMeshes = useMemo(() => {
-    if (!level || !materials) return null;
-    const meshes: JSX.Element[] = [];
+  // Build level geometry imperatively (walls, floor, ceiling).
+  // Using imperative creation avoids Reactylon reconciler crashes when
+  // meshes are disposed during floor transitions.
+  useEffect(() => {
+    if (!level || !materials || !scene) return;
 
+    const created: Mesh[] = [];
+
+    // Floor
+    const floorMesh = MeshBuilder.CreateGround(
+      'floor',
+      {width: level.width * CELL_SIZE, height: level.depth * CELL_SIZE},
+      scene,
+    );
+    floorMesh.position = new Vector3(
+      (level.width * CELL_SIZE) / 2, 0, (level.depth * CELL_SIZE) / 2,
+    );
+    floorMesh.receiveShadows = true;
+    floorMesh.checkCollisions = true;
+    floorMesh.material = materials.floor;
+    created.push(floorMesh);
+
+    // Ceiling
+    const ceilingMesh = MeshBuilder.CreateGround(
+      'ceiling',
+      {width: level.width * CELL_SIZE, height: level.depth * CELL_SIZE},
+      scene,
+    );
+    ceilingMesh.position = new Vector3(
+      (level.width * CELL_SIZE) / 2, WALL_HEIGHT, (level.depth * CELL_SIZE) / 2,
+    );
+    ceilingMesh.rotation = new Vector3(Math.PI, 0, 0);
+    ceilingMesh.material = materials.ceiling;
+    created.push(ceilingMesh);
+
+    // Walls + lava floor tiles
     for (let z = 0; z < level.depth; z++) {
       for (let x = 0; x < level.width; x++) {
         const cell = level.grid[z][x];
 
-        // Lava floor hazard tiles (flat glowing planes on the ground)
         if (cell === MapCell.FLOOR_LAVA) {
-          meshes.push(
-            <box
-              key={`lava-${x}-${z}`}
-              name={`lava-${x}-${z}`}
-              options={{width: CELL_SIZE, height: 0.05, depth: CELL_SIZE}}
-              position={
-                new Vector3(x * CELL_SIZE, 0.03, z * CELL_SIZE)
-              }
-              receiveShadows={false}
-              material={materials.lava}
-            />,
+          const lava = MeshBuilder.CreateBox(
+            `lava-${x}-${z}`,
+            {width: CELL_SIZE, height: 0.05, depth: CELL_SIZE},
+            scene,
           );
+          lava.position = new Vector3(x * CELL_SIZE, 0.03, z * CELL_SIZE);
+          lava.receiveShadows = false;
+          lava.material = materials.lava;
+          created.push(lava);
           continue;
         }
 
         const wallType = mapCellToWallType(cell);
         if (!wallType) continue;
 
-        const mat = materials[wallType];
-        meshes.push(
-          <box
-            key={`wall-${x}-${z}`}
-            name={`wall-${x}-${z}`}
-            options={{width: CELL_SIZE, height: WALL_HEIGHT, depth: CELL_SIZE}}
-            position={
-              new Vector3(x * CELL_SIZE, WALL_HEIGHT / 2, z * CELL_SIZE)
-            }
-            receiveShadows
-            checkCollisions
-            material={mat}
-          />,
+        const wall = MeshBuilder.CreateBox(
+          `wall-${x}-${z}`,
+          {width: CELL_SIZE, height: WALL_HEIGHT, depth: CELL_SIZE},
+          scene,
         );
+        wall.position = new Vector3(x * CELL_SIZE, WALL_HEIGHT / 2, z * CELL_SIZE);
+        wall.receiveShadows = true;
+        wall.checkCollisions = true;
+        wall.material = materials[wallType];
+        created.push(wall);
       }
     }
-    return meshes;
-  }, [level, materials]);
+
+    levelMeshesRef.current = created;
+
+    return () => {
+      for (const m of levelMeshesRef.current) {
+        m.dispose();
+      }
+      levelMeshesRef.current = [];
+    };
+  }, [level, materials, scene]);
 
   if (!level || !materials) return null;
 
@@ -769,51 +850,13 @@ export function GameEngine() {
       {/* Environment Light - tinted by floor theme */}
       <hemisphericLight
         name="ambient"
-        intensity={0.35}
+        intensity={0.55}
         direction={new Vector3(0, 1, 0)}
         diffuse={Color3.FromHexString(ambientColor)}
-        groundColor={Color3.FromHexString('#110000')}
+        groundColor={Color3.FromHexString('#1a0505')}
       />
 
-      {/* Floor */}
-      <ground
-        name="floor"
-        options={{
-          width: level.width * CELL_SIZE,
-          height: level.depth * CELL_SIZE,
-        }}
-        position={
-          new Vector3(
-            (level.width * CELL_SIZE) / 2,
-            0,
-            (level.depth * CELL_SIZE) / 2,
-          )
-        }
-        receiveShadows
-        checkCollisions
-        material={materials.floor}
-      />
-
-      {/* Ceiling */}
-      <ground
-        name="ceiling"
-        options={{
-          width: level.width * CELL_SIZE,
-          height: level.depth * CELL_SIZE,
-        }}
-        position={
-          new Vector3(
-            (level.width * CELL_SIZE) / 2,
-            WALL_HEIGHT,
-            (level.depth * CELL_SIZE) / 2,
-          )
-        }
-        rotation={new Vector3(Math.PI, 0, 0)}
-        material={materials.ceiling}
-      />
-
-      {/* Walls */}
-      {wallMeshes}
+      {/* Floor, ceiling, and walls created imperatively via useEffect */}
 
       {/* Player camera + controls */}
       <PlayerController level={level} />
@@ -874,6 +917,8 @@ const PlayerController = ({level}: {level: LevelData}) => {
 
       // Sprint state (manual mode only)
       let isSprinting = false;
+      let touchControls: TouchControls | null = null;
+      const isTouch = isTouchDevice();
 
       // --- Autoplay: create Yuka AI governor ---
       if (autoplay) {
@@ -889,8 +934,12 @@ const PlayerController = ({level}: {level: LevelData}) => {
         if (typeof window !== 'undefined') {
           (window as any).__aiGovernor = governor;
         }
+      } else if (isTouch) {
+        // --- Touch device: create virtual controls overlay ---
+        touchControls = new TouchControls(scene);
+        // No pointer lock on touch — camera look handled by touch drag
       } else {
-        // --- Manual: attach keyboard/mouse controls ---
+        // --- Desktop: attach keyboard/mouse controls ---
         camera.attachControl(true);
 
         const canvas = scene.getEngine().getRenderingCanvas();
@@ -926,6 +975,66 @@ const PlayerController = ({level}: {level: LevelData}) => {
           camera.speed = baseSpeed * bonuses.speedMult;
         }
 
+        // --- Touch input processing ---
+        if (isTouch && touchControls && !autoplay) {
+          const gs = GameState.get();
+          if (gs.screen === 'playing') {
+            touchControls.update();
+
+            // Movement: apply joystick to camera position via forward/right vectors
+            if (Math.abs(touchInput.moveX) > 0.05 || Math.abs(touchInput.moveZ) > 0.05) {
+              const forward = camera.getForwardRay().direction;
+              forward.y = 0;
+              forward.normalize();
+              const right = Vector3.Cross(Vector3.Up(), forward).normalize();
+              const moveSpeed = 0.15;
+              const move = forward.scale(touchInput.moveZ * moveSpeed)
+                .add(right.scale(-touchInput.moveX * moveSpeed));
+              camera.position.addInPlace(move);
+            }
+
+            // Look: apply touch drag to camera rotation
+            if (touchInput.lookDeltaX !== 0 || touchInput.lookDeltaY !== 0) {
+              camera.rotation.y += touchInput.lookDeltaX;
+              camera.rotation.x += touchInput.lookDeltaY;
+              // Clamp vertical look
+              camera.rotation.x = Math.max(-Math.PI / 2.5, Math.min(Math.PI / 2.5, camera.rotation.x));
+            }
+
+            // Fire
+            if (touchInput.fire) {
+              const fired = tryShoot(scene, playerEntity);
+              if (fired && scene.activeCamera) {
+                const dir = scene.activeCamera.getForwardRay().direction;
+                createMuzzleFlash(camera.position.add(dir.scale(0.5)), dir, scene);
+                camera.rotation.x -= 0.02;
+              }
+            }
+
+            // Reload
+            if (touchInput.reload) {
+              tryReload(playerEntity);
+            }
+
+            // Weapon switch
+            if (touchInput.weaponSwitch > 0) {
+              const weaponMap: Record<number, WeaponId> = {
+                1: 'hellPistol', 2: 'brimShotgun',
+                3: 'hellfireCannon', 4: 'goatsBane',
+              };
+              const wid = weaponMap[touchInput.weaponSwitch];
+              if (wid) switchWeapon(playerEntity, wid);
+            }
+
+            // Pause
+            if (touchInput.pause) {
+              useGameStore.getState().patch({screen: 'paused'});
+            }
+
+            resetTouchInput();
+          }
+        }
+
         // Bounds checking
         if (camera.position.y < -10) {
           camera.position = new Vector3(
@@ -936,9 +1045,9 @@ const PlayerController = ({level}: {level: LevelData}) => {
         }
       };
 
-      // Manual-mode shooting with muzzle flash + recoil kick
+      // Manual-mode shooting with muzzle flash + recoil kick (desktop only)
       const handlePointerDown = () => {
-        if (autoplay) return;
+        if (autoplay || isTouch) return;
         const gs = GameState.get();
         if (gs.screen !== 'playing') return;
         const fired = tryShoot(scene, playerEntity);
@@ -1007,6 +1116,9 @@ const PlayerController = ({level}: {level: LevelData}) => {
         }
         if (governor) {
           governor.dispose();
+        }
+        if (touchControls) {
+          touchControls.dispose();
         }
       };
     });
@@ -1091,6 +1203,7 @@ const EnemyRenderer = () => {
       }
       meshMapRef.current.clear();
       disposeGoatCache();
+      disposeAllEnemyColliders();
     };
   }, [scene]);
 
@@ -1177,59 +1290,69 @@ const ProjectileRenderer = () => {
 // ---------------------------------------------------------------------------
 
 const PickupRenderer = () => {
-  const [pickups, setPickups] = useState<Entity[]>(
-    world.entities.filter((e: Entity) => e.pickup?.active),
-  );
-  const [bobOffset, setBobOffset] = useState(0);
+  const scene = useScene();
+  const meshMapRef = useRef<Map<string, Mesh>>(new Map());
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setPickups([...world.entities.filter((e: Entity) => e.pickup?.active)]);
-      setBobOffset(Math.sin(Date.now() * 0.003) * 0.15);
-    }, 50);
-    return () => clearInterval(interval);
-  }, []);
+    if (!scene) return;
 
-  return (
-    <>
-      {pickups.map((pickup: Entity) => {
-        if (!pickup.position) return null;
+    const interval = setInterval(() => {
+      const activePickups = world.entities.filter(
+        (e: Entity) => e.pickup?.active,
+      );
+      const bobOffset = Math.sin(Date.now() * 0.003) * 0.15;
+      const activeIds = new Set(activePickups.map(p => p.id).filter(Boolean));
+      const meshMap = meshMapRef.current;
+
+      // Remove meshes for despawned pickups
+      for (const [id, mesh] of meshMap) {
+        if (!activeIds.has(id)) {
+          mesh.dispose();
+          meshMap.delete(id);
+        }
+      }
+
+      // Create/update meshes for active pickups
+      for (const pickup of activePickups) {
+        if (!pickup.position || !pickup.id) continue;
+        const id = pickup.id;
 
         const isHealth = pickup.pickup?.pickupType === 'health';
         const isWeapon = pickup.pickup?.pickupType === 'weapon';
-        const color = isHealth
-          ? '#44ff44'
-          : isWeapon
-            ? '#ff44ff'
-            : '#ffaa00';
-        const emissive = isHealth
-          ? '#115511'
-          : isWeapon
-            ? '#441144'
-            : '#443300';
         const diameter = isWeapon ? 0.7 : 0.5;
 
-        return (
-          <sphere
-            key={pickup.id}
-            name={`mesh-pickup-${pickup.id}`}
-            options={{diameter, segments: 12}}
-            position={
-              new Vector3(
-                pickup.position.x,
-                0.5 + bobOffset,
-                pickup.position.z,
-              )
-            }>
-            <standardMaterial
-              name={`pickupMat-${pickup.id}`}
-              emissiveColor={Color3.FromHexString(color)}
-              diffuseColor={Color3.FromHexString(emissive)}
-              alpha={0.85}
-            />
-          </sphere>
-        );
-      })}
-    </>
-  );
+        let mesh = meshMap.get(id);
+        if (!mesh) {
+          mesh = MeshBuilder.CreateSphere(
+            `mesh-pickup-${id}`,
+            {diameter, segments: 12},
+            scene,
+          );
+          const mat = new StandardMaterial(`pickupMat-${id}`, scene);
+          const color = isHealth ? '#44ff44' : isWeapon ? '#ff44ff' : '#ffaa00';
+          const emissive = isHealth ? '#115511' : isWeapon ? '#441144' : '#443300';
+          mat.emissiveColor = Color3.FromHexString(color);
+          mat.diffuseColor = Color3.FromHexString(emissive);
+          mat.alpha = 0.85;
+          mesh.material = mat;
+          meshMap.set(id, mesh);
+        }
+
+        mesh.position.x = pickup.position.x;
+        mesh.position.y = 0.5 + bobOffset;
+        mesh.position.z = pickup.position.z;
+      }
+    }, 50);
+
+    return () => {
+      clearInterval(interval);
+      for (const mesh of meshMapRef.current.values()) {
+        mesh.material?.dispose();
+        mesh.dispose();
+      }
+      meshMapRef.current.clear();
+    };
+  }, [scene]);
+
+  return null;
 };

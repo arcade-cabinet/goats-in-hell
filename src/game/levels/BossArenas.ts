@@ -14,6 +14,14 @@ const PILLAR_POSITIONS: [number, number][] = [
   [7, 11],
 ];
 
+/** Symmetric pickup positions in the boss arena (grid coords). */
+export const BOSS_ARENA_PICKUP_POSITIONS: [number, number][] = [
+  [3, 3],   // near top-left pillar
+  [11, 3],  // near top-right pillar
+  [3, 11],  // near bottom-left pillar
+  [11, 11], // near bottom-right pillar
+];
+
 export function generateBossArena(): number[][] {
   const grid: number[][] = [];
 

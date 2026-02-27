@@ -81,3 +81,11 @@ yarn-error.log
 
 # Screenshots (dev testing artifacts)
 *.png
+
+# Production build output
+dist/
+
+# Debug logs
+console-debug*.log
+console-warnings.log
+vm-debug.log

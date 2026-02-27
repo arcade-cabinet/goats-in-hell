@@ -69,7 +69,7 @@ export const DIFFICULTY_PRESETS: Record<Difficulty, DifficultyModifiers> = {
     enemySpeedMult: 1.2,
     playerStartHp: 75,
     xpMult: 0.8,
-    pickupDensityMult: 0.7,
+    pickupDensityMult: 0.85,
   },
 };
 
