@@ -4,13 +4,14 @@ import {world} from '../entities/world';
 import {GameState} from '../../state/GameState';
 import {useGameStore} from '../../state/GameStore';
 import {playSound} from './AudioSystem';
+import {pushDamageEvent} from './damageEvents';
 
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
 /** Safely remove an entity from the world, disposing its mesh if present. */
-function removeEntity(entity: Entity): void {
+export function removeEntity(entity: Entity): void {
   if (entity.mesh) {
     entity.mesh.dispose();
   }
@@ -24,7 +25,7 @@ function removeEntity(entity: Entity): void {
  * Apply damage to an enemy, factoring in armor if present.
  * Returns the actual damage dealt to HP.
  */
-function damageEnemy(entity: Entity, damage: number): number {
+export function damageEnemy(entity: Entity, damage: number): number {
   const enemy = entity.enemy!;
 
   // Armored enemies absorb damage with armor first
@@ -35,6 +36,12 @@ function damageEnemy(entity: Entity, damage: number): number {
   }
 
   enemy.hp -= damage;
+
+  // Emit floating damage number
+  if (damage > 0 && entity.position) {
+    pushDamageEvent(damage, entity.position);
+  }
+
   return damage;
 }
 
@@ -42,7 +49,7 @@ function damageEnemy(entity: Entity, damage: number): number {
  * Handle an enemy being killed: update score/kills, play sound, and remove
  * the entity from the world.
  */
-function handleEnemyKill(entity: Entity): void {
+export function handleEnemyKill(entity: Entity): void {
   const state = GameState.get();
   const scoreValue = entity.enemy?.scoreValue ?? 0;
 
@@ -169,8 +176,8 @@ export function combatSystemUpdate(deltaTime: number): void {
     pos.y += vel.y * dtScale;
     pos.z += vel.z * dtScale;
 
-    // Decrement lifetime
-    proj.life -= 1;
+    // Decrement lifetime (delta-time scaled so range is framerate-independent)
+    proj.life -= dtScale;
 
     if (proj.life <= 0) {
       removeEntity(projectile);
