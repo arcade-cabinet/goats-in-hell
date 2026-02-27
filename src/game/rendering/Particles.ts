@@ -64,46 +64,100 @@ export function createLavaEmbers(
   return system;
 }
 
+/** Color presets for different enemy gore types. */
+const BLOOD_COLORS: Record<string, [Color4, Color4]> = {
+  default: [new Color4(0.6, 0.0, 0.0, 1), new Color4(0.3, 0.0, 0.0, 1)],
+  fire: [new Color4(1.0, 0.3, 0.0, 1), new Color4(0.7, 0.1, 0.0, 1)],
+  void: [new Color4(0.4, 0.0, 0.8, 1), new Color4(0.2, 0.0, 0.5, 1)],
+  shadow: [new Color4(0.3, 0.0, 0.6, 1), new Color4(0.1, 0.0, 0.3, 1)],
+  iron: [new Color4(0.3, 0.4, 0.5, 1), new Color4(0.1, 0.2, 0.3, 1)],
+  boss: [new Color4(0.8, 0.0, 1.0, 1), new Color4(0.5, 0.0, 0.7, 1)],
+};
+
+/** Map enemy type strings to gore color keys. */
+function getGoreColor(enemyType?: string): [Color4, Color4] {
+  if (!enemyType) return BLOOD_COLORS.default;
+  if (enemyType.includes('fire') || enemyType.includes('inferno')) return BLOOD_COLORS.fire;
+  if (enemyType.includes('void')) return BLOOD_COLORS.void;
+  if (enemyType.includes('shadow')) return BLOOD_COLORS.shadow;
+  if (enemyType.includes('iron') || enemyType.includes('Knight')) return BLOOD_COLORS.iron;
+  if (enemyType.includes('arch')) return BLOOD_COLORS.boss;
+  return BLOOD_COLORS.default;
+}
+
+/**
+ * Blood spray + giblet burst on enemy death.
+ * Significantly more violent than before — this is an 18+ game.
+ */
 export function createDeathBurst(
   position: Vector3,
   scene: Scene,
   isBoss: boolean,
+  enemyType?: string,
 ): ParticleSystem {
-  const capacity = isBoss ? 80 : 30;
+  const [color1, color2] = isBoss ? BLOOD_COLORS.boss : getGoreColor(enemyType);
+
+  // Main blood spray
+  const capacity = isBoss ? 150 : 60;
   const system = new ParticleSystem('deathBurst', capacity, scene);
   system.particleTexture = getParticleTexture(scene);
 
   system.emitter = position;
   system.manualEmitCount = capacity;
 
-  system.minLifeTime = 0.3;
-  system.maxLifeTime = 0.8;
+  system.minLifeTime = 0.4;
+  system.maxLifeTime = 1.5;
 
-  system.direction1 = new Vector3(-1, -1, -1);
-  system.direction2 = new Vector3(1, 1, 1);
+  system.direction1 = new Vector3(-2, -0.5, -2);
+  system.direction2 = new Vector3(2, 3, 2);
 
-  system.minEmitPower = 2;
-  system.maxEmitPower = 5;
+  system.minEmitPower = isBoss ? 5 : 3;
+  system.maxEmitPower = isBoss ? 12 : 8;
 
-  system.minSize = 0.05;
-  system.maxSize = 0.15;
+  system.minSize = 0.04;
+  system.maxSize = isBoss ? 0.25 : 0.15;
 
-  if (isBoss) {
-    system.color1 = new Color4(0.8, 0, 1, 1);
-    system.color2 = new Color4(0.8, 0, 1, 1);
-  } else {
-    system.color1 = new Color4(0.8, 0.1, 0.1, 1);
-    system.color2 = new Color4(0.8, 0.1, 0.1, 1);
-  }
-  system.colorDead = new Color4(0, 0, 0, 0);
+  system.color1 = color1;
+  system.color2 = color2;
+  system.colorDead = new Color4(0.15, 0, 0, 0);
 
-  system.gravity = new Vector3(0, -2, 0);
+  system.gravity = new Vector3(0, -6, 0);
 
   system.disposeOnStop = true;
-  system.targetStopDuration = 1;
+  system.targetStopDuration = 2;
 
   system.start();
   system.stop();
+
+  // Secondary system: blood droplets that fall and linger
+  const drips = new ParticleSystem('bloodDrips', isBoss ? 40 : 15, scene);
+  drips.particleTexture = getParticleTexture(scene);
+  drips.emitter = position;
+  drips.manualEmitCount = isBoss ? 40 : 15;
+
+  drips.minLifeTime = 1.0;
+  drips.maxLifeTime = 3.0;
+
+  drips.direction1 = new Vector3(-1, 2, -1);
+  drips.direction2 = new Vector3(1, 5, 1);
+
+  drips.minEmitPower = 1;
+  drips.maxEmitPower = 3;
+
+  drips.minSize = 0.06;
+  drips.maxSize = 0.12;
+
+  drips.color1 = new Color4(color1.r * 0.7, color1.g * 0.7, color1.b * 0.7, 0.9);
+  drips.color2 = new Color4(color2.r * 0.7, color2.g * 0.7, color2.b * 0.7, 0.9);
+  drips.colorDead = new Color4(0.1, 0, 0, 0);
+
+  drips.gravity = new Vector3(0, -9.8, 0);
+
+  drips.disposeOnStop = true;
+  drips.targetStopDuration = 3.5;
+
+  drips.start();
+  drips.stop();
 
   return system;
 }
@@ -179,5 +233,42 @@ export function createPickupGlow(
   system.gravity = new Vector3(0, 0.3, 0);
 
   system.start();
+  return system;
+}
+
+/** Fiery barrel explosion — big orange/red burst. */
+export function createExplosionBurst(
+  position: Vector3,
+  scene: Scene,
+): ParticleSystem {
+  const system = new ParticleSystem('explosion', 80, scene);
+  system.particleTexture = getParticleTexture(scene);
+  system.emitter = position;
+  system.manualEmitCount = 80;
+
+  system.minLifeTime = 0.3;
+  system.maxLifeTime = 1.2;
+
+  system.direction1 = new Vector3(-3, -1, -3);
+  system.direction2 = new Vector3(3, 5, 3);
+
+  system.minEmitPower = 4;
+  system.maxEmitPower = 10;
+
+  system.minSize = 0.1;
+  system.maxSize = 0.35;
+
+  system.color1 = new Color4(1.0, 0.6, 0.1, 1);
+  system.color2 = new Color4(1.0, 0.3, 0.0, 1);
+  system.colorDead = new Color4(0.2, 0.05, 0.0, 0);
+
+  system.gravity = new Vector3(0, -4, 0);
+
+  system.disposeOnStop = true;
+  system.targetStopDuration = 1.5;
+
+  system.start();
+  system.stop();
+
   return system;
 }

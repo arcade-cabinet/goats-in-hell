@@ -44,9 +44,10 @@ import {
   getWaveInfo,
 } from './systems/WaveSystem';
 import {doorSystemUpdate, resetDoorSystem} from './systems/DoorSystem';
-import {hazardSystemUpdate, resetHazardSystem} from './systems/HazardSystem';
+import {hazardSystemUpdate, resetHazardSystem, setHazardScene} from './systems/HazardSystem';
+import {resetKillStreaks} from './systems/KillStreakSystem';
 import {tickGameClock, resetGameClock, getGameTime} from './systems/GameClock';
-import {initPhysics, disposeAllEnemyColliders} from './systems/PhysicsSetup';
+import {initPhysics, disposeAllEnemyColliders, removeEnemyCollider} from './systems/PhysicsSetup';
 import {
   tryShoot,
   tryReload,
@@ -347,6 +348,8 @@ export function GameEngine() {
     // Reset door states for new floor
     resetDoorSystem();
     resetHazardSystem();
+    resetKillStreaks();
+    setHazardScene(scene);
 
     // --- Preserve player HP across floors ---
     let preservedHp: number | null = null;
@@ -663,7 +666,9 @@ export function GameEngine() {
           const mesh = scene.getMeshByName(`mesh-enemy-${id}`);
           if (mesh) {
             const isBoss = ['infernoGoat', 'voidGoat', 'ironGoat', 'archGoat'].some(bt => id?.includes(bt));
-            createDeathBurst(mesh.position.clone(), scene, isBoss);
+            // Extract enemy type from entity id (format: "boss-{type}-{floor}" or "{type}-{idx}")
+            const enemyType = id?.split('-').find(s => s.match(/[A-Z]/)) ?? undefined;
+            createDeathBurst(mesh.position.clone(), scene, isBoss, enemyType);
           }
         }
       }
@@ -1242,12 +1247,24 @@ const PlayerController = ({level}: {level: LevelData}) => {
 // Enemy Renderer — imperative 3D procedural goat meshes
 // ---------------------------------------------------------------------------
 
+/** Death animation: knockback + fade + shrink over ~1s. */
+interface DeathAnim {
+  mesh: Mesh;
+  vx: number;
+  vz: number;
+  vy: number;
+  life: number;
+  maxLife: number;
+}
+
 const EnemyRenderer = () => {
   const scene = useScene();
   const meshMapRef = useRef<Map<string, Mesh>>(new Map());
+  const deathAnimsRef = useRef<DeathAnim[]>([]);
 
   useEffect(() => {
     const meshMap = meshMapRef.current;
+    const deathAnims = deathAnimsRef.current;
 
     const update = () => {
       const currentEnemies = world.entities.filter(
@@ -1255,18 +1272,61 @@ const EnemyRenderer = () => {
       );
       const currentIds = new Set(currentEnemies.map(e => e.id));
 
-      // Remove meshes for dead enemies
+      // Find player (used for knockback direction + look-at rotation)
+      const playerEntity = world.entities.find((e: Entity) => e.type === 'player');
+
+      // Detect dead enemies — transfer mesh to death animation instead of disposing
       for (const [id, mesh] of meshMap) {
         if (!currentIds.has(id)) {
-          disposeGoatMesh(mesh);
+          // Calculate knockback direction (away from player)
+          let vx = 0, vz = 0;
+          if (playerEntity?.position) {
+            const dx = mesh.position.x - playerEntity.position.x;
+            const dz = mesh.position.z - playerEntity.position.z;
+            const len = Math.sqrt(dx * dx + dz * dz) || 1;
+            const force = 0.15;
+            vx = (dx / len) * force;
+            vz = (dz / len) * force;
+          }
+          // Remove physics collider before animation (avoid stale collisions)
+          removeEnemyCollider(mesh.metadata?.entityId);
+          deathAnims.push({
+            mesh,
+            vx,
+            vz,
+            vy: 0.08, // slight upward launch
+            life: 40,
+            maxLife: 40,
+          });
           meshMap.delete(id);
         }
       }
 
-      // Find player for look-at rotation
-      const player = world.entities.find(
-        (e: Entity) => e.type === 'player',
-      );
+      // Animate dying enemies
+      for (let i = deathAnims.length - 1; i >= 0; i--) {
+        const anim = deathAnims[i];
+        anim.life--;
+        const t = 1 - anim.life / anim.maxLife; // 0 → 1
+
+        // Apply velocity
+        anim.mesh.position.x += anim.vx;
+        anim.mesh.position.z += anim.vz;
+        anim.mesh.position.y += anim.vy;
+        anim.vy -= 0.004; // gravity
+
+        // Shrink and fade
+        const scale = Math.max(0, 1 - t * 1.2);
+        anim.mesh.scaling.setAll(scale);
+        anim.mesh.visibility = Math.max(0, 1 - t);
+
+        // Tilt backward (dramatic death fall)
+        anim.mesh.rotation.x = t * 1.2;
+
+        if (anim.life <= 0) {
+          anim.mesh.dispose();
+          deathAnims.splice(i, 1);
+        }
+      }
 
       // Create/update meshes for living enemies
       for (const enemy of currentEnemies) {
@@ -1286,9 +1346,9 @@ const EnemyRenderer = () => {
         mesh.position.set(enemy.position.x, 0, enemy.position.z);
 
         // Face toward player
-        if (player?.position) {
-          const dx = player.position.x - mesh.position.x;
-          const dz = player.position.z - mesh.position.z;
+        if (playerEntity?.position) {
+          const dx = playerEntity.position.x - mesh.position.x;
+          const dz = playerEntity.position.z - mesh.position.z;
           mesh.rotation.y = Math.atan2(dx, dz);
         }
 
@@ -1305,6 +1365,11 @@ const EnemyRenderer = () => {
         disposeGoatMesh(mesh);
       }
       meshMap.clear();
+      // Clean up any in-progress death animations
+      for (const anim of deathAnims) {
+        anim.mesh.dispose();
+      }
+      deathAnims.length = 0;
       disposeGoatCache();
       disposeAllEnemyColliders();
     };

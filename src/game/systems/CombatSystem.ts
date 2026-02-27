@@ -6,6 +6,7 @@ import {useGameStore} from '../../state/GameStore';
 import {playSound} from './AudioSystem';
 import {pushDamageEvent} from './damageEvents';
 import {damageBarrel} from './HazardSystem';
+import {registerKill} from './KillStreakSystem';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -62,6 +63,9 @@ export function handleEnemyKill(entity: Entity): void {
 
   // Award XP for the kill (logarithmic leveling)
   useGameStore.getState().awardXp(scoreValue);
+
+  // Track kill streak
+  registerKill();
 
   playSound('goat_die');
   removeEntity(entity);

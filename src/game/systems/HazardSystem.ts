@@ -5,7 +5,7 @@
  * - Explosive barrels: take damage from player projectiles, explode dealing AoE
  */
 
-import {Vector3} from '@babylonjs/core';
+import {Scene, Vector3} from '@babylonjs/core';
 import type {Entity} from '../entities/components';
 import {world} from '../entities/world';
 import {GameState} from '../../state/GameState';
@@ -13,6 +13,7 @@ import {playSound} from './AudioSystem';
 import {pushDamageEvent} from './damageEvents';
 import {removeEntity} from './CombatSystem';
 import {getGameTime} from './GameClock';
+import {createExplosionBurst} from '../rendering/Particles';
 
 const SPIKE_RANGE = 1.2;
 const SPIKE_COOLDOWN_MS = 1500;
@@ -20,6 +21,11 @@ const BARREL_EXPLOSION_RANGE = 4;
 
 /** Per-hazard cooldown tracker (keyed by entity id). */
 const hazardCooldowns = new Map<string, number>();
+let activeScene: Scene | null = null;
+
+export function setHazardScene(scene: Scene): void {
+  activeScene = scene;
+}
 
 export function resetHazardSystem(): void {
   hazardCooldowns.clear();
@@ -72,6 +78,11 @@ function explodeBarrel(barrel: Entity): void {
   const damage = barrel.hazard!.damage;
 
   playSound('explosion');
+
+  // Visual explosion effect
+  if (activeScene) {
+    createExplosionBurst(pos.clone(), activeScene);
+  }
 
   // Damage all entities in blast radius
   const nearby = world.entities.filter((e: Entity) => {

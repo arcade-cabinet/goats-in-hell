@@ -25,6 +25,7 @@ import {CELL_SIZE, MapCell} from '../levels/LevelGenerator';
 import {useGameStore, DIFFICULTY_PRESETS, getLevelBonuses} from '../../state/GameStore';
 import type {Entity, WeaponId} from '../entities/components';
 import {getGameTime} from '../systems/GameClock';
+import {getAnnouncement} from '../systems/KillStreakSystem';
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -877,13 +878,16 @@ export class BabylonHUD {
     this.healthLabel.color = color;
     this.healthValueText.text = `${hp}/${maxHp}`;
 
-    // Low HP vignette
-    const isLow = ratio < 0.25;
+    // Low HP blood vignette — intensifies as health drops
+    const isLow = ratio < 0.5;
     this.vignette.isVisible = isLow;
     if (isLow) {
-      // Pulse by oscillating alpha
-      const pulse = 0.15 + Math.sin(getGameTime() * 0.008) * 0.1;
-      this.vignette.color = `rgba(200, 0, 0, ${pulse.toFixed(2)})`;
+      // Intensity ramps: 0.5 HP ratio → mild, 0.1 → extreme
+      const severity = 1 - ratio / 0.5; // 0 at 50% HP, 1 at 0% HP
+      const pulse = severity * (0.25 + Math.sin(getGameTime() * 0.01) * 0.12);
+      const thickness = Math.round(30 + severity * 60);
+      this.vignette.thickness = thickness;
+      this.vignette.color = `rgba(180, 0, 0, ${pulse.toFixed(2)})`;
     }
   }
 
@@ -1133,25 +1137,21 @@ export class BabylonHUD {
       this.killText.isVisible = true;
       this.killTimer = 60;
 
-      // Streak tracking: kills within 2 seconds of each other
-      if (now - this.lastKillTime < 2000) {
-        this.streakCount += killsDelta;
-      } else {
-        this.streakCount = killsDelta;
-      }
-      this.lastKillTime = now;
+    }
 
-      // Show streak for 2+ kills
-      if (this.streakCount >= 2) {
-        const streakNames = ['', '', 'DOUBLE KILL', 'TRIPLE KILL', 'MULTI KILL', 'MEGA KILL'];
-        const name = this.streakCount >= streakNames.length
-          ? `${this.streakCount}x KILL STREAK`
-          : streakNames[this.streakCount];
-        this.streakText.text = name;
-        this.streakText.color = this.streakCount >= 4 ? '#ff2200' : '#ff6600';
-        this.streakText.isVisible = true;
-        this.streakTimer = 90;
-      }
+    // Kill streak announcements from KillStreakSystem
+    const announcement = getAnnouncement();
+    if (announcement) {
+      this.streakText.text = announcement.label;
+      this.streakText.color = announcement.color;
+      this.streakText.shadowColor = announcement.color + '99';
+      this.streakText.isVisible = true;
+      // Scale text: start large and shrink to normal
+      const scale = 1.0 + (1.0 - announcement.progress) * 0.5;
+      this.streakText.fontSize = Math.round(28 * scale);
+      this.streakText.alpha = 1.0 - announcement.progress * 0.3;
+    } else {
+      this.streakText.isVisible = false;
     }
 
     // Fade kill confirmation
@@ -1161,18 +1161,6 @@ export class BabylonHUD {
       // Float upward
       this.killText.top = 30 - (60 - this.killTimer) * 0.3;
       if (this.killTimer <= 0) this.killText.isVisible = false;
-    }
-
-    // Fade streak
-    if (this.streakTimer > 0) {
-      this.streakTimer--;
-      this.streakText.alpha = Math.min(1, this.streakTimer / 30);
-      if (this.streakTimer <= 0) this.streakText.isVisible = false;
-    }
-
-    // Reset streak after 3 seconds of no kills
-    if (now - this.lastKillTime > 3000) {
-      this.streakCount = 0;
     }
   }
 

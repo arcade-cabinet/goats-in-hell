@@ -123,16 +123,16 @@ export function updateScreenEffects(scene: Scene, deltaMs: number): void {
   if (state.damageFlash > 0 && pipeline.imageProcessing) {
     const t = state.damageFlash; // 0..1
 
-    // Vignette: ramp weight aggressively for blood-screen overlay feel
-    // At t=1 the vignette is extremely heavy (almost full-screen red).
+    // Vignette: extremely heavy blood-screen overlay
+    // At t=1 the vignette is near full-screen blood red.
     pipeline.imageProcessing.vignetteWeight =
-      BASE_VIGNETTE_WEIGHT + t * 12;
+      BASE_VIGNETTE_WEIGHT + t * 18;
 
-    // Chromatic aberration: shift green/blue channels slightly toward red
-    // so the vignette fringe shows color separation.
-    const red = Math.min(1, 0.5 + t * 0.5); // 0.5 -> 1.0
-    const green = t * 0.08; // slight green bleed for aberration
-    const blue = t * 0.04; // tiny blue for fringe
+    // Chromatic aberration: shift green/blue channels toward red
+    // for that visceral blood splatter chromatic fringe.
+    const red = Math.min(1, 0.6 + t * 0.4);
+    const green = t * 0.1;
+    const blue = t * 0.05;
     pipeline.imageProcessing.vignetteColor = new Color4(
       red,
       green,
@@ -143,8 +143,8 @@ export function updateScreenEffects(scene: Scene, deltaMs: number): void {
     // Slight contrast boost during flash
     pipeline.imageProcessing.contrast = BASE_CONTRAST + t * 0.3;
 
-    // Decay: 0-1 range, ~250ms full fade at 0.004/ms
-    const newFlash = Math.max(0, t - deltaMs * 0.004);
+    // Decay: 0-1 range, ~400ms full fade at 0.0025/ms (slower = more visceral)
+    const newFlash = Math.max(0, t - deltaMs * 0.0025);
     GameState.set({damageFlash: newFlash});
 
     if (newFlash <= 0) {
