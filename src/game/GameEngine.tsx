@@ -15,12 +15,13 @@ import {
   CELL_SIZE,
   LevelGenerator,
   MapCell,
+  PLATFORM_HEIGHT,
   WALL_HEIGHT,
 } from './levels/LevelGenerator';
 import type {FloorTheme} from './levels/FloorThemes';
 import {getThemeForFloor} from './levels/FloorThemes';
 import {generateArena, getArenaPlayerSpawn} from './levels/ArenaGenerator';
-import {generateBossArena, BOSS_ARENA_PICKUP_POSITIONS} from './levels/BossArenas';
+import {generateBossArena, BOSS_ARENA_PICKUP_POSITIONS, BOSS_ARENA_SIZE} from './levels/BossArenas';
 import {setActiveLevel, clearActiveLevel} from './levels/activeLevelRef';
 import {GameState} from '../state/GameState';
 
@@ -43,6 +44,7 @@ import {
   getWaveInfo,
 } from './systems/WaveSystem';
 import {doorSystemUpdate, resetDoorSystem} from './systems/DoorSystem';
+import {hazardSystemUpdate, resetHazardSystem} from './systems/HazardSystem';
 import {tickGameClock, resetGameClock, getGameTime} from './systems/GameClock';
 import {initPhysics, disposeAllEnemyColliders} from './systems/PhysicsSetup';
 import {
@@ -288,8 +290,8 @@ export function GameEngine() {
     let levelData: LevelData;
 
     if (encounterType === 'arena') {
-      const ARENA_SIZE = 20;
-      const arenaGrid = generateArena(ARENA_SIZE) as MapCell[][];
+      const ARENA_SIZE = 24;
+      const arenaGrid = generateArena(ARENA_SIZE, floor) as MapCell[][];
       const spawn = getArenaPlayerSpawn(ARENA_SIZE);
       levelData = {
         width: ARENA_SIZE,
@@ -301,8 +303,9 @@ export function GameEngine() {
         theme,
       };
     } else if (encounterType === 'boss') {
-      const BOSS_ARENA_SIZE = 15;
-      const bossGrid = generateBossArena() as MapCell[][];
+      const bossId = storeState.stage.bossId ?? 'archGoat';
+      const bossTypeForArena = (ENEMY_TYPES.includes(bossId as EntityType) ? bossId : 'archGoat') as EntityType;
+      const bossGrid = generateBossArena(bossTypeForArena) as MapCell[][];
       levelData = {
         width: BOSS_ARENA_SIZE,
         depth: BOSS_ARENA_SIZE,
@@ -343,6 +346,7 @@ export function GameEngine() {
 
     // Reset door states for new floor
     resetDoorSystem();
+    resetHazardSystem();
 
     // --- Preserve player HP across floors ---
     let preservedHp: number | null = null;
@@ -443,6 +447,22 @@ export function GameEngine() {
             active: true,
             weaponId: spawn.weaponId as WeaponId,
           },
+        });
+      } else if (spawn.type === 'hazard_spikes') {
+        // Spike trap: uses spike GLB, deals damage when player walks over
+        world.add({
+          id: `hazard-spike-${idx}`,
+          type: 'hazard_spikes' as EntityType,
+          position: new Vector3(spawn.x, 0, spawn.z),
+          hazard: {hazardType: 'spikes', damage: 10, cooldown: 0},
+        });
+      } else if (spawn.type === 'hazard_barrel') {
+        // Explosive barrel: shoots to explode, damages nearby enemies + player
+        world.add({
+          id: `hazard-barrel-${idx}`,
+          type: 'hazard_barrel' as EntityType,
+          position: new Vector3(spawn.x, 0.5, spawn.z),
+          hazard: {hazardType: 'barrel', damage: 50, cooldown: 0, hp: 20},
         });
       } else if (PROP_TYPES.has(spawn.type)) {
         const propMesh = createProp(
@@ -603,6 +623,11 @@ export function GameEngine() {
       // 2. Combat (projectile movement + collision) - skip during grace
       if (!inGracePeriod) {
         combatSystemUpdate(dt);
+      }
+
+      // 2b. Environmental hazards (spikes, barrels)
+      if (!inGracePeriod) {
+        hazardSystemUpdate();
       }
 
       // 3. Pickups
@@ -825,6 +850,36 @@ export function GameEngine() {
           continue;
         }
 
+        // Raised platform: solid block at ground level for elevation
+        if (cell === MapCell.FLOOR_RAISED) {
+          const platform = MeshBuilder.CreateBox(
+            `platform-${x}-${z}`,
+            {width: CELL_SIZE, height: PLATFORM_HEIGHT, depth: CELL_SIZE},
+            scene,
+          );
+          platform.position = new Vector3(x * CELL_SIZE, PLATFORM_HEIGHT / 2, z * CELL_SIZE);
+          platform.receiveShadows = true;
+          platform.checkCollisions = true;
+          platform.material = materials.obsidian;
+          created.push(platform);
+          continue;
+        }
+
+        // Ramp: angled surface connecting ground to raised platform
+        if (cell === MapCell.RAMP) {
+          const ramp = MeshBuilder.CreateBox(
+            `ramp-${x}-${z}`,
+            {width: CELL_SIZE, height: PLATFORM_HEIGHT * 0.5, depth: CELL_SIZE},
+            scene,
+          );
+          ramp.position = new Vector3(x * CELL_SIZE, PLATFORM_HEIGHT * 0.25, z * CELL_SIZE);
+          ramp.receiveShadows = true;
+          ramp.checkCollisions = true;
+          ramp.material = materials.stone;
+          created.push(ramp);
+          continue;
+        }
+
         const wallType = mapCellToWallType(cell);
         if (!wallType) continue;
 
@@ -879,6 +934,9 @@ export function GameEngine() {
 
       {/* Pickup rendering */}
       <PickupRenderer />
+
+      {/* Environmental hazards */}
+      <HazardRenderer />
     </transformNode>
   );
 }
@@ -925,8 +983,12 @@ const PlayerController = ({level}: {level: LevelData}) => {
       scene.gravity = new Vector3(0, -9.81 / 60, 0);
       scene.collisionsEnabled = true;
 
-      // Sprint state (manual mode only)
+      // Sprint and jump state (manual mode only)
       let isSprinting = false;
+      let jumpVelocity = 0;
+      let isGrounded = true;
+      const JUMP_FORCE = 0.22;
+      const GROUND_Y = camera.position.y; // baseline floor Y
       let touchControls: TouchControls | null = null;
       const isTouch = isTouchDevice();
 
@@ -978,11 +1040,22 @@ const PlayerController = ({level}: {level: LevelData}) => {
         // Camera position → player entity position
         playerEntity.position = camera.position.clone();
 
-        // Manual mode: sprint speed with level bonus
+        // Manual mode: sprint speed with level bonus + jump physics
         if (!autoplay) {
           const bonuses = getLevelBonuses(useGameStore.getState().leveling.level);
           const baseSpeed = isSprinting ? 0.45 : 0.3;
           camera.speed = baseSpeed * bonuses.speedMult;
+
+          // Jump physics: apply velocity and detect landing
+          if (jumpVelocity !== 0) {
+            camera.cameraDirection.y += jumpVelocity;
+            jumpVelocity -= 0.012; // gravity acceleration per frame
+            // Detect landing: camera stops falling when gravity collision kicks in
+            if (jumpVelocity < 0 && camera.position.y <= GROUND_Y + 0.1) {
+              jumpVelocity = 0;
+              isGrounded = true;
+            }
+          }
         }
 
         // --- Touch input processing ---
@@ -1039,6 +1112,12 @@ const PlayerController = ({level}: {level: LevelData}) => {
               };
               const wid = weaponMap[touchInput.weaponSwitch];
               if (wid) switchWeapon(playerEntity, wid);
+            }
+
+            // Jump
+            if (touchInput.jump && isGrounded) {
+              jumpVelocity = JUMP_FORCE;
+              isGrounded = false;
             }
 
             // Pause
@@ -1103,6 +1182,14 @@ const PlayerController = ({level}: {level: LevelData}) => {
             break;
           case 'Shift':
             isSprinting = true;
+            break;
+          case ' ':
+            // Jump: apply upward velocity if grounded
+            if (isGrounded) {
+              jumpVelocity = JUMP_FORCE;
+              isGrounded = false;
+            }
+            e.preventDefault(); // prevent page scroll
             break;
         }
       };
@@ -1358,6 +1445,86 @@ const PickupRenderer = () => {
         mesh.position.x = pickup.position.x;
         mesh.position.y = 0.5 + bobOffset;
         mesh.position.z = pickup.position.z;
+      }
+    }, 50);
+
+    return () => {
+      clearInterval(interval);
+      for (const mesh of meshMap.values()) {
+        mesh.material?.dispose();
+        mesh.dispose();
+      }
+      meshMap.clear();
+    };
+  }, [scene]);
+
+  return null;
+};
+
+// ---------------------------------------------------------------------------
+// Hazard Renderer - spikes (floor mesh) and barrels (cylinder)
+// ---------------------------------------------------------------------------
+
+const HazardRenderer = () => {
+  const scene = useScene();
+
+  useEffect(() => {
+    if (!scene) return;
+    const meshMap = new Map<string, Mesh>();
+
+    const interval = setInterval(() => {
+      const hazards = world.entities.filter(
+        (e: Entity) => e.hazard && e.position,
+      );
+      const activeIds = new Set(hazards.map(h => h.id).filter(Boolean));
+
+      // Remove meshes for despawned hazards
+      for (const [id, mesh] of meshMap) {
+        if (!activeIds.has(id)) {
+          mesh.material?.dispose();
+          mesh.dispose();
+          meshMap.delete(id);
+        }
+      }
+
+      // Create/update meshes for active hazards
+      for (const hazard of hazards) {
+        if (!hazard.position || !hazard.id) continue;
+        const id = hazard.id;
+        const hz = hazard.hazard!;
+
+        let mesh = meshMap.get(id);
+        if (!mesh) {
+          if (hz.hazardType === 'spikes') {
+            mesh = MeshBuilder.CreateBox(
+              `mesh-hazard-${id}`,
+              {width: 1.5, height: 0.3, depth: 1.5},
+              scene,
+            );
+            const mat = new StandardMaterial(`spikeMat-${id}`, scene);
+            mat.diffuseColor = Color3.FromHexString('#555555');
+            mat.emissiveColor = Color3.FromHexString('#331111');
+            mat.specularPower = 64;
+            mesh.material = mat;
+          } else {
+            // Barrel
+            mesh = MeshBuilder.CreateCylinder(
+              `mesh-hazard-${id}`,
+              {height: 1.2, diameter: 0.8, tessellation: 12},
+              scene,
+            );
+            const mat = new StandardMaterial(`barrelMat-${id}`, scene);
+            mat.diffuseColor = Color3.FromHexString('#8B4513');
+            mat.emissiveColor = Color3.FromHexString('#441100');
+            mesh.material = mat;
+          }
+          mesh.checkCollisions = true;
+          meshMap.set(id, mesh);
+        }
+
+        mesh.position.x = hazard.position.x;
+        mesh.position.y = hz.hazardType === 'spikes' ? 0.15 : 0.6;
+        mesh.position.z = hazard.position.z;
       }
     }, 50);
 

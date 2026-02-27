@@ -6,6 +6,7 @@ import {weapons} from './weapons';
 import {playSound} from '../systems/AudioSystem';
 import type {SoundType} from '../systems/AudioSystem';
 import {damageEnemy, handleEnemyKill} from '../systems/CombatSystem';
+import {damageBarrel} from '../systems/HazardSystem';
 import {useGameStore, getLevelBonuses} from '../../state/GameStore';
 import {physicsRaycast} from '../systems/PhysicsSetup';
 import {getGameTime} from '../systems/GameClock';
@@ -233,6 +234,37 @@ function performHitscan(
   const hit = physicsRaycast(scene, origin, direction, def.range);
   if (hit) {
     applyDamageToEnemy(hit.entityId, def.damage);
+  } else {
+    // No physics hit — check barrels via proximity (no physics body)
+    checkBarrelHitscan(origin, direction, def.range, def.damage);
+  }
+}
+
+/** Barrel hitscan fallback — ray vs barrel positions via dot product proximity. */
+function checkBarrelHitscan(
+  origin: Vector3,
+  direction: Vector3,
+  range: number,
+  damage: number,
+): void {
+  const barrels = world.entities.filter(
+    (e: Entity) => e.hazard?.hazardType === 'barrel' && e.position,
+  );
+  const normDir = direction.normalize();
+
+  for (const barrel of barrels) {
+    const toBarrel = barrel.position!.subtract(origin);
+    const proj = Vector3.Dot(toBarrel, normDir);
+    if (proj < 0 || proj > range) continue;
+
+    // Perpendicular distance from ray to barrel center
+    const closest = origin.add(normDir.scale(proj));
+    const perpDist = Vector3.Distance(closest, barrel.position!);
+    if (perpDist < 0.8) {
+      damageBarrel(barrel, damage);
+      playSound('hit');
+      return;
+    }
   }
 }
 

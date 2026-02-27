@@ -12,7 +12,8 @@ import type {MusicAssetKey} from './AssetRegistry';
 // Types
 // ---------------------------------------------------------------------------
 
-type MusicTrack = 'menu' | 'exploration' | 'tense' | 'boss' | 'dark';
+type MusicTrack = 'menu' | 'exploration' | 'tense' | 'boss' | 'dark'
+  | 'death-metal' | 'violence' | 'revenge' | 'gothic';
 
 const TRACK_TO_ASSET: Record<MusicTrack, MusicAssetKey> = {
   menu: 'music-menu',
@@ -20,6 +21,10 @@ const TRACK_TO_ASSET: Record<MusicTrack, MusicAssetKey> = {
   tense: 'music-tense',
   boss: 'music-boss',
   dark: 'music-dark',
+  'death-metal': 'music-death-metal',
+  violence: 'music-violence',
+  revenge: 'music-revenge',
+  gothic: 'music-gothic',
 };
 
 // ---------------------------------------------------------------------------
@@ -130,16 +135,21 @@ export function updateMusic(): void {
   } else if (screen === 'playing' || screen === 'paused' || screen === 'victory' || screen === 'bossIntro') {
     const encounter = state.stage.encounterType;
     if (encounter === 'boss') {
-      desired = 'boss';
+      // Boss fights: heavy tracks that escalate the tension
+      const bossFloor = state.stage.floor;
+      desired = bossFloor >= 15 ? 'revenge' : 'boss';
+    } else if (encounter === 'arena') {
+      // Arena survival: aggressive combat music
+      const arenaFloor = state.stage.floor;
+      desired = arenaFloor >= 10 ? 'violence' : 'death-metal';
     } else {
-      // Map floor themes to music tracks
+      // Exploration: vary by floor theme, intensify with progression
       const themes = ['firePits', 'fleshCaverns', 'obsidianFortress', 'theVoid'];
       const idx = (state.stage.floor - 1) % themes.length;
       const themeName = themes[idx];
-      // firePits/fleshCaverns → exploration, obsidianFortress → tense, theVoid → dark
       const themeToTrack: Record<string, MusicTrack> = {
         firePits: 'exploration',
-        fleshCaverns: 'exploration',
+        fleshCaverns: 'gothic',
         obsidianFortress: 'tense',
         theVoid: 'dark',
       };

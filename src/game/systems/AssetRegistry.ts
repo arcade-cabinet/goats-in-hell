@@ -86,6 +86,13 @@ export const PROP_MODEL_ASSETS = {
   'prop-column': require('../../../assets/models/props/column-large.glb'),
   'prop-chalice': require('../../../assets/models/props/detail-chalice.glb'),
   'prop-bowl': require('../../../assets/models/props/detail-bowl.glb'),
+  'prop-spikes': require('../../../assets/models/props/floor_tile_big_spikes.glb'),
+  'prop-barrel': require('../../../assets/models/props/barrel_large.glb'),
+  'prop-barrel-small': require('../../../assets/models/props/barrel_small.glb'),
+  'prop-torch-lit': require('../../../assets/models/props/torch_lit.glb'),
+  'prop-torch-mounted': require('../../../assets/models/props/torch_mounted.glb'),
+  'prop-chest': require('../../../assets/models/props/chest.glb'),
+  'prop-chest-gold': require('../../../assets/models/props/chest_gold.glb'),
 } as const;
 
 export type PropModelKey = keyof typeof PROP_MODEL_ASSETS;
@@ -100,6 +107,10 @@ export const MUSIC_ASSETS = {
   'music-tense': require('../../../assets/audio/music/tense.ogg'),
   'music-boss': require('../../../assets/audio/music/boss.ogg'),
   'music-dark': require('../../../assets/audio/music/dark.ogg'),
+  'music-death-metal': require('../../../assets/audio/music/death-metal.ogg'),
+  'music-violence': require('../../../assets/audio/music/violence.ogg'),
+  'music-revenge': require('../../../assets/audio/music/revenge.ogg'),
+  'music-gothic': require('../../../assets/audio/music/gothic-picture.ogg'),
 } as const;
 
 export type MusicAssetKey = keyof typeof MUSIC_ASSETS;

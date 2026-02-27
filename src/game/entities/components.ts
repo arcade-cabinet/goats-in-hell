@@ -6,7 +6,8 @@ export type EntityType =
   | 'archGoat' | 'infernoGoat' | 'voidGoat' | 'ironGoat'
   | 'projectile'
   | 'health' | 'ammo' | 'weaponPickup'
-  | 'door' | 'decoration';
+  | 'door' | 'decoration'
+  | 'hazard_spikes' | 'hazard_barrel';
 
 export type WeaponId = 'hellPistol' | 'brimShotgun' | 'hellfireCannon' | 'goatsBane';
 
@@ -81,4 +82,12 @@ export type Entity = {
 
   // Door
   door?: {open: boolean; opening: boolean; openProgress: number};
+
+  // Environmental hazard
+  hazard?: {
+    hazardType: 'spikes' | 'barrel';
+    damage: number;
+    cooldown: number;
+    hp?: number; // for destructible hazards like barrels
+  };
 };

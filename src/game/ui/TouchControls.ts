@@ -33,6 +33,8 @@ export interface TouchInputState {
   weaponSwitch: number;
   /** Pause requested. */
   pause: boolean;
+  /** Jump requested. */
+  jump: boolean;
 }
 
 /** Global touch input state — reset each frame by the consumer. */
@@ -45,6 +47,7 @@ export const touchInput: TouchInputState = {
   reload: false,
   weaponSwitch: 0,
   pause: false,
+  jump: false,
 };
 
 // ---------------------------------------------------------------------------
@@ -87,6 +90,7 @@ export class TouchControls {
     this.createJoystick();
     this.createFireButton();
     this.createReloadButton();
+    this.createJumpButton();
     this.createWeaponButtons();
     this.createPauseButton();
     this.createLookZone();
@@ -272,6 +276,33 @@ export class TouchControls {
   }
 
   // -------------------------------------------------------------------------
+  // Jump Button
+  // -------------------------------------------------------------------------
+
+  private createJumpButton(): void {
+    const btn = Button.CreateSimpleButton('jump-btn', 'JUMP');
+    btn.width = '70px';
+    btn.height = '55px';
+    btn.cornerRadius = 12;
+    btn.color = 'white';
+    btn.background = 'rgba(50,255,100,0.4)';
+    btn.thickness = 2;
+    btn.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+    btn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
+    btn.left = '170px';
+    btn.top = '-80px';
+    btn.fontSize = 14;
+    btn.fontWeight = 'bold';
+    btn.isPointerBlocker = true;
+    btn.zIndex = 10;
+    this.gui.addControl(btn);
+
+    btn.onPointerDownObservable.add(() => {
+      touchInput.jump = true;
+    });
+  }
+
+  // -------------------------------------------------------------------------
   // Weapon Switch Buttons (1-4 along the bottom)
   // -------------------------------------------------------------------------
 
@@ -363,4 +394,5 @@ export function resetTouchInput(): void {
   touchInput.reload = false;
   touchInput.weaponSwitch = 0;
   touchInput.pause = false;
+  touchInput.jump = false;
 }

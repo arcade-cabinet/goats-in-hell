@@ -5,6 +5,7 @@ import {GameState} from '../../state/GameState';
 import {useGameStore} from '../../state/GameStore';
 import {playSound} from './AudioSystem';
 import {pushDamageEvent} from './damageEvents';
+import {damageBarrel} from './HazardSystem';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -116,6 +117,20 @@ function checkPlayerProjectileCollisions(projectile: Entity): boolean {
       }
 
       break; // Projectile consumed on first direct hit
+    }
+  }
+
+  // Also check barrel hits (projectile can hit a barrel instead of an enemy)
+  if (!hitSomething) {
+    for (const entity of [...world.entities]) {
+      if (entity.hazard?.hazardType !== 'barrel' || !entity.position) continue;
+      const dist = Vector3.Distance(projPos, entity.position);
+      if (dist < 1.2) {
+        hitSomething = true;
+        damageBarrel(entity, projData.damage);
+        playSound('hit');
+        break;
+      }
     }
   }
 
