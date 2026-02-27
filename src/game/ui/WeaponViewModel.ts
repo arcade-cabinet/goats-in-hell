@@ -18,7 +18,7 @@ import {
 import {world} from '../entities/world';
 import {useGameStore} from '../../state/GameStore';
 import {getGameTime} from '../systems/GameClock';
-import type {Entity, WeaponId} from '../entities/components';
+import type {WeaponId} from '../entities/components';
 import {loadWeaponModel, cloneModelHierarchy} from '../systems/AssetLoader';
 import type {WeaponModelKey} from '../systems/AssetRegistry';
 
@@ -147,6 +147,15 @@ export class WeaponViewModel {
     const bobY = Math.sin(this.bobPhase) * BOB_AMP;
     const bobX = Math.cos(this.bobPhase * 0.5) * BOB_AMP * 0.5;
 
+    // Jump bob — weapon drops slightly during ascent, rises on descent
+    let jumpBob = 0;
+    if (this.camera) {
+      const airborne = this.camera.position.y - 1.0; // 1.0 = GROUND_Y
+      if (Math.abs(airborne) > 0.05) {
+        jumpBob = -airborne * 0.04; // subtle drop during jump
+      }
+    }
+
     // Fire kick
     const gunFlash = useGameStore.getState().gunFlash ?? 0;
     if (gunFlash > 0.8 && getGameTime() - this.lastFireTime > 100) {
@@ -156,7 +165,7 @@ export class WeaponViewModel {
     this.kickOffset *= KICK_DECAY;
 
     this.root.position.x = BASE_POS.x + bobX;
-    this.root.position.y = BASE_POS.y + bobY + this.kickOffset;
+    this.root.position.y = BASE_POS.y + bobY + jumpBob + this.kickOffset;
     this.root.position.z = BASE_POS.z - this.kickOffset * 0.5;
 
     if (player.player.isReloading) {

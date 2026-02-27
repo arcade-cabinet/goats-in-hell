@@ -1072,6 +1072,8 @@ export class BabylonHUD {
           case 4: ctx.fillStyle = '#222233'; break; // obsidian
           case 5: ctx.fillStyle = '#885522'; break; // door
           case 6: ctx.fillStyle = '#ff4400'; break; // lava floor hazard
+          case 7: ctx.fillStyle = '#556677'; break; // raised platform
+          case 8: ctx.fillStyle = '#667755'; break; // ramp
           default: ctx.fillStyle = '#333333';
         }
         ctx.fillRect(x * cellPx, z * cellPx, cellPx, cellPx);

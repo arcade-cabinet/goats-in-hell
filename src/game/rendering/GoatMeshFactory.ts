@@ -32,20 +32,29 @@ interface GoatConfig {
 }
 
 const GOAT_CONFIGS: Record<string, GoatConfig> = {
+  // === DemonicGoat variants (same base mesh, distinct material overrides) ===
   goat: {
     scale: 1.0,
     modelKey: 'enemy-goat',
-    emissiveHex: '#330000',
-    emissiveIntensity: 0.15,
+    emissiveHex: '#440000',
+    emissiveIntensity: 0.2,
     eyeColor: '#ff0000',
   },
   hellgoat: {
-    scale: 1.15,
+    scale: 1.2,
     modelKey: 'enemy-hellgoat',
-    emissiveHex: '#441100',
-    emissiveIntensity: 0.25,
-    eyeColor: '#ff2200',
+    emissiveHex: '#662200',
+    emissiveIntensity: 0.35,
+    eyeColor: '#ff4400',
   },
+  goatKnight: {
+    scale: 1.4,
+    modelKey: 'enemy-goatKnight',
+    emissiveHex: '#223344',
+    emissiveIntensity: 0.15,
+    eyeColor: '#4488ff',
+  },
+  // === Specialized enemy models ===
   fireGoat: {
     scale: 1.0,
     modelKey: 'enemy-fireGoat',
@@ -60,18 +69,12 @@ const GOAT_CONFIGS: Record<string, GoatConfig> = {
     emissiveIntensity: 0.3,
     eyeColor: '#8888ff',
   },
-  goatKnight: {
-    scale: 1.3,
-    modelKey: 'enemy-goatKnight',
-    emissiveHex: '#112233',
-    emissiveIntensity: 0.15,
-    eyeColor: '#4466ff',
-  },
+  // === Boss models (unique silhouettes for gameplay clarity) ===
   archGoat: {
     scale: 2.0,
     modelKey: 'enemy-archGoat',
-    emissiveHex: '#440044',
-    emissiveIntensity: 0.35,
+    emissiveHex: '#550044',
+    emissiveIntensity: 0.4,
     eyeColor: '#cc00ff',
   },
   infernoGoat: {
@@ -91,8 +94,8 @@ const GOAT_CONFIGS: Record<string, GoatConfig> = {
   ironGoat: {
     scale: 2.2,
     modelKey: 'enemy-ironGoat',
-    emissiveHex: '#223344',
-    emissiveIntensity: 0.2,
+    emissiveHex: '#334455',
+    emissiveIntensity: 0.25,
     eyeColor: '#4488ff',
   },
 };

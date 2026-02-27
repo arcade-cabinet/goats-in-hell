@@ -60,15 +60,22 @@ export type WeaponModelKey = keyof typeof WEAPON_MODEL_ASSETS;
 // ---------------------------------------------------------------------------
 
 export const ENEMY_MODEL_ASSETS = {
-  'enemy-goat': require('../../../assets/models/enemies/Skeleton_Minion.glb'),
-  'enemy-hellgoat': require('../../../assets/models/enemies/Skeleton_Warrior.glb'),
+  // Goat variants — all use the DemonicGoat base model at different scales/materials
+  'enemy-goat': require('../../../assets/models/enemies/demonic-goat.glb'),
+  'enemy-hellgoat': require('../../../assets/models/enemies/demonic-goat.glb'),
+  'enemy-goatKnight': require('../../../assets/models/enemies/demonic-goat.glb'),
+  // Specialized enemy models — distinct silhouettes for gameplay readability
   'enemy-fireGoat': require('../../../assets/models/enemies/phantom.glb'),
   'enemy-shadowGoat': require('../../../assets/models/enemies/wraith.glb'),
-  'enemy-goatKnight': require('../../../assets/models/enemies/Skeleton_Rogue.glb'),
+  // Boss models — unique per boss for visual impact
   'enemy-archGoat': require('../../../assets/models/enemies/alienmonster.glb'),
   'enemy-infernoGoat': require('../../../assets/models/enemies/spider.glb'),
   'enemy-voidGoat': require('../../../assets/models/enemies/character-ghost.glb'),
   'enemy-ironGoat': require('../../../assets/models/enemies/Skeleton_Mage.glb'),
+  // Skeleton trash mobs (for future horde variants)
+  'enemy-skeleton': require('../../../assets/models/enemies/Skeleton_Minion.glb'),
+  'enemy-skeletonWarrior': require('../../../assets/models/enemies/Skeleton_Warrior.glb'),
+  'enemy-skeletonRogue': require('../../../assets/models/enemies/Skeleton_Rogue.glb'),
 } as const;
 
 export type EnemyModelKey = keyof typeof ENEMY_MODEL_ASSETS;
