@@ -16,11 +16,13 @@ export type GameScreen =
   | 'mainMenu'
   | 'newGame'       // difficulty + seed selection
   | 'settings'
+  | 'loading'       // asset loading before gameplay
   | 'playing'
   | 'paused'
   | 'dead'
   | 'victory'       // between-stage interstitial
-  | 'bossIntro';    // boss entrance cutscene-ish
+  | 'bossIntro'     // boss entrance cutscene-ish
+  | 'gameComplete'; // escaped hell — final stats + credits
 
 export type Difficulty = 'easy' | 'normal' | 'hard';
 
@@ -150,6 +152,13 @@ export interface GameStoreState {
   damageFlash: number;
   screenShake: number;
   gunFlash: number;
+  hitMarker: number;
+
+  // --- Settings ---
+  /** Master volume 0-1. */
+  masterVolume: number;
+  /** Mouse sensitivity (camera angular sensibility inverse). */
+  mouseSensitivity: number;
 
   // --- Autoplay (e2e testing) ---
   /** When true, Yuka AI governor controls the player. */
@@ -172,6 +181,14 @@ export interface GameStoreState {
   patch: (partial: Partial<GameStoreState>) => void;
   /** Full reset to main menu. */
   resetToMenu: () => void;
+
+  // --- Save/Load ---
+  /** Whether a saved run exists in localStorage. */
+  hasSave: boolean;
+  /** Continue a saved run. */
+  continueGame: () => void;
+  /** Delete the saved run (permadeath or manual). */
+  deleteSave: () => void;
 }
 
 // ---------------------------------------------------------------------------
@@ -181,6 +198,32 @@ export interface GameStoreState {
 /** XP required for a given level: 100 * level^1.5 */
 function xpForLevel(level: number): number {
   return Math.floor(100 * Math.pow(level, 1.5));
+}
+
+// ---------------------------------------------------------------------------
+// Level bonuses — per-level stat multipliers
+// ---------------------------------------------------------------------------
+
+export interface LevelBonuses {
+  /** Outgoing damage multiplier (1.0 = baseline). */
+  damageMult: number;
+  /** Max HP bonus (flat, added to base maxHp). */
+  maxHpBonus: number;
+  /** Move speed multiplier (1.0 = baseline). */
+  speedMult: number;
+}
+
+/**
+ * Returns stat bonuses for a given player level.
+ * Each level grants: +5% damage, +5 max HP, +2% speed.
+ */
+export function getLevelBonuses(level: number): LevelBonuses {
+  const bonus = level - 1; // level 1 = no bonus
+  return {
+    damageMult: 1 + bonus * 0.05,
+    maxHpBonus: bonus * 5,
+    speedMult: 1 + bonus * 0.02,
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -237,6 +280,94 @@ export function generateSeedPhrase(): string {
 export const SEED_POOLS = {ADJECTIVES, NOUNS} as const;
 
 // ---------------------------------------------------------------------------
+// Save/Load persistence
+// ---------------------------------------------------------------------------
+
+const SAVE_KEY = 'goats-in-hell-save';
+const SETTINGS_KEY = 'goats-in-hell-settings';
+
+interface SaveData {
+  difficulty: Difficulty;
+  nightmareFlags: NightmareFlags;
+  seed: string;
+  stage: StageState;
+  leveling: LevelingState;
+  bossesDefeated: string[];
+  score: number;
+  totalKills: number;
+  elapsedMs: number; // accumulated play time
+}
+
+function writeSave(state: GameStoreState): void {
+  const data: SaveData = {
+    difficulty: state.difficulty,
+    nightmareFlags: state.nightmareFlags,
+    seed: state.seed,
+    stage: state.stage,
+    leveling: state.leveling,
+    bossesDefeated: state.bossesDefeated,
+    score: state.score,
+    totalKills: state.totalKills,
+    elapsedMs: Date.now() - state.startTime,
+  };
+  try {
+    localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+  } catch {
+    // localStorage may be unavailable or full — silently fail
+  }
+}
+
+function readSave(): SaveData | null {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw) as SaveData;
+  } catch {
+    return null;
+  }
+}
+
+function clearSave(): void {
+  try {
+    localStorage.removeItem(SAVE_KEY);
+  } catch {
+    // ignore
+  }
+}
+
+function hasSavedGame(): boolean {
+  try {
+    return localStorage.getItem(SAVE_KEY) !== null;
+  } catch {
+    return false;
+  }
+}
+
+export function writeSettings(volume: number, sensitivity: number): void {
+  try {
+    localStorage.setItem(
+      SETTINGS_KEY,
+      JSON.stringify({masterVolume: volume, mouseSensitivity: sensitivity}),
+    );
+  } catch {
+    // ignore
+  }
+}
+
+function readSettings(): {masterVolume: number; mouseSensitivity: number} | null {
+  try {
+    const raw = localStorage.getItem(SETTINGS_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+const savedSettings = readSettings();
+const initialSeed = generateSeedPhrase();
+
+// ---------------------------------------------------------------------------
 // Store
 // ---------------------------------------------------------------------------
 
@@ -265,8 +396,8 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
 
     difficulty: 'normal',
     nightmareFlags: {nightmare: false, permadeath: false, ultraNightmare: false},
-    seed: generateSeedPhrase(),
-    rng: seedrandom(generateSeedPhrase()),
+    seed: initialSeed,
+    rng: seedrandom(initialSeed),
 
     stage: createInitialStage(),
     leveling: createInitialLeveling(),
@@ -280,9 +411,15 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
     damageFlash: 0,
     screenShake: 0,
     gunFlash: 0,
+    hitMarker: 0,
+
+    masterVolume: savedSettings?.masterVolume ?? 0.7,
+    mouseSensitivity: savedSettings?.mouseSensitivity ?? 0.5,
 
     autoplay: typeof window !== 'undefined' &&
       new URLSearchParams(window.location?.search ?? '').has('autoplay'),
+
+    hasSave: hasSavedGame(),
 
     // --- Actions ---
 
@@ -305,11 +442,20 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
         damageFlash: 0,
         screenShake: 0,
         gunFlash: 0,
+        hitMarker: 0,
       });
     },
 
     advanceStage: () => {
       const {stage} = get();
+
+      // Game completion: after defeating the boss at stage 20 (4th boss cycle)
+      if (stage.stageNumber >= 20 && stage.encounterType === 'boss') {
+        clearSave();
+        set({screen: 'gameComplete', hasSave: false});
+        return;
+      }
+
       const next = stage.stageNumber + 1;
       const encounterType = nextEncounterType(next);
       const bossId = encounterType === 'boss' ? bossForStage(next) : null;
@@ -326,6 +472,10 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
         },
         kills: 0,
       });
+
+      // Persist save after advancing
+      writeSave(get());
+      set({hasSave: true});
     },
 
     awardXp: (amount) => {
@@ -346,9 +496,41 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
 
     defeatBoss: (bossId) => {
       set(s => ({bossesDefeated: [...s.bossesDefeated, bossId]}));
+      writeSave(get());
     },
 
     patch: (partial) => set(partial as any),
+
+    continueGame: () => {
+      const save = readSave();
+      if (!save) return;
+
+      set({
+        screen: 'playing',
+        difficulty: save.difficulty,
+        nightmareFlags: save.nightmareFlags.ultraNightmare
+          ? {...save.nightmareFlags, permadeath: true}
+          : save.nightmareFlags,
+        seed: save.seed,
+        rng: seedrandom(save.seed),
+        stage: save.stage,
+        leveling: save.leveling,
+        bossesDefeated: save.bossesDefeated,
+        score: save.score,
+        kills: 0,
+        totalKills: save.totalKills,
+        startTime: Date.now() - save.elapsedMs,
+        damageFlash: 0,
+        screenShake: 0,
+        gunFlash: 0,
+        hitMarker: 0,
+      });
+    },
+
+    deleteSave: () => {
+      clearSave();
+      set({hasSave: false});
+    },
 
     resetToMenu: () => {
       set({
@@ -356,6 +538,8 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
         damageFlash: 0,
         screenShake: 0,
         gunFlash: 0,
+        hitMarker: 0,
+        hasSave: hasSavedGame(),
       });
     },
   }));
@@ -372,7 +556,9 @@ export const GameState = {
         ? 'menu' as const
         : s.screen === 'bossIntro'
           ? 'playing' as const
-          : s.screen,
+          : s.screen === 'gameComplete'
+            ? 'victory' as const
+            : s.screen,
       mode: 'roguelike' as const,
       floor: s.stage.floor,
       score: s.score,
@@ -382,6 +568,7 @@ export const GameState = {
       damageFlash: s.damageFlash,
       screenShake: s.screenShake,
       gunFlash: s.gunFlash,
+      hitMarker: s.hitMarker,
     };
   },
   set(partial: Record<string, any>) {
