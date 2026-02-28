@@ -319,6 +319,14 @@ export function savePlayerSnapshot(snapshot: PlayerSnapshot): void {
   cachedPlayerSnapshot = snapshot;
 }
 
+/** Callback invoked after a successful save. Set by BabylonHUD to show toast. */
+let onSaveCallback: (() => void) | null = null;
+
+/** Register a callback to be called after each save. */
+export function registerOnSave(cb: () => void): void {
+  onSaveCallback = cb;
+}
+
 function writeSave(state: GameStoreState): void {
   const data: SaveData = {
     version: 2,
@@ -337,6 +345,7 @@ function writeSave(state: GameStoreState): void {
   };
   try {
     localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+    if (onSaveCallback) onSaveCallback();
   } catch {
     // localStorage may be unavailable or full — silently fail
   }

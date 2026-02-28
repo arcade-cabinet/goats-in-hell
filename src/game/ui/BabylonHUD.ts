@@ -22,7 +22,7 @@ import {getThemeForFloor} from '../levels/FloorThemes';
 import {getWaveInfo} from '../systems/WaveSystem';
 import {getActiveLevel} from '../levels/activeLevelRef';
 import {CELL_SIZE, MapCell} from '../levels/LevelGenerator';
-import {useGameStore, DIFFICULTY_PRESETS, getLevelBonuses} from '../../state/GameStore';
+import {useGameStore, DIFFICULTY_PRESETS, getLevelBonuses, registerOnSave} from '../../state/GameStore';
 import {GameState} from '../../state/GameState';
 import type {Entity, WeaponId} from '../entities/components';
 import {getGameTime} from '../systems/GameClock';
@@ -114,6 +114,18 @@ export function triggerEnvKill(type: 'void' | 'lava' | 'barrel'): void {
 export function resetDamageIndicators(): void {
   damageIndicators[0] = damageIndicators[1] = damageIndicators[2] = damageIndicators[3] = 0;
   pendingDamageSources.length = 0;
+}
+
+// ---------------------------------------------------------------------------
+// Save toast — brief "Game Saved" notification
+// ---------------------------------------------------------------------------
+
+let saveToastTimer = 0;
+const SAVE_TOAST_DURATION = 120; // ~2 seconds at 60fps
+
+/** Show a brief "Game Saved" toast at the top of the screen. */
+export function showSaveToast(): void {
+  saveToastTimer = SAVE_TOAST_DURATION;
 }
 
 // ---------------------------------------------------------------------------
@@ -302,6 +314,9 @@ export class BabylonHUD {
   private floorStatsPanel!: Rectangle;
   private floorStatsTexts: TextBlock[] = [];
 
+  // Save toast
+  private saveToastText!: TextBlock;
+
   constructor(scene: Scene) {
     this.gui = AdvancedDynamicTexture.CreateFullscreenUI('HUD', true, scene);
     this.gui.idealHeight = 900;
@@ -331,9 +346,13 @@ export class BabylonHUD {
     this.createBloodSplatter();
     this.createEnvKillMessage();
     this.createFloorStatsPanel();
+    this.createSaveToast();
 
     // Register blood splatter callback so combat systems can trigger it
     bloodSplatterCallback = (intensity: number) => this.triggerBloodSplatter(intensity);
+
+    // Register save callback to show "Game Saved" toast
+    registerOnSave(() => showSaveToast());
   }
 
   // =========================================================================
@@ -1037,6 +1056,7 @@ export class BabylonHUD {
     this.updateBloodSplatter();
     this.updateEnvKillMessage();
     this.updateFloorStats();
+    this.updateSaveToast();
   }
 
   private updateHealth(player: Entity): void {
@@ -1997,6 +2017,37 @@ export class BabylonHUD {
       this.envKillText.top = 60 - slideIn * 15;
     } else {
       this.envKillText.isVisible = false;
+    }
+  }
+
+  // =========================================================================
+  // Save toast
+  // =========================================================================
+
+  private createSaveToast(): void {
+    this.saveToastText = new TextBlock('saveToast', 'GAME SAVED');
+    this.saveToastText.fontFamily = FONT;
+    this.saveToastText.fontSize = 14;
+    this.saveToastText.fontWeight = 'bold';
+    this.saveToastText.color = '#44cc44';
+    this.saveToastText.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
+    this.saveToastText.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_CENTER;
+    this.saveToastText.top = 46;
+    this.saveToastText.isVisible = false;
+    this.gui.addControl(this.saveToastText);
+  }
+
+  private updateSaveToast(): void {
+    if (saveToastTimer > 0) {
+      saveToastTimer--;
+      this.saveToastText.isVisible = true;
+
+      // Fade in over first 15 frames, hold, fade out over last 30 frames
+      const fadeIn = Math.min(1, (SAVE_TOAST_DURATION - saveToastTimer) / 15);
+      const fadeOut = Math.min(1, saveToastTimer / 30);
+      this.saveToastText.alpha = Math.min(fadeIn, fadeOut);
+    } else {
+      this.saveToastText.isVisible = false;
     }
   }
 
