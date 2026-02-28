@@ -1,15 +1,23 @@
-import {Color4} from '@babylonjs/core';
-import type {Scene as BabylonScene} from '@babylonjs/core';
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Scene} from 'reactylon';
-import {EngineWrapper} from './EngineWrapper';
-import {GameEngine} from './game/GameEngine';
 import {MainMenu} from './ui/MainMenu';
 import {useGameStore, generateSeedPhrase} from './state/GameStore';
 import type {Difficulty} from './state/GameStore';
 
+// Detect engine preference from URL: ?engine=r3f (default) or ?engine=babylon
+function getEngine(): 'r3f' | 'babylon' {
+  if (typeof window === 'undefined') return 'r3f';
+  const param = new URLSearchParams(window.location.search).get('engine');
+  if (param === 'babylon') return 'babylon';
+  return 'r3f';
+}
+
+// Lazy-load engine wrappers so unused engine code is not bundled
+const BabylonEngine = React.lazy(() => import('./BabylonApp'));
+const R3FEngine = React.lazy(() => import('./R3FRoot'));
+
 const App = () => {
+  const engine = useMemo(getEngine, []);
   const screen = useGameStore(s => s.screen);
   const patch = useGameStore(s => s.patch);
   const autoplay = useGameStore(s => s.autoplay);
@@ -119,14 +127,9 @@ const App = () => {
   return (
     <View style={styles.container}>
       {isGameActive && (
-        <EngineWrapper camera={undefined}>
-          <Scene
-            onSceneReady={(scene: BabylonScene) => {
-              scene.clearColor = new Color4(0.05, 0.01, 0.02, 1);
-            }}>
-            <GameEngine />
-          </Scene>
-        </EngineWrapper>
+        <React.Suspense fallback={null}>
+          {engine === 'r3f' ? <R3FEngine /> : <BabylonEngine />}
+        </React.Suspense>
       )}
       {(screen === 'mainMenu' || screen === 'newGame' || screen === 'settings') && (
         <MainMenu />
