@@ -24,7 +24,7 @@ import { resetGameClock, tickGameClock } from './game/systems/GameClock';
 import { hazardSystemUpdate, resetHazardSystem } from './game/systems/HazardSystem';
 import { resetKillStreaks } from './game/systems/KillStreakSystem';
 import { powerUpSystemUpdate, resetPowerUps } from './game/systems/PowerUpSystem';
-import { advanceFloor, checkFloorComplete } from './game/systems/ProgressionSystem';
+import { advanceFloor, checkFloorComplete, resetFloorProgression } from './game/systems/ProgressionSystem';
 import { getWaveInfo, resetWaveSystem, waveSystemUpdate } from './game/systems/WaveSystem';
 import { initAmbientSound, updateAmbientSound } from './r3f/audio/AmbientSoundSystem';
 import { getAudioContext, initAudio, loadAllSfx, setSfxBuffers } from './r3f/audio/AudioSystem';
@@ -165,6 +165,7 @@ function GameScene() {
     resetDoorSystem();
     resetPowerUps();
     resetKillStreaks();
+    resetFloorProgression();
     clearDamageNumbers();
     resetScreenShake();
 

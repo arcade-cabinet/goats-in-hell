@@ -6,7 +6,7 @@
  * functions for damage flash, sprint effects, and floor transitions.
  */
 
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import {
   Bloom,
   ChromaticAberration,
@@ -144,7 +144,8 @@ function computeEffectState(deltaMs: number): EffectState {
 // React component
 // ---------------------------------------------------------------------------
 
-export function PostProcessingEffects(): React.JSX.Element {
+export function PostProcessingEffects(): React.JSX.Element | null {
+  const gl = useThree((s) => s.gl);
   const bloomRef = useRef<any>(null);
   const vignetteRef = useRef<any>(null);
   const chromaticRef = useRef<any>(null);
@@ -153,7 +154,17 @@ export function PostProcessingEffects(): React.JSX.Element {
   // Stable offset vector reused every frame to avoid GC
   const offsetVec = useMemo(() => new Vector2(0, 0), []);
 
+  // EffectComposer (from @react-three/postprocessing) is WebGL-only.
+  // When WebGPURenderer is using the true WebGPU backend (not the WebGL2
+  // fallback), EffectComposer crashes. Detect the backend and skip effects.
+  const isWebGPUBackend = useMemo(() => {
+    const backendName = (gl as any).backend?.constructor?.name;
+    return backendName === 'WebGPUBackend';
+  }, [gl]);
+
   useFrame((_state, delta) => {
+    if (isWebGPUBackend) return;
+
     const deltaMs = delta * 1000;
     const fx = computeEffectState(deltaMs);
 
@@ -183,6 +194,11 @@ export function PostProcessingEffects(): React.JSX.Element {
       }
     }
   });
+
+  // Skip EffectComposer entirely on true WebGPU backend — it's WebGL-only
+  if (isWebGPUBackend) {
+    return null;
+  }
 
   return (
     <EffectErrorBoundary>

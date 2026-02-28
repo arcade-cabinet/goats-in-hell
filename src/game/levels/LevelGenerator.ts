@@ -113,14 +113,25 @@ export class LevelGenerator {
     const playerCellZ = spawnRoom.z + Math.floor(spawnRoom.h / 2);
     this.playerSpawn = vec3(playerCellX * CELL_SIZE, 1, playerCellZ * CELL_SIZE);
 
-    // Populate rooms with enemies and pickups
-    for (const room of rooms) {
-      const roomCenterX = room.x + Math.floor(room.w / 2);
-      const roomCenterZ = room.z + Math.floor(room.h / 2);
-      const distFromSpawn =
-        Math.abs(roomCenterX - playerCellX) + Math.abs(roomCenterZ - playerCellZ);
+    // Populate rooms with enemies and pickups.
+    // Sort rooms by descending distance from spawn so the furthest rooms are
+    // populated first — guarantees at least one room gets enemies even when
+    // BSP generates tightly-clustered rooms.
+    const sortedRooms = rooms
+      .map((room) => {
+        const cx = room.x + Math.floor(room.w / 2);
+        const cz = room.z + Math.floor(room.h / 2);
+        const dist = Math.abs(cx - playerCellX) + Math.abs(cz - playerCellZ);
+        return { room, dist };
+      })
+      .sort((a, b) => b.dist - a.dist);
 
-      if (distFromSpawn < 5) continue; // Skip spawn room
+    let totalEnemiesSpawned = 0;
+
+    for (const { room, dist: distFromSpawn } of sortedRooms) {
+      // Skip the spawn room (distance < 3 grid cells from player start).
+      // Reduced from 5 to 3 so small maps still get enemy rooms.
+      if (distFromSpawn < 3) continue;
 
       // Enemies: scale count by room area, floor, and theme density
       const roomArea = room.w * room.h;
@@ -134,6 +145,7 @@ export class LevelGenerator {
         if (this.grid[ez]?.[ex] !== MapCell.EMPTY) continue;
         const type = theme.enemyTypes[Math.floor(rng() * theme.enemyTypes.length)];
         this.spawns.push({ x: ex * CELL_SIZE, z: ez * CELL_SIZE, type });
+        totalEnemiesSpawned++;
       }
 
       // Pickups: ammo and health
@@ -147,6 +159,18 @@ export class LevelGenerator {
             type: rng() > 0.5 ? 'health' : 'ammo',
           });
         }
+      }
+    }
+
+    // Safety net: if no enemies were spawned (all rooms too close to spawn),
+    // force-spawn at least 2 enemies in the room furthest from the player.
+    if (totalEnemiesSpawned === 0 && sortedRooms.length > 0) {
+      const furthestRoom = sortedRooms[0].room;
+      for (let e = 0; e < 2; e++) {
+        const ex = furthestRoom.x + 1 + Math.floor(rng() * Math.max(1, furthestRoom.w - 2));
+        const ez = furthestRoom.z + 1 + Math.floor(rng() * Math.max(1, furthestRoom.h - 2));
+        const type = theme.enemyTypes[Math.floor(rng() * theme.enemyTypes.length)];
+        this.spawns.push({ x: ex * CELL_SIZE, z: ez * CELL_SIZE, type });
       }
     }
 
