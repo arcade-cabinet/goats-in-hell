@@ -294,6 +294,7 @@ function buildGlbEnemyMesh(type: string): THREE.Group | null {
             mat.transparent = true;
             mat.opacity = config.baseVisibility;
           }
+          mat.needsUpdate = true;
         }
       };
       if (Array.isArray(child.material)) {

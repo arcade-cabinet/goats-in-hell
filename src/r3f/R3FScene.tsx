@@ -15,8 +15,8 @@ export function R3FScene({ children }: { children?: React.ReactNode }) {
   const { scene } = useThree();
 
   useEffect(() => {
-    scene.background = new THREE.Color('#0a0000');
-    scene.fog = new THREE.FogExp2('#0a0000', 0.06);
+    scene.background = new THREE.Color('#2a1010');
+    scene.fog = new THREE.FogExp2('#2a1010', 0.028);
 
     // All lighting is handled by DynamicLighting — no lights here to avoid
     // overlapping/stacking with theme-based lights.

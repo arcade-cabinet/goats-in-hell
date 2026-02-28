@@ -130,6 +130,32 @@ export class AIGovernor {
   /** Whether a sprint was requested this frame (used in output mode). */
   private sprintRequested = false;
 
+  // --- Pathfinding ---
+  /** Current waypoint path (world coords, ECS convention). */
+  private waypoints: Vec3[] = [];
+  /** Index of the next waypoint to approach. */
+  private waypointIndex = 0;
+  /** Threshold to consider a waypoint reached. */
+  private readonly WAYPOINT_REACH = 1.5;
+  /** Minimum distance to target before pathfinding kicks in (otherwise steer direct). */
+  private readonly PATHFIND_MIN_DIST = 3;
+
+  // --- Stuck detection ---
+  /** Checkpoint position updated every STUCK_CHECK_INTERVAL ms. */
+  private stuckCheckpoint: Vec3 = vec3(0, 0, 0);
+  /** Time since last checkpoint update. */
+  private stuckCheckTimer = 0;
+  /** How often (ms) to check if we've moved significantly. */
+  private readonly STUCK_CHECK_INTERVAL = 2000;
+  /** Minimum distance² the AI must move per check interval to not be "stuck". */
+  private readonly STUCK_MIN_DIST_SQ = 4.0; // 2 units
+  /** Consecutive failed movement checks before unsticking. */
+  private stuckStrikes = 0;
+  /** Strikes needed before random movement burst. */
+  private readonly STUCK_STRIKES_BURST = 1;
+  /** Strikes needed before forcing explore state. */
+  private readonly STUCK_STRIKES_EXPLORE = 2;
+
   constructor(camera: AICamera, player: Entity, grid: MapCell[][], cellSize: number) {
     this.camera = camera;
     this.player = player;
@@ -218,6 +244,37 @@ export class AIGovernor {
       this.lastDecisionTime = now;
     }
 
+    // --- Stuck detection: periodic check if AI has moved enough ---
+    // Wall sliding can cause small frame-to-frame movement that defeats simple checks.
+    // Instead, every STUCK_CHECK_INTERVAL ms we verify the AI moved at least 2 units
+    // from its checkpoint position. Consecutive failures trigger escalating responses.
+    const pos = this.player.position;
+    this.stuckCheckTimer += dt;
+    if (this.stuckCheckTimer >= this.STUCK_CHECK_INTERVAL) {
+      this.stuckCheckTimer = 0;
+      const dx = pos.x - this.stuckCheckpoint.x;
+      const dz = pos.z - this.stuckCheckpoint.z;
+      const distSq = dx * dx + dz * dz;
+      if (distSq < this.STUCK_MIN_DIST_SQ) {
+        this.stuckStrikes++;
+        if (this.stuckStrikes >= this.STUCK_STRIKES_EXPLORE) {
+          // Hard reset: force explore with cleared path
+          this.setState('explore', null);
+          this.stuckStrikes = 0;
+        } else if (this.stuckStrikes >= this.STUCK_STRIKES_BURST) {
+          // Random movement burst to unstick
+          const angle = Math.random() * Math.PI * 2;
+          this.outputFrame.moveX = Math.cos(angle);
+          this.outputFrame.moveZ = Math.sin(angle);
+          this.waypoints = [];
+        }
+      } else {
+        // Making progress — reset strikes
+        this.stuckStrikes = 0;
+      }
+      this.stuckCheckpoint = vec3(pos.x, pos.y, pos.z);
+    }
+
     // --- Execute behaviour ---
     switch (this._state) {
       case 'hunt':
@@ -266,6 +323,7 @@ export class AIGovernor {
     const enemies = this.getEnemies();
     const nearestEnemy = this.nearest(enemies);
     const nearestHealth = this.nearestPickup('health');
+    const nearestAmmo = this.nearestPickup('ammo');
 
     // Flee: critically low HP and threat nearby
     if (
@@ -283,6 +341,12 @@ export class AIGovernor {
       return;
     }
 
+    // Resupply: seek ammo when current weapon is empty or very low
+    if (nearestAmmo && !this.hasAmmo(this.player.player!.currentWeapon)) {
+      this.setState('heal', nearestAmmo); // Reuse heal state (approach pickup)
+      return;
+    }
+
     // Hunt: engage enemies
     if (nearestEnemy) {
       this.setState('hunt', nearestEnemy);
@@ -296,6 +360,8 @@ export class AIGovernor {
   private setState(state: AIState, target: Entity | null): void {
     this._state = state;
     this.targetEntity = target;
+    this.waypoints = [];
+    this.waypointIndex = 0;
 
     // Configure YUKA behaviors
     this.arriveBehavior.active = false;
@@ -322,6 +388,7 @@ export class AIGovernor {
 
     // Check target still alive
     if (!world.entities.includes(target)) {
+      this.waypoints = [];
       this.decide();
       return;
     }
@@ -329,51 +396,54 @@ export class AIGovernor {
     const dist = this.distToEntity(target);
     const wpn = weapons[this.player.player!.currentWeapon];
     const engageRange = wpn.range * SHOOT_RANGE_FACTOR;
+    const hasLOS = this.hasLineOfSight(this.camera.position, target.position);
 
-    // Keep target synced for YUKA steering
-    this.arriveBehavior.target.set(target.position.x, 0, target.position.z);
-
-    if (dist > engageRange) {
-      // Approach
-      this.applySteeringMovement(dt, MOVE_SPEED);
-    } else if (dist < 3) {
-      // Too close - backpedal
-      this.moveAwayFrom(target.position, MOVE_SPEED * 0.6, dt);
-    } else {
-      // In range - strafe slightly for dodging
+    if (hasLOS && dist < engageRange && dist > 3) {
+      // In range with LOS — strafe and shoot
       this.strafeAround(target.position, MOVE_SPEED * 0.4, dt);
+      this.waypoints = []; // Clear path since we can see the target
+    } else if (hasLOS && dist < 3) {
+      // Too close — backpedal
+      this.moveAwayFrom(target.position, MOVE_SPEED * 0.6, dt);
+      this.waypoints = [];
+    } else {
+      // No LOS or out of range — pathfind toward target
+      this.navigateToEntity(target, MOVE_SPEED, dt);
     }
 
-    // Aim and fire
+    // Aim and fire — only shoot if we have line of sight (no walls between us)
     this.aimAt(target.position);
-    if (dist < engageRange) {
+    if (dist < engageRange && hasLOS) {
       this.tryFire();
     }
   }
 
   private execHeal(dt: number): void {
     const target = this.targetEntity;
-    if (!target?.position || !target.pickup?.active) {
+    if (!target?.position || (!target.pickup?.active && !target.enemy)) {
+      this.waypoints = [];
       this.decide();
       return;
     }
 
     if (!world.entities.includes(target)) {
+      this.waypoints = [];
       this.decide();
       return;
     }
 
-    this.arriveBehavior.target.set(target.position.x, 0, target.position.z);
-    this.applySteeringMovement(dt, SPRINT_SPEED);
+    // Pathfind to pickup
+    this.navigateToEntity(target, SPRINT_SPEED, dt);
     this.sprintRequested = true;
     this.aimAt(target.position);
 
-    // Still shoot at enemies while healing
+    // Still shoot at enemies while healing (only with line of sight)
     const enemies = this.getEnemies();
     const closest = this.nearest(enemies);
     if (closest?.position) {
       const d = this.distToEntity(closest);
-      if (d < weapons[this.player.player!.currentWeapon].range * 0.5) {
+      if (d < weapons[this.player.player!.currentWeapon].range * 0.5
+        && this.hasLineOfSight(this.camera.position, closest.position)) {
         this.aimAt(closest.position);
         this.tryFire();
       }
@@ -390,13 +460,14 @@ export class AIGovernor {
     this.moveAwayFrom(threat.position, SPRINT_SPEED, dt);
     this.sprintRequested = true;
 
-    // Shoot while retreating
+    // Shoot while retreating (only with line of sight)
     const enemies = this.getEnemies();
     const closest = this.nearest(enemies);
     if (closest?.position) {
       this.aimAt(closest.position);
       const d = this.distToEntity(closest);
-      if (d < weapons[this.player.player!.currentWeapon].range * 0.6) {
+      if (d < weapons[this.player.player!.currentWeapon].range * 0.6
+        && this.hasLineOfSight(this.camera.position, closest.position)) {
         this.tryFire();
       }
     }
@@ -408,23 +479,40 @@ export class AIGovernor {
   }
 
   private execExplore(dt: number): void {
-    // YUKA wander computes a velocity; apply it
-    this.applySteeringMovement(dt, MOVE_SPEED);
+    // Priority 1: If enemies exist anywhere, pathfind toward the nearest one
+    const enemies = this.getEnemies();
+    const nearestEnemy = this.nearest(enemies);
+    if (nearestEnemy?.position) {
+      this.navigateToEntity(nearestEnemy, MOVE_SPEED, dt);
+      this.aimAt(nearestEnemy.position);
+      // If we have LOS and range, switch to hunt
+      const dist = this.distToEntity(nearestEnemy);
+      if (dist < weapons[this.player.player!.currentWeapon].range * SHOOT_RANGE_FACTOR
+        && this.hasLineOfSight(this.camera.position, nearestEnemy.position)) {
+        this.setState('hunt', nearestEnemy);
+      }
+      return;
+    }
 
-    // Point camera in movement direction
+    // Priority 2: Grab nearby pickups
+    const wpnPickup = this.nearestPickup('weapon');
+    const ammoPickup = this.nearestPickup('ammo');
+    const nearPickup = wpnPickup && (!ammoPickup || this.distToEntity(wpnPickup) < this.distToEntity(ammoPickup))
+      ? wpnPickup
+      : ammoPickup;
+    if (nearPickup?.position && this.distToEntity(nearPickup) < 20) {
+      this.navigateToEntity(nearPickup, MOVE_SPEED, dt);
+      this.aimAt(nearPickup.position);
+      return;
+    }
+
+    // Fallback: YUKA wander (random exploration when nothing to seek)
+    this.applySteeringMovement(dt, MOVE_SPEED);
     const vel = this.vehicle.velocity;
     if (vel.squaredLength() > 0.0001) {
       const p = this.camera.position;
       const lookTarget = vec3(p.x + vel.x * 5, p.y, p.z + vel.z * 5);
       this.aimAt(lookTarget);
-    }
-
-    // Opportunistic: grab weapon pickups
-    const wpnPickup = this.nearestPickup('weapon');
-    if (wpnPickup?.position && this.distToEntity(wpnPickup) < 10) {
-      this.arriveBehavior.target.set(wpnPickup.position.x, 0, wpnPickup.position.z);
-      this.arriveBehavior.active = true;
-      this.wanderBehavior.active = false;
     }
   }
 
@@ -638,6 +726,204 @@ export class AIGovernor {
   private distToEntity(entity: Entity): number {
     if (!entity.position) return Infinity;
     return vec3Distance(this.camera.position, entity.position);
+  }
+
+  /**
+   * Grid-based line-of-sight check using DDA ray marching.
+   * Returns true if there is a clear path between two ECS positions
+   * with no wall cells in between.
+   */
+  private hasLineOfSight(from: Vec3, to: Vec3): boolean {
+    const cs = this.cellSize;
+    // Convert world positions to grid coordinates
+    const x0 = from.x / cs;
+    const y0 = from.z / cs; // Z in ECS maps to grid row
+    const x1 = to.x / cs;
+    const y1 = to.z / cs;
+
+    const dx = Math.abs(x1 - x0);
+    const dy = Math.abs(y1 - y0);
+    let x = Math.floor(x0);
+    let y = Math.floor(y0);
+    const xEnd = Math.floor(x1);
+    const yEnd = Math.floor(y1);
+    const stepX = x0 < x1 ? 1 : -1;
+    const stepY = y0 < y1 ? 1 : -1;
+
+    // Steps along the ray using DDA
+    let tMaxX = dx === 0 ? Infinity : ((stepX > 0 ? x + 1 - x0 : x0 - x) / dx);
+    let tMaxY = dy === 0 ? Infinity : ((stepY > 0 ? y + 1 - y0 : y0 - y) / dy);
+    const tDeltaX = dx === 0 ? Infinity : 1 / dx;
+    const tDeltaY = dy === 0 ? Infinity : 1 / dy;
+
+    // March along the ray
+    const maxSteps = Math.ceil(dx + dy) + 2;
+    for (let i = 0; i < maxSteps; i++) {
+      // Check if current cell is a wall (skip start cell)
+      if (i > 0 && y >= 0 && y < this.gridH && x >= 0 && x < this.gridW) {
+        if (this.grid[y][x] !== 0) {
+          return false; // Wall blocks line of sight
+        }
+      }
+
+      // Reached destination cell
+      if (x === xEnd && y === yEnd) return true;
+
+      // Step to next cell
+      if (tMaxX < tMaxY) {
+        x += stepX;
+        tMaxX += tDeltaX;
+      } else {
+        y += stepY;
+        tMaxY += tDeltaY;
+      }
+    }
+
+    return true; // Reached end without hitting wall
+  }
+
+  // -----------------------------------------------------------------------
+  // Pathfinding (BFS on grid)
+  // -----------------------------------------------------------------------
+
+  /**
+   * BFS pathfind from the player's current position to a target position.
+   * Returns a list of world-space waypoints (ECS coords) through walkable cells.
+   */
+  private findPath(target: Vec3): Vec3[] {
+    const cs = this.cellSize;
+    const pos = this.camera.position;
+    const sx = Math.floor(pos.x / cs);
+    const sy = Math.floor(pos.z / cs);
+    const ex = Math.floor(target.x / cs);
+    const ey = Math.floor(target.z / cs);
+
+    // Clamp to grid bounds
+    if (sx < 0 || sx >= this.gridW || sy < 0 || sy >= this.gridH) return [];
+    if (ex < 0 || ex >= this.gridW || ey < 0 || ey >= this.gridH) return [];
+
+    // Same cell — no path needed
+    if (sx === ex && sy === ey) return [target];
+
+    // BFS
+    const visited = new Set<number>();
+    const parent = new Map<number, number>();
+    const key = (x: number, y: number) => y * this.gridW + x;
+    const queue: [number, number][] = [[sx, sy]];
+    visited.add(key(sx, sy));
+
+    const dirs = [
+      [1, 0], [-1, 0], [0, 1], [0, -1],
+      [1, 1], [1, -1], [-1, 1], [-1, -1], // diagonals
+    ];
+
+    let found = false;
+    while (queue.length > 0) {
+      const [cx, cy] = queue.shift()!;
+      if (cx === ex && cy === ey) {
+        found = true;
+        break;
+      }
+
+      for (const [dx, dy] of dirs) {
+        const nx = cx + dx;
+        const ny = cy + dy;
+        if (nx < 0 || nx >= this.gridW || ny < 0 || ny >= this.gridH) continue;
+        const nk = key(nx, ny);
+        if (visited.has(nk)) continue;
+        if (this.grid[ny][nx] !== 0) continue;
+        // For diagonals, ensure we can actually fit through
+        if (dx !== 0 && dy !== 0) {
+          if (this.grid[cy][cx + dx] !== 0 || this.grid[cy + dy][cx] !== 0) continue;
+        }
+        visited.add(nk);
+        parent.set(nk, key(cx, cy));
+        queue.push([nx, ny]);
+      }
+    }
+
+    if (!found) return []; // No path exists
+
+    // Reconstruct path
+    const path: Vec3[] = [];
+    let ck = key(ex, ey);
+    while (ck !== key(sx, sy)) {
+      const y = Math.floor(ck / this.gridW);
+      const x = ck % this.gridW;
+      path.unshift(vec3((x + 0.5) * cs, pos.y, (y + 0.5) * cs));
+      const pk = parent.get(ck);
+      if (pk === undefined) break;
+      ck = pk;
+    }
+
+    // Simplify path: skip waypoints that are directly visible from earlier ones
+    if (path.length > 2) {
+      const simplified: Vec3[] = [path[0]];
+      let anchor = 0;
+      for (let i = 2; i < path.length; i++) {
+        if (!this.hasLineOfSight(path[anchor], path[i])) {
+          simplified.push(path[i - 1]);
+          anchor = i - 1;
+        }
+      }
+      simplified.push(path[path.length - 1]);
+      return simplified;
+    }
+
+    return path;
+  }
+
+  /**
+   * Navigate along the current waypoint path.
+   * Returns true if we're moving toward a waypoint, false if path is exhausted.
+   */
+  private followPath(speed: number, dt: number): boolean {
+    if (this.waypointIndex >= this.waypoints.length) return false;
+
+    const wp = this.waypoints[this.waypointIndex];
+    const pos = this.camera.position;
+    const dx = wp.x - pos.x;
+    const dz = wp.z - pos.z;
+    const dist = Math.sqrt(dx * dx + dz * dz);
+
+    // Reached waypoint — advance to next
+    if (dist < this.WAYPOINT_REACH) {
+      this.waypointIndex++;
+      return this.waypointIndex < this.waypoints.length;
+    }
+
+    // Move toward waypoint
+    const norm = vec3(dx / dist, 0, dz / dist);
+    const dtScale = dt / 16;
+    const displacement = vec3Scale(norm, speed * dtScale);
+    this.displacementToMoveXZ(displacement);
+    return true;
+  }
+
+  /**
+   * Pathfind to a target entity and follow the path.
+   * Re-computes path periodically or when target moves significantly.
+   */
+  private navigateToEntity(target: Entity, speed: number, dt: number): void {
+    if (!target.position) return;
+
+    // Recompute path every ~60 frames or if no path exists
+    const needRepath = this.waypoints.length === 0
+      || this.waypointIndex >= this.waypoints.length
+      || this.frameCount % 60 === 0;
+
+    if (needRepath) {
+      this.waypoints = this.findPath(target.position);
+      this.waypointIndex = 0;
+    }
+
+    if (!this.followPath(speed, dt)) {
+      // Path exhausted or not found — fall back to direct steering
+      this.arriveBehavior.target.set(target.position.x, 0, target.position.z);
+      this.arriveBehavior.active = true;
+      this.wanderBehavior.active = false;
+      this.applySteeringMovement(dt, speed);
+    }
   }
 }
 
