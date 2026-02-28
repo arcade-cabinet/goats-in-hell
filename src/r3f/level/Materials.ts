@@ -10,7 +10,7 @@
  * floor transitions.
  */
 import { Asset } from 'expo-asset';
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 import { COLORS } from '../../constants';
 import type { FloorTheme } from '../../game/levels/FloorThemes';
 import { TEXTURE_ASSETS, type TextureAssetKey } from '../../game/systems/AssetRegistry';

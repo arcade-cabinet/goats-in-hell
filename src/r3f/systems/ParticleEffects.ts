@@ -5,7 +5,7 @@
  * small emissive sphere meshes that radiate outward and decay.
  * Particles are recycled via a per-burst pool.
  */
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 
 // ---------------------------------------------------------------------------
 // Particle pool

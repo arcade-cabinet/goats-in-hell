@@ -29,7 +29,7 @@ import { getWaveInfo, resetWaveSystem, waveSystemUpdate } from './game/systems/W
 import { initAmbientSound, updateAmbientSound } from './r3f/audio/AmbientSoundSystem';
 import { getAudioContext, initAudio, loadAllSfx, setSfxBuffers } from './r3f/audio/AudioSystem';
 import { initMusic, loadAllMusic, setMusicBuffers, updateMusic } from './r3f/audio/MusicSystem';
-import { clearDamageNumbers, DamageNumbers } from './r3f/entities/DamageNumbers';
+import { clearDamageNumbers, clearDamageNumbersSceneRef, DamageNumbers } from './r3f/entities/DamageNumbers';
 import { EnemyColliders } from './r3f/entities/EnemyColliders';
 import { EnemyRenderer } from './r3f/entities/EnemyMesh';
 import { PickupRenderer } from './r3f/entities/PickupMesh';
@@ -42,7 +42,7 @@ import { R3FApp } from './r3f/R3FApp';
 import { DynamicLighting } from './r3f/rendering/Lighting';
 import { PostProcessingEffects, triggerFloorFadeIn } from './r3f/rendering/PostProcessing';
 import { clearCombatScene, combatSystemUpdate, damageEnemy, setCombatScene } from './r3f/systems/CombatSystem';
-import { updateParticles } from './r3f/systems/ParticleEffects';
+import { disposeParticleResources, updateParticles } from './r3f/systems/ParticleEffects';
 import { pickupSystemUpdate } from './r3f/systems/PickupSystem';
 import { resetScreenShake } from './r3f/systems/ScreenShake';
 import { MuzzleFlashEffect } from './r3f/weapons/MuzzleFlash';
@@ -266,6 +266,15 @@ function GameScene() {
       setDamageEnemyCallback(() => {});
     };
   }, [scene]);
+
+  // Full teardown on unmount — dispose all imperative Three.js resources
+  useEffect(() => {
+    return () => {
+      clearDamageNumbers();
+      clearDamageNumbersSceneRef();
+      disposeParticleResources();
+    };
+  }, []);
 
   // One-time: load SFX + music audio buffers asynchronously
   useEffect(() => {

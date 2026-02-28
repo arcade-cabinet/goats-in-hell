@@ -1,7 +1,7 @@
 import { useThree } from '@react-three/fiber';
 import type React from 'react';
 import { useEffect } from 'react';
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 
 /**
  * Scene setup — lighting, fog, background.

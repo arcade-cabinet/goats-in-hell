@@ -5,7 +5,7 @@
  * Uses Miniplex ECS world, Zustand game store, and imperative Three.js
  * particle effects. No Babylon.js dependencies.
  */
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 import type { Entity } from '../../game/entities/components';
 import { world } from '../../game/entities/world';
 import { registerKill } from '../../game/systems/KillStreakSystem';

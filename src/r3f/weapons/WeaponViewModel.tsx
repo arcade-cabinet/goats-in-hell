@@ -15,7 +15,7 @@
 
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 import type { Entity, WeaponId } from '../../game/entities/components';
 import { world } from '../../game/entities/world';
 import { WEAPON_MODEL_ASSETS } from '../../game/systems/AssetRegistry';

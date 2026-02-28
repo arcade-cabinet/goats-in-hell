@@ -15,7 +15,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import type { RapierContext } from '@react-three/rapier';
 import { useRapier } from '@react-three/rapier';
 import { useCallback, useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 import { world } from '../../game/entities/world';
 import { createBloodSplash, createImpactSparks } from '../systems/ParticleEffects';
 import type { ProjectileSlot } from './ProjectilePool';

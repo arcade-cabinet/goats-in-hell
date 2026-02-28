@@ -10,7 +10,7 @@
  *   - Coordinates are right-handed (no Z negation needed within R3F)
  */
 
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 import type { Entity, WeaponId } from '../../game/entities/components';
 import { getGameTime } from '../../game/systems/GameClock';
 import { getDamageMultiplier } from '../../game/systems/PowerUpSystem';

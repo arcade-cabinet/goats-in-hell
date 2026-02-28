@@ -15,7 +15,7 @@ import React from 'react';
 // Uncomment these imports when R3F packages are installed:
 // import {Suspense} from 'react';
 // import {Canvas} from '@react-three/fiber';
-// import * as THREE from 'three';
+// import * as THREE from 'three/webgpu';
 // import {Physics} from '@react-three/rapier';
 // import {R3FScene} from '../R3FScene';
 

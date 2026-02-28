@@ -8,7 +8,7 @@
  * All projectile meshes are small emissive spheres managed imperatively.
  */
 
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 
 // ---------------------------------------------------------------------------
 // Types

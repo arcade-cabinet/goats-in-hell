@@ -7,7 +7,7 @@
 
 import { useFrame, useThree } from '@react-three/fiber';
 import { useRef } from 'react';
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -165,4 +165,11 @@ export function clearDamageNumbers(): void {
     mat.dispose();
   }
   activeNumbers.length = 0;
+}
+
+/**
+ * Clear the scene ref. Call on full teardown to prevent stale references.
+ */
+export function clearDamageNumbersSceneRef(): void {
+  sceneRef = null;
 }

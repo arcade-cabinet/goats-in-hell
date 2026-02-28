@@ -16,7 +16,7 @@ import {
 } from '@react-three/postprocessing';
 import { BlendFunction } from 'postprocessing';
 import React, { useMemo, useRef } from 'react';
-import { Vector2 } from 'three';
+import { Vector2 } from 'three/webgpu';
 
 // ---------------------------------------------------------------------------
 // Error boundary — prevents postprocessing crashes from killing the game
