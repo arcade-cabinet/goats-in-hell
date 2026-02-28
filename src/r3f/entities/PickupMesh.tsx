@@ -14,7 +14,7 @@
 
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 import { COLORS } from '../../constants';
 import type { Entity } from '../../game/entities/components';
 import { world } from '../../game/entities/world';
@@ -159,6 +159,17 @@ export function PickupRenderer(): null {
 // ---------------------------------------------------------------------------
 // Mesh creation helper
 // ---------------------------------------------------------------------------
+
+/**
+ * Dispose shared pickup geometry. Call on app teardown to free GPU resources.
+ * After calling this, new pickups will recreate the shared geometry.
+ */
+export function disposePickupResources(): void {
+  if (sharedRingGeometry) {
+    sharedRingGeometry.dispose();
+    sharedRingGeometry = null;
+  }
+}
 
 function createPickupMesh(entity: Entity, scene: THREE.Scene): TrackedPickup | null {
   if (!entity.pickup || !entity.position || !entity.id) return null;

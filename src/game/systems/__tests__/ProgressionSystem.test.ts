@@ -13,10 +13,17 @@ jest.mock('../GameClock', () => ({
 import type { Entity } from '../../entities/components';
 import { vec3 as Vector3 } from '../../entities/vec3';
 import { world } from '../../entities/world';
-import { checkFloorComplete, checkPlayerDeath, triggerDeath } from '../ProgressionSystem';
+import {
+  checkFloorComplete,
+  checkPlayerDeath,
+  resetFloorProgression,
+  trackEnemySpawn,
+  triggerDeath,
+} from '../ProgressionSystem';
 
 beforeEach(() => {
   for (const e of [...world.entities]) world.remove(e);
+  resetFloorProgression();
   const { useGameStore } = require('../../../state/GameStore');
   useGameStore.setState({
     screen: 'playing',
@@ -26,7 +33,7 @@ beforeEach(() => {
 });
 
 describe('checkFloorComplete', () => {
-  it('returns true when no enemies exist', () => {
+  it('returns false when no enemies were ever spawned', () => {
     const player: Entity = {
       id: 'player',
       type: 'player',
@@ -43,6 +50,29 @@ describe('checkFloorComplete', () => {
       },
     };
     world.add(player);
+    // No enemies spawned — floor should NOT auto-complete
+    expect(checkFloorComplete()).toBe(false);
+  });
+
+  it('returns true when all spawned enemies are killed', () => {
+    const player: Entity = {
+      id: 'player',
+      type: 'player',
+      position: Vector3(0, 0, 0),
+      player: {
+        hp: 100,
+        maxHp: 100,
+        speed: 5,
+        sprintMult: 1.5,
+        currentWeapon: 'hellPistol',
+        weapons: ['hellPistol'],
+        isReloading: false,
+        reloadStart: 0,
+      },
+    };
+    world.add(player);
+    // Simulate enemies being spawned and then killed
+    trackEnemySpawn();
     expect(checkFloorComplete()).toBe(true);
   });
 
@@ -79,13 +109,14 @@ describe('checkFloorComplete', () => {
     };
     world.add(player);
     world.add(enemy);
+    trackEnemySpawn();
     expect(checkFloorComplete()).toBe(false);
   });
 
-  it('returns true with non-enemy entities only', () => {
+  it('returns false with non-enemy entities and no spawns tracked', () => {
     const pickup: Entity = { id: 'pickup-1', type: 'powerup' };
     world.add(pickup);
-    expect(checkFloorComplete()).toBe(true);
+    expect(checkFloorComplete()).toBe(false);
   });
 });
 

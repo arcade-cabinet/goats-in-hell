@@ -11,7 +11,7 @@
 
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 import { CELL_SIZE } from '../../constants';
 import type { FloorTheme } from '../../game/levels/FloorThemes';
 import { MapCell } from '../../game/levels/LevelGenerator';

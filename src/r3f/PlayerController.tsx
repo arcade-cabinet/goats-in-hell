@@ -10,7 +10,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import type { RapierRigidBody } from '@react-three/rapier';
 import { CapsuleCollider, RigidBody, useRapier } from '@react-three/rapier';
 import { useCallback, useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 import type { Entity, WeaponId } from '../game/entities/components';
 import { world } from '../game/entities/world';
 import { getLevelBonuses, useGameStore } from '../state/GameStore';

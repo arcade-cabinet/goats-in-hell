@@ -8,7 +8,7 @@
  * All projectile meshes are small emissive spheres managed imperatively.
  */
 
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -41,9 +41,9 @@ export interface ProjectileSlot {
 
 const POOL_SIZE = 100;
 
-// Bullet: small sphere
-const BULLET_RADIUS = 0.05;
-const ROCKET_RADIUS = 0.15;
+// Bullet: visible sphere (bigger = more satisfying visual feedback)
+const BULLET_RADIUS = 0.08;
+const ROCKET_RADIUS = 0.2;
 
 let sharedBulletGeometry: THREE.SphereGeometry | null = null;
 let sharedRocketGeometry: THREE.SphereGeometry | null = null;
@@ -249,5 +249,25 @@ export class ProjectilePool {
     slot.active = false;
     slot.mesh.visible = false;
     slot.life = 0;
+  }
+
+  /**
+   * Dispose shared geometry and material caches. Call on app teardown
+   * to free GPU resources. After calling this, new ProjectilePool
+   * instances will recreate the shared resources.
+   */
+  static disposeProjectilePoolResources(): void {
+    if (sharedBulletGeometry) {
+      sharedBulletGeometry.dispose();
+      sharedBulletGeometry = null;
+    }
+    if (sharedRocketGeometry) {
+      sharedRocketGeometry.dispose();
+      sharedRocketGeometry = null;
+    }
+    for (const mat of materialCache.values()) {
+      mat.dispose();
+    }
+    materialCache.clear();
   }
 }

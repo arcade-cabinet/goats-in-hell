@@ -8,10 +8,30 @@ import { world } from '../entities/world';
 // ---------------------------------------------------------------------------
 
 /**
- * Returns true when no entities with an `.enemy` component remain in the world,
- * meaning the player has cleared the current floor.
+ * Number of enemies spawned for the current floor.
+ * Prevents auto-completing floors where no enemies were generated.
+ */
+let enemiesSpawnedThisFloor = 0;
+
+/** Increment the enemy spawn counter. Call once per enemy entity added. */
+export function trackEnemySpawn(): void {
+  enemiesSpawnedThisFloor++;
+}
+
+/** Reset the floor progression state. Call on floor transitions. */
+export function resetFloorProgression(): void {
+  enemiesSpawnedThisFloor = 0;
+}
+
+/**
+ * Returns true when no entities with an `.enemy` component remain in the world
+ * AND at least one enemy was spawned this floor, meaning the player has cleared
+ * the current floor.
  */
 export function checkFloorComplete(): boolean {
+  // Don't auto-complete floors where no enemies were spawned
+  if (enemiesSpawnedThisFloor === 0) return false;
+
   for (const entity of world.entities) {
     if (entity.enemy) {
       return false;

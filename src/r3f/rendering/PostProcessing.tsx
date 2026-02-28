@@ -6,7 +6,7 @@
  * functions for damage flash, sprint effects, and floor transitions.
  */
 
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import {
   Bloom,
   ChromaticAberration,
@@ -16,7 +16,7 @@ import {
 } from '@react-three/postprocessing';
 import { BlendFunction } from 'postprocessing';
 import React, { useMemo, useRef } from 'react';
-import { Vector2 } from 'three';
+import { Vector2 } from 'three/webgpu';
 
 // ---------------------------------------------------------------------------
 // Error boundary — prevents postprocessing crashes from killing the game
@@ -144,7 +144,8 @@ function computeEffectState(deltaMs: number): EffectState {
 // React component
 // ---------------------------------------------------------------------------
 
-export function PostProcessingEffects(): React.JSX.Element {
+export function PostProcessingEffects(): React.JSX.Element | null {
+  const gl = useThree((s) => s.gl);
   const bloomRef = useRef<any>(null);
   const vignetteRef = useRef<any>(null);
   const chromaticRef = useRef<any>(null);
@@ -153,7 +154,17 @@ export function PostProcessingEffects(): React.JSX.Element {
   // Stable offset vector reused every frame to avoid GC
   const offsetVec = useMemo(() => new Vector2(0, 0), []);
 
+  // EffectComposer (from @react-three/postprocessing) is WebGL-only.
+  // When WebGPURenderer is using the true WebGPU backend (not the WebGL2
+  // fallback), EffectComposer crashes. Detect the backend and skip effects.
+  const isWebGPUBackend = useMemo(() => {
+    const backendName = (gl as any).backend?.constructor?.name;
+    return backendName === 'WebGPUBackend';
+  }, [gl]);
+
   useFrame((_state, delta) => {
+    if (isWebGPUBackend) return;
+
     const deltaMs = delta * 1000;
     const fx = computeEffectState(deltaMs);
 
@@ -184,9 +195,21 @@ export function PostProcessingEffects(): React.JSX.Element {
     }
   });
 
+  // Skip EffectComposer entirely on true WebGPU backend — it's WebGL-only
+  if (isWebGPUBackend) {
+    return null;
+  }
+
   return (
     <EffectErrorBoundary>
       <EffectComposer multisampling={0}>
+        <Bloom
+          ref={bloomRef}
+          intensity={0.8}
+          luminanceThreshold={0.6}
+          luminanceSmoothing={0.3}
+          mipmapBlur
+        />
         <Vignette
           ref={vignetteRef}
           offset={0.3}

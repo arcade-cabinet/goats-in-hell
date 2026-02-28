@@ -14,7 +14,7 @@
 
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 import { COLORS } from '../../constants';
 import type { Entity, EntityType } from '../../game/entities/components';
 import { world } from '../../game/entities/world';
@@ -331,6 +331,10 @@ export function EnemyRenderer() {
   const { scene } = useThree();
   const spawnedRef = useRef<Map<string, THREE.Group>>(new Map());
   const modelsLoadedRef = useRef(false);
+  /** Set of entity IDs that have already been upgraded from fallback→GLB. */
+  const upgradedRef = useRef<Set<string>>(new Set());
+  /** Once all current fallbacks have been upgraded, skip the check entirely. */
+  const allUpgradedRef = useRef(false);
 
   // Kick off model loading on mount
   useEffect(() => {
@@ -340,6 +344,8 @@ export function EnemyRenderer() {
     loadModels(entries).then(() => {
       if (!cancelled) {
         modelsLoadedRef.current = true;
+        // Reset upgrade tracking so newly loaded models trigger upgrades
+        allUpgradedRef.current = false;
       }
     });
 
@@ -373,12 +379,18 @@ export function EnemyRenderer() {
       // Spawn mesh for new enemies
       if (!spawned.has(entity.id)) {
         spawnEnemyMesh(entity, scene, spawned, modelsLoadedRef.current);
+        // If a fallback capsule was created after models loaded, resume upgrade checks
+        const justSpawned = spawned.get(entity.id);
+        if (modelsLoadedRef.current && justSpawned && !justSpawned.userData.isGlb) {
+          allUpgradedRef.current = false;
+        }
       }
 
-      // If models just finished loading, upgrade any fallback capsules to GLB
-      if (modelsLoadedRef.current) {
+      // If models just finished loading, upgrade any fallback capsules to GLB.
+      // Skip entirely once all existing fallbacks have been upgraded.
+      if (modelsLoadedRef.current && !allUpgradedRef.current) {
         const existing = spawned.get(entity.id);
-        if (existing && !existing.userData.isGlb) {
+        if (existing && !existing.userData.isGlb && !upgradedRef.current.has(entity.id!)) {
           const type = entity.type as string;
           const config = ENEMY_CONFIGS[type] || ENEMY_CONFIGS.goat;
           if (isModelLoaded(config.modelKey)) {
@@ -387,8 +399,23 @@ export function EnemyRenderer() {
             disposeMeshGroup(existing);
             spawned.delete(entity.id);
             spawnEnemyMesh(entity, scene, spawned, true);
+            upgradedRef.current.add(entity.id!);
           }
         }
+      }
+    }
+
+    // Check if all current fallbacks have been upgraded (skip future checks)
+    if (modelsLoadedRef.current && !allUpgradedRef.current) {
+      let hasFallbacks = false;
+      for (const [, mesh] of spawned) {
+        if (!mesh.userData.isGlb) {
+          hasFallbacks = true;
+          break;
+        }
+      }
+      if (!hasFallbacks) {
+        allUpgradedRef.current = true;
       }
     }
 
@@ -398,6 +425,7 @@ export function EnemyRenderer() {
         scene.remove(mesh);
         disposeMeshGroup(mesh);
         spawned.delete(id);
+        upgradedRef.current.delete(id);
       }
     }
 
@@ -432,7 +460,8 @@ function spawnEnemyMesh(
     if (glbMesh) {
       mesh = glbMesh;
     } else {
-      // Model failed to load — use fallback capsule
+      // Model failed to load — use fallback capsule.
+      // A new fallback after models loaded means upgrade checks must resume.
       const template = getFallbackTemplate(type);
       mesh = cloneFallbackTemplate(template);
     }

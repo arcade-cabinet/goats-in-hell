@@ -1,10 +1,9 @@
 /**
- * HUD event bridge — engine-agnostic no-op stubs.
+ * HUD event bridge — engine-agnostic interface for game-logic → HUD communication.
  *
- * Legacy Babylon.js code imported registerDamageDirection, triggerBloodSplatter,
- * triggerEnvKill etc. from BabylonHUD. The R3F HUD reads these events via
- * Zustand/GameState instead, so these are no-ops kept to avoid breaking
- * game-logic imports in AISystem, CombatSystem, HazardSystem.
+ * Game-logic systems (AISystem, CombatSystem, HazardSystem) call these functions
+ * when gameplay events occur. In the R3F renderer the HUD reads state from Zustand
+ * directly, so these implementations are intentionally empty (null-object pattern).
  */
 import type { Vec3 } from '../entities/components';
 

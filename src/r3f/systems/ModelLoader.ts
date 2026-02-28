@@ -12,7 +12,7 @@
  *   const mesh = cloneModel('enemy-goat'); // THREE.Group or null
  */
 import { Asset } from 'expo-asset';
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 // ---------------------------------------------------------------------------

@@ -6,6 +6,7 @@ import { vec3 } from '../entities/vec3';
 import { world } from '../entities/world';
 import { getGameTime } from './GameClock';
 import type { PowerUpType } from './PowerUpSystem';
+import { trackEnemySpawn } from './ProgressionSystem';
 
 /** Shorthand for the store's seeded PRNG — deterministic per-seed. */
 function rng(): number {
@@ -288,6 +289,7 @@ export function waveSystemUpdate(deltaTime: number, arenaSize: number): void {
       };
 
       world.add(entity);
+      trackEnemySpawn();
 
       spawnTimer = 60; // one enemy per second at 60fps
       enemiesSpawnedThisWave++;

@@ -5,7 +5,7 @@
  * Collision detection:
  *   - For each active projectile, cast a short Rapier ray along velocity
  *   - On enemy hit: apply damage via callback
- *   - On wall hit: release projectile (impact particles TBD)
+ *   - On wall hit: release projectile + spawn impact sparks
  *   - On rocket hit: area damage to nearby enemies
  *
  * Exports pool ref for WeaponSystem to call spawn().
@@ -15,10 +15,16 @@ import { useFrame, useThree } from '@react-three/fiber';
 import type { RapierContext } from '@react-three/rapier';
 import { useRapier } from '@react-three/rapier';
 import { useCallback, useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
+import type { Vec3 } from '../../game/entities/components';
 import { world } from '../../game/entities/world';
+import {
+  clearEnemyProjectileBridge,
+  setEnemyProjectileBridge,
+} from '../../game/systems/EnemyProjectileBridge';
+import { damagePlayer } from '../systems/CombatSystem';
 import { createBloodSplash, createImpactSparks } from '../systems/ParticleEffects';
-import type { ProjectileSlot } from './ProjectilePool';
+import { PROJECTILE_COLORS, type ProjectileSlot } from './ProjectilePool';
 import { ProjectilePool } from './ProjectilePool';
 import { recordHit } from './WeaponSystem';
 
@@ -62,19 +68,52 @@ const _enemyPos = new THREE.Vector3();
 // Component
 // ---------------------------------------------------------------------------
 
+// Temp vectors for enemy projectile bridge (reused to avoid allocation)
+const _bridgeOrigin = new THREE.Vector3();
+const _bridgeDir = new THREE.Vector3();
+
+// Temp vector for player position check
+const _playerPos = new THREE.Vector3();
+
 export function ProjectileManager() {
   const { scene } = useThree();
   const { world: rapierWorld, rapier } = useRapier();
   const poolRef = useRef<ProjectilePool | null>(null);
 
-  // Create pool on mount
+  // Create pool on mount + register enemy projectile bridge
   useEffect(() => {
     const pool = new ProjectilePool(scene);
     poolRef.current = pool;
     activePool = pool;
 
+    // Register bridge so enemy AI projectiles spawn visible pool meshes.
+    // AI uses Babylon coords (positive Z = forward); pool uses Three.js
+    // coords (negative Z = forward). Speed is per-frame at 60fps; pool
+    // expects units/sec so multiply by 60.
+    setEnemyProjectileBridge((origin: Vec3, direction: Vec3, damage: number, speed: number) => {
+      _bridgeOrigin.set(origin.x, origin.y + 0.5, -origin.z);
+      _bridgeDir.set(direction.x, direction.y, -direction.z).normalize();
+      // Convert per-frame speed (at 60fps) to units/sec
+      const speedPerSec = speed * 60;
+      const slotIndex = pool.spawn(
+        _bridgeOrigin,
+        _bridgeDir,
+        speedPerSec,
+        damage,
+        'enemy',
+        0,
+        PROJECTILE_COLORS.enemy,
+        false,
+      );
+      if (slotIndex === -1) {
+        console.warn('[ProjectileManager] Pool exhausted — enemy projectile dropped');
+      }
+    });
+
     return () => {
+      clearEnemyProjectileBridge();
       pool.dispose();
+      ProjectilePool.disposeProjectilePoolResources();
       poolRef.current = null;
       activePool = null;
     };
@@ -142,7 +181,50 @@ function checkProjectileCollision(
     { x: _rayDir.x, y: _rayDir.y, z: _rayDir.z },
   );
 
-  // --- Phase 1: Distance-based enemy hit detection ---
+  // --- Phase 0: Enemy projectile → Player hit detection ---
+  // Check enemy-owned projectiles against the player entity.
+  if (slot.owner === 'enemy') {
+    const player = world.entities.find((e) => e.type === 'player' && e.player);
+    if (player?.position) {
+      _playerPos.set(player.position.x, player.position.y + 0.5, -player.position.z);
+      const projPos = slot.mesh.position;
+      const dx = projPos.x - _playerPos.x;
+      const dy = projPos.y - _playerPos.y;
+      const dz = projPos.z - _playerPos.z;
+      const distSq = dx * dx + dy * dy + dz * dz;
+
+      if (distSq < 2.25) {
+        // 1.5² = 2.25 — potential hit! Verify line-of-sight (wall occlusion).
+        _hitNormal.subVectors(_playerPos, projPos).normalize();
+        const losRay = new rapier.Ray(
+          { x: projPos.x, y: projPos.y, z: projPos.z },
+          { x: _hitNormal.x, y: _hitNormal.y, z: _hitNormal.z },
+        );
+        const dist = Math.sqrt(distSq);
+        const losHit = rapierWorld.castRay(losRay, dist, true);
+        if (losHit && losHit.timeOfImpact < dist * 0.9) {
+          // Wall between projectile and player — no damage
+        } else {
+          damagePlayer(slot.damage);
+          pool.release(index);
+          return;
+        }
+      }
+    }
+
+    // Enemy projectiles don't need Phase 1 or 2 (no enemy-to-enemy damage),
+    // but DO need wall collision to prevent flying through geometry.
+    const wallHit = rapierWorld.castRay(ray, rayLength, true);
+    if (wallHit) {
+      _hitPos.copy(slot.mesh.position);
+      _hitNormal.copy(slot.velocity).normalize().negate();
+      createImpactSparks(_hitPos, _hitNormal, scene);
+      pool.release(index);
+    }
+    return;
+  }
+
+  // --- Phase 1: Distance-based enemy hit detection (player projectiles) ---
   // Check projectile proximity to all enemy ECS entities. This is the primary
   // hit detection method because it's frame-accurate and doesn't depend on
   // Rapier collider registration timing.
@@ -155,10 +237,15 @@ function checkProjectileCollision(
       // Convert entity position (Babylon left-handed) to Three.js right-handed
       _enemyPos.set(entity.position.x, entity.position.y + 0.5, -entity.position.z);
 
-      const dist = projPos.distanceTo(_enemyPos);
+      // Squared distance comparison (avoids sqrt for performance)
+      const dx = projPos.x - _enemyPos.x;
+      const dy = projPos.y - _enemyPos.y;
+      const dz = projPos.z - _enemyPos.z;
+      const distSq = dx * dx + dy * dy + dz * dz;
 
-      if (dist < 1.5) {
-        // Direct hit on enemy — blood splash at projectile position
+      if (distSq < 2.25) {
+        // 1.5² = 2.25 — direct hit!
+        // Blood splash at projectile position
         _hitPos.copy(projPos);
         createBloodSplash(_hitPos, scene);
 
@@ -243,17 +330,21 @@ function applyAreaDamage(
 ): void {
   if (!damageEnemyCallback) return;
 
+  const radiusSq = radius * radius;
+
   for (const entity of world.entities) {
     if (!entity.enemy || !entity.position || !entity.id) continue;
     if (entity.id === skipId) continue;
 
     // Convert entity position (Babylon left-handed) to Three.js right-handed
-    _enemyPos.set(entity.position.x, entity.position.y, -entity.position.z);
-
-    const dist = _enemyPos.distanceTo(center);
-    if (dist > radius) continue;
+    const dx = entity.position.x - center.x;
+    const dy = entity.position.y - center.y;
+    const dz = -entity.position.z - center.z;
+    const distSq = dx * dx + dy * dy + dz * dz;
+    if (distSq > radiusSq) continue;
 
     // Linear falloff: full damage at center, 0 at edge
+    const dist = Math.sqrt(distSq);
     const falloff = 1 - dist / radius;
     const damage = Math.ceil(baseDamage * falloff);
     if (damage > 0) {

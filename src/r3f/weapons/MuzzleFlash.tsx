@@ -10,7 +10,7 @@
 
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 import { useGameStore } from '../../state/GameStore';
 import { triggerMuzzleFlash as triggerDynamicLight } from '../rendering/Lighting';
 
@@ -18,8 +18,8 @@ import { triggerMuzzleFlash as triggerDynamicLight } from '../rendering/Lighting
 // Constants
 // ---------------------------------------------------------------------------
 
-const FLASH_DURATION = 0.05; // 50ms in seconds
-const FLASH_SIZE = 0.15; // world-space size of the flash quad
+const FLASH_DURATION = 0.10; // 100ms in seconds — punchier feedback
+const FLASH_SIZE = 0.22; // world-space size of the flash quad — more visible
 const FLASH_OFFSET_Z = -0.55; // forward from camera (camera looks -Z)
 const FLASH_OFFSET_X = 0.2; // right from camera center (barrel position)
 const FLASH_OFFSET_Y = -0.12; // slightly below center
