@@ -17,6 +17,7 @@ import { useRapier } from '@react-three/rapier';
 import { useCallback, useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { world } from '../../game/entities/world';
+import { createBloodSplash, createImpactSparks } from '../systems/ParticleEffects';
 import type { ProjectileSlot } from './ProjectilePool';
 import { ProjectilePool } from './ProjectilePool';
 import { recordHit } from './WeaponSystem';
@@ -79,12 +80,12 @@ export function ProjectileManager() {
     };
   }, [scene]);
 
-  // Stable collision checker that captures rapier context
+  // Stable collision checker that captures rapier context + scene
   const checkCollision = useCallback(
     (slot: ProjectileSlot, index: number, pool: ProjectilePool, dt: number) => {
-      checkProjectileCollision(slot, index, pool, rapierWorld, rapier, dt);
+      checkProjectileCollision(slot, index, pool, rapierWorld, rapier, dt, scene);
     },
-    [rapierWorld, rapier],
+    [rapierWorld, rapier, scene],
   );
 
   // Per-frame update
@@ -111,6 +112,10 @@ export function ProjectileManager() {
 // Collision detection
 // ---------------------------------------------------------------------------
 
+// Temp vectors for particle effects (reused to avoid allocation)
+const _hitPos = new THREE.Vector3();
+const _hitNormal = new THREE.Vector3();
+
 /**
  * Cast a short ray along the projectile's velocity to detect hits.
  * The ray length is velocity * dt (distance traveled this frame) + a small margin.
@@ -122,6 +127,7 @@ function checkProjectileCollision(
   rapierWorld: RapierContext['world'],
   rapier: RapierContext['rapier'],
   dt: number,
+  scene: THREE.Scene,
 ): void {
   // Ray from projectile position along velocity
   _rayOrigin.copy(slot.mesh.position);
@@ -136,44 +142,84 @@ function checkProjectileCollision(
     { x: _rayDir.x, y: _rayDir.y, z: _rayDir.z },
   );
 
+  // --- Phase 1: Distance-based enemy hit detection ---
+  // Check projectile proximity to all enemy ECS entities. This is the primary
+  // hit detection method because it's frame-accurate and doesn't depend on
+  // Rapier collider registration timing.
+  if (slot.owner === 'player') {
+    const projPos = slot.mesh.position;
+
+    for (const entity of world.entities) {
+      if (!entity.enemy || !entity.position) continue;
+
+      // Convert entity position (Babylon left-handed) to Three.js right-handed
+      _enemyPos.set(entity.position.x, entity.position.y + 0.5, -entity.position.z);
+
+      const dist = projPos.distanceTo(_enemyPos);
+
+      if (dist < 1.5) {
+        // Direct hit on enemy — blood splash at projectile position
+        _hitPos.copy(projPos);
+        createBloodSplash(_hitPos, scene);
+
+        if (damageEnemyCallback && entity.id) {
+          damageEnemyCallback(entity.id, slot.damage);
+        }
+        recordHit();
+
+        // Area damage for rockets
+        if (slot.aoe > 0 && entity.id) {
+          applyAreaDamage(slot.mesh.position, slot.aoe, slot.damage, entity.id);
+        }
+
+        pool.release(index);
+        return;
+      }
+    }
+  }
+
+  // --- Phase 2: Rapier raycast for wall collision ---
+  // Only triggers if no enemy was hit above. Detects walls for impact sparks
+  // and to prevent projectiles from flying through geometry.
   const hit = rapierWorld.castRay(ray, rayLength, true);
 
   if (!hit) return;
 
   const hitCollider = hit.collider;
   const parentBody = hitCollider.parent();
-  if (!parentBody) {
-    // Hit something without a parent body — treat as wall
-    pool.release(index);
-    return;
-  }
 
-  const userData = parentBody.userData as { entityId?: string } | undefined;
-  const entityId = userData?.entityId;
+  // Check if we hit an enemy collider (backup path for enemies near walls)
+  if (parentBody) {
+    const userData = parentBody.userData as { entityId?: string } | undefined;
+    const entityId = userData?.entityId;
 
-  if (entityId && slot.owner === 'player') {
-    // Check if this is an enemy entity
-    const entity = world.entities.find((e) => e.id === entityId && e.enemy);
-    if (entity) {
-      // Direct hit on enemy
-      if (damageEnemyCallback) {
-        damageEnemyCallback(entityId, slot.damage);
+    if (entityId && slot.owner === 'player') {
+      const entity = world.entities.find((e) => e.id === entityId && e.enemy);
+      if (entity) {
+        _hitPos.copy(slot.mesh.position);
+        createBloodSplash(_hitPos, scene);
+
+        if (damageEnemyCallback) {
+          damageEnemyCallback(entityId, slot.damage);
+        }
+        recordHit();
+
+        if (slot.aoe > 0) {
+          applyAreaDamage(slot.mesh.position, slot.aoe, slot.damage, entityId);
+        }
+
+        pool.release(index);
+        return;
       }
-      recordHit();
-
-      // Area damage for rockets
-      if (slot.aoe > 0) {
-        applyAreaDamage(slot.mesh.position, slot.aoe, slot.damage, entityId);
-      }
-
-      pool.release(index);
-      return;
     }
   }
 
-  // Hit wall or other non-enemy collider
+  // Hit wall — impact sparks
+  _hitPos.copy(slot.mesh.position);
+  _hitNormal.copy(slot.velocity).normalize().negate();
+  createImpactSparks(_hitPos, _hitNormal, scene);
+
   if (slot.aoe > 0) {
-    // Rockets explode on any surface
     applyAreaDamage(slot.mesh.position, slot.aoe, slot.damage);
   }
 

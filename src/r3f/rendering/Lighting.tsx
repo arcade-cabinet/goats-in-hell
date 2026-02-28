@@ -1,15 +1,20 @@
 /**
  * R3F Dynamic Lighting
  *
- * Creates theme-based point lights, a player-following spotlight,
- * and a muzzle flash system. All lights are created imperatively
- * via useEffect + scene.add to avoid JSX type conflicts with Reactylon.
+ * Creates theme-based point lights placed at open floor cells, a subtle
+ * player-following spotlight, and a muzzle flash system. All lights are
+ * created imperatively via useEffect + scene.add.
+ *
+ * This is the SOLE source of scene lighting — R3FScene.tsx sets background
+ * and fog only, with no lights of its own, to avoid stacking/overlap.
  */
 
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import { CELL_SIZE } from '../../constants';
 import type { FloorTheme } from '../../game/levels/FloorThemes';
+import { MapCell } from '../../game/levels/LevelGenerator';
 
 // ---------------------------------------------------------------------------
 // Theme-based light configurations
@@ -22,16 +27,16 @@ interface ThemeLightConfig {
 }
 
 const THEME_LIGHTS: Record<string, ThemeLightConfig> = {
-  firePits: { color: '#ff4400', intensity: 2, distance: 8 },
-  fleshCaverns: { color: '#cc3333', intensity: 1, distance: 6 },
-  obsidianFortress: { color: '#4466aa', intensity: 1.5, distance: 8 },
-  theVoid: { color: '#6600cc', intensity: 2, distance: 10 },
+  firePits: { color: '#ff4400', intensity: 1.2, distance: 8 },
+  fleshCaverns: { color: '#cc3333', intensity: 0.8, distance: 6 },
+  obsidianFortress: { color: '#4466aa', intensity: 1.0, distance: 8 },
+  theVoid: { color: '#6600cc', intensity: 1.2, distance: 10 },
 };
 
 // Default fallback for unknown themes
 const DEFAULT_THEME_LIGHT: ThemeLightConfig = {
   color: '#ff4400',
-  intensity: 1.5,
+  intensity: 1.0,
   distance: 8,
 };
 
@@ -82,11 +87,57 @@ export function triggerMuzzleFlash(position: THREE.Vector3): void {
 }
 
 // ---------------------------------------------------------------------------
+// Helpers — find open floor cells for room light placement
+// ---------------------------------------------------------------------------
+
+/** MapCell values considered walkable open floor. */
+function isFloorCell(cell: MapCell): boolean {
+  return cell === MapCell.EMPTY || cell === MapCell.FLOOR_RAISED || cell === MapCell.DOOR;
+}
+
+/**
+ * Collect candidate (gridX, gridZ) positions for room lights.
+ * We stride through the grid at `spacing` intervals and pick cells that are
+ * open floor, capping at `maxLights`. Positions are shuffled with a simple
+ * deterministic Fisher-Yates so the same grid always produces the same lights.
+ */
+function pickFloorLightPositions(
+  grid: MapCell[][],
+  width: number,
+  depth: number,
+  spacing: number,
+  maxLights: number,
+): { gx: number; gz: number }[] {
+  const candidates: { gx: number; gz: number }[] = [];
+
+  for (let gz = 1; gz < depth - 1; gz += spacing) {
+    for (let gx = 1; gx < width - 1; gx += spacing) {
+      if (isFloorCell(grid[gz][gx])) {
+        candidates.push({ gx, gz });
+      }
+    }
+  }
+
+  // Deterministic shuffle (seeded by grid dimensions so it's stable per level)
+  let seed = width * 1000 + depth;
+  for (let i = candidates.length - 1; i > 0; i--) {
+    seed = (seed * 16807 + 0) % 2147483647; // LCG
+    const j = seed % (i + 1);
+    [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+  }
+
+  return candidates.slice(0, maxLights);
+}
+
+// ---------------------------------------------------------------------------
 // DynamicLighting component
 // ---------------------------------------------------------------------------
 
 interface DynamicLightingProps {
   theme: FloorTheme;
+  grid: MapCell[][];
+  width: number;
+  depth: number;
 }
 
 interface TrackedPointLight {
@@ -96,7 +147,7 @@ interface TrackedPointLight {
   flickerPhase: number;
 }
 
-export function DynamicLighting({ theme }: DynamicLightingProps): null {
+export function DynamicLighting({ theme, grid, width, depth }: DynamicLightingProps): null {
   const { scene, camera } = useThree();
 
   // Refs for all managed lights
@@ -113,10 +164,10 @@ export function DynamicLighting({ theme }: DynamicLightingProps): null {
   }, [scene]);
 
   // -------------------------------------------------------------------------
-  // Create ambient light
+  // Create ambient light — very dim, warm reddish for hell atmosphere
   // -------------------------------------------------------------------------
   useEffect(() => {
-    const ambient = new THREE.AmbientLight(theme.ambientColor, 0.15);
+    const ambient = new THREE.AmbientLight(theme.ambientColor, 0.12);
     ambient.name = 'ambientLight';
     scene.add(ambient);
     ambientRef.current = ambient;
@@ -129,45 +180,39 @@ export function DynamicLighting({ theme }: DynamicLightingProps): null {
   }, [scene, theme]);
 
   // -------------------------------------------------------------------------
-  // Create theme-based room point lights
+  // Create theme-based room point lights at open floor cells
   // -------------------------------------------------------------------------
   useEffect(() => {
     const config = THEME_LIGHTS[theme.name] ?? DEFAULT_THEME_LIGHT;
     const lights: TrackedPointLight[] = [];
 
-    // Create a grid of point lights to illuminate the level.
-    // Place them at regular intervals; the exact positions will be
-    // adjusted by level geometry in a real integration, but for now
-    // we create a reasonable grid pattern.
-    const GRID_SPACING = 6;
-    const GRID_COUNT = 4; // 4x4 = 16 positions, capped at 6 lights
-    const MAX_ROOM_LIGHTS = 6;
+    const LIGHT_SPACING = 4; // grid-cell stride between candidate positions
+    const MAX_ROOM_LIGHTS = 8;
 
-    for (let gz = 0; gz < GRID_COUNT && lights.length < MAX_ROOM_LIGHTS; gz++) {
-      for (let gx = 0; gx < GRID_COUNT && lights.length < MAX_ROOM_LIGHTS; gx++) {
-        // Skip some positions for variety (checkerboard-ish pattern)
-        if ((gx + gz) % 2 === 0) continue;
+    const positions = pickFloorLightPositions(grid, width, depth, LIGHT_SPACING, MAX_ROOM_LIGHTS);
 
-        const light = new THREE.PointLight(config.color, config.intensity, config.distance);
-        light.name = `roomLight_${lights.length}`;
-        light.position.set(
-          gx * GRID_SPACING - (GRID_COUNT * GRID_SPACING) / 2,
-          2.0, // slightly below ceiling
-          gz * GRID_SPACING - (GRID_COUNT * GRID_SPACING) / 2,
-        );
+    // Deterministic seed for flicker variation
+    let flickerSeed = width * 1000 + depth;
 
-        scene.add(light);
+    for (const { gx, gz } of positions) {
+      const light = new THREE.PointLight(config.color, config.intensity, config.distance);
+      light.name = `roomLight_${lights.length}`;
+      // Convert grid coords to world coords (Z negated for R3F convention)
+      light.position.set(gx * CELL_SIZE, 2.0, -(gz * CELL_SIZE));
 
-        const flickerSpeed = 2 + Math.random() * 3;
-        const flickerPhase = Math.random() * Math.PI * 2;
+      scene.add(light);
 
-        lights.push({
-          light,
-          baseIntensity: config.intensity,
-          flickerSpeed,
-          flickerPhase,
-        });
-      }
+      flickerSeed = (flickerSeed * 16807) % 2147483647;
+      const flickerSpeed = 2 + (flickerSeed % 300) / 100; // 2–5
+      flickerSeed = (flickerSeed * 16807) % 2147483647;
+      const flickerPhase = ((flickerSeed % 628) / 100) * 1; // 0–~6.28
+
+      lights.push({
+        light,
+        baseIntensity: config.intensity,
+        flickerSpeed,
+        flickerPhase,
+      });
     }
 
     roomLightsRef.current = lights;
@@ -179,18 +224,18 @@ export function DynamicLighting({ theme }: DynamicLightingProps): null {
       }
       roomLightsRef.current = [];
     };
-  }, [scene, theme]);
+  }, [scene, theme, grid, width, depth]);
 
   // -------------------------------------------------------------------------
-  // Create player spotlight (forward-facing, attached to camera)
+  // Create player spotlight — subtle forward-facing, attached to camera
   // -------------------------------------------------------------------------
   useEffect(() => {
     const spotlight = new THREE.SpotLight(
       '#fff5e0', // warm white
-      0.3,
-      15,
-      0.5, // angle (radians)
-      0.5, // penumbra
+      0.5, // subtle intensity
+      15, // distance
+      0.4, // angle (radians) — narrow cone
+      0.3, // penumbra — soft edge
     );
     spotlight.name = 'playerSpotlight';
     spotlight.position.copy(camera.position);
@@ -237,7 +282,7 @@ export function DynamicLighting({ theme }: DynamicLightingProps): null {
     // Flicker room point lights with sinusoidal variation
     for (const tracked of roomLightsRef.current) {
       tracked.light.intensity =
-        tracked.baseIntensity + Math.sin(time * tracked.flickerSpeed + tracked.flickerPhase) * 0.2;
+        tracked.baseIntensity + Math.sin(time * tracked.flickerSpeed + tracked.flickerPhase) * 0.15;
     }
 
     // Update player spotlight to follow camera

@@ -15,9 +15,32 @@ import {
   Vignette,
 } from '@react-three/postprocessing';
 import { BlendFunction } from 'postprocessing';
-import type React from 'react';
-import { useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { Vector2 } from 'three';
+
+// ---------------------------------------------------------------------------
+// Error boundary — prevents postprocessing crashes from killing the game
+// ---------------------------------------------------------------------------
+
+class EffectErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean }
+> {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error) {
+    console.warn('[PostProcessing] Crashed, rendering without effects:', error.message);
+  }
+
+  render() {
+    if (this.state.hasError) return null;
+    return this.props.children;
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Module-level effect state (avoids Zustand overhead for per-frame effects)
@@ -162,21 +185,22 @@ export function PostProcessingEffects(): React.JSX.Element {
   });
 
   return (
-    <EffectComposer>
-      <Bloom ref={bloomRef} luminanceThreshold={0.6} luminanceSmoothing={0.3} intensity={0.8} />
-      <Vignette
-        ref={vignetteRef}
-        offset={0.3}
-        darkness={0.7}
-        blendFunction={BlendFunction.NORMAL}
-      />
-      <ChromaticAberration
-        ref={chromaticRef}
-        offset={offsetVec}
-        radialModulation={false}
-        modulationOffset={0}
-      />
-      <Noise ref={noiseRef} opacity={0.04} blendFunction={BlendFunction.OVERLAY} />
-    </EffectComposer>
+    <EffectErrorBoundary>
+      <EffectComposer multisampling={0}>
+        <Vignette
+          ref={vignetteRef}
+          offset={0.3}
+          darkness={0.7}
+          blendFunction={BlendFunction.NORMAL}
+        />
+        <ChromaticAberration
+          ref={chromaticRef}
+          offset={offsetVec}
+          radialModulation={false}
+          modulationOffset={0}
+        />
+        <Noise ref={noiseRef} opacity={0.04} blendFunction={BlendFunction.OVERLAY} />
+      </EffectComposer>
+    </EffectErrorBoundary>
   );
 }

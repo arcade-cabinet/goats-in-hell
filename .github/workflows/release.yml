@@ -1,0 +1,116 @@
+name: Release
+
+on:
+  workflow_call:
+    # Called by cd.yml after release-please creates a release
+  workflow_dispatch:
+    # Manual trigger for testing
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  # ------------------------------------------------------------------
+  # GitHub Pages deployment
+  # ------------------------------------------------------------------
+  build-web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npx expo export --platform web
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy-pages:
+    needs: build-web
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+  # ------------------------------------------------------------------
+  # Android debug APK builds — all architectures
+  # ------------------------------------------------------------------
+  build-android:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: [armeabi-v7a, arm64-v8a, x86, x86_64]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - run: npm ci
+
+      - name: Build debug APK
+        env:
+          ABI_FILTER: ${{ matrix.arch }}
+        run: |
+          cd android
+          ./gradlew assembleDebug \
+            -PreactNativeArchitectures="$ABI_FILTER" \
+            --no-daemon
+
+      - name: Find and rename APK
+        env:
+          ARCH: ${{ matrix.arch }}
+        run: |
+          APK_PATH=$(find android/app/build/outputs/apk/debug -name "*.apk" | head -1)
+          mkdir -p artifacts
+          cp "$APK_PATH" "artifacts/goats-in-hell-debug-${ARCH}.apk"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: apk-${{ matrix.arch }}
+          path: artifacts/*.apk
+
+  # Upload APKs to the GitHub release
+  upload-release-assets:
+    needs: build-android
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: apks
+          pattern: apk-*
+          merge-multiple: true
+
+      - name: Upload APKs to release
+        env:
+          GH_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          TAG=$(gh release list --repo "$GH_REPO" --limit 1 --json tagName -q '.[0].tagName')
+          if [ -n "$TAG" ]; then
+            for apk in apks/*.apk; do
+              gh release upload "$TAG" "$apk" --repo "$GH_REPO" --clobber
+            done
+          fi

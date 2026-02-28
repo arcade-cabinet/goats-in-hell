@@ -18,30 +18,10 @@ export function R3FScene({ children }: { children?: React.ReactNode }) {
     scene.background = new THREE.Color('#0a0000');
     scene.fog = new THREE.FogExp2('#0a0000', 0.06);
 
-    // Dim warm ambient — fills shadow areas so nothing is pitch black
-    const ambient = new THREE.AmbientLight('#ffccaa', 0.15);
-    scene.add(ambient);
+    // All lighting is handled by DynamicLighting — no lights here to avoid
+    // overlapping/stacking with theme-based lights.
 
-    // Main directional light — shadow caster, angled like dungeon torchlight
-    const dirLight = new THREE.DirectionalLight('#ff8855', 0.4);
-    dirLight.position.set(5, 10, -5);
-    dirLight.castShadow = true;
-    dirLight.shadow.mapSize.set(1024, 1024);
-    dirLight.shadow.camera.near = 0.5;
-    dirLight.shadow.camera.far = 50;
-    dirLight.shadow.camera.left = -20;
-    dirLight.shadow.camera.right = 20;
-    dirLight.shadow.camera.top = 20;
-    dirLight.shadow.camera.bottom = -20;
-    dirLight.shadow.camera.updateProjectionMatrix();
-    scene.add(dirLight);
-
-    return () => {
-      scene.remove(ambient);
-      scene.remove(dirLight);
-      ambient.dispose();
-      dirLight.dispose();
-    };
+    return () => {};
   }, [scene]);
 
   return <>{children}</>;

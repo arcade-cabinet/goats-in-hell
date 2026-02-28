@@ -2,12 +2,18 @@
  * Three.js PBR materials for dungeon walls, floors, and ceilings.
  *
  * Provides factory functions that create MeshStandardMaterial for each theme
- * element, with color/emissive/roughness/metalness tuned per FloorTheme.
- * Materials are cached by theme name to avoid recreation.
+ * element, with PBR textures (color, normal, roughness) loaded from the
+ * AssetRegistry. Textures are loaded asynchronously and applied once ready;
+ * materials start with flat-color fallbacks so rendering is never blocked.
+ *
+ * Materials and textures are cached by key to avoid recreation across
+ * floor transitions.
  */
+import { Asset } from 'expo-asset';
 import * as THREE from 'three';
 import { COLORS } from '../../constants';
 import type { FloorTheme } from '../../game/levels/FloorThemes';
+import { TEXTURE_ASSETS, type TextureAssetKey } from '../../game/systems/AssetRegistry';
 
 // ---------------------------------------------------------------------------
 // Cache: one material instance per theme + element combination
@@ -16,6 +22,253 @@ import type { FloorTheme } from '../../game/levels/FloorThemes';
 const wallCache = new Map<string, THREE.MeshStandardMaterial>();
 const floorCache = new Map<string, THREE.MeshStandardMaterial>();
 const ceilingCache = new Map<string, THREE.MeshStandardMaterial>();
+
+// ---------------------------------------------------------------------------
+// Texture loading & caching
+// ---------------------------------------------------------------------------
+
+const textureCache = new Map<TextureAssetKey, THREE.Texture>();
+const textureLoader = new THREE.TextureLoader();
+
+/** Pending load promises — prevents duplicate fetches for the same key. */
+const pendingLoads = new Map<TextureAssetKey, Promise<THREE.Texture | null>>();
+
+/**
+ * Resolve a Metro require() module ID to a fetchable URI string.
+ * Uses expo-asset for React Native / Expo projects.
+ */
+function resolveAssetUri(moduleId: number | string): string {
+  if (typeof moduleId === 'string') return moduleId;
+  const asset = Asset.fromModule(moduleId);
+  return asset.uri;
+}
+
+/**
+ * Load a single texture by AssetRegistry key. Returns the cached texture
+ * immediately if already loaded, otherwise kicks off an async load and
+ * returns a Promise. Returns null on failure (caller should keep flat color).
+ */
+function loadTexture(key: TextureAssetKey): Promise<THREE.Texture | null> {
+  // Already loaded — return immediately
+  const cached = textureCache.get(key);
+  if (cached) return Promise.resolve(cached);
+
+  // Already in-flight — return existing promise
+  const pending = pendingLoads.get(key);
+  if (pending) return pending;
+
+  const moduleId = TEXTURE_ASSETS[key];
+  if (moduleId == null) return Promise.resolve(null);
+
+  const promise = new Promise<THREE.Texture | null>((resolve) => {
+    try {
+      const uri = resolveAssetUri(moduleId as unknown as number);
+      textureLoader.load(
+        uri,
+        (texture) => {
+          textureCache.set(key, texture);
+          pendingLoads.delete(key);
+          resolve(texture);
+        },
+        undefined,
+        (_err) => {
+          console.warn(`[Materials] Failed to load texture "${key}"`);
+          pendingLoads.delete(key);
+          resolve(null);
+        },
+      );
+    } catch (_e) {
+      console.warn(`[Materials] Failed to resolve asset URI for "${key}"`);
+      pendingLoads.delete(key);
+      resolve(null);
+    }
+  });
+
+  pendingLoads.set(key, promise);
+  return promise;
+}
+
+/**
+ * Configure a texture for tiled dungeon surfaces: repeat wrapping +
+ * appropriate tiling scale.
+ */
+function configureTiling(
+  texture: THREE.Texture,
+  repeatX: number,
+  repeatY: number,
+  isColorMap = true,
+): void {
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(repeatX, repeatY);
+  // Color maps need sRGB; normal/roughness/metalness maps store data, not color
+  texture.colorSpace = isColorMap ? THREE.SRGBColorSpace : THREE.NoColorSpace;
+  texture.needsUpdate = true;
+}
+
+// ---------------------------------------------------------------------------
+// Texture set definitions per theme/element
+// ---------------------------------------------------------------------------
+
+interface TextureSetDef {
+  color: TextureAssetKey;
+  normal: TextureAssetKey;
+  roughness: TextureAssetKey;
+  emission?: TextureAssetKey;
+  metalness?: TextureAssetKey;
+}
+
+/** Wall texture sets keyed by theme name. */
+const WALL_TEXTURE_SETS: Record<string, TextureSetDef> = {
+  firePits: {
+    color: 'stone-color',
+    normal: 'stone-normal',
+    roughness: 'stone-roughness',
+  },
+  fleshCaverns: {
+    color: 'flesh-color',
+    normal: 'flesh-normal',
+    roughness: 'flesh-roughness',
+  },
+  obsidianFortress: {
+    color: 'obsidian-color',
+    normal: 'obsidian-normal',
+    roughness: 'obsidian-roughness',
+  },
+  theVoid: {
+    color: 'obsidian-color',
+    normal: 'obsidian-normal',
+    roughness: 'obsidian-roughness',
+  },
+};
+
+/** Wall texture sets keyed by wall-type cell value. */
+const WALL_TYPE_TEXTURE_SETS: Record<number, TextureSetDef> = {
+  // WALL_STONE (1) — brick texture
+  1: {
+    color: 'stone-color',
+    normal: 'stone-normal',
+    roughness: 'stone-roughness',
+  },
+  // WALL_FLESH (2) — organic lava-like texture
+  2: {
+    color: 'flesh-color',
+    normal: 'flesh-normal',
+    roughness: 'flesh-roughness',
+  },
+  // WALL_LAVA (3) — lava texture with emission
+  3: {
+    color: 'lava-color',
+    normal: 'lava-normal',
+    roughness: 'lava-roughness',
+    emission: 'lava-emission',
+  },
+  // WALL_OBSIDIAN (4) — dark crystalline texture
+  4: {
+    color: 'obsidian-color',
+    normal: 'obsidian-normal',
+    roughness: 'obsidian-roughness',
+  },
+};
+
+/** Floor texture set (same ground texture for all themes, tinted per theme). */
+const FLOOR_TEXTURE_SET: TextureSetDef = {
+  color: 'floor-color',
+  normal: 'floor-normal',
+  roughness: 'floor-roughness',
+};
+
+/** Ceiling texture set. */
+const CEILING_TEXTURE_SET: TextureSetDef = {
+  color: 'ceiling-color',
+  normal: 'ceiling-normal',
+  roughness: 'ceiling-roughness',
+};
+
+/** Door texture set. */
+const DOOR_TEXTURE_SET: TextureSetDef = {
+  color: 'door-color',
+  normal: 'door-normal',
+  roughness: 'door-roughness',
+  metalness: 'door-metalness',
+};
+
+// ---------------------------------------------------------------------------
+// Async texture application
+// ---------------------------------------------------------------------------
+
+/** Tiling repeat counts for different surface types. */
+const WALL_TILE = { x: 1, y: 1 };
+const FLOOR_TILE = { x: 8, y: 8 };
+const CEILING_TILE = { x: 8, y: 8 };
+const DOOR_TILE = { x: 1, y: 1 };
+const LAVA_TILE = { x: 2, y: 2 };
+
+/**
+ * Asynchronously load and apply a set of PBR textures to a material.
+ * The material keeps its flat-color appearance until textures are ready.
+ */
+function applyTextureSet(
+  mat: THREE.MeshStandardMaterial,
+  texSet: TextureSetDef,
+  tileX: number,
+  tileY: number,
+): void {
+  // Color (diffuse/albedo) map
+  loadTexture(texSet.color).then((tex) => {
+    if (tex) {
+      const t = tex.clone();
+      configureTiling(t, tileX, tileY);
+      mat.map = t;
+      mat.needsUpdate = true;
+    }
+  });
+
+  // Normal map (data texture — not color)
+  loadTexture(texSet.normal).then((tex) => {
+    if (tex) {
+      const t = tex.clone();
+      configureTiling(t, tileX, tileY, false);
+      mat.normalMap = t;
+      mat.normalScale.set(1.0, 1.0);
+      mat.needsUpdate = true;
+    }
+  });
+
+  // Roughness map (data texture — not color)
+  loadTexture(texSet.roughness).then((tex) => {
+    if (tex) {
+      const t = tex.clone();
+      configureTiling(t, tileX, tileY, false);
+      mat.roughnessMap = t;
+      mat.needsUpdate = true;
+    }
+  });
+
+  // Emission map (optional — e.g. lava, this IS a color map)
+  if (texSet.emission) {
+    loadTexture(texSet.emission).then((tex) => {
+      if (tex) {
+        const t = tex.clone();
+        configureTiling(t, tileX, tileY);
+        mat.emissiveMap = t;
+        mat.needsUpdate = true;
+      }
+    });
+  }
+
+  // Metalness map (data texture — not color)
+  if (texSet.metalness) {
+    loadTexture(texSet.metalness).then((tex) => {
+      if (tex) {
+        const t = tex.clone();
+        configureTiling(t, tileX, tileY, false);
+        mat.metalnessMap = t;
+        mat.needsUpdate = true;
+      }
+    });
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Per-wall-type material properties (keyed by MapCell wall value)
@@ -218,6 +471,7 @@ function makeMaterial(props: {
  * Create (or return cached) wall material for a theme.
  * Uses the theme's primary wall type properties as the base,
  * overlaid with theme-specific emissive/roughness tweaks.
+ * PBR textures are loaded asynchronously and applied once ready.
  */
 export function createWallMaterial(theme: FloorTheme): THREE.MeshStandardMaterial {
   const key = theme.name;
@@ -228,11 +482,19 @@ export function createWallMaterial(theme: FloorTheme): THREE.MeshStandardMateria
   const mat = makeMaterial(preset.wall);
   mat.name = `wall-${key}`;
   wallCache.set(key, mat);
+
+  // Apply PBR textures asynchronously
+  const texSet = WALL_TEXTURE_SETS[key];
+  if (texSet) {
+    applyTextureSet(mat, texSet, WALL_TILE.x, WALL_TILE.y);
+  }
+
   return mat;
 }
 
 /**
  * Create (or return cached) floor material for a theme.
+ * PBR textures are loaded asynchronously and applied once ready.
  */
 export function createFloorMaterial(theme: FloorTheme): THREE.MeshStandardMaterial {
   const key = theme.name;
@@ -244,11 +506,16 @@ export function createFloorMaterial(theme: FloorTheme): THREE.MeshStandardMateri
   mat.name = `floor-${key}`;
   mat.side = THREE.DoubleSide;
   floorCache.set(key, mat);
+
+  // Apply floor PBR textures
+  applyTextureSet(mat, FLOOR_TEXTURE_SET, FLOOR_TILE.x, FLOOR_TILE.y);
+
   return mat;
 }
 
 /**
  * Create (or return cached) ceiling material for a theme.
+ * PBR textures are loaded asynchronously and applied once ready.
  */
 export function createCeilingMaterial(theme: FloorTheme): THREE.MeshStandardMaterial {
   const key = theme.name;
@@ -260,12 +527,17 @@ export function createCeilingMaterial(theme: FloorTheme): THREE.MeshStandardMate
   mat.name = `ceiling-${key}`;
   mat.side = THREE.DoubleSide;
   ceilingCache.set(key, mat);
+
+  // Apply ceiling PBR textures
+  applyTextureSet(mat, CEILING_TEXTURE_SET, CEILING_TILE.x, CEILING_TILE.y);
+
   return mat;
 }
 
 /**
  * Get material properties for a specific wall type (MapCell value).
  * Used when different wall cells within a level need distinct materials.
+ * PBR textures are loaded asynchronously and applied once ready.
  */
 export function getWallTypeMaterial(wallCellValue: number): THREE.MeshStandardMaterial {
   const cacheKey = `wallType-${wallCellValue}`;
@@ -279,17 +551,31 @@ export function getWallTypeMaterial(wallCellValue: number): THREE.MeshStandardMa
     const mat = makeMaterial(stoneProps);
     mat.name = cacheKey;
     wallCache.set(cacheKey, mat);
+
+    // Apply stone textures as fallback
+    const texSet = WALL_TYPE_TEXTURE_SETS[1];
+    if (texSet) {
+      applyTextureSet(mat, texSet, WALL_TILE.x, WALL_TILE.y);
+    }
     return mat;
   }
 
   const mat = makeMaterial(props);
   mat.name = cacheKey;
   wallCache.set(cacheKey, mat);
+
+  // Apply wall-type-specific PBR textures
+  const texSet = WALL_TYPE_TEXTURE_SETS[wallCellValue];
+  if (texSet) {
+    applyTextureSet(mat, texSet, WALL_TILE.x, WALL_TILE.y);
+  }
+
   return mat;
 }
 
 /**
  * Create a lava floor tile material (emissive orange/red).
+ * Uses lava PBR textures with emission map for glowing effect.
  */
 export function createLavaMaterial(): THREE.MeshStandardMaterial {
   const cacheKey = 'lavaFloor';
@@ -306,6 +592,16 @@ export function createLavaMaterial(): THREE.MeshStandardMaterial {
   });
   mat.name = cacheKey;
   wallCache.set(cacheKey, mat);
+
+  // Apply lava PBR textures with emission
+  const texSet: TextureSetDef = {
+    color: 'lava-color',
+    normal: 'lava-normal',
+    roughness: 'lava-roughness',
+    emission: 'lava-emission',
+  };
+  applyTextureSet(mat, texSet, LAVA_TILE.x, LAVA_TILE.y);
+
   return mat;
 }
 
@@ -333,7 +629,7 @@ export function createVoidPitMaterial(): THREE.MeshStandardMaterial {
 }
 
 /**
- * Create a door material.
+ * Create a door material with metal PBR textures.
  */
 export function createDoorMaterial(): THREE.MeshStandardMaterial {
   const cacheKey = 'door';
@@ -349,11 +645,15 @@ export function createDoorMaterial(): THREE.MeshStandardMaterial {
   });
   mat.name = cacheKey;
   wallCache.set(cacheKey, mat);
+
+  // Apply door PBR textures (metal)
+  applyTextureSet(mat, DOOR_TEXTURE_SET, DOOR_TILE.x, DOOR_TILE.y);
+
   return mat;
 }
 
 /**
- * Create a ramp material (stone-like).
+ * Create a ramp material (stone-like) with PBR textures.
  */
 export function createRampMaterial(): THREE.MeshStandardMaterial {
   const cacheKey = 'ramp';
@@ -369,11 +669,18 @@ export function createRampMaterial(): THREE.MeshStandardMaterial {
   });
   mat.name = cacheKey;
   wallCache.set(cacheKey, mat);
+
+  // Use stone textures for ramps
+  const texSet = WALL_TYPE_TEXTURE_SETS[1]; // stone
+  if (texSet) {
+    applyTextureSet(mat, texSet, WALL_TILE.x, WALL_TILE.y);
+  }
+
   return mat;
 }
 
 /**
- * Create a platform material (obsidian-like for raised floors).
+ * Create a platform material (obsidian-like for raised floors) with PBR textures.
  */
 export function createPlatformMaterial(): THREE.MeshStandardMaterial {
   const cacheKey = 'platform';
@@ -389,11 +696,19 @@ export function createPlatformMaterial(): THREE.MeshStandardMaterial {
   });
   mat.name = cacheKey;
   wallCache.set(cacheKey, mat);
+
+  // Use obsidian textures for platforms
+  const texSet = WALL_TYPE_TEXTURE_SETS[4]; // obsidian
+  if (texSet) {
+    applyTextureSet(mat, texSet, WALL_TILE.x, WALL_TILE.y);
+  }
+
   return mat;
 }
 
 /**
- * Dispose all cached materials. Call on app teardown.
+ * Dispose all cached materials. Textures are intentionally retained
+ * as they are shared across floor transitions. Call on app teardown.
  */
 export function disposeCachedMaterials(): void {
   for (const mat of wallCache.values()) mat.dispose();
@@ -402,4 +717,18 @@ export function disposeCachedMaterials(): void {
   wallCache.clear();
   floorCache.clear();
   ceilingCache.clear();
+  // Note: textures are intentionally NOT disposed here — they are shared
+  // across floor transitions and should persist for the lifetime of the app.
+  // The texture cache is cheap (GPU textures are released when the context
+  // is lost) and reloading them is expensive.
+}
+
+/**
+ * Preload all PBR textures so they are ready before the first floor renders.
+ * Call this during the loading screen. Returns a promise that resolves once
+ * all textures are loaded (or have failed gracefully).
+ */
+export async function preloadAllTextures(): Promise<void> {
+  const allKeys = Object.keys(TEXTURE_ASSETS) as TextureAssetKey[];
+  await Promise.all(allKeys.map((key) => loadTexture(key)));
 }
