@@ -14,11 +14,9 @@ jest.mock('../PowerUpSystem', () => ({
   activatePowerUp: jest.fn(),
 }));
 
-jest.mock('../../rendering/Particles', () => ({
-  createPickupBurst: jest.fn(),
-}));
+// Particles module was deleted — pickup burst is now handled by R3F rendering layer
 
-import {Vector3} from '@babylonjs/core';
+import {vec3 as Vector3} from '../../entities/vec3';
 import type {Entity} from '../../entities/components';
 import {world} from '../../entities/world';
 import {pickupSystemUpdate} from '../PickupSystem';
@@ -29,7 +27,7 @@ function makePlayer(x = 0, z = 0, hp = 100): Entity {
   const player: Entity = {
     id: 'player',
     type: 'player',
-    position: new Vector3(x, 1, z),
+    position: Vector3(x, 1, z),
     player: {
       hp,
       maxHp: 100,
@@ -55,7 +53,7 @@ function makePickup(type: string, x: number, z: number, value = 20, extra: any =
   const entity: Entity = {
     id: `pickup-${Math.random()}`,
     type: 'powerup',
-    position: new Vector3(x, 0, z),
+    position: Vector3(x, 0, z),
     pickup: {pickupType: type as any, value, active: true, ...extra},
   };
   world.add(entity);

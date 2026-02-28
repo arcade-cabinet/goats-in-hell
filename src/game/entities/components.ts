@@ -1,4 +1,17 @@
-import {Mesh, Vector3, ParticleSystem} from '@babylonjs/core';
+/**
+ * Engine-agnostic ECS component types.
+ *
+ * Previously used Babylon.js Vector3/Mesh/ParticleSystem — now uses
+ * plain Vec3 objects. Rendering is managed by R3F components that
+ * read these ECS positions each frame.
+ */
+
+/** Simple 3D vector — engine-agnostic replacement for Babylon Vector3. */
+export interface Vec3 {
+  x: number;
+  y: number;
+  z: number;
+}
 
 export type EntityType =
   | 'player'
@@ -17,14 +30,10 @@ export type Entity = {
   type?: EntityType;
 
   // Transform
-  position?: Vector3;
-  rotation?: Vector3;
-  velocity?: Vector3;
-  scale?: Vector3;
-
-  // Rendering
-  mesh?: Mesh;
-  particles?: ParticleSystem;
+  position?: Vec3;
+  rotation?: Vec3;
+  velocity?: Vec3;
+  scale?: Vec3;
 
   // Player
   player?: {

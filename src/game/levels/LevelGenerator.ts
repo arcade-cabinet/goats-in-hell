@@ -1,4 +1,5 @@
-import {Vector3} from '@babylonjs/core';
+import type {Vec3} from '../entities/components';
+import {vec3, vec3Zero} from '../entities/vec3';
 import {getThemeForFloor, type FloorTheme} from './FloorThemes';
 import {generateBossArena} from './BossArenas';
 import {useGameStore} from '../../state/GameStore';
@@ -45,7 +46,7 @@ export class LevelGenerator {
   theme: FloorTheme;
   grid: MapCell[][] = [];
   spawns: SpawnData[] = [];
-  playerSpawn: Vector3 = Vector3.Zero();
+  playerSpawn: Vec3 = vec3Zero();
 
   constructor(width: number, depth: number, floor: number = 1) {
     this.floor = floor;
@@ -100,7 +101,7 @@ export class LevelGenerator {
     }
     const playerCellX = spawnRoom.x + Math.floor(spawnRoom.w / 2);
     const playerCellZ = spawnRoom.z + Math.floor(spawnRoom.h / 2);
-    this.playerSpawn = new Vector3(playerCellX * CELL_SIZE, 1, playerCellZ * CELL_SIZE);
+    this.playerSpawn = vec3(playerCellX * CELL_SIZE, 1, playerCellZ * CELL_SIZE);
 
     // Populate rooms with enemies and pickups
     for (const room of rooms) {

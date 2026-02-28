@@ -5,16 +5,15 @@
  * - Explosive barrels: take damage from player projectiles, explode dealing AoE
  */
 
-import {Scene, Vector3} from '@babylonjs/core';
 import type {Entity} from '../entities/components';
+import {vec3Distance} from '../entities/vec3';
 import {world} from '../entities/world';
 import {GameState} from '../../state/GameState';
 import {playSound} from './AudioSystem';
 import {pushDamageEvent} from './damageEvents';
 import {removeEntity} from './CombatSystem';
 import {getGameTime} from './GameClock';
-import {registerDamageDirection, triggerBloodSplatter, triggerEnvKill} from '../ui/BabylonHUD';
-import {createExplosionBurst} from '../rendering/Particles';
+import {registerDamageDirection, triggerBloodSplatter, triggerEnvKill} from '../ui/HUDEvents';
 
 const SPIKE_RANGE = 1.2;
 const SPIKE_COOLDOWN_MS = 1500;
@@ -22,11 +21,6 @@ const BARREL_EXPLOSION_RANGE = 4;
 
 /** Per-hazard cooldown tracker (keyed by entity id). */
 const hazardCooldowns = new Map<string, number>();
-let activeScene: Scene | null = null;
-
-export function setHazardScene(scene: Scene): void {
-  activeScene = scene;
-}
 
 export function resetHazardSystem(): void {
   hazardCooldowns.clear();
@@ -42,7 +36,7 @@ export function hazardSystemUpdate(): void {
   for (const hazard of hazards) {
     const hz = hazard.hazard!;
     const pos = hazard.position!;
-    const dist = Vector3.Distance(player.position, pos);
+    const dist = vec3Distance(player.position, pos);
 
     if (hz.hazardType === 'spikes') {
       // Damage player if within range and off cooldown
@@ -82,19 +76,14 @@ function explodeBarrel(barrel: Entity): void {
 
   playSound('explosion');
 
-  // Visual explosion effect
-  if (activeScene) {
-    createExplosionBurst(pos.clone(), activeScene);
-  }
-
   // Damage all entities in blast radius
   const nearby = world.entities.filter((e: Entity) => {
     if (!e.position || e === barrel) return false;
-    return Vector3.Distance(e.position, pos) < BARREL_EXPLOSION_RANGE;
+    return vec3Distance(e.position, pos) < BARREL_EXPLOSION_RANGE;
   });
 
   for (const entity of nearby) {
-    const dist = Vector3.Distance(entity.position!, pos);
+    const dist = vec3Distance(entity.position!, pos);
     // Damage falls off with distance (100% at center, 25% at edge)
     const falloff = 1 - (dist / BARREL_EXPLOSION_RANGE) * 0.75;
     const actualDmg = Math.ceil(damage * falloff);
@@ -112,9 +101,9 @@ function explodeBarrel(barrel: Entity): void {
         removeEntity(entity);
         triggerEnvKill('barrel');
         // Barrel explosion screen shake for nearby enemy kills
-        const player = world.entities.find((e: Entity) => e.type === 'player');
-        if (player?.position) {
-          const playerDist = Vector3.Distance(player.position, pos);
+        const p = world.entities.find((e: Entity) => e.type === 'player');
+        if (p?.position) {
+          const playerDist = vec3Distance(p.position, pos);
           if (playerDist < BARREL_EXPLOSION_RANGE * 2) {
             const proximity = 1 - playerDist / (BARREL_EXPLOSION_RANGE * 2);
             const shake = Math.ceil(proximity * 6);

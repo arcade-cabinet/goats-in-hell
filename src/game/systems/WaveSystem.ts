@@ -1,5 +1,5 @@
-import {Vector3} from '@babylonjs/core';
 import type {Entity, EntityType, WeaponId} from '../entities/components';
+import {vec3} from '../entities/vec3';
 import {world} from '../entities/world';
 import {GameState} from '../../state/GameState';
 import {useGameStore, DIFFICULTY_PRESETS} from '../../state/GameStore';
@@ -113,7 +113,7 @@ function spawnArenaPickups(arenaSize: number): void {
     world.add({
       id: `arena-pickup-${arenaPickupCounter}`,
       type: 'ammo',
-      position: new Vector3(sx * 2, 0.5, sz * 2),
+      position: vec3(sx * 2, 0.5, sz * 2),
       pickup: {
         pickupType: 'ammo',
         value: 18,
@@ -130,7 +130,7 @@ function spawnArenaPickups(arenaSize: number): void {
     world.add({
       id: `arena-pickup-${arenaPickupCounter}`,
       type: 'health',
-      position: new Vector3(hx * 2, 0.5, hz * 2),
+      position: vec3(hx * 2, 0.5, hz * 2),
       pickup: {
         pickupType: 'health',
         value: 25,
@@ -145,7 +145,7 @@ function spawnArenaPickups(arenaSize: number): void {
     world.add({
       id: `arena-pickup-${arenaPickupCounter}`,
       type: 'health',
-      position: new Vector3(hx * 2, 0.5, hz * 2),
+      position: vec3(hx * 2, 0.5, hz * 2),
       pickup: {
         pickupType: 'health',
         value: 15,
@@ -164,7 +164,7 @@ function spawnArenaPowerUp(arenaSize: number): void {
   world.add({
     id: `arena-pickup-${arenaPickupCounter}`,
     type: 'powerup' as EntityType,
-    position: new Vector3(px * 2, 0.8, pz * 2),
+    position: vec3(px * 2, 0.8, pz * 2),
     pickup: {
       pickupType: 'powerup',
       value: 0,
@@ -183,7 +183,7 @@ function spawnArenaWeaponPickup(arenaSize: number): void {
   world.add({
     id: `arena-pickup-${arenaPickupCounter}`,
     type: 'weaponPickup',
-    position: new Vector3(wx * 2, 0.5, wz * 2),
+    position: vec3(wx * 2, 0.5, wz * 2),
     pickup: {
       pickupType: 'weapon',
       value: 0,
@@ -275,7 +275,7 @@ export function waveSystemUpdate(deltaTime: number, arenaSize: number): void {
       const entity: Entity = {
         id: `wave-${currentWave}-${waveSpawnCounter}`,
         type: enemyType,
-        position: new Vector3(sx * 2, 1, sz * 2), // multiply by CELL_SIZE (2)
+        position: vec3(sx * 2, 1, sz * 2), // multiply by CELL_SIZE (2)
         enemy: {
           ...stats,
           hp: Math.ceil(stats.hp * diffMods.enemyHpMult),

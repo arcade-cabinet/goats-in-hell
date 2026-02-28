@@ -10,7 +10,7 @@ jest.mock('../GameClock', () => ({
   getGameTime: jest.fn(() => 0),
 }));
 
-import {Vector3} from '@babylonjs/core';
+import {vec3 as Vector3} from '../../entities/vec3';
 import type {Entity} from '../../entities/components';
 import {world} from '../../entities/world';
 import {
@@ -34,7 +34,7 @@ describe('checkFloorComplete', () => {
     const player: Entity = {
       id: 'player',
       type: 'player',
-      position: new Vector3(0, 0, 0),
+      position: Vector3(0, 0, 0),
       player: {hp: 100, maxHp: 100, speed: 5, sprintMult: 1.5, currentWeapon: 'hellPistol', weapons: ['hellPistol'], isReloading: false, reloadStart: 0},
     };
     world.add(player);
@@ -45,13 +45,13 @@ describe('checkFloorComplete', () => {
     const player: Entity = {
       id: 'player',
       type: 'player',
-      position: new Vector3(0, 0, 0),
+      position: Vector3(0, 0, 0),
       player: {hp: 100, maxHp: 100, speed: 5, sprintMult: 1.5, currentWeapon: 'hellPistol', weapons: ['hellPistol'], isReloading: false, reloadStart: 0},
     };
     const enemy: Entity = {
       id: 'enemy-1',
       type: 'goat',
-      position: new Vector3(5, 0, 5),
+      position: Vector3(5, 0, 5),
       enemy: {hp: 10, maxHp: 10, damage: 5, speed: 1, attackRange: 2, alert: false, attackCooldown: 0, scoreValue: 100},
     };
     world.add(player);

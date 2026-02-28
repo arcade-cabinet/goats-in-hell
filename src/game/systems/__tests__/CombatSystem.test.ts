@@ -10,7 +10,7 @@ jest.mock('../AudioSystem', () => ({
   playSound: jest.fn(),
 }));
 
-jest.mock('../../ui/BabylonHUD', () => ({
+jest.mock('../../ui/HUDEvents', () => ({
   registerDamageDirection: jest.fn(),
   triggerBloodSplatter: jest.fn(),
 }));
@@ -36,7 +36,7 @@ jest.mock('../GameClock', () => ({
   getGameTime: jest.fn(() => 0),
 }));
 
-import {Vector3} from '@babylonjs/core';
+import {vec3 as Vector3} from '../../entities/vec3';
 import type {Entity} from '../../entities/components';
 import {world} from '../../entities/world';
 import {damageEnemy, handleEnemyKill, removeEntity} from '../CombatSystem';
@@ -66,7 +66,7 @@ describe('damageEnemy', () => {
     const entity: Entity = {
       id: 'test-enemy',
       type: 'goat',
-      position: new Vector3(5, 1, 5),
+      position: Vector3(5, 1, 5),
       enemy: {
         hp,
         maxHp,
@@ -131,7 +131,7 @@ describe('damageEnemy', () => {
     const player: Entity = {
       id: 'player',
       type: 'player',
-      position: new Vector3(0, 1, 0),
+      position: Vector3(0, 1, 0),
       player: {
         hp: 100,
         maxHp: 100,
@@ -176,7 +176,7 @@ describe('handleEnemyKill', () => {
     const entity: Entity = {
       id: 'kill-target',
       type: 'goat',
-      position: new Vector3(3, 1, 3),
+      position: Vector3(3, 1, 3),
       enemy: {
         hp: 0,
         maxHp: 50,
@@ -267,33 +267,16 @@ describe('handleEnemyKill', () => {
 });
 
 describe('removeEntity', () => {
-  it('disposes mesh if present', () => {
-    const disposeMock = jest.fn();
+  it('removes entity from world', () => {
     const entity: Entity = {
-      id: 'mesh-entity',
+      id: 'simple-entity',
       type: 'goat',
-      mesh: {dispose: disposeMock} as any,
     };
     world.add(entity);
 
     removeEntity(entity);
 
-    expect(disposeMock).toHaveBeenCalled();
     expect(world.entities).not.toContain(entity);
-  });
-
-  it('disposes particles if present', () => {
-    const disposeParticles = jest.fn();
-    const entity: Entity = {
-      id: 'particle-entity',
-      type: 'goat',
-      particles: {dispose: disposeParticles} as any,
-    };
-    world.add(entity);
-
-    removeEntity(entity);
-
-    expect(disposeParticles).toHaveBeenCalled();
   });
 
   it('removes entity from world without mesh', () => {

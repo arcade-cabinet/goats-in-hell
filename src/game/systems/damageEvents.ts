@@ -1,10 +1,11 @@
-import {Vector3} from '@babylonjs/core';
+import type {Vec3} from '../entities/components';
+import {vec3Clone} from '../entities/vec3';
 import {getGameTime} from './GameClock';
 
 export interface DamageEvent {
   id: number;
   amount: number;
-  position: Vector3;
+  position: Vec3;
   /** Game-time timestamp when the damage occurred (ms from GameClock). */
   time: number;
   isCrit?: boolean;
@@ -17,11 +18,11 @@ const events: DamageEvent[] = [];
 const MAX_AGE = 1200;
 
 /** Record a new damage event. Call from CombatSystem when damage is dealt. */
-export function pushDamageEvent(amount: number, position: Vector3, isCrit?: boolean): void {
+export function pushDamageEvent(amount: number, position: Vec3, isCrit?: boolean): void {
   events.push({
     id: nextId++,
     amount,
-    position: position.clone(),
+    position: vec3Clone(position),
     time: getGameTime(),
     isCrit,
   });

@@ -1,17 +1,18 @@
 /**
- * Secret Room System — detects when the player discovers hidden rooms
- * by shooting or walking close to secret walls.
+ * Secret Room System — detects when the player discovers hidden rooms.
  *
- * Secret walls (MapCell.WALL_SECRET) are rendered as normal walls but
- * have mesh metadata `isSecret: true`. When triggered, the wall mesh
- * is disposed and the grid cell is set to EMPTY, revealing the room.
+ * Engine-agnostic: tracks discovered secrets and emits events. The R3F
+ * level renderer is responsible for hiding/showing secret walls based on
+ * the grid state updated here.
  */
-import {Scene, Vector3, Mesh} from '@babylonjs/core';
+import type {Vec3} from '../entities/components';
+import {vec3Distance} from '../entities/vec3';
 import {MapCell} from '../levels/LevelGenerator';
 import {playSound} from './AudioSystem';
 import {GameState} from '../../state/GameState';
 import {useGameStore} from '../../state/GameStore';
-import type {LevelData} from '../GameEngine';
+import type {LevelData} from '../levels/LevelData';
+import {CELL_SIZE} from '../levels/LevelGenerator';
 
 // ---------------------------------------------------------------------------
 // State
@@ -47,46 +48,28 @@ export function tickSecretTimer(): void {
 }
 
 /**
- * Check if the player is close to any secret wall. If so, open it.
- * Called each frame from the game loop.
+ * Check if the player is close to any secret wall cell. If so, open it.
  */
 export function checkSecretWalls(
-  scene: Scene,
-  playerPos: Vector3,
+  playerPos: Vec3,
   level: LevelData,
-  levelMeshes: Mesh[],
 ): void {
-  const DISCOVER_RANGE = 1.8; // player must be within this range
+  const DISCOVER_RANGE = 1.8;
+  const grid = level.grid;
 
-  for (let i = levelMeshes.length - 1; i >= 0; i--) {
-    const mesh = levelMeshes[i];
-    if (!mesh.metadata?.isSecret) continue;
+  for (let z = 0; z < grid.length; z++) {
+    for (let x = 0; x < grid[0].length; x++) {
+      if (grid[z][x] !== MapCell.WALL_SECRET) continue;
 
-    const dist = Vector3.Distance(playerPos, mesh.position);
-    if (dist < DISCOVER_RANGE) {
-      openSecretWall(mesh, level, levelMeshes, i);
+      const wallX = x * CELL_SIZE;
+      const wallZ = z * CELL_SIZE;
+      const dist = vec3Distance(playerPos, {x: wallX, y: playerPos.y, z: wallZ});
+
+      if (dist < DISCOVER_RANGE) {
+        openSecretWall(x, z, level);
+      }
     }
   }
-}
-
-/**
- * Check if a raycast (from shooting) hit a secret wall.
- * Called from the weapon system when a hitscan hits geometry.
- */
-export function checkSecretWallShot(
-  hitMeshName: string,
-  level: LevelData,
-  levelMeshes: Mesh[],
-): boolean {
-  for (let i = levelMeshes.length - 1; i >= 0; i--) {
-    const mesh = levelMeshes[i];
-    if (!mesh.metadata?.isSecret) continue;
-    if (mesh.name === hitMeshName) {
-      openSecretWall(mesh, level, levelMeshes, i);
-      return true;
-    }
-  }
-  return false;
 }
 
 // ---------------------------------------------------------------------------
@@ -94,26 +77,19 @@ export function checkSecretWallShot(
 // ---------------------------------------------------------------------------
 
 function openSecretWall(
-  mesh: Mesh,
+  gridX: number,
+  gridZ: number,
   level: LevelData,
-  levelMeshes: Mesh[],
-  index: number,
 ): void {
-  const {gridX, gridZ} = mesh.metadata;
-
   // Update the grid to remove the wall
   if (level.grid[gridZ]?.[gridX] !== undefined) {
     level.grid[gridZ][gridX] = MapCell.EMPTY;
   }
 
-  // Remove the mesh
-  mesh.dispose();
-  levelMeshes.splice(index, 1);
-
   // Effects
   secretsFound++;
   secretNotifyTimer = NOTIFY_DURATION;
-  playSound('pickup'); // reuse the pickup chime for now
+  playSound('pickup');
   GameState.set({screenShake: 6});
 
   // Award bonus score

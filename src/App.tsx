@@ -1,23 +1,11 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect} from 'react';
 import {View, StyleSheet} from 'react-native';
+import R3FRoot from './R3FRoot';
 import {MainMenu} from './ui/MainMenu';
 import {useGameStore, generateSeedPhrase} from './state/GameStore';
 import type {Difficulty} from './state/GameStore';
 
-// Detect engine preference from URL: ?engine=r3f (default) or ?engine=babylon
-function getEngine(): 'r3f' | 'babylon' {
-  if (typeof window === 'undefined') return 'r3f';
-  const param = new URLSearchParams(window.location.search).get('engine');
-  if (param === 'babylon') return 'babylon';
-  return 'r3f';
-}
-
-// Lazy-load engine wrappers so unused engine code is not bundled
-const BabylonEngine = React.lazy(() => import('./BabylonApp'));
-const R3FEngine = React.lazy(() => import('./R3FRoot'));
-
 const App = () => {
-  const engine = useMemo(getEngine, []);
   const screen = useGameStore(s => s.screen);
   const patch = useGameStore(s => s.patch);
   const autoplay = useGameStore(s => s.autoplay);
@@ -126,11 +114,7 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      {isGameActive && (
-        <React.Suspense fallback={null}>
-          {engine === 'r3f' ? <R3FEngine /> : <BabylonEngine />}
-        </React.Suspense>
-      )}
+      {isGameActive && <R3FRoot />}
       {(screen === 'mainMenu' || screen === 'newGame' || screen === 'settings') && (
         <MainMenu />
       )}

@@ -19,14 +19,14 @@ import {
   ArriveBehavior,
   Vector3 as YV3,
 } from 'yuka';
-import {Vector3} from '@babylonjs/core';
-import type {Entity} from '../entities/components';
+import type {Entity, Vec3} from '../entities/components';
+import {vec3, vec3Zero, vec3Clone, vec3Distance, vec3Subtract, vec3Scale, vec3Length, vec3ScaleInPlace} from '../entities/vec3';
 import {world} from '../entities/world';
 import {GameState} from '../../state/GameState';
 import {useGameStore} from '../../state/GameStore';
 import {playSound} from './AudioSystem';
 import {getGameTime} from './GameClock';
-import {registerDamageDirection} from '../ui/BabylonHUD';
+import {registerDamageDirection} from '../ui/HUDEvents';
 
 /** Shorthand for the store's seeded PRNG. */
 function rng(): number {
@@ -128,15 +128,15 @@ function createVehicleForEnemy(entity: Entity): Vehicle {
 // Helpers (unchanged from original)
 // ---------------------------------------------------------------------------
 
-function directionTo(from: Vector3, to: Vector3): Vector3 {
-  const dir = to.subtract(from);
+function directionTo(from: Vec3, to: Vec3): Vec3 {
+  const dir = vec3Subtract(to, from);
   dir.y = 0;
-  const len = dir.length();
-  if (len < 0.0001) return Vector3.Zero();
-  return dir.scaleInPlace(1 / len);
+  const len = vec3Length(dir);
+  if (len < 0.0001) return vec3Zero();
+  return vec3ScaleInPlace(dir, 1 / len);
 }
 
-function meleeHitPlayer(player: Entity, damage: number, sourcePos?: Vector3): void {
+function meleeHitPlayer(player: Entity, damage: number, sourcePos?: Vec3): void {
   player.player!.hp -= damage;
   GameState.set({damageFlash: 1.0, screenShake: 10});
   playSound('hurt');
@@ -144,17 +144,17 @@ function meleeHitPlayer(player: Entity, damage: number, sourcePos?: Vector3): vo
 }
 
 function spawnProjectile(
-  origin: Vector3,
-  direction: Vector3,
+  origin: Vec3,
+  direction: Vec3,
   damage: number,
   speed: number,
 ): void {
-  const vel = direction.scale(speed);
+  const vel = vec3Scale(direction, speed);
   world.add({
     id: `eproj-${getGameTime().toFixed(0)}-${rng().toString(36).slice(2, 6)}`,
     type: 'projectile',
-    position: origin.clone(),
-    velocity: new Vector3(vel.x, vel.y, vel.z),
+    position: vec3Clone(origin),
+    velocity: vec3(vel.x, vel.y, vel.z),
     projectile: {
       life: 120,
       damage,
@@ -255,7 +255,7 @@ function postSteeringInfernoGoat(
       const angle = (i - (count - 1) / 2) * spreadAngle;
       const cos = Math.cos(angle);
       const sin = Math.sin(angle);
-      const rotated = new Vector3(
+      const rotated = vec3(
         dir.x * cos - dir.z * sin,
         0,
         dir.x * sin + dir.z * cos,
@@ -273,7 +273,7 @@ function postSteeringInfernoGoat(
       const ringCount = 12;
       for (let i = 0; i < ringCount; i++) {
         const a = (i / ringCount) * Math.PI * 2;
-        const ringDir = new Vector3(Math.cos(a), 0, Math.sin(a));
+        const ringDir = vec3(Math.cos(a), 0, Math.sin(a));
         spawnProjectile(entity.position!, ringDir, Math.ceil(enemy.damage * 0.6), 0.07);
       }
       enemy._fireRingCd = 360;
@@ -331,7 +331,7 @@ function postSteeringVoidGoat(
     world.add({
       id: `voidClone-${getGameTime().toFixed(0)}-${rng().toString(36).slice(2, 6)}`,
       type: 'shadowGoat',
-      position: new Vector3(
+      position: vec3(
         entity.position!.x + ox,
         entity.position!.y,
         entity.position!.z + oz,
@@ -431,7 +431,7 @@ function postSteeringArchGoat(
     for (const angle of angles) {
       const cos = Math.cos(angle);
       const sin = Math.sin(angle);
-      const rotated = new Vector3(
+      const rotated = vec3(
         baseDir.x * cos - baseDir.z * sin,
         0,
         baseDir.x * sin + baseDir.z * cos,
@@ -453,7 +453,7 @@ function postSteeringArchGoat(
     world.add({
       id: `archMinion-${getGameTime().toFixed(0)}-${rng().toString(36).slice(2, 6)}`,
       type: minionType,
-      position: new Vector3(
+      position: vec3(
         entity.position!.x + ox,
         entity.position!.y,
         entity.position!.z + oz,
@@ -494,7 +494,7 @@ export function aiSystemUpdate(deltaTime: number): void {
 
     const enemy = entity.enemy;
     const id = entity.id ?? '';
-    const dist = Vector3.Distance(entity.position, playerPos);
+    const dist = vec3Distance(entity.position, playerPos);
 
     // Alert check
     if (!enemy.alert && dist < ALERT_RADIUS) {
@@ -550,7 +550,7 @@ export function aiSystemUpdate(deltaTime: number): void {
     entity.position.x = vehicle.position.x;
     entity.position.z = vehicle.position.z;
 
-    const dist = Vector3.Distance(entity.position, playerPos);
+    const dist = vec3Distance(entity.position, playerPos);
 
     // Type-specific post-steering (attacks, projectiles, abilities)
     switch (entity.type) {

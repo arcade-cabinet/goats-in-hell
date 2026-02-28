@@ -6,7 +6,7 @@ jest.mock('../AudioSystem', () => ({
   playSound: jest.fn(),
 }));
 
-jest.mock('../../ui/BabylonHUD', () => ({
+jest.mock('../../ui/HUDEvents', () => ({
   registerDamageDirection: jest.fn(),
   triggerBloodSplatter: jest.fn(),
   triggerEnvKill: jest.fn(),
@@ -31,11 +31,7 @@ jest.mock('../GameClock', () => {
   };
 });
 
-jest.mock('../../rendering/Particles', () => ({
-  createExplosionBurst: jest.fn(),
-}));
-
-import {Vector3} from '@babylonjs/core';
+import {vec3 as Vector3} from '../../entities/vec3';
 import type {Entity} from '../../entities/components';
 import {world} from '../../entities/world';
 import {
@@ -54,7 +50,7 @@ function makePlayer(x = 0, z = 0, hp = 100): Entity {
   const player: Entity = {
     id: 'player',
     type: 'player',
-    position: new Vector3(x, 1, z),
+    position: Vector3(x, 1, z),
     player: {
       hp,
       maxHp: 100,
@@ -86,8 +82,8 @@ describe('damageBarrel', () => {
     const barrel: Entity = {
       id: 'barrel-1',
       type: 'hazard_barrel',
-      position: new Vector3(5, 0, 5),
-      hazard: {hazardType: 'barrel', damage: 20, hp: 30},
+      position: Vector3(5, 0, 5),
+      hazard: {hazardType: 'barrel', damage: 20, cooldown: 0, hp: 30},
     };
     damageBarrel(barrel, 10);
     expect(barrel.hazard!.hp).toBe(20);
@@ -97,8 +93,8 @@ describe('damageBarrel', () => {
     const spike: Entity = {
       id: 'spike-1',
       type: 'hazard_spikes',
-      position: new Vector3(5, 0, 5),
-      hazard: {hazardType: 'spikes', damage: 10},
+      position: Vector3(5, 0, 5),
+      hazard: {hazardType: 'spikes', damage: 10, cooldown: 0},
     };
     damageBarrel(spike, 10);
     // No crash, no change
@@ -109,8 +105,8 @@ describe('damageBarrel', () => {
     const barrel: Entity = {
       id: 'barrel-nohp',
       type: 'hazard_barrel',
-      position: new Vector3(5, 0, 5),
-      hazard: {hazardType: 'barrel', damage: 20},
+      position: Vector3(5, 0, 5),
+      hazard: {hazardType: 'barrel', damage: 20, cooldown: 0},
     };
     damageBarrel(barrel, 10);
     expect(barrel.hazard!.hp).toBeUndefined();
@@ -123,8 +119,8 @@ describe('hazardSystemUpdate — spikes', () => {
     const spike: Entity = {
       id: 'spike-1',
       type: 'hazard_spikes',
-      position: new Vector3(1, 0, 1), // same spot as player
-      hazard: {hazardType: 'spikes', damage: 15},
+      position: Vector3(1, 0, 1), // same spot as player
+      hazard: {hazardType: 'spikes', damage: 15, cooldown: 0},
     };
     world.add(spike);
 
@@ -140,8 +136,8 @@ describe('hazardSystemUpdate — spikes', () => {
     const spike: Entity = {
       id: 'spike-2',
       type: 'hazard_spikes',
-      position: new Vector3(1, 0, 1),
-      hazard: {hazardType: 'spikes', damage: 10},
+      position: Vector3(1, 0, 1),
+      hazard: {hazardType: 'spikes', damage: 10, cooldown: 0},
     };
     world.add(spike);
 
@@ -163,8 +159,8 @@ describe('hazardSystemUpdate — spikes', () => {
     const spike: Entity = {
       id: 'spike-far',
       type: 'hazard_spikes',
-      position: new Vector3(10, 0, 10),
-      hazard: {hazardType: 'spikes', damage: 10},
+      position: Vector3(10, 0, 10),
+      hazard: {hazardType: 'spikes', damage: 10, cooldown: 0},
     };
     world.add(spike);
 
@@ -180,8 +176,8 @@ describe('hazardSystemUpdate — barrel explosion', () => {
     const barrel: Entity = {
       id: 'barrel-boom',
       type: 'hazard_barrel',
-      position: new Vector3(5, 0, 5),
-      hazard: {hazardType: 'barrel', damage: 30, hp: -1},
+      position: Vector3(5, 0, 5),
+      hazard: {hazardType: 'barrel', damage: 30, cooldown: 0, hp: -1},
     };
     world.add(barrel);
 
@@ -196,13 +192,13 @@ describe('hazardSystemUpdate — barrel explosion', () => {
     const barrel: Entity = {
       id: 'barrel-aoe',
       type: 'hazard_barrel',
-      position: new Vector3(5, 0, 5),
-      hazard: {hazardType: 'barrel', damage: 20, hp: 0},
+      position: Vector3(5, 0, 5),
+      hazard: {hazardType: 'barrel', damage: 20, cooldown: 0, hp: 0},
     };
     const enemy: Entity = {
       id: 'enemy-near',
       type: 'goat',
-      position: new Vector3(6, 0, 5), // 1 unit away
+      position: Vector3(6, 0, 5), // 1 unit away
       enemy: {hp: 50, maxHp: 50, damage: 5, speed: 1, attackRange: 2, alert: false, attackCooldown: 0, scoreValue: 100},
     };
     world.add(barrel);
@@ -219,14 +215,14 @@ describe('hazardSystemUpdate — barrel explosion', () => {
     const barrel1: Entity = {
       id: 'barrel-chain-1',
       type: 'hazard_barrel',
-      position: new Vector3(5, 0, 5),
-      hazard: {hazardType: 'barrel', damage: 20, hp: 0},
+      position: Vector3(5, 0, 5),
+      hazard: {hazardType: 'barrel', damage: 20, cooldown: 0, hp: 0},
     };
     const barrel2: Entity = {
       id: 'barrel-chain-2',
       type: 'hazard_barrel',
-      position: new Vector3(7, 0, 5), // 2 units away, within blast radius
-      hazard: {hazardType: 'barrel', damage: 20, hp: 30},
+      position: Vector3(7, 0, 5), // 2 units away, within blast radius
+      hazard: {hazardType: 'barrel', damage: 20, cooldown: 0, hp: 30},
     };
     world.add(barrel1);
     world.add(barrel2);

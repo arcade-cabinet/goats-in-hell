@@ -20,7 +20,7 @@ jest.mock('../../levels/LevelGenerator', () => ({
   WALL_HEIGHT: 3,
 }));
 
-import {Vector3} from '@babylonjs/core';
+import {vec3 as Vector3} from '../../entities/vec3';
 import {world} from '../../entities/world';
 import {
   resetWaveSystem,
