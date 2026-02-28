@@ -167,27 +167,36 @@ function scheduleNoise(
 function playGoatDie(ctx: AudioContext): void {
   const t = ctx.currentTime;
   const dest = getOutput(ctx);
-  scheduleOsc(ctx, 'sawtooth', 400, 60, 0.4, 0.35, dest, t);
+  // Randomize pitch and duration for variety
+  const pitchVar = 320 + useGameStore.getState().rng() * 200; // 320-520 Hz
+  const endPitch = 40 + useGameStore.getState().rng() * 40; // 40-80 Hz
+  const dur = 0.3 + useGameStore.getState().rng() * 0.15; // 0.3-0.45s
+  scheduleOsc(ctx, 'sawtooth', pitchVar, endPitch, 0.4, dur, dest, t);
 }
 
 function playGoatAlert(ctx: AudioContext): void {
   const t = ctx.currentTime;
   const dest = getOutput(ctx);
+  const rngFn = useGameStore.getState().rng;
+  const basePitch = 160 + rngFn() * 100; // 160-260 Hz
+  const peakPitch = basePitch + 100 + rngFn() * 100; // +100-200 Hz
+  const dur = 0.25 + rngFn() * 0.1;
+
   const osc = ctx.createOscillator();
   osc.type = 'sawtooth';
-  osc.frequency.setValueAtTime(200, t);
-  osc.frequency.linearRampToValueAtTime(350, t + 0.15);
-  osc.frequency.linearRampToValueAtTime(200, t + 0.3);
+  osc.frequency.setValueAtTime(basePitch, t);
+  osc.frequency.linearRampToValueAtTime(peakPitch, t + dur * 0.5);
+  osc.frequency.linearRampToValueAtTime(basePitch, t + dur);
 
   const gainNode = ctx.createGain();
   gainNode.gain.setValueAtTime(0.25, t);
-  gainNode.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+  gainNode.gain.exponentialRampToValueAtTime(0.001, t + dur);
 
   osc.connect(gainNode);
   gainNode.connect(dest);
 
   osc.start(t);
-  osc.stop(t + 0.3);
+  osc.stop(t + dur);
 }
 
 function playPickup(ctx: AudioContext): void {

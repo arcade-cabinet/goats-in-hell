@@ -978,6 +978,15 @@ export class BabylonHUD {
     this.crosshairDot.background = color;
     this.crosshairDot.width = hit ? '4px' : '2px';
     this.crosshairDot.height = hit ? '4px' : '2px';
+
+    // Crosshair spread on hit — arms push outward then snap back
+    const spread = hit ? hitMarker * 8 : 0; // hitMarker decays 1→0
+    const baseGap = 5;
+    const baseLen = 14;
+    this.crosshairTop.top = -(baseGap + baseLen / 2 + spread);
+    this.crosshairBottom.top = baseGap + baseLen / 2 + spread;
+    this.crosshairLeft.left = -(baseGap + baseLen / 2 + spread);
+    this.crosshairRight.left = baseGap + baseLen / 2 + spread;
   }
 
   private updateFloorInfo(state: ReturnType<typeof useGameStore.getState>): void {
