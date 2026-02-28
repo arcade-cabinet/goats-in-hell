@@ -91,6 +91,14 @@ const SWITCH_LOWER_SPEED = 0.08; // frames to lower (0→1)
 const SWITCH_RAISE_SPEED = 0.06; // frames to raise (1→0)
 const SWITCH_DROP_DIST = 0.35; // how far below screen to drop
 
+// Look momentum sway — weapon lags behind mouse movement
+const LOOK_SWAY_STRENGTH = 0.15; // how much mouse velocity offsets weapon
+const LOOK_SWAY_DECAY = 0.85;     // spring return speed
+
+// Weapon inspect — idle fidget after not shooting
+const INSPECT_DELAY = 300; // frames (~5s) before inspect starts
+const INSPECT_CYCLE = 240; // frames per inspect cycle
+
 // Landing dip
 const LANDING_DIP_DECAY = 0.88;
 
@@ -188,6 +196,16 @@ export class WeaponViewModel {
   private lastPlayerPos = Vector3.Zero();
   private lastFireTime = 0;
 
+  // Look momentum sway
+  private lookSwayX = 0; // current horizontal sway offset
+  private lookSwayY = 0; // current vertical sway offset
+  private lastCamRotX = 0; // camera pitch last frame
+  private lastCamRotY = 0; // camera yaw last frame
+
+  // Weapon inspect animation
+  private idleFrames = 0; // frames since last fire/reload
+  private inspectPhase = 0;
+
   // Weapon switch animation
   private switchState: 'idle' | 'lowering' | 'raising' = 'idle';
   private switchProgress = 0; // 0 = fully up, 1 = fully lowered
@@ -268,6 +286,25 @@ export class WeaponViewModel {
       }
     }
 
+    // Look momentum sway — weapon offsets opposite to mouse movement
+    if (this.camera) {
+      const dRotX = this.camera.rotation.x - this.lastCamRotX;
+      const dRotY = this.camera.rotation.y - this.lastCamRotY;
+      // Only apply if delta is small (avoid huge jumps from teleports/resets)
+      if (Math.abs(dRotX) < 0.2 && Math.abs(dRotY) < 0.2) {
+        this.lookSwayX -= dRotY * LOOK_SWAY_STRENGTH;
+        this.lookSwayY -= dRotX * LOOK_SWAY_STRENGTH;
+      }
+      this.lastCamRotX = this.camera.rotation.x;
+      this.lastCamRotY = this.camera.rotation.y;
+    }
+    // Spring return to center
+    this.lookSwayX *= LOOK_SWAY_DECAY;
+    this.lookSwayY *= LOOK_SWAY_DECAY;
+    // Clamp to prevent extreme offsets
+    this.lookSwayX = Math.max(-0.04, Math.min(0.04, this.lookSwayX));
+    this.lookSwayY = Math.max(-0.03, Math.min(0.03, this.lookSwayY));
+
     // Per-weapon recoil kick
     const gunFlash = useGameStore.getState().gunFlash ?? 0;
     const recoil = this.currentWeapon
@@ -279,6 +316,7 @@ export class WeaponViewModel {
       const rng = useGameStore.getState().rng;
       this.kickSideOffset = (rng() - 0.5) * 2 * recoil.kickSide;
       this.lastFireTime = getGameTime();
+      this.idleFrames = 0; // reset inspect timer on fire
       // Screen shake for heavy weapons
       if (recoil.shake > 0) {
         GameState.set({screenShake: Math.max(GameState.get().screenShake, recoil.shake)});
@@ -294,19 +332,43 @@ export class WeaponViewModel {
     // Landing dip — decays each frame
     landingDipAmount *= LANDING_DIP_DECAY;
 
+    // Weapon inspect — idle fidget after not shooting for a while
+    if (!player.player.isReloading && this.switchState === 'idle') {
+      this.idleFrames++;
+    } else {
+      this.idleFrames = 0;
+    }
+
+    let inspectRotX = 0;
+    let inspectRotY = 0;
+    let inspectRotZ = 0;
+    if (this.idleFrames > INSPECT_DELAY) {
+      this.inspectPhase += 1;
+      const t = this.inspectPhase / INSPECT_CYCLE;
+      // Blend in over 30 frames
+      const blend = Math.min(1, (this.idleFrames - INSPECT_DELAY) / 30);
+      // Gentle tilting and rotation
+      inspectRotX = Math.sin(t * Math.PI * 2) * 0.08 * blend;
+      inspectRotY = Math.sin(t * Math.PI * 2 * 0.7) * 0.06 * blend;
+      inspectRotZ = Math.cos(t * Math.PI * 2 * 1.3) * 0.04 * blend;
+    } else {
+      this.inspectPhase = 0;
+    }
+
     // Smooth ease-in-out curve for switch animation
     const switchY = -this.switchProgress * this.switchProgress * SWITCH_DROP_DIST;
 
-    this.root.position.x = BASE_POS.x + bobX + swayX + this.kickSideOffset;
-    this.root.position.y = BASE_POS.y + bobY + jumpBob + this.kickOffset + swayY + switchY - landingDipAmount;
+    this.root.position.x = BASE_POS.x + bobX + swayX + this.kickSideOffset + this.lookSwayX;
+    this.root.position.y = BASE_POS.y + bobY + jumpBob + this.kickOffset + swayY + switchY - landingDipAmount + this.lookSwayY;
     this.root.position.z = BASE_POS.z - this.kickOffset * recoil.kickBack;
 
     if (player.player.isReloading) {
       this.root.rotation.x = 0.5;
     } else {
-      this.root.rotation.x = -this.kickOffset * recoil.kickRot;
+      this.root.rotation.x = -this.kickOffset * recoil.kickRot + inspectRotX;
     }
-    this.root.rotation.z = swayRot + this.strafeTilt;
+    this.root.rotation.y = inspectRotY;
+    this.root.rotation.z = swayRot + this.strafeTilt + inspectRotZ;
   }
 
   private updateSwitchAnimation(): void {

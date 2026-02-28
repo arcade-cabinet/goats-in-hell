@@ -1219,6 +1219,7 @@ export class BabylonHUD {
           case 6: ctx.fillStyle = '#ff4400'; break; // lava floor hazard
           case 7: ctx.fillStyle = '#556677'; break; // raised platform
           case 8: ctx.fillStyle = '#667755'; break; // ramp
+          case 10: ctx.fillStyle = '#220044'; break; // void pit
           case 9: { // secret wall — subtle shimmer hint
             const shimmer = Math.sin(Date.now() * 0.005) * 0.3 + 0.7;
             const g = Math.floor(40 * shimmer);

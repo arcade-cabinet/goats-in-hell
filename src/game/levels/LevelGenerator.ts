@@ -22,6 +22,7 @@ export enum MapCell {
   FLOOR_RAISED = 7,    // Elevated platform floor
   RAMP = 8,            // Connects ground to raised platform
   WALL_SECRET = 9,     // Looks like normal wall but can be opened
+  FLOOR_VOID = 10,     // Void pit — instant death for anything that falls in
 }
 
 export type SpawnData = {x: number; z: number; type: string; weaponId?: string; rotation?: number; elevation?: number};
@@ -192,6 +193,9 @@ export class LevelGenerator {
 
     // Place secret treasure rooms
     this.placeSecretRooms(playerCellX, playerCellZ);
+
+    // Place void pits (theVoid biome only)
+    this.placeVoidPits(playerCellX, playerCellZ);
   }
 
   // ---------------------------------------------------------------------------
@@ -701,7 +705,8 @@ export class LevelGenerator {
       cell === MapCell.DOOR ||
       cell === MapCell.FLOOR_LAVA ||
       cell === MapCell.FLOOR_RAISED ||
-      cell === MapCell.RAMP;
+      cell === MapCell.RAMP ||
+      cell === MapCell.FLOOR_VOID;
   }
 
   /**
@@ -913,6 +918,46 @@ export class LevelGenerator {
       }
 
       placed++;
+    }
+  }
+
+  /**
+   * Place void pits in theVoid biome. Pits are 1x1 empty floor cells
+   * that act as instant kill zones. Only placed in open room cells
+   * far from the player and corridors.
+   */
+  private placeVoidPits(playerCellX: number, playerCellZ: number) {
+    if (this.theme.name !== 'theVoid') return;
+
+    const pitChance = 0.04 + this.floor * 0.002; // increases with floor
+
+    for (let z = 3; z < this.depth - 3; z++) {
+      for (let x = 3; x < this.width - 3; x++) {
+        if (this.grid[z][x] !== MapCell.EMPTY) continue;
+
+        const distFromSpawn = Math.abs(x - playerCellX) + Math.abs(z - playerCellZ);
+        if (distFromSpawn < 8) continue;
+
+        // Only place in open areas (0-1 wall neighbors) to avoid blocking corridors
+        const wallNeighbors =
+          (this.isWall(x - 1, z) ? 1 : 0) +
+          (this.isWall(x + 1, z) ? 1 : 0) +
+          (this.isWall(x, z - 1) ? 1 : 0) +
+          (this.isWall(x, z + 1) ? 1 : 0);
+        if (wallNeighbors > 1) continue;
+
+        // Don't place adjacent to other void pits (prevents impassable clusters)
+        const hasAdjacentPit =
+          (this.inBounds(x - 1, z) && this.grid[z][x - 1] === MapCell.FLOOR_VOID) ||
+          (this.inBounds(x + 1, z) && this.grid[z][x + 1] === MapCell.FLOOR_VOID) ||
+          (this.inBounds(x, z - 1) && this.grid[z - 1][x] === MapCell.FLOOR_VOID) ||
+          (this.inBounds(x, z + 1) && this.grid[z + 1][x] === MapCell.FLOOR_VOID);
+        if (hasAdjacentPit) continue;
+
+        if (rng() < pitChance) {
+          this.grid[z][x] = MapCell.FLOOR_VOID;
+        }
+      }
     }
   }
 

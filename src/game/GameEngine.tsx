@@ -791,6 +791,34 @@ export function GameEngine() {
         }
       }
 
+      // 8b2. Void pit instant kill
+      if (!inGracePeriod && player.player && player.position) {
+        const cellX = Math.round(player.position.x / CELL_SIZE);
+        const cellZ = Math.round(player.position.z / CELL_SIZE);
+        if (
+          cellX >= 0 && cellX < levelData.width &&
+          cellZ >= 0 && cellZ < levelData.depth &&
+          levelData.grid[cellZ]?.[cellX] === MapCell.FLOOR_VOID
+        ) {
+          player.player.hp = 0; // instant death
+          GameState.set({damageFlash: 1.0, screenShake: 15});
+        }
+
+        // Void pits also kill enemies that walk over them
+        for (const enemy of world.entities) {
+          if (!enemy.enemy || !enemy.position) continue;
+          const ex = Math.round(enemy.position.x / CELL_SIZE);
+          const ez = Math.round(enemy.position.z / CELL_SIZE);
+          if (
+            ex >= 0 && ex < levelData.width &&
+            ez >= 0 && ez < levelData.depth &&
+            levelData.grid[ez]?.[ex] === MapCell.FLOOR_VOID
+          ) {
+            enemy.enemy.hp = 0;
+          }
+        }
+      }
+
       // 8c. Footstep audio tied to player movement
       if (player.position) {
         const dist = Vector3.Distance(player.position, lastFootstepPos.current);
@@ -972,6 +1000,26 @@ export function GameEngine() {
           platform.checkCollisions = true;
           platform.material = materials.obsidian;
           created.push(platform);
+          continue;
+        }
+
+        // Void pit: dark transparent opening in the floor
+        if (cell === MapCell.FLOOR_VOID) {
+          const voidPit = MeshBuilder.CreateBox(
+            `void-${x}-${z}`,
+            {width: CELL_SIZE, height: 0.05, depth: CELL_SIZE},
+            scene,
+          );
+          voidPit.position = new Vector3(x * CELL_SIZE, -0.02, z * CELL_SIZE);
+          voidPit.receiveShadows = false;
+          voidPit.isPickable = false;
+          // Dark purple void material
+          const voidMat = new StandardMaterial(`voidMat-${x}-${z}`, scene);
+          voidMat.diffuseColor = new Color3(0.05, 0, 0.1);
+          voidMat.emissiveColor = new Color3(0.15, 0, 0.25);
+          voidMat.alpha = 0.6;
+          voidPit.material = voidMat;
+          created.push(voidPit);
           continue;
         }
 
