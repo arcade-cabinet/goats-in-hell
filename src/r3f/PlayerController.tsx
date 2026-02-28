@@ -32,7 +32,12 @@ const _right = new THREE.Vector3();
 const _moveDir = new THREE.Vector3();
 const _yAxis = new THREE.Vector3(0, 1, 0);
 
-export function PlayerController() {
+interface PlayerControllerProps {
+  /** Spawn position in Three.js world coordinates (Z already negated). */
+  spawnPosition?: [number, number, number];
+}
+
+export function PlayerController({ spawnPosition = [0, PLAYER_HEIGHT, 0] }: PlayerControllerProps) {
   const { camera, gl } = useThree();
   const { world: rapierWorld } = useRapier();
   const rigidBodyRef = useRef<RapierRigidBody>(null);
@@ -44,6 +49,24 @@ export function PlayerController() {
   const characterControllerRef = useRef<ReturnType<
     typeof rapierWorld.createCharacterController
   > | null>(null);
+
+  // Teleport player to spawn position when it changes (floor transitions)
+  useEffect(() => {
+    const rb = rigidBodyRef.current;
+    if (rb) {
+      rb.setNextKinematicTranslation({
+        x: spawnPosition[0],
+        y: spawnPosition[1],
+        z: spawnPosition[2],
+      });
+    }
+    // Also reset camera and look direction
+    camera.position.set(spawnPosition[0], spawnPosition[1] + PLAYER_HEIGHT * 0.5, spawnPosition[2]);
+    yawRef.current = 0;
+    pitchRef.current = 0;
+    jumpVelocityRef.current = 0;
+    isGroundedRef.current = true;
+  }, [spawnPosition, camera]);
 
   // Create Rapier character controller once
   useEffect(() => {
@@ -178,7 +201,7 @@ export function PlayerController() {
       ref={rigidBodyRef}
       type="kinematicPosition"
       colliders={false}
-      position={[0, PLAYER_HEIGHT, 0]}
+      position={spawnPosition}
     >
       <CapsuleCollider args={[PLAYER_HEIGHT * 0.4, PLAYER_RADIUS]} />
     </RigidBody>
