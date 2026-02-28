@@ -163,13 +163,7 @@ export function PostProcessingEffects(): React.JSX.Element {
 
   return (
     <EffectComposer>
-      <Bloom
-        ref={bloomRef}
-        luminanceThreshold={0.6}
-        luminanceSmoothing={0.3}
-        intensity={0.8}
-        mipmapBlur
-      />
+      <Bloom ref={bloomRef} luminanceThreshold={0.6} luminanceSmoothing={0.3} intensity={0.8} />
       <Vignette
         ref={vignetteRef}
         offset={0.3}
@@ -178,7 +172,7 @@ export function PostProcessingEffects(): React.JSX.Element {
       />
       <ChromaticAberration
         ref={chromaticRef}
-        offset={new Vector2(0, 0)}
+        offset={offsetVec}
         radialModulation={false}
         modulationOffset={0}
       />
