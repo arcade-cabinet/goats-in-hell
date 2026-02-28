@@ -13,6 +13,7 @@ import { useGameStore } from '../../state/GameStore';
 import { playSound } from '../audio/AudioSystem';
 import { spawnDamageNumber } from '../entities/DamageNumbers';
 import { HapticEvent, haptics } from '../input/HapticsService';
+import { triggerDeath } from '../../game/systems/ProgressionSystem';
 import { triggerDamageFlash } from '../rendering/PostProcessing';
 import { createBloodSplash, createDeathBurst } from './ParticleEffects';
 import { triggerScreenShake } from './ScreenShake';
@@ -236,6 +237,9 @@ export function damagePlayer(damage: number): boolean {
 
   if (!player || !player.player) return false;
 
+  // Death guard — prevent ghost damage after player is already dead
+  if (player.player.hp <= 0) return true;
+
   player.player.hp -= damage;
 
   // Audio feedback
@@ -257,9 +261,9 @@ export function damagePlayer(damage: number): boolean {
   if (player.player.hp <= 0) {
     player.player.hp = 0;
 
-    // Trigger death — set game screen to dead
+    // Trigger death — handles screen transition + permadeath save deletion
     playSound('death_sting');
-    useGameStore.getState().patch({ screen: 'dead' });
+    triggerDeath();
 
     return true;
   }
@@ -372,27 +376,8 @@ function checkEnemyProjectileCollision(projectile: Entity, player: Entity): bool
   const dist = distanceBetween(projectile.position!, player.position);
 
   if (dist < 1.5) {
-    const rawDmg = projectile.projectile!.damage;
-    player.player.hp -= rawDmg;
-
-    // Visual feedback
-    triggerDamageFlash();
-    const store = useGameStore.getState();
-    store.patch({
-      damageFlash: rawDmg > 0 ? 0.8 : 0.2,
-      screenShake: rawDmg > 0 ? 8 : 3,
-    });
-
-    playSound('hurt');
-    haptics.trigger(HapticEvent.DamageTaken);
-
-    // Check for death
-    if (player.player.hp <= 0) {
-      player.player.hp = 0;
-      playSound('death_sting');
-      store.patch({ screen: 'dead' });
-    }
-
+    // Route through centralized damagePlayer() for death guard + permadeath
+    damagePlayer(projectile.projectile!.damage);
     return true;
   }
 

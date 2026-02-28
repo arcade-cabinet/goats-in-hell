@@ -51,6 +51,7 @@ let musicGain: GainNode | null = null;
 let currentTrack: MusicTrack | null = null;
 let activeSource: AudioBufferSourceNode | null = null;
 let bufferMap: Map<MusicAssetKey, AudioBuffer> | null = null;
+let pendingStopTimeout: ReturnType<typeof setTimeout> | null = null;
 
 const MUSIC_VOLUME = 0.12;
 const FADE_MS = 300;
@@ -107,50 +108,67 @@ export function playTrack(track: MusicTrack): void {
   if (track === currentTrack) return;
   stopMusic();
 
-  if (!ctx) initMusic();
-  const c = ctx!;
-  if (c.state === 'suspended') c.resume();
+  try {
+    if (!ctx) initMusic();
+    const c = ctx!;
+    if (c.state === 'suspended') c.resume();
 
-  if (!bufferMap) return;
-  const assetKey = TRACK_TO_ASSET[track];
-  const buffer = bufferMap.get(assetKey);
-  if (!buffer) return;
+    if (!bufferMap) return;
+    const assetKey = TRACK_TO_ASSET[track];
+    const buffer = bufferMap.get(assetKey);
+    if (!buffer) return;
 
-  // Set currentTrack only after confirming we can actually play
-  currentTrack = track;
+    // Set currentTrack only after confirming we can actually play
+    currentTrack = track;
 
-  const source = c.createBufferSource();
-  source.buffer = buffer;
-  source.loop = true;
-  source.connect(musicGain!);
-  source.start();
-  activeSource = source;
+    const source = c.createBufferSource();
+    source.buffer = buffer;
+    source.loop = true;
+    source.connect(musicGain!);
+    source.start();
+    activeSource = source;
+  } catch (err) {
+    console.warn('[MusicSystem] playTrack error:', err);
+  }
 }
 
 export function stopMusic(): void {
-  if (activeSource && ctx && musicGain) {
-    const c = ctx;
-    const fadeEnd = c.currentTime + FADE_MS / 1000;
-    musicGain.gain.setValueAtTime(musicGain.gain.value, c.currentTime);
-    musicGain.gain.linearRampToValueAtTime(0, fadeEnd);
+  // Cancel any pending cleanup from a previous stop
+  if (pendingStopTimeout !== null) {
+    clearTimeout(pendingStopTimeout);
+    pendingStopTimeout = null;
+  }
 
-    const src = activeSource;
-    setTimeout(() => {
-      try {
-        src.stop();
-      } catch {
-        /* already stopped */
-      }
-      try {
-        src.disconnect();
-      } catch {
-        /* ignore */
-      }
-      if (musicGain) {
-        musicGain.gain.cancelScheduledValues(0);
-        musicGain.gain.value = MUSIC_VOLUME;
-      }
-    }, FADE_MS + 50);
+  if (activeSource && ctx && musicGain) {
+    try {
+      const c = ctx;
+      const fadeEnd = c.currentTime + FADE_MS / 1000;
+      musicGain.gain.setValueAtTime(musicGain.gain.value, c.currentTime);
+      musicGain.gain.linearRampToValueAtTime(0, fadeEnd);
+
+      const src = activeSource;
+      const gain = musicGain;
+      pendingStopTimeout = setTimeout(() => {
+        pendingStopTimeout = null;
+        try {
+          src.stop();
+        } catch {
+          /* already stopped */
+        }
+        try {
+          src.disconnect();
+        } catch {
+          /* ignore */
+        }
+        // Only reset gain if it's still our gain node (not disposed)
+        if (gain) {
+          gain.gain.cancelScheduledValues(0);
+          gain.gain.value = MUSIC_VOLUME;
+        }
+      }, FADE_MS + 50);
+    } catch (err) {
+      console.warn('[MusicSystem] stopMusic error:', err);
+    }
   }
   activeSource = null;
   currentTrack = null;
@@ -242,12 +260,18 @@ export async function loadAllMusic(
 
   const map = new Map<MusicAssetKey, AudioBuffer>();
   const entries = Object.entries(MUSIC_ASSETS) as [MusicAssetKey, number][];
-  await Promise.all(
+  const results = await Promise.allSettled(
     entries.map(async ([key, moduleId]) => {
       const buffer = await loadAudioBuffer(moduleId, audioCtx);
       map.set(key, buffer);
     }),
   );
+  // Log any individual track failures without killing the whole load
+  for (let i = 0; i < results.length; i++) {
+    if (results[i].status === 'rejected') {
+      console.warn(`[MusicSystem] Failed to load track "${entries[i][0]}":`, (results[i] as PromiseRejectedResult).reason);
+    }
+  }
   return map;
 }
 

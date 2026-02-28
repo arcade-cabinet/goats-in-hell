@@ -35,6 +35,7 @@ import {
 import { world } from '../entities/world';
 import { registerDamageDirection } from '../ui/HUDEvents';
 import { playSound } from './AudioSystem';
+import { bridgeDamagePlayer } from './PlayerDamageBridge';
 import { getGameTime } from './GameClock';
 import { spawnEnemyProjectile } from './EnemyProjectileBridge';
 import { trackEnemySpawn } from './ProgressionSystem';
@@ -147,10 +148,9 @@ function directionTo(from: Vec3, to: Vec3): Vec3 {
   return vec3ScaleInPlace(dir, 1 / len);
 }
 
-function meleeHitPlayer(player: Entity, damage: number, sourcePos?: Vec3): void {
-  player.player!.hp -= damage;
-  GameState.set({ damageFlash: 1.0, screenShake: 10 });
-  playSound('hurt');
+function meleeHitPlayer(_player: Entity, damage: number, sourcePos?: Vec3): void {
+  // Route through centralized damage pipeline for death guard + permadeath
+  bridgeDamagePlayer(damage);
   if (sourcePos) registerDamageDirection(sourcePos);
 }
 
