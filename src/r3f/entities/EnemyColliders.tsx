@@ -14,17 +14,24 @@
  *   - radius: 0.4
  */
 
-import React, {useState, useRef, useCallback} from 'react';
-import {useFrame} from '@react-three/fiber';
-import {RigidBody, CapsuleCollider} from '@react-three/rapier';
-import type {RapierRigidBody} from '@react-three/rapier';
-import {world} from '../../game/entities/world';
-import type {EntityType} from '../../game/entities/components';
+import { useFrame } from '@react-three/fiber';
+import type { RapierRigidBody } from '@react-three/rapier';
+import { CapsuleCollider, RigidBody } from '@react-three/rapier';
+import { useCallback, useRef, useState } from 'react';
+import type { EntityType } from '../../game/entities/components';
+import { world } from '../../game/entities/world';
 
 // Enemy entity types that should have colliders
 const ENEMY_TYPES = new Set<EntityType>([
-  'goat', 'hellgoat', 'fireGoat', 'shadowGoat', 'goatKnight',
-  'archGoat', 'infernoGoat', 'voidGoat', 'ironGoat',
+  'goat',
+  'hellgoat',
+  'fireGoat',
+  'shadowGoat',
+  'goatKnight',
+  'archGoat',
+  'infernoGoat',
+  'voidGoat',
+  'ironGoat',
 ]);
 
 // Capsule dimensions matching Havok colliders
@@ -54,7 +61,7 @@ export function EnemyColliders() {
       if (!entity.enemy || !entity.id || !entity.type) continue;
       if (!ENEMY_TYPES.has(entity.type)) continue;
       currentIds.add(entity.id);
-      currentEnemies.push({id: entity.id, type: entity.type});
+      currentEnemies.push({ id: entity.id, type: entity.type });
     }
 
     // Only update React state if the set of IDs changed
@@ -78,7 +85,7 @@ export function EnemyColliders() {
  * Individual enemy rigid body — kinematic position type.
  * Syncs position from ECS entity each frame.
  */
-function EnemyRigidBody({enemyId}: {enemyId: string}) {
+function EnemyRigidBody({ enemyId }: { enemyId: string }) {
   const rigidBodyRef = useRef<RapierRigidBody>(null);
 
   useFrame(() => {
@@ -119,7 +126,7 @@ function EnemyRigidBody({enemyId}: {enemyId: string}) {
       type="kinematicPosition"
       colliders={false}
       position={initialPos}
-      userData={{entityId: enemyId}}
+      userData={{ entityId: enemyId }}
       name={`collider-enemy-${enemyId}`}
     >
       <CapsuleCollider args={[CAPSULE_HALF_HEIGHT, CAPSULE_RADIUS]} />

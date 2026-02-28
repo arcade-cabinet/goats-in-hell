@@ -14,9 +14,9 @@
  *   with keyboard/mouse and gamepad providers.
  */
 
-import type {InputFrame} from '../InputActions';
-import type {IInputProvider} from '../InputManager';
-import type {AIGovernor, AIOutputFrame} from '../../../game/systems/AIGovernor';
+import type { AIGovernor, AIOutputFrame } from '../../../game/systems/AIGovernor';
+import type { InputFrame } from '../InputActions';
+import type { IInputProvider } from '../InputManager';
 
 /** Shortest-path angular difference (result in [-PI, PI]). */
 function angleDelta(from: number, to: number): number {
@@ -107,6 +107,6 @@ export class AIProvider implements IInputProvider {
   dispose(): void {
     this.governor.dispose();
     // Clear reference to allow GC
-    (this as unknown as {governor: AIGovernor | null}).governor = null;
+    (this as unknown as { governor: AIGovernor | null }).governor = null;
   }
 }

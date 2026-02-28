@@ -7,7 +7,7 @@
  * Called each frame from the R3F game loop via EnemyRenderer's useFrame.
  */
 import * as THREE from 'three';
-import {world} from '../../game/entities/world';
+import { world } from '../../game/entities/world';
 
 /**
  * Sync ECS enemy entity positions/rotations to their Three.js meshes.

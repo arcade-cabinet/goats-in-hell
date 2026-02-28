@@ -1,11 +1,11 @@
-import type {Entity, EntityType, WeaponId} from '../entities/components';
-import {vec3} from '../entities/vec3';
-import {world} from '../entities/world';
-import {GameState} from '../../state/GameState';
-import {useGameStore, DIFFICULTY_PRESETS} from '../../state/GameStore';
-import {getEnemyStats} from '../entities/enemyStats';
-import {getGameTime} from './GameClock';
-import type {PowerUpType} from './PowerUpSystem';
+import { GameState } from '../../state/GameState';
+import { DIFFICULTY_PRESETS, useGameStore } from '../../state/GameStore';
+import type { Entity, EntityType, WeaponId } from '../entities/components';
+import { getEnemyStats } from '../entities/enemyStats';
+import { vec3 } from '../entities/vec3';
+import { world } from '../entities/world';
+import { getGameTime } from './GameClock';
+import type { PowerUpType } from './PowerUpSystem';
 
 /** Shorthand for the store's seeded PRNG — deterministic per-seed. */
 function rng(): number {
@@ -60,7 +60,6 @@ export function startNextWave(): void {
   totalEnemiesForWave = Math.min(30, 3 + currentWave * 2);
 }
 
-
 // ---------------------------------------------------------------------------
 // Enemy type selection
 // ---------------------------------------------------------------------------
@@ -96,13 +95,14 @@ export function getEnemyTypeForWave(wave: number): EntityType {
 
 function spawnArenaPickups(arenaSize: number): void {
   // Remove uncollected arena pickups from previous wave to prevent entity accumulation
-  const stalePickups = world.entities.filter(e => e.id?.startsWith('arena-pickup-'));
+  const stalePickups = world.entities.filter((e) => e.id?.startsWith('arena-pickup-'));
   for (const p of stalePickups) {
     world.remove(p);
   }
 
   const storeState = useGameStore.getState();
-  const isNightmare = storeState.nightmareFlags.nightmare || storeState.nightmareFlags.ultraNightmare;
+  const isNightmare =
+    storeState.nightmareFlags.nightmare || storeState.nightmareFlags.ultraNightmare;
 
   // Spawn 2-3 ammo pickups
   const ammoCount = 2 + Math.floor(rng() * 2);
@@ -323,7 +323,7 @@ export function waveSystemUpdate(deltaTime: number, arenaSize: number): void {
       const bonusPerKill = Math.floor(50 * (scoreMultiplier - 1));
       const bonus = bonusPerKill * newKills;
       if (bonus > 0) {
-        GameState.set({score: state.score + bonus});
+        GameState.set({ score: state.score + bonus });
       }
     }
 

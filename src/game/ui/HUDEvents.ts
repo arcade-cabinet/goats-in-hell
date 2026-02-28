@@ -6,7 +6,7 @@
  * Zustand/GameState instead, so these are no-ops kept to avoid breaking
  * game-logic imports in AISystem, CombatSystem, HazardSystem.
  */
-import type {Vec3} from '../entities/components';
+import type { Vec3 } from '../entities/components';
 
 /**
  * Register a damage direction for the HUD directional indicator.

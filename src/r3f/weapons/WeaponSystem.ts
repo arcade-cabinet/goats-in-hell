@@ -11,13 +11,13 @@
  */
 
 import * as THREE from 'three';
-import type {Entity, WeaponId} from '../../game/entities/components';
-import {weapons} from '../../game/weapons/weapons';
-import {useGameStore, getLevelBonuses} from '../../state/GameStore';
-import {getGameTime} from '../../game/systems/GameClock';
-import {getDamageMultiplier} from '../../game/systems/PowerUpSystem';
-import type {ProjectilePool} from './ProjectilePool';
-import {PROJECTILE_COLORS} from './ProjectilePool';
+import type { Entity, WeaponId } from '../../game/entities/components';
+import { getGameTime } from '../../game/systems/GameClock';
+import { getDamageMultiplier } from '../../game/systems/PowerUpSystem';
+import { weapons } from '../../game/weapons/weapons';
+import { getLevelBonuses, useGameStore } from '../../state/GameStore';
+import type { ProjectilePool } from './ProjectilePool';
+import { PROJECTILE_COLORS } from './ProjectilePool';
 
 // ---------------------------------------------------------------------------
 // PRNG shorthand
@@ -34,8 +34,8 @@ function rng(): number {
 let shotsFired = 0;
 let shotsHit = 0;
 
-export function getShotStats(): {fired: number; hit: number} {
-  return {fired: shotsFired, hit: shotsHit};
+export function getShotStats(): { fired: number; hit: number } {
+  return { fired: shotsFired, hit: shotsHit };
 }
 
 export function resetShotStats(): void {
@@ -67,8 +67,15 @@ export function resetFireCooldowns(): void {
 // ---------------------------------------------------------------------------
 
 type SoundType =
-  | 'shoot' | 'shotgun' | 'rapid' | 'bigshot'
-  | 'hit' | 'empty' | 'reload' | 'reload_complete' | 'weapon_switch';
+  | 'shoot'
+  | 'shotgun'
+  | 'rapid'
+  | 'bigshot'
+  | 'hit'
+  | 'empty'
+  | 'reload'
+  | 'reload_complete'
+  | 'weapon_switch';
 
 const weaponSoundMap: Record<WeaponId, SoundType> = {
   hellPistol: 'shoot',
@@ -87,10 +94,10 @@ interface WeaponProjectileConfig {
 }
 
 const WEAPON_PROJECTILE_CONFIG: Record<WeaponId, WeaponProjectileConfig> = {
-  hellPistol: {color: PROJECTILE_COLORS.hellPistol, isRocket: false},
-  brimShotgun: {color: PROJECTILE_COLORS.brimShotgun, isRocket: false},
-  hellfireCannon: {color: PROJECTILE_COLORS.hellfireCannon, isRocket: false},
-  goatsBane: {color: PROJECTILE_COLORS.goatsBane, isRocket: true},
+  hellPistol: { color: PROJECTILE_COLORS.hellPistol, isRocket: false },
+  brimShotgun: { color: PROJECTILE_COLORS.brimShotgun, isRocket: false },
+  hellfireCannon: { color: PROJECTILE_COLORS.hellfireCannon, isRocket: false },
+  goatsBane: { color: PROJECTILE_COLORS.goatsBane, isRocket: true },
 };
 
 // ---------------------------------------------------------------------------
@@ -103,7 +110,7 @@ const WEAPON_PROJECTILE_CONFIG: Record<WeaponId, WeaponProjectileConfig> = {
  */
 export function initPlayerAmmo(): Record<
   WeaponId,
-  {current: number; reserve: number; magSize: number}
+  { current: number; reserve: number; magSize: number }
 > {
   return {
     hellPistol: {
@@ -111,9 +118,9 @@ export function initPlayerAmmo(): Record<
       reserve: 48,
       magSize: weapons.hellPistol.magSize,
     },
-    brimShotgun: {current: 0, reserve: 0, magSize: weapons.brimShotgun.magSize},
-    hellfireCannon: {current: 0, reserve: 0, magSize: weapons.hellfireCannon.magSize},
-    goatsBane: {current: 0, reserve: 0, magSize: weapons.goatsBane.magSize},
+    brimShotgun: { current: 0, reserve: 0, magSize: weapons.brimShotgun.magSize },
+    hellfireCannon: { current: 0, reserve: 0, magSize: weapons.hellfireCannon.magSize },
+    goatsBane: { current: 0, reserve: 0, magSize: weapons.goatsBane.magSize },
   };
 }
 
@@ -137,8 +144,8 @@ const _spawnOrigin = new THREE.Vector3();
 export function tryShoot(
   player: Entity,
   pool: ProjectilePool,
-  aimOrigin: {x: number; y: number; z: number} | null,
-  aimDirection: {x: number; y: number; z: number} | null,
+  aimOrigin: { x: number; y: number; z: number } | null,
+  aimDirection: { x: number; y: number; z: number } | null,
   camera: THREE.Camera,
 ): SoundType | null {
   if (!player.player || !player.ammo || !player.position) {
@@ -211,7 +218,7 @@ export function tryShoot(
   }
 
   // Update gun flash effect
-  useGameStore.getState().patch({gunFlash: 6});
+  useGameStore.getState().patch({ gunFlash: 6 });
 
   return weaponSoundMap[weaponId];
 }

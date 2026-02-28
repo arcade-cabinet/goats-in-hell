@@ -22,10 +22,10 @@
  * Registers XR controllers with HapticsService for haptic pulse output.
  */
 
-import type {InputFrame} from '../InputActions';
-import type {IInputProvider} from '../InputManager';
-import {haptics} from '../HapticsService';
-import type {XRStore} from '@react-three/xr';
+import type { XRStore } from '@react-three/xr';
+import { haptics } from '../HapticsService';
+import type { InputFrame } from '../InputActions';
+import type { IInputProvider } from '../InputManager';
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -78,9 +78,11 @@ export class XRControllerProvider implements IInputProvider {
    * Read gamepad component state from @react-three/xr controller state.
    * The XR store exposes inputSourceStates with typed gamepad state.
    */
-  private getControllerGamepad(
-    handedness: 'left' | 'right',
-  ): {gamepad: Gamepad | null; inputSource: XRInputSource | null; object: THREE.Object3D | null} {
+  private getControllerGamepad(handedness: 'left' | 'right'): {
+    gamepad: Gamepad | null;
+    inputSource: XRInputSource | null;
+    object: THREE.Object3D | null;
+  } {
     const state = this.store.getState();
     const inputStates = state.inputSourceStates;
 
@@ -94,7 +96,13 @@ export class XRControllerProvider implements IInputProvider {
       if (!this.registeredInputSources.has(inputState.inputSource)) {
         this.registeredInputSources.add(inputState.inputSource);
         if (gamepad) {
-          haptics.registerXRController({gamepad: gamepad as unknown as {hapticActuators?: Array<{pulse(intensity: number, duration: number): Promise<void>}>}});
+          haptics.registerXRController({
+            gamepad: gamepad as unknown as {
+              hapticActuators?: Array<{
+                pulse(intensity: number, duration: number): Promise<void>;
+              }>;
+            },
+          });
         }
       }
 
@@ -105,7 +113,7 @@ export class XRControllerProvider implements IInputProvider {
       };
     }
 
-    return {gamepad: null, inputSource: null, object: null};
+    return { gamepad: null, inputSource: null, object: null };
   }
 
   // -------------------------------------------------------------------------
@@ -201,12 +209,12 @@ export class XRControllerProvider implements IInputProvider {
     if (right.object) {
       // Get world position of the right controller
       const worldPos = right.object.getWorldPosition(_tempVec3A);
-      result.aimOrigin = {x: worldPos.x, y: worldPos.y, z: worldPos.z};
+      result.aimOrigin = { x: worldPos.x, y: worldPos.y, z: worldPos.z };
 
       // Get forward direction of the right controller (local -Z in Three.js)
       _tempVec3B.set(0, 0, -1);
       _tempVec3B.applyQuaternion(right.object.getWorldQuaternion(_tempQuat));
-      result.aimDirection = {x: _tempVec3B.x, y: _tempVec3B.y, z: _tempVec3B.z};
+      result.aimDirection = { x: _tempVec3B.x, y: _tempVec3B.y, z: _tempVec3B.z };
     }
 
     return result;

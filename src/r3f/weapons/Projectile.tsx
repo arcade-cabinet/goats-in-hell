@@ -11,15 +11,15 @@
  * Exports pool ref for WeaponSystem to call spawn().
  */
 
-import {useEffect, useRef, useCallback} from 'react';
-import {useThree, useFrame} from '@react-three/fiber';
-import {useRapier} from '@react-three/rapier';
-import type {RapierContext} from '@react-three/rapier';
+import { useFrame, useThree } from '@react-three/fiber';
+import type { RapierContext } from '@react-three/rapier';
+import { useRapier } from '@react-three/rapier';
+import { useCallback, useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import {ProjectilePool} from './ProjectilePool';
-import type {ProjectileSlot} from './ProjectilePool';
-import {recordHit} from './WeaponSystem';
-import {world} from '../../game/entities/world';
+import { world } from '../../game/entities/world';
+import type { ProjectileSlot } from './ProjectilePool';
+import { ProjectilePool } from './ProjectilePool';
+import { recordHit } from './WeaponSystem';
 
 // ---------------------------------------------------------------------------
 // Module-level pool reference (accessible from WeaponSystem via getPool())
@@ -36,11 +36,7 @@ export function getProjectilePool(): ProjectilePool | null {
 // Collision callback type
 // ---------------------------------------------------------------------------
 
-export type DamageEnemyFn = (
-  entityId: string,
-  damage: number,
-  isAoe?: boolean,
-) => void;
+export type DamageEnemyFn = (entityId: string, damage: number, isAoe?: boolean) => void;
 
 // Module-level damage callback — set by the parent game scene
 let damageEnemyCallback: DamageEnemyFn | null = null;
@@ -66,8 +62,8 @@ const _enemyPos = new THREE.Vector3();
 // ---------------------------------------------------------------------------
 
 export function ProjectileManager() {
-  const {scene} = useThree();
-  const {world: rapierWorld, rapier} = useRapier();
+  const { scene } = useThree();
+  const { world: rapierWorld, rapier } = useRapier();
   const poolRef = useRef<ProjectilePool | null>(null);
 
   // Create pool on mount
@@ -136,8 +132,8 @@ function checkProjectileCollision(
 
   // Construct a proper Rapier Ray instance
   const ray = new rapier.Ray(
-    {x: _rayOrigin.x, y: _rayOrigin.y, z: _rayOrigin.z},
-    {x: _rayDir.x, y: _rayDir.y, z: _rayDir.z},
+    { x: _rayOrigin.x, y: _rayOrigin.y, z: _rayOrigin.z },
+    { x: _rayDir.x, y: _rayDir.y, z: _rayDir.z },
   );
 
   const hit = rapierWorld.castRay(ray, rayLength, true);
@@ -152,12 +148,12 @@ function checkProjectileCollision(
     return;
   }
 
-  const userData = parentBody.userData as {entityId?: string} | undefined;
+  const userData = parentBody.userData as { entityId?: string } | undefined;
   const entityId = userData?.entityId;
 
   if (entityId && slot.owner === 'player') {
     // Check if this is an enemy entity
-    const entity = world.entities.find(e => e.id === entityId && e.enemy);
+    const entity = world.entities.find((e) => e.id === entityId && e.enemy);
     if (entity) {
       // Direct hit on enemy
       if (damageEnemyCallback) {

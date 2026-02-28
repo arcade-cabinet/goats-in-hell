@@ -11,8 +11,8 @@
  *   - useXRSessionModeSupported() to check VR availability
  */
 
-import React from 'react';
-import {createXRStore, XR, XROrigin, useXRSessionModeSupported} from '@react-three/xr';
+import { createXRStore, useXRSessionModeSupported, XR, XROrigin } from '@react-three/xr';
+import type React from 'react';
 
 // ---------------------------------------------------------------------------
 // XR Store singleton
@@ -53,7 +53,7 @@ interface XRSetupProps {
  * </Canvas>
  * ```
  */
-export function XRSetup({children}: XRSetupProps) {
+export function XRSetup({ children }: XRSetupProps) {
   return (
     <XR store={xrStore}>
       {/* XROrigin sets the player's feet position in the tracking space.

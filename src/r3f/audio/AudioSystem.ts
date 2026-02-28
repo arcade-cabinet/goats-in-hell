@@ -11,7 +11,7 @@
  * - Master volume control integrated with useGameStore
  */
 
-import {useGameStore} from '../../state/GameStore';
+import { useGameStore } from '../../state/GameStore';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -209,10 +209,7 @@ function scheduleOsc(
   const osc = ctx.createOscillator();
   osc.type = type;
   osc.frequency.setValueAtTime(startFreq, startTime);
-  osc.frequency.exponentialRampToValueAtTime(
-    Math.max(endFreq, 0.001),
-    startTime + duration,
-  );
+  osc.frequency.exponentialRampToValueAtTime(Math.max(endFreq, 0.001), startTime + duration);
 
   const gainNode = ctx.createGain();
   gainNode.gain.setValueAtTime(gain, startTime);
@@ -289,8 +286,8 @@ function playGoatAlert(ctx: AudioContext): void {
   const shaper = ctx.createWaveShaper();
   const curve = new Float32Array(256);
   for (let i = 0; i < 256; i++) {
-    const x = (i / 128) - 1;
-    curve[i] = (Math.PI + 3) * x / (Math.PI + 3 * Math.abs(x));
+    const x = i / 128 - 1;
+    curve[i] = ((Math.PI + 3) * x) / (Math.PI + 3 * Math.abs(x));
   }
   shaper.curve = curve;
   shaper.oversample = '2x';
@@ -555,16 +552,13 @@ export function playSound(type: SoundType): void {
 function resolveAssetUri(moduleId: number | string): string {
   if (typeof moduleId === 'string') return moduleId;
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const {Asset} = require('expo-asset');
+  const { Asset } = require('expo-asset');
   const asset = Asset.fromModule(moduleId);
   return asset.uri;
 }
 
 /** Fetch and decode an OGG audio file into an AudioBuffer. */
-async function loadAudioBuffer(
-  moduleId: number,
-  ctx: AudioContext,
-): Promise<AudioBuffer> {
+async function loadAudioBuffer(moduleId: number, ctx: AudioContext): Promise<AudioBuffer> {
   const uri = resolveAssetUri(moduleId);
   const response = await fetch(uri);
   if (!response.ok) {
@@ -578,11 +572,9 @@ async function loadAudioBuffer(
  * Load all SFX from the AssetRegistry into grouped AudioBuffer arrays.
  * Groups by prefix: 'sfx-pistol-0' -> 'sfx-pistol'.
  */
-export async function loadAllSfx(
-  ctx: AudioContext,
-): Promise<Map<string, AudioBuffer[]>> {
+export async function loadAllSfx(ctx: AudioContext): Promise<Map<string, AudioBuffer[]>> {
   // Late import to avoid circular dependency at module load time
-  const {SFX_ASSETS} = await import('../../game/systems/AssetRegistry');
+  const { SFX_ASSETS } = await import('../../game/systems/AssetRegistry');
   type SfxAssetKey = keyof typeof SFX_ASSETS;
 
   const map = new Map<string, AudioBuffer[]>();

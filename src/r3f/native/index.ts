@@ -1,1 +1,1 @@
-export {NativeCanvas} from './NativeCanvas';
+export { NativeCanvas } from './NativeCanvas';

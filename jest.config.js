@@ -1,7 +1,7 @@
 module.exports = {
   preset: 'react-native',
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|miniplex|zustand|seedrandom|three|@react-three)/)',
+    'node_modules/(?!(\\.pnpm|react-native|@react-native|miniplex|zustand|seedrandom|three|@react-three)/)',
   ],
   testPathIgnorePatterns: [
     '/node_modules/',

@@ -12,12 +12,12 @@ jest.mock('../../game/systems/GameClock', () => ({
 }));
 
 import {
-  useGameStore,
   DIFFICULTY_PRESETS,
-  getLevelBonuses,
-  generateSeedPhrase,
-  writeSettings,
   GameState,
+  generateSeedPhrase,
+  getLevelBonuses,
+  useGameStore,
+  writeSettings,
 } from '../GameStore';
 
 beforeEach(() => {
@@ -26,9 +26,9 @@ beforeEach(() => {
   useGameStore.setState({
     screen: 'mainMenu',
     difficulty: 'normal',
-    nightmareFlags: {nightmare: false, permadeath: false, ultraNightmare: false},
+    nightmareFlags: { nightmare: false, permadeath: false, ultraNightmare: false },
     seed: 'test-seed',
-    leveling: {level: 1, xp: 0, xpToNext: 283},
+    leveling: { level: 1, xp: 0, xpToNext: 283 },
     bossesDefeated: [],
     score: 0,
     kills: 0,
@@ -45,7 +45,7 @@ beforeEach(() => {
 describe('awardXp', () => {
   it('adds XP to the leveling state', () => {
     useGameStore.getState().awardXp(50);
-    const {leveling} = useGameStore.getState();
+    const { leveling } = useGameStore.getState();
     expect(leveling.xp).toBe(50);
     expect(leveling.level).toBe(1);
   });
@@ -53,7 +53,7 @@ describe('awardXp', () => {
   it('levels up when XP exceeds xpToNext', () => {
     // xpForLevel(2) = floor(100 * 2^1.5) = 282
     useGameStore.getState().awardXp(300);
-    const {leveling} = useGameStore.getState();
+    const { leveling } = useGameStore.getState();
     expect(leveling.level).toBe(2);
     // Remaining XP = 300 - 283 = 17 (xpToNext for level 1 = ceil(100*2^1.5) = 283)
     expect(leveling.xp).toBeLessThan(300);
@@ -61,19 +61,19 @@ describe('awardXp', () => {
 
   it('handles multiple level-ups from large XP', () => {
     useGameStore.getState().awardXp(2000);
-    const {leveling} = useGameStore.getState();
+    const { leveling } = useGameStore.getState();
     expect(leveling.level).toBeGreaterThan(2);
   });
 
   it('applies difficulty XP multiplier', () => {
-    useGameStore.setState({difficulty: 'easy'});
+    useGameStore.setState({ difficulty: 'easy' });
     useGameStore.getState().awardXp(100);
     const easyXp = useGameStore.getState().leveling.xp;
 
     // Reset
     useGameStore.setState({
       difficulty: 'hard',
-      leveling: {level: 1, xp: 0, xpToNext: 283},
+      leveling: { level: 1, xp: 0, xpToNext: 283 },
     });
     useGameStore.getState().awardXp(100);
     const hardXp = useGameStore.getState().leveling.xp;
@@ -103,7 +103,11 @@ describe('save/load', () => {
   it('save roundtrip preserves data via continueGame', () => {
     // Start a game and advance a stage to trigger save
     const store = useGameStore.getState();
-    store.startNewGame('hard', {nightmare: false, permadeath: false, ultraNightmare: false}, 'roundtrip-seed');
+    store.startNewGame(
+      'hard',
+      { nightmare: false, permadeath: false, ultraNightmare: false },
+      'roundtrip-seed',
+    );
 
     // Manually set some state
     useGameStore.setState({
@@ -134,7 +138,11 @@ describe('save/load', () => {
 
   it('deleteSave removes save data', () => {
     const store = useGameStore.getState();
-    store.startNewGame('normal', {nightmare: false, permadeath: false, ultraNightmare: false}, 'delete-test');
+    store.startNewGame(
+      'normal',
+      { nightmare: false, permadeath: false, ultraNightmare: false },
+      'delete-test',
+    );
     useGameStore.getState().advanceStage();
 
     expect(localStorage.getItem('goats-in-hell-save')).not.toBeNull();
@@ -145,7 +153,7 @@ describe('save/load', () => {
   });
 
   it('continueGame does nothing if no save exists', () => {
-    useGameStore.setState({screen: 'mainMenu', score: 42});
+    useGameStore.setState({ screen: 'mainMenu', score: 42 });
     useGameStore.getState().continueGame();
     // Should not change state
     expect(useGameStore.getState().screen).toBe('mainMenu');
@@ -153,8 +161,8 @@ describe('save/load', () => {
   });
 
   it('rejects malformed save data', () => {
-    localStorage.setItem('goats-in-hell-save', JSON.stringify({bad: 'data'}));
-    useGameStore.setState({screen: 'mainMenu'});
+    localStorage.setItem('goats-in-hell-save', JSON.stringify({ bad: 'data' }));
+    useGameStore.setState({ screen: 'mainMenu' });
     useGameStore.getState().continueGame();
     // Should not change screen — malformed data is ignored
     expect(useGameStore.getState().screen).toBe('mainMenu');
@@ -163,7 +171,7 @@ describe('save/load', () => {
 
 describe('settings persistence', () => {
   it('writes and reads settings', () => {
-    writeSettings({masterVolume: 0.5, mouseSensitivity: 0.8});
+    writeSettings({ masterVolume: 0.5, mouseSensitivity: 0.8 });
     const raw = localStorage.getItem('goats-in-hell-settings');
     expect(raw).not.toBeNull();
     const parsed = JSON.parse(raw!);
@@ -174,12 +182,14 @@ describe('settings persistence', () => {
 
 describe('startNewGame', () => {
   it('sets screen to playing and resets stats', () => {
-    useGameStore.setState({score: 999, kills: 50});
-    useGameStore.getState().startNewGame(
-      'easy',
-      {nightmare: false, permadeath: false, ultraNightmare: false},
-      'fresh-seed',
-    );
+    useGameStore.setState({ score: 999, kills: 50 });
+    useGameStore
+      .getState()
+      .startNewGame(
+        'easy',
+        { nightmare: false, permadeath: false, ultraNightmare: false },
+        'fresh-seed',
+      );
 
     const state = useGameStore.getState();
     expect(state.screen).toBe('playing');
@@ -190,22 +200,26 @@ describe('startNewGame', () => {
   });
 
   it('forces permadeath when ultraNightmare is set', () => {
-    useGameStore.getState().startNewGame(
-      'hard',
-      {nightmare: true, permadeath: false, ultraNightmare: true},
-      'ultra-seed',
-    );
+    useGameStore
+      .getState()
+      .startNewGame(
+        'hard',
+        { nightmare: true, permadeath: false, ultraNightmare: true },
+        'ultra-seed',
+      );
     expect(useGameStore.getState().nightmareFlags.permadeath).toBe(true);
   });
 });
 
 describe('advanceStage', () => {
   it('increments stage number', () => {
-    useGameStore.getState().startNewGame(
-      'normal',
-      {nightmare: false, permadeath: false, ultraNightmare: false},
-      'stage-test',
-    );
+    useGameStore
+      .getState()
+      .startNewGame(
+        'normal',
+        { nightmare: false, permadeath: false, ultraNightmare: false },
+        'stage-test',
+      );
 
     useGameStore.getState().advanceStage();
 
@@ -213,12 +227,14 @@ describe('advanceStage', () => {
   });
 
   it('resets kills on stage advance', () => {
-    useGameStore.getState().startNewGame(
-      'normal',
-      {nightmare: false, permadeath: false, ultraNightmare: false},
-      'kills-test',
-    );
-    useGameStore.setState({kills: 15});
+    useGameStore
+      .getState()
+      .startNewGame(
+        'normal',
+        { nightmare: false, permadeath: false, ultraNightmare: false },
+        'kills-test',
+      );
+    useGameStore.setState({ kills: 15 });
 
     useGameStore.getState().advanceStage();
 
@@ -226,11 +242,13 @@ describe('advanceStage', () => {
   });
 
   it('sets encounter to boss on stage 5', () => {
-    useGameStore.getState().startNewGame(
-      'normal',
-      {nightmare: false, permadeath: false, ultraNightmare: false},
-      'boss-test',
-    );
+    useGameStore
+      .getState()
+      .startNewGame(
+        'normal',
+        { nightmare: false, permadeath: false, ultraNightmare: false },
+        'boss-test',
+      );
     // Advance through stages 1-4 to reach stage 5
     useGameStore.setState({
       stage: {
@@ -253,11 +271,13 @@ describe('advanceStage', () => {
   });
 
   it('sets arena encounter on stage 4', () => {
-    useGameStore.getState().startNewGame(
-      'normal',
-      {nightmare: false, permadeath: false, ultraNightmare: false},
-      'arena-test',
-    );
+    useGameStore
+      .getState()
+      .startNewGame(
+        'normal',
+        { nightmare: false, permadeath: false, ultraNightmare: false },
+        'arena-test',
+      );
     useGameStore.setState({
       stage: {
         stageNumber: 3,
@@ -277,22 +297,22 @@ describe('advanceStage', () => {
 
 describe('GameState shim', () => {
   it('translates mainMenu screen to "menu"', () => {
-    useGameStore.setState({screen: 'mainMenu'});
+    useGameStore.setState({ screen: 'mainMenu' });
     expect(GameState.get().screen).toBe('menu');
   });
 
   it('translates bossIntro screen to "playing"', () => {
-    useGameStore.setState({screen: 'bossIntro'});
+    useGameStore.setState({ screen: 'bossIntro' });
     expect(GameState.get().screen).toBe('playing');
   });
 
   it('passes through "playing" unchanged', () => {
-    useGameStore.setState({screen: 'playing'});
+    useGameStore.setState({ screen: 'playing' });
     expect(GameState.get().screen).toBe('playing');
   });
 
   it('set() translates legacy "menu" back to "mainMenu"', () => {
-    GameState.set({screen: 'menu'});
+    GameState.set({ screen: 'menu' });
     expect(useGameStore.getState().screen).toBe('mainMenu');
   });
 });
@@ -316,7 +336,7 @@ describe('generateSeedPhrase', () => {
     const seed = generateSeedPhrase();
     const parts = seed.split('-');
     expect(parts.length).toBe(3);
-    parts.forEach(part => {
+    parts.forEach((part) => {
       expect(part.length).toBeGreaterThan(0);
     });
   });

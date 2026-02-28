@@ -16,18 +16,12 @@
  *
  * Activate with ?autoplay URL param (optionally ?autoplay=easy|hard).
  */
-import {
-  Vehicle,
-  EntityManager,
-  ArriveBehavior,
-  WanderBehavior,
-  Vector3 as YV3,
-} from 'yuka';
-import type {Entity, Vec3, WeaponId} from '../entities/components';
-import {vec3, vec3Subtract, vec3Scale, vec3Distance, vec3Length} from '../entities/vec3';
-import {world} from '../entities/world';
-import {weapons} from '../weapons/weapons';
-import {LevelGenerator, MapCell} from '../levels/LevelGenerator';
+import { ArriveBehavior, EntityManager, Vehicle, WanderBehavior, Vector3 as YV3 } from 'yuka';
+import type { Entity, Vec3, WeaponId } from '../entities/components';
+import { vec3, vec3Distance, vec3Length, vec3Scale, vec3Subtract } from '../entities/vec3';
+import { world } from '../entities/world';
+import { LevelGenerator, type MapCell } from '../levels/LevelGenerator';
+import { weapons } from '../weapons/weapons';
 
 /**
  * Generic camera interface — abstracts away Babylon/Three camera specifics.
@@ -35,7 +29,7 @@ import {LevelGenerator, MapCell} from '../levels/LevelGenerator';
  */
 export interface AICamera {
   position: Vec3;
-  rotation: {x: number; y: number};
+  rotation: { x: number; y: number };
 }
 
 // ---------------------------------------------------------------------------
@@ -61,10 +55,10 @@ export interface AIDebugInfo {
  * The AIProvider must negate Z values when converting to Three.js.
  */
 export interface AIOutputFrame {
-  moveX: number;      // -1..1 strafe (positive = right)
-  moveZ: number;      // -1..1 forward/back (positive = forward, Babylon.js Z+)
-  lookYaw: number;    // target yaw angle (radians, Babylon.js convention)
-  lookPitch: number;  // target pitch angle (radians, Babylon.js convention)
+  moveX: number; // -1..1 strafe (positive = right)
+  moveZ: number; // -1..1 forward/back (positive = forward, Babylon.js Z+)
+  lookYaw: number; // target yaw angle (radians, Babylon.js convention)
+  lookPitch: number; // target pitch angle (radians, Babylon.js convention)
   fire: boolean;
   reload: boolean;
   weaponSlot: number; // 0 = no change, 1-4 = slot
@@ -100,10 +94,10 @@ function emptyAIOutputFrame(): AIOutputFrame {
 const HEAL_THRESHOLD = 0.35;
 const FLEE_THRESHOLD = 0.15;
 const FLEE_DISTANCE = 8;
-const MOVE_SPEED = 0.10;
+const MOVE_SPEED = 0.1;
 const SPRINT_SPEED = 0.15;
 const SHOOT_RANGE_FACTOR = 0.8; // Fire within 80% of weapon's max range
-const AIM_LERP = 0.12; // Camera aim smoothing (0-1 per frame)
+const _AIM_LERP = 0.12; // Camera aim smoothing (0-1 per frame)
 const DECISION_INTERVAL = 200; // ms between state re-evaluations
 const WANDER_RADIUS = 6;
 const WANDER_JITTER = 0.8;
@@ -128,7 +122,6 @@ export class AIGovernor {
   private _state: AIState = 'explore';
   private targetEntity: Entity | null = null;
   private lastDecisionTime = 0;
-  private wanderYaw = 0;
   private frameCount = 0;
 
   // --- Output callback mode ---
@@ -137,15 +130,10 @@ export class AIGovernor {
   /** Whether a sprint was requested this frame (used in output mode). */
   private sprintRequested = false;
 
-  constructor(
-    camera: AICamera,
-    player: Entity,
-    grid: MapCell[][],
-    cellSize: number,
-  ) {
+  constructor(camera: AICamera, player: Entity, grid: MapCell[][], cellSize: number) {
     this.camera = camera;
     this.player = player;
-    this.grid = grid.map(row => row.map(c => c as number));
+    this.grid = grid.map((row) => row.map((c) => c as number));
     this.gridH = this.grid.length;
     this.gridW = this.grid[0]?.length ?? 0;
     this.cellSize = cellSize;
@@ -314,11 +302,7 @@ export class AIGovernor {
     this.wanderBehavior.active = false;
 
     if (target?.position) {
-      this.arriveBehavior.target = new YV3(
-        target.position.x,
-        0,
-        target.position.z,
-      );
+      this.arriveBehavior.target = new YV3(target.position.x, 0, target.position.z);
       this.arriveBehavior.active = state !== 'flee' && state !== 'explore';
     }
 
@@ -438,11 +422,7 @@ export class AIGovernor {
     // Opportunistic: grab weapon pickups
     const wpnPickup = this.nearestPickup('weapon');
     if (wpnPickup?.position && this.distToEntity(wpnPickup) < 10) {
-      this.arriveBehavior.target.set(
-        wpnPickup.position.x,
-        0,
-        wpnPickup.position.z,
-      );
+      this.arriveBehavior.target.set(wpnPickup.position.x, 0, wpnPickup.position.z);
       this.arriveBehavior.active = true;
       this.wanderBehavior.active = false;
     }
@@ -490,26 +470,8 @@ export class AIGovernor {
 
     const vel = this.vehicle.velocity;
     const dtScale = dt / 16;
-    const displacement = vec3(
-      vel.x * dtScale * 0.5,
-      0,
-      vel.z * dtScale * 0.5,
-    );
+    const displacement = vec3(vel.x * dtScale * 0.5, 0, vel.z * dtScale * 0.5);
 
-    this.displacementToMoveXZ(displacement);
-  }
-
-  /** Move directly toward a target with manual steering (no YUKA). */
-  private moveToward(target: Vec3, speed: number, dt: number): void {
-    const pos = this.camera.position;
-    const dir = vec3Subtract(target, pos);
-    dir.y = 0;
-    const len = vec3Length(dir);
-    if (len < 0.2) return;
-    const norm = vec3Scale(dir, 1 / len);
-
-    const dtScale = dt / 16;
-    const displacement = vec3Scale(norm, speed * dtScale);
     this.displacementToMoveXZ(displacement);
   }
 
@@ -604,17 +566,9 @@ export class AIGovernor {
 
     if (dist < 6 && owned.includes('brimShotgun') && this.hasAmmo('brimShotgun')) {
       ideal = 'brimShotgun';
-    } else if (
-      dist < 20 &&
-      owned.includes('hellfireCannon') &&
-      this.hasAmmo('hellfireCannon')
-    ) {
+    } else if (dist < 20 && owned.includes('hellfireCannon') && this.hasAmmo('hellfireCannon')) {
       ideal = 'hellfireCannon';
-    } else if (
-      dist > 15 &&
-      owned.includes('goatsBane') &&
-      this.hasAmmo('goatsBane')
-    ) {
+    } else if (dist > 15 && owned.includes('goatsBane') && this.hasAmmo('goatsBane')) {
       ideal = 'goatsBane';
     } else if (this.hasAmmo('hellPistol')) {
       ideal = 'hellPistol';
@@ -658,9 +612,7 @@ export class AIGovernor {
   // -----------------------------------------------------------------------
 
   private getEnemies(): Entity[] {
-    return world.entities.filter(
-      (e: Entity) => !!e.enemy && !!e.position,
-    );
+    return world.entities.filter((e: Entity) => !!e.enemy && !!e.position);
   }
 
   private nearest(entities: Entity[]): Entity | null {
@@ -676,12 +628,9 @@ export class AIGovernor {
     return best;
   }
 
-  private nearestPickup(
-    type: 'health' | 'ammo' | 'weapon',
-  ): Entity | null {
+  private nearestPickup(type: 'health' | 'ammo' | 'weapon'): Entity | null {
     const pickups = world.entities.filter(
-      (e: Entity) =>
-        e.pickup?.active && e.pickup.pickupType === type && !!e.position,
+      (e: Entity) => e.pickup?.active && e.pickup.pickupType === type && !!e.position,
     );
     return this.nearest(pickups);
   }

@@ -5,15 +5,23 @@
  * Crossfades between tracks on state transitions.
  */
 
-import {useGameStore} from '../../state/GameStore';
-import type {MusicAssetKey} from './AssetRegistry';
+import { useGameStore } from '../../state/GameStore';
+import type { MusicAssetKey } from './AssetRegistry';
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
-type MusicTrack = 'menu' | 'exploration' | 'tense' | 'boss' | 'dark'
-  | 'death-metal' | 'violence' | 'revenge' | 'gothic';
+type MusicTrack =
+  | 'menu'
+  | 'exploration'
+  | 'tense'
+  | 'boss'
+  | 'dark'
+  | 'death-metal'
+  | 'violence'
+  | 'revenge'
+  | 'gothic';
 
 const TRACK_TO_ASSET: Record<MusicTrack, MusicAssetKey> = {
   menu: 'music-menu',
@@ -108,8 +116,16 @@ export function stopMusic(): void {
 
     const src = activeSource;
     setTimeout(() => {
-      try { src.stop(); } catch { /* already stopped */ }
-      try { src.disconnect(); } catch { /* ignore */ }
+      try {
+        src.stop();
+      } catch {
+        /* already stopped */
+      }
+      try {
+        src.disconnect();
+      } catch {
+        /* ignore */
+      }
       if (musicGain) {
         musicGain.gain.cancelScheduledValues(0);
         musicGain.gain.value = MUSIC_VOLUME;
@@ -134,7 +150,12 @@ export function updateMusic(): void {
     desired = 'menu';
   } else if (screen === 'dead' || screen === 'gameComplete') {
     desired = null;
-  } else if (screen === 'playing' || screen === 'paused' || screen === 'victory' || screen === 'bossIntro') {
+  } else if (
+    screen === 'playing' ||
+    screen === 'paused' ||
+    screen === 'victory' ||
+    screen === 'bossIntro'
+  ) {
     const encounter = state.stage.encounterType;
     if (encounter === 'boss') {
       // Boss fights: heavy tracks that escalate the tension

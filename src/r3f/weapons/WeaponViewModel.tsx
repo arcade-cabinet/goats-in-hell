@@ -11,14 +11,13 @@
  * to avoid JSX type conflicts with Reactylon.
  */
 
-import {useEffect, useRef} from 'react';
-import {useThree, useFrame} from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import type {WeaponId} from '../../game/entities/components';
-import {useGameStore} from '../../state/GameStore';
-import {getReloadProgress} from './WeaponSystem';
-import {world} from '../../game/entities/world';
-import type {Entity} from '../../game/entities/components';
+import type { Entity, WeaponId } from '../../game/entities/components';
+import { world } from '../../game/entities/world';
+import { useGameStore } from '../../state/GameStore';
+import { getReloadProgress } from './WeaponSystem';
 
 // ---------------------------------------------------------------------------
 // Weapon visual config
@@ -86,7 +85,7 @@ const SWITCH_DROP_DEPTH = 0.25;
 // ---------------------------------------------------------------------------
 
 export function WeaponViewModel() {
-  const {camera} = useThree();
+  const { camera } = useThree();
 
   // Refs for managed objects
   const groupRef = useRef<THREE.Group | null>(null);
@@ -162,10 +161,7 @@ export function WeaponViewModel() {
 
     // --- Animate weapon switch ---
     if (switchProgressRef.current > 0) {
-      switchProgressRef.current = Math.max(
-        0,
-        switchProgressRef.current - dt / SWITCH_DURATION,
-      );
+      switchProgressRef.current = Math.max(0, switchProgressRef.current - dt / SWITCH_DURATION);
 
       if (switchProgressRef.current <= 0) {
         if (switchDirectionRef.current === 'down') {
@@ -217,11 +213,7 @@ export function WeaponViewModel() {
     }
 
     // Apply combined offset to group
-    group.position.set(
-      config.offset.x,
-      offsetY + recoilUp - switchDrop,
-      offsetZ + recoilBack,
-    );
+    group.position.set(config.offset.x, offsetY + recoilUp - switchDrop, offsetZ + recoilBack);
   });
 
   // No JSX output — mesh is managed imperatively

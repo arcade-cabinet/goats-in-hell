@@ -5,7 +5,7 @@
  * This file preserves the old API (GameState.get/set/reset/subscribe)
  * so existing systems keep working without a big-bang migration.
  */
-export {GameState} from './GameStore';
+export { GameState } from './GameStore';
 
 // Legacy screen type that old consumers expect
 export type GameScreen = 'menu' | 'playing' | 'paused' | 'dead' | 'victory' | 'modeSelect';

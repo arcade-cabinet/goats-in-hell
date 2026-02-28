@@ -1,6 +1,6 @@
-import type {Vec3} from '../entities/components';
-import {vec3Clone} from '../entities/vec3';
-import {getGameTime} from './GameClock';
+import type { Vec3 } from '../entities/components';
+import { vec3Clone } from '../entities/vec3';
+import { getGameTime } from './GameClock';
 
 export interface DamageEvent {
   id: number;

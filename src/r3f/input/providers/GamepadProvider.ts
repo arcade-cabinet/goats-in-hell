@@ -13,8 +13,8 @@
  * - Start (buttons[9]) → pause (rising edge)
  */
 
-import type {InputFrame} from '../InputActions';
-import type {IInputProvider} from '../InputManager';
+import type { InputFrame } from '../InputActions';
+import type { IInputProvider } from '../InputManager';
 
 const STICK_DEADZONE = 0.15;
 const LOOK_SENSITIVITY = 0.05; // radians per unit per frame
@@ -38,7 +38,7 @@ export class GamepadProvider implements IInputProvider {
     const sign = Math.sign(raw);
     const abs = Math.abs(raw);
     if (abs < STICK_DEADZONE) return 0;
-    return sign * (abs - STICK_DEADZONE) / (1 - STICK_DEADZONE);
+    return (sign * (abs - STICK_DEADZONE)) / (1 - STICK_DEADZONE);
   }
 
   /** Return the first connected gamepad, or null. */

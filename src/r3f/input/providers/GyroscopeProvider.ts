@@ -9,8 +9,8 @@
  * must also grant permission via a user-gesture-triggered prompt.
  */
 
-import type {InputFrame} from '../InputActions';
-import type {IInputProvider} from '../InputManager';
+import type { InputFrame } from '../InputActions';
+import type { IInputProvider } from '../InputManager';
 
 /** Maximum accumulated look delta per frame to prevent huge jumps on tab-away. */
 const MAX_ACCUMULATED_DELTA = 0.5; // radians (~28 degrees)

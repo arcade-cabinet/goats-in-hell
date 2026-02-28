@@ -5,10 +5,11 @@
  * and a muzzle flash system. All lights are created imperatively
  * via useEffect + scene.add to avoid JSX type conflicts with Reactylon.
  */
-import {useEffect, useRef} from 'react';
-import {useThree, useFrame} from '@react-three/fiber';
+
+import { useFrame, useThree } from '@react-three/fiber';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import type {FloorTheme} from '../../game/levels/FloorThemes';
+import type { FloorTheme } from '../../game/levels/FloorThemes';
 
 // ---------------------------------------------------------------------------
 // Theme-based light configurations
@@ -21,10 +22,10 @@ interface ThemeLightConfig {
 }
 
 const THEME_LIGHTS: Record<string, ThemeLightConfig> = {
-  firePits: {color: '#ff4400', intensity: 2, distance: 8},
-  fleshCaverns: {color: '#cc3333', intensity: 1, distance: 6},
-  obsidianFortress: {color: '#4466aa', intensity: 1.5, distance: 8},
-  theVoid: {color: '#6600cc', intensity: 2, distance: 10},
+  firePits: { color: '#ff4400', intensity: 2, distance: 8 },
+  fleshCaverns: { color: '#cc3333', intensity: 1, distance: 6 },
+  obsidianFortress: { color: '#4466aa', intensity: 1.5, distance: 8 },
+  theVoid: { color: '#6600cc', intensity: 2, distance: 10 },
 };
 
 // Default fallback for unknown themes
@@ -66,11 +67,7 @@ export function triggerMuzzleFlash(position: THREE.Vector3): void {
 
   // Reuse existing light or create a new one
   if (!muzzleFlash.light) {
-    muzzleFlash.light = new THREE.PointLight(
-      MUZZLE_FLASH_COLOR,
-      0,
-      MUZZLE_FLASH_DISTANCE,
-    );
+    muzzleFlash.light = new THREE.PointLight(MUZZLE_FLASH_COLOR, 0, MUZZLE_FLASH_DISTANCE);
     muzzleFlash.light.name = 'muzzleFlashLight';
     muzzleFlash.scene.add(muzzleFlash.light);
   }
@@ -96,8 +93,8 @@ interface TrackedPointLight {
   flickerPhase: number;
 }
 
-export function DynamicLighting({theme}: DynamicLightingProps): null {
-  const {scene, camera} = useThree();
+export function DynamicLighting({ theme }: DynamicLightingProps): null {
+  const { scene, camera } = useThree();
 
   // Refs for all managed lights
   const roomLightsRef = useRef<TrackedPointLight[]>([]);
@@ -144,19 +141,11 @@ export function DynamicLighting({theme}: DynamicLightingProps): null {
     const MAX_ROOM_LIGHTS = 6;
 
     for (let gz = 0; gz < GRID_COUNT && lights.length < MAX_ROOM_LIGHTS; gz++) {
-      for (
-        let gx = 0;
-        gx < GRID_COUNT && lights.length < MAX_ROOM_LIGHTS;
-        gx++
-      ) {
+      for (let gx = 0; gx < GRID_COUNT && lights.length < MAX_ROOM_LIGHTS; gx++) {
         // Skip some positions for variety (checkerboard-ish pattern)
         if ((gx + gz) % 2 === 0) continue;
 
-        const light = new THREE.PointLight(
-          config.color,
-          config.intensity,
-          config.distance,
-        );
+        const light = new THREE.PointLight(config.color, config.intensity, config.distance);
         light.name = `roomLight_${lights.length}`;
         light.position.set(
           gx * GRID_SPACING - (GRID_COUNT * GRID_SPACING) / 2,
@@ -239,14 +228,13 @@ export function DynamicLighting({theme}: DynamicLightingProps): null {
   // -------------------------------------------------------------------------
   // Per-frame updates
   // -------------------------------------------------------------------------
-  useFrame(({clock, camera: cam}) => {
+  useFrame(({ clock, camera: cam }) => {
     const time = clock.getElapsedTime();
 
     // Flicker room point lights with sinusoidal variation
     for (const tracked of roomLightsRef.current) {
       tracked.light.intensity =
-        tracked.baseIntensity +
-        Math.sin(time * tracked.flickerSpeed + tracked.flickerPhase) * 0.2;
+        tracked.baseIntensity + Math.sin(time * tracked.flickerSpeed + tracked.flickerPhase) * 0.2;
     }
 
     // Update player spotlight to follow camera
@@ -257,9 +245,7 @@ export function DynamicLighting({theme}: DynamicLightingProps): null {
       // Point the spotlight in the camera's forward direction
       const forward = new THREE.Vector3(0, 0, -1);
       forward.applyQuaternion(cam.quaternion);
-      spotlight.target.position
-        .copy(cam.position)
-        .add(forward.multiplyScalar(5));
+      spotlight.target.position.copy(cam.position).add(forward.multiplyScalar(5));
       spotlight.target.updateMatrixWorld();
     }
 

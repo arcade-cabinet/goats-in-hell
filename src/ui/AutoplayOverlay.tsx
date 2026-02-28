@@ -3,10 +3,11 @@
  * Shows AI governor state, current target, weapon, and session stats.
  * Reads governor via window.__aiGovernor (set by PlayerController).
  */
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {useGameStore} from '../state/GameStore';
-import type {AIDebugInfo} from '../game/systems/AIGovernor';
+import type React from 'react';
+import { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import type { AIDebugInfo } from '../game/systems/AIGovernor';
+import { useGameStore } from '../state/GameStore';
 
 const STATE_COLORS: Record<string, string> = {
   hunt: '#ff4444',
@@ -17,12 +18,12 @@ const STATE_COLORS: Record<string, string> = {
 
 export const AutoplayOverlay: React.FC = () => {
   const [debug, setDebug] = useState<AIDebugInfo | null>(null);
-  const score = useGameStore(s => s.score);
-  const kills = useGameStore(s => s.kills);
-  const totalKills = useGameStore(s => s.totalKills);
-  const floor = useGameStore(s => s.stage.floor);
-  const difficulty = useGameStore(s => s.difficulty);
-  const startTime = useGameStore(s => s.startTime);
+  const score = useGameStore((s) => s.score);
+  const kills = useGameStore((s) => s.kills);
+  const totalKills = useGameStore((s) => s.totalKills);
+  const floor = useGameStore((s) => s.stage.floor);
+  const difficulty = useGameStore((s) => s.difficulty);
+  const startTime = useGameStore((s) => s.startTime);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -39,14 +40,14 @@ export const AutoplayOverlay: React.FC = () => {
   const sec = elapsed % 60;
   const timeStr = `${min}:${sec.toString().padStart(2, '0')}`;
 
-  const stateColor = debug ? STATE_COLORS[debug.state] ?? '#888' : '#888';
+  const stateColor = debug ? (STATE_COLORS[debug.state] ?? '#888') : '#888';
 
   return (
     <View style={styles.container} pointerEvents="none">
       <View style={styles.panel}>
         <View style={styles.headerRow}>
           <Text style={styles.headerLabel}>AUTOPLAY</Text>
-          <View style={[styles.dot, {backgroundColor: '#44ff44'}]} />
+          <View style={[styles.dot, { backgroundColor: '#44ff44' }]} />
         </View>
 
         <View style={styles.divider} />
@@ -54,7 +55,7 @@ export const AutoplayOverlay: React.FC = () => {
         {/* AI State */}
         <View style={styles.row}>
           <Text style={styles.label}>STATE</Text>
-          <Text style={[styles.value, {color: stateColor}]}>
+          <Text style={[styles.value, { color: stateColor }]}>
             {debug?.state?.toUpperCase() ?? '...'}
           </Text>
         </View>

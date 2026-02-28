@@ -1,5 +1,6 @@
-import React, {useEffect} from 'react';
-import {useThree} from '@react-three/fiber';
+import { useThree } from '@react-three/fiber';
+import type React from 'react';
+import { useEffect } from 'react';
 import * as THREE from 'three';
 
 /**
@@ -10,8 +11,8 @@ import * as THREE from 'three';
  * conflicts with Reactylon's JSX augmentation during the migration period.
  * After Task 16 removes Reactylon, these can optionally become declarative.
  */
-export function R3FScene({children}: {children?: React.ReactNode}) {
-  const {scene} = useThree();
+export function R3FScene({ children }: { children?: React.ReactNode }) {
+  const { scene } = useThree();
 
   useEffect(() => {
     scene.background = new THREE.Color('#0a0000');

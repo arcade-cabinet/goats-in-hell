@@ -1,7 +1,7 @@
-import type {Entity} from '../entities/components';
-import {world} from '../entities/world';
-import {GameState} from '../../state/GameState';
-import {useGameStore} from '../../state/GameStore';
+import { GameState } from '../../state/GameState';
+import { useGameStore } from '../../state/GameStore';
+import type { Entity } from '../entities/components';
+import { world } from '../entities/world';
 
 // ---------------------------------------------------------------------------
 // Floor completion
@@ -27,7 +27,7 @@ export function checkFloorComplete(): boolean {
  * when the player clicks DESCEND on the VictoryScreen.
  */
 export function advanceFloor(): void {
-  GameState.set({screen: 'victory'});
+  GameState.set({ screen: 'victory' });
 }
 
 // ---------------------------------------------------------------------------
@@ -39,9 +39,7 @@ export function advanceFloor(): void {
  * zero (or below).
  */
 export function checkPlayerDeath(): boolean {
-  const player = world.entities.find(
-    (e: Entity) => e.type === 'player',
-  );
+  const player = world.entities.find((e: Entity) => e.type === 'player');
 
   if (!player || !player.player) {
     return true;
@@ -54,10 +52,10 @@ export function checkPlayerDeath(): boolean {
  * Transition to the death screen so the UI can display a game-over overlay.
  */
 export function triggerDeath(): void {
-  GameState.set({screen: 'dead'});
+  GameState.set({ screen: 'dead' });
 
   // Permadeath: delete save on death
-  const {nightmareFlags, deleteSave} = useGameStore.getState();
+  const { nightmareFlags, deleteSave } = useGameStore.getState();
   if (nightmareFlags.permadeath) {
     deleteSave();
   }

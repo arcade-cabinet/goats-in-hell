@@ -13,7 +13,7 @@
  * theVoid        — eerie sine sweep + sub-bass pulse
  */
 
-import {useGameStore} from '../../state/GameStore';
+import { useGameStore } from '../../state/GameStore';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -130,7 +130,7 @@ function createFirePits(c: AudioContext, dest: AudioNode): AmbientLayer {
   bubble.start();
   nodes.push(bubble, bubbleLfo);
 
-  return {nodes, gain};
+  return { nodes, gain };
 }
 
 function createFleshCaverns(c: AudioContext, dest: AudioNode): AmbientLayer {
@@ -204,7 +204,7 @@ function createFleshCaverns(c: AudioContext, dest: AudioNode): AmbientLayer {
   moan2.start();
   nodes.push(moan1, moan2);
 
-  return {nodes, gain};
+  return { nodes, gain };
 }
 
 function createObsidianFortress(c: AudioContext, dest: AudioNode): AmbientLayer {
@@ -233,7 +233,7 @@ function createObsidianFortress(c: AudioContext, dest: AudioNode): AmbientLayer 
   const windData = windBuffer.getChannelData(0);
   const rng = useGameStore.getState().rng;
   for (let i = 0; i < windLen; i++) {
-    windData[i] = (rng() * 2 - 1);
+    windData[i] = rng() * 2 - 1;
   }
   const wind = c.createBufferSource();
   wind.buffer = windBuffer;
@@ -274,7 +274,7 @@ function createObsidianFortress(c: AudioContext, dest: AudioNode): AmbientLayer 
   grind.start();
   nodes.push(grind);
 
-  return {nodes, gain};
+  return { nodes, gain };
 }
 
 function createTheVoid(c: AudioContext, dest: AudioNode): AmbientLayer {
@@ -361,7 +361,7 @@ function createTheVoid(c: AudioContext, dest: AudioNode): AmbientLayer {
   tri2.start();
   nodes.push(tri1, tri2);
 
-  return {nodes, gain};
+  return { nodes, gain };
 }
 
 // ---------------------------------------------------------------------------
@@ -395,10 +395,20 @@ function stopAmbient(): void {
         if ('stop' in node && typeof (node as OscillatorNode).stop === 'function') {
           (node as OscillatorNode).stop();
         }
-      } catch { /* already stopped */ }
-      try { node.disconnect(); } catch { /* ignore */ }
+      } catch {
+        /* already stopped */
+      }
+      try {
+        node.disconnect();
+      } catch {
+        /* ignore */
+      }
     }
-    try { layer.gain.disconnect(); } catch { /* ignore */ }
+    try {
+      layer.gain.disconnect();
+    } catch {
+      /* ignore */
+    }
   }, FADE_OUT_MS + 100);
 
   activeLayer = null;
@@ -436,14 +446,25 @@ export function updateAmbientSound(): void {
   const state = useGameStore.getState();
   const screen = state.screen;
 
-  if (screen === 'mainMenu' || screen === 'dead' || screen === 'gameComplete' || screen === 'newGame' || screen === 'settings') {
+  if (
+    screen === 'mainMenu' ||
+    screen === 'dead' ||
+    screen === 'gameComplete' ||
+    screen === 'newGame' ||
+    screen === 'settings'
+  ) {
     if (currentBiome !== null) {
       stopAmbient();
     }
     return;
   }
 
-  if (screen === 'playing' || screen === 'paused' || screen === 'victory' || screen === 'bossIntro') {
+  if (
+    screen === 'playing' ||
+    screen === 'paused' ||
+    screen === 'victory' ||
+    screen === 'bossIntro'
+  ) {
     // Map floor to biome theme
     const themes: BiomeKey[] = ['firePits', 'fleshCaverns', 'obsidianFortress', 'theVoid'];
     const idx = (state.stage.floor - 1) % themes.length;

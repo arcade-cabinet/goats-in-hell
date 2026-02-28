@@ -1,6 +1,7 @@
-import React, {useEffect, useRef} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Animated} from 'react-native';
-import {useGameStore, DIFFICULTY_PRESETS} from '../state/GameStore';
+import type React from 'react';
+import { useEffect, useRef } from 'react';
+import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { DIFFICULTY_PRESETS, useGameStore } from '../state/GameStore';
 
 function formatPlaytime(startTime: number): string {
   const elapsed = Date.now() - startTime;
@@ -11,15 +12,15 @@ function formatPlaytime(startTime: number): string {
 }
 
 export const GameCompleteScreen: React.FC = () => {
-  const score = useGameStore(s => s.score);
-  const totalKills = useGameStore(s => s.totalKills);
-  const floor = useGameStore(s => s.stage.floor);
-  const level = useGameStore(s => s.leveling.level);
-  const startTime = useGameStore(s => s.startTime);
-  const difficulty = useGameStore(s => s.difficulty);
-  const nightmareFlags = useGameStore(s => s.nightmareFlags);
-  const bossesDefeated = useGameStore(s => s.bossesDefeated);
-  const resetToMenu = useGameStore(s => s.resetToMenu);
+  const score = useGameStore((s) => s.score);
+  const totalKills = useGameStore((s) => s.totalKills);
+  const floor = useGameStore((s) => s.stage.floor);
+  const level = useGameStore((s) => s.leveling.level);
+  const startTime = useGameStore((s) => s.startTime);
+  const difficulty = useGameStore((s) => s.difficulty);
+  const nightmareFlags = useGameStore((s) => s.nightmareFlags);
+  const bossesDefeated = useGameStore((s) => s.bossesDefeated);
+  const resetToMenu = useGameStore((s) => s.resetToMenu);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const titleSlide = useRef(new Animated.Value(-40)).current;
@@ -65,7 +66,7 @@ export const GameCompleteScreen: React.FC = () => {
   }, [pulseAnim]);
 
   return (
-    <Animated.View style={[styles.container, {opacity: fadeAnim}]} pointerEvents="box-none">
+    <Animated.View style={[styles.container, { opacity: fadeAnim }]} pointerEvents="box-none">
       <View style={styles.overlay} />
 
       {/* Decorative top */}
@@ -78,18 +79,18 @@ export const GameCompleteScreen: React.FC = () => {
       </View>
 
       {/* Title */}
-      <Animated.View style={[styles.titleWrap, {transform: [{translateY: titleSlide}]}]}>
+      <Animated.View style={[styles.titleWrap, { transform: [{ translateY: titleSlide }] }]}>
         <Text style={styles.titleGlow2}>YOU ESCAPED</Text>
         <Text style={styles.titleGlow1}>YOU ESCAPED</Text>
         <Text style={styles.title}>YOU ESCAPED</Text>
       </Animated.View>
 
-      <Animated.Text style={[styles.subtitle, {opacity: fadeAnim}]}>
+      <Animated.Text style={[styles.subtitle, { opacity: fadeAnim }]}>
         The gates of Hell close behind you...
       </Animated.Text>
 
       {/* Final stats */}
-      <Animated.View style={[styles.statsPanel, {opacity: fadeAnim}]}>
+      <Animated.View style={[styles.statsPanel, { opacity: fadeAnim }]}>
         <View style={styles.divider} />
 
         <View style={styles.statRow}>
@@ -149,11 +150,8 @@ export const GameCompleteScreen: React.FC = () => {
       </Animated.View>
 
       {/* Return button */}
-      <TouchableOpacity
-        style={styles.returnBtn}
-        onPress={resetToMenu}
-        activeOpacity={0.7}>
-        <Animated.View style={[styles.returnGlow, {opacity: pulseAnim}]} />
+      <TouchableOpacity style={styles.returnBtn} onPress={resetToMenu} activeOpacity={0.7}>
+        <Animated.View style={[styles.returnGlow, { opacity: pulseAnim }]} />
         <Text style={styles.returnText}>RETURN TO THE SURFACE</Text>
       </TouchableOpacity>
 
@@ -218,7 +216,7 @@ const styles = StyleSheet.create({
     color: 'transparent',
     letterSpacing: 6,
     textShadowColor: 'rgba(255, 200, 50, 0.6)',
-    textShadowOffset: {width: 0, height: 0},
+    textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 15,
   },
   titleGlow2: {
@@ -229,7 +227,7 @@ const styles = StyleSheet.create({
     color: 'transparent',
     letterSpacing: 6,
     textShadowColor: 'rgba(255, 200, 50, 0.25)',
-    textShadowOffset: {width: 0, height: 0},
+    textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 40,
   },
 

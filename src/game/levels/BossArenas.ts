@@ -1,15 +1,29 @@
-import {MapCell, PLATFORM_HEIGHT} from './LevelGenerator';
-import type {EntityType} from '../entities/components';
+import type { EntityType } from '../entities/components';
+import { MapCell } from './LevelGenerator';
 
 // Lazy accessors — avoids circular import crash at module load time
 // (LevelGenerator -> BossArenas -> LevelGenerator cycle)
-function EMPTY() { return MapCell.EMPTY; }
-function WALL_STONE() { return MapCell.WALL_STONE; }
-function WALL_LAVA() { return MapCell.WALL_LAVA; }
-function WALL_OBSIDIAN() { return MapCell.WALL_OBSIDIAN; }
-function FLOOR_RAISED() { return MapCell.FLOOR_RAISED; }
-function FLOOR_LAVA() { return MapCell.FLOOR_LAVA; }
-function RAMP() { return MapCell.RAMP; }
+function EMPTY() {
+  return MapCell.EMPTY;
+}
+function WALL_STONE() {
+  return MapCell.WALL_STONE;
+}
+function WALL_LAVA() {
+  return MapCell.WALL_LAVA;
+}
+function WALL_OBSIDIAN() {
+  return MapCell.WALL_OBSIDIAN;
+}
+function FLOOR_RAISED() {
+  return MapCell.FLOOR_RAISED;
+}
+function FLOOR_LAVA() {
+  return MapCell.FLOOR_LAVA;
+}
+function RAMP() {
+  return MapCell.RAMP;
+}
 
 export const BOSS_ARENA_SIZE = 19;
 
@@ -89,7 +103,10 @@ function buildInfernoArena(grid: number[][], size: number): void {
 
   // Stone cover pillars in middle lane (where most combat happens)
   const pillarPositions = [
-    [4, mid], [mid - 2, mid], [mid + 2, mid], [size - 5, mid],
+    [4, mid],
+    [mid - 2, mid],
+    [mid + 2, mid],
+    [size - 5, mid],
   ];
   for (const [px, pz] of pillarPositions) {
     grid[pz][px] = WALL_STONE();
@@ -98,8 +115,10 @@ function buildInfernoArena(grid: number[][], size: number): void {
 
   // Corner raised platforms (2x2) — elevated vantage points
   const corners = [
-    {x: 2, z: 2}, {x: size - 4, z: 2},
-    {x: 2, z: size - 4}, {x: size - 4, z: size - 4},
+    { x: 2, z: 2 },
+    { x: size - 4, z: 2 },
+    { x: 2, z: size - 4 },
+    { x: size - 4, z: size - 4 },
   ];
   for (const c of corners) {
     for (let dz = 0; dz <= 1; dz++) {
@@ -162,7 +181,8 @@ function buildVoidArena(grid: number[][], size: number): void {
       if (grid[z][x] === EMPTY()) grid[z][x] = FLOOR_LAVA();
       if (grid[z][size - 1 - x] === EMPTY()) grid[z][size - 1 - x] = FLOOR_LAVA();
       if (grid[size - 1 - z][x] === EMPTY()) grid[size - 1 - z][x] = FLOOR_LAVA();
-      if (grid[size - 1 - z][size - 1 - x] === EMPTY()) grid[size - 1 - z][size - 1 - x] = FLOOR_LAVA();
+      if (grid[size - 1 - z][size - 1 - x] === EMPTY())
+        grid[size - 1 - z][size - 1 - x] = FLOOR_LAVA();
     }
   }
 }
@@ -201,8 +221,10 @@ function buildIronArena(grid: number[][], size: number): void {
 
   // Raised sniper positions at dead ends
   const sniperSpots = [
-    {x: 2, z: 2}, {x: size - 3, z: 2},
-    {x: 2, z: size - 3}, {x: size - 3, z: size - 3},
+    { x: 2, z: 2 },
+    { x: size - 3, z: 2 },
+    { x: 2, z: size - 3 },
+    { x: size - 3, z: size - 3 },
   ];
   for (const s of sniperSpots) {
     grid[s.z][s.x] = FLOOR_RAISED();
@@ -245,7 +267,12 @@ function buildArchArena(grid: number[][], size: number): void {
   }
 
   // 4 ramp approaches to the ring
-  const rampDirs = [{dx: 1, dz: 0}, {dx: -1, dz: 0}, {dx: 0, dz: 1}, {dx: 0, dz: -1}];
+  const rampDirs = [
+    { dx: 1, dz: 0 },
+    { dx: -1, dz: 0 },
+    { dx: 0, dz: 1 },
+    { dx: 0, dz: -1 },
+  ];
   for (const dir of rampDirs) {
     for (let i = ringR; i <= ringR + 2; i++) {
       const rx = mid + dir.dx * i;

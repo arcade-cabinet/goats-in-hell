@@ -6,9 +6,9 @@
  * for sprint/jump/reload/pause.
  */
 
-import type {InputFrame} from '../InputActions';
-import type {IInputProvider} from '../InputManager';
-import {useGameStore} from '../../../state/GameStore';
+import { useGameStore } from '../../../state/GameStore';
+import type { InputFrame } from '../InputActions';
+import type { IInputProvider } from '../InputManager';
 
 export class KeyboardMouseProvider implements IInputProvider {
   readonly type = 'keyboard-mouse';
@@ -52,7 +52,7 @@ export class KeyboardMouseProvider implements IInputProvider {
     document.addEventListener('mousemove', this.onMouseMove);
     document.addEventListener('mousedown', this.onMouseDown);
     document.addEventListener('mouseup', this.onMouseUp);
-    document.addEventListener('wheel', this.onWheel, {passive: true});
+    document.addEventListener('wheel', this.onWheel, { passive: true });
   }
 
   // -------------------------------------------------------------------------
@@ -170,9 +170,7 @@ export class KeyboardMouseProvider implements IInputProvider {
   }
 
   isAvailable(): boolean {
-    return !(
-      'ontouchstart' in window && navigator.maxTouchPoints > 0
-    );
+    return !('ontouchstart' in window && navigator.maxTouchPoints > 0);
   }
 
   dispose(): void {

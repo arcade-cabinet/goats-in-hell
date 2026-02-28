@@ -1,8 +1,7 @@
+export { DynamicLighting, triggerMuzzleFlash } from './Lighting';
 export {
   PostProcessingEffects,
-  triggerDamageFlash,
   setSprinting,
+  triggerDamageFlash,
   triggerFloorFadeIn,
 } from './PostProcessing';
-
-export {DynamicLighting, triggerMuzzleFlash} from './Lighting';

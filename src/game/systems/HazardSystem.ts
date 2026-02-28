@@ -5,15 +5,15 @@
  * - Explosive barrels: take damage from player projectiles, explode dealing AoE
  */
 
-import type {Entity} from '../entities/components';
-import {vec3Distance} from '../entities/vec3';
-import {world} from '../entities/world';
-import {GameState} from '../../state/GameState';
-import {playSound} from './AudioSystem';
-import {pushDamageEvent} from './damageEvents';
-import {removeEntity} from './CombatSystem';
-import {getGameTime} from './GameClock';
-import {registerDamageDirection, triggerBloodSplatter, triggerEnvKill} from '../ui/HUDEvents';
+import { GameState } from '../../state/GameState';
+import type { Entity } from '../entities/components';
+import { vec3Distance } from '../entities/vec3';
+import { world } from '../entities/world';
+import { registerDamageDirection, triggerBloodSplatter, triggerEnvKill } from '../ui/HUDEvents';
+import { playSound } from './AudioSystem';
+import { removeEntity } from './CombatSystem';
+import { pushDamageEvent } from './damageEvents';
+import { getGameTime } from './GameClock';
 
 const SPIKE_RANGE = 1.2;
 const SPIKE_COOLDOWN_MS = 1500;
@@ -45,7 +45,7 @@ export function hazardSystemUpdate(): void {
         if (now - lastHit > SPIKE_COOLDOWN_MS) {
           player.player.hp -= hz.damage;
           hazardCooldowns.set(hazard.id!, now);
-          GameState.set({damageFlash: 0.5, screenShake: 4});
+          GameState.set({ damageFlash: 0.5, screenShake: 4 });
           playSound('hurt');
           triggerBloodSplatter(Math.min(1, hz.damage / 20));
           registerDamageDirection(pos);
@@ -90,7 +90,7 @@ function explodeBarrel(barrel: Entity): void {
 
     if (entity.type === 'player' && entity.player) {
       entity.player.hp -= actualDmg;
-      GameState.set({damageFlash: 0.8, screenShake: 12});
+      GameState.set({ damageFlash: 0.8, screenShake: 12 });
       registerDamageDirection(pos);
       triggerBloodSplatter(Math.min(1, actualDmg / 30));
       playSound('hurt');
@@ -108,7 +108,7 @@ function explodeBarrel(barrel: Entity): void {
             const proximity = 1 - playerDist / (BARREL_EXPLOSION_RANGE * 2);
             const shake = Math.ceil(proximity * 6);
             const cur = GameState.get().screenShake;
-            GameState.set({screenShake: Math.max(cur, shake)});
+            GameState.set({ screenShake: Math.max(cur, shake) });
           }
         }
       }

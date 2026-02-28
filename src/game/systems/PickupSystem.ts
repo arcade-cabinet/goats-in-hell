@@ -1,8 +1,14 @@
-import type {Entity, WeaponId} from '../entities/components';
-import {vec3Distance, vec3Subtract, vec3Normalize, vec3Scale, vec3AddInPlace} from '../entities/vec3';
-import {world} from '../entities/world';
-import {playSound} from './AudioSystem';
-import {activatePowerUp} from './PowerUpSystem';
+import type { Entity, WeaponId } from '../entities/components';
+import {
+  vec3AddInPlace,
+  vec3Distance,
+  vec3Normalize,
+  vec3Scale,
+  vec3Subtract,
+} from '../entities/vec3';
+import { world } from '../entities/world';
+import { playSound } from './AudioSystem';
+import { activatePowerUp } from './PowerUpSystem';
 
 // Magnet pull: pickups within this radius accelerate toward the player
 const MAGNET_RADIUS = 3.5;
@@ -26,9 +32,7 @@ const WEAPON_PICKUP_RESERVE: Record<WeaponId, number> = {
  * the pickup from the world.
  */
 export function pickupSystemUpdate(): void {
-  const player = world.entities.find(
-    (e: Entity) => e.type === 'player',
-  );
+  const player = world.entities.find((e: Entity) => e.type === 'player');
 
   if (!player || !player.player || !player.position || !player.ammo) {
     return;
@@ -37,9 +41,7 @@ export function pickupSystemUpdate(): void {
   const playerPos = player.position;
 
   // Snapshot so removals during iteration are safe
-  const pickups = world.entities.filter(
-    (e: Entity) => e.pickup && e.pickup.active && e.position,
-  );
+  const pickups = world.entities.filter((e: Entity) => e.pickup?.active && e.position);
 
   for (const entity of pickups) {
     const pickup = entity.pickup!;
@@ -61,10 +63,7 @@ export function pickupSystemUpdate(): void {
     // ----- Apply pickup effect -----
 
     if (pickup.pickupType === 'health') {
-      player.player.hp = Math.min(
-        player.player.hp + pickup.value,
-        player.player.maxHp,
-      );
+      player.player.hp = Math.min(player.player.hp + pickup.value, player.player.maxHp);
     } else if (pickup.pickupType === 'ammo') {
       const weaponId = player.player.currentWeapon;
       const ammoSlot = player.ammo[weaponId];

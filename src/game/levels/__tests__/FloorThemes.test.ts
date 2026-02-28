@@ -2,7 +2,7 @@
  * FloorThemes tests — theme cycling, properties, floor-to-theme mapping.
  */
 
-import {getThemeForFloor, FloorTheme} from '../FloorThemes';
+import { getThemeForFloor } from '../FloorThemes';
 
 describe('getThemeForFloor', () => {
   it('floor 1 returns firePits', () => {
@@ -52,14 +52,14 @@ describe('theme properties', () => {
   });
 
   it('enemy density increases from firePits to theVoid', () => {
-    const densities = [1, 2, 3, 4].map(f => getThemeForFloor(f).enemyDensity);
+    const densities = [1, 2, 3, 4].map((f) => getThemeForFloor(f).enemyDensity);
     for (let i = 1; i < densities.length; i++) {
       expect(densities[i]).toBeGreaterThanOrEqual(densities[i - 1]);
     }
   });
 
   it('each theme has unique display name', () => {
-    const names = new Set([1, 2, 3, 4].map(f => getThemeForFloor(f).displayName));
+    const names = new Set([1, 2, 3, 4].map((f) => getThemeForFloor(f).displayName));
     expect(names.size).toBe(4);
   });
 });

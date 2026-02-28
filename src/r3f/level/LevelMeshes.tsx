@@ -9,24 +9,23 @@
  *
  * LevelColliders is a separate declarative component for Rapier physics.
  */
-import {useEffect, useMemo} from 'react';
-import {useThree} from '@react-three/fiber';
-import {RigidBody, CuboidCollider} from '@react-three/rapier';
-import * as THREE from 'three';
 
-import {MapCell, PLATFORM_HEIGHT} from '../../game/levels/LevelGenerator';
-import {CELL_SIZE, WALL_HEIGHT} from '../../constants';
-import type {FloorTheme} from '../../game/levels/FloorThemes';
+import { useThree } from '@react-three/fiber';
+import { CuboidCollider, RigidBody } from '@react-three/rapier';
+import { useEffect, useMemo } from 'react';
+import * as THREE from 'three';
+import { CELL_SIZE, WALL_HEIGHT } from '../../constants';
+import type { FloorTheme } from '../../game/levels/FloorThemes';
+import { MapCell, PLATFORM_HEIGHT } from '../../game/levels/LevelGenerator';
 import {
-  createWallMaterial,
-  createFloorMaterial,
   createCeilingMaterial,
-  getWallTypeMaterial,
-  createLavaMaterial,
-  createVoidPitMaterial,
   createDoorMaterial,
-  createRampMaterial,
+  createFloorMaterial,
+  createLavaMaterial,
   createPlatformMaterial,
+  createRampMaterial,
+  createVoidPitMaterial,
+  getWallTypeMaterial,
 } from './Materials';
 
 // ---------------------------------------------------------------------------
@@ -47,13 +46,13 @@ export interface WallPosition {
 }
 
 interface CellMeshData {
-  wallPositions: Map<number, {x: number; y: number; z: number}[]>;
-  floorCells: {x: number; z: number}[];
-  lavaCells: {x: number; z: number}[];
-  platformCells: {x: number; z: number}[];
-  rampCells: {x: number; z: number}[];
-  voidCells: {x: number; z: number}[];
-  doorPositions: {x: number; y: number; z: number}[];
+  wallPositions: Map<number, { x: number; y: number; z: number }[]>;
+  floorCells: { x: number; z: number }[];
+  lavaCells: { x: number; z: number }[];
+  platformCells: { x: number; z: number }[];
+  rampCells: { x: number; z: number }[];
+  voidCells: { x: number; z: number }[];
+  doorPositions: { x: number; y: number; z: number }[];
 }
 
 // ---------------------------------------------------------------------------
@@ -86,13 +85,13 @@ function analyzeGrid(
   width: number,
   depth: number,
 ): CellMeshData {
-  const wallPositions = new Map<number, {x: number; y: number; z: number}[]>();
-  const floorCells: {x: number; z: number}[] = [];
-  const lavaCells: {x: number; z: number}[] = [];
-  const platformCells: {x: number; z: number}[] = [];
-  const rampCells: {x: number; z: number}[] = [];
-  const voidCells: {x: number; z: number}[] = [];
-  const doorPositions: {x: number; y: number; z: number}[] = [];
+  const wallPositions = new Map<number, { x: number; y: number; z: number }[]>();
+  const floorCells: { x: number; z: number }[] = [];
+  const lavaCells: { x: number; z: number }[] = [];
+  const platformCells: { x: number; z: number }[] = [];
+  const rampCells: { x: number; z: number }[] = [];
+  const voidCells: { x: number; z: number }[] = [];
+  const doorPositions: { x: number; y: number; z: number }[] = [];
 
   for (let row = 0; row < depth; row++) {
     for (let col = 0; col < width; col++) {
@@ -118,22 +117,30 @@ function analyzeGrid(
           z: worldZ,
         });
         // Doors also get a floor
-        floorCells.push({x: col, z: row});
+        floorCells.push({ x: col, z: row });
       } else if (cell === MapCell.EMPTY) {
-        floorCells.push({x: col, z: row});
+        floorCells.push({ x: col, z: row });
       } else if (cell === MapCell.FLOOR_LAVA) {
-        lavaCells.push({x: col, z: row});
+        lavaCells.push({ x: col, z: row });
       } else if (cell === MapCell.FLOOR_RAISED) {
-        platformCells.push({x: col, z: row});
+        platformCells.push({ x: col, z: row });
       } else if (cell === MapCell.RAMP) {
-        rampCells.push({x: col, z: row});
+        rampCells.push({ x: col, z: row });
       } else if (cell === MapCell.FLOOR_VOID) {
-        voidCells.push({x: col, z: row});
+        voidCells.push({ x: col, z: row });
       }
     }
   }
 
-  return {wallPositions, floorCells, lavaCells, platformCells, rampCells, voidCells, doorPositions};
+  return {
+    wallPositions,
+    floorCells,
+    lavaCells,
+    platformCells,
+    rampCells,
+    voidCells,
+    doorPositions,
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -147,7 +154,7 @@ function analyzeGrid(
  *
  * Returns null (no React DOM output). All rendering is side-effectful.
  */
-export function LevelMeshes({grid, theme, width, depth}: LevelMeshesProps): null {
+export function LevelMeshes({ grid, theme, width, depth }: LevelMeshesProps): null {
   const scene = useThree((state) => state.scene);
 
   // Memoize grid analysis so it only recalculates when inputs change
@@ -162,10 +169,7 @@ export function LevelMeshes({grid, theme, width, depth}: LevelMeshesProps): null
     // -----------------------------------------------------------------------
     // Floor: single large plane at y=0
     // -----------------------------------------------------------------------
-    const floorGeo = new THREE.PlaneGeometry(
-      width * CELL_SIZE,
-      depth * CELL_SIZE,
-    );
+    const floorGeo = new THREE.PlaneGeometry(width * CELL_SIZE, depth * CELL_SIZE);
     floorGeo.rotateX(-Math.PI / 2); // Lay flat (face up)
     const floorMat = createFloorMaterial(theme);
     const floorMesh = new THREE.Mesh(floorGeo, floorMat);
@@ -173,11 +177,7 @@ export function LevelMeshes({grid, theme, width, depth}: LevelMeshesProps): null
     // Grid spans from col 0..width-1 and row 0..depth-1
     // World X center: (width-1) * CELL_SIZE / 2
     // World Z center: -(depth-1) * CELL_SIZE / 2  (negated)
-    floorMesh.position.set(
-      ((width - 1) * CELL_SIZE) / 2,
-      0,
-      -((depth - 1) * CELL_SIZE) / 2,
-    );
+    floorMesh.position.set(((width - 1) * CELL_SIZE) / 2, 0, -((depth - 1) * CELL_SIZE) / 2);
     floorMesh.receiveShadow = true;
     floorMesh.name = 'level-floor';
     scene.add(floorMesh);
@@ -186,10 +186,7 @@ export function LevelMeshes({grid, theme, width, depth}: LevelMeshesProps): null
     // -----------------------------------------------------------------------
     // Ceiling: single large plane at y=WALL_HEIGHT, facing down
     // -----------------------------------------------------------------------
-    const ceilingGeo = new THREE.PlaneGeometry(
-      width * CELL_SIZE,
-      depth * CELL_SIZE,
-    );
+    const ceilingGeo = new THREE.PlaneGeometry(width * CELL_SIZE, depth * CELL_SIZE);
     ceilingGeo.rotateX(Math.PI / 2); // Face down
     const ceilingMat = createCeilingMaterial(theme);
     const ceilingMesh = new THREE.Mesh(ceilingGeo, ceilingMat);
@@ -260,20 +257,12 @@ export function LevelMeshes({grid, theme, width, depth}: LevelMeshesProps): null
     if (meshData.lavaCells.length > 0) {
       const lavaGeo = new THREE.BoxGeometry(CELL_SIZE, 0.05, CELL_SIZE);
       const lavaMat = createLavaMaterial();
-      const lavaInstanced = new THREE.InstancedMesh(
-        lavaGeo,
-        lavaMat,
-        meshData.lavaCells.length,
-      );
+      const lavaInstanced = new THREE.InstancedMesh(lavaGeo, lavaMat, meshData.lavaCells.length);
       lavaInstanced.name = 'level-lava';
 
       for (let i = 0; i < meshData.lavaCells.length; i++) {
         const cell = meshData.lavaCells[i];
-        tempMatrix.makeTranslation(
-          cell.x * CELL_SIZE,
-          0.03,
-          -cell.z * CELL_SIZE,
-        );
+        tempMatrix.makeTranslation(cell.x * CELL_SIZE, 0.03, -cell.z * CELL_SIZE);
         lavaInstanced.setMatrixAt(i, tempMatrix);
       }
 
@@ -299,11 +288,7 @@ export function LevelMeshes({grid, theme, width, depth}: LevelMeshesProps): null
 
       for (let i = 0; i < meshData.platformCells.length; i++) {
         const cell = meshData.platformCells[i];
-        tempMatrix.makeTranslation(
-          cell.x * CELL_SIZE,
-          PLATFORM_HEIGHT / 2,
-          -cell.z * CELL_SIZE,
-        );
+        tempMatrix.makeTranslation(cell.x * CELL_SIZE, PLATFORM_HEIGHT / 2, -cell.z * CELL_SIZE);
         platformInstanced.setMatrixAt(i, tempMatrix);
       }
 
@@ -319,22 +304,14 @@ export function LevelMeshes({grid, theme, width, depth}: LevelMeshesProps): null
       const rampHeight = PLATFORM_HEIGHT * 0.5;
       const rampGeo = new THREE.BoxGeometry(CELL_SIZE, rampHeight, CELL_SIZE);
       const rampMat = createRampMaterial();
-      const rampInstanced = new THREE.InstancedMesh(
-        rampGeo,
-        rampMat,
-        meshData.rampCells.length,
-      );
+      const rampInstanced = new THREE.InstancedMesh(rampGeo, rampMat, meshData.rampCells.length);
       rampInstanced.name = 'level-ramps';
       rampInstanced.castShadow = true;
       rampInstanced.receiveShadow = true;
 
       for (let i = 0; i < meshData.rampCells.length; i++) {
         const cell = meshData.rampCells[i];
-        tempMatrix.makeTranslation(
-          cell.x * CELL_SIZE,
-          rampHeight / 2,
-          -cell.z * CELL_SIZE,
-        );
+        tempMatrix.makeTranslation(cell.x * CELL_SIZE, rampHeight / 2, -cell.z * CELL_SIZE);
         rampInstanced.setMatrixAt(i, tempMatrix);
       }
 
@@ -349,20 +326,12 @@ export function LevelMeshes({grid, theme, width, depth}: LevelMeshesProps): null
     if (meshData.voidCells.length > 0) {
       const voidGeo = new THREE.BoxGeometry(CELL_SIZE, 0.05, CELL_SIZE);
       const voidMat = createVoidPitMaterial();
-      const voidInstanced = new THREE.InstancedMesh(
-        voidGeo,
-        voidMat,
-        meshData.voidCells.length,
-      );
+      const voidInstanced = new THREE.InstancedMesh(voidGeo, voidMat, meshData.voidCells.length);
       voidInstanced.name = 'level-void-pits';
 
       for (let i = 0; i < meshData.voidCells.length; i++) {
         const cell = meshData.voidCells[i];
-        tempMatrix.makeTranslation(
-          cell.x * CELL_SIZE,
-          -0.02,
-          -cell.z * CELL_SIZE,
-        );
+        tempMatrix.makeTranslation(cell.x * CELL_SIZE, -0.02, -cell.z * CELL_SIZE);
         voidInstanced.setMatrixAt(i, tempMatrix);
       }
 
@@ -386,7 +355,7 @@ export function LevelMeshes({grid, theme, width, depth}: LevelMeshesProps): null
         }
       }
     };
-  }, [scene, theme, meshData]);
+  }, [scene, theme, meshData, depth, width]);
 
   return null;
 }
@@ -491,7 +460,7 @@ export interface ColliderData {
  */
 export function extractColliderData(
   grid: MapCell[][],
-  theme: FloorTheme,
+  _theme: FloorTheme,
   width: number,
   depth: number,
 ): ColliderData {
@@ -507,14 +476,14 @@ export function extractColliderData(
       const worldZ = -row * CELL_SIZE;
 
       if (isWallCell(cell)) {
-        wallPositions.push({x: worldX, y: WALL_HEIGHT / 2, z: worldZ});
+        wallPositions.push({ x: worldX, y: WALL_HEIGHT / 2, z: worldZ });
       } else if (cell === MapCell.DOOR) {
-        doorPositions.push({x: worldX, y: WALL_HEIGHT / 2, z: worldZ});
+        doorPositions.push({ x: worldX, y: WALL_HEIGHT / 2, z: worldZ });
       } else if (cell === MapCell.FLOOR_RAISED) {
-        platformPositions.push({x: worldX, y: PLATFORM_HEIGHT / 2, z: worldZ});
+        platformPositions.push({ x: worldX, y: PLATFORM_HEIGHT / 2, z: worldZ });
       } else if (cell === MapCell.RAMP) {
         const rampHeight = PLATFORM_HEIGHT * 0.5;
-        rampPositions.push({x: worldX, y: rampHeight / 2, z: worldZ});
+        rampPositions.push({ x: worldX, y: rampHeight / 2, z: worldZ });
       }
     }
   }

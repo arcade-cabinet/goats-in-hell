@@ -12,9 +12,10 @@
  * - getTouchProvider(): returns the IInputProvider instance
  */
 
-import React, {useEffect, useRef, useCallback} from 'react';
-import type {InputFrame} from '../InputActions';
-import type {IInputProvider} from '../InputManager';
+import type React from 'react';
+import { useCallback, useEffect, useRef } from 'react';
+import type { InputFrame } from '../InputActions';
+import type { IInputProvider } from '../InputManager';
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -137,12 +138,12 @@ export function getTouchProvider(): IInputProvider {
 export const TouchOverlay: React.FC = () => {
   // Joystick tracking
   const joystickTouchId = useRef<number | null>(null);
-  const joystickCenter = useRef({x: 0, y: 0});
+  const joystickCenter = useRef({ x: 0, y: 0 });
   const joystickKnobRef = useRef<HTMLDivElement | null>(null);
 
   // Look zone tracking
   const lookTouchId = useRef<number | null>(null);
-  const lookLastPos = useRef({x: 0, y: 0});
+  const lookLastPos = useRef({ x: 0, y: 0 });
 
   // -----------------------------------------------------------------------
   // Joystick handlers
@@ -186,8 +187,10 @@ export const TouchOverlay: React.FC = () => {
         }
       } else {
         const clampedDist = Math.min(dist, maxRadius);
-        const normX = (dx / dist) * (clampedDist - JOYSTICK_DEADZONE) / (maxRadius - JOYSTICK_DEADZONE);
-        const normY = (dy / dist) * (clampedDist - JOYSTICK_DEADZONE) / (maxRadius - JOYSTICK_DEADZONE);
+        const normX =
+          ((dx / dist) * (clampedDist - JOYSTICK_DEADZONE)) / (maxRadius - JOYSTICK_DEADZONE);
+        const normY =
+          ((dy / dist) * (clampedDist - JOYSTICK_DEADZONE)) / (maxRadius - JOYSTICK_DEADZONE);
         touchState.moveX = Math.max(-1, Math.min(1, normX));
         touchState.moveZ = Math.max(-1, Math.min(1, -normY)); // invert Y: up = forward
 
@@ -225,7 +228,7 @@ export const TouchOverlay: React.FC = () => {
     if (!touch) return;
     e.preventDefault();
     lookTouchId.current = touch.identifier;
-    lookLastPos.current = {x: touch.clientX, y: touch.clientY};
+    lookLastPos.current = { x: touch.clientX, y: touch.clientY };
   }, []);
 
   const onLookMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
@@ -239,7 +242,7 @@ export const TouchOverlay: React.FC = () => {
       const dy = touch.clientY - lookLastPos.current.y;
       touchState.lookDeltaX += dx * LOOK_SENSITIVITY;
       touchState.lookDeltaY += dy * LOOK_SENSITIVITY;
-      lookLastPos.current = {x: touch.clientX, y: touch.clientY};
+      lookLastPos.current = { x: touch.clientX, y: touch.clientY };
     }
   }, []);
 
@@ -281,10 +284,13 @@ export const TouchOverlay: React.FC = () => {
     touchState.pause = true;
   }, []);
 
-  const onWeaponTap = useCallback((slot: number) => (e: React.TouchEvent) => {
-    e.preventDefault();
-    touchState.weaponSlot = slot;
-  }, []);
+  const onWeaponTap = useCallback(
+    (slot: number) => (e: React.TouchEvent) => {
+      e.preventDefault();
+      touchState.weaponSlot = slot;
+    },
+    [],
+  );
 
   // Clean up on unmount
   useEffect(() => {
@@ -425,7 +431,7 @@ export const TouchOverlay: React.FC = () => {
       </div>
 
       {/* ---- Weapon slots 1-4 (top-right row) ---- */}
-      {[1, 2, 3, 4].map(slot => (
+      {[1, 2, 3, 4].map((slot) => (
         <div
           key={slot}
           onTouchStart={onWeaponTap(slot)}

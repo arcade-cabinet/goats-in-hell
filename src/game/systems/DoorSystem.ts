@@ -4,10 +4,10 @@
  * Tracks door open/close states per grid cell. The R3F level renderer
  * reads these states to animate door meshes.
  */
-import type {Entity} from '../entities/components';
-import {world} from '../entities/world';
-import {playSound} from './AudioSystem';
-import {CELL_SIZE, MapCell} from '../levels/LevelGenerator';
+import type { Entity } from '../entities/components';
+import { world } from '../entities/world';
+import { CELL_SIZE, MapCell } from '../levels/LevelGenerator';
+import { playSound } from './AudioSystem';
 
 /** Tracks the opening/closing state of door meshes by name. */
 export interface DoorState {
@@ -37,10 +37,7 @@ export function getDoorStates(): ReadonlyMap<string, DoorState> {
 /**
  * Each frame: find player, check proximity to door cells, animate opening.
  */
-export function doorSystemUpdate(
-  grid: MapCell[][],
-  deltaTime: number,
-): void {
+export function doorSystemUpdate(grid: MapCell[][], deltaTime: number): void {
   const player = world.entities.find((e: Entity) => e.type === 'player');
   if (!player?.position) return;
 

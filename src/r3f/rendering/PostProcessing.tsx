@@ -5,17 +5,19 @@
  * using @react-three/postprocessing. Exposes module-level trigger
  * functions for damage flash, sprint effects, and floor transitions.
  */
-import React, {useRef, useMemo} from 'react';
-import {useFrame} from '@react-three/fiber';
+
+import { useFrame } from '@react-three/fiber';
 import {
-  EffectComposer,
   Bloom,
-  Vignette,
   ChromaticAberration,
+  EffectComposer,
   Noise,
+  Vignette,
 } from '@react-three/postprocessing';
-import {BlendFunction} from 'postprocessing';
-import {Vector2} from 'three';
+import { BlendFunction } from 'postprocessing';
+import type React from 'react';
+import { useMemo, useRef } from 'react';
+import { Vector2 } from 'three';
 
 // ---------------------------------------------------------------------------
 // Module-level effect state (avoids Zustand overhead for per-frame effects)
@@ -69,10 +71,7 @@ interface EffectState {
 function computeEffectState(deltaMs: number): EffectState {
   // Decay damage flash
   if (damageFlashIntensity > 0) {
-    damageFlashIntensity = Math.max(
-      0,
-      damageFlashIntensity - deltaMs * DAMAGE_FLASH_DECAY,
-    );
+    damageFlashIntensity = Math.max(0, damageFlashIntensity - deltaMs * DAMAGE_FLASH_DECAY);
   }
 
   // Interpolate sprint blend
@@ -85,10 +84,7 @@ function computeEffectState(deltaMs: number): EffectState {
 
   // Decay floor fade
   if (floorFadeIntensity > 0) {
-    floorFadeIntensity = Math.max(
-      0,
-      floorFadeIntensity - deltaMs * FLOOR_FADE_DECAY,
-    );
+    floorFadeIntensity = Math.max(0, floorFadeIntensity - deltaMs * FLOOR_FADE_DECAY);
   }
 
   // Compute derived values
@@ -184,11 +180,7 @@ export function PostProcessingEffects(): React.JSX.Element {
         radialModulation={false}
         modulationOffset={0}
       />
-      <Noise
-        ref={noiseRef}
-        opacity={0.04}
-        blendFunction={BlendFunction.OVERLAY}
-      />
+      <Noise ref={noiseRef} opacity={0.04} blendFunction={BlendFunction.OVERLAY} />
     </EffectComposer>
   );
 }

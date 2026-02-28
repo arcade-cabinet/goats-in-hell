@@ -1,14 +1,14 @@
-import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import {useGameStore, writeSettings} from '../state/GameStore';
-import {setMasterVolume} from '../game/systems/AudioSystem';
-import {setMusicMasterVolume} from '../game/systems/MusicSystem';
+import type React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { setMasterVolume } from '../game/systems/AudioSystem';
+import { setMusicMasterVolume } from '../game/systems/MusicSystem';
+import { useGameStore, writeSettings } from '../state/GameStore';
 
 export const PauseMenu: React.FC = () => {
-  const patch = useGameStore(s => s.patch);
-  const resetToMenu = useGameStore(s => s.resetToMenu);
-  const masterVolume = useGameStore(s => s.masterVolume);
-  const mouseSensitivity = useGameStore(s => s.mouseSensitivity);
+  const patch = useGameStore((s) => s.patch);
+  const resetToMenu = useGameStore((s) => s.resetToMenu);
+  const masterVolume = useGameStore((s) => s.masterVolume);
+  const mouseSensitivity = useGameStore((s) => s.mouseSensitivity);
 
   const volumePercent = Math.round(masterVolume * 100);
   const sensitivityPercent = Math.round(mouseSensitivity * 100);
@@ -29,7 +29,7 @@ export const PauseMenu: React.FC = () => {
 
   const adjustVolume = (delta: number) => {
     const newVol = Math.max(0, Math.min(1, masterVolume + delta));
-    patch({masterVolume: newVol});
+    patch({ masterVolume: newVol });
     setMasterVolume(newVol);
     setMusicMasterVolume(newVol);
     setTimeout(persistSettings, 0);
@@ -37,7 +37,7 @@ export const PauseMenu: React.FC = () => {
 
   const adjustSensitivity = (delta: number) => {
     const newSens = Math.max(0.1, Math.min(1, mouseSensitivity + delta));
-    patch({mouseSensitivity: newSens});
+    patch({ mouseSensitivity: newSens });
     setTimeout(persistSettings, 0);
   };
 
@@ -64,8 +64,9 @@ export const PauseMenu: React.FC = () => {
         <View style={styles.buttonsContainer}>
           <TouchableOpacity
             style={styles.resumeButton}
-            onPress={() => patch({screen: 'playing'})}
-            activeOpacity={0.7}>
+            onPress={() => patch({ screen: 'playing' })}
+            activeOpacity={0.7}
+          >
             <View style={styles.resumeButtonHighlight} />
             <Text style={styles.resumeButtonText}>RESUME</Text>
           </TouchableOpacity>
@@ -73,7 +74,8 @@ export const PauseMenu: React.FC = () => {
           <TouchableOpacity
             style={styles.quitButton}
             onPress={() => resetToMenu()}
-            activeOpacity={0.7}>
+            activeOpacity={0.7}
+          >
             <Text style={styles.quitButtonText}>QUIT TO MENU</Text>
           </TouchableOpacity>
         </View>
@@ -92,7 +94,7 @@ export const PauseMenu: React.FC = () => {
                 <Text style={styles.sliderBtnText}>-</Text>
               </TouchableOpacity>
               <View style={styles.sliderTrack}>
-                <View style={[styles.sliderFill, {width: `${volumePercent}%` as any}]} />
+                <View style={[styles.sliderFill, { width: `${volumePercent}%` as any }]} />
               </View>
               <TouchableOpacity onPress={() => adjustVolume(0.1)} style={styles.sliderBtn}>
                 <Text style={styles.sliderBtnText}>+</Text>
@@ -108,7 +110,7 @@ export const PauseMenu: React.FC = () => {
                 <Text style={styles.sliderBtnText}>-</Text>
               </TouchableOpacity>
               <View style={styles.sliderTrack}>
-                <View style={[styles.sliderFill, {width: `${sensitivityPercent}%` as any}]} />
+                <View style={[styles.sliderFill, { width: `${sensitivityPercent}%` as any }]} />
               </View>
               <TouchableOpacity onPress={() => adjustSensitivity(0.1)} style={styles.sliderBtn}>
                 <Text style={styles.sliderBtnText}>+</Text>
@@ -205,7 +207,7 @@ const styles = StyleSheet.create({
     color: 'transparent',
     letterSpacing: 12,
     textShadowColor: 'rgba(136, 85, 51, 0.3)',
-    textShadowOffset: {width: 0, height: 0},
+    textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 20,
   },
 

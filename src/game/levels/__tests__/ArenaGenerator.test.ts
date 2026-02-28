@@ -4,9 +4,17 @@
 
 jest.mock('../../levels/LevelGenerator', () => ({
   MapCell: {
-    EMPTY: 0, WALL_STONE: 1, WALL_FLESH: 2, WALL_LAVA: 3,
-    WALL_OBSIDIAN: 4, DOOR: 5, WALL_SECRET: 6, VOID: 7,
-    FLOOR_RAISED: 8, FLOOR_LAVA: 9, RAMP: 10,
+    EMPTY: 0,
+    WALL_STONE: 1,
+    WALL_FLESH: 2,
+    WALL_LAVA: 3,
+    WALL_OBSIDIAN: 4,
+    DOOR: 5,
+    WALL_SECRET: 6,
+    VOID: 7,
+    FLOOR_RAISED: 8,
+    FLOOR_LAVA: 9,
+    RAMP: 10,
   },
   CELL_SIZE: 2,
   WALL_HEIGHT: 3,
@@ -26,11 +34,16 @@ jest.mock('../../../state/GameStore', () => ({
   },
 }));
 
-import {generateArena, getArenaPlayerSpawn} from '../ArenaGenerator';
+import { generateArena, getArenaPlayerSpawn } from '../ArenaGenerator';
 
 const MC = {
-  EMPTY: 0, WALL_STONE: 1, WALL_LAVA: 3, WALL_OBSIDIAN: 4,
-  FLOOR_RAISED: 8, FLOOR_LAVA: 9, RAMP: 10,
+  EMPTY: 0,
+  WALL_STONE: 1,
+  WALL_LAVA: 3,
+  WALL_OBSIDIAN: 4,
+  FLOOR_RAISED: 8,
+  FLOOR_LAVA: 9,
+  RAMP: 10,
 };
 
 beforeEach(() => {

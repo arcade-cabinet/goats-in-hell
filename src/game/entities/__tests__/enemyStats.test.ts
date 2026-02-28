@@ -2,8 +2,8 @@
  * enemyStats tests — verify all enemy type stats are correct and consistent.
  */
 
-import {getEnemyStats} from '../enemyStats';
-import type {EntityType} from '../components';
+import type { EntityType } from '../components';
+import { getEnemyStats } from '../enemyStats';
 
 const REGULAR_TYPES: EntityType[] = ['hellgoat', 'fireGoat', 'shadowGoat', 'goatKnight'];
 const BOSS_TYPES: EntityType[] = ['archGoat', 'infernoGoat', 'voidGoat', 'ironGoat'];
@@ -30,14 +30,14 @@ describe('getEnemyStats', () => {
   });
 
   it('bosses have more HP than regular enemies', () => {
-    const maxRegularHp = Math.max(...REGULAR_TYPES.map(t => getEnemyStats(t).hp));
-    const minBossHp = Math.min(...BOSS_TYPES.map(t => getEnemyStats(t).hp));
+    const maxRegularHp = Math.max(...REGULAR_TYPES.map((t) => getEnemyStats(t).hp));
+    const minBossHp = Math.min(...BOSS_TYPES.map((t) => getEnemyStats(t).hp));
     expect(minBossHp).toBeGreaterThan(maxRegularHp);
   });
 
   it('bosses have higher score values than regular enemies', () => {
-    const maxRegularScore = Math.max(...REGULAR_TYPES.map(t => getEnemyStats(t).scoreValue));
-    const minBossScore = Math.min(...BOSS_TYPES.map(t => getEnemyStats(t).scoreValue));
+    const maxRegularScore = Math.max(...REGULAR_TYPES.map((t) => getEnemyStats(t).scoreValue));
+    const minBossScore = Math.min(...BOSS_TYPES.map((t) => getEnemyStats(t).scoreValue));
     expect(minBossScore).toBeGreaterThan(maxRegularScore);
   });
 

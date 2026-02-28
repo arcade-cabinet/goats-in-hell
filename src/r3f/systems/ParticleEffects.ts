@@ -40,10 +40,7 @@ const activeParticles: Particle[] = [];
 // Death burst — red/orange particles radiating from enemy death position
 // ---------------------------------------------------------------------------
 
-export function createDeathBurst(
-  position: THREE.Vector3,
-  scene: THREE.Scene,
-): void {
+export function createDeathBurst(position: THREE.Vector3, scene: THREE.Scene): void {
   const geo = getParticleSphere();
   const now = performance.now();
 
@@ -148,10 +145,7 @@ export function createImpactSparks(
 // Blood splash — red particles on enemy hit
 // ---------------------------------------------------------------------------
 
-export function createBloodSplash(
-  position: THREE.Vector3,
-  scene: THREE.Scene,
-): void {
+export function createBloodSplash(position: THREE.Vector3, scene: THREE.Scene): void {
   const geo = getParticleSphere();
   const now = performance.now();
 

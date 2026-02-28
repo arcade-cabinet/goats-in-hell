@@ -1,19 +1,19 @@
-export {LevelMeshes, LevelColliders, extractColliderData} from './LevelMeshes';
 export type {
-  LevelMeshesProps,
-  LevelCollidersProps,
-  WallPosition,
   ColliderData,
+  LevelCollidersProps,
+  LevelMeshesProps,
+  WallPosition,
 } from './LevelMeshes';
+export { extractColliderData, LevelColliders, LevelMeshes } from './LevelMeshes';
 export {
-  createWallMaterial,
-  createFloorMaterial,
   createCeilingMaterial,
-  getWallTypeMaterial,
-  createLavaMaterial,
-  createVoidPitMaterial,
   createDoorMaterial,
-  createRampMaterial,
+  createFloorMaterial,
+  createLavaMaterial,
   createPlatformMaterial,
+  createRampMaterial,
+  createVoidPitMaterial,
+  createWallMaterial,
   disposeCachedMaterials,
+  getWallTypeMaterial,
 } from './Materials';

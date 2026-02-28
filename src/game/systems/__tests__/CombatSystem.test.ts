@@ -36,12 +36,12 @@ jest.mock('../GameClock', () => ({
   getGameTime: jest.fn(() => 0),
 }));
 
-import {vec3 as Vector3} from '../../entities/vec3';
-import type {Entity} from '../../entities/components';
-import {world} from '../../entities/world';
-import {damageEnemy, handleEnemyKill, removeEntity} from '../CombatSystem';
-import {playSound} from '../AudioSystem';
-import {registerKill} from '../KillStreakSystem';
+import type { Entity } from '../../entities/components';
+import { vec3 as Vector3 } from '../../entities/vec3';
+import { world } from '../../entities/world';
+import { playSound } from '../AudioSystem';
+import { damageEnemy, handleEnemyKill, removeEntity } from '../CombatSystem';
+import { registerKill } from '../KillStreakSystem';
 
 // Reset world and Zustand store between tests
 beforeEach(() => {
@@ -51,12 +51,12 @@ beforeEach(() => {
   }
   jest.clearAllMocks();
   // Reset GameStore state to defaults
-  const {useGameStore} = require('../../../state/GameStore');
+  const { useGameStore } = require('../../../state/GameStore');
   useGameStore.setState({
     score: 0,
     kills: 0,
     totalKills: 0,
-    leveling: {level: 1, xp: 0, xpToNext: 283},
+    leveling: { level: 1, xp: 0, xpToNext: 283 },
     difficulty: 'normal',
   });
 });
@@ -172,7 +172,7 @@ describe('damageEnemy', () => {
 
 describe('handleEnemyKill', () => {
   it('increments score and kills', () => {
-    const {useGameStore} = require('../../../state/GameStore');
+    const { useGameStore } = require('../../../state/GameStore');
     const entity: Entity = {
       id: 'kill-target',
       type: 'goat',

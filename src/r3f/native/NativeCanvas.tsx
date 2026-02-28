@@ -11,6 +11,7 @@
  */
 
 import React from 'react';
+
 // Uncomment these imports when R3F packages are installed:
 // import {Suspense} from 'react';
 // import {Canvas} from '@react-three/fiber';
@@ -53,7 +54,7 @@ interface NativeCanvasProps {
  * Once react-native-wgpu and R3F are installed, uncomment the Canvas
  * implementation below and remove the placeholder.
  */
-export function NativeCanvas({children}: NativeCanvasProps) {
+export function NativeCanvas({ children }: NativeCanvasProps) {
   // -------------------------------------------------------------------
   // PLACEHOLDER: Replace this block with the real Canvas once R3F and
   // react-native-wgpu are installed. The commented-out implementation
@@ -62,7 +63,7 @@ export function NativeCanvas({children}: NativeCanvasProps) {
 
   return React.createElement(
     'div',
-    {style: {flex: 1, alignItems: 'center', justifyContent: 'center'}},
+    { style: { flex: 1, alignItems: 'center', justifyContent: 'center' } },
     React.createElement(
       'span',
       null,

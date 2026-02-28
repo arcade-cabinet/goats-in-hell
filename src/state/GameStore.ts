@@ -5,8 +5,9 @@
  * Supports: difficulty, seeded runs, logarithmic leveling, boss progression,
  * unified floor/arena/boss encounter flow, and screen effects.
  */
-import {create} from 'zustand';
+
 import seedrandom from 'seedrandom';
+import { create } from 'zustand';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -14,14 +15,14 @@ import seedrandom from 'seedrandom';
 
 export type GameScreen =
   | 'mainMenu'
-  | 'newGame'       // difficulty + seed selection
+  | 'newGame' // difficulty + seed selection
   | 'settings'
-  | 'loading'       // asset loading before gameplay
+  | 'loading' // asset loading before gameplay
   | 'playing'
   | 'paused'
   | 'dead'
-  | 'victory'       // between-stage interstitial
-  | 'bossIntro'     // boss entrance cutscene-ish
+  | 'victory' // between-stage interstitial
+  | 'bossIntro' // boss entrance cutscene-ish
   | 'gameComplete'; // escaped hell — final stats + credits
 
 export type Difficulty = 'easy' | 'normal' | 'hard';
@@ -178,11 +179,7 @@ export interface GameStoreState {
 
   // --- Actions ---
   /** Start a new run with the given config. */
-  startNewGame: (
-    difficulty: Difficulty,
-    nightmareFlags: NightmareFlags,
-    seed: string,
-  ) => void;
+  startNewGame: (difficulty: Difficulty, nightmareFlags: NightmareFlags, seed: string) => void;
   /** Advance to the next stage. */
   advanceStage: () => void;
   /** Award XP and handle level-ups. */
@@ -211,7 +208,7 @@ export interface GameStoreState {
 
 /** XP required for a given level: 100 * level^1.5 */
 function xpForLevel(level: number): number {
-  return Math.floor(100 * Math.pow(level, 1.5));
+  return Math.floor(100 * level ** 1.5);
 }
 
 // ---------------------------------------------------------------------------
@@ -248,9 +245,7 @@ export function getLevelBonuses(level: number): LevelBonuses {
  * Decides the next encounter type based on stage number.
  * Pattern: 3 explore floors → 1 arena wave → boss every 5 stages.
  */
-function nextEncounterType(
-  stageNumber: number,
-): 'explore' | 'arena' | 'boss' {
+function nextEncounterType(stageNumber: number): 'explore' | 'arena' | 'boss' {
   if (stageNumber > 0 && stageNumber % 5 === 0) return 'boss';
   if (stageNumber % 5 === 4) return 'arena';
   return 'explore';
@@ -268,20 +263,64 @@ function bossForStage(stageNumber: number): string {
 // ---------------------------------------------------------------------------
 
 const ADJECTIVES = [
-  'burning', 'cursed', 'damned', 'fallen', 'wretched',
-  'infernal', 'hollow', 'screaming', 'rusted', 'blackened',
-  'molten', 'shattered', 'unholy', 'bleeding', 'twisted',
-  'forsaken', 'rotting', 'vengeful', 'ashen', 'doomed',
-  'sulfurous', 'tormented', 'vile', 'fetid', 'smoldering',
-  'abyssal', 'profane', 'sundered', 'blighted', 'cinder',
+  'burning',
+  'cursed',
+  'damned',
+  'fallen',
+  'wretched',
+  'infernal',
+  'hollow',
+  'screaming',
+  'rusted',
+  'blackened',
+  'molten',
+  'shattered',
+  'unholy',
+  'bleeding',
+  'twisted',
+  'forsaken',
+  'rotting',
+  'vengeful',
+  'ashen',
+  'doomed',
+  'sulfurous',
+  'tormented',
+  'vile',
+  'fetid',
+  'smoldering',
+  'abyssal',
+  'profane',
+  'sundered',
+  'blighted',
+  'cinder',
 ];
 
 const NOUNS = [
-  'goat', 'skull', 'flame', 'throne', 'pyre',
-  'abyss', 'horn', 'crypt', 'ember', 'pit',
-  'brimstone', 'furnace', 'idol', 'altar', 'sigil',
-  'chalice', 'bone', 'scepter', 'gate', 'void',
-  'maw', 'cauldron', 'pentacle', 'hoof', 'cage',
+  'goat',
+  'skull',
+  'flame',
+  'throne',
+  'pyre',
+  'abyss',
+  'horn',
+  'crypt',
+  'ember',
+  'pit',
+  'brimstone',
+  'furnace',
+  'idol',
+  'altar',
+  'sigil',
+  'chalice',
+  'bone',
+  'scepter',
+  'gate',
+  'void',
+  'maw',
+  'cauldron',
+  'pentacle',
+  'hoof',
+  'cage',
 ];
 
 /** Generate a random adjective-adjective-noun seed using Math.random. */
@@ -291,7 +330,7 @@ export function generateSeedPhrase(): string {
 }
 
 /** Get the word pools for UI display / rerolling. */
-export const SEED_POOLS = {ADJECTIVES, NOUNS} as const;
+export const SEED_POOLS = { ADJECTIVES, NOUNS } as const;
 
 // ---------------------------------------------------------------------------
 // Save/Load persistence
@@ -370,12 +409,21 @@ function isValidSave(data: unknown): data is SaveData {
     typeof d.difficulty === 'string' &&
     ['easy', 'normal', 'hard'].includes(d.difficulty) &&
     typeof d.seed === 'string' &&
-    typeof d.score === 'number' && Number.isFinite(d.score) && d.score >= 0 &&
-    typeof d.totalKills === 'number' && Number.isFinite(d.totalKills) && d.totalKills >= 0 &&
-    typeof d.elapsedMs === 'number' && Number.isFinite(d.elapsedMs) && d.elapsedMs >= 0 &&
-    d.stage !== null && typeof d.stage === 'object' &&
-    d.leveling !== null && typeof d.leveling === 'object' &&
-    d.nightmareFlags !== null && typeof d.nightmareFlags === 'object' &&
+    typeof d.score === 'number' &&
+    Number.isFinite(d.score) &&
+    d.score >= 0 &&
+    typeof d.totalKills === 'number' &&
+    Number.isFinite(d.totalKills) &&
+    d.totalKills >= 0 &&
+    typeof d.elapsedMs === 'number' &&
+    Number.isFinite(d.elapsedMs) &&
+    d.elapsedMs >= 0 &&
+    d.stage !== null &&
+    typeof d.stage === 'object' &&
+    d.leveling !== null &&
+    typeof d.leveling === 'object' &&
+    d.nightmareFlags !== null &&
+    typeof d.nightmareFlags === 'object' &&
     Array.isArray(d.bossesDefeated);
   if (!baseValid) return false;
 
@@ -443,17 +491,25 @@ function readSettings(): SettingsData | null {
     if (!raw) return null;
     const parsed = JSON.parse(raw);
     if (
-      typeof parsed?.masterVolume === 'number' && Number.isFinite(parsed.masterVolume) &&
-      typeof parsed?.mouseSensitivity === 'number' && Number.isFinite(parsed.mouseSensitivity)
+      typeof parsed?.masterVolume === 'number' &&
+      Number.isFinite(parsed.masterVolume) &&
+      typeof parsed?.mouseSensitivity === 'number' &&
+      Number.isFinite(parsed.mouseSensitivity)
     ) {
       const result: SettingsData = {
         masterVolume: Math.max(0, Math.min(1, parsed.masterVolume)),
         mouseSensitivity: Math.max(0.1, Math.min(1, parsed.mouseSensitivity)),
       };
-      if (typeof parsed.touchLookSensitivity === 'number' && Number.isFinite(parsed.touchLookSensitivity)) {
+      if (
+        typeof parsed.touchLookSensitivity === 'number' &&
+        Number.isFinite(parsed.touchLookSensitivity)
+      ) {
         result.touchLookSensitivity = Math.max(0.1, Math.min(2, parsed.touchLookSensitivity));
       }
-      if (typeof parsed.gamepadLookSensitivity === 'number' && Number.isFinite(parsed.gamepadLookSensitivity)) {
+      if (
+        typeof parsed.gamepadLookSensitivity === 'number' &&
+        Number.isFinite(parsed.gamepadLookSensitivity)
+      ) {
         result.gamepadLookSensitivity = Math.max(0.1, Math.min(2, parsed.gamepadLookSensitivity));
       }
       if (typeof parsed.gamepadDeadzone === 'number' && Number.isFinite(parsed.gamepadDeadzone)) {
@@ -503,178 +559,179 @@ function createInitialLeveling(): LevelingState {
 }
 
 export const useGameStore = create<GameStoreState>()((set, get) => ({
-    // --- Defaults ---
-    screen: 'mainMenu',
+  // --- Defaults ---
+  screen: 'mainMenu',
 
-    difficulty: 'normal',
-    nightmareFlags: {nightmare: false, permadeath: false, ultraNightmare: false},
-    seed: initialSeed,
-    rng: seedrandom(initialSeed),
+  difficulty: 'normal',
+  nightmareFlags: { nightmare: false, permadeath: false, ultraNightmare: false },
+  seed: initialSeed,
+  rng: seedrandom(initialSeed),
 
-    stage: createInitialStage(),
-    leveling: createInitialLeveling(),
-    bossesDefeated: [],
+  stage: createInitialStage(),
+  leveling: createInitialLeveling(),
+  bossesDefeated: [],
 
-    score: 0,
-    kills: 0,
-    totalKills: 0,
-    startTime: Date.now(),
+  score: 0,
+  kills: 0,
+  totalKills: 0,
+  startTime: Date.now(),
 
-    damageFlash: 0,
-    screenShake: 0,
-    gunFlash: 0,
-    hitMarker: 0,
+  damageFlash: 0,
+  screenShake: 0,
+  gunFlash: 0,
+  hitMarker: 0,
 
-    masterVolume: savedSettings?.masterVolume ?? 0.7,
-    mouseSensitivity: savedSettings?.mouseSensitivity ?? 0.5,
-    touchLookSensitivity: savedSettings?.touchLookSensitivity ?? 1.0,
-    gamepadLookSensitivity: savedSettings?.gamepadLookSensitivity ?? 1.0,
-    gamepadDeadzone: savedSettings?.gamepadDeadzone ?? 0.15,
-    gyroSensitivity: savedSettings?.gyroSensitivity ?? 1.0,
-    gyroEnabled: savedSettings?.gyroEnabled ?? false,
-    hapticsEnabled: savedSettings?.hapticsEnabled ?? true,
+  masterVolume: savedSettings?.masterVolume ?? 0.7,
+  mouseSensitivity: savedSettings?.mouseSensitivity ?? 0.5,
+  touchLookSensitivity: savedSettings?.touchLookSensitivity ?? 1.0,
+  gamepadLookSensitivity: savedSettings?.gamepadLookSensitivity ?? 1.0,
+  gamepadDeadzone: savedSettings?.gamepadDeadzone ?? 0.15,
+  gyroSensitivity: savedSettings?.gyroSensitivity ?? 1.0,
+  gyroEnabled: savedSettings?.gyroEnabled ?? false,
+  hapticsEnabled: savedSettings?.hapticsEnabled ?? true,
 
-    autoplay: typeof window !== 'undefined' &&
-      new URLSearchParams(window.location?.search ?? '').has('autoplay'),
+  autoplay:
+    typeof window !== 'undefined' &&
+    new URLSearchParams(window.location?.search ?? '').has('autoplay'),
 
-    hasSave: hasSavedGame(),
-    restoredPlayerState: null,
+  hasSave: hasSavedGame(),
+  restoredPlayerState: null,
 
-    // --- Actions ---
+  // --- Actions ---
 
-    startNewGame: (difficulty, nightmareFlags, seed) => {
-      cachedPlayerSnapshot = {};
-      set({
-        screen: 'playing',
-        difficulty,
-        nightmareFlags: nightmareFlags.ultraNightmare
-          ? {...nightmareFlags, permadeath: true}
-          : nightmareFlags,
-        seed,
-        rng: seedrandom(seed),
-        stage: createInitialStage(),
-        leveling: createInitialLeveling(),
-        bossesDefeated: [],
-        score: 0,
-        kills: 0,
-        totalKills: 0,
-        startTime: Date.now(),
-        damageFlash: 0,
-        screenShake: 0,
-        gunFlash: 0,
-        hitMarker: 0,
-        restoredPlayerState: null,
-      });
-    },
+  startNewGame: (difficulty, nightmareFlags, seed) => {
+    cachedPlayerSnapshot = {};
+    set({
+      screen: 'playing',
+      difficulty,
+      nightmareFlags: nightmareFlags.ultraNightmare
+        ? { ...nightmareFlags, permadeath: true }
+        : nightmareFlags,
+      seed,
+      rng: seedrandom(seed),
+      stage: createInitialStage(),
+      leveling: createInitialLeveling(),
+      bossesDefeated: [],
+      score: 0,
+      kills: 0,
+      totalKills: 0,
+      startTime: Date.now(),
+      damageFlash: 0,
+      screenShake: 0,
+      gunFlash: 0,
+      hitMarker: 0,
+      restoredPlayerState: null,
+    });
+  },
 
-    advanceStage: () => {
-      const {stage} = get();
+  advanceStage: () => {
+    const { stage } = get();
 
-      // Game completion: after defeating the boss at stage 20 (4th boss cycle)
-      if (stage.stageNumber >= 20 && stage.encounterType === 'boss') {
-        clearSave();
-        set({screen: 'gameComplete', hasSave: false});
-        return;
-      }
-
-      const next = stage.stageNumber + 1;
-      const encounterType = nextEncounterType(next);
-      const bossId = encounterType === 'boss' ? bossForStage(next) : null;
-
-      set({
-        screen: encounterType === 'boss' ? 'bossIntro' : 'victory',
-        stage: {
-          stageNumber: next,
-          floor: encounterType === 'explore' ? stage.floor + 1 : stage.floor,
-          encounterType,
-          arenaWave: encounterType === 'arena' ? 1 : 0,
-          bossId,
-          enemiesRemaining: 0,
-        },
-        kills: 0,
-      });
-
-      // Persist save after advancing
-      writeSave(get());
-      set({hasSave: true});
-    },
-
-    awardXp: (amount) => {
-      const {leveling, difficulty} = get();
-      const mult = DIFFICULTY_PRESETS[difficulty].xpMult;
-      let xp = leveling.xp + Math.floor(amount * mult);
-      let level = leveling.level;
-      let xpToNext = leveling.xpToNext;
-
-      while (xp >= xpToNext) {
-        xp -= xpToNext;
-        level++;
-        xpToNext = xpForLevel(level + 1);
-      }
-
-      set({leveling: {level, xp, xpToNext}});
-    },
-
-    defeatBoss: (bossId) => {
-      set(s => ({bossesDefeated: [...s.bossesDefeated, bossId]}));
-      writeSave(get());
-    },
-
-    patch: (partial) => set(partial as any),
-
-    continueGame: () => {
-      const save = readSave();
-      if (!save) return;
-
-      // Restore player state from v2+ saves
-      const restoredPlayerState: PlayerSnapshot | null =
-        save.version >= 2 && (save.playerHp !== undefined || save.currentWeapon !== undefined)
-          ? {
-              playerHp: save.playerHp,
-              currentWeapon: save.currentWeapon,
-              ammoReserves: save.ammoReserves,
-            }
-          : null;
-
-      set({
-        screen: 'playing',
-        difficulty: save.difficulty,
-        nightmareFlags: save.nightmareFlags.ultraNightmare
-          ? {...save.nightmareFlags, permadeath: true}
-          : save.nightmareFlags,
-        seed: save.seed,
-        rng: seedrandom(save.seed),
-        stage: save.stage,
-        leveling: save.leveling,
-        bossesDefeated: save.bossesDefeated,
-        score: save.score,
-        kills: 0,
-        totalKills: save.totalKills,
-        startTime: Date.now() - save.elapsedMs,
-        damageFlash: 0,
-        screenShake: 0,
-        gunFlash: 0,
-        hitMarker: 0,
-        restoredPlayerState,
-      });
-    },
-
-    deleteSave: () => {
+    // Game completion: after defeating the boss at stage 20 (4th boss cycle)
+    if (stage.stageNumber >= 20 && stage.encounterType === 'boss') {
       clearSave();
-      set({hasSave: false});
-    },
+      set({ screen: 'gameComplete', hasSave: false });
+      return;
+    }
 
-    resetToMenu: () => {
-      set({
-        screen: 'mainMenu',
-        damageFlash: 0,
-        screenShake: 0,
-        gunFlash: 0,
-        hitMarker: 0,
-        hasSave: hasSavedGame(),
-      });
-    },
-  }));
+    const next = stage.stageNumber + 1;
+    const encounterType = nextEncounterType(next);
+    const bossId = encounterType === 'boss' ? bossForStage(next) : null;
+
+    set({
+      screen: encounterType === 'boss' ? 'bossIntro' : 'victory',
+      stage: {
+        stageNumber: next,
+        floor: encounterType === 'explore' ? stage.floor + 1 : stage.floor,
+        encounterType,
+        arenaWave: encounterType === 'arena' ? 1 : 0,
+        bossId,
+        enemiesRemaining: 0,
+      },
+      kills: 0,
+    });
+
+    // Persist save after advancing
+    writeSave(get());
+    set({ hasSave: true });
+  },
+
+  awardXp: (amount) => {
+    const { leveling, difficulty } = get();
+    const mult = DIFFICULTY_PRESETS[difficulty].xpMult;
+    let xp = leveling.xp + Math.floor(amount * mult);
+    let level = leveling.level;
+    let xpToNext = leveling.xpToNext;
+
+    while (xp >= xpToNext) {
+      xp -= xpToNext;
+      level++;
+      xpToNext = xpForLevel(level + 1);
+    }
+
+    set({ leveling: { level, xp, xpToNext } });
+  },
+
+  defeatBoss: (bossId) => {
+    set((s) => ({ bossesDefeated: [...s.bossesDefeated, bossId] }));
+    writeSave(get());
+  },
+
+  patch: (partial) => set(partial as any),
+
+  continueGame: () => {
+    const save = readSave();
+    if (!save) return;
+
+    // Restore player state from v2+ saves
+    const restoredPlayerState: PlayerSnapshot | null =
+      save.version >= 2 && (save.playerHp !== undefined || save.currentWeapon !== undefined)
+        ? {
+            playerHp: save.playerHp,
+            currentWeapon: save.currentWeapon,
+            ammoReserves: save.ammoReserves,
+          }
+        : null;
+
+    set({
+      screen: 'playing',
+      difficulty: save.difficulty,
+      nightmareFlags: save.nightmareFlags.ultraNightmare
+        ? { ...save.nightmareFlags, permadeath: true }
+        : save.nightmareFlags,
+      seed: save.seed,
+      rng: seedrandom(save.seed),
+      stage: save.stage,
+      leveling: save.leveling,
+      bossesDefeated: save.bossesDefeated,
+      score: save.score,
+      kills: 0,
+      totalKills: save.totalKills,
+      startTime: Date.now() - save.elapsedMs,
+      damageFlash: 0,
+      screenShake: 0,
+      gunFlash: 0,
+      hitMarker: 0,
+      restoredPlayerState,
+    });
+  },
+
+  deleteSave: () => {
+    clearSave();
+    set({ hasSave: false });
+  },
+
+  resetToMenu: () => {
+    set({
+      screen: 'mainMenu',
+      damageFlash: 0,
+      screenShake: 0,
+      gunFlash: 0,
+      hitMarker: 0,
+      hasSave: hasSavedGame(),
+    });
+  },
+}));
 
 // ---------------------------------------------------------------------------
 // Backward-compatible GameState shim (for systems that haven't migrated)
@@ -684,13 +741,14 @@ export const GameState = {
   get() {
     const s = useGameStore.getState();
     return {
-      screen: s.screen === 'mainMenu' || s.screen === 'newGame' || s.screen === 'settings'
-        ? 'menu' as const
-        : s.screen === 'bossIntro'
-          ? 'playing' as const
-          : s.screen === 'gameComplete'
-            ? 'victory' as const
-            : s.screen,
+      screen:
+        s.screen === 'mainMenu' || s.screen === 'newGame' || s.screen === 'settings'
+          ? ('menu' as const)
+          : s.screen === 'bossIntro'
+            ? ('playing' as const)
+            : s.screen === 'gameComplete'
+              ? ('victory' as const)
+              : s.screen,
       mode: 'roguelike' as const,
       floor: s.stage.floor,
       score: s.score,
@@ -706,7 +764,7 @@ export const GameState = {
   set(partial: Record<string, any>) {
     // Translate legacy screen names to new store values
     if (partial.screen === 'menu' || partial.screen === 'modeSelect') {
-      partial = {...partial, screen: 'mainMenu'};
+      partial = { ...partial, screen: 'mainMenu' };
     }
     useGameStore.setState(partial as any);
   },

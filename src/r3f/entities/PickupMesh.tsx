@@ -11,12 +11,13 @@
  *
  * Uses imperative Three.js API to avoid JSX type conflicts with Reactylon.
  */
-import {useEffect, useRef} from 'react';
-import {useThree, useFrame} from '@react-three/fiber';
+
+import { useFrame, useThree } from '@react-three/fiber';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import type {Entity} from '../../game/entities/components';
-import {world} from '../../game/entities/world';
-import {COLORS} from '../../constants';
+import { COLORS } from '../../constants';
+import type { Entity } from '../../game/entities/components';
+import { world } from '../../game/entities/world';
 
 // ---------------------------------------------------------------------------
 // Pickup type visual configuration
@@ -79,7 +80,7 @@ interface TrackedPickup {
 // ---------------------------------------------------------------------------
 
 export function PickupRenderer(): null {
-  const {scene} = useThree();
+  const { scene } = useThree();
   const trackedRef = useRef<Map<string, TrackedPickup>>(new Map());
 
   // Cleanup on unmount
@@ -96,7 +97,7 @@ export function PickupRenderer(): null {
     };
   }, [scene]);
 
-  useFrame(({clock}) => {
+  useFrame(({ clock }) => {
     const time = clock.getElapsedTime();
     const tracked = trackedRef.current;
 
@@ -159,10 +160,7 @@ export function PickupRenderer(): null {
 // Mesh creation helper
 // ---------------------------------------------------------------------------
 
-function createPickupMesh(
-  entity: Entity,
-  scene: THREE.Scene,
-): TrackedPickup | null {
+function createPickupMesh(entity: Entity, scene: THREE.Scene): TrackedPickup | null {
   if (!entity.pickup || !entity.position || !entity.id) return null;
 
   const pickupType = entity.pickup.pickupType;
@@ -221,11 +219,7 @@ function createPickupMeshWithConfig(
 
   // Set initial position (negate Z)
   const baseY = entity.position.y + 0.5; // Float slightly above ground
-  group.position.set(
-    entity.position.x,
-    baseY,
-    -entity.position.z,
-  );
+  group.position.set(entity.position.x, baseY, -entity.position.z);
 
   scene.add(group);
 

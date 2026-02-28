@@ -1,17 +1,18 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {View, Text, StyleSheet, Animated, type DimensionValue} from 'react-native';
-import {useGameStore, DIFFICULTY_PRESETS} from '../state/GameStore';
-import {world} from '../game/entities/world';
-import {weapons} from '../game/weapons/weapons';
-import {getThemeForFloor} from '../game/levels/FloorThemes';
-import {getWaveInfo} from '../game/systems/WaveSystem';
-import {getActiveLevel} from '../game/levels/activeLevelRef';
-import {consumeDamageEvents} from '../game/systems/damageEvents';
-import {CELL_SIZE, MapCell} from '../game/levels/LevelGenerator';
-import type {Entity, WeaponId} from '../game/entities/components';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { Animated, type DimensionValue, StyleSheet, Text, View } from 'react-native';
+import type { Entity, WeaponId } from '../game/entities/components';
+import { world } from '../game/entities/world';
+import { getActiveLevel } from '../game/levels/activeLevelRef';
+import { getThemeForFloor } from '../game/levels/FloorThemes';
+import { CELL_SIZE, MapCell } from '../game/levels/LevelGenerator';
+import { consumeDamageEvents } from '../game/systems/damageEvents';
+import { getWaveInfo } from '../game/systems/WaveSystem';
+import { weapons } from '../game/weapons/weapons';
+import { DIFFICULTY_PRESETS, useGameStore } from '../state/GameStore';
 
 function getPlayer(): Entity | undefined {
-  return world.entities.find(e => e.type === 'player');
+  return world.entities.find((e) => e.type === 'player');
 }
 
 function getHealthColor(ratio: number): string {
@@ -29,7 +30,7 @@ function formatTime(ms: number): string {
 }
 
 export const HUD: React.FC = () => {
-  const [tick, setTick] = useState(0);
+  const [_tick, setTick] = useState(0);
   const lowHpAnim = useRef(new Animated.Value(1)).current;
   const [displayScore, setDisplayScore] = useState(0);
   const scoreRef = useRef(0);
@@ -37,7 +38,7 @@ export const HUD: React.FC = () => {
   // 60ms polling interval for responsive HUD
   useEffect(() => {
     const interval = setInterval(() => {
-      setTick(t => t + 1);
+      setTick((t) => t + 1);
     }, 60);
     return () => clearInterval(interval);
   }, []);
@@ -70,10 +71,7 @@ export const HUD: React.FC = () => {
       const step = Math.max(1, Math.ceil(Math.abs(diff) / 8));
       const interval = setInterval(() => {
         scoreRef.current += diff > 0 ? step : -step;
-        if (
-          (diff > 0 && scoreRef.current >= target) ||
-          (diff < 0 && scoreRef.current <= target)
-        ) {
+        if ((diff > 0 && scoreRef.current >= target) || (diff < 0 && scoreRef.current <= target)) {
           scoreRef.current = target;
           clearInterval(interval);
         }
@@ -123,16 +121,12 @@ export const HUD: React.FC = () => {
   const crosshairHit = hitMarker > 0;
 
   // Reload progress (0 to 1)
-  const reloadProgress = isReloading
-    ? Math.min(1, (Date.now() - reloadStart) / reloadTime)
-    : 0;
+  const reloadProgress = isReloading ? Math.min(1, (Date.now() - reloadStart) / reloadTime) : 0;
 
   return (
     <View style={styles.container} pointerEvents="none">
       {/* Low HP vignette overlay */}
-      {isLowHp && (
-        <Animated.View style={[styles.lowHpVignette, {opacity: lowHpAnim}]} />
-      )}
+      {isLowHp && <Animated.View style={[styles.lowHpVignette, { opacity: lowHpAnim }]} />}
 
       {/* Health bar - bottom left */}
       <View style={styles.healthContainer}>
@@ -145,14 +139,14 @@ export const HUD: React.FC = () => {
                   width: `${hpRatio * 100}%` as DimensionValue,
                   backgroundColor: healthColor,
                 },
-                isLowHp && {opacity: lowHpAnim},
+                isLowHp && { opacity: lowHpAnim },
               ]}
             />
             {/* Health bar tick marks */}
-            {[0.25, 0.5, 0.75].map(p => (
+            {[0.25, 0.5, 0.75].map((p) => (
               <View
                 key={p}
-                style={[styles.healthTick, {left: `${p * 100}%` as DimensionValue}]}
+                style={[styles.healthTick, { left: `${p * 100}%` as DimensionValue }]}
               />
             ))}
           </View>
@@ -160,9 +154,10 @@ export const HUD: React.FC = () => {
             <Animated.Text
               style={[
                 styles.healthLabel,
-                {color: healthColor},
-                isLowHp && {opacity: lowHpAnim},
-              ]}>
+                { color: healthColor },
+                isLowHp && { opacity: lowHpAnim },
+              ]}
+            >
               HP
             </Animated.Text>
             <Text style={styles.healthValue}>
@@ -183,7 +178,7 @@ export const HUD: React.FC = () => {
                 <View
                   style={[
                     styles.reloadBarInner,
-                    {width: `${reloadProgress * 100}%` as DimensionValue},
+                    { width: `${reloadProgress * 100}%` as DimensionValue },
                   ]}
                 />
               </View>
@@ -207,21 +202,20 @@ export const HUD: React.FC = () => {
           <Text style={styles.floorNumber}>FL {floor}</Text>
           <Text style={styles.floorTheme}>{theme.displayName}</Text>
           {encounterType !== 'explore' && (
-            <Text style={styles.encounterTag}>
-              {encounterType === 'arena' ? 'ARENA' : 'BOSS'}
-            </Text>
+            <Text style={styles.encounterTag}>{encounterType === 'arena' ? 'ARENA' : 'BOSS'}</Text>
           )}
-          {encounterType === 'arena' && (() => {
-            const waveInfo = getWaveInfo();
-            return (
-              <View style={styles.waveRow}>
-                <Text style={styles.waveText}>WAVE {waveInfo.wave}</Text>
-                {waveInfo.multiplier > 1 && (
-                  <Text style={styles.streakText}>x{waveInfo.multiplier.toFixed(1)}</Text>
-                )}
-              </View>
-            );
-          })()}
+          {encounterType === 'arena' &&
+            (() => {
+              const waveInfo = getWaveInfo();
+              return (
+                <View style={styles.waveRow}>
+                  <Text style={styles.waveText}>WAVE {waveInfo.wave}</Text>
+                  {waveInfo.multiplier > 1 && (
+                    <Text style={styles.streakText}>x{waveInfo.multiplier.toFixed(1)}</Text>
+                  )}
+                </View>
+              );
+            })()}
         </View>
         {/* Level / XP bar */}
         <View style={styles.levelPanel}>
@@ -230,7 +224,7 @@ export const HUD: React.FC = () => {
             <View
               style={[
                 styles.xpBarInner,
-                {width: `${Math.min(100, xpProgress * 100)}%` as DimensionValue},
+                { width: `${Math.min(100, xpProgress * 100)}%` as DimensionValue },
               ]}
             />
           </View>
@@ -240,13 +234,10 @@ export const HUD: React.FC = () => {
         </View>
         {/* Difficulty / Nightmare indicators */}
         <View style={styles.diffIndicatorRow}>
-          <Text style={[
-            styles.diffTag,
-            difficulty === 'hard' && styles.diffTagHard,
-          ]}>{diffLabel}</Text>
-          {nightmareFlags.ultraNightmare && (
-            <Text style={styles.nightmareTagUltra}>ULTRA</Text>
-          )}
+          <Text style={[styles.diffTag, difficulty === 'hard' && styles.diffTagHard]}>
+            {diffLabel}
+          </Text>
+          {nightmareFlags.ultraNightmare && <Text style={styles.nightmareTagUltra}>ULTRA</Text>}
           {nightmareFlags.nightmare && !nightmareFlags.ultraNightmare && (
             <Text style={styles.nightmareTag}>NIGHTMARE</Text>
           )}
@@ -279,13 +270,15 @@ export const HUD: React.FC = () => {
                   styles.weaponSlot,
                   active && styles.weaponSlotActive,
                   !owned && styles.weaponSlotLocked,
-                ]}>
+                ]}
+              >
                 <Text
                   style={[
                     styles.weaponSlotText,
                     active && styles.weaponSlotTextActive,
                     !owned && styles.weaponSlotTextLocked,
-                  ]}>
+                  ]}
+                >
                   {i + 1}
                 </Text>
               </View>
@@ -305,10 +298,18 @@ export const HUD: React.FC = () => {
 
       {/* Crosshair - center (flashes white on hit) */}
       <View style={styles.crosshairContainer}>
-        <View style={[styles.crosshairArm, styles.crosshairTop, crosshairHit && styles.crosshairHit]} />
-        <View style={[styles.crosshairArm, styles.crosshairBottom, crosshairHit && styles.crosshairHit]} />
-        <View style={[styles.crosshairArm, styles.crosshairLeft, crosshairHit && styles.crosshairHit]} />
-        <View style={[styles.crosshairArm, styles.crosshairRight, crosshairHit && styles.crosshairHit]} />
+        <View
+          style={[styles.crosshairArm, styles.crosshairTop, crosshairHit && styles.crosshairHit]}
+        />
+        <View
+          style={[styles.crosshairArm, styles.crosshairBottom, crosshairHit && styles.crosshairHit]}
+        />
+        <View
+          style={[styles.crosshairArm, styles.crosshairLeft, crosshairHit && styles.crosshairHit]}
+        />
+        <View
+          style={[styles.crosshairArm, styles.crosshairRight, crosshairHit && styles.crosshairHit]}
+        />
         <View style={[styles.crosshairDot, crosshairHit && styles.crosshairDotHit]} />
       </View>
     </View>
@@ -329,7 +330,7 @@ const Minimap: React.FC = () => {
   const player = getPlayer();
   if (!player?.position) return null;
 
-  const {grid, width, depth} = level;
+  const { grid, width, depth } = level;
   const px = Math.floor(player.position.x / CELL_SIZE);
   const pz = Math.floor(player.position.z / CELL_SIZE);
 
@@ -339,8 +340,8 @@ const Minimap: React.FC = () => {
   const minZ = Math.max(0, pz - MINIMAP_RADIUS);
   const maxZ = Math.min(depth - 1, pz + MINIMAP_RADIUS);
 
-  const visW = maxX - minX + 1;
-  const visH = maxZ - minZ + 1;
+  const _visW = maxX - minX + 1;
+  const _visH = maxZ - minZ + 1;
   const cellPx = MINIMAP_SIZE / (MINIMAP_RADIUS * 2 + 1);
 
   // Build pixel data
@@ -352,10 +353,14 @@ const Minimap: React.FC = () => {
       const isWall = cell >= MapCell.WALL_STONE && cell <= MapCell.DOOR;
       if (!isWall) continue;
 
-      const color = cell === MapCell.WALL_LAVA ? '#552200'
-        : cell === MapCell.WALL_FLESH ? '#331111'
-        : cell === MapCell.DOOR ? '#554422'
-        : '#333333';
+      const color =
+        cell === MapCell.WALL_LAVA
+          ? '#552200'
+          : cell === MapCell.WALL_FLESH
+            ? '#331111'
+            : cell === MapCell.DOOR
+              ? '#554422'
+              : '#333333';
 
       cells.push(
         <View
@@ -374,7 +379,7 @@ const Minimap: React.FC = () => {
   }
 
   // Enemy dots
-  const enemies = world.entities.filter(e => e.enemy && e.position);
+  const enemies = world.entities.filter((e) => e.enemy && e.position);
   const enemyDots: React.JSX.Element[] = [];
   for (const e of enemies) {
     const ex = Math.floor(e.position!.x / CELL_SIZE);
@@ -439,7 +444,7 @@ const DamageNumbers: React.FC = () => {
 
   return (
     <>
-      {events.map(ev => {
+      {events.map((ev) => {
         const age = now - ev.time;
         const progress = Math.min(1, age / DMG_LIFETIME);
         const opacity = 1 - progress;
@@ -456,11 +461,12 @@ const DamageNumbers: React.FC = () => {
               ev.amount >= 30 && styles.dmgNumberBig,
               {
                 opacity,
-                transform: [{translateY: translateY + offsetY}],
+                transform: [{ translateY: translateY + offsetY }],
                 left: '50%' as DimensionValue,
                 marginLeft: offsetX,
               },
-            ]}>
+            ]}
+          >
             {ev.amount}
           </Text>
         );
@@ -482,10 +488,10 @@ const BOSS_DISPLAY_NAMES: Record<string, string> = {
 };
 
 const BossHealthBar: React.FC = () => {
-  const boss = world.entities.find(e => e.enemy && BOSS_TYPES.has(e.type ?? ''));
+  const boss = world.entities.find((e) => e.enemy && BOSS_TYPES.has(e.type ?? ''));
   if (!boss?.enemy) return null;
 
-  const {hp, maxHp} = boss.enemy;
+  const { hp, maxHp } = boss.enemy;
   const ratio = maxHp > 0 ? hp / maxHp : 0;
   const name = BOSS_DISPLAY_NAMES[boss.type ?? ''] ?? 'BOSS';
 
@@ -498,15 +504,12 @@ const BossHealthBar: React.FC = () => {
         <View
           style={[
             styles.bossBarInner,
-            {width: `${ratio * 100}%` as DimensionValue, backgroundColor: barColor},
+            { width: `${ratio * 100}%` as DimensionValue, backgroundColor: barColor },
           ]}
         />
         {/* Tick marks at 25%, 50%, 75% */}
-        {[0.25, 0.5, 0.75].map(p => (
-          <View
-            key={p}
-            style={[styles.bossBarTick, {left: `${p * 100}%` as DimensionValue}]}
-          />
+        {[0.25, 0.5, 0.75].map((p) => (
+          <View key={p} style={[styles.bossBarTick, { left: `${p * 100}%` as DimensionValue }]} />
         ))}
       </View>
       <Text style={styles.bossHpText}>
@@ -831,7 +834,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#ffffff',
     textShadowColor: 'rgba(255, 0, 0, 0.6)',
-    textShadowOffset: {width: 0, height: 0},
+    textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 8,
     letterSpacing: 2,
   },
@@ -968,7 +971,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#ffcc00',
     textShadowColor: 'rgba(0, 0, 0, 0.8)',
-    textShadowOffset: {width: 1, height: 1},
+    textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 2,
   },
   dmgNumberBig: {
@@ -992,7 +995,7 @@ const styles = StyleSheet.create({
     letterSpacing: 4,
     marginBottom: 4,
     textShadowColor: 'rgba(255, 0, 0, 0.5)',
-    textShadowOffset: {width: 0, height: 0},
+    textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 6,
   },
   bossBarOuter: {

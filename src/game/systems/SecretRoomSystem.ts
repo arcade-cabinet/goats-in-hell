@@ -5,14 +5,14 @@
  * level renderer is responsible for hiding/showing secret walls based on
  * the grid state updated here.
  */
-import type {Vec3} from '../entities/components';
-import {vec3Distance} from '../entities/vec3';
-import {MapCell} from '../levels/LevelGenerator';
-import {playSound} from './AudioSystem';
-import {GameState} from '../../state/GameState';
-import {useGameStore} from '../../state/GameStore';
-import type {LevelData} from '../levels/LevelData';
-import {CELL_SIZE} from '../levels/LevelGenerator';
+
+import { GameState } from '../../state/GameState';
+import { useGameStore } from '../../state/GameStore';
+import type { Vec3 } from '../entities/components';
+import { vec3Distance } from '../entities/vec3';
+import type { LevelData } from '../levels/LevelData';
+import { CELL_SIZE, MapCell } from '../levels/LevelGenerator';
+import { playSound } from './AudioSystem';
 
 // ---------------------------------------------------------------------------
 // State
@@ -50,10 +50,7 @@ export function tickSecretTimer(): void {
 /**
  * Check if the player is close to any secret wall cell. If so, open it.
  */
-export function checkSecretWalls(
-  playerPos: Vec3,
-  level: LevelData,
-): void {
+export function checkSecretWalls(playerPos: Vec3, level: LevelData): void {
   const DISCOVER_RANGE = 1.8;
   const grid = level.grid;
 
@@ -63,7 +60,7 @@ export function checkSecretWalls(
 
       const wallX = x * CELL_SIZE;
       const wallZ = z * CELL_SIZE;
-      const dist = vec3Distance(playerPos, {x: wallX, y: playerPos.y, z: wallZ});
+      const dist = vec3Distance(playerPos, { x: wallX, y: playerPos.y, z: wallZ });
 
       if (dist < DISCOVER_RANGE) {
         openSecretWall(x, z, level);
@@ -76,11 +73,7 @@ export function checkSecretWalls(
 // Internal
 // ---------------------------------------------------------------------------
 
-function openSecretWall(
-  gridX: number,
-  gridZ: number,
-  level: LevelData,
-): void {
+function openSecretWall(gridX: number, gridZ: number, level: LevelData): void {
   // Update the grid to remove the wall
   if (level.grid[gridZ]?.[gridX] !== undefined) {
     level.grid[gridZ][gridX] = MapCell.EMPTY;
@@ -90,9 +83,9 @@ function openSecretWall(
   secretsFound++;
   secretNotifyTimer = NOTIFY_DURATION;
   playSound('pickup');
-  GameState.set({screenShake: 6});
+  GameState.set({ screenShake: 6 });
 
   // Award bonus score
   const store = useGameStore.getState();
-  useGameStore.setState({score: store.score + 500});
+  useGameStore.setState({ score: store.score + 500 });
 }

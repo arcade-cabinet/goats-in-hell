@@ -8,11 +8,11 @@
  * Fades out over ~50ms with random rotation for visual variety.
  */
 
-import {useEffect, useRef} from 'react';
-import {useThree, useFrame} from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import {useGameStore} from '../../state/GameStore';
-import {triggerMuzzleFlash as triggerDynamicLight} from '../rendering/Lighting';
+import { useGameStore } from '../../state/GameStore';
+import { triggerMuzzleFlash as triggerDynamicLight } from '../rendering/Lighting';
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -65,7 +65,7 @@ const _worldPos = new THREE.Vector3();
 // ---------------------------------------------------------------------------
 
 export function MuzzleFlashEffect() {
-  const {camera} = useThree();
+  const { camera } = useThree();
   const meshRef = useRef<THREE.Mesh | null>(null);
   const timerRef = useRef(0);
   const prevGunFlashRef = useRef(0);

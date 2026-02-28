@@ -5,8 +5,8 @@
  * Kills within a time window count as a streak. Awards bonus XP.
  */
 
-import {useGameStore} from '../../state/GameStore';
-import {getGameTime} from './GameClock';
+import { useGameStore } from '../../state/GameStore';
+import { getGameTime } from './GameClock';
 
 // ---------------------------------------------------------------------------
 // Streak tiers
@@ -20,13 +20,13 @@ interface StreakTier {
 }
 
 const STREAK_TIERS: StreakTier[] = [
-  {kills: 2, label: 'DOUBLE KILL', xpBonus: 50, color: '#ffcc00'},
-  {kills: 3, label: 'TRIPLE KILL', xpBonus: 100, color: '#ff8800'},
-  {kills: 4, label: 'QUAD KILL', xpBonus: 200, color: '#ff4400'},
-  {kills: 5, label: 'MASSACRE', xpBonus: 400, color: '#ff0000'},
-  {kills: 7, label: 'RAMPAGE', xpBonus: 600, color: '#cc00ff'},
-  {kills: 10, label: 'UNSTOPPABLE', xpBonus: 1000, color: '#ff00ff'},
-  {kills: 15, label: 'GODLIKE', xpBonus: 2000, color: '#ffffff'},
+  { kills: 2, label: 'DOUBLE KILL', xpBonus: 50, color: '#ffcc00' },
+  { kills: 3, label: 'TRIPLE KILL', xpBonus: 100, color: '#ff8800' },
+  { kills: 4, label: 'QUAD KILL', xpBonus: 200, color: '#ff4400' },
+  { kills: 5, label: 'MASSACRE', xpBonus: 400, color: '#ff0000' },
+  { kills: 7, label: 'RAMPAGE', xpBonus: 600, color: '#cc00ff' },
+  { kills: 10, label: 'UNSTOPPABLE', xpBonus: 1000, color: '#ff00ff' },
+  { kills: 15, label: 'GODLIKE', xpBonus: 2000, color: '#ffffff' },
 ];
 
 // ---------------------------------------------------------------------------
@@ -38,7 +38,7 @@ const STREAK_WINDOW = 3000;
 
 let streakCount = 0;
 let lastKillTime = 0;
-let currentAnnouncement: {label: string; color: string; time: number} | null = null;
+let currentAnnouncement: { label: string; color: string; time: number } | null = null;
 
 // ---------------------------------------------------------------------------
 // API
@@ -70,7 +70,7 @@ export function registerKill(): void {
 }
 
 /** Get the current active announcement (if any, within display window). */
-export function getAnnouncement(): {label: string; color: string; progress: number} | null {
+export function getAnnouncement(): { label: string; color: string; progress: number } | null {
   if (!currentAnnouncement) return null;
 
   const elapsed = getGameTime() - currentAnnouncement.time;

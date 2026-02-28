@@ -6,8 +6,8 @@
  * Materials are cached by theme name to avoid recreation.
  */
 import * as THREE from 'three';
-import type {FloorTheme} from '../../game/levels/FloorThemes';
-import {COLORS} from '../../constants';
+import { COLORS } from '../../constants';
+import type { FloorTheme } from '../../game/levels/FloorThemes';
 
 // ---------------------------------------------------------------------------
 // Cache: one material instance per theme + element combination

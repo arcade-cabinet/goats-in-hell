@@ -15,13 +15,24 @@ export interface Vec3 {
 
 export type EntityType =
   | 'player'
-  | 'goat' | 'hellgoat' | 'fireGoat' | 'shadowGoat' | 'goatKnight'
-  | 'archGoat' | 'infernoGoat' | 'voidGoat' | 'ironGoat'
+  | 'goat'
+  | 'hellgoat'
+  | 'fireGoat'
+  | 'shadowGoat'
+  | 'goatKnight'
+  | 'archGoat'
+  | 'infernoGoat'
+  | 'voidGoat'
+  | 'ironGoat'
   | 'projectile'
-  | 'health' | 'ammo' | 'weaponPickup'
+  | 'health'
+  | 'ammo'
+  | 'weaponPickup'
   | 'powerup'
-  | 'door' | 'decoration'
-  | 'hazard_spikes' | 'hazard_barrel';
+  | 'door'
+  | 'decoration'
+  | 'hazard_spikes'
+  | 'hazard_barrel';
 
 export type WeaponId = 'hellPistol' | 'brimShotgun' | 'hellfireCannon' | 'goatsBane';
 
@@ -67,7 +78,7 @@ export type Entity = {
     visibilityAlpha?: number;
     // Stagger state
     staggerTimer?: number; // ms remaining of stagger
-    staggerDirX?: number;  // knockback direction
+    staggerDirX?: number; // knockback direction
     staggerDirZ?: number;
     // Boss-specific ability cooldowns
     _fireRingCd?: number;
@@ -75,7 +86,7 @@ export type Entity = {
   };
 
   // Weapon ammo (per-weapon)
-  ammo?: Record<WeaponId, {current: number; reserve: number; magSize: number}>;
+  ammo?: Record<WeaponId, { current: number; reserve: number; magSize: number }>;
 
   // Projectile
   projectile?: {
@@ -96,7 +107,7 @@ export type Entity = {
   };
 
   // Door
-  door?: {open: boolean; opening: boolean; openProgress: number};
+  door?: { open: boolean; opening: boolean; openProgress: number };
 
   // Environmental hazard
   hazard?: {

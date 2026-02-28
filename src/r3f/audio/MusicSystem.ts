@@ -9,15 +9,23 @@
  * Track selection based on encounter type and floor theme.
  */
 
-import {useGameStore} from '../../state/GameStore';
-import type {MusicAssetKey} from '../../game/systems/AssetRegistry';
+import type { MusicAssetKey } from '../../game/systems/AssetRegistry';
+import { useGameStore } from '../../state/GameStore';
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
-type MusicTrack = 'menu' | 'exploration' | 'tense' | 'boss' | 'dark'
-  | 'death-metal' | 'violence' | 'revenge' | 'gothic';
+type MusicTrack =
+  | 'menu'
+  | 'exploration'
+  | 'tense'
+  | 'boss'
+  | 'dark'
+  | 'death-metal'
+  | 'violence'
+  | 'revenge'
+  | 'gothic';
 
 const TRACK_TO_ASSET: Record<MusicTrack, MusicAssetKey> = {
   menu: 'music-menu',
@@ -124,8 +132,16 @@ export function stopMusic(): void {
 
     const src = activeSource;
     setTimeout(() => {
-      try { src.stop(); } catch { /* already stopped */ }
-      try { src.disconnect(); } catch { /* ignore */ }
+      try {
+        src.stop();
+      } catch {
+        /* already stopped */
+      }
+      try {
+        src.disconnect();
+      } catch {
+        /* ignore */
+      }
       if (musicGain) {
         musicGain.gain.cancelScheduledValues(0);
         musicGain.gain.value = MUSIC_VOLUME;
@@ -150,7 +166,12 @@ export function updateMusic(): void {
     desired = 'menu';
   } else if (screen === 'dead' || screen === 'gameComplete') {
     desired = null;
-  } else if (screen === 'playing' || screen === 'paused' || screen === 'victory' || screen === 'bossIntro') {
+  } else if (
+    screen === 'playing' ||
+    screen === 'paused' ||
+    screen === 'victory' ||
+    screen === 'bossIntro'
+  ) {
     const encounter = state.stage.encounterType;
     if (encounter === 'boss') {
       // Boss fights: heavy tracks that escalate the tension
@@ -192,16 +213,13 @@ export function updateMusic(): void {
 function resolveAssetUri(moduleId: number | string): string {
   if (typeof moduleId === 'string') return moduleId;
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const {Asset} = require('expo-asset');
+  const { Asset } = require('expo-asset');
   const asset = Asset.fromModule(moduleId);
   return asset.uri;
 }
 
 /** Fetch and decode an OGG audio file into an AudioBuffer. */
-async function loadAudioBuffer(
-  moduleId: number,
-  audioCtx: AudioContext,
-): Promise<AudioBuffer> {
+async function loadAudioBuffer(moduleId: number, audioCtx: AudioContext): Promise<AudioBuffer> {
   const uri = resolveAssetUri(moduleId);
   const response = await fetch(uri);
   if (!response.ok) {
@@ -216,7 +234,7 @@ export async function loadAllMusic(
   audioCtx: AudioContext,
 ): Promise<Map<MusicAssetKey, AudioBuffer>> {
   // Late import to avoid circular dependency at module load time
-  const {MUSIC_ASSETS} = await import('../../game/systems/AssetRegistry');
+  const { MUSIC_ASSETS } = await import('../../game/systems/AssetRegistry');
 
   const map = new Map<MusicAssetKey, AudioBuffer>();
   const entries = Object.entries(MUSIC_ASSETS) as [MusicAssetKey, number][];

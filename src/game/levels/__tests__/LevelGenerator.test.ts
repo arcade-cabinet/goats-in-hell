@@ -15,7 +15,13 @@ jest.mock('../../../state/GameStore', () => ({
   },
 }));
 
-import {LevelGenerator, MapCell, CELL_SIZE, WALL_HEIGHT, PLATFORM_HEIGHT} from '../LevelGenerator';
+import {
+  CELL_SIZE,
+  LevelGenerator,
+  MapCell,
+  PLATFORM_HEIGHT,
+  WALL_HEIGHT,
+} from '../LevelGenerator';
 
 beforeEach(() => {
   mockPrngCounter = 42; // reset seed each test
@@ -175,8 +181,8 @@ describe('generate()', () => {
     const gen = new LevelGenerator(25, 25, 1);
     gen.generate();
 
-    const enemies = gen.spawns.filter(s =>
-      ['goat', 'hellgoat', 'fireGoat', 'shadowGoat', 'goatKnight'].includes(s.type)
+    const enemies = gen.spawns.filter((s) =>
+      ['goat', 'hellgoat', 'fireGoat', 'shadowGoat', 'goatKnight'].includes(s.type),
     );
     expect(enemies.length).toBeGreaterThan(0);
   });
@@ -185,7 +191,7 @@ describe('generate()', () => {
     const gen = new LevelGenerator(25, 25, 1);
     gen.generate();
 
-    const pickups = gen.spawns.filter(s => s.type === 'health' || s.type === 'ammo');
+    const pickups = gen.spawns.filter((s) => s.type === 'health' || s.type === 'ammo');
     expect(pickups.length).toBeGreaterThan(0);
   });
 
@@ -193,15 +199,15 @@ describe('generate()', () => {
     mockPrngCounter = 42;
     const gen1 = new LevelGenerator(25, 25, 1);
     gen1.generate();
-    const enemies1 = gen1.spawns.filter(s =>
-      ['goat', 'hellgoat', 'fireGoat', 'shadowGoat', 'goatKnight'].includes(s.type)
+    const enemies1 = gen1.spawns.filter((s) =>
+      ['goat', 'hellgoat', 'fireGoat', 'shadowGoat', 'goatKnight'].includes(s.type),
     ).length;
 
     mockPrngCounter = 42;
     const gen8 = new LevelGenerator(25, 25, 8);
     gen8.generate();
-    const enemies8 = gen8.spawns.filter(s =>
-      ['goat', 'hellgoat', 'fireGoat', 'shadowGoat', 'goatKnight'].includes(s.type)
+    const enemies8 = gen8.spawns.filter((s) =>
+      ['goat', 'hellgoat', 'fireGoat', 'shadowGoat', 'goatKnight'].includes(s.type),
     ).length;
 
     expect(enemies8).toBeGreaterThan(enemies1);

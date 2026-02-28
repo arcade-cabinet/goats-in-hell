@@ -1,76 +1,95 @@
+# Dependencies
+node_modules/
 
+# Package manager artifacts
+package-lock.json
+npm-debug.log
+yarn-error.log
+.yarn/*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-!debug.keystore
-!default.mode1v3
-!default.mode2v3
-!default.pbxuser
-!default.perspectivev3
-.cxx/
-.DS_Store
-.worktrees/
-.env*
+.pnpm-store/
+.pnpm-debug.log
+
+# Build output
+build/
+dist/
+
+# Expo
 .expo/
-.gradle
-.idea
+
+# Metro
 .metro-health-check*
-.playwright-mcp/
-.yarn/*
-*.bak
-*.hmap
-*.hprof
+
+# Testing
+/coverage
+
+# Environment
+.env*
+
+# OS
+.DS_Store
+
+# IDE
+.idea
 *.iml
-*.ipa
-*.jsbundle
-*.keystore
-*.mode1v3
-*.mode2v3
-*.moved-aside
+
+# Claude Code worktrees
+.worktrees/
+.claude/
+
+# Playwright MCP
+.playwright-mcp/
+
+# Android/IntelliJ
+.cxx/
+.gradle
+local.properties
+DerivedData
+*.hprof
+
+# Xcode
 *.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
 *.perspectivev3
-*.png
+!default.perspectivev3
+xcuserdata
 *.xccheckout
 *.xcuserstate
 **/.xcode.env.local
+
+# iOS
+*.ipa
+**Pods/
+/vendor/bundle/
+
+# React Native
+*.jsbundle
+*.hmap
+
+# Keystore
+*.keystore
+!debug.keystore
+
+# Fastlane
 **/fastlane/Preview.html
 **/fastlane/report.xml
 **/fastlane/screenshots
 **/fastlane/test_output
-**/Pods/
-/coverage
-/vendor/bundle/
-#
-# Android/IntelliJ
-# Bundle artifact
+
 # Debug logs
-# Environment files
-# Expo
-# fastlane
-# For more information about the recommended setup visit:
-# https://docs.fastlane.tools/best-practices/source-control/
-# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
-# node.js
-# OSX
-# Playwright MCP
-# Production build output
-# Ruby / CocoaPods
-# Screenshots (dev testing artifacts)
-# screenshots whenever they are needed.
-# Temporary files created by Metro to check the health of the file watcher
-# testing
-# Xcode
-# Yarn
-build/
 console-debug*.log
 console-warnings.log
-DerivedData
-dist/
-local.properties
-node_modules/
-npm-debug.log
 vm-debug.log
-xcuserdata
-yarn-error.log
+
+# Dev testing artifacts
+*.bak
+*.moved-aside
+*.png

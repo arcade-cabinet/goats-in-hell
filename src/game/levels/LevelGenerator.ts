@@ -1,8 +1,8 @@
-import type {Vec3} from '../entities/components';
-import {vec3, vec3Zero} from '../entities/vec3';
-import {getThemeForFloor, type FloorTheme} from './FloorThemes';
-import {generateBossArena} from './BossArenas';
-import {useGameStore} from '../../state/GameStore';
+import { useGameStore } from '../../state/GameStore';
+import type { Vec3 } from '../entities/components';
+import { vec3, vec3Zero } from '../entities/vec3';
+import { generateBossArena } from './BossArenas';
+import { type FloorTheme, getThemeForFloor } from './FloorThemes';
 
 /** Shorthand for the store's seeded PRNG — deterministic per-seed. */
 function rng(): number {
@@ -20,17 +20,27 @@ export enum MapCell {
   WALL_OBSIDIAN = 4,
   DOOR = 5,
   FLOOR_LAVA = 6,
-  FLOOR_RAISED = 7,    // Elevated platform floor
-  RAMP = 8,            // Connects ground to raised platform
-  WALL_SECRET = 9,     // Looks like normal wall but can be opened
-  FLOOR_VOID = 10,     // Void pit — instant death for anything that falls in
+  FLOOR_RAISED = 7, // Elevated platform floor
+  RAMP = 8, // Connects ground to raised platform
+  WALL_SECRET = 9, // Looks like normal wall but can be opened
+  FLOOR_VOID = 10, // Void pit — instant death for anything that falls in
 }
 
-export type SpawnData = {x: number; z: number; type: string; weaponId?: string; rotation?: number; elevation?: number};
+export type SpawnData = {
+  x: number;
+  z: number;
+  type: string;
+  weaponId?: string;
+  rotation?: number;
+  elevation?: number;
+};
 
 /** Room data from BSP generation. */
 interface BspRoom {
-  x: number; z: number; w: number; h: number;
+  x: number;
+  z: number;
+  w: number;
+  h: number;
   elevation: number; // 0 = ground level, 1 = raised platform (Y + PLATFORM_HEIGHT)
 }
 
@@ -107,7 +117,8 @@ export class LevelGenerator {
     for (const room of rooms) {
       const roomCenterX = room.x + Math.floor(room.w / 2);
       const roomCenterZ = room.z + Math.floor(room.h / 2);
-      const distFromSpawn = Math.abs(roomCenterX - playerCellX) + Math.abs(roomCenterZ - playerCellZ);
+      const distFromSpawn =
+        Math.abs(roomCenterX - playerCellX) + Math.abs(roomCenterZ - playerCellZ);
 
       if (distFromSpawn < 5) continue; // Skip spawn room
 
@@ -122,7 +133,7 @@ export class LevelGenerator {
         const ez = room.z + 1 + Math.floor(rng() * Math.max(1, room.h - 2));
         if (this.grid[ez]?.[ex] !== MapCell.EMPTY) continue;
         const type = theme.enemyTypes[Math.floor(rng() * theme.enemyTypes.length)];
-        this.spawns.push({x: ex * CELL_SIZE, z: ez * CELL_SIZE, type});
+        this.spawns.push({ x: ex * CELL_SIZE, z: ez * CELL_SIZE, type });
       }
 
       // Pickups: ammo and health
@@ -142,14 +153,9 @@ export class LevelGenerator {
     // Decorate walls with theme accent walls
     for (let r = 1; r < this.depth - 1; r++) {
       for (let c = 1; c < this.width - 1; c++) {
-        if (
-          this.grid[r][c] === (theme.primaryWall as MapCell) &&
-          rng() > 0.8
-        ) {
+        if (this.grid[r][c] === (theme.primaryWall as MapCell) && rng() > 0.8) {
           const accentWalls = theme.accentWalls;
-          this.grid[r][c] = accentWalls[
-            Math.floor(rng() * accentWalls.length)
-          ] as MapCell;
+          this.grid[r][c] = accentWalls[Math.floor(rng() * accentWalls.length)] as MapCell;
         }
       }
     }
@@ -204,17 +210,21 @@ export class LevelGenerator {
   // ---------------------------------------------------------------------------
 
   private bspGenerate(): BspRoom[] {
-    const MIN_PARTITION = 8;  // Minimum partition size before we stop splitting
-    const MIN_ROOM = 4;      // Minimum room dimension
-    const ROOM_PADDING = 1;  // Wall gap between room edge and partition edge
+    const MIN_PARTITION = 8; // Minimum partition size before we stop splitting
+    const MIN_ROOM = 4; // Minimum room dimension
+    const ROOM_PADDING = 1; // Wall gap between room edge and partition edge
 
     interface Partition {
-      x: number; z: number; w: number; h: number;
-      left?: Partition; right?: Partition;
+      x: number;
+      z: number;
+      w: number;
+      h: number;
+      left?: Partition;
+      right?: Partition;
       room?: BspRoom;
     }
 
-    const root: Partition = {x: 1, z: 1, w: this.width - 2, h: this.depth - 2};
+    const root: Partition = { x: 1, z: 1, w: this.width - 2, h: this.depth - 2 };
     const leaves: Partition[] = [];
 
     // Recursive split
@@ -234,23 +244,29 @@ export class LevelGenerator {
       if (node.w > node.h * 1.3) {
         splitH = false; // Split vertically (along x)
       } else if (node.h > node.w * 1.3) {
-        splitH = true;  // Split horizontally (along z)
+        splitH = true; // Split horizontally (along z)
       } else {
         splitH = rng() < 0.5;
       }
 
       if (splitH) {
         // Horizontal split: divide along z axis
-        if (node.h < MIN_PARTITION * 2) { leaves.push(node); return; }
+        if (node.h < MIN_PARTITION * 2) {
+          leaves.push(node);
+          return;
+        }
         const splitZ = MIN_PARTITION + Math.floor(rng() * (node.h - MIN_PARTITION * 2 + 1));
-        node.left = {x: node.x, z: node.z, w: node.w, h: splitZ};
-        node.right = {x: node.x, z: node.z + splitZ, w: node.w, h: node.h - splitZ};
+        node.left = { x: node.x, z: node.z, w: node.w, h: splitZ };
+        node.right = { x: node.x, z: node.z + splitZ, w: node.w, h: node.h - splitZ };
       } else {
         // Vertical split: divide along x axis
-        if (node.w < MIN_PARTITION * 2) { leaves.push(node); return; }
+        if (node.w < MIN_PARTITION * 2) {
+          leaves.push(node);
+          return;
+        }
         const splitX = MIN_PARTITION + Math.floor(rng() * (node.w - MIN_PARTITION * 2 + 1));
-        node.left = {x: node.x, z: node.z, w: splitX, h: node.h};
-        node.right = {x: node.x + splitX, z: node.z, w: node.w - splitX, h: node.h};
+        node.left = { x: node.x, z: node.z, w: splitX, h: node.h };
+        node.right = { x: node.x + splitX, z: node.z, w: node.w - splitX, h: node.h };
       }
 
       split(node.left!, depth + 1);
@@ -273,7 +289,7 @@ export class LevelGenerator {
 
       // ~30% of rooms are elevated platforms (not on floor 1 — ease player in)
       const isRaised = this.floor > 1 && rng() < 0.3;
-      const room: BspRoom = {x: roomX, z: roomZ, w: roomW, h: roomH, elevation: isRaised ? 1 : 0};
+      const room: BspRoom = { x: roomX, z: roomZ, w: roomW, h: roomH, elevation: isRaised ? 1 : 0 };
       leaf.room = room;
       rooms.push(room);
 
@@ -346,7 +362,7 @@ export class LevelGenerator {
         for (let dx = -1; dx <= 1; dx++) {
           const rx = midX + dx;
           const rz = midZ + dz;
-          if (this.inBounds(rx, rz) && this.grid[rz][rx] !== this.theme.primaryWall as MapCell) {
+          if (this.inBounds(rx, rz) && this.grid[rz][rx] !== (this.theme.primaryWall as MapCell)) {
             this.grid[rz][rx] = MapCell.RAMP;
           }
         }
@@ -460,24 +476,20 @@ export class LevelGenerator {
    * until hitting an existing open cell, ensuring the boss arena is
    * reachable from the rest of the map.
    */
-  private carveArenaCorridors(
-    offsetX: number,
-    offsetZ: number,
-    arenaSize: number
-  ) {
+  private carveArenaCorridors(offsetX: number, offsetZ: number, arenaSize: number) {
     const centerX = offsetX + Math.floor(arenaSize / 2);
     const centerZ = offsetZ + Math.floor(arenaSize / 2);
 
     // Define the 4 edge midpoints and their outward directions
-    const edges: {startX: number; startZ: number; dx: number; dz: number}[] = [
+    const edges: { startX: number; startZ: number; dx: number; dz: number }[] = [
       // Top edge (z = offsetZ), carve upward (dz = -1)
-      {startX: centerX, startZ: offsetZ - 1, dx: 0, dz: -1},
+      { startX: centerX, startZ: offsetZ - 1, dx: 0, dz: -1 },
       // Bottom edge (z = offsetZ + arenaSize - 1), carve downward (dz = +1)
-      {startX: centerX, startZ: offsetZ + arenaSize, dx: 0, dz: 1},
+      { startX: centerX, startZ: offsetZ + arenaSize, dx: 0, dz: 1 },
       // Left edge (x = offsetX), carve left (dx = -1)
-      {startX: offsetX - 1, startZ: centerZ, dx: -1, dz: 0},
+      { startX: offsetX - 1, startZ: centerZ, dx: -1, dz: 0 },
       // Right edge (x = offsetX + arenaSize - 1), carve right (dx = +1)
-      {startX: offsetX + arenaSize, startZ: centerZ, dx: 1, dz: 0},
+      { startX: offsetX + arenaSize, startZ: centerZ, dx: 1, dz: 0 },
     ];
 
     for (const edge of edges) {
@@ -512,9 +524,10 @@ export class LevelGenerator {
         // Check if this cell (or its 2-wide neighbor) is already open
         // before we carve, meaning we've connected to the existing map
         const alreadyOpen = this.grid[cz][cx] === MapCell.EMPTY;
-        const neighborAlreadyOpen = edge.dx === 0
-          ? this.inBounds(cx + 1, cz) && this.grid[cz][cx + 1] === MapCell.EMPTY
-          : this.inBounds(cx, cz + 1) && this.grid[cz + 1][cx] === MapCell.EMPTY;
+        const neighborAlreadyOpen =
+          edge.dx === 0
+            ? this.inBounds(cx + 1, cz) && this.grid[cz][cx + 1] === MapCell.EMPTY
+            : this.inBounds(cx, cz + 1) && this.grid[cz + 1][cx] === MapCell.EMPTY;
 
         // Carve the 2-wide corridor
         this.grid[cz][cx] = MapCell.EMPTY;
@@ -544,38 +557,27 @@ export class LevelGenerator {
   /**
    * Spawn extra elite enemies around the boss arena on boss floors.
    */
-  private spawnBossArenaElites(
-    offsetX: number,
-    offsetZ: number,
-    arenaSize: number
-  ) {
+  private spawnBossArenaElites(offsetX: number, offsetZ: number, arenaSize: number) {
     const theme = this.theme;
     // Place elites inside the arena near the edges
-    const elitePositions: {x: number; z: number}[] = [
-      {x: offsetX + 2, z: offsetZ + 2},
-      {x: offsetX + arenaSize - 3, z: offsetZ + 2},
-      {x: offsetX + 2, z: offsetZ + arenaSize - 3},
-      {x: offsetX + arenaSize - 3, z: offsetZ + arenaSize - 3},
-      {x: offsetX + Math.floor(arenaSize / 2), z: offsetZ + 2},
-      {x: offsetX + Math.floor(arenaSize / 2), z: offsetZ + arenaSize - 3},
+    const elitePositions: { x: number; z: number }[] = [
+      { x: offsetX + 2, z: offsetZ + 2 },
+      { x: offsetX + arenaSize - 3, z: offsetZ + 2 },
+      { x: offsetX + 2, z: offsetZ + arenaSize - 3 },
+      { x: offsetX + arenaSize - 3, z: offsetZ + arenaSize - 3 },
+      { x: offsetX + Math.floor(arenaSize / 2), z: offsetZ + 2 },
+      { x: offsetX + Math.floor(arenaSize / 2), z: offsetZ + arenaSize - 3 },
     ];
 
     for (const pos of elitePositions) {
-      if (
-        this.inBounds(pos.x, pos.z) &&
-        this.grid[pos.z][pos.x] === MapCell.EMPTY
-      ) {
+      if (this.inBounds(pos.x, pos.z) && this.grid[pos.z][pos.x] === MapCell.EMPTY) {
         // Pick a strong enemy type for elite spawns
-        const eliteTypes = theme.enemyTypes.filter(
-          t => t !== 'goat'
-        );
+        const eliteTypes = theme.enemyTypes.filter((t) => t !== 'goat');
         const type =
           eliteTypes.length > 0
             ? eliteTypes[Math.floor(rng() * eliteTypes.length)]
-            : theme.enemyTypes[
-                Math.floor(rng() * theme.enemyTypes.length)
-              ];
-        this.spawns.push({x: pos.x * CELL_SIZE, z: pos.z * CELL_SIZE, type});
+            : theme.enemyTypes[Math.floor(rng() * theme.enemyTypes.length)];
+        this.spawns.push({ x: pos.x * CELL_SIZE, z: pos.z * CELL_SIZE, type });
       }
     }
   }
@@ -595,11 +597,9 @@ export class LevelGenerator {
         const wallRight = this.isWall(x + 1, z);
 
         // Horizontal corridor choke: walls above and below, open left and right
-        const horizontalChoke =
-          wallAbove && wallBelow && !wallLeft && !wallRight;
+        const horizontalChoke = wallAbove && wallBelow && !wallLeft && !wallRight;
         // Vertical corridor choke: walls left and right, open above and below
-        const verticalChoke =
-          wallLeft && wallRight && !wallAbove && !wallBelow;
+        const verticalChoke = wallLeft && wallRight && !wallAbove && !wallBelow;
 
         if ((horizontalChoke || verticalChoke) && rng() < 0.15) {
           this.grid[z][x] = MapCell.DOOR;
@@ -613,20 +613,20 @@ export class LevelGenerator {
    * The player starts with hellPistol; other weapons are unlocked by floor.
    */
   private placeWeaponPickups(playerCellX: number, playerCellZ: number) {
-    const weaponsByFloor: {weaponId: string; minFloor: number}[] = [
-      {weaponId: 'brimShotgun', minFloor: 1},
-      {weaponId: 'hellfireCannon', minFloor: 2},
-      {weaponId: 'goatsBane', minFloor: 3},
+    const weaponsByFloor: { weaponId: string; minFloor: number }[] = [
+      { weaponId: 'brimShotgun', minFloor: 1 },
+      { weaponId: 'hellfireCannon', minFloor: 2 },
+      { weaponId: 'goatsBane', minFloor: 3 },
     ];
 
     // Collect all open cells at least 10 cells away from player spawn
-    const candidates: {x: number; z: number}[] = [];
+    const candidates: { x: number; z: number }[] = [];
     for (let z = 1; z < this.depth - 1; z++) {
       for (let x = 1; x < this.width - 1; x++) {
         if (this.grid[z][x] !== MapCell.EMPTY) continue;
         const dist = Math.abs(x - playerCellX) + Math.abs(z - playerCellZ);
         if (dist >= 10) {
-          candidates.push({x, z});
+          candidates.push({ x, z });
         }
       }
     }
@@ -663,13 +663,13 @@ export class LevelGenerator {
     if (rng() > 0.4) return; // 40% chance
 
     // Find open cells far from player
-    const candidates: {x: number; z: number}[] = [];
+    const candidates: { x: number; z: number }[] = [];
     for (let z = 1; z < this.depth - 1; z++) {
       for (let x = 1; x < this.width - 1; x++) {
         if (this.grid[z][x] !== MapCell.EMPTY) continue;
         const dist = Math.abs(x - playerCellX) + Math.abs(z - playerCellZ);
         if (dist >= 8) {
-          candidates.push({x, z});
+          candidates.push({ x, z });
         }
       }
     }
@@ -702,12 +702,14 @@ export class LevelGenerator {
 
   /** Check if a cell is walkable (any non-wall). */
   static isWalkable(cell: MapCell): boolean {
-    return cell === MapCell.EMPTY ||
+    return (
+      cell === MapCell.EMPTY ||
       cell === MapCell.DOOR ||
       cell === MapCell.FLOOR_LAVA ||
       cell === MapCell.FLOOR_RAISED ||
       cell === MapCell.RAMP ||
-      cell === MapCell.FLOOR_VOID;
+      cell === MapCell.FLOOR_VOID
+    );
   }
 
   /**
@@ -752,8 +754,12 @@ export class LevelGenerator {
         // Wall-adjacent cells: fire-baskets or candles
         if (wallNeighbors === 1 && rng() < wallPropChance) {
           const type = isFireTheme
-            ? (rng() > 0.4 ? 'prop_firebasket' : 'prop_candle')
-            : (rng() > 0.6 ? 'prop_candle_multi' : 'prop_candle');
+            ? rng() > 0.4
+              ? 'prop_firebasket'
+              : 'prop_candle'
+            : rng() > 0.6
+              ? 'prop_candle_multi'
+              : 'prop_candle';
           this.spawns.push({
             x: x * CELL_SIZE,
             z: z * CELL_SIZE,
@@ -804,8 +810,10 @@ export class LevelGenerator {
     // Find candidate positions: wall cells adjacent to an empty corridor cell
     // with enough space behind the wall for a 3x3 room
     interface SecretCandidate {
-      wallX: number; wallZ: number;
-      roomCenterX: number; roomCenterZ: number;
+      wallX: number;
+      wallZ: number;
+      roomCenterX: number;
+      roomCenterZ: number;
       direction: 'n' | 's' | 'e' | 'w';
     }
 
@@ -820,14 +828,14 @@ export class LevelGenerator {
 
         // Check each direction: wall cell has open corridor on one side
         // and enough solid wall behind it for a 3x3 room
-        const dirs: {dx: number; dz: number; dir: SecretCandidate['direction']}[] = [
-          {dx: 0, dz: -1, dir: 'n'}, // corridor to the north, room to the south
-          {dx: 0, dz: 1, dir: 's'},
-          {dx: -1, dz: 0, dir: 'w'},
-          {dx: 1, dz: 0, dir: 'e'},
+        const dirs: { dx: number; dz: number; dir: SecretCandidate['direction'] }[] = [
+          { dx: 0, dz: -1, dir: 'n' }, // corridor to the north, room to the south
+          { dx: 0, dz: 1, dir: 's' },
+          { dx: -1, dz: 0, dir: 'w' },
+          { dx: 1, dz: 0, dir: 'e' },
         ];
 
-        for (const {dx, dz, dir} of dirs) {
+        for (const { dx, dz, dir } of dirs) {
           // Corridor cell adjacent to the wall
           const corridorX = x + dx;
           const corridorZ = z + dz;
@@ -853,7 +861,7 @@ export class LevelGenerator {
           }
 
           if (canPlace) {
-            candidates.push({wallX: x, wallZ: z, roomCenterX, roomCenterZ, direction: dir});
+            candidates.push({ wallX: x, wallZ: z, roomCenterX, roomCenterZ, direction: dir });
           }
         }
       }
@@ -880,8 +888,10 @@ export class LevelGenerator {
       this.grid[c.wallZ][c.wallX] = MapCell.WALL_SECRET;
 
       // Also carve the cell between wall and room center (the "throat")
-      const throatX = c.wallX + (c.roomCenterX - c.wallX > 0 ? 1 : c.roomCenterX - c.wallX < 0 ? -1 : 0);
-      const throatZ = c.wallZ + (c.roomCenterZ - c.wallZ > 0 ? 1 : c.roomCenterZ - c.wallZ < 0 ? -1 : 0);
+      const throatX =
+        c.wallX + (c.roomCenterX - c.wallX > 0 ? 1 : c.roomCenterX - c.wallX < 0 ? -1 : 0);
+      const throatZ =
+        c.wallZ + (c.roomCenterZ - c.wallZ > 0 ? 1 : c.roomCenterZ - c.wallZ < 0 ? -1 : 0);
       if (this.inBounds(throatX, throatZ)) {
         this.grid[throatZ][throatX] = MapCell.EMPTY;
       }
@@ -967,7 +977,7 @@ export class LevelGenerator {
     if (this.floor < 2) return;
     const count = 1 + Math.floor(rng() * 3);
     let placed = 0;
-    const candidates: {x: number; z: number; rotation: number}[] = [];
+    const candidates: { x: number; z: number; rotation: number }[] = [];
 
     // Find wall-adjacent empty cells where a plaque could hang
     for (let z = 2; z < this.depth - 2; z++) {
@@ -977,10 +987,13 @@ export class LevelGenerator {
         if (distFromSpawn < 6) continue;
 
         // Check each wall neighbor — pick one direction the text faces away from
-        if (this.isWall(x, z - 1)) candidates.push({x, z, rotation: 0}); // faces +Z
-        else if (this.isWall(x, z + 1)) candidates.push({x, z, rotation: Math.PI}); // faces -Z
-        else if (this.isWall(x - 1, z)) candidates.push({x, z, rotation: Math.PI / 2}); // faces +X
-        else if (this.isWall(x + 1, z)) candidates.push({x, z, rotation: -Math.PI / 2}); // faces -X
+        if (this.isWall(x, z - 1))
+          candidates.push({ x, z, rotation: 0 }); // faces +Z
+        else if (this.isWall(x, z + 1))
+          candidates.push({ x, z, rotation: Math.PI }); // faces -Z
+        else if (this.isWall(x - 1, z))
+          candidates.push({ x, z, rotation: Math.PI / 2 }); // faces +X
+        else if (this.isWall(x + 1, z)) candidates.push({ x, z, rotation: -Math.PI / 2 }); // faces -X
       }
     }
 

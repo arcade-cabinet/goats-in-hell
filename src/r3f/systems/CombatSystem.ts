@@ -6,14 +6,14 @@
  * particle effects. No Babylon.js dependencies.
  */
 import * as THREE from 'three';
-import type {Entity} from '../../game/entities/components';
-import {world} from '../../game/entities/world';
-import {useGameStore} from '../../state/GameStore';
-import {playSound} from '../audio/AudioSystem';
-import {triggerDamageFlash} from '../rendering/PostProcessing';
-import {haptics, HapticEvent} from '../input/HapticsService';
-import {createDeathBurst, createBloodSplash} from './ParticleEffects';
-import {registerKill} from '../../game/systems/KillStreakSystem';
+import type { Entity } from '../../game/entities/components';
+import { world } from '../../game/entities/world';
+import { registerKill } from '../../game/systems/KillStreakSystem';
+import { useGameStore } from '../../state/GameStore';
+import { playSound } from '../audio/AudioSystem';
+import { HapticEvent, haptics } from '../input/HapticsService';
+import { triggerDamageFlash } from '../rendering/PostProcessing';
+import { createBloodSplash, createDeathBurst } from './ParticleEffects';
 
 // ---------------------------------------------------------------------------
 // Scene reference — set by the game loop component
@@ -57,17 +57,11 @@ export interface DamageResult {
  * @param isHeadshot  Whether this was a headshot (critical).
  * @returns  Result with actual damage dealt and kill status.
  */
-export function damageEnemy(
-  entityId: string,
-  damage: number,
-  isHeadshot?: boolean,
-): DamageResult {
-  const entity = world.entities.find(
-    (e: Entity) => e.id === entityId && e.enemy,
-  );
+export function damageEnemy(entityId: string, damage: number, isHeadshot?: boolean): DamageResult {
+  const entity = world.entities.find((e: Entity) => e.id === entityId && e.enemy);
 
   if (!entity || !entity.enemy) {
-    return {killed: false, damage: 0};
+    return { killed: false, damage: 0 };
   }
 
   const enemy = entity.enemy;
@@ -98,7 +92,7 @@ export function damageEnemy(
 
   if (enemy.hp <= 0) {
     handleEnemyKill(entity);
-    return {killed: true, damage};
+    return { killed: true, damage };
   }
 
   // Enemy survived — play hurt feedback
@@ -106,11 +100,7 @@ export function damageEnemy(
 
   // Blood splash at enemy position (negate Z for Three.js coords)
   if (combatScene && entity.position) {
-    const pos = new THREE.Vector3(
-      entity.position.x,
-      entity.position.y + 0.5,
-      -entity.position.z,
-    );
+    const pos = new THREE.Vector3(entity.position.x, entity.position.y + 0.5, -entity.position.z);
     createBloodSplash(pos, combatScene);
   }
 
@@ -118,18 +108,14 @@ export function damageEnemy(
     playSound('headshot');
   }
 
-  return {killed: false, damage};
+  return { killed: false, damage };
 }
 
 /**
  * Apply damage to an enemy entity directly (when you already have the entity).
  * Used internally for projectile and AoE damage.
  */
-export function damageEnemyEntity(
-  entity: Entity,
-  damage: number,
-  isCrit?: boolean,
-): number {
+export function damageEnemyEntity(entity: Entity, damage: number, _isCrit?: boolean): number {
   const enemy = entity.enemy!;
 
   // Armored enemies absorb damage with armor first
@@ -191,11 +177,7 @@ export function handleEnemyKill(entity: Entity): void {
 
   // Death particles at entity position (negate Z for Three.js coords)
   if (combatScene && entity.position) {
-    const pos = new THREE.Vector3(
-      entity.position.x,
-      entity.position.y + 0.5,
-      -entity.position.z,
-    );
+    const pos = new THREE.Vector3(entity.position.x, entity.position.y + 0.5, -entity.position.z);
     createDeathBurst(pos, combatScene);
   }
 
@@ -214,9 +196,7 @@ export function handleEnemyKill(entity: Entity): void {
  * @returns  Whether the player died.
  */
 export function damagePlayer(damage: number): boolean {
-  const player = world.entities.find(
-    (e: Entity) => e.type === 'player' && e.player,
-  );
+  const player = world.entities.find((e: Entity) => e.type === 'player' && e.player);
 
   if (!player || !player.player) return false;
 
@@ -242,7 +222,7 @@ export function damagePlayer(damage: number): boolean {
 
     // Trigger death — set game screen to dead
     playSound('death_sting');
-    useGameStore.getState().patch({screen: 'dead'});
+    useGameStore.getState().patch({ screen: 'dead' });
 
     return true;
   }
@@ -264,8 +244,8 @@ export function damagePlayer(damage: number): boolean {
  * Both are in Babylon left-handed space (no Z negation needed for comparison).
  */
 function distanceBetween(
-  a: {x: number; y: number; z: number},
-  b: {x: number; y: number; z: number},
+  a: { x: number; y: number; z: number },
+  b: { x: number; y: number; z: number },
 ): number {
   const dx = a.x - b.x;
   const dy = a.y - b.y;
@@ -324,9 +304,7 @@ function checkPlayerProjectileCollisions(projectile: Entity): boolean {
         }
 
         // Screen shake proportional to explosion proximity + kill count
-        const playerEntity = world.entities.find(
-          (e: Entity) => e.type === 'player',
-        );
+        const playerEntity = world.entities.find((e: Entity) => e.type === 'player');
         if (playerEntity?.position) {
           const playerDist = distanceBetween(projPos, playerEntity.position);
           if (playerDist < projData.aoe * 2) {
@@ -349,10 +327,7 @@ function checkPlayerProjectileCollisions(projectile: Entity): boolean {
 }
 
 /** Check an enemy-owned projectile against the player. */
-function checkEnemyProjectileCollision(
-  projectile: Entity,
-  player: Entity,
-): boolean {
+function checkEnemyProjectileCollision(projectile: Entity, player: Entity): boolean {
   if (!player.position || !player.player) return false;
 
   const dist = distanceBetween(projectile.position!, player.position);
@@ -376,7 +351,7 @@ function checkEnemyProjectileCollision(
     if (player.player.hp <= 0) {
       player.player.hp = 0;
       playSound('death_sting');
-      store.patch({screen: 'dead'});
+      store.patch({ screen: 'dead' });
     }
 
     return true;
@@ -400,11 +375,9 @@ function checkEnemyProjectileCollision(
  */
 export function combatSystemUpdate(deltaTime: number): void {
   const dtScale = deltaTime / 16;
-  const dtSeconds = deltaTime / 1000;
+  const _dtSeconds = deltaTime / 1000;
 
-  const player = world.entities.find(
-    (e: Entity) => e.type === 'player' && e.player,
-  );
+  const player = world.entities.find((e: Entity) => e.type === 'player' && e.player);
 
   // --- Enemy melee attacks ---
   if (player?.position && player.player) {

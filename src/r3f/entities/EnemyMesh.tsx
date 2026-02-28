@@ -11,13 +11,13 @@
  *   - Sync positions each frame via updateEnemyMeshes()
  */
 
-import {useEffect, useRef} from 'react';
-import {useThree, useFrame} from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import {world} from '../../game/entities/world';
-import type {Entity, EntityType} from '../../game/entities/components';
-import {updateEnemyMeshes} from './EnemySystem';
-import {COLORS} from '../../constants';
+import { COLORS } from '../../constants';
+import type { Entity, EntityType } from '../../game/entities/components';
+import { world } from '../../game/entities/world';
+import { updateEnemyMeshes } from './EnemySystem';
 
 // ---------------------------------------------------------------------------
 // Enemy type configuration
@@ -103,8 +103,15 @@ const ENEMY_CONFIGS: Record<string, EnemyMeshConfig> = {
 
 // All enemy entity types for filtering
 const ENEMY_TYPES = new Set<EntityType>([
-  'goat', 'hellgoat', 'fireGoat', 'shadowGoat', 'goatKnight',
-  'archGoat', 'infernoGoat', 'voidGoat', 'ironGoat',
+  'goat',
+  'hellgoat',
+  'fireGoat',
+  'shadowGoat',
+  'goatKnight',
+  'archGoat',
+  'infernoGoat',
+  'voidGoat',
+  'ironGoat',
 ]);
 
 // ---------------------------------------------------------------------------
@@ -179,7 +186,7 @@ function buildTemplate(type: string): THREE.Group {
   group.scale.setScalar(config.scale);
 
   // Store config on group for later reference
-  group.userData = {enemyType: type, baseScale: config.scale};
+  group.userData = { enemyType: type, baseScale: config.scale };
 
   return group;
 }
@@ -209,7 +216,7 @@ function getTemplate(type: string): THREE.Group {
  *   3. Call updateEnemyMeshes() to sync positions from ECS
  */
 export function EnemyRenderer() {
-  const {scene} = useThree();
+  const { scene } = useThree();
   const spawnedRef = useRef<Map<string, THREE.Group>>(new Map());
 
   // Cleanup on unmount
@@ -292,11 +299,7 @@ function spawnEnemyMesh(
 
   // Set initial position (negate Z for coordinate system conversion)
   if (entity.position) {
-    mesh.position.set(
-      entity.position.x,
-      entity.position.y,
-      -entity.position.z,
-    );
+    mesh.position.set(entity.position.x, entity.position.y, -entity.position.z);
   }
 
   scene.add(mesh);

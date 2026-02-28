@@ -1,4 +1,4 @@
-import {useGameStore} from '../../state/GameStore';
+import { useGameStore } from '../../state/GameStore';
 
 export type SoundType =
   | 'shoot'
@@ -116,10 +116,7 @@ function scheduleOsc(
   const osc = ctx.createOscillator();
   osc.type = type;
   osc.frequency.setValueAtTime(startFreq, startTime);
-  osc.frequency.exponentialRampToValueAtTime(
-    Math.max(endFreq, 0.001),
-    startTime + duration,
-  );
+  osc.frequency.exponentialRampToValueAtTime(Math.max(endFreq, 0.001), startTime + duration);
 
   const gainNode = ctx.createGain();
   gainNode.gain.setValueAtTime(gain, startTime);
@@ -196,8 +193,8 @@ function playGoatAlert(ctx: AudioContext): void {
   const shaper = ctx.createWaveShaper();
   const curve = new Float32Array(256);
   for (let i = 0; i < 256; i++) {
-    const x = (i / 128) - 1;
-    curve[i] = (Math.PI + 3) * x / (Math.PI + 3 * Math.abs(x));
+    const x = i / 128 - 1;
+    curve[i] = ((Math.PI + 3) * x) / (Math.PI + 3 * Math.abs(x));
   }
   shaper.curve = curve;
   shaper.oversample = '2x';

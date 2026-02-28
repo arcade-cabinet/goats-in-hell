@@ -5,14 +5,9 @@
  * 3D model/texture loading is now handled by R3F hooks (useGLTF, useTexture).
  * This module retains only the audio loading pipeline which uses Web Audio API.
  */
-import {Asset} from 'expo-asset';
+import { Asset } from 'expo-asset';
 
-import {
-  MUSIC_ASSETS,
-  SFX_ASSETS,
-  type MusicAssetKey,
-  type SfxAssetKey,
-} from './AssetRegistry';
+import { MUSIC_ASSETS, type MusicAssetKey, SFX_ASSETS, type SfxAssetKey } from './AssetRegistry';
 
 // ---------------------------------------------------------------------------
 // URI resolution
@@ -30,10 +25,7 @@ function resolveAssetUri(moduleId: number | string): string {
 // ---------------------------------------------------------------------------
 
 /** Fetch and decode an OGG audio file into an AudioBuffer. */
-async function loadAudioBuffer(
-  moduleId: number,
-  audioCtx: AudioContext,
-): Promise<AudioBuffer> {
+async function loadAudioBuffer(moduleId: number, audioCtx: AudioContext): Promise<AudioBuffer> {
   const uri = resolveAssetUri(moduleId);
   const response = await fetch(uri);
   if (!response.ok) {
@@ -59,9 +51,7 @@ export async function loadAllMusic(
 }
 
 /** Load all SFX into a map of AudioBuffer arrays (variants per sound). */
-export async function loadAllSfx(
-  audioCtx: AudioContext,
-): Promise<Map<string, AudioBuffer[]>> {
+export async function loadAllSfx(audioCtx: AudioContext): Promise<Map<string, AudioBuffer[]>> {
   const map = new Map<string, AudioBuffer[]>();
   const entries = Object.entries(SFX_ASSETS) as [SfxAssetKey, number][];
 

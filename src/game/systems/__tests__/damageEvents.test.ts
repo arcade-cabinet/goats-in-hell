@@ -6,12 +6,14 @@ jest.mock('../GameClock', () => {
   let mockTime = 0;
   return {
     getGameTime: jest.fn(() => mockTime),
-    __setMockTime: (t: number) => { mockTime = t; },
+    __setMockTime: (t: number) => {
+      mockTime = t;
+    },
   };
 });
 
-import {vec3 as Vector3} from '../../entities/vec3';
-import {pushDamageEvent, consumeDamageEvents, clearDamageEvents} from '../damageEvents';
+import { vec3 as Vector3 } from '../../entities/vec3';
+import { clearDamageEvents, consumeDamageEvents, pushDamageEvent } from '../damageEvents';
 
 const GameClockMock = require('../GameClock') as {
   getGameTime: jest.Mock;

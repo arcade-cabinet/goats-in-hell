@@ -6,8 +6,8 @@
  * and the first non-null aim override wins (VR controllers take priority).
  */
 
-import type {InputFrame} from './InputActions';
-import {emptyInputFrame} from './InputActions';
+import type { InputFrame } from './InputActions';
+import { emptyInputFrame } from './InputActions';
 
 /** Interface that all input providers implement. */
 export interface IInputProvider {

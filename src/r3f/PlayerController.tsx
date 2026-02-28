@@ -6,15 +6,15 @@
  * Syncs camera position ↔ Miniplex ECS player entity each frame.
  */
 
-import {useEffect, useRef, useCallback} from 'react';
-import {useFrame, useThree} from '@react-three/fiber';
-import {RigidBody, CapsuleCollider, useRapier} from '@react-three/rapier';
-import type {RapierRigidBody} from '@react-three/rapier';
+import { useFrame, useThree } from '@react-three/fiber';
+import type { RapierRigidBody } from '@react-three/rapier';
+import { CapsuleCollider, RigidBody, useRapier } from '@react-three/rapier';
+import { useCallback, useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import {world} from '../game/entities/world';
-import type {Entity} from '../game/entities/components';
-import {useGameStore, getLevelBonuses} from '../state/GameStore';
-import {inputManager} from './input/InputManager';
+import type { Entity } from '../game/entities/components';
+import { world } from '../game/entities/world';
+import { getLevelBonuses, useGameStore } from '../state/GameStore';
+import { inputManager } from './input/InputManager';
 
 // Movement constants (matching existing Babylon.js values)
 const WALK_SPEED = 6; // units/sec (Babylon 0.3 * 60fps ≈ 18, but Rapier uses real units)
@@ -32,15 +32,17 @@ const _right = new THREE.Vector3();
 const _moveDir = new THREE.Vector3();
 
 export function PlayerController() {
-  const {camera, gl} = useThree();
-  const {world: rapierWorld} = useRapier();
+  const { camera, gl } = useThree();
+  const { world: rapierWorld } = useRapier();
   const rigidBodyRef = useRef<RapierRigidBody>(null);
   const yawRef = useRef(0);
   const pitchRef = useRef(0);
   const jumpVelocityRef = useRef(0);
   const isGroundedRef = useRef(true);
   const pointerLockedRef = useRef(false);
-  const characterControllerRef = useRef<ReturnType<typeof rapierWorld.createCharacterController> | null>(null);
+  const characterControllerRef = useRef<ReturnType<
+    typeof rapierWorld.createCharacterController
+  > | null>(null);
 
   // Create Rapier character controller once
   useEffect(() => {
@@ -163,7 +165,7 @@ export function PlayerController() {
 
     // --- Bounds check ---
     if (bodyPos.y < -10) {
-      rb.setNextKinematicTranslation({x: bodyPos.x, y: PLAYER_HEIGHT, z: bodyPos.z});
+      rb.setNextKinematicTranslation({ x: bodyPos.x, y: PLAYER_HEIGHT, z: bodyPos.z });
     }
 
     // Post-frame: clear accumulated deltas

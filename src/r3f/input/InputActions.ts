@@ -44,8 +44,8 @@ export interface InputFrame {
   weaponCycle: number;
 
   // Aim override for VR controllers (null = use camera forward)
-  aimOrigin: {x: number; y: number; z: number} | null;
-  aimDirection: {x: number; y: number; z: number} | null;
+  aimOrigin: { x: number; y: number; z: number } | null;
+  aimDirection: { x: number; y: number; z: number } | null;
 }
 
 /** Returns a zeroed-out InputFrame. */

@@ -164,10 +164,7 @@ export class HapticsService {
     for (const controller of this.xrControllers) {
       const actuators = controller.gamepad?.hapticActuators;
       if (actuators && actuators.length > 0) {
-        const xrIntensityClamped = Math.min(
-          1,
-          pattern.xrIntensity * clampedIntensity,
-        );
+        const xrIntensityClamped = Math.min(1, pattern.xrIntensity * clampedIntensity);
         const xrDuration = Math.round(pattern.xrDuration * clampedIntensity);
         for (const actuator of actuators) {
           actuator.pulse(xrIntensityClamped, xrDuration).catch(() => {
@@ -217,9 +214,7 @@ export class HapticsService {
     if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
       return true;
     }
-    return this.xrControllers.some(
-      (c) => (c.gamepad?.hapticActuators?.length ?? 0) > 0,
-    );
+    return this.xrControllers.some((c) => (c.gamepad?.hapticActuators?.length ?? 0) > 0);
   }
 }
 

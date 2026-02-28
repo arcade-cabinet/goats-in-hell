@@ -85,11 +85,11 @@ function getEmissiveMaterial(color: string): THREE.MeshStandardMaterial {
 
 /** Weapon-specific projectile colors. */
 export const PROJECTILE_COLORS = {
-  hellPistol: '#ff8800',    // orange
-  brimShotgun: '#4488ff',   // blue
+  hellPistol: '#ff8800', // orange
+  brimShotgun: '#4488ff', // blue
   hellfireCannon: '#ff2200', // red
-  goatsBane: '#aa44ff',     // purple
-  enemy: '#ff4444',         // red-ish for enemy projectiles
+  goatsBane: '#aa44ff', // purple
+  enemy: '#ff4444', // red-ish for enemy projectiles
 } as const;
 
 // ---------------------------------------------------------------------------

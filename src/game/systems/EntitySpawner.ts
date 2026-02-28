@@ -5,22 +5,30 @@
  * Engine-agnostic: uses Vec3 instead of Babylon Vector3. Props/lore are
  * handled by R3F rendering components reading the entity data.
  */
-import type {EntityType, WeaponId} from '../entities/components';
-import {vec3} from '../entities/vec3';
-import {world} from '../entities/world';
-import {getEnemyStats} from '../entities/enemyStats';
-import {CELL_SIZE} from '../levels/LevelGenerator';
-import {BOSS_ARENA_PICKUP_POSITIONS} from '../levels/BossArenas';
-import {useGameStore} from '../../state/GameStore';
-import type {PowerUpType} from '../systems/PowerUpSystem';
-import type {LevelData} from '../levels/LevelData';
+
+import { useGameStore } from '../../state/GameStore';
+import type { EntityType, WeaponId } from '../entities/components';
+import { getEnemyStats } from '../entities/enemyStats';
+import { vec3 } from '../entities/vec3';
+import { world } from '../entities/world';
+import { BOSS_ARENA_PICKUP_POSITIONS } from '../levels/BossArenas';
+import type { LevelData } from '../levels/LevelData';
+import { CELL_SIZE } from '../levels/LevelGenerator';
+import type { PowerUpType } from '../systems/PowerUpSystem';
 
 const ENEMY_TYPES: EntityType[] = [
-  'goat', 'hellgoat', 'fireGoat', 'shadowGoat', 'goatKnight',
-  'archGoat', 'infernoGoat', 'voidGoat', 'ironGoat',
+  'goat',
+  'hellgoat',
+  'fireGoat',
+  'shadowGoat',
+  'goatKnight',
+  'archGoat',
+  'infernoGoat',
+  'voidGoat',
+  'ironGoat',
 ];
 
-export {ENEMY_TYPES};
+export { ENEMY_TYPES };
 
 interface DiffMods {
   enemyHpMult: number;
@@ -65,9 +73,16 @@ export function spawnLevelEntities(
         },
       });
     } else if (spawn.type === 'health' || spawn.type === 'ammo') {
-      if (diffMods.pickupDensityMult < 1 && useGameStore.getState().rng() > diffMods.pickupDensityMult) return;
+      if (
+        diffMods.pickupDensityMult < 1 &&
+        useGameStore.getState().rng() > diffMods.pickupDensityMult
+      )
+        return;
       const baseValue = spawn.type === 'health' ? 25 : 8;
-      const scaledValue = Math.max(1, Math.round(baseValue * Math.min(1.5, diffMods.pickupDensityMult)));
+      const scaledValue = Math.max(
+        1,
+        Math.round(baseValue * Math.min(1.5, diffMods.pickupDensityMult)),
+      );
       world.add({
         id: `pickup-${idx}`,
         type: entityType,
@@ -110,14 +125,14 @@ export function spawnLevelEntities(
         id: `hazard-spike-${idx}`,
         type: 'hazard_spikes',
         position: vec3(spawn.x, 0, spawn.z),
-        hazard: {hazardType: 'spikes', damage: 10, cooldown: 0},
+        hazard: { hazardType: 'spikes', damage: 10, cooldown: 0 },
       });
     } else if (spawn.type === 'hazard_barrel') {
       world.add({
         id: `hazard-barrel-${idx}`,
         type: 'hazard_barrel',
         position: vec3(spawn.x, 0.5, spawn.z),
-        hazard: {hazardType: 'barrel', damage: 50, cooldown: 0, hp: 20},
+        hazard: { hazardType: 'barrel', damage: 50, cooldown: 0, hp: 20 },
       });
     }
     // Props and lore messages are handled by R3F rendering components
@@ -135,7 +150,8 @@ export function spawnBoss(
   isNightmare: boolean,
 ): void {
   const bossType: EntityType = ENEMY_TYPES.includes(bossId as EntityType)
-    ? (bossId as EntityType) : 'archGoat';
+    ? (bossId as EntityType)
+    : 'archGoat';
   const bossStats = getEnemyStats(bossType);
   const scaledBossHp = Math.ceil(bossStats.hp * diffMods.enemyHpMult * 1.5);
   const scaledBossMaxHp = Math.ceil(bossStats.maxHp * diffMods.enemyHpMult * 1.5);
@@ -160,11 +176,11 @@ export function spawnBoss(
   });
 
   // Spawn initial pickups in boss arena at corner positions
-  const bossPickups: {type: 'ammo' | 'health'; value: number}[] = [
-    {type: 'ammo', value: 18},
-    {type: 'ammo', value: 18},
-    {type: 'ammo', value: 18},
-    {type: 'health', value: 30},
+  const bossPickups: { type: 'ammo' | 'health'; value: number }[] = [
+    { type: 'ammo', value: 18 },
+    { type: 'ammo', value: 18 },
+    { type: 'ammo', value: 18 },
+    { type: 'health', value: 30 },
   ];
   BOSS_ARENA_PICKUP_POSITIONS.forEach((pos, i) => {
     const [px, pz] = pos;

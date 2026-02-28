@@ -6,9 +6,9 @@
  * (which is engine-agnostic Web Audio API).
  */
 
-import {initAudio, setSfxBuffers} from './AudioSystem';
-import {initMusic, setMusicBuffers} from './MusicSystem';
-import {loadAllMusic, loadAllSfx} from './AssetLoader';
+import { loadAllMusic, loadAllSfx } from './AssetLoader';
+import { initAudio, setSfxBuffers } from './AudioSystem';
+import { initMusic, setMusicBuffers } from './MusicSystem';
 
 /**
  * Load audio assets. Calls `onProgress` as each stage completes.

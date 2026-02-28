@@ -7,16 +7,16 @@ jest.mock('../AudioSystem', () => ({
 }));
 
 jest.mock('../../levels/LevelGenerator', () => ({
-  MapCell: {EMPTY: 0, WALL_STONE: 1, WALL_FLESH: 2, WALL_LAVA: 3, WALL_OBSIDIAN: 4, DOOR: 5},
+  MapCell: { EMPTY: 0, WALL_STONE: 1, WALL_FLESH: 2, WALL_LAVA: 3, WALL_OBSIDIAN: 4, DOOR: 5 },
   CELL_SIZE: 2,
   WALL_HEIGHT: 3,
 }));
 
-import {vec3 as Vector3} from '../../entities/vec3';
-import {world} from '../../entities/world';
-import {resetDoorSystem, doorSystemUpdate, getDoorStates} from '../DoorSystem';
-import {playSound} from '../AudioSystem';
-import type {WeaponId} from '../../entities/components';
+import type { WeaponId } from '../../entities/components';
+import { vec3 as Vector3 } from '../../entities/vec3';
+import { world } from '../../entities/world';
+import { playSound } from '../AudioSystem';
+import { doorSystemUpdate, getDoorStates, resetDoorSystem } from '../DoorSystem';
 
 const DOOR = 5;
 const EMPTY = 0;
@@ -39,7 +39,16 @@ function makePlayer(x: number, z: number) {
     id: 'player',
     type: 'player' as const,
     position: Vector3(x, 1, z),
-    player: {hp: 100, maxHp: 100, speed: 5, sprintMult: 1.5, currentWeapon: 'hellPistol' as WeaponId, weapons: ['hellPistol' as WeaponId], isReloading: false, reloadStart: 0},
+    player: {
+      hp: 100,
+      maxHp: 100,
+      speed: 5,
+      sprintMult: 1.5,
+      currentWeapon: 'hellPistol' as WeaponId,
+      weapons: ['hellPistol' as WeaponId],
+      isReloading: false,
+      reloadStart: 0,
+    },
   };
   world.add(player);
   return player;
