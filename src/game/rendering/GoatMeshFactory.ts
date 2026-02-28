@@ -190,6 +190,7 @@ export function createGoatMesh(
   const mesh = cloneModelHierarchy(template, `mesh-enemy-${id}`, scene);
   mesh.isVisible = true;
   mesh.scaling = new Vector3(config.scale, config.scale, config.scale);
+  mesh.metadata = {...(mesh.metadata ?? {}), baseScale: config.scale};
 
   // Apply base visibility for ghostly/stealth enemies
   if (config.baseVisibility !== undefined && config.baseVisibility < 1) {

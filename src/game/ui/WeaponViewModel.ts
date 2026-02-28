@@ -17,6 +17,7 @@ import {
 
 import {world} from '../entities/world';
 import {useGameStore} from '../../state/GameStore';
+import {GameState} from '../../state/GameState';
 import {getGameTime} from '../systems/GameClock';
 import type {WeaponId} from '../entities/components';
 import {loadWeaponModel, cloneModelHierarchy} from '../systems/AssetLoader';
@@ -29,8 +30,51 @@ import type {WeaponModelKey} from '../systems/AssetRegistry';
 const BASE_POS = new Vector3(0.04, -0.15, 0.25);
 const BOB_AMP = 0.012;
 const BOB_FREQ = 0.007;
-const KICK_AMOUNT = 0.08;
-const KICK_DECAY = 0.88;
+
+// Per-weapon recoil profiles
+interface RecoilProfile {
+  kickUp: number;      // upward position offset
+  kickBack: number;    // backward (Z) offset multiplier
+  kickRot: number;     // X-rotation multiplier (pitch-up)
+  kickSide: number;    // random side-to-side kick
+  decay: number;       // how fast recoil recovers (0-1, lower = slower)
+  shake: number;       // camera-shake intensity on fire (0 = none)
+}
+
+const RECOIL_PROFILES: Record<WeaponId, RecoilProfile> = {
+  hellPistol: {
+    kickUp: 0.06,
+    kickBack: 0.4,
+    kickRot: 2.5,
+    kickSide: 0.005,
+    decay: 0.88,
+    shake: 0,
+  },
+  brimShotgun: {
+    kickUp: 0.14,
+    kickBack: 0.8,
+    kickRot: 4.5,
+    kickSide: 0.015,
+    decay: 0.82,
+    shake: 4,
+  },
+  hellfireCannon: {
+    kickUp: 0.18,
+    kickBack: 1.0,
+    kickRot: 5.0,
+    kickSide: 0.008,
+    decay: 0.78,
+    shake: 6,
+  },
+  goatsBane: {
+    kickUp: 0.22,
+    kickBack: 1.2,
+    kickRot: 6.0,
+    kickSide: 0.02,
+    decay: 0.75,
+    shake: 10,
+  },
+};
 
 // Idle sway — subtle figure-8 breathing pattern when standing still
 const SWAY_AMP_X = 0.003;
@@ -139,6 +183,7 @@ export class WeaponViewModel {
   private swayPhase = 0;
   private idleTime = 0; // frames spent idle (blends sway in/out)
   private kickOffset = 0;
+  private kickSideOffset = 0;
   private strafeTilt = 0; // current Z-rotation from strafing
   private lastPlayerPos = Vector3.Zero();
   private lastFireTime = 0;
@@ -223,13 +268,24 @@ export class WeaponViewModel {
       }
     }
 
-    // Fire kick
+    // Per-weapon recoil kick
     const gunFlash = useGameStore.getState().gunFlash ?? 0;
+    const recoil = this.currentWeapon
+      ? RECOIL_PROFILES[this.currentWeapon]
+      : RECOIL_PROFILES.hellPistol;
     if (gunFlash > 0.8 && getGameTime() - this.lastFireTime > 100) {
-      this.kickOffset = KICK_AMOUNT;
+      this.kickOffset = recoil.kickUp;
+      // Random lateral kick for weapon spread feel
+      const rng = useGameStore.getState().rng;
+      this.kickSideOffset = (rng() - 0.5) * 2 * recoil.kickSide;
       this.lastFireTime = getGameTime();
+      // Screen shake for heavy weapons
+      if (recoil.shake > 0) {
+        GameState.set({screenShake: Math.max(GameState.get().screenShake, recoil.shake)});
+      }
     }
-    this.kickOffset *= KICK_DECAY;
+    this.kickOffset *= recoil.decay;
+    this.kickSideOffset *= recoil.decay;
 
     // Strafe tilt — weapon leans opposite to lateral movement
     const targetTilt = -Math.sign(lateralSpeed) * Math.min(Math.abs(lateralSpeed) * 2, 1) * STRAFE_TILT_MAX;
@@ -241,14 +297,14 @@ export class WeaponViewModel {
     // Smooth ease-in-out curve for switch animation
     const switchY = -this.switchProgress * this.switchProgress * SWITCH_DROP_DIST;
 
-    this.root.position.x = BASE_POS.x + bobX + swayX;
+    this.root.position.x = BASE_POS.x + bobX + swayX + this.kickSideOffset;
     this.root.position.y = BASE_POS.y + bobY + jumpBob + this.kickOffset + swayY + switchY - landingDipAmount;
-    this.root.position.z = BASE_POS.z - this.kickOffset * 0.5;
+    this.root.position.z = BASE_POS.z - this.kickOffset * recoil.kickBack;
 
     if (player.player.isReloading) {
       this.root.rotation.x = 0.5;
     } else {
-      this.root.rotation.x = -this.kickOffset * 3;
+      this.root.rotation.x = -this.kickOffset * recoil.kickRot;
     }
     this.root.rotation.z = swayRot + this.strafeTilt;
   }

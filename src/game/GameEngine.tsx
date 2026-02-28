@@ -1,6 +1,7 @@
 import {
   Color3,
   Color4,
+  FreeCamera,
   Mesh,
   MeshBuilder,
   StandardMaterial,
@@ -38,6 +39,7 @@ import {
 } from './systems/ProgressionSystem';
 import {initAudio, setMasterVolume, playSound as playSfx, setSfxBuffers} from './systems/AudioSystem';
 import {initMusic, setMusicMasterVolume, updateMusic, disposeMusic, setMusicBuffers} from './systems/MusicSystem';
+import {updateAmbientSound, disposeAmbientSound} from './systems/AmbientSoundSystem';
 import {loadAllMusic, loadAllSfx} from './systems/AssetLoader';
 import {
   waveSystemUpdate,
@@ -81,7 +83,7 @@ import {
   setSprinting,
   triggerFloorFadeIn,
 } from './rendering/PostProcessing';
-import {createDeathBurst, createMuzzleFlash, createLavaEmbers, createProjectileTrail} from './rendering/Particles';
+import {createDeathBurst, createMuzzleFlash, createLavaEmbers, createProjectileTrail, createSpawnEffect} from './rendering/Particles';
 import {
   createGoatMesh,
   disposeGoatMesh,
@@ -626,6 +628,12 @@ export function GameEngine() {
     // Note: if the effect re-runs mid-boss (shouldn't happen, but guard anyway),
     // the old game loop is unsubscribed by the cleanup return, so no double-spawns.
 
+    // Death slow-mo state — when player dies, slow time for dramatic effect
+    const DEATH_SLOWMO_DURATION = 1200; // ms of slow-mo before death screen
+    const DEATH_SLOWMO_SCALE = 0.25;    // 25% speed during death
+    let deathSlowMoTimer = 0;           // 0 = not dying, >0 = ms remaining
+    let deathSlowMoActive = false;
+
     // Main game loop
     let lastTime = performance.now();
     const gameLoop = () => {
@@ -633,6 +641,7 @@ export function GameEngine() {
 
       // Music track auto-switching based on game state
       updateMusic();
+      updateAmbientSound();
 
       // Screen overlays (death, victory, pause, etc.) must update every frame
       screens.update();
@@ -640,8 +649,32 @@ export function GameEngine() {
       if (gs.screen !== 'playing') return;
 
       const now = performance.now();
-      const dt = now - lastTime;
+      let dt = now - lastTime;
       lastTime = now;
+
+      // Death slow-mo: scale dt and tilt camera during dying phase
+      if (deathSlowMoActive) {
+        const rawDt = dt;
+        dt *= DEATH_SLOWMO_SCALE;
+        deathSlowMoTimer -= rawDt; // countdown uses real time
+
+        // Camera death tilt — slowly lean to the right and look down
+        const cam = scene.activeCamera as FreeCamera;
+        if (cam) {
+          const progress = 1 - Math.max(0, deathSlowMoTimer / DEATH_SLOWMO_DURATION);
+          cam.rotation.z += progress * 0.002; // gradual roll
+          cam.position.y -= progress * 0.003; // sink toward ground
+        }
+
+        if (deathSlowMoTimer <= 0) {
+          deathSlowMoActive = false;
+          // Reset camera roll before death screen
+          const cam2 = scene.activeCamera as FreeCamera;
+          if (cam2) cam2.rotation.z = 0;
+          triggerDeath();
+          return;
+        }
+      }
 
       // Advance the game chronometer (only ticks during active gameplay)
       tickGameClock(dt);
@@ -752,9 +785,12 @@ export function GameEngine() {
 
       // 9. Check win/death conditions (skip during grace period —
       //    enemies need time to register and the player is invulnerable)
-      if (!inGracePeriod) {
+      if (!inGracePeriod && !deathSlowMoActive) {
         if (checkPlayerDeath()) {
-          triggerDeath();
+          // Start death slow-mo instead of immediate death screen
+          deathSlowMoActive = true;
+          deathSlowMoTimer = DEATH_SLOWMO_DURATION;
+          GameState.set({screenShake: 12});
         } else if (encounterType === 'arena') {
           // Arena: drive wave spawning; complete after 5+ waves cleared
           waveSystemUpdate(dt, levelData.width);
@@ -816,6 +852,7 @@ export function GameEngine() {
       scene.onBeforeRenderObservable.removeCallback(gameLoop);
       disposePostProcessing();
       disposeMusic();
+      disposeAmbientSound();
       hud.dispose();
       screens.dispose();
       dmgNumbers.dispose();
@@ -1313,14 +1350,18 @@ interface DeathAnim {
   maxLife: number;
 }
 
+const SPAWN_ANIM_FRAMES = 18; // ~0.3s at 60fps
+
 const EnemyRenderer = () => {
   const scene = useScene();
   const meshMapRef = useRef<Map<string, Mesh>>(new Map());
   const deathAnimsRef = useRef<DeathAnim[]>([]);
+  const spawnAnimsRef = useRef<Map<string, number>>(new Map());
 
   useEffect(() => {
     const meshMap = meshMapRef.current;
     const deathAnims = deathAnimsRef.current;
+    const spawnAnims = spawnAnimsRef.current;
 
     const update = () => {
       const currentEnemies = world.entities.filter(
@@ -1355,6 +1396,7 @@ const EnemyRenderer = () => {
             maxLife: 40,
           });
           meshMap.delete(id);
+          spawnAnims.delete(id);
         }
       }
 
@@ -1396,6 +1438,10 @@ const EnemyRenderer = () => {
             scene,
           );
           meshMap.set(enemy.id, mesh);
+          // Start spawn-in animation
+          spawnAnims.set(enemy.id, 0);
+          mesh.scaling.setAll(0);
+          createSpawnEffect(enemy.position.clone(), scene);
         }
 
         // Position (mesh origin is at hooves, y=0)
@@ -1406,6 +1452,24 @@ const EnemyRenderer = () => {
           const dx = playerEntity.position.x - mesh.position.x;
           const dz = playerEntity.position.z - mesh.position.z;
           mesh.rotation.y = Math.atan2(dx, dz);
+        }
+
+        // Spawn-in scale animation (elastic ease-out: pops in and settles)
+        const spawnFrame = spawnAnims.get(enemy.id);
+        if (spawnFrame !== undefined) {
+          const next = spawnFrame + 1;
+          const t = Math.min(1, next / SPAWN_ANIM_FRAMES);
+          // Overshoot by 15% then settle to 1.0
+          const ease = 1 - Math.pow(1 - t, 3) * (1 - t);
+          const overshoot = ease * (1 + 0.15 * Math.sin(t * Math.PI));
+          const baseScale = mesh.metadata?.baseScale ?? 1;
+          mesh.scaling.setAll(overshoot * baseScale);
+          if (next >= SPAWN_ANIM_FRAMES) {
+            spawnAnims.delete(enemy.id);
+            mesh.scaling.setAll(baseScale);
+          } else {
+            spawnAnims.set(enemy.id, next);
+          }
         }
 
         // Visibility (shadowGoat transparency)
@@ -1426,6 +1490,7 @@ const EnemyRenderer = () => {
         anim.mesh.dispose();
       }
       deathAnims.length = 0;
+      spawnAnims.clear();
       disposeGoatCache();
       disposeAllEnemyColliders();
     };

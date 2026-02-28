@@ -408,3 +408,50 @@ export function createProjectileTrail(
 
   return system;
 }
+
+// ---------------------------------------------------------------------------
+// Enemy spawn teleport-in effect
+// ---------------------------------------------------------------------------
+
+/**
+ * Create a brief spawn-in particle burst — expanding ring of demonic energy.
+ * Called when a new enemy mesh is first created.
+ */
+export function createSpawnEffect(
+  position: Vector3,
+  scene: Scene,
+): ParticleSystem {
+  const system = new ParticleSystem('spawnEffect', 30, scene);
+  system.particleTexture = getParticleTexture(scene);
+
+  system.emitter = position.clone();
+  system.manualEmitCount = 30;
+
+  system.minLifeTime = 0.3;
+  system.maxLifeTime = 0.6;
+
+  // Ring-shaped burst: horizontal spread, slight upward
+  system.direction1 = new Vector3(-3, 0.5, -3);
+  system.direction2 = new Vector3(3, 2, 3);
+
+  system.minEmitPower = 2;
+  system.maxEmitPower = 4;
+
+  system.minSize = 0.08;
+  system.maxSize = 0.2;
+
+  // Demonic red-orange → dark fade
+  system.color1 = new Color4(1, 0.3, 0.1, 1);
+  system.color2 = new Color4(0.8, 0.1, 0.4, 0.8);
+  system.colorDead = new Color4(0.2, 0, 0.1, 0);
+
+  system.gravity = new Vector3(0, -2, 0);
+
+  system.disposeOnStop = true;
+  system.targetStopDuration = 1.0;
+
+  system.start();
+  system.stop();
+
+  return system;
+}
