@@ -139,6 +139,7 @@ export function cloneModel(key: string): THREE.Group | null {
 
   // Deep-clone geometry AND materials so each instance is fully independent.
   // Without geometry cloning, disposing one instance corrupts all other clones.
+  // After cloning materials, set needsUpdate = true so WebGPU recompiles shaders.
   clone.traverse((child) => {
     if (child instanceof THREE.Mesh) {
       if (child.geometry) {
@@ -146,9 +147,14 @@ export function cloneModel(key: string): THREE.Group | null {
       }
       if (child.material) {
         if (Array.isArray(child.material)) {
-          child.material = child.material.map((m: THREE.Material) => m.clone());
+          child.material = child.material.map((m: THREE.Material) => {
+            const cloned = m.clone();
+            cloned.needsUpdate = true;
+            return cloned;
+          });
         } else {
           child.material = child.material.clone();
+          child.material.needsUpdate = true;
         }
       }
     }

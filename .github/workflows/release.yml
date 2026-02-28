@@ -26,14 +26,18 @@ jobs:
         with:
           lfs: true
 
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          # No cache — package-lock.json is gitignored
+          cache: pnpm
 
-      - run: npm install
+      - run: pnpm install --frozen-lockfile
 
-      - run: npx expo export --platform web
+      - run: pnpm exec expo export --platform web
 
       - uses: actions/upload-pages-artifact@v3
         with:
@@ -63,20 +67,24 @@ jobs:
         with:
           lfs: true
 
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          # No cache — package-lock.json is gitignored
+          cache: pnpm
 
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
 
-      - run: npm install
+      - run: pnpm install --frozen-lockfile
 
       - name: Generate native Android project
-        run: npx expo prebuild --platform android --no-install
+        run: pnpm exec expo prebuild --platform android --no-install
 
       - name: Build debug APK
         env:

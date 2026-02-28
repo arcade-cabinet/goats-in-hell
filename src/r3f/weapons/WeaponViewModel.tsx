@@ -327,6 +327,7 @@ function buildGlbWeapon(weaponId: WeaponId, config: WeaponVisualConfig): THREE.G
         ) {
           mat.emissive = new THREE.Color(config.emissive);
           mat.emissiveIntensity = 0.5;
+          mat.needsUpdate = true;
         }
       };
       if (Array.isArray(child.material)) {
