@@ -223,9 +223,33 @@ function applySpread(direction: Vector3, spread: number): Vector3 {
   return spreadDir.normalize();
 }
 
+// Headshot constants
+const HEADSHOT_HEIGHT_RATIO = 0.7;   // hit above 70% of capsule height = headshot
+const HEADSHOT_DAMAGE_MULT = 2.0;
+const BASE_CAPSULE_HEIGHT = 1.5;     // matches GoatMeshFactory capsuleHeight = 1.5 * scale
+
+// Module-level headshot notification state (read by HUD)
+let headshotTimer = 0;
+
+/** Get headshot display timer (frames remaining). Called by HUD. */
+export function getHeadshotTimer(): number {
+  return headshotTimer;
+}
+
+/** Tick headshot timer down. Called each frame by HUD update. */
+export function tickHeadshotTimer(): void {
+  if (headshotTimer > 0) headshotTimer--;
+}
+
+function notifyHeadshot(): void {
+  playSound('headshot');
+  headshotTimer = 90; // ~1.5 seconds at 60fps
+}
+
 /**
  * Cast a Havok physics raycast from origin along direction.
  * Hits enemy capsule colliders and applies damage via entity metadata.
+ * Detects headshots by checking hit point Y against capsule geometry.
  */
 function performHitscan(
   scene: Scene,
@@ -235,7 +259,31 @@ function performHitscan(
 ): void {
   const hit = physicsRaycast(scene, origin, direction, def.range);
   if (hit) {
-    applyDamageToEnemy(hit.entityId, def.damage);
+    // Headshot detection: check if hit point is in the upper portion of the enemy
+    const entity = world.entities.find(e => e.id === hit.entityId && e.enemy);
+    let damage = def.damage;
+    let isHeadshot = false;
+
+    if (entity) {
+      // Look up scale from the mesh metadata or default to 1
+      const mesh = scene.getMeshByName(`mesh-enemy-${entity.id}`);
+      const scale = mesh?.metadata?.baseScale ?? 1;
+      const capsuleHeight = BASE_CAPSULE_HEIGHT * scale;
+      const headshotThreshold = capsuleHeight * HEADSHOT_HEIGHT_RATIO;
+
+      if (hit.hitPoint.y > headshotThreshold) {
+        isHeadshot = true;
+        damage = Math.ceil(damage * HEADSHOT_DAMAGE_MULT);
+      }
+    }
+
+    applyDamageToEnemy(hit.entityId, damage);
+
+    if (isHeadshot) {
+      GameState.set({hitMarker: 10}); // extra-strong hit marker for headshots
+      notifyHeadshot();
+    }
+
     // Impact sparks at hit point
     createImpactSparks(hit.hitPoint, hit.hitNormal, scene);
   } else {

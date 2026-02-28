@@ -28,6 +28,7 @@ import type {Entity, WeaponId} from '../entities/components';
 import {getGameTime} from '../systems/GameClock';
 import {getAnnouncement} from '../systems/KillStreakSystem';
 import {getActiveBuffs} from '../systems/PowerUpSystem';
+import {getHeadshotTimer, tickHeadshotTimer} from '../weapons/WeaponSystem';
 import {Vector3} from '@babylonjs/core';
 
 // ---------------------------------------------------------------------------
@@ -189,6 +190,9 @@ export class BabylonHUD {
   private streakCount = 0;
   private lastKillTime = 0;
 
+  // Headshot notification
+  private headshotText!: TextBlock;
+
   // Active power-up buff icons
   private buffTexts: TextBlock[] = [];
 
@@ -239,6 +243,7 @@ export class BabylonHUD {
     this.createTutorialHints();
     this.createDamageDirectionIndicators();
     this.createFloorAnnouncement();
+    this.createHeadshotNotification();
   }
 
   // =========================================================================
@@ -936,6 +941,7 @@ export class BabylonHUD {
     this.updateBuffIcons();
     this.updateDamageDirection();
     this.updateFloorAnnouncement(storeState);
+    this.updateHeadshotNotification();
   }
 
   private updateHealth(player: Entity): void {
@@ -1471,6 +1477,41 @@ export class BabylonHUD {
       this.damageArcs[i].alpha = damageIndicators[i];
       damageIndicators[i] *= INDICATOR_DECAY;
       if (damageIndicators[i] < 0.01) damageIndicators[i] = 0;
+    }
+  }
+
+  // =========================================================================
+  // Headshot notification
+  // =========================================================================
+
+  private createHeadshotNotification(): void {
+    this.headshotText = new TextBlock('headshotNotif', 'HEADSHOT!');
+    this.headshotText.fontFamily = FONT;
+    this.headshotText.fontSize = 22;
+    this.headshotText.fontWeight = 'bold';
+    this.headshotText.color = '#ffdd00';
+    this.headshotText.shadowColor = 'rgba(255, 100, 0, 0.8)';
+    this.headshotText.shadowBlur = 10;
+    this.headshotText.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_CENTER;
+    this.headshotText.verticalAlignment = Control.VERTICAL_ALIGNMENT_CENTER;
+    this.headshotText.top = -70;
+    this.headshotText.alpha = 0;
+    this.headshotText.isHitTestVisible = false;
+    this.gui.addControl(this.headshotText);
+  }
+
+  private updateHeadshotNotification(): void {
+    const timer = getHeadshotTimer();
+    tickHeadshotTimer();
+    if (timer > 0) {
+      // Fade in quickly, hold, fade out
+      const alpha = timer > 70 ? (90 - timer) / 20 : timer / 30;
+      this.headshotText.alpha = Math.min(1, alpha);
+      // Slight scale pulse on fresh headshot
+      const scale = timer > 75 ? 1 + (90 - timer) * 0.02 : 1;
+      this.headshotText.fontSize = Math.round(22 * scale);
+    } else {
+      this.headshotText.alpha = 0;
     }
   }
 

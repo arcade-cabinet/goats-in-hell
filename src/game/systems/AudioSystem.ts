@@ -6,6 +6,7 @@ export type SoundType =
   | 'rapid'
   | 'bigshot'
   | 'hit'
+  | 'headshot'
   | 'goat_die'
   | 'goat_alert'
   | 'pickup'
@@ -240,6 +241,15 @@ function playWeaponSwitch(ctx: AudioContext): void {
   scheduleNoise(ctx, 0.05, 0.1, 25, dest, t);
 }
 
+function playHeadshot(ctx: AudioContext): void {
+  const t = ctx.currentTime;
+  const dest = getOutput(ctx);
+  // Sharp metallic "ding" — distinctive and satisfying
+  scheduleOsc(ctx, 'sine', 1200, 1200, 0.08, 0.25, dest, t);
+  scheduleOsc(ctx, 'sine', 1800, 1800, 0.06, 0.15, dest, t + 0.03);
+  scheduleOsc(ctx, 'triangle', 2400, 2400, 0.04, 0.1, dest, t + 0.05);
+}
+
 function playDeathSting(ctx: AudioContext): void {
   const t = ctx.currentTime;
   const dest = getOutput(ctx);
@@ -315,6 +325,9 @@ export function playSound(type: SoundType): void {
       break;
     case 'boss_hit':
       playBufferSound('sfx-impact', 0.7);
+      break;
+    case 'headshot':
+      playHeadshot(ctx);
       break;
     case 'door':
       playBufferSound('sfx-doorOpen', 0.5);
