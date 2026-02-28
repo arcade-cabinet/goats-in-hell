@@ -113,6 +113,7 @@ export function ProjectileManager() {
     return () => {
       clearEnemyProjectileBridge();
       pool.dispose();
+      ProjectilePool.disposeProjectilePoolResources();
       poolRef.current = null;
       activePool = null;
     };

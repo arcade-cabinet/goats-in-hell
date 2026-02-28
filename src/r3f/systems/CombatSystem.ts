@@ -410,7 +410,6 @@ export function combatSystemUpdate(deltaTime: number): void {
   // Frame-rate normalization factor: 1.0 at 60fps (16ms), proportionally
   // larger/smaller at other rates so movement and lifetimes stay consistent.
   const dtFactor = deltaTime / 16;
-  const _dtSeconds = deltaTime / 1000;
 
   const player = world.entities.find((e: Entity) => e.type === 'player' && e.player);
 

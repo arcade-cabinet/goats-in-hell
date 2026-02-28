@@ -1,16 +1,17 @@
+import { CELL_SIZE, WALL_HEIGHT } from '../../constants';
 import { useGameStore } from '../../state/GameStore';
 import type { Vec3 } from '../entities/components';
 import { vec3, vec3Zero } from '../entities/vec3';
 import { generateBossArena } from './BossArenas';
 import { type FloorTheme, getThemeForFloor } from './FloorThemes';
 
+// Re-export from constants for consumers that import from this module
+export { CELL_SIZE, WALL_HEIGHT };
+
 /** Shorthand for the store's seeded PRNG — deterministic per-seed. */
 function rng(): number {
   return useGameStore.getState().rng();
 }
-
-export const CELL_SIZE = 2; // matches BLOCK_SIZE
-export const WALL_HEIGHT = 3;
 
 export enum MapCell {
   EMPTY = 0,
