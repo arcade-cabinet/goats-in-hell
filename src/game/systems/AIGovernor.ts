@@ -6,22 +6,31 @@
  * fleeing, and exploring. Bridges YUKA's coordinate system to Babylon.js
  * and handles grid-based wall avoidance.
  *
+ * Supports two modes:
+ *   1. Direct camera mode (legacy Babylon.js) — manipulates camera directly
+ *   2. Output callback mode (R3F) — emits AIOutputFrame each tick; the
+ *      AIProvider converts it to an InputFrame for the InputManager.
+ *
+ * NOTE: All coordinates in this file are Babylon.js left-handed (Z+ = forward).
+ * When converting to Three.js right-handed coordinates, negate Z values.
+ *
  * Activate with ?autoplay URL param (optionally ?autoplay=easy|hard).
  */
-import {
-  Vehicle,
-  EntityManager,
-  ArriveBehavior,
-  WanderBehavior,
-  Vector3 as YV3,
-} from 'yuka';
-import {Vector3} from '@babylonjs/core';
-import type {UniversalCamera, Scene} from '@babylonjs/core';
-import type {Entity, WeaponId} from '../entities/components';
-import {world} from '../entities/world';
-import {tryShoot, tryReload, switchWeapon} from '../weapons/WeaponSystem';
-import {weapons} from '../weapons/weapons';
-import {LevelGenerator, MapCell} from '../levels/LevelGenerator';
+import { ArriveBehavior, EntityManager, Vehicle, WanderBehavior, Vector3 as YV3 } from 'yuka';
+import type { Entity, Vec3, WeaponId } from '../entities/components';
+import { vec3, vec3Distance, vec3Length, vec3Scale, vec3Subtract } from '../entities/vec3';
+import { world } from '../entities/world';
+import { LevelGenerator, type MapCell } from '../levels/LevelGenerator';
+import { weapons } from '../weapons/weapons';
+
+/**
+ * Generic camera interface — abstracts away Babylon/Three camera specifics.
+ * The governor reads position + rotation but only writes in legacy mode.
+ */
+export interface AICamera {
+  position: Vec3;
+  rotation: { x: number; y: number };
+}
 
 // ---------------------------------------------------------------------------
 // Types
@@ -37,6 +46,47 @@ export interface AIDebugInfo {
   steering: string;
 }
 
+/**
+ * Abstract output frame emitted by the AIGovernor when an output callback
+ * is registered. Contains movement, look, and action intents that the
+ * AIProvider translates into an InputFrame.
+ *
+ * Coordinate system: Babylon.js left-handed (Z+ forward, X+ right).
+ * The AIProvider must negate Z values when converting to Three.js.
+ */
+export interface AIOutputFrame {
+  moveX: number; // -1..1 strafe (positive = right)
+  moveZ: number; // -1..1 forward/back (positive = forward, Babylon.js Z+)
+  lookYaw: number; // target yaw angle (radians, Babylon.js convention)
+  lookPitch: number; // target pitch angle (radians, Babylon.js convention)
+  fire: boolean;
+  reload: boolean;
+  weaponSlot: number; // 0 = no change, 1-4 = slot
+  sprint: boolean;
+}
+
+/** Weapon ID to slot number mapping (1-indexed). */
+const WEAPON_SLOT_MAP: Record<WeaponId, number> = {
+  hellPistol: 1,
+  brimShotgun: 2,
+  hellfireCannon: 3,
+  goatsBane: 4,
+};
+
+/** Return a zeroed AIOutputFrame. */
+function emptyAIOutputFrame(): AIOutputFrame {
+  return {
+    moveX: 0,
+    moveZ: 0,
+    lookYaw: 0,
+    lookPitch: 0,
+    fire: false,
+    reload: false,
+    weaponSlot: 0,
+    sprint: false,
+  };
+}
+
 // ---------------------------------------------------------------------------
 // Tuning constants
 // ---------------------------------------------------------------------------
@@ -44,10 +94,10 @@ export interface AIDebugInfo {
 const HEAL_THRESHOLD = 0.35;
 const FLEE_THRESHOLD = 0.15;
 const FLEE_DISTANCE = 8;
-const MOVE_SPEED = 0.10;
+const MOVE_SPEED = 0.1;
 const SPRINT_SPEED = 0.15;
 const SHOOT_RANGE_FACTOR = 0.8; // Fire within 80% of weapon's max range
-const AIM_LERP = 0.12; // Camera aim smoothing (0–1 per frame)
+const _AIM_LERP = 0.12; // Camera aim smoothing (0-1 per frame)
 const DECISION_INTERVAL = 200; // ms between state re-evaluations
 const WANDER_RADIUS = 6;
 const WANDER_JITTER = 0.8;
@@ -62,8 +112,7 @@ export class AIGovernor {
   private arriveBehavior: ArriveBehavior;
   private wanderBehavior: WanderBehavior;
 
-  private camera: UniversalCamera;
-  private scene: Scene;
+  private camera: AICamera;
   private player: Entity;
   private grid: number[][];
   private gridW: number;
@@ -73,20 +122,18 @@ export class AIGovernor {
   private _state: AIState = 'explore';
   private targetEntity: Entity | null = null;
   private lastDecisionTime = 0;
-  private wanderYaw = 0;
   private frameCount = 0;
 
-  constructor(
-    camera: UniversalCamera,
-    scene: Scene,
-    player: Entity,
-    grid: MapCell[][],
-    cellSize: number,
-  ) {
+  // --- Output callback mode ---
+  private outputCallback: ((frame: AIOutputFrame) => void) | null = null;
+  private outputFrame: AIOutputFrame = emptyAIOutputFrame();
+  /** Whether a sprint was requested this frame (used in output mode). */
+  private sprintRequested = false;
+
+  constructor(camera: AICamera, player: Entity, grid: MapCell[][], cellSize: number) {
     this.camera = camera;
-    this.scene = scene;
     this.player = player;
-    this.grid = grid.map(row => row.map(c => c as number));
+    this.grid = grid.map((row) => row.map((c) => c as number));
     this.gridH = this.grid.length;
     this.gridW = this.grid[0]?.length ?? 0;
     this.cellSize = cellSize;
@@ -127,6 +174,16 @@ export class AIGovernor {
     return this._state;
   }
 
+  /**
+   * Register a callback to receive an AIOutputFrame each tick instead of
+   * the governor directly manipulating the Babylon camera. When set, the
+   * governor still READS camera position for distance calculations but does
+   * NOT write to it.
+   */
+  setOutputCallback(cb: (frame: AIOutputFrame) => void): void {
+    this.outputCallback = cb;
+  }
+
   getDebugInfo(): AIDebugInfo {
     const dist = this.targetEntity ? this.distToEntity(this.targetEntity) : -1;
     return {
@@ -146,6 +203,12 @@ export class AIGovernor {
   update(dt: number): void {
     if (!this.player.player || !this.player.position) return;
     this.frameCount++;
+
+    // Reset per-frame output state
+    if (this.outputCallback) {
+      this.outputFrame = emptyAIOutputFrame();
+      this.sprintRequested = false;
+    }
 
     const now = performance.now();
 
@@ -178,10 +241,17 @@ export class AIGovernor {
 
     // Auto-reload
     this.handleReload();
+
+    // --- Emit output frame if in callback mode ---
+    if (this.outputCallback) {
+      this.outputFrame.sprint = this.sprintRequested;
+      this.outputCallback(this.outputFrame);
+    }
   }
 
   dispose(): void {
     this.entityManager.clear();
+    this.outputCallback = null;
   }
 
   // -----------------------------------------------------------------------
@@ -232,11 +302,7 @@ export class AIGovernor {
     this.wanderBehavior.active = false;
 
     if (target?.position) {
-      this.arriveBehavior.target = new YV3(
-        target.position.x,
-        0,
-        target.position.z,
-      );
+      this.arriveBehavior.target = new YV3(target.position.x, 0, target.position.z);
       this.arriveBehavior.active = state !== 'flee' && state !== 'explore';
     }
 
@@ -271,10 +337,10 @@ export class AIGovernor {
       // Approach
       this.applySteeringMovement(dt, MOVE_SPEED);
     } else if (dist < 3) {
-      // Too close — backpedal
+      // Too close - backpedal
       this.moveAwayFrom(target.position, MOVE_SPEED * 0.6, dt);
     } else {
-      // In range — strafe slightly for dodging
+      // In range - strafe slightly for dodging
       this.strafeAround(target.position, MOVE_SPEED * 0.4, dt);
     }
 
@@ -299,6 +365,7 @@ export class AIGovernor {
 
     this.arriveBehavior.target.set(target.position.x, 0, target.position.z);
     this.applySteeringMovement(dt, SPRINT_SPEED);
+    this.sprintRequested = true;
     this.aimAt(target.position);
 
     // Still shoot at enemies while healing
@@ -321,6 +388,7 @@ export class AIGovernor {
     }
 
     this.moveAwayFrom(threat.position, SPRINT_SPEED, dt);
+    this.sprintRequested = true;
 
     // Shoot while retreating
     const enemies = this.getEnemies();
@@ -346,20 +414,15 @@ export class AIGovernor {
     // Point camera in movement direction
     const vel = this.vehicle.velocity;
     if (vel.squaredLength() > 0.0001) {
-      const lookTarget = this.camera.position.add(
-        new Vector3(vel.x, 0, vel.z).scale(5),
-      );
+      const p = this.camera.position;
+      const lookTarget = vec3(p.x + vel.x * 5, p.y, p.z + vel.z * 5);
       this.aimAt(lookTarget);
     }
 
     // Opportunistic: grab weapon pickups
     const wpnPickup = this.nearestPickup('weapon');
     if (wpnPickup?.position && this.distToEntity(wpnPickup) < 10) {
-      this.arriveBehavior.target.set(
-        wpnPickup.position.x,
-        0,
-        wpnPickup.position.z,
-      );
+      this.arriveBehavior.target.set(wpnPickup.position.x, 0, wpnPickup.position.z);
       this.arriveBehavior.active = true;
       this.wanderBehavior.active = false;
     }
@@ -370,111 +433,81 @@ export class AIGovernor {
   // -----------------------------------------------------------------------
 
   /**
-   * Run YUKA's EntityManager to compute steering velocity, then apply it
-   * to the Babylon camera with grid-based wall avoidance.
+   * Convert a world-space displacement vector into local-space moveX/moveZ
+   * relative to the current camera yaw, and write to the output frame.
+   *
+   * In Babylon.js: yaw = rotation.y, forward is +Z when yaw=0.
+   * moveX: right (+) / left (-)
+   * moveZ: forward (+) / backward (-)
+   */
+  private displacementToMoveXZ(displacement: Vec3): void {
+    const yaw = this.camera.rotation.y;
+    const cosY = Math.cos(yaw);
+    const sinY = Math.sin(yaw);
+
+    const localX = cosY * displacement.x - sinY * displacement.z;
+    const localZ = sinY * displacement.x + cosY * displacement.z;
+
+    const len = Math.sqrt(localX * localX + localZ * localZ);
+    if (len > 0.001) {
+      const s = Math.min(1, 1 / len);
+      this.outputFrame.moveX = localX * s;
+      this.outputFrame.moveZ = localZ * s;
+    }
+  }
+
+  /**
+   * Run YUKA's EntityManager to compute steering velocity, then emit
+   * to the output frame for the AIProvider to consume.
    */
   private applySteeringMovement(dt: number, speed: number): void {
-    // Sync camera position → YUKA vehicle
     const p = this.camera.position;
     this.vehicle.position.set(p.x, 0, p.z);
     this.vehicle.maxSpeed = speed;
 
-    // Tick YUKA (expects seconds)
     const dtSec = dt / 1000;
     this.entityManager.update(dtSec);
 
-    // Read YUKA's computed velocity
     const vel = this.vehicle.velocity;
-    const dtScale = dt / 16; // frame-rate normalize
-    const displacement = new Vector3(
-      vel.x * dtScale * 0.5,
-      0,
-      vel.z * dtScale * 0.5,
-    );
-
-    this.applyMovement(displacement);
-  }
-
-  /** Move directly toward a target with manual steering (no YUKA). */
-  private moveToward(target: Vector3, speed: number, dt: number): void {
-    const pos = this.camera.position;
-    const dir = target.subtract(pos);
-    dir.y = 0;
-    const len = dir.length();
-    if (len < 0.2) return;
-    dir.scaleInPlace(1 / len);
-
     const dtScale = dt / 16;
-    const displacement = dir.scale(speed * dtScale);
-    this.applyMovement(displacement);
+    const displacement = vec3(vel.x * dtScale * 0.5, 0, vel.z * dtScale * 0.5);
+
+    this.displacementToMoveXZ(displacement);
   }
 
   /** Move directly away from a position. */
-  private moveAwayFrom(target: Vector3, speed: number, dt: number): void {
+  private moveAwayFrom(target: Vec3, speed: number, dt: number): void {
     const pos = this.camera.position;
-    const dir = pos.subtract(target);
+    const dir = vec3Subtract(pos, target);
     dir.y = 0;
-    const len = dir.length();
+    const len = vec3Length(dir);
     if (len < 0.1) return;
-    dir.scaleInPlace(1 / len);
+    const norm = vec3Scale(dir, 1 / len);
 
     const dtScale = dt / 16;
-    const displacement = dir.scale(speed * dtScale);
-    this.applyMovement(displacement);
+    const displacement = vec3Scale(norm, speed * dtScale);
+    this.displacementToMoveXZ(displacement);
   }
 
   /** Circle-strafe around a target position. */
-  private strafeAround(target: Vector3, speed: number, dt: number): void {
+  private strafeAround(target: Vec3, speed: number, dt: number): void {
     const pos = this.camera.position;
-    const toTarget = target.subtract(pos);
+    const toTarget = vec3Subtract(target, pos);
     toTarget.y = 0;
-    // Perpendicular (rotate 90 degrees)
-    const perp = new Vector3(-toTarget.z, 0, toTarget.x);
-    const len = perp.length();
+    const perp = vec3(-toTarget.z, 0, toTarget.x);
+    const len = vec3Length(perp);
     if (len < 0.1) return;
-    perp.scaleInPlace(1 / len);
+    const norm = vec3Scale(perp, 1 / len);
 
-    // Alternate strafe direction every ~3 seconds
     const strafeDir = Math.sin(performance.now() * 0.001) > 0 ? 1 : -1;
 
     const dtScale = dt / 16;
-    const displacement = perp.scale(speed * dtScale * strafeDir);
-    this.applyMovement(displacement);
-  }
-
-  /**
-   * Apply a displacement to the camera, checking the grid for wall collisions.
-   * Falls back to axis-aligned sliding if the diagonal move is blocked.
-   */
-  private applyMovement(displacement: Vector3): void {
-    const pos = this.camera.position;
-    const full = pos.add(displacement);
-
-    if (this.isWalkable(full)) {
-      this.camera.position.addInPlace(displacement);
-      return;
-    }
-
-    // Slide along X
-    const slideX = new Vector3(displacement.x, 0, 0);
-    if (this.isWalkable(pos.add(slideX))) {
-      this.camera.position.addInPlace(slideX);
-      return;
-    }
-
-    // Slide along Z
-    const slideZ = new Vector3(0, 0, displacement.z);
-    if (this.isWalkable(pos.add(slideZ))) {
-      this.camera.position.addInPlace(slideZ);
-      return;
-    }
-
-    // Fully blocked — nudge the wander angle so we try a new direction
-    this.wanderYaw += Math.PI * 0.4;
+    const displacement = vec3Scale(norm, speed * dtScale * strafeDir);
+    this.displacementToMoveXZ(displacement);
   }
 
   /** Check if a world-space position is on a walkable (empty) grid cell. */
-  private isWalkable(pos: Vector3): boolean {
+  private isWalkable(pos: Vec3): boolean {
     const gx = Math.floor(pos.x / this.cellSize);
     const gz = Math.floor(pos.z / this.cellSize);
 
@@ -486,25 +519,19 @@ export class AIGovernor {
   // Aiming
   // -----------------------------------------------------------------------
 
-  /** Smoothly rotate camera to face a world-space target. */
-  private aimAt(target: Vector3): void {
+  /** Set look target angles in the output frame. */
+  private aimAt(target: Vec3): void {
     const pos = this.camera.position;
     const dx = target.x - pos.x;
     const dz = target.z - pos.z;
     const dy = (target.y ?? 1) - pos.y;
 
-    // Yaw (left/right)
     const yaw = Math.atan2(dx, dz);
-    // Pitch (up/down) — targets are at roughly y=1, camera at y=2
     const horizDist = Math.sqrt(dx * dx + dz * dz);
     const pitch = -Math.atan2(dy, horizDist);
 
-    this.camera.rotation.y = lerpAngle(this.camera.rotation.y, yaw, AIM_LERP);
-    this.camera.rotation.x = lerpAngle(
-      this.camera.rotation.x,
-      pitch,
-      AIM_LERP,
-    );
+    this.outputFrame.lookYaw = yaw;
+    this.outputFrame.lookPitch = pitch;
   }
 
   // -----------------------------------------------------------------------
@@ -518,11 +545,12 @@ export class AIGovernor {
     const ammo = this.player.ammo[wpnId];
 
     if (ammo.current <= 0) {
-      tryReload(this.player);
+      // Always use output frame — legacy direct mode is removed
+      this.outputFrame.reload = true;
       return;
     }
 
-    tryShoot(this.scene, this.player);
+    this.outputFrame.fire = true;
   }
 
   private manageWeapons(): void {
@@ -538,24 +566,16 @@ export class AIGovernor {
 
     if (dist < 6 && owned.includes('brimShotgun') && this.hasAmmo('brimShotgun')) {
       ideal = 'brimShotgun';
-    } else if (
-      dist < 20 &&
-      owned.includes('hellfireCannon') &&
-      this.hasAmmo('hellfireCannon')
-    ) {
+    } else if (dist < 20 && owned.includes('hellfireCannon') && this.hasAmmo('hellfireCannon')) {
       ideal = 'hellfireCannon';
-    } else if (
-      dist > 15 &&
-      owned.includes('goatsBane') &&
-      this.hasAmmo('goatsBane')
-    ) {
+    } else if (dist > 15 && owned.includes('goatsBane') && this.hasAmmo('goatsBane')) {
       ideal = 'goatsBane';
     } else if (this.hasAmmo('hellPistol')) {
       ideal = 'hellPistol';
     }
 
     if (ideal !== this.player.player.currentWeapon) {
-      switchWeapon(this.player, ideal);
+      this.outputFrame.weaponSlot = WEAPON_SLOT_MAP[ideal];
     }
   }
 
@@ -568,7 +588,7 @@ export class AIGovernor {
 
     // Auto-reload when empty
     if (ammo.current <= 0 && ammo.reserve > 0) {
-      tryReload(this.player);
+      this.outputFrame.reload = true;
       return;
     }
 
@@ -578,7 +598,7 @@ export class AIGovernor {
     const dist = closest ? this.distToEntity(closest) : Infinity;
 
     if (dist > 15 && ammo.current < ammo.magSize * 0.25 && ammo.reserve > 0) {
-      tryReload(this.player);
+      this.outputFrame.reload = true;
     }
   }
 
@@ -592,9 +612,7 @@ export class AIGovernor {
   // -----------------------------------------------------------------------
 
   private getEnemies(): Entity[] {
-    return world.entities.filter(
-      (e: Entity) => !!e.enemy && !!e.position,
-    );
+    return world.entities.filter((e: Entity) => !!e.enemy && !!e.position);
   }
 
   private nearest(entities: Entity[]): Entity | null {
@@ -610,29 +628,17 @@ export class AIGovernor {
     return best;
   }
 
-  private nearestPickup(
-    type: 'health' | 'ammo' | 'weapon',
-  ): Entity | null {
+  private nearestPickup(type: 'health' | 'ammo' | 'weapon'): Entity | null {
     const pickups = world.entities.filter(
-      (e: Entity) =>
-        e.pickup?.active && e.pickup.pickupType === type && !!e.position,
+      (e: Entity) => e.pickup?.active && e.pickup.pickupType === type && !!e.position,
     );
     return this.nearest(pickups);
   }
 
   private distToEntity(entity: Entity): number {
     if (!entity.position) return Infinity;
-    return Vector3.Distance(this.camera.position, entity.position);
+    return vec3Distance(this.camera.position, entity.position);
   }
 }
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-function lerpAngle(from: number, to: number, t: number): number {
-  let diff = to - from;
-  while (diff > Math.PI) diff -= Math.PI * 2;
-  while (diff < -Math.PI) diff += Math.PI * 2;
-  return from + diff * t;
-}
+// (lerpAngle removed — only used in legacy direct-camera mode)

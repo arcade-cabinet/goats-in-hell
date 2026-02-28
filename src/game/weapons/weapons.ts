@@ -1,4 +1,4 @@
-import type {WeaponId} from '../entities/components';
+import type { WeaponId } from '../entities/components';
 
 export interface WeaponDef {
   id: WeaponId;
@@ -19,7 +19,7 @@ export const weapons: Record<WeaponId, WeaponDef> = {
   hellPistol: {
     id: 'hellPistol',
     name: 'Hell Pistol',
-    damage: 4,           // reliable hitscan, ~13 DPS
+    damage: 4, // reliable hitscan, ~13 DPS
     pellets: 1,
     spread: 0,
     magSize: 12,
@@ -27,11 +27,12 @@ export const weapons: Record<WeaponId, WeaponDef> = {
     reloadTime: 1200,
     range: 50,
     isProjectile: false,
+    projectileSpeed: 80,
   },
   brimShotgun: {
     id: 'brimShotgun',
     name: 'Brimstone Shotgun',
-    damage: 4,           // 4×7 = 28 per shot at point-blank, ~23 DPS
+    damage: 4, // 4×7 = 28 per shot at point-blank, ~23 DPS
     pellets: 7,
     spread: 0.14,
     magSize: 6,
@@ -39,11 +40,12 @@ export const weapons: Record<WeaponId, WeaponDef> = {
     reloadTime: 2200,
     range: 12,
     isProjectile: false,
+    projectileSpeed: 60,
   },
   hellfireCannon: {
     id: 'hellfireCannon',
     name: 'Hellfire Cannon',
-    damage: 3,           // rapid projectile stream, ~20 DPS
+    damage: 3, // rapid projectile stream, ~20 DPS
     pellets: 1,
     spread: 0.03,
     magSize: 30,
@@ -51,12 +53,12 @@ export const weapons: Record<WeaponId, WeaponDef> = {
     reloadTime: 3000,
     range: 30,
     isProjectile: true,
-    projectileSpeed: 0.5,
+    projectileSpeed: 40,
   },
   goatsBane: {
     id: 'goatsBane',
     name: "Goat's Bane",
-    damage: 60,          // heavy rocket, ~40 DPS + AoE crowd clear
+    damage: 60, // heavy rocket, ~40 DPS + AoE crowd clear
     pellets: 1,
     spread: 0,
     magSize: 3,
@@ -64,7 +66,7 @@ export const weapons: Record<WeaponId, WeaponDef> = {
     reloadTime: 3500,
     range: 100,
     isProjectile: true,
-    projectileSpeed: 0.35,
+    projectileSpeed: 20,
     aoe: 5,
   },
 };

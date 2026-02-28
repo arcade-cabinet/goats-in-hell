@@ -1,6 +1,7 @@
-import React, {useEffect, useRef} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Animated} from 'react-native';
-import {useGameStore} from '../state/GameStore';
+import type React from 'react';
+import { useEffect, useRef } from 'react';
+import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useGameStore } from '../state/GameStore';
 
 const BOSS_NAMES: Record<string, string> = {
   infernoGoat: 'INFERNO GOAT',
@@ -17,9 +18,9 @@ const BOSS_TAUNTS: Record<string, string> = {
 };
 
 export const BossIntroScreen: React.FC = () => {
-  const bossId = useGameStore(s => s.stage.bossId);
-  const floor = useGameStore(s => s.stage.floor);
-  const patch = useGameStore(s => s.patch);
+  const bossId = useGameStore((s) => s.stage.bossId);
+  const floor = useGameStore((s) => s.stage.floor);
+  const patch = useGameStore((s) => s.patch);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const titleScale = useRef(new Animated.Value(0.3)).current;
@@ -64,13 +65,11 @@ export const BossIntroScreen: React.FC = () => {
   }, [pulseAnim]);
 
   const handleEnter = () => {
-    patch({screen: 'playing', startTime: Date.now()});
+    patch({ screen: 'playing', startTime: Date.now() });
   };
 
   return (
-    <Animated.View
-      style={[styles.container, {opacity: fadeAnim}]}
-      pointerEvents="box-none">
+    <Animated.View style={[styles.container, { opacity: fadeAnim }]} pointerEvents="box-none">
       <View style={styles.overlay} />
 
       {/* Decorative border */}
@@ -84,8 +83,7 @@ export const BossIntroScreen: React.FC = () => {
 
       <Text style={styles.floorLabel}>FLOOR {floor}</Text>
 
-      <Animated.View
-        style={[styles.titleContainer, {transform: [{scale: titleScale}]}]}>
+      <Animated.View style={[styles.titleContainer, { transform: [{ scale: titleScale }] }]}>
         <Text style={styles.titleGlow2}>BOSS</Text>
         <Text style={styles.titleGlow1}>BOSS</Text>
         <Text style={styles.title}>BOSS</Text>
@@ -94,11 +92,8 @@ export const BossIntroScreen: React.FC = () => {
       <Text style={styles.bossName}>{bossName}</Text>
       <Text style={styles.taunt}>{bossTaunt}</Text>
 
-      <TouchableOpacity
-        style={styles.enterButton}
-        onPress={handleEnter}
-        activeOpacity={0.7}>
-        <Animated.View style={[styles.enterGlow, {opacity: pulseAnim}]} />
+      <TouchableOpacity style={styles.enterButton} onPress={handleEnter} activeOpacity={0.7}>
+        <Animated.View style={[styles.enterGlow, { opacity: pulseAnim }]} />
         <Text style={styles.enterText}>ENTER THE ARENA</Text>
       </TouchableOpacity>
 
@@ -176,7 +171,7 @@ const styles = StyleSheet.create({
     color: 'transparent',
     letterSpacing: 12,
     textShadowColor: 'rgba(255, 0, 50, 0.7)',
-    textShadowOffset: {width: 0, height: 0},
+    textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 15,
   },
   titleGlow2: {
@@ -187,7 +182,7 @@ const styles = StyleSheet.create({
     color: 'transparent',
     letterSpacing: 12,
     textShadowColor: 'rgba(255, 0, 50, 0.3)',
-    textShadowOffset: {width: 0, height: 0},
+    textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 40,
   },
 
@@ -199,7 +194,7 @@ const styles = StyleSheet.create({
     letterSpacing: 4,
     marginBottom: 8,
     textShadowColor: 'rgba(255, 50, 100, 0.4)',
-    textShadowOffset: {width: 0, height: 0},
+    textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 10,
   },
   taunt: {

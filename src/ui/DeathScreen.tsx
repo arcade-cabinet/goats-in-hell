@@ -1,6 +1,7 @@
-import React, {useEffect, useRef} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Animated} from 'react-native';
-import {useGameStore} from '../state/GameStore';
+import type React from 'react';
+import { useEffect, useRef } from 'react';
+import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useGameStore } from '../state/GameStore';
 
 const SKULL_ART = `        .-""""-.
        /        \\
@@ -25,18 +26,17 @@ function formatSurvivalTime(startTime: number): string {
 }
 
 export const DeathScreen: React.FC = () => {
-  const score = useGameStore(s => s.score);
-  const totalKills = useGameStore(s => s.totalKills);
-  const floor = useGameStore(s => s.stage.floor);
-  const level = useGameStore(s => s.leveling.level);
-  const startTime = useGameStore(s => s.startTime);
-  const difficulty = useGameStore(s => s.difficulty);
-  const nightmareFlags = useGameStore(s => s.nightmareFlags);
-  const seed = useGameStore(s => s.seed);
-  const startNewGame = useGameStore(s => s.startNewGame);
-  const resetToMenu = useGameStore(s => s.resetToMenu);
-  const isPermadeath =
-    nightmareFlags.permadeath || nightmareFlags.ultraNightmare;
+  const score = useGameStore((s) => s.score);
+  const totalKills = useGameStore((s) => s.totalKills);
+  const floor = useGameStore((s) => s.stage.floor);
+  const level = useGameStore((s) => s.leveling.level);
+  const startTime = useGameStore((s) => s.startTime);
+  const difficulty = useGameStore((s) => s.difficulty);
+  const nightmareFlags = useGameStore((s) => s.nightmareFlags);
+  const seed = useGameStore((s) => s.seed);
+  const startNewGame = useGameStore((s) => s.startNewGame);
+  const resetToMenu = useGameStore((s) => s.resetToMenu);
+  const isPermadeath = nightmareFlags.permadeath || nightmareFlags.ultraNightmare;
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const titleScale = useRef(new Animated.Value(0.5)).current;
@@ -90,32 +90,29 @@ export const DeathScreen: React.FC = () => {
   const survivalTime = formatSurvivalTime(startTime);
 
   return (
-    <Animated.View
-      style={[styles.container, {opacity: fadeAnim}]}
-      pointerEvents="box-none">
+    <Animated.View style={[styles.container, { opacity: fadeAnim }]} pointerEvents="box-none">
       {/* Red tinted dark overlay */}
       <View style={styles.overlay} />
 
       {/* Skull decoration */}
-      <Animated.View style={[styles.skullContainer, {opacity: fadeAnim}]}>
+      <Animated.View style={[styles.skullContainer, { opacity: fadeAnim }]}>
         <Text style={styles.skullArt}>{SKULL_ART}</Text>
       </Animated.View>
 
       {/* Title with glow layers */}
-      <Animated.View
-        style={[styles.titleContainer, {transform: [{scale: titleScale}]}]}>
+      <Animated.View style={[styles.titleContainer, { transform: [{ scale: titleScale }] }]}>
         <Text style={styles.titleGlow3}>YOU DIED</Text>
         <Text style={styles.titleGlow2}>YOU DIED</Text>
         <Text style={styles.titleGlow1}>YOU DIED</Text>
         <Text style={styles.title}>YOU DIED</Text>
       </Animated.View>
 
-      <Animated.Text style={[styles.subtitle, {opacity: fadeAnim}]}>
+      <Animated.Text style={[styles.subtitle, { opacity: fadeAnim }]}>
         The goats have claimed your soul...
       </Animated.Text>
 
       {/* Stats panel */}
-      <Animated.View style={[styles.statsPanel, {opacity: fadeAnim}]}>
+      <Animated.View style={[styles.statsPanel, { opacity: fadeAnim }]}>
         <View style={styles.statsDividerTop} />
 
         <View style={styles.statRow}>
@@ -155,27 +152,17 @@ export const DeathScreen: React.FC = () => {
       </Animated.View>
 
       {/* Buttons */}
-      <Animated.View style={[styles.buttonsContainer, {opacity: fadeAnim}]}>
+      <Animated.View style={[styles.buttonsContainer, { opacity: fadeAnim }]}>
         {!isPermadeath && (
-          <TouchableOpacity
-            style={styles.retryButton}
-            onPress={handleTryAgain}
-            activeOpacity={0.7}>
-            <Animated.View
-              style={[styles.retryButtonGlow, {opacity: pulseAnim}]}
-            />
+          <TouchableOpacity style={styles.retryButton} onPress={handleTryAgain} activeOpacity={0.7}>
+            <Animated.View style={[styles.retryButtonGlow, { opacity: pulseAnim }]} />
             <Text style={styles.retryButtonText}>TRY AGAIN</Text>
           </TouchableOpacity>
         )}
 
-        {isPermadeath && (
-          <Text style={styles.permadeathText}>PERMADEATH — NO SECOND CHANCES</Text>
-        )}
+        {isPermadeath && <Text style={styles.permadeathText}>PERMADEATH — NO SECOND CHANCES</Text>}
 
-        <TouchableOpacity
-          style={styles.quitButton}
-          onPress={handleQuit}
-          activeOpacity={0.7}>
+        <TouchableOpacity style={styles.quitButton} onPress={handleQuit} activeOpacity={0.7}>
           <Text style={styles.quitButtonText}>QUIT TO MENU</Text>
         </TouchableOpacity>
       </Animated.View>
@@ -229,7 +216,7 @@ const styles = StyleSheet.create({
     color: 'transparent',
     letterSpacing: 8,
     textShadowColor: 'rgba(255, 0, 0, 0.7)',
-    textShadowOffset: {width: 0, height: 0},
+    textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 12,
   },
   titleGlow2: {
@@ -240,7 +227,7 @@ const styles = StyleSheet.create({
     color: 'transparent',
     letterSpacing: 8,
     textShadowColor: 'rgba(255, 20, 0, 0.4)',
-    textShadowOffset: {width: 0, height: 0},
+    textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 30,
   },
   titleGlow3: {
@@ -251,7 +238,7 @@ const styles = StyleSheet.create({
     color: 'transparent',
     letterSpacing: 8,
     textShadowColor: 'rgba(255, 50, 0, 0.2)',
-    textShadowOffset: {width: 0, height: 0},
+    textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 60,
   },
 

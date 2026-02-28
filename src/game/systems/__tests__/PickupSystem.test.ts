@@ -14,22 +14,20 @@ jest.mock('../PowerUpSystem', () => ({
   activatePowerUp: jest.fn(),
 }));
 
-jest.mock('../../rendering/Particles', () => ({
-  createPickupBurst: jest.fn(),
-}));
+// Particles module was deleted — pickup burst is now handled by R3F rendering layer
 
-import {Vector3} from '@babylonjs/core';
-import type {Entity} from '../../entities/components';
-import {world} from '../../entities/world';
-import {pickupSystemUpdate} from '../PickupSystem';
-import {playSound} from '../AudioSystem';
-import {activatePowerUp} from '../PowerUpSystem';
+import type { Entity } from '../../entities/components';
+import { vec3 as Vector3 } from '../../entities/vec3';
+import { world } from '../../entities/world';
+import { playSound } from '../AudioSystem';
+import { pickupSystemUpdate } from '../PickupSystem';
+import { activatePowerUp } from '../PowerUpSystem';
 
 function makePlayer(x = 0, z = 0, hp = 100): Entity {
   const player: Entity = {
     id: 'player',
     type: 'player',
-    position: new Vector3(x, 1, z),
+    position: Vector3(x, 1, z),
     player: {
       hp,
       maxHp: 100,
@@ -41,10 +39,10 @@ function makePlayer(x = 0, z = 0, hp = 100): Entity {
       reloadStart: 0,
     },
     ammo: {
-      hellPistol: {current: 12, reserve: 20, magSize: 12},
-      brimShotgun: {current: 0, reserve: 0, magSize: 6},
-      hellfireCannon: {current: 0, reserve: 0, magSize: 30},
-      goatsBane: {current: 0, reserve: 0, magSize: 3},
+      hellPistol: { current: 12, reserve: 20, magSize: 12 },
+      brimShotgun: { current: 0, reserve: 0, magSize: 6 },
+      hellfireCannon: { current: 0, reserve: 0, magSize: 30 },
+      goatsBane: { current: 0, reserve: 0, magSize: 3 },
     },
   };
   world.add(player);
@@ -55,8 +53,8 @@ function makePickup(type: string, x: number, z: number, value = 20, extra: any =
   const entity: Entity = {
     id: `pickup-${Math.random()}`,
     type: 'powerup',
-    position: new Vector3(x, 0, z),
-    pickup: {pickupType: type as any, value, active: true, ...extra},
+    position: Vector3(x, 0, z),
+    pickup: { pickupType: type as any, value, active: true, ...extra },
   };
   world.add(entity);
   return entity;
@@ -117,7 +115,7 @@ describe('ammo pickup', () => {
 describe('weapon pickup', () => {
   it('adds weapon to inventory if not owned', () => {
     const player = makePlayer(0, 0);
-    makePickup('weapon', 0.5, 0, 0, {weaponId: 'brimShotgun'});
+    makePickup('weapon', 0.5, 0, 0, { weaponId: 'brimShotgun' });
     pickupSystemUpdate();
     expect(player.player!.weapons).toContain('brimShotgun');
   });
@@ -125,15 +123,15 @@ describe('weapon pickup', () => {
   it('does not duplicate weapon in inventory', () => {
     const player = makePlayer(0, 0);
     player.player!.weapons.push('brimShotgun');
-    makePickup('weapon', 0.5, 0, 0, {weaponId: 'brimShotgun'});
+    makePickup('weapon', 0.5, 0, 0, { weaponId: 'brimShotgun' });
     pickupSystemUpdate();
-    const count = player.player!.weapons.filter(w => w === 'brimShotgun').length;
+    const count = player.player!.weapons.filter((w) => w === 'brimShotgun').length;
     expect(count).toBe(1);
   });
 
   it('grants reserve ammo for the weapon', () => {
     const player = makePlayer(0, 0);
-    makePickup('weapon', 0.5, 0, 0, {weaponId: 'goatsBane'});
+    makePickup('weapon', 0.5, 0, 0, { weaponId: 'goatsBane' });
     pickupSystemUpdate();
     expect(player.ammo!.goatsBane.reserve).toBe(12); // WEAPON_PICKUP_RESERVE for goatsBane
   });
@@ -142,7 +140,7 @@ describe('weapon pickup', () => {
 describe('powerup pickup', () => {
   it('activates the power-up', () => {
     makePlayer(0, 0);
-    makePickup('powerup', 0.5, 0, 0, {powerUpType: 'quadDamage'});
+    makePickup('powerup', 0.5, 0, 0, { powerUpType: 'quadDamage' });
     pickupSystemUpdate();
     expect(activatePowerUp).toHaveBeenCalledWith('quadDamage');
   });

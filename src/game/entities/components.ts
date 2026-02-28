@@ -1,14 +1,38 @@
-import {Mesh, Vector3, ParticleSystem} from '@babylonjs/core';
+/**
+ * Engine-agnostic ECS component types.
+ *
+ * Previously used Babylon.js Vector3/Mesh/ParticleSystem — now uses
+ * plain Vec3 objects. Rendering is managed by R3F components that
+ * read these ECS positions each frame.
+ */
+
+/** Simple 3D vector — engine-agnostic replacement for Babylon Vector3. */
+export interface Vec3 {
+  x: number;
+  y: number;
+  z: number;
+}
 
 export type EntityType =
   | 'player'
-  | 'goat' | 'hellgoat' | 'fireGoat' | 'shadowGoat' | 'goatKnight'
-  | 'archGoat' | 'infernoGoat' | 'voidGoat' | 'ironGoat'
+  | 'goat'
+  | 'hellgoat'
+  | 'fireGoat'
+  | 'shadowGoat'
+  | 'goatKnight'
+  | 'archGoat'
+  | 'infernoGoat'
+  | 'voidGoat'
+  | 'ironGoat'
   | 'projectile'
-  | 'health' | 'ammo' | 'weaponPickup'
+  | 'health'
+  | 'ammo'
+  | 'weaponPickup'
   | 'powerup'
-  | 'door' | 'decoration'
-  | 'hazard_spikes' | 'hazard_barrel';
+  | 'door'
+  | 'decoration'
+  | 'hazard_spikes'
+  | 'hazard_barrel';
 
 export type WeaponId = 'hellPistol' | 'brimShotgun' | 'hellfireCannon' | 'goatsBane';
 
@@ -17,14 +41,10 @@ export type Entity = {
   type?: EntityType;
 
   // Transform
-  position?: Vector3;
-  rotation?: Vector3;
-  velocity?: Vector3;
-  scale?: Vector3;
-
-  // Rendering
-  mesh?: Mesh;
-  particles?: ParticleSystem;
+  position?: Vec3;
+  rotation?: Vec3;
+  velocity?: Vec3;
+  scale?: Vec3;
 
   // Player
   player?: {
@@ -58,7 +78,7 @@ export type Entity = {
     visibilityAlpha?: number;
     // Stagger state
     staggerTimer?: number; // ms remaining of stagger
-    staggerDirX?: number;  // knockback direction
+    staggerDirX?: number; // knockback direction
     staggerDirZ?: number;
     // Boss-specific ability cooldowns
     _fireRingCd?: number;
@@ -66,7 +86,7 @@ export type Entity = {
   };
 
   // Weapon ammo (per-weapon)
-  ammo?: Record<WeaponId, {current: number; reserve: number; magSize: number}>;
+  ammo?: Record<WeaponId, { current: number; reserve: number; magSize: number }>;
 
   // Projectile
   projectile?: {
@@ -87,7 +107,7 @@ export type Entity = {
   };
 
   // Door
-  door?: {open: boolean; opening: boolean; openProgress: number};
+  door?: { open: boolean; opening: boolean; openProgress: number };
 
   // Environmental hazard
   hazard?: {

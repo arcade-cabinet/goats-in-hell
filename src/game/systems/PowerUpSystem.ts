@@ -10,8 +10,8 @@
  * Active buffs shown on BabylonHUD with countdown timers.
  */
 
-import {getGameTime} from './GameClock';
-import {playSound} from './AudioSystem';
+import { playSound } from './AudioSystem';
+import { getGameTime } from './GameClock';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -33,12 +33,15 @@ interface ActiveBuff {
 // Configuration
 // ---------------------------------------------------------------------------
 
-export const POWERUP_CONFIG: Record<PowerUpType, {
-  label: string;
-  color: string;
-  duration: number;
-  description: string;
-}> = {
+export const POWERUP_CONFIG: Record<
+  PowerUpType,
+  {
+    label: string;
+    color: string;
+    duration: number;
+    description: string;
+  }
+> = {
   quadDamage: {
     label: 'QUAD DAMAGE',
     color: '#ff2200',
@@ -77,7 +80,7 @@ export function activatePowerUp(type: PowerUpType): void {
   const config = POWERUP_CONFIG[type];
 
   // Check if already active — refresh instead of stacking
-  const existing = activeBuffs.find(b => b.type === type);
+  const existing = activeBuffs.find((b) => b.type === type);
   if (existing) {
     existing.startTime = now;
     existing.duration = config.duration;
@@ -125,12 +128,12 @@ export function powerUpSystemUpdate(): void {
 
 /** Returns the outgoing damage multiplier (1.0 = normal, 4.0 = quad). */
 export function getDamageMultiplier(): number {
-  return activeBuffs.some(b => b.type === 'quadDamage') ? 4.0 : 1.0;
+  return activeBuffs.some((b) => b.type === 'quadDamage') ? 4.0 : 1.0;
 }
 
 /** Returns the movement speed multiplier (1.0 = normal, 2.0 = hell speed). */
 export function getSpeedMultiplier(): number {
-  return activeBuffs.some(b => b.type === 'hellSpeed') ? 2.0 : 1.0;
+  return activeBuffs.some((b) => b.type === 'hellSpeed') ? 2.0 : 1.0;
 }
 
 /**
@@ -138,7 +141,7 @@ export function getSpeedMultiplier(): number {
  * after absorption (0 if fully absorbed).
  */
 export function absorbDamage(damage: number): number {
-  const shield = activeBuffs.find(b => b.type === 'demonShield');
+  const shield = activeBuffs.find((b) => b.type === 'demonShield');
   if (!shield || shield.shieldHp === undefined || shield.shieldHp <= 0) {
     return damage;
   }
@@ -159,7 +162,7 @@ export function getActiveBuffs(): Array<{
   shieldFraction?: number;
 }> {
   const now = getGameTime();
-  return activeBuffs.map(buff => {
+  return activeBuffs.map((buff) => {
     const config = POWERUP_CONFIG[buff.type];
     const elapsed = now - buff.startTime;
     return {
@@ -174,7 +177,7 @@ export function getActiveBuffs(): Array<{
 
 /** Check if a specific buff is active. */
 export function isBuffActive(type: PowerUpType): boolean {
-  return activeBuffs.some(b => b.type === type);
+  return activeBuffs.some((b) => b.type === type);
 }
 
 /** Reset all active buffs (floor transition / death). */

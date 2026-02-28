@@ -14,15 +14,24 @@ jest.mock('../GameClock', () => ({
 }));
 
 jest.mock('../../levels/LevelGenerator', () => ({
-  MapCell: {EMPTY: 0, WALL_STONE: 1, WALL_FLESH: 2, WALL_LAVA: 3, WALL_OBSIDIAN: 4, DOOR: 5, WALL_SECRET: 6, VOID: 7},
+  MapCell: {
+    EMPTY: 0,
+    WALL_STONE: 1,
+    WALL_FLESH: 2,
+    WALL_LAVA: 3,
+    WALL_OBSIDIAN: 4,
+    DOOR: 5,
+    WALL_SECRET: 6,
+    VOID: 7,
+  },
   CELL_SIZE: 2,
   WALL_HEIGHT: 3,
 }));
 
 import {
-  resetSecrets,
   getSecretNotifyTimer,
   getSecretsFound,
+  resetSecrets,
   tickSecretTimer,
 } from '../SecretRoomSystem';
 

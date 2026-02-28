@@ -12,21 +12,30 @@
  * velocities are written back to the ECS entity positions.
  */
 import {
-  EntityManager,
-  Vehicle,
-  SeekBehavior,
-  FleeBehavior,
   ArriveBehavior,
+  EntityManager,
+  FleeBehavior,
+  SeekBehavior,
+  Vehicle,
   Vector3 as YV3,
 } from 'yuka';
-import {Vector3} from '@babylonjs/core';
-import type {Entity} from '../entities/components';
-import {world} from '../entities/world';
-import {GameState} from '../../state/GameState';
-import {useGameStore} from '../../state/GameStore';
-import {playSound} from './AudioSystem';
-import {getGameTime} from './GameClock';
-import {registerDamageDirection} from '../ui/BabylonHUD';
+import { GameState } from '../../state/GameState';
+import { useGameStore } from '../../state/GameStore';
+import type { Entity, Vec3 } from '../entities/components';
+import {
+  vec3,
+  vec3Clone,
+  vec3Distance,
+  vec3Length,
+  vec3Scale,
+  vec3ScaleInPlace,
+  vec3Subtract,
+  vec3Zero,
+} from '../entities/vec3';
+import { world } from '../entities/world';
+import { registerDamageDirection } from '../ui/HUDEvents';
+import { playSound } from './AudioSystem';
+import { getGameTime } from './GameClock';
 
 /** Shorthand for the store's seeded PRNG. */
 function rng(): number {
@@ -128,33 +137,28 @@ function createVehicleForEnemy(entity: Entity): Vehicle {
 // Helpers (unchanged from original)
 // ---------------------------------------------------------------------------
 
-function directionTo(from: Vector3, to: Vector3): Vector3 {
-  const dir = to.subtract(from);
+function directionTo(from: Vec3, to: Vec3): Vec3 {
+  const dir = vec3Subtract(to, from);
   dir.y = 0;
-  const len = dir.length();
-  if (len < 0.0001) return Vector3.Zero();
-  return dir.scaleInPlace(1 / len);
+  const len = vec3Length(dir);
+  if (len < 0.0001) return vec3Zero();
+  return vec3ScaleInPlace(dir, 1 / len);
 }
 
-function meleeHitPlayer(player: Entity, damage: number, sourcePos?: Vector3): void {
+function meleeHitPlayer(player: Entity, damage: number, sourcePos?: Vec3): void {
   player.player!.hp -= damage;
-  GameState.set({damageFlash: 1.0, screenShake: 10});
+  GameState.set({ damageFlash: 1.0, screenShake: 10 });
   playSound('hurt');
   if (sourcePos) registerDamageDirection(sourcePos);
 }
 
-function spawnProjectile(
-  origin: Vector3,
-  direction: Vector3,
-  damage: number,
-  speed: number,
-): void {
-  const vel = direction.scale(speed);
+function spawnProjectile(origin: Vec3, direction: Vec3, damage: number, speed: number): void {
+  const vel = vec3Scale(direction, speed);
   world.add({
     id: `eproj-${getGameTime().toFixed(0)}-${rng().toString(36).slice(2, 6)}`,
     type: 'projectile',
-    position: origin.clone(),
-    velocity: new Vector3(vel.x, vel.y, vel.z),
+    position: vec3Clone(origin),
+    velocity: vec3(vel.x, vel.y, vel.z),
     projectile: {
       life: 120,
       damage,
@@ -168,11 +172,7 @@ function spawnProjectile(
 // Type-specific post-steering logic (attacks, projectiles, abilities)
 // ---------------------------------------------------------------------------
 
-function postSteeringBasicGoat(
-  entity: Entity,
-  player: Entity,
-  dist: number,
-): void {
+function postSteeringBasicGoat(entity: Entity, player: Entity, dist: number): void {
   const enemy = entity.enemy!;
   if (dist <= enemy.attackRange && enemy.attackCooldown <= 0) {
     meleeHitPlayer(player, enemy.damage, entity.position);
@@ -180,12 +180,7 @@ function postSteeringBasicGoat(
   }
 }
 
-function postSteeringFireGoat(
-  entity: Entity,
-  player: Entity,
-  dist: number,
-  dtScale: number,
-): void {
+function postSteeringFireGoat(entity: Entity, player: Entity, dist: number, dtScale: number): void {
   const enemy = entity.enemy!;
   if (enemy.shootCooldown === undefined) enemy.shootCooldown = 90;
 
@@ -198,11 +193,7 @@ function postSteeringFireGoat(
   }
 }
 
-function postSteeringShadowGoat(
-  entity: Entity,
-  player: Entity,
-  dist: number,
-): void {
+function postSteeringShadowGoat(entity: Entity, player: Entity, dist: number): void {
   const enemy = entity.enemy!;
 
   // Visibility ramp
@@ -215,11 +206,7 @@ function postSteeringShadowGoat(
   }
 }
 
-function postSteeringGoatKnight(
-  entity: Entity,
-  player: Entity,
-  dist: number,
-): void {
+function postSteeringGoatKnight(entity: Entity, player: Entity, dist: number): void {
   const enemy = entity.enemy!;
   if (dist <= enemy.attackRange && enemy.attackCooldown <= 0) {
     meleeHitPlayer(player, enemy.damage, entity.position);
@@ -255,11 +242,7 @@ function postSteeringInfernoGoat(
       const angle = (i - (count - 1) / 2) * spreadAngle;
       const cos = Math.cos(angle);
       const sin = Math.sin(angle);
-      const rotated = new Vector3(
-        dir.x * cos - dir.z * sin,
-        0,
-        dir.x * sin + dir.z * cos,
-      );
+      const rotated = vec3(dir.x * cos - dir.z * sin, 0, dir.x * sin + dir.z * cos);
       spawnProjectile(entity.position!, rotated, enemy.damage, 0.1);
     }
     enemy.shootCooldown = isEnraged ? 40 : 60;
@@ -273,7 +256,7 @@ function postSteeringInfernoGoat(
       const ringCount = 12;
       for (let i = 0; i < ringCount; i++) {
         const a = (i / ringCount) * Math.PI * 2;
-        const ringDir = new Vector3(Math.cos(a), 0, Math.sin(a));
+        const ringDir = vec3(Math.cos(a), 0, Math.sin(a));
         spawnProjectile(entity.position!, ringDir, Math.ceil(enemy.damage * 0.6), 0.07);
       }
       enemy._fireRingCd = 360;
@@ -324,18 +307,14 @@ function postSteeringVoidGoat(
 
   // Phase 2: spawn shadow clones (weak shadowGoats) occasionally — capped at 6
   // Normalize spawn chance to ~0.18/s regardless of frame rate (0.003 * 60fps)
-  const voidCloneCount = world.entities.filter(e => e.id?.startsWith('voidClone')).length;
+  const voidCloneCount = world.entities.filter((e) => e.id?.startsWith('voidClone')).length;
   if (isPhase2 && voidCloneCount < 6 && rng() < 0.003 * dtScale) {
     const ox = (rng() - 0.5) * 5;
     const oz = (rng() - 0.5) * 5;
     world.add({
       id: `voidClone-${getGameTime().toFixed(0)}-${rng().toString(36).slice(2, 6)}`,
       type: 'shadowGoat',
-      position: new Vector3(
-        entity.position!.x + ox,
-        entity.position!.y,
-        entity.position!.z + oz,
-      ),
+      position: vec3(entity.position!.x + ox, entity.position!.y, entity.position!.z + oz),
       enemy: {
         hp: 8,
         maxHp: 8,
@@ -351,12 +330,7 @@ function postSteeringVoidGoat(
   }
 }
 
-function postSteeringIronGoat(
-  entity: Entity,
-  player: Entity,
-  dist: number,
-  dtScale: number,
-): void {
+function postSteeringIronGoat(entity: Entity, player: Entity, dist: number, dtScale: number): void {
   const enemy = entity.enemy!;
   const hpPercent = enemy.hp / enemy.maxHp;
 
@@ -364,14 +338,14 @@ function postSteeringIronGoat(
   if (dist <= enemy.attackRange && enemy.attackCooldown <= 0) {
     meleeHitPlayer(player, enemy.damage, entity.position);
     enemy.attackCooldown = Math.floor(ATTACK_COOLDOWN_FRAMES * 2);
-    GameState.set({screenShake: 15});
+    GameState.set({ screenShake: 15 });
   }
 
   // Armor regeneration: slowly regain armor over time
   if (enemy.isArmored && enemy.armorHp !== undefined && enemy.armorMaxHp !== undefined) {
     if (enemy.armorHp < enemy.armorMaxHp) {
       // Regen 0.5 armor per second
-      enemy.armorHp = Math.min(enemy.armorMaxHp, enemy.armorHp + 0.5 * dtScale / 60);
+      enemy.armorHp = Math.min(enemy.armorMaxHp, enemy.armorHp + (0.5 * dtScale) / 60);
     }
   }
 
@@ -382,7 +356,7 @@ function postSteeringIronGoat(
     if (enemy._slamCd <= 0 && dist < 5) {
       // Ground slam: heavy damage + big screen shake
       meleeHitPlayer(player, Math.ceil(enemy.damage * 1.5), entity.position);
-      GameState.set({screenShake: 25, damageFlash: 0.5});
+      GameState.set({ screenShake: 25, damageFlash: 0.5 });
       enemy._slamCd = 300;
       playSound('explosion');
     }
@@ -402,11 +376,7 @@ function postSteeringArchGoat(
   const isPhase3 = hpPercent <= 0.25;
 
   // Phase transitions: boost speed
-  vehicle.maxSpeed = isPhase3
-    ? enemy.speed * 2
-    : isPhase2
-      ? enemy.speed * 1.5
-      : enemy.speed;
+  vehicle.maxSpeed = isPhase3 ? enemy.speed * 2 : isPhase2 ? enemy.speed * 1.5 : enemy.speed;
 
   // Melee
   if (dist <= enemy.attackRange && enemy.attackCooldown <= 0) {
@@ -425,17 +395,11 @@ function postSteeringArchGoat(
 
   if (enemy.shootCooldown <= 0 && dist < ALERT_RADIUS) {
     const baseDir = directionTo(entity.position!, player.position!);
-    const angles = isPhase3
-      ? [-0.4, -0.2, 0, 0.2, 0.4]
-      : [-0.2, 0, 0.2];
+    const angles = isPhase3 ? [-0.4, -0.2, 0, 0.2, 0.4] : [-0.2, 0, 0.2];
     for (const angle of angles) {
       const cos = Math.cos(angle);
       const sin = Math.sin(angle);
-      const rotated = new Vector3(
-        baseDir.x * cos - baseDir.z * sin,
-        0,
-        baseDir.x * sin + baseDir.z * cos,
-      );
+      const rotated = vec3(baseDir.x * cos - baseDir.z * sin, 0, baseDir.x * sin + baseDir.z * cos);
       spawnProjectile(entity.position!, rotated, enemy.damage, isPhase3 ? 0.1 : 0.08);
     }
     enemy.shootCooldown = isPhase3 ? 40 : isPhase2 ? 60 : 120;
@@ -443,7 +407,7 @@ function postSteeringArchGoat(
 
   // Minion spawn: more frequent in phase 3 — capped at 8
   // Normalize spawn chance by dtScale for frame-rate independence
-  const archMinionCount = world.entities.filter(e => e.id?.startsWith('archMinion')).length;
+  const archMinionCount = world.entities.filter((e) => e.id?.startsWith('archMinion')).length;
   const spawnChance = isPhase3 ? 0.005 : isPhase2 ? 0.002 : 0;
   if (spawnChance > 0 && archMinionCount < 8 && rng() < spawnChance * dtScale) {
     const ox = (rng() - 0.5) * 6;
@@ -453,11 +417,7 @@ function postSteeringArchGoat(
     world.add({
       id: `archMinion-${getGameTime().toFixed(0)}-${rng().toString(36).slice(2, 6)}`,
       type: minionType,
-      position: new Vector3(
-        entity.position!.x + ox,
-        entity.position!.y,
-        entity.position!.z + oz,
-      ),
+      position: vec3(entity.position!.x + ox, entity.position!.y, entity.position!.z + oz),
       enemy: {
         hp: minionHp,
         maxHp: minionHp,
@@ -477,7 +437,7 @@ function postSteeringArchGoat(
 // ---------------------------------------------------------------------------
 
 export function aiSystemUpdate(deltaTime: number): void {
-  const player = world.entities.find(e => e.type === 'player');
+  const player = world.entities.find((e) => e.type === 'player');
   if (!player || !player.position || !player.player) return;
 
   const playerPos = player.position;
@@ -494,7 +454,7 @@ export function aiSystemUpdate(deltaTime: number): void {
 
     const enemy = entity.enemy;
     const id = entity.id ?? '';
-    const dist = Vector3.Distance(entity.position, playerPos);
+    const dist = vec3Distance(entity.position, playerPos);
 
     // Alert check
     if (!enemy.alert && dist < ALERT_RADIUS) {
@@ -550,7 +510,7 @@ export function aiSystemUpdate(deltaTime: number): void {
     entity.position.x = vehicle.position.x;
     entity.position.z = vehicle.position.z;
 
-    const dist = Vector3.Distance(entity.position, playerPos);
+    const dist = vec3Distance(entity.position, playerPos);
 
     // Type-specific post-steering (attacks, projectiles, abilities)
     switch (entity.type) {

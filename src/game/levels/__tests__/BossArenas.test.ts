@@ -4,24 +4,33 @@
 
 jest.mock('../../levels/LevelGenerator', () => ({
   MapCell: {
-    EMPTY: 0, WALL_STONE: 1, WALL_FLESH: 2, WALL_LAVA: 3,
-    WALL_OBSIDIAN: 4, DOOR: 5, WALL_SECRET: 6, VOID: 7,
-    FLOOR_RAISED: 8, FLOOR_LAVA: 9, RAMP: 10,
+    EMPTY: 0,
+    WALL_STONE: 1,
+    WALL_FLESH: 2,
+    WALL_LAVA: 3,
+    WALL_OBSIDIAN: 4,
+    DOOR: 5,
+    WALL_SECRET: 6,
+    VOID: 7,
+    FLOOR_RAISED: 8,
+    FLOOR_LAVA: 9,
+    RAMP: 10,
   },
   CELL_SIZE: 2,
   WALL_HEIGHT: 3,
   PLATFORM_HEIGHT: 1,
 }));
 
-import {
-  generateBossArena,
-  BOSS_ARENA_SIZE,
-  BOSS_ARENA_PICKUP_POSITIONS,
-} from '../BossArenas';
+import { BOSS_ARENA_PICKUP_POSITIONS, BOSS_ARENA_SIZE, generateBossArena } from '../BossArenas';
 
 const MC = {
-  EMPTY: 0, WALL_STONE: 1, WALL_LAVA: 3, WALL_OBSIDIAN: 4,
-  FLOOR_RAISED: 8, FLOOR_LAVA: 9, RAMP: 10,
+  EMPTY: 0,
+  WALL_STONE: 1,
+  WALL_LAVA: 3,
+  WALL_OBSIDIAN: 4,
+  FLOOR_RAISED: 8,
+  FLOOR_LAVA: 9,
+  RAMP: 10,
 };
 
 describe('BOSS_ARENA_SIZE', () => {

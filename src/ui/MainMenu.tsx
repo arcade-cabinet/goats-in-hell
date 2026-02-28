@@ -1,22 +1,30 @@
-import React, {useEffect, useState, useRef, useCallback} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Animated, type DimensionValue} from 'react-native';
+import type React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  useGameStore,
+  Animated,
+  type DimensionValue,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { setMasterVolume } from '../game/systems/AudioSystem';
+import { setMusicMasterVolume } from '../game/systems/MusicSystem';
+import type { Difficulty, NightmareFlags } from '../state/GameStore';
+import {
+  DIFFICULTY_PRESETS,
   generateSeedPhrase,
   SEED_POOLS,
-  DIFFICULTY_PRESETS,
+  useGameStore,
+  writeSettings,
 } from '../state/GameStore';
-import type {Difficulty, NightmareFlags} from '../state/GameStore';
-import {setMasterVolume} from '../game/systems/AudioSystem';
-import {setMusicMasterVolume} from '../game/systems/MusicSystem';
-import {writeSettings} from '../state/GameStore';
 
 // ---------------------------------------------------------------------------
 // Main Menu (New Game / Continue / Settings)
 // ---------------------------------------------------------------------------
 
 export const MainMenu: React.FC = () => {
-  const screen = useGameStore(s => s.screen);
+  const screen = useGameStore((s) => s.screen);
 
   if (screen === 'newGame') return <NewGameScreen />;
   if (screen === 'settings') return <SettingsScreen />;
@@ -43,15 +51,15 @@ const GOAT_ART = `        ╱╲     ╱╲
 
 const TitleScreen: React.FC = () => {
   const pulseAnim = useRef(new Animated.Value(0.4)).current;
-  const patch = useGameStore(s => s.patch);
-  const hasSave = useGameStore(s => s.hasSave);
-  const continueGame = useGameStore(s => s.continueGame);
+  const patch = useGameStore((s) => s.patch);
+  const hasSave = useGameStore((s) => s.hasSave);
+  const continueGame = useGameStore((s) => s.continueGame);
 
   useEffect(() => {
     const loop = Animated.loop(
       Animated.sequence([
-        Animated.timing(pulseAnim, {toValue: 1, duration: 1200, useNativeDriver: false}),
-        Animated.timing(pulseAnim, {toValue: 0.3, duration: 1200, useNativeDriver: false}),
+        Animated.timing(pulseAnim, { toValue: 1, duration: 1200, useNativeDriver: false }),
+        Animated.timing(pulseAnim, { toValue: 0.3, duration: 1200, useNativeDriver: false }),
       ]),
     );
     loop.start();
@@ -70,9 +78,7 @@ const TitleScreen: React.FC = () => {
       <Text style={s.pentagram}>{'⛧'}</Text>
 
       {/* Goat skull art */}
-      <Animated.Text style={[s.goatArt, {opacity: pulseAnim}]}>
-        {GOAT_ART}
-      </Animated.Text>
+      <Animated.Text style={[s.goatArt, { opacity: pulseAnim }]}>{GOAT_ART}</Animated.Text>
 
       {/* Title */}
       <View style={s.titleWrap}>
@@ -83,7 +89,7 @@ const TitleScreen: React.FC = () => {
 
       <Text style={s.divider}>{'━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'}</Text>
 
-      <Animated.Text style={[s.pulse, {opacity: pulseAnim}]}>
+      <Animated.Text style={[s.pulse, { opacity: pulseAnim }]}>
         {'— CHOOSE YOUR FATE —'}
       </Animated.Text>
 
@@ -91,16 +97,14 @@ const TitleScreen: React.FC = () => {
       <View style={s.menuButtons}>
         <TouchableOpacity
           style={s.primaryBtn}
-          onPress={() => patch({screen: 'newGame'})}
-          activeOpacity={0.7}>
+          onPress={() => patch({ screen: 'newGame' })}
+          activeOpacity={0.7}
+        >
           <Text style={s.primaryBtnText}>NEW GAME</Text>
         </TouchableOpacity>
 
         {hasSave ? (
-          <TouchableOpacity
-            style={s.secondaryBtn}
-            onPress={continueGame}
-            activeOpacity={0.7}>
+          <TouchableOpacity style={s.secondaryBtn} onPress={continueGame} activeOpacity={0.7}>
             <Text style={s.secondaryBtnText}>CONTINUE</Text>
             <Text style={s.btnHint}>Resume saved run</Text>
           </TouchableOpacity>
@@ -113,8 +117,9 @@ const TitleScreen: React.FC = () => {
 
         <TouchableOpacity
           style={s.secondaryBtn}
-          onPress={() => patch({screen: 'settings'})}
-          activeOpacity={0.7}>
+          onPress={() => patch({ screen: 'settings' })}
+          activeOpacity={0.7}
+        >
           <Text style={s.secondaryBtnText}>SETTINGS</Text>
         </TouchableOpacity>
       </View>
@@ -131,15 +136,15 @@ const TitleScreen: React.FC = () => {
 // New Game Screen – Difficulty Grid + Seed Selection
 // ---------------------------------------------------------------------------
 
-const DIFFICULTIES: {key: Difficulty; icon: string; desc: string}[] = [
-  {key: 'easy', icon: '🕯', desc: 'Merciful spawns\n+50% pickups'},
-  {key: 'normal', icon: '🔥', desc: 'The intended\nexperience'},
-  {key: 'hard', icon: '💀', desc: 'Relentless hordes\nfewer supplies'},
+const DIFFICULTIES: { key: Difficulty; icon: string; desc: string }[] = [
+  { key: 'easy', icon: '🕯', desc: 'Merciful spawns\n+50% pickups' },
+  { key: 'normal', icon: '🔥', desc: 'The intended\nexperience' },
+  { key: 'hard', icon: '💀', desc: 'Relentless hordes\nfewer supplies' },
 ];
 
 const NewGameScreen: React.FC = () => {
-  const patch = useGameStore(s => s.patch);
-  const startNewGame = useGameStore(s => s.startNewGame);
+  const patch = useGameStore((s) => s.patch);
+  const startNewGame = useGameStore((s) => s.startNewGame);
 
   const [difficulty, setDifficulty] = useState<Difficulty>('normal');
   const [nightmare, setNightmare] = useState(false);
@@ -179,7 +184,7 @@ const NewGameScreen: React.FC = () => {
     <View style={s.container}>
       <View style={s.bgLayer} />
 
-      <TouchableOpacity onPress={() => patch({screen: 'mainMenu'})} style={s.backBtn}>
+      <TouchableOpacity onPress={() => patch({ screen: 'mainMenu' })} style={s.backBtn}>
         <Text style={s.backBtnText}>{'< BACK'}</Text>
       </TouchableOpacity>
 
@@ -188,14 +193,15 @@ const NewGameScreen: React.FC = () => {
       {/* Difficulty Grid – top row: 3 graduated difficulties */}
       <Text style={s.label}>DIFFICULTY</Text>
       <View style={s.diffGrid}>
-        {DIFFICULTIES.map(d => {
+        {DIFFICULTIES.map((d) => {
           const active = difficulty === d.key;
           return (
             <TouchableOpacity
               key={d.key}
               style={[s.diffCell, active && s.diffCellActive]}
               onPress={() => setDifficulty(d.key)}
-              activeOpacity={0.7}>
+              activeOpacity={0.7}
+            >
               <Text style={s.diffIcon}>{d.icon}</Text>
               <Text style={[s.diffLabel, active && s.diffLabelActive]}>
                 {DIFFICULTY_PRESETS[d.key].label.toUpperCase()}
@@ -210,8 +216,9 @@ const NewGameScreen: React.FC = () => {
       <View style={s.modRow}>
         <TouchableOpacity
           style={[s.modCell, nightmare && s.modCellActive]}
-          onPress={() => setNightmare(n => !n)}
-          activeOpacity={0.7}>
+          onPress={() => setNightmare((n) => !n)}
+          activeOpacity={0.7}
+        >
           <Text style={s.modIcon}>👹</Text>
           <Text style={[s.modLabel, nightmare && s.modLabelActive]}>NIGHTMARE</Text>
           <Text style={s.modDesc}>2x damage{'\n'}no health drops</Text>
@@ -223,12 +230,11 @@ const NewGameScreen: React.FC = () => {
             effectivePermadeath && s.modCellActive,
             ultraNightmare && s.modCellLocked,
           ]}
-          onPress={() => !ultraNightmare && setPermadeath(p => !p)}
-          activeOpacity={ultraNightmare ? 1 : 0.7}>
+          onPress={() => !ultraNightmare && setPermadeath((p) => !p)}
+          activeOpacity={ultraNightmare ? 1 : 0.7}
+        >
           <Text style={s.modIcon}>⚰</Text>
-          <Text style={[s.modLabel, effectivePermadeath && s.modLabelActive]}>
-            PERMADEATH
-          </Text>
+          <Text style={[s.modLabel, effectivePermadeath && s.modLabelActive]}>PERMADEATH</Text>
           <Text style={s.modDesc}>
             {ultraNightmare ? 'Forced by\nUltra Nightmare' : 'One life\nno continues'}
           </Text>
@@ -237,7 +243,7 @@ const NewGameScreen: React.FC = () => {
         <TouchableOpacity
           style={[s.modCell, ultraNightmare && s.modCellUltra]}
           onPress={() => {
-            setUltraNightmare(u => {
+            setUltraNightmare((u) => {
               const next = !u;
               if (next) {
                 setNightmare(true);
@@ -246,23 +252,23 @@ const NewGameScreen: React.FC = () => {
               return next;
             });
           }}
-          activeOpacity={0.7}>
+          activeOpacity={0.7}
+        >
           <Text style={s.modIcon}>🩸</Text>
-          <Text style={[s.modLabel, ultraNightmare && s.modLabelUltra]}>
-            ULTRA{'\n'}NIGHTMARE
-          </Text>
+          <Text style={[s.modLabel, ultraNightmare && s.modLabelUltra]}>ULTRA{'\n'}NIGHTMARE</Text>
           <Text style={s.modDesc}>Everything on{'\n'}extra boss phases</Text>
         </TouchableOpacity>
       </View>
 
       {/* Seed selector */}
-      <Text style={[s.label, {marginTop: 20}]}>SEED</Text>
+      <Text style={[s.label, { marginTop: 20 }]}>SEED</Text>
       <View style={s.seedRow}>
         {seed.split('-').map((word, idx) => (
           <TouchableOpacity
             key={idx}
             style={s.seedWord}
-            onPress={() => rerollWord(idx as 0 | 1 | 2)}>
+            onPress={() => rerollWord(idx as 0 | 1 | 2)}
+          >
             <Text style={s.seedWordText}>{word}</Text>
             <Text style={s.seedReroll}>↻</Text>
           </TouchableOpacity>
@@ -275,8 +281,8 @@ const NewGameScreen: React.FC = () => {
       {/* Stats preview */}
       <View style={s.preview}>
         <Text style={s.previewText}>
-          HP {diffMod.playerStartHp} | Enemy HP ×{diffMod.enemyHpMult} | DMG ×
-          {diffMod.enemyDmgMult} | XP ×{diffMod.xpMult}
+          HP {diffMod.playerStartHp} | Enemy HP ×{diffMod.enemyHpMult} | DMG ×{diffMod.enemyDmgMult}{' '}
+          | XP ×{diffMod.xpMult}
         </Text>
       </View>
 
@@ -292,84 +298,232 @@ const NewGameScreen: React.FC = () => {
 // Settings Screen
 // ---------------------------------------------------------------------------
 
+/** Helper to persist all settings to localStorage after a store patch. */
+const persistAllSettings = () => {
+  const st = useGameStore.getState();
+  writeSettings({
+    masterVolume: st.masterVolume,
+    mouseSensitivity: st.mouseSensitivity,
+    touchLookSensitivity: st.touchLookSensitivity,
+    gamepadLookSensitivity: st.gamepadLookSensitivity,
+    gamepadDeadzone: st.gamepadDeadzone,
+    gyroSensitivity: st.gyroSensitivity,
+    gyroEnabled: st.gyroEnabled,
+    hapticsEnabled: st.hapticsEnabled,
+  });
+};
+
+/** Generic slider row used throughout the Settings screen. */
+const SettingSlider: React.FC<{
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  step: number;
+  /** Display formatter — defaults to percentage of max. */
+  format?: (v: number) => string;
+  onChange: (v: number) => void;
+}> = ({ label, value, min, max, step, format, onChange }) => {
+  const pct = Math.round(((value - min) / (max - min)) * 100);
+  const display = format ? format(value) : `${Math.round(value * 100)}%`;
+
+  const adjust = (delta: number) => {
+    const raw = value + delta;
+    // Round to avoid floating-point drift
+    const clamped = Math.max(min, Math.min(max, Math.round(raw * 1000) / 1000));
+    onChange(clamped);
+  };
+
+  return (
+    <View style={s.settingRow}>
+      <Text style={s.settingLabel}>{label}</Text>
+      <View style={s.sliderRow}>
+        <TouchableOpacity onPress={() => adjust(-step)} style={s.sliderBtn}>
+          <Text style={s.sliderBtnText}>-</Text>
+        </TouchableOpacity>
+        <View style={s.sliderTrack}>
+          <View style={[s.sliderFill, { width: `${pct}%` as DimensionValue }]} />
+        </View>
+        <TouchableOpacity onPress={() => adjust(step)} style={s.sliderBtn}>
+          <Text style={s.sliderBtnText}>+</Text>
+        </TouchableOpacity>
+        <Text style={s.sliderValue}>{display}</Text>
+      </View>
+    </View>
+  );
+};
+
+/** Toggle row for boolean settings. */
+const SettingToggle: React.FC<{
+  label: string;
+  value: boolean;
+  onChange: (v: boolean) => void;
+}> = ({ label, value, onChange }) => (
+  <View style={s.settingRow}>
+    <View style={s.toggleRow}>
+      <Text style={s.settingLabel}>{label}</Text>
+      <TouchableOpacity
+        style={[s.toggleBtn, value && s.toggleBtnActive]}
+        onPress={() => onChange(!value)}
+        activeOpacity={0.7}
+      >
+        <Text style={[s.toggleBtnText, value && s.toggleBtnTextActive]}>
+          {value ? 'ON' : 'OFF'}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+);
+
 const SettingsScreen: React.FC = () => {
-  const patch = useGameStore(s => s.patch);
-  const masterVolume = useGameStore(s => s.masterVolume);
-  const mouseSensitivity = useGameStore(s => s.mouseSensitivity);
+  const patch = useGameStore((s) => s.patch);
+  const masterVolume = useGameStore((s) => s.masterVolume);
+  const mouseSensitivity = useGameStore((s) => s.mouseSensitivity);
+  const touchLookSensitivity = useGameStore((s) => s.touchLookSensitivity);
+  const gamepadLookSensitivity = useGameStore((s) => s.gamepadLookSensitivity);
+  const gamepadDeadzone = useGameStore((s) => s.gamepadDeadzone);
+  const gyroSensitivity = useGameStore((s) => s.gyroSensitivity);
+  const gyroEnabled = useGameStore((s) => s.gyroEnabled);
+  const hapticsEnabled = useGameStore((s) => s.hapticsEnabled);
 
-  const volumePercent = Math.round(masterVolume * 100);
-  const sensitivityPercent = Math.round(mouseSensitivity * 100);
+  /** Patch store + persist. For volume we also update audio engine. */
+  const patchAndPersist = useCallback(
+    (partial: Record<string, unknown>) => {
+      patch(partial as any);
+      // Defer persistence so the store has settled
+      setTimeout(persistAllSettings, 0);
+    },
+    [patch],
+  );
 
-  const adjustVolume = (delta: number) => {
-    const newVol = Math.max(0, Math.min(1, masterVolume + delta));
-    patch({masterVolume: newVol});
-    setMasterVolume(newVol);
-    setMusicMasterVolume(newVol);
-    writeSettings(newVol, mouseSensitivity);
-  };
-
-  const adjustSensitivity = (delta: number) => {
-    const newSens = Math.max(0.1, Math.min(1, mouseSensitivity + delta));
-    patch({mouseSensitivity: newSens});
-    writeSettings(masterVolume, newSens);
-  };
+  const adjustVolume = useCallback(
+    (v: number) => {
+      patchAndPersist({ masterVolume: v });
+      setMasterVolume(v);
+      setMusicMasterVolume(v);
+    },
+    [patchAndPersist],
+  );
 
   return (
     <View style={s.container}>
       <View style={s.bgLayer} />
-      <TouchableOpacity onPress={() => patch({screen: 'mainMenu'})} style={s.backBtn}>
+      <TouchableOpacity onPress={() => patch({ screen: 'mainMenu' })} style={s.backBtn}>
         <Text style={s.backBtnText}>{'< BACK'}</Text>
       </TouchableOpacity>
       <Text style={s.sectionTitle}>SETTINGS</Text>
 
-      {/* Volume slider */}
-      <View style={s.settingRow}>
-        <Text style={s.settingLabel}>VOLUME</Text>
-        <View style={s.sliderRow}>
-          <TouchableOpacity onPress={() => adjustVolume(-0.1)} style={s.sliderBtn}>
-            <Text style={s.sliderBtnText}>-</Text>
-          </TouchableOpacity>
-          <View style={s.sliderTrack}>
-            <View style={[s.sliderFill, {width: `${volumePercent}%` as DimensionValue}]} />
-          </View>
-          <TouchableOpacity onPress={() => adjustVolume(0.1)} style={s.sliderBtn}>
-            <Text style={s.sliderBtnText}>+</Text>
-          </TouchableOpacity>
-          <Text style={s.sliderValue}>{volumePercent}%</Text>
-        </View>
-      </View>
+      {/* --- Audio section --- */}
+      <Text style={s.settingsSectionHeader}>AUDIO</Text>
 
-      {/* Sensitivity slider */}
-      <View style={s.settingRow}>
-        <Text style={s.settingLabel}>MOUSE SENSITIVITY</Text>
-        <View style={s.sliderRow}>
-          <TouchableOpacity onPress={() => adjustSensitivity(-0.1)} style={s.sliderBtn}>
-            <Text style={s.sliderBtnText}>-</Text>
-          </TouchableOpacity>
-          <View style={s.sliderTrack}>
-            <View style={[s.sliderFill, {width: `${sensitivityPercent}%` as DimensionValue}]} />
-          </View>
-          <TouchableOpacity onPress={() => adjustSensitivity(0.1)} style={s.sliderBtn}>
-            <Text style={s.sliderBtnText}>+</Text>
-          </TouchableOpacity>
-          <Text style={s.sliderValue}>{sensitivityPercent}%</Text>
-        </View>
-      </View>
+      <SettingSlider
+        label="VOLUME"
+        value={masterVolume}
+        min={0}
+        max={1}
+        step={0.1}
+        onChange={adjustVolume}
+      />
+
+      {/* --- Controls section --- */}
+      <Text style={s.settingsSectionHeader}>CONTROLS</Text>
+
+      <SettingSlider
+        label="MOUSE SENSITIVITY"
+        value={mouseSensitivity}
+        min={0.1}
+        max={1}
+        step={0.1}
+        onChange={(v) => patchAndPersist({ mouseSensitivity: v })}
+      />
+      <SettingSlider
+        label="TOUCH LOOK SENSITIVITY"
+        value={touchLookSensitivity}
+        min={0.1}
+        max={2}
+        step={0.1}
+        format={(v) => `${v.toFixed(1)}x`}
+        onChange={(v) => patchAndPersist({ touchLookSensitivity: v })}
+      />
+      <SettingSlider
+        label="GAMEPAD LOOK SENSITIVITY"
+        value={gamepadLookSensitivity}
+        min={0.1}
+        max={2}
+        step={0.1}
+        format={(v) => `${v.toFixed(1)}x`}
+        onChange={(v) => patchAndPersist({ gamepadLookSensitivity: v })}
+      />
+      <SettingSlider
+        label="GAMEPAD DEADZONE"
+        value={gamepadDeadzone}
+        min={0.05}
+        max={0.4}
+        step={0.05}
+        format={(v) => v.toFixed(2)}
+        onChange={(v) => patchAndPersist({ gamepadDeadzone: v })}
+      />
+
+      {/* --- Features section --- */}
+      <Text style={s.settingsSectionHeader}>FEATURES</Text>
+
+      <SettingToggle
+        label="GYROSCOPE AIM (MOBILE)"
+        value={gyroEnabled}
+        onChange={(v) => patchAndPersist({ gyroEnabled: v })}
+      />
+      {gyroEnabled && (
+        <SettingSlider
+          label="GYRO SENSITIVITY"
+          value={gyroSensitivity}
+          min={0.1}
+          max={2}
+          step={0.1}
+          format={(v) => `${v.toFixed(1)}x`}
+          onChange={(v) => patchAndPersist({ gyroSensitivity: v })}
+        />
+      )}
+      <SettingToggle
+        label="VIBRATION FEEDBACK"
+        value={hapticsEnabled}
+        onChange={(v) => patchAndPersist({ hapticsEnabled: v })}
+      />
 
       {/* Controls reference */}
       <View style={s.settingsGroup}>
-        <Text style={s.settingsLabel}>CONTROLS</Text>
+        <Text style={s.settingsLabel}>KEY BINDINGS</Text>
         <View style={s.controlsGrid}>
           <View style={s.controlCol}>
-            <Text style={s.controlLine}><Text style={s.controlKey}>WASD</Text>{'  '}Move</Text>
-            <Text style={s.controlLine}><Text style={s.controlKey}>MOUSE</Text>{'  '}Look</Text>
-            <Text style={s.controlLine}><Text style={s.controlKey}>CLICK</Text>{'  '}Shoot</Text>
-            <Text style={s.controlLine}><Text style={s.controlKey}>SHIFT</Text>{'  '}Sprint</Text>
+            <Text style={s.controlLine}>
+              <Text style={s.controlKey}>WASD</Text>
+              {'  '}Move
+            </Text>
+            <Text style={s.controlLine}>
+              <Text style={s.controlKey}>MOUSE</Text>
+              {'  '}Look
+            </Text>
+            <Text style={s.controlLine}>
+              <Text style={s.controlKey}>CLICK</Text>
+              {'  '}Shoot
+            </Text>
+            <Text style={s.controlLine}>
+              <Text style={s.controlKey}>SHIFT</Text>
+              {'  '}Sprint
+            </Text>
           </View>
           <View style={s.controlCol}>
-            <Text style={s.controlLine}><Text style={s.controlKey}>R</Text>{'     '}Reload</Text>
-            <Text style={s.controlLine}><Text style={s.controlKey}>1-4</Text>{'   '}Weapons</Text>
-            <Text style={s.controlLine}><Text style={s.controlKey}>ESC</Text>{'   '}Pause</Text>
+            <Text style={s.controlLine}>
+              <Text style={s.controlKey}>R</Text>
+              {'     '}Reload
+            </Text>
+            <Text style={s.controlLine}>
+              <Text style={s.controlKey}>1-4</Text>
+              {'   '}Weapons
+            </Text>
+            <Text style={s.controlLine}>
+              <Text style={s.controlKey}>ESC</Text>
+              {'   '}Pause
+            </Text>
           </View>
         </View>
       </View>
@@ -427,12 +581,18 @@ const s = StyleSheet.create({
     marginBottom: 16,
     textAlign: 'center' as const,
     textShadowColor: 'rgba(255, 68, 0, 0.6)',
-    textShadowOffset: {width: 0, height: 0},
+    textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 8,
   },
 
   // Title
-  titleWrap: {alignItems: 'center', justifyContent: 'center', height: 50, marginBottom: 4, width: '100%' as DimensionValue},
+  titleWrap: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 50,
+    marginBottom: 4,
+    width: '100%' as DimensionValue,
+  },
   title: {
     position: 'absolute',
     fontSize: 36,
@@ -449,7 +609,7 @@ const s = StyleSheet.create({
     color: 'transparent',
     letterSpacing: 10,
     textShadowColor: 'rgba(255, 0, 0, 0.9)',
-    textShadowOffset: {width: 0, height: 0},
+    textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 30,
   },
   subtitle: {
@@ -476,7 +636,7 @@ const s = StyleSheet.create({
   },
 
   // Menu buttons
-  menuButtons: {alignItems: 'center', gap: 12, marginBottom: 16},
+  menuButtons: { alignItems: 'center', gap: 12, marginBottom: 16 },
   primaryBtn: {
     borderWidth: 2,
     borderColor: '#cc0000',
@@ -539,8 +699,8 @@ const s = StyleSheet.create({
   },
 
   // Back button
-  backBtn: {position: 'absolute', top: 20, left: 20, padding: 8},
-  backBtnText: {fontFamily: 'Courier', fontSize: 14, color: '#880000', letterSpacing: 2},
+  backBtn: { position: 'absolute', top: 20, left: 20, padding: 8 },
+  backBtnText: { fontFamily: 'Courier', fontSize: 14, color: '#880000', letterSpacing: 2 },
 
   // Section title
   sectionTitle: {
@@ -579,7 +739,7 @@ const s = StyleSheet.create({
     borderColor: '#cc0000',
     backgroundColor: 'rgba(204, 0, 0, 0.15)',
   },
-  diffIcon: {fontSize: 24, marginBottom: 4},
+  diffIcon: { fontSize: 24, marginBottom: 4 },
   diffLabel: {
     fontFamily: 'Courier',
     fontSize: 12,
@@ -588,7 +748,7 @@ const s = StyleSheet.create({
     letterSpacing: 2,
     marginBottom: 4,
   },
-  diffLabelActive: {color: '#cc0000'},
+  diffLabelActive: { color: '#cc0000' },
   diffDesc: {
     fontFamily: 'Courier',
     fontSize: 9,
@@ -622,7 +782,7 @@ const s = StyleSheet.create({
     borderColor: '#cc0000',
     backgroundColor: 'rgba(204, 0, 0, 0.2)',
   },
-  modIcon: {fontSize: 20, marginBottom: 2},
+  modIcon: { fontSize: 20, marginBottom: 2 },
   modLabel: {
     fontFamily: 'Courier',
     fontSize: 10,
@@ -632,8 +792,8 @@ const s = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 2,
   },
-  modLabelActive: {color: '#cc6600'},
-  modLabelUltra: {color: '#ff0000'},
+  modLabelActive: { color: '#cc6600' },
+  modLabelUltra: { color: '#ff0000' },
   modDesc: {
     fontFamily: 'Courier',
     fontSize: 8,
@@ -707,9 +867,21 @@ const s = StyleSheet.create({
     letterSpacing: 6,
   },
 
+  // Settings section header (e.g. "CONTROLS", "FEATURES")
+  settingsSectionHeader: {
+    fontFamily: 'Courier',
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#cc0000',
+    letterSpacing: 6,
+    marginTop: 16,
+    marginBottom: 10,
+    opacity: 0.7,
+  },
+
   // Settings
   settingRow: {
-    marginBottom: 20,
+    marginBottom: 14,
     width: 320,
   },
   settingLabel: {
@@ -759,6 +931,36 @@ const s = StyleSheet.create({
     width: 40,
     textAlign: 'right' as const,
   },
+  // Toggle controls
+  toggleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  toggleBtn: {
+    borderWidth: 1,
+    borderColor: '#440000',
+    backgroundColor: 'rgba(40, 0, 0, 0.3)',
+    paddingVertical: 4,
+    paddingHorizontal: 14,
+    minWidth: 56,
+    alignItems: 'center',
+  },
+  toggleBtnActive: {
+    borderColor: '#cc0000',
+    backgroundColor: 'rgba(204, 0, 0, 0.15)',
+  },
+  toggleBtnText: {
+    fontFamily: 'Courier',
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#553333',
+    letterSpacing: 2,
+  },
+  toggleBtnTextActive: {
+    color: '#cc0000',
+  },
+
   settingsGroup: {
     alignItems: 'center',
     marginTop: 20,
@@ -774,7 +976,7 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     gap: 30,
   },
-  controlCol: {gap: 2},
+  controlCol: { gap: 2 },
   controlLine: {
     fontFamily: 'Courier',
     fontSize: 10,

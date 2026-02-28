@@ -3,11 +3,11 @@
  */
 
 import {
-  tickGameClock,
-  resetGameClock,
-  getGameTime,
-  getGameDelta,
   getFrameCount,
+  getGameDelta,
+  getGameTime,
+  resetGameClock,
+  tickGameClock,
 } from '../GameClock';
 
 beforeEach(() => {

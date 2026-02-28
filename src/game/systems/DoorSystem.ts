@@ -1,12 +1,16 @@
-import type {Scene} from '@babylonjs/core';
-import {Vector3} from '@babylonjs/core';
-import type {Entity} from '../entities/components';
-import {world} from '../entities/world';
-import {playSound} from './AudioSystem';
-import {CELL_SIZE, MapCell, WALL_HEIGHT} from '../levels/LevelGenerator';
+/**
+ * Door System — engine-agnostic door proximity + animation logic.
+ *
+ * Tracks door open/close states per grid cell. The R3F level renderer
+ * reads these states to animate door meshes.
+ */
+import type { Entity } from '../entities/components';
+import { world } from '../entities/world';
+import { CELL_SIZE, MapCell } from '../levels/LevelGenerator';
+import { playSound } from './AudioSystem';
 
 /** Tracks the opening/closing state of door meshes by name. */
-interface DoorState {
+export interface DoorState {
   meshName: string;
   openProgress: number; // 0 = closed, 1 = fully open
   opening: boolean;
@@ -25,15 +29,15 @@ export function resetDoorSystem(): void {
   doorStates.clear();
 }
 
+/** Get the current door states map (used by R3F renderer). */
+export function getDoorStates(): ReadonlyMap<string, DoorState> {
+  return doorStates;
+}
+
 /**
- * Each frame: find player, check proximity to door meshes, animate opening.
- * Door meshes are named "wall-{x}-{z}" and correspond to MapCell.DOOR cells.
+ * Each frame: find player, check proximity to door cells, animate opening.
  */
-export function doorSystemUpdate(
-  scene: Scene,
-  grid: MapCell[][],
-  deltaTime: number,
-): void {
+export function doorSystemUpdate(grid: MapCell[][], deltaTime: number): void {
   const player = world.entities.find((e: Entity) => e.type === 'player');
   if (!player?.position) return;
 
@@ -99,36 +103,16 @@ export function doorSystemUpdate(
       // Animate opening
       if (state.opening && state.openProgress < 1) {
         state.openProgress = Math.min(1, state.openProgress + OPEN_SPEED * deltaTime);
-
-        const mesh = scene.getMeshByName(meshName);
-        if (mesh) {
-          // Slide upward into ceiling
-          mesh.position.y = (WALL_HEIGHT / 2) + state.openProgress * WALL_HEIGHT;
-
-          // Once fully open, disable collision so player walks through
-          if (state.openProgress >= 1) {
-            mesh.checkCollisions = false;
-            mesh.isPickable = false;
-          }
-        }
       }
 
       // Animate closing
       if (state.closing && state.openProgress > 0) {
         state.openProgress = Math.max(0, state.openProgress - CLOSE_SPEED * deltaTime);
 
-        const mesh = scene.getMeshByName(meshName);
-        if (mesh) {
-          mesh.position.y = (WALL_HEIGHT / 2) + state.openProgress * WALL_HEIGHT;
-
-          // Re-enable collision once fully closed
-          if (state.openProgress <= 0) {
-            state.openProgress = 0;
-            state.closing = false;
-            state.closeTimer = 0;
-            mesh.checkCollisions = true;
-            mesh.isPickable = true;
-          }
+        if (state.openProgress <= 0) {
+          state.openProgress = 0;
+          state.closing = false;
+          state.closeTimer = 0;
         }
       }
     }

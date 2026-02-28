@@ -1,4 +1,4 @@
-import type {EntityType} from '../entities/components';
+import type { EntityType } from '../entities/components';
 
 // MapCell values from LevelGenerator.ts
 const WALL_STONE = 1;

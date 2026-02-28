@@ -1,4 +1,4 @@
-import type {Entity, EntityType} from './components';
+import type { Entity, EntityType } from './components';
 
 /** Canonical enemy stats — single source of truth for all spawning paths. */
 export function getEnemyStats(

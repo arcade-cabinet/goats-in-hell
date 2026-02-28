@@ -1,6 +1,7 @@
-import React, {useEffect, useRef} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Animated} from 'react-native';
-import {useGameStore} from '../state/GameStore';
+import type React from 'react';
+import { useEffect, useRef } from 'react';
+import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useGameStore } from '../state/GameStore';
 
 const FAST_CLEAR_THRESHOLD_SEC = 60;
 const FAST_CLEAR_BONUS = 500;
@@ -17,14 +18,14 @@ function formatFloorTime(startTime: number): string {
 }
 
 export const VictoryScreen: React.FC = () => {
-  const score = useGameStore(s => s.score);
-  const kills = useGameStore(s => s.kills);
-  const floor = useGameStore(s => s.stage.floor);
-  const level = useGameStore(s => s.leveling.level);
-  const startTime = useGameStore(s => s.startTime);
-  const advanceStage = useGameStore(s => s.advanceStage);
-  const patch = useGameStore(s => s.patch);
-  const resetToMenu = useGameStore(s => s.resetToMenu);
+  const score = useGameStore((s) => s.score);
+  const kills = useGameStore((s) => s.kills);
+  const floor = useGameStore((s) => s.stage.floor);
+  const level = useGameStore((s) => s.leveling.level);
+  const startTime = useGameStore((s) => s.startTime);
+  const advanceStage = useGameStore((s) => s.advanceStage);
+  const patch = useGameStore((s) => s.patch);
+  const resetToMenu = useGameStore((s) => s.resetToMenu);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const titleSlide = useRef(new Animated.Value(-30)).current;
   const pulseAnim = useRef(new Animated.Value(0.6)).current;
@@ -96,14 +97,14 @@ export const VictoryScreen: React.FC = () => {
   const handleDescend = () => {
     const bonus = isFastClear ? FAST_CLEAR_BONUS : 0;
     if (bonus > 0) {
-      patch({score: score + bonus});
+      patch({ score: score + bonus });
     }
     advanceStage();
     // advanceStage may set screen to 'bossIntro' or 'gameComplete' —
     // only transition to 'playing' if neither of those was set
     const nextScreen = useGameStore.getState().screen;
     if (nextScreen !== 'bossIntro' && nextScreen !== 'gameComplete') {
-      patch({screen: 'playing', startTime: Date.now()});
+      patch({ screen: 'playing', startTime: Date.now() });
     }
   };
 
@@ -112,9 +113,7 @@ export const VictoryScreen: React.FC = () => {
   };
 
   return (
-    <Animated.View
-      style={[styles.container, {opacity: fadeAnim}]}
-      pointerEvents="box-none">
+    <Animated.View style={[styles.container, { opacity: fadeAnim }]} pointerEvents="box-none">
       {/* Gold-tinted dark overlay */}
       <View style={styles.overlay} />
 
@@ -128,15 +127,13 @@ export const VictoryScreen: React.FC = () => {
       </View>
 
       {/* Floor number */}
-      <Animated.View
-        style={[styles.floorBadge, {transform: [{translateY: titleSlide}]}]}>
+      <Animated.View style={[styles.floorBadge, { transform: [{ translateY: titleSlide }] }]}>
         <Text style={styles.floorLabel}>FLOOR</Text>
         <Text style={styles.floorNumber}>{floor}</Text>
       </Animated.View>
 
       {/* Title */}
-      <Animated.View
-        style={[styles.titleContainer, {transform: [{translateY: titleSlide}]}]}>
+      <Animated.View style={[styles.titleContainer, { transform: [{ translateY: titleSlide }] }]}>
         <Text style={styles.titleGlow2}>FLOOR CLEARED</Text>
         <Text style={styles.titleGlow1}>FLOOR CLEARED</Text>
         <Text style={styles.title}>FLOOR CLEARED</Text>
@@ -145,7 +142,7 @@ export const VictoryScreen: React.FC = () => {
       <Text style={styles.subtitle}>The darkness recedes... for now.</Text>
 
       {/* Stats panel */}
-      <Animated.View style={[styles.statsPanel, {opacity: fadeAnim}]}>
+      <Animated.View style={[styles.statsPanel, { opacity: fadeAnim }]}>
         <View style={styles.statsDivider} />
 
         <View style={styles.statRow}>
@@ -178,8 +175,7 @@ export const VictoryScreen: React.FC = () => {
 
         {/* Fast clear bonus */}
         {isFastClear && (
-          <Animated.View
-            style={[styles.bonusContainer, {opacity: bonusFlash}]}>
+          <Animated.View style={[styles.bonusContainer, { opacity: bonusFlash }]}>
             <Text style={styles.bonusLabel}>SPEED BONUS</Text>
             <Text style={styles.bonusValue}>+{FAST_CLEAR_BONUS}</Text>
           </Animated.View>
@@ -188,21 +184,13 @@ export const VictoryScreen: React.FC = () => {
 
       {/* Buttons */}
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity
-          style={styles.descendButton}
-          onPress={handleDescend}
-          activeOpacity={0.7}>
-          <Animated.View
-            style={[styles.descendButtonGlow, {opacity: pulseAnim}]}
-          />
+        <TouchableOpacity style={styles.descendButton} onPress={handleDescend} activeOpacity={0.7}>
+          <Animated.View style={[styles.descendButtonGlow, { opacity: pulseAnim }]} />
           <Text style={styles.descendButtonText}>DESCEND DEEPER</Text>
           <Text style={styles.descendHint}>Floor {floor + 1} awaits</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.exitButton}
-          onPress={handleExit}
-          activeOpacity={0.7}>
+        <TouchableOpacity style={styles.exitButton} onPress={handleExit} activeOpacity={0.7}>
           <Text style={styles.exitButtonText}>EXIT TO MENU</Text>
         </TouchableOpacity>
       </View>
@@ -270,7 +258,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#ffaa00',
     textShadowColor: 'rgba(255, 170, 0, 0.5)',
-    textShadowOffset: {width: 0, height: 0},
+    textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 15,
     lineHeight: 60,
   },
@@ -298,7 +286,7 @@ const styles = StyleSheet.create({
     color: 'transparent',
     letterSpacing: 6,
     textShadowColor: 'rgba(255, 170, 0, 0.6)',
-    textShadowOffset: {width: 0, height: 0},
+    textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 12,
   },
   titleGlow2: {
@@ -309,7 +297,7 @@ const styles = StyleSheet.create({
     color: 'transparent',
     letterSpacing: 6,
     textShadowColor: 'rgba(255, 170, 0, 0.3)',
-    textShadowOffset: {width: 0, height: 0},
+    textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 30,
   },
 

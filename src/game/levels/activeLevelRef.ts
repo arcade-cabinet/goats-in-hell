@@ -2,7 +2,7 @@
  * Module-level reference to the active level grid for HUD minimap access.
  * Set by GameEngine when a level is initialized, cleared on cleanup.
  */
-import type {MapCell} from './LevelGenerator';
+import type { MapCell } from './LevelGenerator';
 
 let activeGrid: MapCell[][] | null = null;
 let activeWidth = 0;
@@ -20,7 +20,7 @@ export function clearActiveLevel(): void {
   activeDepth = 0;
 }
 
-export function getActiveLevel(): {grid: MapCell[][]; width: number; depth: number} | null {
+export function getActiveLevel(): { grid: MapCell[][]; width: number; depth: number } | null {
   if (!activeGrid) return null;
-  return {grid: activeGrid, width: activeWidth, depth: activeDepth};
+  return { grid: activeGrid, width: activeWidth, depth: activeDepth };
 }

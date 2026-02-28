@@ -6,7 +6,9 @@ jest.mock('../GameClock', () => {
   let mockTime = 0;
   return {
     getGameTime: jest.fn(() => mockTime),
-    __setMockTime: (t: number) => { mockTime = t; },
+    __setMockTime: (t: number) => {
+      mockTime = t;
+    },
   };
 });
 
@@ -15,9 +17,9 @@ jest.mock('../AudioSystem', () => ({
 }));
 
 import {
-  registerKill,
-  getStreakCount,
   getAnnouncement,
+  getStreakCount,
+  registerKill,
   resetKillStreaks,
 } from '../KillStreakSystem';
 
@@ -30,9 +32,9 @@ beforeEach(() => {
   resetKillStreaks();
   GameClockMock.__setMockTime(0);
   // Reset GameStore so awardXp calls don't bleed
-  const {useGameStore} = require('../../../state/GameStore');
+  const { useGameStore } = require('../../../state/GameStore');
   useGameStore.setState({
-    leveling: {level: 1, xp: 0, xpToNext: 283},
+    leveling: { level: 1, xp: 0, xpToNext: 283 },
   });
 });
 

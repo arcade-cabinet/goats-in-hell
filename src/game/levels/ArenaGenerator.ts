@@ -1,5 +1,5 @@
-import {MapCell, PLATFORM_HEIGHT} from './LevelGenerator';
-import {useGameStore} from '../../state/GameStore';
+import { useGameStore } from '../../state/GameStore';
+import { MapCell } from './LevelGenerator';
 
 const EMPTY = MapCell.EMPTY;
 const WALL_STONE = MapCell.WALL_STONE;
@@ -81,7 +81,12 @@ function buildCrucible(grid: number[][], size: number): void {
   const q = Math.floor(size / 4);
 
   // Central cross of cover pillars (4 arms from center)
-  const armDirections = [{dx: 1, dz: 0}, {dx: -1, dz: 0}, {dx: 0, dz: 1}, {dx: 0, dz: -1}];
+  const armDirections = [
+    { dx: 1, dz: 0 },
+    { dx: -1, dz: 0 },
+    { dx: 0, dz: 1 },
+    { dx: 0, dz: -1 },
+  ];
   for (const dir of armDirections) {
     for (let i = 2; i <= 4; i++) {
       const x = mid + dir.dx * i;
@@ -95,8 +100,10 @@ function buildCrucible(grid: number[][], size: number): void {
 
   // Four corner raised platforms (2x2 each)
   const corners = [
-    {x: q, z: q}, {x: size - q - 1, z: q},
-    {x: q, z: size - q - 1}, {x: size - q - 1, z: size - q - 1},
+    { x: q, z: q },
+    { x: size - q - 1, z: q },
+    { x: q, z: size - q - 1 },
+    { x: size - q - 1, z: size - q - 1 },
   ];
   for (const c of corners) {
     for (let dz = 0; dz <= 1; dz++) {
@@ -242,7 +249,12 @@ function buildHellpit(grid: number[][], size: number): void {
   }
 
   // 4 bridge corridors across the lava (ramps leading to center)
-  const bridgeDirs = [{dx: 1, dz: 0}, {dx: -1, dz: 0}, {dx: 0, dz: 1}, {dx: 0, dz: -1}];
+  const bridgeDirs = [
+    { dx: 1, dz: 0 },
+    { dx: -1, dz: 0 },
+    { dx: 0, dz: 1 },
+    { dx: 0, dz: -1 },
+  ];
   for (const dir of bridgeDirs) {
     for (let i = centerR; i <= lavaRingR + 1; i++) {
       const bx = mid + dir.dx * i;
@@ -301,6 +313,6 @@ function placeCoverBlocks(grid: number[][], size: number, count: number): void {
 /**
  * Returns the player spawn point for the arena (center of the grid).
  */
-export function getArenaPlayerSpawn(size: number): {x: number; z: number} {
-  return {x: Math.floor(size / 2), z: Math.floor(size / 2)};
+export function getArenaPlayerSpawn(size: number): { x: number; z: number } {
+  return { x: Math.floor(size / 2), z: Math.floor(size / 2) };
 }

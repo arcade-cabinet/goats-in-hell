@@ -6,7 +6,9 @@ jest.mock('../GameClock', () => {
   let mockTime = 0;
   return {
     getGameTime: jest.fn(() => mockTime),
-    __setMockTime: (t: number) => { mockTime = t; },
+    __setMockTime: (t: number) => {
+      mockTime = t;
+    },
   };
 });
 
@@ -15,13 +17,13 @@ jest.mock('../AudioSystem', () => ({
 }));
 
 import {
+  absorbDamage,
   activatePowerUp,
-  powerUpSystemUpdate,
+  getActiveBuffs,
   getDamageMultiplier,
   getSpeedMultiplier,
-  absorbDamage,
-  getActiveBuffs,
   isBuffActive,
+  powerUpSystemUpdate,
   resetPowerUps,
 } from '../PowerUpSystem';
 

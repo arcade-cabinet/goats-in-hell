@@ -1,11 +1,11 @@
-import {Vector3} from '@babylonjs/core';
-import type {Entity, EntityType, WeaponId} from '../entities/components';
-import {world} from '../entities/world';
-import {GameState} from '../../state/GameState';
-import {useGameStore, DIFFICULTY_PRESETS} from '../../state/GameStore';
-import {getEnemyStats} from '../entities/enemyStats';
-import {getGameTime} from './GameClock';
-import type {PowerUpType} from './PowerUpSystem';
+import { GameState } from '../../state/GameState';
+import { DIFFICULTY_PRESETS, useGameStore } from '../../state/GameStore';
+import type { Entity, EntityType, WeaponId } from '../entities/components';
+import { getEnemyStats } from '../entities/enemyStats';
+import { vec3 } from '../entities/vec3';
+import { world } from '../entities/world';
+import { getGameTime } from './GameClock';
+import type { PowerUpType } from './PowerUpSystem';
 
 /** Shorthand for the store's seeded PRNG — deterministic per-seed. */
 function rng(): number {
@@ -60,7 +60,6 @@ export function startNextWave(): void {
   totalEnemiesForWave = Math.min(30, 3 + currentWave * 2);
 }
 
-
 // ---------------------------------------------------------------------------
 // Enemy type selection
 // ---------------------------------------------------------------------------
@@ -96,13 +95,14 @@ export function getEnemyTypeForWave(wave: number): EntityType {
 
 function spawnArenaPickups(arenaSize: number): void {
   // Remove uncollected arena pickups from previous wave to prevent entity accumulation
-  const stalePickups = world.entities.filter(e => e.id?.startsWith('arena-pickup-'));
+  const stalePickups = world.entities.filter((e) => e.id?.startsWith('arena-pickup-'));
   for (const p of stalePickups) {
     world.remove(p);
   }
 
   const storeState = useGameStore.getState();
-  const isNightmare = storeState.nightmareFlags.nightmare || storeState.nightmareFlags.ultraNightmare;
+  const isNightmare =
+    storeState.nightmareFlags.nightmare || storeState.nightmareFlags.ultraNightmare;
 
   // Spawn 2-3 ammo pickups
   const ammoCount = 2 + Math.floor(rng() * 2);
@@ -113,7 +113,7 @@ function spawnArenaPickups(arenaSize: number): void {
     world.add({
       id: `arena-pickup-${arenaPickupCounter}`,
       type: 'ammo',
-      position: new Vector3(sx * 2, 0.5, sz * 2),
+      position: vec3(sx * 2, 0.5, sz * 2),
       pickup: {
         pickupType: 'ammo',
         value: 18,
@@ -130,7 +130,7 @@ function spawnArenaPickups(arenaSize: number): void {
     world.add({
       id: `arena-pickup-${arenaPickupCounter}`,
       type: 'health',
-      position: new Vector3(hx * 2, 0.5, hz * 2),
+      position: vec3(hx * 2, 0.5, hz * 2),
       pickup: {
         pickupType: 'health',
         value: 25,
@@ -145,7 +145,7 @@ function spawnArenaPickups(arenaSize: number): void {
     world.add({
       id: `arena-pickup-${arenaPickupCounter}`,
       type: 'health',
-      position: new Vector3(hx * 2, 0.5, hz * 2),
+      position: vec3(hx * 2, 0.5, hz * 2),
       pickup: {
         pickupType: 'health',
         value: 15,
@@ -164,7 +164,7 @@ function spawnArenaPowerUp(arenaSize: number): void {
   world.add({
     id: `arena-pickup-${arenaPickupCounter}`,
     type: 'powerup' as EntityType,
-    position: new Vector3(px * 2, 0.8, pz * 2),
+    position: vec3(px * 2, 0.8, pz * 2),
     pickup: {
       pickupType: 'powerup',
       value: 0,
@@ -183,7 +183,7 @@ function spawnArenaWeaponPickup(arenaSize: number): void {
   world.add({
     id: `arena-pickup-${arenaPickupCounter}`,
     type: 'weaponPickup',
-    position: new Vector3(wx * 2, 0.5, wz * 2),
+    position: vec3(wx * 2, 0.5, wz * 2),
     pickup: {
       pickupType: 'weapon',
       value: 0,
@@ -275,7 +275,7 @@ export function waveSystemUpdate(deltaTime: number, arenaSize: number): void {
       const entity: Entity = {
         id: `wave-${currentWave}-${waveSpawnCounter}`,
         type: enemyType,
-        position: new Vector3(sx * 2, 1, sz * 2), // multiply by CELL_SIZE (2)
+        position: vec3(sx * 2, 1, sz * 2), // multiply by CELL_SIZE (2)
         enemy: {
           ...stats,
           hp: Math.ceil(stats.hp * diffMods.enemyHpMult),
@@ -323,7 +323,7 @@ export function waveSystemUpdate(deltaTime: number, arenaSize: number): void {
       const bonusPerKill = Math.floor(50 * (scoreMultiplier - 1));
       const bonus = bonusPerKill * newKills;
       if (bonus > 0) {
-        GameState.set({score: state.score + bonus});
+        GameState.set({ score: state.score + bonus });
       }
     }
 

@@ -1,19 +1,15 @@
-import {Color4} from '@babylonjs/core';
-import type {Scene as BabylonScene} from '@babylonjs/core';
-import React, {useEffect} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {Scene} from 'reactylon';
-import {EngineWrapper} from './EngineWrapper';
-import {GameEngine} from './game/GameEngine';
-import {MainMenu} from './ui/MainMenu';
-import {useGameStore, generateSeedPhrase} from './state/GameStore';
-import type {Difficulty} from './state/GameStore';
+import { useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
+import R3FRoot from './R3FRoot';
+import type { Difficulty } from './state/GameStore';
+import { generateSeedPhrase, useGameStore } from './state/GameStore';
+import { MainMenu } from './ui/MainMenu';
 
 const App = () => {
-  const screen = useGameStore(s => s.screen);
-  const patch = useGameStore(s => s.patch);
-  const autoplay = useGameStore(s => s.autoplay);
-  const startNewGame = useGameStore(s => s.startNewGame);
+  const screen = useGameStore((s) => s.screen);
+  const patch = useGameStore((s) => s.patch);
+  const autoplay = useGameStore((s) => s.autoplay);
+  const startNewGame = useGameStore((s) => s.startNewGame);
 
   // Autoplay: auto-start a game on mount, optionally at a specific difficulty
   // URL: ?autoplay or ?autoplay=easy or ?autoplay=hard
@@ -32,7 +28,7 @@ const App = () => {
     const timer = setTimeout(() => {
       startNewGame(
         difficulty,
-        {nightmare: false, permadeath: false, ultraNightmare: false},
+        { nightmare: false, permadeath: false, ultraNightmare: false },
         generateSeedPhrase(),
       );
     }, 100);
@@ -46,17 +42,13 @@ const App = () => {
 
     const timer = setTimeout(() => {
       const s = useGameStore.getState();
-      startNewGame(
-        s.difficulty,
-        s.nightmareFlags,
-        generateSeedPhrase(),
-      );
+      startNewGame(s.difficulty, s.nightmareFlags, generateSeedPhrase());
     }, 3000); // 3-second pause on death screen before restarting
     return () => clearTimeout(timer);
   }, [autoplay, screen, startNewGame]);
 
   // Autoplay: auto-advance on victory / bossIntro / gameComplete
-  const advanceStage = useGameStore(s => s.advanceStage);
+  const advanceStage = useGameStore((s) => s.advanceStage);
   useEffect(() => {
     if (!autoplay) return;
     if (screen === 'victory') {
@@ -64,14 +56,14 @@ const App = () => {
         advanceStage();
         const nextScreen = useGameStore.getState().screen;
         if (nextScreen !== 'bossIntro' && nextScreen !== 'gameComplete') {
-          patch({screen: 'playing', startTime: Date.now()});
+          patch({ screen: 'playing', startTime: Date.now() });
         }
       }, 2000);
       return () => clearTimeout(timer);
     }
     if (screen === 'bossIntro') {
       const timer = setTimeout(() => {
-        patch({screen: 'playing', startTime: Date.now()});
+        patch({ screen: 'playing', startTime: Date.now() });
       }, 2000);
       return () => clearTimeout(timer);
     }
@@ -79,11 +71,7 @@ const App = () => {
       // Auto-restart after completing the game
       const timer = setTimeout(() => {
         const s = useGameStore.getState();
-        startNewGame(
-          s.difficulty,
-          s.nightmareFlags,
-          generateSeedPhrase(),
-        );
+        startNewGame(s.difficulty, s.nightmareFlags, generateSeedPhrase());
       }, 5000);
       return () => clearTimeout(timer);
     }
@@ -96,9 +84,9 @@ const App = () => {
       if (e.key === 'Escape') {
         const current = useGameStore.getState().screen;
         if (current === 'playing') {
-          patch({screen: 'paused'});
+          patch({ screen: 'paused' });
         } else if (current === 'paused') {
-          patch({screen: 'playing'});
+          patch({ screen: 'playing' });
         }
       }
     };
@@ -118,25 +106,14 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      {isGameActive && (
-        <EngineWrapper camera={undefined}>
-          <Scene
-            onSceneReady={(scene: BabylonScene) => {
-              scene.clearColor = new Color4(0.05, 0.01, 0.02, 1);
-            }}>
-            <GameEngine />
-          </Scene>
-        </EngineWrapper>
-      )}
-      {(screen === 'mainMenu' || screen === 'newGame' || screen === 'settings') && (
-        <MainMenu />
-      )}
+      {isGameActive && <R3FRoot />}
+      {(screen === 'mainMenu' || screen === 'newGame' || screen === 'settings') && <MainMenu />}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: '#000'},
+  container: { flex: 1, backgroundColor: '#000' },
 });
 
 export default App;

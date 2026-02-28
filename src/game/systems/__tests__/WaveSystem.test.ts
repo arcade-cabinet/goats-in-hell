@@ -10,33 +10,29 @@ jest.mock('../GameClock', () => {
   let mockTime = 0;
   return {
     getGameTime: jest.fn(() => mockTime),
-    __setMockTime: (t: number) => { mockTime = t; },
+    __setMockTime: (t: number) => {
+      mockTime = t;
+    },
   };
 });
 
 jest.mock('../../levels/LevelGenerator', () => ({
-  MapCell: {EMPTY: 0, WALL_STONE: 1},
+  MapCell: { EMPTY: 0, WALL_STONE: 1 },
   CELL_SIZE: 2,
   WALL_HEIGHT: 3,
 }));
 
-import {Vector3} from '@babylonjs/core';
-import {world} from '../../entities/world';
-import {
-  resetWaveSystem,
-  startNextWave,
-  getEnemyTypeForWave,
-  getWaveInfo,
-} from '../WaveSystem';
+import { world } from '../../entities/world';
+import { getEnemyTypeForWave, getWaveInfo, resetWaveSystem, startNextWave } from '../WaveSystem';
 
 beforeEach(() => {
   for (const e of [...world.entities]) world.remove(e);
   resetWaveSystem();
   // Set up store with seeded RNG for deterministic tests
-  const {useGameStore} = require('../../../state/GameStore');
+  const { useGameStore } = require('../../../state/GameStore');
   useGameStore.setState({
     difficulty: 'normal',
-    nightmareFlags: {nightmare: false, permadeath: false, ultraNightmare: false},
+    nightmareFlags: { nightmare: false, permadeath: false, ultraNightmare: false },
     kills: 0,
     score: 0,
   });
