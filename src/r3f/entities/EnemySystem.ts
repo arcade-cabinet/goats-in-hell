@@ -13,17 +13,17 @@ import { world } from '../../game/entities/world';
  * Sync ECS enemy entity positions/rotations to their Three.js meshes.
  *
  * For each enemy entity in the Miniplex world, finds the corresponding
- * mesh by name (`mesh-enemy-{id}`) and updates its transform:
+ * mesh from the provided meshMap (keyed by entity ID) and updates its transform:
  *   - Position: x stays, y stays, z negated (left-handed → right-handed)
  *   - Rotation: y-axis rotation for facing direction
  *   - ShadowGoat visibility: opacity driven by visibilityAlpha
  *   - Stagger: slight offset in knockback direction while staggerTimer > 0
  */
-export function updateEnemyMeshes(scene: THREE.Scene): void {
+export function updateEnemyMeshes(meshMap: Map<string, THREE.Group>): void {
   for (const entity of world.entities) {
     if (!entity.enemy || !entity.position || !entity.id) continue;
 
-    const mesh = scene.getObjectByName(`mesh-enemy-${entity.id}`);
+    const mesh = meshMap.get(entity.id);
     if (!mesh) continue;
 
     // --- Position sync (negate Z for coordinate system conversion) ---

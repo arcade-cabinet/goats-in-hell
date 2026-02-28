@@ -25,6 +25,7 @@ import {
   createPlatformMaterial,
   createRampMaterial,
   createVoidPitMaterial,
+  disposeCachedMaterials,
   getWallTypeMaterial,
 } from './Materials';
 
@@ -344,16 +345,37 @@ export function LevelMeshes({ grid, theme, width, depth }: LevelMeshesProps): nu
     // Cleanup on unmount or when dependencies change
     // -----------------------------------------------------------------------
     return () => {
+      // Track whether wallBoxGeo has already been disposed (shared across wall InstancedMeshes)
+      let wallBoxGeoDisposed = false;
+
       for (const obj of createdObjects) {
         scene.remove(obj);
-        if (obj instanceof THREE.Mesh) {
-          obj.geometry.dispose();
-        } else if (obj instanceof THREE.InstancedMesh) {
-          // InstancedMesh shares geometry — only dispose if we created it uniquely
-          // wallBoxGeo is shared across wall types, so only dispose once
-          obj.geometry.dispose();
+
+        if (obj instanceof THREE.Mesh || obj instanceof THREE.InstancedMesh) {
+          // Dispose geometry — but only dispose wallBoxGeo once
+          if (obj.geometry === wallBoxGeo) {
+            if (!wallBoxGeoDisposed) {
+              obj.geometry.dispose();
+              wallBoxGeoDisposed = true;
+            }
+          } else {
+            obj.geometry.dispose();
+          }
+
+          // Dispose material(s) attached to this mesh
+          const mat = obj.material;
+          if (Array.isArray(mat)) {
+            for (const m of mat) {
+              if (m instanceof THREE.Material) m.dispose();
+            }
+          } else if (mat instanceof THREE.Material) {
+            mat.dispose();
+          }
         }
       }
+
+      // Clear the material cache since the materials above are now disposed
+      disposeCachedMaterials();
     };
   }, [scene, theme, meshData, depth, width]);
 

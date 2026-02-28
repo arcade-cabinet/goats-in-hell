@@ -257,7 +257,7 @@ export function EnemyRenderer() {
     }
 
     // --- Position/rotation sync ---
-    updateEnemyMeshes(scene);
+    updateEnemyMeshes(spawned);
   });
 
   // No JSX output — all meshes are managed imperatively

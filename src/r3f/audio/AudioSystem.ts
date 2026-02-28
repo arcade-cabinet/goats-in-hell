@@ -12,6 +12,7 @@
  */
 
 import { useGameStore } from '../../state/GameStore';
+import { getSharedAudioContext } from './sharedAudioContext';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -65,7 +66,7 @@ let sfxBuffers: Map<string, AudioBuffer[]> | null = null;
 
 export function initAudio(): void {
   if (!audioCtx) {
-    audioCtx = new AudioContext();
+    audioCtx = getSharedAudioContext();
     masterGain = audioCtx.createGain();
     masterGain.connect(audioCtx.destination);
     // Read initial volume from store
@@ -81,7 +82,11 @@ export function setMasterVolume(volume: number): void {
 
 export function disposeAudio(): void {
   if (audioCtx) {
-    audioCtx.close();
+    // Don't close the shared AudioContext — other subsystems may still use it.
+    // Just disconnect our gain node and drop the reference.
+    if (masterGain) {
+      masterGain.disconnect();
+    }
     audioCtx = null;
     masterGain = null;
   }
@@ -477,6 +482,7 @@ export function playSound(type: SoundType): void {
       playBufferSound('sfx-pistol', 0.5, 0.6);
       break;
     case 'bigshot':
+      // Math.random() is intentional — cosmetic variation doesn't need deterministic seeding
       playBufferSound('sfx-cannon', 0.8, 0.9 + Math.random() * 0.2);
       break;
     case 'hit':

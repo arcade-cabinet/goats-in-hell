@@ -64,7 +64,8 @@ interface EffectState {
   bloomIntensity: number;
   vignetteOffset: number;
   vignetteDarkness: number;
-  chromaticOffset: Vector2;
+  chromaX: number;
+  chromaY: number;
   noiseOpacity: number;
 }
 
@@ -110,7 +111,8 @@ function computeEffectState(deltaMs: number): EffectState {
     bloomIntensity,
     vignetteOffset: Math.max(0.05, vignetteOffset),
     vignetteDarkness: Math.min(1.5, vignetteDarkness),
-    chromaticOffset: new Vector2(chromaX, chromaY),
+    chromaX,
+    chromaY,
     noiseOpacity,
   };
 }
@@ -145,7 +147,7 @@ export function PostProcessingEffects(): React.JSX.Element {
 
     // Update ChromaticAberration
     if (chromaticRef.current) {
-      offsetVec.set(fx.chromaticOffset.x, fx.chromaticOffset.y);
+      offsetVec.set(fx.chromaX, fx.chromaY);
       chromaticRef.current.offset = offsetVec;
     }
 

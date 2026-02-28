@@ -30,6 +30,7 @@ const _euler = new THREE.Euler(0, 0, 0, 'YXZ');
 const _forward = new THREE.Vector3();
 const _right = new THREE.Vector3();
 const _moveDir = new THREE.Vector3();
+const _yAxis = new THREE.Vector3(0, 1, 0);
 
 export function PlayerController() {
   const { camera, gl } = useThree();
@@ -109,8 +110,8 @@ export function PlayerController() {
 
     // --- Movement ---
     // Forward/right vectors from yaw only (no pitch in movement)
-    _forward.set(0, 0, -1).applyAxisAngle(new THREE.Vector3(0, 1, 0), yawRef.current);
-    _right.set(1, 0, 0).applyAxisAngle(new THREE.Vector3(0, 1, 0), yawRef.current);
+    _forward.set(0, 0, -1).applyAxisAngle(_yAxis, yawRef.current);
+    _right.set(1, 0, 0).applyAxisAngle(_yAxis, yawRef.current);
 
     const bonuses = getLevelBonuses(useGameStore.getState().leveling.level);
     const speedMult = input.sprint ? SPRINT_MULT : 1;

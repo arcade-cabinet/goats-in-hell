@@ -78,6 +78,7 @@ export function pickupSystemUpdate(): void {
     let dist = distance(playerPos, pickupPos);
 
     // Magnet pull: attract nearby pickups toward the player
+    // NOTE: MAGNET_STRENGTH tuned for 60fps. For frame-rate independence, multiply by (dt * 60).
     if (dist < MAGNET_RADIUS && dist > PICKUP_RADIUS) {
       const pull = MAGNET_STRENGTH * (1 - dist / MAGNET_RADIUS);
       const dirX = playerPos.x - pickupPos.x;

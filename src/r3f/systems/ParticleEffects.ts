@@ -23,6 +23,9 @@ const PARTICLES_PER_BURST = 20;
 const IMPACT_SPARK_COUNT = 8;
 const BLOOD_PARTICLE_COUNT = 12;
 
+// Hard cap on total active particles to prevent runaway allocations
+const MAX_ACTIVE_PARTICLES = 300;
+
 // Shared geometries (created once, reused)
 let particleSphere: THREE.SphereGeometry | null = null;
 
@@ -37,25 +40,72 @@ function getParticleSphere(): THREE.SphereGeometry {
 const activeParticles: Particle[] = [];
 
 // ---------------------------------------------------------------------------
+// Pre-allocated material pools (shared across all particles of each type)
+// ---------------------------------------------------------------------------
+
+/** Pool of red/orange materials for death burst particles. */
+const deathMaterialPool: THREE.MeshBasicMaterial[] = [];
+
+/** Pool of dark red materials for blood splash particles. */
+const bloodMaterialPool: THREE.MeshBasicMaterial[] = [];
+
+/** Pool of yellow/white materials for impact spark particles. */
+const sparkMaterialPool: THREE.MeshBasicMaterial[] = [];
+
+function initMaterialPools(): void {
+  if (deathMaterialPool.length > 0) return; // already initialized
+
+  // 5 red/orange variants for death bursts
+  for (let i = 0; i < 5; i++) {
+    const hue = 0 + (i / 5) * 0.08;
+    const color = new THREE.Color().setHSL(hue, 0.9, 0.5);
+    deathMaterialPool.push(new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 1 }));
+  }
+
+  // 5 dark red variants for blood splashes
+  for (let i = 0; i < 5; i++) {
+    const r = 0.5 + (i / 5) * 0.3;
+    const g = (i / 5) * 0.1;
+    const b = (i / 5) * 0.05;
+    bloodMaterialPool.push(
+      new THREE.MeshBasicMaterial({
+        color: new THREE.Color(r, g, b),
+        transparent: true,
+        opacity: 1,
+      }),
+    );
+  }
+
+  // 3 yellow/white variants for impact sparks
+  for (let i = 0; i < 3; i++) {
+    const brightness = 0.8 + (i / 3) * 0.2;
+    sparkMaterialPool.push(
+      new THREE.MeshBasicMaterial({
+        color: new THREE.Color(brightness, brightness * 0.9, brightness * 0.5),
+        transparent: true,
+        opacity: 1,
+      }),
+    );
+  }
+}
+
+function pickRandom<T>(pool: T[]): T {
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+// ---------------------------------------------------------------------------
 // Death burst — red/orange particles radiating from enemy death position
 // ---------------------------------------------------------------------------
 
 export function createDeathBurst(position: THREE.Vector3, scene: THREE.Scene): void {
+  if (activeParticles.length > MAX_ACTIVE_PARTICLES) return;
+  initMaterialPools();
+
   const geo = getParticleSphere();
   const now = performance.now();
 
   for (let i = 0; i < PARTICLES_PER_BURST; i++) {
-    // Random red-orange color
-    const hue = 0 + Math.random() * 0.08; // 0 = red, 0.08 = orange-red
-    const saturation = 0.8 + Math.random() * 0.2;
-    const lightness = 0.4 + Math.random() * 0.3;
-    const color = new THREE.Color().setHSL(hue, saturation, lightness);
-
-    const mat = new THREE.MeshBasicMaterial({
-      color,
-      transparent: true,
-      opacity: 1,
-    });
+    const mat = pickRandom(deathMaterialPool);
 
     const mesh = new THREE.Mesh(geo, mat);
     mesh.position.copy(position);
@@ -92,19 +142,14 @@ export function createImpactSparks(
   normal: THREE.Vector3,
   scene: THREE.Scene,
 ): void {
+  if (activeParticles.length > MAX_ACTIVE_PARTICLES) return;
+  initMaterialPools();
+
   const geo = getParticleSphere();
   const now = performance.now();
 
   for (let i = 0; i < IMPACT_SPARK_COUNT; i++) {
-    // Yellow-white color
-    const brightness = 0.8 + Math.random() * 0.2;
-    const color = new THREE.Color(brightness, brightness * 0.9, brightness * 0.5);
-
-    const mat = new THREE.MeshBasicMaterial({
-      color,
-      transparent: true,
-      opacity: 1,
-    });
+    const mat = pickRandom(sparkMaterialPool);
 
     const mesh = new THREE.Mesh(geo, mat);
     mesh.position.copy(position);
@@ -146,21 +191,14 @@ export function createImpactSparks(
 // ---------------------------------------------------------------------------
 
 export function createBloodSplash(position: THREE.Vector3, scene: THREE.Scene): void {
+  if (activeParticles.length > MAX_ACTIVE_PARTICLES) return;
+  initMaterialPools();
+
   const geo = getParticleSphere();
   const now = performance.now();
 
   for (let i = 0; i < BLOOD_PARTICLE_COUNT; i++) {
-    // Dark red color
-    const r = 0.5 + Math.random() * 0.3;
-    const g = Math.random() * 0.1;
-    const b = Math.random() * 0.05;
-    const color = new THREE.Color(r, g, b);
-
-    const mat = new THREE.MeshBasicMaterial({
-      color,
-      transparent: true,
-      opacity: 1,
-    });
+    const mat = pickRandom(bloodMaterialPool);
 
     const mesh = new THREE.Mesh(geo, mat);
     mesh.position.copy(position);
@@ -209,12 +247,9 @@ export function updateParticles(dt: number): void {
     const t = elapsed / p.lifetime; // 0 to 1+
 
     if (t >= 1) {
-      // Particle expired — remove from scene and pool
+      // Particle expired — remove from scene (material is pooled, do NOT dispose)
       const parent = p.mesh.parent;
       if (parent) parent.remove(p.mesh);
-      if (p.mesh.material instanceof THREE.Material) {
-        p.mesh.material.dispose();
-      }
       p.active = false;
       activeParticles.splice(i, 1);
       continue;
@@ -247,9 +282,7 @@ export function clearAllParticles(): void {
   for (const p of activeParticles) {
     const parent = p.mesh.parent;
     if (parent) parent.remove(p.mesh);
-    if (p.mesh.material instanceof THREE.Material) {
-      p.mesh.material.dispose();
-    }
+    // Materials are pooled — do NOT dispose them here
   }
   activeParticles.length = 0;
 }
@@ -263,4 +296,11 @@ export function disposeParticleResources(): void {
     particleSphere.dispose();
     particleSphere = null;
   }
+  // Dispose pooled materials on full teardown
+  for (const m of deathMaterialPool) m.dispose();
+  for (const m of bloodMaterialPool) m.dispose();
+  for (const m of sparkMaterialPool) m.dispose();
+  deathMaterialPool.length = 0;
+  bloodMaterialPool.length = 0;
+  sparkMaterialPool.length = 0;
 }

@@ -21,6 +21,9 @@ import { createBloodSplash, createDeathBurst } from './ParticleEffects';
 
 let combatScene: THREE.Scene | null = null;
 
+// Reusable temp vector for particle spawn positions (avoids per-hit allocation)
+const _particlePos = new THREE.Vector3();
+
 /** Provide the Three.js scene for particle effects. Call once on mount. */
 export function setCombatScene(scene: THREE.Scene): void {
   combatScene = scene;
@@ -100,8 +103,8 @@ export function damageEnemy(entityId: string, damage: number, isHeadshot?: boole
 
   // Blood splash at enemy position (negate Z for Three.js coords)
   if (combatScene && entity.position) {
-    const pos = new THREE.Vector3(entity.position.x, entity.position.y + 0.5, -entity.position.z);
-    createBloodSplash(pos, combatScene);
+    _particlePos.set(entity.position.x, entity.position.y + 0.5, -entity.position.z);
+    createBloodSplash(_particlePos, combatScene);
   }
 
   if (isHeadshot) {
@@ -177,8 +180,8 @@ export function handleEnemyKill(entity: Entity): void {
 
   // Death particles at entity position (negate Z for Three.js coords)
   if (combatScene && entity.position) {
-    const pos = new THREE.Vector3(entity.position.x, entity.position.y + 0.5, -entity.position.z);
-    createDeathBurst(pos, combatScene);
+    _particlePos.set(entity.position.x, entity.position.y + 0.5, -entity.position.z);
+    createDeathBurst(_particlePos, combatScene);
   }
 
   // Remove entity from ECS world
@@ -259,7 +262,7 @@ function checkPlayerProjectileCollisions(projectile: Entity): boolean {
   const projData = projectile.projectile!;
   let hitSomething = false;
 
-  for (const entity of [...world.entities]) {
+  for (const entity of world.entities) {
     if (!entity.enemy || !entity.position) continue;
 
     const dist = distanceBetween(projPos, entity.position);
@@ -275,12 +278,8 @@ function checkPlayerProjectileCollisions(projectile: Entity): boolean {
         playSound('hit');
         // Blood splash
         if (combatScene && entity.position) {
-          const pos = new THREE.Vector3(
-            entity.position.x,
-            entity.position.y + 0.5,
-            -entity.position.z,
-          );
-          createBloodSplash(pos, combatScene);
+          _particlePos.set(entity.position.x, entity.position.y + 0.5, -entity.position.z);
+          createBloodSplash(_particlePos, combatScene);
         }
       }
 
@@ -289,7 +288,8 @@ function checkPlayerProjectileCollisions(projectile: Entity): boolean {
         playSound('explosion');
 
         let aoeKills = 0;
-        for (const other of [...world.entities]) {
+        const aoeKillList: Entity[] = [];
+        for (const other of world.entities) {
           if (!other.enemy || !other.position || other === entity) continue;
 
           const aoeDist = distanceBetween(projPos, other.position);
@@ -297,10 +297,15 @@ function checkPlayerProjectileCollisions(projectile: Entity): boolean {
             damageEnemyEntity(other, projData.damage);
 
             if (other.enemy.hp <= 0) {
-              handleEnemyKill(other);
+              aoeKillList.push(other);
               aoeKills++;
             }
           }
+        }
+
+        // Process deferred kills after iteration
+        for (const killed of aoeKillList) {
+          handleEnemyKill(killed);
         }
 
         // Screen shake proportional to explosion proximity + kill count
@@ -374,7 +379,9 @@ function checkEnemyProjectileCollision(projectile: Entity, player: Entity): bool
  * @param deltaTime  Frame delta in ms (typically ~16 for 60fps)
  */
 export function combatSystemUpdate(deltaTime: number): void {
-  const dtScale = deltaTime / 16;
+  // Frame-rate normalization factor: 1.0 at 60fps (16ms), proportionally
+  // larger/smaller at other rates so movement and lifetimes stay consistent.
+  const dtFactor = deltaTime / 16;
   const _dtSeconds = deltaTime / 1000;
 
   const player = world.entities.find((e: Entity) => e.type === 'player' && e.player);
@@ -422,12 +429,12 @@ export function combatSystemUpdate(deltaTime: number): void {
     const vel = projectile.velocity!;
 
     // Move projectile
-    pos.x += vel.x * dtScale;
-    pos.y += vel.y * dtScale;
-    pos.z += vel.z * dtScale;
+    pos.x += vel.x * dtFactor;
+    pos.y += vel.y * dtFactor;
+    pos.z += vel.z * dtFactor;
 
     // Decrement lifetime (delta-time scaled so range is framerate-independent)
-    proj.life -= dtScale;
+    proj.life -= dtFactor;
 
     if (proj.life <= 0) {
       removeEntity(projectile);

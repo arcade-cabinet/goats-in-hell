@@ -105,7 +105,7 @@ export function MuzzleFlashEffect() {
       timerRef.current = FLASH_DURATION;
       mesh.visible = true;
 
-      // Random rotation for variety
+      // Math.random() is intentional — cosmetic variation doesn't need deterministic seeding
       mesh.rotation.z = Math.random() * Math.PI * 2;
 
       // Reset opacity

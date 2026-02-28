@@ -170,7 +170,10 @@ export class KeyboardMouseProvider implements IInputProvider {
   }
 
   isAvailable(): boolean {
-    return !('ontouchstart' in window && navigator.maxTouchPoints > 0);
+    if (typeof window === 'undefined') return false;
+    // Use pointer media query — 'fine' means mouse/trackpad available.
+    // The old 'ontouchstart' check returned false on touchscreen laptops.
+    return window.matchMedia?.('(pointer: fine)')?.matches ?? true;
   }
 
   dispose(): void {

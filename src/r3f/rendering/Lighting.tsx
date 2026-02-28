@@ -58,6 +58,9 @@ const MUZZLE_FLASH_INTENSITY = 5;
 const MUZZLE_FLASH_DISTANCE = 4;
 const MUZZLE_FLASH_COLOR = '#ffffcc'; // yellow-white
 
+// Reusable temp vector for spotlight forward direction (avoids per-frame allocation)
+const _spotForward = new THREE.Vector3();
+
 /**
  * Trigger a muzzle flash at the given world position.
  * Creates a temporary bright PointLight that fades over 100ms.
@@ -243,9 +246,9 @@ export function DynamicLighting({ theme }: DynamicLightingProps): null {
       spotlight.position.copy(cam.position);
 
       // Point the spotlight in the camera's forward direction
-      const forward = new THREE.Vector3(0, 0, -1);
-      forward.applyQuaternion(cam.quaternion);
-      spotlight.target.position.copy(cam.position).add(forward.multiplyScalar(5));
+      _spotForward.set(0, 0, -1);
+      _spotForward.applyQuaternion(cam.quaternion);
+      spotlight.target.position.copy(cam.position).add(_spotForward.multiplyScalar(5));
       spotlight.target.updateMatrixWorld();
     }
 

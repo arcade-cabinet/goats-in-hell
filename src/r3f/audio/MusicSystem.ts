@@ -11,6 +11,7 @@
 
 import type { MusicAssetKey } from '../../game/systems/AssetRegistry';
 import { useGameStore } from '../../state/GameStore';
+import { getSharedAudioContext } from './sharedAudioContext';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -60,7 +61,7 @@ const FADE_MS = 300;
 
 export function initMusic(): void {
   if (ctx) return;
-  ctx = new AudioContext();
+  ctx = getSharedAudioContext();
   masterGain = ctx.createGain();
   // Read initial volume from store
   masterGain.gain.value = useGameStore.getState().masterVolume;
@@ -88,7 +89,10 @@ export function setMusicBuffers(buffers: Map<MusicAssetKey, AudioBuffer>): void 
 export function disposeMusic(): void {
   stopMusic();
   if (ctx) {
-    ctx.close();
+    // Don't close the shared AudioContext — other subsystems may still use it.
+    // Just disconnect our gain nodes and drop the references.
+    if (musicGain) musicGain.disconnect();
+    if (masterGain) masterGain.disconnect();
     ctx = null;
     masterGain = null;
     musicGain = null;

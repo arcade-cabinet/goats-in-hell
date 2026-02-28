@@ -14,6 +14,7 @@
  */
 
 import { useGameStore } from '../../state/GameStore';
+import { getSharedAudioContext } from './sharedAudioContext';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -45,7 +46,7 @@ const FADE_OUT_MS = 1500;
 
 export function initAmbientSound(): void {
   if (ctx) return;
-  ctx = new AudioContext();
+  ctx = getSharedAudioContext();
   masterGain = ctx.createGain();
   masterGain.gain.value = AMBIENT_VOLUME;
   masterGain.connect(ctx.destination);
@@ -60,7 +61,9 @@ export function setAmbientVolume(volume: number): void {
 export function disposeAmbientSound(): void {
   stopAmbient();
   if (ctx) {
-    ctx.close();
+    // Don't close the shared AudioContext — other subsystems may still use it.
+    // Just disconnect our gain node and drop the reference.
+    if (masterGain) masterGain.disconnect();
     ctx = null;
     masterGain = null;
   }

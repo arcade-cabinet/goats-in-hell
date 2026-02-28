@@ -26,9 +26,9 @@ export const xrStore = createXRStore({
   // Disable the automatic offer-session browser prompt — we control entry
   // via the EnterVRButton component.
   offerSession: false,
-  // Emulate a Meta Quest 3 on localhost when WebXR is not natively available.
-  // This enables development on non-VR devices.
-  emulate: 'metaQuest3',
+  // Emulate a Meta Quest 3 in development when WebXR is not natively available.
+  // Disabled in production to avoid shipping the emulator bundle.
+  emulate: process.env.NODE_ENV !== 'production' ? 'metaQuest3' : undefined,
 });
 
 // ---------------------------------------------------------------------------
