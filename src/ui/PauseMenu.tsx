@@ -13,18 +13,32 @@ export const PauseMenu: React.FC = () => {
   const volumePercent = Math.round(masterVolume * 100);
   const sensitivityPercent = Math.round(mouseSensitivity * 100);
 
+  const persistSettings = () => {
+    const s = useGameStore.getState();
+    writeSettings({
+      masterVolume: s.masterVolume,
+      mouseSensitivity: s.mouseSensitivity,
+      touchLookSensitivity: s.touchLookSensitivity,
+      gamepadLookSensitivity: s.gamepadLookSensitivity,
+      gamepadDeadzone: s.gamepadDeadzone,
+      gyroSensitivity: s.gyroSensitivity,
+      gyroEnabled: s.gyroEnabled,
+      hapticsEnabled: s.hapticsEnabled,
+    });
+  };
+
   const adjustVolume = (delta: number) => {
     const newVol = Math.max(0, Math.min(1, masterVolume + delta));
     patch({masterVolume: newVol});
     setMasterVolume(newVol);
     setMusicMasterVolume(newVol);
-    writeSettings(newVol, mouseSensitivity);
+    setTimeout(persistSettings, 0);
   };
 
   const adjustSensitivity = (delta: number) => {
     const newSens = Math.max(0.1, Math.min(1, mouseSensitivity + delta));
     patch({mouseSensitivity: newSens});
-    writeSettings(masterVolume, newSens);
+    setTimeout(persistSettings, 0);
   };
 
   return (

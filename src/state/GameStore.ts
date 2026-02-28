@@ -159,6 +159,18 @@ export interface GameStoreState {
   masterVolume: number;
   /** Mouse sensitivity (camera angular sensibility inverse). */
   mouseSensitivity: number;
+  /** Touch look sensitivity 0.1-2.0. */
+  touchLookSensitivity: number;
+  /** Gamepad look sensitivity 0.1-2.0. */
+  gamepadLookSensitivity: number;
+  /** Gamepad deadzone 0.05-0.4. */
+  gamepadDeadzone: number;
+  /** Gyroscope sensitivity 0.1-2.0. */
+  gyroSensitivity: number;
+  /** Whether gyroscope aiming is enabled. */
+  gyroEnabled: boolean;
+  /** Whether haptic feedback is enabled. */
+  hapticsEnabled: boolean;
 
   // --- Autoplay (e2e testing) ---
   /** When true, Yuka AI governor controls the player. */
@@ -406,18 +418,26 @@ function hasSavedGame(): boolean {
   }
 }
 
-export function writeSettings(volume: number, sensitivity: number): void {
+export interface SettingsData {
+  masterVolume: number;
+  mouseSensitivity: number;
+  touchLookSensitivity?: number;
+  gamepadLookSensitivity?: number;
+  gamepadDeadzone?: number;
+  gyroSensitivity?: number;
+  gyroEnabled?: boolean;
+  hapticsEnabled?: boolean;
+}
+
+export function writeSettings(settings: SettingsData): void {
   try {
-    localStorage.setItem(
-      SETTINGS_KEY,
-      JSON.stringify({masterVolume: volume, mouseSensitivity: sensitivity}),
-    );
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
   } catch {
     // ignore
   }
 }
 
-function readSettings(): {masterVolume: number; mouseSensitivity: number} | null {
+function readSettings(): SettingsData | null {
   try {
     const raw = localStorage.getItem(SETTINGS_KEY);
     if (!raw) return null;
@@ -426,10 +446,29 @@ function readSettings(): {masterVolume: number; mouseSensitivity: number} | null
       typeof parsed?.masterVolume === 'number' && Number.isFinite(parsed.masterVolume) &&
       typeof parsed?.mouseSensitivity === 'number' && Number.isFinite(parsed.mouseSensitivity)
     ) {
-      return {
+      const result: SettingsData = {
         masterVolume: Math.max(0, Math.min(1, parsed.masterVolume)),
         mouseSensitivity: Math.max(0.1, Math.min(1, parsed.mouseSensitivity)),
       };
+      if (typeof parsed.touchLookSensitivity === 'number' && Number.isFinite(parsed.touchLookSensitivity)) {
+        result.touchLookSensitivity = Math.max(0.1, Math.min(2, parsed.touchLookSensitivity));
+      }
+      if (typeof parsed.gamepadLookSensitivity === 'number' && Number.isFinite(parsed.gamepadLookSensitivity)) {
+        result.gamepadLookSensitivity = Math.max(0.1, Math.min(2, parsed.gamepadLookSensitivity));
+      }
+      if (typeof parsed.gamepadDeadzone === 'number' && Number.isFinite(parsed.gamepadDeadzone)) {
+        result.gamepadDeadzone = Math.max(0.05, Math.min(0.4, parsed.gamepadDeadzone));
+      }
+      if (typeof parsed.gyroSensitivity === 'number' && Number.isFinite(parsed.gyroSensitivity)) {
+        result.gyroSensitivity = Math.max(0.1, Math.min(2, parsed.gyroSensitivity));
+      }
+      if (typeof parsed.gyroEnabled === 'boolean') {
+        result.gyroEnabled = parsed.gyroEnabled;
+      }
+      if (typeof parsed.hapticsEnabled === 'boolean') {
+        result.hapticsEnabled = parsed.hapticsEnabled;
+      }
+      return result;
     }
     return null;
   } catch {
@@ -488,6 +527,12 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
 
     masterVolume: savedSettings?.masterVolume ?? 0.7,
     mouseSensitivity: savedSettings?.mouseSensitivity ?? 0.5,
+    touchLookSensitivity: savedSettings?.touchLookSensitivity ?? 1.0,
+    gamepadLookSensitivity: savedSettings?.gamepadLookSensitivity ?? 1.0,
+    gamepadDeadzone: savedSettings?.gamepadDeadzone ?? 0.15,
+    gyroSensitivity: savedSettings?.gyroSensitivity ?? 1.0,
+    gyroEnabled: savedSettings?.gyroEnabled ?? false,
+    hapticsEnabled: savedSettings?.hapticsEnabled ?? true,
 
     autoplay: typeof window !== 'undefined' &&
       new URLSearchParams(window.location?.search ?? '').has('autoplay'),

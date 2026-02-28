@@ -163,7 +163,7 @@ describe('save/load', () => {
 
 describe('settings persistence', () => {
   it('writes and reads settings', () => {
-    writeSettings(0.5, 0.8);
+    writeSettings({masterVolume: 0.5, mouseSensitivity: 0.8});
     const raw = localStorage.getItem('goats-in-hell-settings');
     expect(raw).not.toBeNull();
     const parsed = JSON.parse(raw!);
