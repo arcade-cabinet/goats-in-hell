@@ -1,5 +1,6 @@
 import {
   Color3,
+  Color4,
   Mesh,
   MeshBuilder,
   StandardMaterial,
@@ -28,7 +29,7 @@ import {GameState} from '../state/GameState';
 // Systems
 import {aiSystemUpdate, aiSystemReset} from './systems/AISystem';
 import {combatSystemUpdate} from './systems/CombatSystem';
-import {pickupSystemUpdate} from './systems/PickupSystem';
+import {pickupSystemUpdate, setPickupScene} from './systems/PickupSystem';
 import {
   checkFloorComplete,
   advanceFloor,
@@ -73,8 +74,10 @@ import {
   setupPostProcessing,
   updateScreenEffects,
   disposePostProcessing,
+  setSprinting,
+  triggerFloorFadeIn,
 } from './rendering/PostProcessing';
-import {createDeathBurst, createMuzzleFlash, createLavaEmbers} from './rendering/Particles';
+import {createDeathBurst, createMuzzleFlash, createLavaEmbers, createProjectileTrail} from './rendering/Particles';
 import {
   createGoatMesh,
   disposeGoatMesh,
@@ -350,6 +353,7 @@ export function GameEngine() {
     resetHazardSystem();
     resetKillStreaks();
     setHazardScene(scene);
+    setPickupScene(scene);
 
     // --- Preserve player HP across floors ---
     let preservedHp: number | null = null;
@@ -577,6 +581,9 @@ export function GameEngine() {
     // Grace period: 2 seconds of invulnerability at floor start
     const GRACE_PERIOD_MS = 2000;
     const graceEnd = performance.now() + GRACE_PERIOD_MS;
+
+    // Cinematic fade-from-black when entering a new floor
+    triggerFloorFadeIn();
 
     // Boss mid-fight resupply flag (spawn extra ammo when boss hits 50% HP)
     // Declared here in the effect closure — resets on each floor init which is correct.
@@ -1187,6 +1194,7 @@ const PlayerController = ({level}: {level: LevelData}) => {
             break;
           case 'Shift':
             isSprinting = true;
+            setSprinting(true);
             break;
           case ' ':
             // Jump: apply upward velocity if grounded
@@ -1202,6 +1210,7 @@ const PlayerController = ({level}: {level: LevelData}) => {
       const handleKeyUp = (e: KeyboardEvent) => {
         if (e.key === 'Shift') {
           isSprinting = false;
+          setSprinting(false);
         }
       };
 
@@ -1385,9 +1394,11 @@ const EnemyRenderer = () => {
 const ProjectileRenderer = () => {
   const scene = useScene();
   const meshMapRef = useRef<Map<string, Mesh>>(new Map());
+  const trailMapRef = useRef<Map<string, import('@babylonjs/core').ParticleSystem>>(new Map());
 
   useEffect(() => {
     const meshMap = meshMapRef.current;
+    const trailMap = trailMapRef.current;
 
     // Shared materials: create once, reuse for all projectiles
     const playerMat = new StandardMaterial('projMat-player', scene);
@@ -1400,6 +1411,10 @@ const ProjectileRenderer = () => {
     enemyMat.diffuseColor = Color3.FromHexString('#ff4400');
     enemyMat.alpha = 0.9;
 
+    // Trail colors per owner
+    const playerTrailColor = new Color4(1.0, 0.6, 0.1, 0.8);
+    const enemyTrailColor = new Color4(1.0, 0.2, 0.0, 0.8);
+
     const update = () => {
       const projectiles = world.entities.filter(
         (e: Entity) => !!e.projectile && !!e.position,
@@ -1408,11 +1423,16 @@ const ProjectileRenderer = () => {
         projectiles.map(e => e.id).filter(Boolean),
       );
 
-      // Remove meshes for expired projectiles
+      // Remove meshes + trails for expired projectiles
       for (const [id, mesh] of meshMap) {
         if (!currentIds.has(id)) {
           mesh.dispose();
           meshMap.delete(id);
+          const trail = trailMap.get(id);
+          if (trail) {
+            trail.stop();
+            trailMap.delete(id);
+          }
         }
       }
 
@@ -1432,6 +1452,13 @@ const ProjectileRenderer = () => {
           mesh.isPickable = false;
           mesh.material = isPlayer ? playerMat : enemyMat;
           meshMap.set(proj.id, mesh);
+
+          // Attach particle trail to projectile mesh
+          const trailColor = isPlayer ? playerTrailColor : enemyTrailColor;
+          const trail = createProjectileTrail(scene, trailColor);
+          trail.emitter = mesh;
+          trail.start();
+          trailMap.set(proj.id, trail);
         }
 
         mesh.position.copyFrom(proj.position);
@@ -1445,7 +1472,12 @@ const ProjectileRenderer = () => {
       for (const mesh of meshMap.values()) {
         mesh.dispose();
       }
+      for (const trail of trailMap.values()) {
+        trail.stop();
+        trail.dispose();
+      }
       meshMap.clear();
+      trailMap.clear();
       playerMat.dispose();
       enemyMat.dispose();
     };

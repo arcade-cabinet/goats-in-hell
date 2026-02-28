@@ -32,6 +32,12 @@ const BOB_FREQ = 0.007;
 const KICK_AMOUNT = 0.08;
 const KICK_DECAY = 0.88;
 
+// Idle sway — subtle figure-8 breathing pattern when standing still
+const SWAY_AMP_X = 0.003;
+const SWAY_AMP_Y = 0.002;
+const SWAY_FREQ = 0.0012; // slow ~5s cycle
+const SWAY_ROT_AMP = 0.008; // subtle Z-axis tilt
+
 /** Maps weapon IDs to their model registry key and emissive tint. */
 const WEAPON_CONFIG: Record<WeaponId, {
   modelKey: WeaponModelKey;
@@ -110,6 +116,8 @@ export class WeaponViewModel {
 
   // Animation state
   private bobPhase = 0;
+  private swayPhase = 0;
+  private idleTime = 0; // frames spent idle (blends sway in/out)
   private kickOffset = 0;
   private lastPlayerPos = Vector3.Zero();
   private lastFireTime = 0;
@@ -135,14 +143,28 @@ export class WeaponViewModel {
       this.switchWeapon(weaponId);
     }
 
-    // Bob based on movement
+    // Bob based on movement + idle sway tracking
+    let isMoving = false;
     if (player.position) {
       const moved = Vector3.Distance(player.position, this.lastPlayerPos);
       if (moved > 0.001) {
         this.bobPhase += BOB_FREQ * 60;
+        isMoving = true;
       }
       this.lastPlayerPos = player.position.clone();
     }
+
+    // Idle sway: ramp in when still, ramp out when moving
+    if (isMoving) {
+      this.idleTime = Math.max(0, this.idleTime - 3); // fast exit
+    } else {
+      this.idleTime = Math.min(60, this.idleTime + 1); // ~1s ramp-in
+    }
+    this.swayPhase += SWAY_FREQ * 60;
+    const swayBlend = Math.min(1, this.idleTime / 30); // 0→1 over 0.5s
+    const swayX = Math.sin(this.swayPhase) * SWAY_AMP_X * swayBlend;
+    const swayY = Math.sin(this.swayPhase * 2) * SWAY_AMP_Y * swayBlend;
+    const swayRot = Math.sin(this.swayPhase * 0.7) * SWAY_ROT_AMP * swayBlend;
 
     const bobY = Math.sin(this.bobPhase) * BOB_AMP;
     const bobX = Math.cos(this.bobPhase * 0.5) * BOB_AMP * 0.5;
@@ -164,8 +186,8 @@ export class WeaponViewModel {
     }
     this.kickOffset *= KICK_DECAY;
 
-    this.root.position.x = BASE_POS.x + bobX;
-    this.root.position.y = BASE_POS.y + bobY + jumpBob + this.kickOffset;
+    this.root.position.x = BASE_POS.x + bobX + swayX;
+    this.root.position.y = BASE_POS.y + bobY + jumpBob + this.kickOffset + swayY;
     this.root.position.z = BASE_POS.z - this.kickOffset * 0.5;
 
     if (player.player.isReloading) {
@@ -173,6 +195,7 @@ export class WeaponViewModel {
     } else {
       this.root.rotation.x = -this.kickOffset * 3;
     }
+    this.root.rotation.z = swayRot;
   }
 
   private switchWeapon(weaponId: WeaponId): void {

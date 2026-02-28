@@ -27,8 +27,29 @@ let shakeRotY = 0;
 // Gun flash FOV kick state
 let fovKick = 0;
 
+// Sprint FOV widen state
+let sprintActive = false;
+let sprintFov = 0; // current interpolated sprint FOV offset
+const SPRINT_FOV_TARGET = 0.08; // ~4.6 degrees wider when sprinting
+const SPRINT_FOV_LERP_UP = 0.08; // fast ramp-up
+const SPRINT_FOV_LERP_DOWN = 0.05; // slightly slower ease-back
+
+// Floor transition fade-from-black state
+let floorFadeIn = 0; // 1 = fully black, decays to 0
+const FLOOR_FADE_DECAY = 0.0018; // ~550ms full fade at 60fps
+
 // Store the camera's base FOV on first use
 let baseFov: number | null = null;
+
+/** Tell PostProcessing whether the player is currently sprinting. */
+export function setSprinting(active: boolean): void {
+  sprintActive = active;
+}
+
+/** Trigger a fade-from-black when entering a new floor. */
+export function triggerFloorFadeIn(): void {
+  floorFadeIn = 1;
+}
 
 export function setupPostProcessing(scene: Scene, camera: Camera): void {
   pipeline = new DefaultRenderingPipeline(
@@ -171,11 +192,7 @@ export function updateScreenEffects(scene: Scene, deltaMs: number): void {
     }
 
     // FOV kick: widen slightly (additive radians)
-    const freeCam = camera as FreeCamera | null;
-    if (freeCam && baseFov !== null && freeCam.fov !== undefined) {
-      fovKick = t * 0.06; // ~3.4 degrees at peak
-      freeCam.fov = baseFov + fovKick;
-    }
+    fovKick = t * 0.06; // ~3.4 degrees at peak
 
     GameState.set({gunFlash: Math.max(0, flash - 1)});
   }
@@ -196,14 +213,48 @@ export function updateScreenEffects(scene: Scene, deltaMs: number): void {
       }
     }
 
-    // Smoothly return FOV
-    const freeCam = camera as FreeCamera | null;
-    if (freeCam && baseFov !== null && freeCam.fov !== undefined && fovKick > 0) {
-      fovKick *= 0.85; // ease back
-      if (fovKick < 0.001) {
-        fovKick = 0;
-      }
-      freeCam.fov = baseFov + fovKick;
+    // Ease gun flash FOV kick back to 0
+    if (fovKick > 0) {
+      fovKick *= 0.85;
+      if (fovKick < 0.001) fovKick = 0;
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  // Sprint FOV widen — smooth lerp toward target
+  // -----------------------------------------------------------------------
+  const sprintTarget = sprintActive ? SPRINT_FOV_TARGET : 0;
+  if (sprintFov < sprintTarget) {
+    sprintFov = Math.min(sprintTarget, sprintFov + SPRINT_FOV_LERP_UP);
+  } else if (sprintFov > sprintTarget) {
+    sprintFov = Math.max(sprintTarget, sprintFov - SPRINT_FOV_LERP_DOWN);
+  }
+
+  // Apply combined FOV: base + gun kick + sprint widen
+  const freeCamFinal = camera as FreeCamera | null;
+  if (freeCamFinal && baseFov !== null && freeCamFinal.fov !== undefined) {
+    freeCamFinal.fov = baseFov + fovKick + sprintFov;
+  }
+
+  // -----------------------------------------------------------------------
+  // Floor transition fade-from-black
+  // -----------------------------------------------------------------------
+  if (floorFadeIn > 0 && pipeline.imageProcessing) {
+    // Darken scene by crushing exposure toward 0
+    const fadeExposure = BASE_EXPOSURE * (1 - floorFadeIn);
+    pipeline.imageProcessing.exposure = Math.min(
+      pipeline.imageProcessing.exposure,
+      fadeExposure,
+    );
+    // Subtle contrast reduction during blackout for smooth blending
+    pipeline.imageProcessing.contrast =
+      BASE_CONTRAST * (0.5 + 0.5 * (1 - floorFadeIn));
+
+    floorFadeIn = Math.max(0, floorFadeIn - deltaMs * FLOOR_FADE_DECAY);
+
+    if (floorFadeIn <= 0) {
+      pipeline.imageProcessing.exposure = BASE_EXPOSURE;
+      pipeline.imageProcessing.contrast = BASE_CONTRAST;
     }
   }
 }
@@ -220,5 +271,8 @@ export function disposePostProcessing(): void {
   shakeRotX = 0;
   shakeRotY = 0;
   fovKick = 0;
+  sprintActive = false;
+  sprintFov = 0;
+  floorFadeIn = 0;
   baseFov = null;
 }

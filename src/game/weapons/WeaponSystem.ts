@@ -10,6 +10,7 @@ import {damageBarrel} from '../systems/HazardSystem';
 import {useGameStore, getLevelBonuses} from '../../state/GameStore';
 import {physicsRaycast} from '../systems/PhysicsSetup';
 import {getGameTime} from '../systems/GameClock';
+import {createImpactSparks} from '../rendering/Particles';
 
 /** Shorthand for the store's seeded PRNG. */
 function rng(): number {
@@ -234,6 +235,8 @@ function performHitscan(
   const hit = physicsRaycast(scene, origin, direction, def.range);
   if (hit) {
     applyDamageToEnemy(hit.entityId, def.damage);
+    // Impact sparks at hit point
+    createImpactSparks(hit.hitPoint, hit.hitNormal, scene);
   } else {
     // No physics hit — check barrels via proximity (no physics body)
     checkBarrelHitscan(origin, direction, def.range, def.damage);

@@ -272,3 +272,139 @@ export function createExplosionBurst(
 
   return system;
 }
+
+/** Pickup collection sparkle burst — color matches pickup type. */
+export function createPickupBurst(
+  position: Vector3,
+  scene: Scene,
+  pickupType: string,
+): ParticleSystem {
+  // Color by pickup type
+  let c1: Color4;
+  let c2: Color4;
+  if (pickupType === 'health') {
+    c1 = new Color4(0.2, 1.0, 0.3, 1);
+    c2 = new Color4(0.0, 0.8, 0.1, 1);
+  } else if (pickupType === 'weapon') {
+    c1 = new Color4(1.0, 0.3, 1.0, 1);
+    c2 = new Color4(0.8, 0.1, 0.8, 1);
+  } else {
+    // ammo or default
+    c1 = new Color4(1.0, 0.7, 0.2, 1);
+    c2 = new Color4(0.9, 0.5, 0.0, 1);
+  }
+
+  const system = new ParticleSystem('pickupBurst', 12, scene);
+  system.particleTexture = getParticleTexture(scene);
+  system.emitter = position;
+  system.manualEmitCount = 12;
+
+  system.minLifeTime = 0.2;
+  system.maxLifeTime = 0.6;
+
+  system.direction1 = new Vector3(-1.5, 1, -1.5);
+  system.direction2 = new Vector3(1.5, 3, 1.5);
+
+  system.minEmitPower = 2;
+  system.maxEmitPower = 5;
+
+  system.minSize = 0.04;
+  system.maxSize = 0.12;
+
+  system.color1 = c1;
+  system.color2 = c2;
+  system.colorDead = new Color4(c1.r * 0.3, c1.g * 0.3, c1.b * 0.3, 0);
+
+  system.gravity = new Vector3(0, -2, 0);
+
+  system.disposeOnStop = true;
+  system.targetStopDuration = 0.8;
+
+  system.start();
+  system.stop();
+
+  return system;
+}
+
+/** Hitscan impact sparks — bright yellow/orange sparks flying off the hit surface. */
+export function createImpactSparks(
+  hitPoint: Vector3,
+  hitNormal: Vector3,
+  scene: Scene,
+): ParticleSystem {
+  const system = new ParticleSystem('impactSparks', 8, scene);
+  system.particleTexture = getParticleTexture(scene);
+  system.emitter = hitPoint;
+  system.manualEmitCount = 8;
+
+  system.minLifeTime = 0.1;
+  system.maxLifeTime = 0.35;
+
+  // Sparks fly outward along hit normal with spread
+  const spread = 1.5;
+  system.direction1 = new Vector3(
+    hitNormal.x * 2 - spread,
+    hitNormal.y * 2,
+    hitNormal.z * 2 - spread,
+  );
+  system.direction2 = new Vector3(
+    hitNormal.x * 2 + spread,
+    hitNormal.y * 2 + 2,
+    hitNormal.z * 2 + spread,
+  );
+
+  system.minEmitPower = 3;
+  system.maxEmitPower = 8;
+
+  system.minSize = 0.02;
+  system.maxSize = 0.06;
+
+  system.color1 = new Color4(1.0, 0.9, 0.4, 1);
+  system.color2 = new Color4(1.0, 0.5, 0.1, 1);
+  system.colorDead = new Color4(0.3, 0.1, 0.0, 0);
+
+  system.gravity = new Vector3(0, -6, 0);
+
+  system.disposeOnStop = true;
+  system.targetStopDuration = 0.5;
+
+  system.start();
+  system.stop();
+
+  return system;
+}
+
+/** Projectile trail emitter — continuous glow trail behind a moving projectile. */
+export function createProjectileTrail(
+  scene: Scene,
+  color: Color4,
+): ParticleSystem {
+  const system = new ParticleSystem('projTrail', 30, scene);
+  system.particleTexture = getParticleTexture(scene);
+
+  system.minLifeTime = 0.1;
+  system.maxLifeTime = 0.3;
+
+  system.emitRate = 40;
+
+  // Tight emission cone (trail stays narrow)
+  system.direction1 = new Vector3(-0.1, -0.1, -0.1);
+  system.direction2 = new Vector3(0.1, 0.1, 0.1);
+
+  system.minEmitPower = 0;
+  system.maxEmitPower = 0.2;
+
+  system.minSize = 0.05;
+  system.maxSize = 0.15;
+
+  system.color1 = color;
+  system.color2 = new Color4(color.r * 0.8, color.g * 0.8, color.b * 0.8, 0.8);
+  system.colorDead = new Color4(color.r * 0.2, color.g * 0.2, color.b * 0.2, 0);
+
+  system.gravity = new Vector3(0, 0, 0);
+
+  system.disposeOnStop = true;
+  system.targetStopDuration = 0.5;
+
+  return system;
+}

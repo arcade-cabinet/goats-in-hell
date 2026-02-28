@@ -1,7 +1,20 @@
-import {Vector3} from '@babylonjs/core';
+import {Scene, Vector3} from '@babylonjs/core';
 import type {Entity, WeaponId} from '../entities/components';
 import {world} from '../entities/world';
 import {playSound} from './AudioSystem';
+import {createPickupBurst} from '../rendering/Particles';
+
+// Magnet pull: pickups within this radius accelerate toward the player
+const MAGNET_RADIUS = 3.5;
+const MAGNET_STRENGTH = 0.12;
+
+// Scene reference for particle effects
+let pickupScene: Scene | null = null;
+
+/** Set the Babylon.js scene for pickup collection particle effects. */
+export function setPickupScene(scene: Scene): void {
+  pickupScene = scene;
+}
 
 // Default reserve ammo granted when picking up a new weapon
 const WEAPON_PICKUP_RESERVE: Record<WeaponId, number> = {
@@ -38,7 +51,21 @@ export function pickupSystemUpdate(): void {
 
   for (const entity of pickups) {
     const pickup = entity.pickup!;
-    const dist = Vector3.Distance(playerPos, entity.position!);
+    const pickupPos = entity.position!;
+    let dist = Vector3.Distance(playerPos, pickupPos);
+
+    // Magnet pull: attract nearby pickups toward the player
+    if (dist < MAGNET_RADIUS && dist > 1.0) {
+      const dir = playerPos.subtract(pickupPos).normalize();
+      const pull = MAGNET_STRENGTH * (1 - dist / MAGNET_RADIUS);
+      pickupPos.addInPlace(dir.scale(pull));
+      // Update mesh position if it exists
+      if (entity.mesh) {
+        entity.mesh.position.x = pickupPos.x;
+        entity.mesh.position.z = pickupPos.z;
+      }
+      dist = Vector3.Distance(playerPos, pickupPos);
+    }
 
     if (dist >= 1.5) {
       continue;
@@ -71,6 +98,11 @@ export function pickupSystemUpdate(): void {
     }
 
     playSound('pickup');
+
+    // ----- Collection particle burst -----
+    if (pickupScene) {
+      createPickupBurst(entity.position!.clone(), pickupScene, pickup.pickupType);
+    }
 
     // ----- Clean up the pickup entity -----
 
