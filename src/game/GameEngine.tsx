@@ -85,6 +85,7 @@ import {
   triggerFloorFadeIn,
 } from './rendering/PostProcessing';
 import {createDeathBurst, createMuzzleFlash, createLavaEmbers, createProjectileTrail, createSpawnEffect, createBiomeParticles} from './rendering/Particles';
+import {placeGoreDecal, disposeAllDecals} from './rendering/GoreDecals';
 import {
   createGoatMesh,
   disposeGoatMesh,
@@ -367,6 +368,7 @@ export function GameEngine() {
     resetBossPhase();
     clearLoreRegistry();
     resetSecrets();
+    disposeAllDecals();
     setHazardScene(scene);
     setPickupScene(scene);
 
@@ -768,6 +770,7 @@ export function GameEngine() {
             // Extract enemy type from entity id (format: "boss-{type}-{floor}" or "{type}-{idx}")
             const enemyType = id?.split('-').find(s => s.match(/[A-Z]/)) ?? undefined;
             createDeathBurst(mesh.position.clone(), scene, isBoss, enemyType);
+            placeGoreDecal(mesh.position.clone(), scene, isBoss, enemyType);
           }
         }
       }

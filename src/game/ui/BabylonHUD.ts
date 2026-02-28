@@ -141,6 +141,7 @@ export class BabylonHUD {
   private crosshairLeft!: Rectangle;
   private crosshairRight!: Rectangle;
   private crosshairDot!: Ellipse;
+  private crosshairCurrentGap = 5; // smoothly interpolated gap
 
   // Floor / encounter
   private floorText!: TextBlock;
@@ -958,7 +959,7 @@ export class BabylonHUD {
 
     this.updateHealth(player);
     this.updateAmmo(player);
-    this.updateCrosshair(storeState.hitMarker ?? 0);
+    this.updateCrosshair(storeState.hitMarker ?? 0, player);
     this.updateFloorInfo(storeState);
     this.updateScore(storeState);
     this.updateLevelXP(storeState);
@@ -1029,7 +1030,7 @@ export class BabylonHUD {
     this.weaponNameText.text = weaponDef?.name?.toUpperCase() ?? 'UNKNOWN';
   }
 
-  private updateCrosshair(hitMarker: number): void {
+  private updateCrosshair(hitMarker: number, player: Entity): void {
     const hit = hitMarker > 0;
     const color = hit ? '#ffffff' : 'rgba(255, 80, 60, 0.75)';
     this.crosshairTop.background = color;
@@ -1040,14 +1041,31 @@ export class BabylonHUD {
     this.crosshairDot.width = hit ? '4px' : '2px';
     this.crosshairDot.height = hit ? '4px' : '2px';
 
-    // Crosshair spread on hit — arms push outward then snap back
-    const spread = hit ? hitMarker * 8 : 0; // hitMarker decays 1→0
-    const baseGap = 5;
+    // --- Dynamic spread based on weapon + movement + hit recoil ---
+
+    // Weapon base spread: convert radians to screen-space pixels
+    // shotgun 0.14 rad → ~14px spread, pistol 0 → 0px
+    const wid = player.player?.currentWeapon ?? 'hellPistol';
+    const weaponSpread = (weapons[wid]?.spread ?? 0) * 100;
+
+    // Movement penalty: velocity magnitude → extra spread
+    const vel = player.velocity;
+    const speed = vel ? Math.sqrt(vel.x * vel.x + vel.z * vel.z) : 0;
+    const movePenalty = Math.min(speed * 60, 10); // cap at 10px
+
+    // Hit recoil (existing behavior)
+    const hitRecoil = hit ? hitMarker * 8 : 0;
+
+    // Compose target gap and lerp for smooth transition
+    const targetGap = 5 + weaponSpread + movePenalty + hitRecoil;
+    this.crosshairCurrentGap += (targetGap - this.crosshairCurrentGap) * 0.25;
+
+    const gap = this.crosshairCurrentGap;
     const baseLen = 14;
-    this.crosshairTop.top = -(baseGap + baseLen / 2 + spread);
-    this.crosshairBottom.top = baseGap + baseLen / 2 + spread;
-    this.crosshairLeft.left = -(baseGap + baseLen / 2 + spread);
-    this.crosshairRight.left = baseGap + baseLen / 2 + spread;
+    this.crosshairTop.top = -(gap + baseLen / 2);
+    this.crosshairBottom.top = gap + baseLen / 2;
+    this.crosshairLeft.left = -(gap + baseLen / 2);
+    this.crosshairRight.left = gap + baseLen / 2;
   }
 
   private updateFloorInfo(state: ReturnType<typeof useGameStore.getState>): void {

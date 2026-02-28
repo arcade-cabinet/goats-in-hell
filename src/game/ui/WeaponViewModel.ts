@@ -20,6 +20,7 @@ import {useGameStore} from '../../state/GameStore';
 import {GameState} from '../../state/GameState';
 import {getGameTime} from '../systems/GameClock';
 import type {WeaponId} from '../entities/components';
+import {weapons} from '../weapons/weapons';
 import {loadWeaponModel, cloneModelHierarchy} from '../systems/AssetLoader';
 import type {WeaponModelKey} from '../systems/AssetRegistry';
 
@@ -98,6 +99,100 @@ const LOOK_SWAY_DECAY = 0.85;     // spring return speed
 // Weapon inspect — idle fidget after not shooting
 const INSPECT_DELAY = 300; // frames (~5s) before inspect starts
 const INSPECT_CYCLE = 240; // frames per inspect cycle
+
+// Per-weapon reload animation profiles
+interface ReloadAnim {
+  /** Return position offset [x, y, z] and rotation [rx, ry, rz] for given progress 0→1. */
+  evaluate(t: number): {pos: [number, number, number]; rot: [number, number, number]};
+}
+
+const RELOAD_ANIMS: Record<WeaponId, ReloadAnim> = {
+  // Pistol: quick mag drop + insert
+  hellPistol: {
+    evaluate(t: number) {
+      if (t < 0.3) {
+        // Phase 1: tilt down, drop mag
+        const p = t / 0.3;
+        return {pos: [0, -0.04 * p, 0], rot: [0.4 * p, 0, 0.05 * p]};
+      } else if (t < 0.7) {
+        // Phase 2: hold while inserting new mag
+        const p = (t - 0.3) / 0.4;
+        return {pos: [0, -0.04, 0.02 * Math.sin(p * Math.PI)], rot: [0.4, 0, 0.05]};
+      } else {
+        // Phase 3: snap back up
+        const p = (t - 0.7) / 0.3;
+        const ease = 1 - (1 - p) * (1 - p); // ease-out
+        return {pos: [0, -0.04 * (1 - ease), 0], rot: [0.4 * (1 - ease), 0, 0.05 * (1 - ease)]};
+      }
+    },
+  },
+  // Shotgun: pump-action — tilt side, slide back then forward
+  brimShotgun: {
+    evaluate(t: number) {
+      if (t < 0.25) {
+        // Tilt sideways, pull back
+        const p = t / 0.25;
+        return {pos: [0.02 * p, -0.02 * p, -0.04 * p], rot: [0.3 * p, 0, -0.12 * p]};
+      } else if (t < 0.55) {
+        // Hold tilted, pump slide back
+        const p = (t - 0.25) / 0.3;
+        return {pos: [0.02, -0.02 - 0.02 * Math.sin(p * Math.PI), -0.04], rot: [0.3, 0, -0.12]};
+      } else if (t < 0.8) {
+        // Pump forward
+        const p = (t - 0.55) / 0.25;
+        return {pos: [0.02, -0.02, -0.04 + 0.06 * p], rot: [0.3 - 0.1 * p, 0, -0.12 + 0.06 * p]};
+      } else {
+        // Return to neutral
+        const p = (t - 0.8) / 0.2;
+        const ease = 1 - (1 - p) * (1 - p);
+        return {pos: [0.02 * (1 - ease), -0.02 * (1 - ease), 0.02 * (1 - ease)], rot: [0.2 * (1 - ease), 0, -0.06 * (1 - ease)]};
+      }
+    },
+  },
+  // Cannon: barrel cool-down spin
+  hellfireCannon: {
+    evaluate(t: number) {
+      const spin = t * Math.PI * 3; // 1.5 full rotations
+      if (t < 0.2) {
+        const p = t / 0.2;
+        return {pos: [0, -0.03 * p, -0.02 * p], rot: [0.35 * p, 0, spin * 0.15]};
+      } else if (t < 0.85) {
+        // Spinning phase
+        return {pos: [0, -0.03, -0.02], rot: [0.35, 0, spin * 0.15]};
+      } else {
+        // Settle back
+        const p = (t - 0.85) / 0.15;
+        const ease = 1 - (1 - p) * (1 - p);
+        return {pos: [0, -0.03 * (1 - ease), -0.02 * (1 - ease)], rot: [0.35 * (1 - ease), 0, spin * 0.15 * (1 - ease)]};
+      }
+    },
+  },
+  // Launcher: open breech reload — tilt back, slam forward
+  goatsBane: {
+    evaluate(t: number) {
+      if (t < 0.3) {
+        // Tilt back and up to open breech
+        const p = t / 0.3;
+        const ease = p * p; // ease-in
+        return {pos: [0, 0.03 * ease, -0.06 * ease], rot: [-0.5 * ease, 0.1 * ease, 0]};
+      } else if (t < 0.6) {
+        // Hold open, insert round (slight wobble)
+        const p = (t - 0.3) / 0.3;
+        const wobble = Math.sin(p * Math.PI * 2) * 0.01;
+        return {pos: [wobble, 0.03, -0.06], rot: [-0.5, 0.1, wobble]};
+      } else if (t < 0.85) {
+        // Slam breech shut — fast forward motion
+        const p = (t - 0.6) / 0.25;
+        const ease = p * p * p; // ease-in (accelerate)
+        return {pos: [0, 0.03 * (1 - ease), -0.06 + 0.08 * ease], rot: [-0.5 + 0.6 * ease, 0.1 * (1 - ease), 0]};
+      } else {
+        // Settle bounce
+        const p = (t - 0.85) / 0.15;
+        return {pos: [0, -0.02 * Math.sin(p * Math.PI), 0.02 * (1 - p)], rot: [0.1 * (1 - p), 0, 0]};
+      }
+    },
+  },
+};
 
 // Landing dip
 const LANDING_DIP_DECAY = 0.88;
@@ -363,12 +458,25 @@ export class WeaponViewModel {
     this.root.position.z = BASE_POS.z - this.kickOffset * recoil.kickBack;
 
     if (player.player.isReloading) {
-      this.root.rotation.x = 0.5;
+      // Per-weapon reload animation driven by reload progress
+      const reloadStart = player.player.reloadStart ?? 0;
+      const reloadTime = this.currentWeapon
+        ? (weapons[this.currentWeapon]?.reloadTime ?? 1500)
+        : 1500;
+      const progress = Math.min(1, (getGameTime() - reloadStart) / reloadTime);
+      const anim = this.currentWeapon ? RELOAD_ANIMS[this.currentWeapon] : RELOAD_ANIMS.hellPistol;
+      const {pos, rot} = anim.evaluate(progress);
+      this.root.position.x += pos[0];
+      this.root.position.y += pos[1];
+      this.root.position.z += pos[2];
+      this.root.rotation.x = rot[0];
+      this.root.rotation.y = rot[1];
+      this.root.rotation.z = swayRot + this.strafeTilt + rot[2];
     } else {
       this.root.rotation.x = -this.kickOffset * recoil.kickRot + inspectRotX;
+      this.root.rotation.y = inspectRotY;
+      this.root.rotation.z = swayRot + this.strafeTilt + inspectRotZ;
     }
-    this.root.rotation.y = inspectRotY;
-    this.root.rotation.z = swayRot + this.strafeTilt + inspectRotZ;
   }
 
   private updateSwitchAnimation(): void {
