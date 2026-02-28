@@ -27,6 +27,7 @@ export const weapons: Record<WeaponId, WeaponDef> = {
     reloadTime: 1200,
     range: 50,
     isProjectile: false,
+    projectileSpeed: 80,
   },
   brimShotgun: {
     id: 'brimShotgun',
@@ -39,6 +40,7 @@ export const weapons: Record<WeaponId, WeaponDef> = {
     reloadTime: 2200,
     range: 12,
     isProjectile: false,
+    projectileSpeed: 60,
   },
   hellfireCannon: {
     id: 'hellfireCannon',
@@ -51,7 +53,7 @@ export const weapons: Record<WeaponId, WeaponDef> = {
     reloadTime: 3000,
     range: 30,
     isProjectile: true,
-    projectileSpeed: 0.5,
+    projectileSpeed: 40,
   },
   goatsBane: {
     id: 'goatsBane',
@@ -64,7 +66,7 @@ export const weapons: Record<WeaponId, WeaponDef> = {
     reloadTime: 3500,
     range: 100,
     isProjectile: true,
-    projectileSpeed: 0.35,
+    projectileSpeed: 20,
     aoe: 5,
   },
 };
