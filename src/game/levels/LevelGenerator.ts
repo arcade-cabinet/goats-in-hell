@@ -177,6 +177,9 @@ export class LevelGenerator {
     // Place weapon pickups
     this.placeWeaponPickups(playerCellX, playerCellZ);
 
+    // Place power-up pickups (rare: ~40% chance per floor, starting floor 2)
+    this.placePowerUps(playerCellX, playerCellZ);
+
     // Place decorative props
     this.placeProps(playerCellX, playerCellZ);
 
@@ -637,6 +640,36 @@ export class LevelGenerator {
       });
       placed++;
     }
+  }
+
+  /**
+   * Place a single power-up pickup on the map (rare).
+   * Only spawns from floor 2+, with a 40% chance per floor.
+   */
+  private placePowerUps(playerCellX: number, playerCellZ: number) {
+    if (this.floor < 2) return;
+    if (rng() > 0.4) return; // 40% chance
+
+    // Find open cells far from player
+    const candidates: {x: number; z: number}[] = [];
+    for (let z = 1; z < this.depth - 1; z++) {
+      for (let x = 1; x < this.width - 1; x++) {
+        if (this.grid[z][x] !== MapCell.EMPTY) continue;
+        const dist = Math.abs(x - playerCellX) + Math.abs(z - playerCellZ);
+        if (dist >= 8) {
+          candidates.push({x, z});
+        }
+      }
+    }
+
+    if (candidates.length === 0) return;
+    const cell = candidates[Math.floor(rng() * candidates.length)];
+
+    this.spawns.push({
+      x: cell.x * CELL_SIZE,
+      z: cell.z * CELL_SIZE,
+      type: 'powerup',
+    });
   }
 
   private inBounds(x: number, z: number): boolean {

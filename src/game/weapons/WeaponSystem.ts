@@ -11,6 +11,7 @@ import {useGameStore, getLevelBonuses} from '../../state/GameStore';
 import {physicsRaycast} from '../systems/PhysicsSetup';
 import {getGameTime} from '../systems/GameClock';
 import {createImpactSparks} from '../rendering/Particles';
+import {getDamageMultiplier} from '../systems/PowerUpSystem';
 
 /** Shorthand for the store's seeded PRNG. */
 function rng(): number {
@@ -282,10 +283,10 @@ function spawnProjectile(
   const spreadDir = applySpread(direction, def.spread);
   const velocity = spreadDir.scale(def.projectileSpeed ?? 0.5);
 
-  // Apply level-based damage multiplier to projectile damage
+  // Apply level-based damage multiplier + quad damage to projectile damage
   const level = useGameStore.getState().leveling.level;
   const bonuses = getLevelBonuses(level);
-  const scaledDmg = Math.ceil(def.damage * bonuses.damageMult);
+  const scaledDmg = Math.ceil(def.damage * bonuses.damageMult * getDamageMultiplier());
 
   world.add({
     id: `proj-${getGameTime().toFixed(0)}-${rng().toString(36).slice(2, 6)}`,
@@ -314,10 +315,10 @@ function applyDamageToEnemy(entityId: string, damage: number): void {
     return;
   }
 
-  // Apply level-based damage multiplier
+  // Apply level-based damage multiplier + quad damage power-up
   const level = useGameStore.getState().leveling.level;
   const bonuses = getLevelBonuses(level);
-  const scaled = Math.ceil(damage * bonuses.damageMult);
+  const scaled = Math.ceil(damage * bonuses.damageMult * getDamageMultiplier());
 
   // Apply damage with armor absorption
   damageEnemy(entity, scaled);

@@ -74,9 +74,10 @@ export type Entity = {
 
   // Pickup
   pickup?: {
-    pickupType: 'health' | 'ammo' | 'weapon';
+    pickupType: 'health' | 'ammo' | 'weapon' | 'powerup';
     value: number;
     weaponId?: WeaponId;
+    powerUpType?: import('../systems/PowerUpSystem').PowerUpType;
     active: boolean;
   };
 

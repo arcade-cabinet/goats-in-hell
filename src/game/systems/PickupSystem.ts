@@ -3,6 +3,7 @@ import type {Entity, WeaponId} from '../entities/components';
 import {world} from '../entities/world';
 import {playSound} from './AudioSystem';
 import {createPickupBurst} from '../rendering/Particles';
+import {activatePowerUp} from './PowerUpSystem';
 
 // Magnet pull: pickups within this radius accelerate toward the player
 const MAGNET_RADIUS = 3.5;
@@ -95,6 +96,8 @@ export function pickupSystemUpdate(): void {
       // Grant reserve ammo for the picked-up weapon
       const ammoSlot = player.ammo[weaponId];
       ammoSlot.reserve = Math.min(ammoSlot.reserve + WEAPON_PICKUP_RESERVE[weaponId], 999);
+    } else if (pickup.pickupType === 'powerup' && pickup.powerUpType) {
+      activatePowerUp(pickup.powerUpType);
     }
 
     playSound('pickup');

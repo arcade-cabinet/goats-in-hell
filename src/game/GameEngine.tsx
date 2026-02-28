@@ -47,6 +47,7 @@ import {
 import {doorSystemUpdate, resetDoorSystem} from './systems/DoorSystem';
 import {hazardSystemUpdate, resetHazardSystem, setHazardScene} from './systems/HazardSystem';
 import {resetKillStreaks} from './systems/KillStreakSystem';
+import {powerUpSystemUpdate, resetPowerUps, getSpeedMultiplier} from './systems/PowerUpSystem';
 import {tickGameClock, resetGameClock, getGameTime} from './systems/GameClock';
 import {initPhysics, disposeAllEnemyColliders, removeEnemyCollider} from './systems/PhysicsSetup';
 import {
@@ -352,6 +353,7 @@ export function GameEngine() {
     resetDoorSystem();
     resetHazardSystem();
     resetKillStreaks();
+    resetPowerUps();
     setHazardScene(scene);
     setPickupScene(scene);
 
@@ -453,6 +455,22 @@ export function GameEngine() {
             value: 0,
             active: true,
             weaponId: spawn.weaponId as WeaponId,
+          },
+        });
+      } else if (spawn.type === 'powerup') {
+        // Power-up pickup (rare — spawned by level generator)
+        const powerUpTypes: import('./systems/PowerUpSystem').PowerUpType[] = ['quadDamage', 'hellSpeed', 'demonShield'];
+        const seededRng = useGameStore.getState().rng;
+        const pType = powerUpTypes[Math.floor(seededRng() * powerUpTypes.length)];
+        world.add({
+          id: `powerup-${idx}`,
+          type: 'powerup' as EntityType,
+          position: new Vector3(spawn.x, 0.8, spawn.z),
+          pickup: {
+            pickupType: 'powerup',
+            value: 0,
+            active: true,
+            powerUpType: pType,
           },
         });
       } else if (spawn.type === 'hazard_spikes') {
@@ -642,6 +660,9 @@ export function GameEngine() {
 
       // 3. Pickups
       pickupSystemUpdate();
+
+      // 3c. Power-up buff timers
+      powerUpSystemUpdate();
 
       // 3b. Door proximity check and animation
       doorSystemUpdate(scene, levelData.grid, dt);
@@ -1056,7 +1077,7 @@ const PlayerController = ({level}: {level: LevelData}) => {
         if (!autoplay) {
           const bonuses = getLevelBonuses(useGameStore.getState().leveling.level);
           const baseSpeed = isSprinting ? 0.45 : 0.3;
-          camera.speed = baseSpeed * bonuses.speedMult;
+          camera.speed = baseSpeed * bonuses.speedMult * getSpeedMultiplier();
 
           // Jump physics: apply velocity and detect landing
           if (jumpVelocity !== 0) {
@@ -1520,7 +1541,8 @@ const PickupRenderer = () => {
 
         const isHealth = pickup.pickup?.pickupType === 'health';
         const isWeapon = pickup.pickup?.pickupType === 'weapon';
-        const diameter = isWeapon ? 0.7 : 0.5;
+        const isPowerUp = pickup.pickup?.pickupType === 'powerup';
+        const diameter = isPowerUp ? 0.9 : isWeapon ? 0.7 : 0.5;
 
         let mesh = meshMap.get(id);
         if (!mesh) {
@@ -1530,18 +1552,33 @@ const PickupRenderer = () => {
             scene,
           );
           const mat = new StandardMaterial(`pickupMat-${id}`, scene);
-          const color = isHealth ? '#44ff44' : isWeapon ? '#ff44ff' : '#ffaa00';
-          const emissive = isHealth ? '#115511' : isWeapon ? '#441144' : '#443300';
+          let color: string;
+          let emissive: string;
+          if (isPowerUp) {
+            // Power-up color by type
+            const pType = pickup.pickup?.powerUpType;
+            color = pType === 'quadDamage' ? '#ff2200' : pType === 'hellSpeed' ? '#2266ff' : '#ffcc00';
+            emissive = pType === 'quadDamage' ? '#661100' : pType === 'hellSpeed' ? '#112266' : '#664400';
+          } else {
+            color = isHealth ? '#44ff44' : isWeapon ? '#ff44ff' : '#ffaa00';
+            emissive = isHealth ? '#115511' : isWeapon ? '#441144' : '#443300';
+          }
           mat.emissiveColor = Color3.FromHexString(color);
           mat.diffuseColor = Color3.FromHexString(emissive);
-          mat.alpha = 0.85;
+          mat.alpha = isPowerUp ? 0.95 : 0.85;
           mesh.material = mat;
           meshMap.set(id, mesh);
         }
 
         mesh.position.x = pickup.position.x;
-        mesh.position.y = 0.5 + bobOffset;
+        mesh.position.y = (isPowerUp ? 0.8 : 0.5) + bobOffset;
         mesh.position.z = pickup.position.z;
+
+        // Power-ups pulse in size for emphasis
+        if (isPowerUp) {
+          const pulse = 1 + Math.sin(getGameTime() * 0.005) * 0.15;
+          mesh.scaling.setAll(pulse);
+        }
       }
     }, 50);
 

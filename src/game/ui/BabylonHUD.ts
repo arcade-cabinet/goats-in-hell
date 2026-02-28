@@ -26,6 +26,7 @@ import {useGameStore, DIFFICULTY_PRESETS, getLevelBonuses} from '../../state/Gam
 import type {Entity, WeaponId} from '../entities/components';
 import {getGameTime} from '../systems/GameClock';
 import {getAnnouncement} from '../systems/KillStreakSystem';
+import {getActiveBuffs} from '../systems/PowerUpSystem';
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -150,6 +151,9 @@ export class BabylonHUD {
   private lastKills = 0;
   private streakCount = 0;
   private lastKillTime = 0;
+
+  // Active power-up buff icons
+  private buffTexts: TextBlock[] = [];
 
   // Weapon pickup notification
   private weaponPickupText!: TextBlock;
@@ -708,6 +712,22 @@ export class BabylonHUD {
     this.streakText.top = 110;
     this.streakText.isVisible = false;
     this.gui.addControl(this.streakText);
+
+    // Pre-allocate buff display text blocks (up to 3)
+    for (let i = 0; i < 3; i++) {
+      const bt = new TextBlock(`buff-${i}`, '');
+      bt.fontFamily = FONT;
+      bt.fontSize = 14;
+      bt.fontWeight = 'bold';
+      bt.color = '#ffffff';
+      bt.textHorizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+      bt.textVerticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
+      bt.left = 10;
+      bt.top = 200 + i * 22;
+      bt.isVisible = false;
+      this.gui.addControl(bt);
+      this.buffTexts.push(bt);
+    }
   }
 
   private createWeaponPickupNotification(): void {
@@ -865,6 +885,7 @@ export class BabylonHUD {
     this.updateKillFeedback(storeState);
     this.updateWeaponPickup(player);
     this.updateTutorialHints(player, storeState);
+    this.updateBuffIcons();
   }
 
   private updateHealth(player: Entity): void {
@@ -1099,7 +1120,9 @@ export class BabylonHUD {
     for (const e of world.entities) {
       if (!e.pickup?.active || !e.position) continue;
       ctx.fillStyle = e.pickup.pickupType === 'health' ? '#44ff44'
-        : e.pickup.pickupType === 'weapon' ? '#ff44ff' : '#ffaa00';
+        : e.pickup.pickupType === 'weapon' ? '#ff44ff'
+        : e.pickup.pickupType === 'powerup' ? '#ffffff'
+        : '#ffaa00';
       const px = (e.position.x / CELL_SIZE) * cellPx;
       const pz = (e.position.z / CELL_SIZE) * cellPx;
       ctx.beginPath();
@@ -1182,6 +1205,31 @@ export class BabylonHUD {
       this.levelUpText.alpha = Math.min(1, this.levelUpTimer / 30);
       if (this.levelUpTimer <= 0) {
         this.levelUpText.isVisible = false;
+      }
+    }
+  }
+
+  private updateBuffIcons(): void {
+    const buffs = getActiveBuffs();
+    for (let i = 0; i < this.buffTexts.length; i++) {
+      const bt = this.buffTexts[i];
+      if (i < buffs.length) {
+        const buff = buffs[i];
+        const remaining = Math.ceil((1 - buff.progress) * (buff.type === 'hellSpeed' ? 8 : buff.type === 'quadDamage' ? 10 : 30));
+        const shieldInfo = buff.shieldFraction !== undefined
+          ? ` [${Math.round(buff.shieldFraction * 100)}%]`
+          : '';
+        bt.text = `${buff.label} ${remaining}s${shieldInfo}`;
+        bt.color = buff.color;
+        bt.isVisible = true;
+        // Flash when about to expire (<3s)
+        if (buff.progress > 0.7) {
+          bt.alpha = 0.5 + Math.sin(getGameTime() * 0.01) * 0.5;
+        } else {
+          bt.alpha = 1;
+        }
+      } else {
+        bt.isVisible = false;
       }
     }
   }

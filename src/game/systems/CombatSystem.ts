@@ -7,6 +7,7 @@ import {playSound} from './AudioSystem';
 import {pushDamageEvent} from './damageEvents';
 import {damageBarrel} from './HazardSystem';
 import {registerKill} from './KillStreakSystem';
+import {absorbDamage} from './PowerUpSystem';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -153,9 +154,14 @@ function checkEnemyProjectileCollision(
   const dist = Vector3.Distance(projectile.position!, player.position);
 
   if (dist < 1.5) {
-    player.player.hp -= projectile.projectile!.damage;
+    // Demon Shield absorbs damage before it hits HP
+    const rawDmg = projectile.projectile!.damage;
+    const remaining = absorbDamage(rawDmg);
+    player.player.hp -= remaining;
 
-    GameState.set({damageFlash: 0.8, screenShake: 8});
+    // Reduced flash if shield absorbed all damage
+    const flashIntensity = remaining > 0 ? 0.8 : 0.2;
+    GameState.set({damageFlash: flashIntensity, screenShake: remaining > 0 ? 8 : 3});
     playSound('hurt');
 
     return true;

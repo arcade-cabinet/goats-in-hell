@@ -5,6 +5,7 @@ import {GameState} from '../../state/GameState';
 import {useGameStore, DIFFICULTY_PRESETS} from '../../state/GameStore';
 import {getEnemyStats} from '../entities/enemyStats';
 import {getGameTime} from './GameClock';
+import type {PowerUpType} from './PowerUpSystem';
 
 /** Shorthand for the store's seeded PRNG — deterministic per-seed. */
 function rng(): number {
@@ -154,6 +155,25 @@ function spawnArenaPickups(arenaSize: number): void {
   }
 }
 
+function spawnArenaPowerUp(arenaSize: number): void {
+  const types: PowerUpType[] = ['quadDamage', 'hellSpeed', 'demonShield'];
+  const pType = types[Math.floor(rng() * types.length)];
+  const px = 3 + Math.floor(rng() * (arenaSize - 6));
+  const pz = 3 + Math.floor(rng() * (arenaSize - 6));
+  arenaPickupCounter++;
+  world.add({
+    id: `arena-pickup-${arenaPickupCounter}`,
+    type: 'powerup' as EntityType,
+    position: new Vector3(px * 2, 0.8, pz * 2),
+    pickup: {
+      pickupType: 'powerup',
+      value: 0,
+      active: true,
+      powerUpType: pType,
+    },
+  });
+}
+
 function spawnArenaWeaponPickup(arenaSize: number): void {
   const weaponPool: WeaponId[] = ['brimShotgun', 'hellfireCannon', 'goatsBane'];
   const weaponId = weaponPool[Math.floor(rng() * weaponPool.length)];
@@ -202,6 +222,10 @@ export function waveSystemUpdate(deltaTime: number, arenaSize: number): void {
     // Drop a weapon pickup every 3rd wave for arsenal diversity
     if (currentWave > 0 && currentWave % 3 === 0) {
       spawnArenaWeaponPickup(arenaSize);
+    }
+    // Drop a power-up every 3rd wave (starting wave 3)
+    if (currentWave >= 3 && currentWave % 3 === 0) {
+      spawnArenaPowerUp(arenaSize);
     }
     startNextWave();
   }
