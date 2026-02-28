@@ -1,8 +1,10 @@
 /**
  * WeaponViewModel — first-person weapon model rendered in camera space.
  *
- * Creates a placeholder weapon mesh (colored box per weapon type)
- * parented to the camera. Handles:
+ * Loads Kenney Blaster Kit GLB models per weapon type, falling back to
+ * colored box placeholders if the model is not yet loaded or fails.
+ *
+ * Parented to the camera. Handles:
  *   - Reload animation: weapon bobs down and back up
  *   - Recoil kick: backward/upward offset on fire, spring back
  *   - Weapon switch animation: old weapon drops, new rises
@@ -16,7 +18,9 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import type { Entity, WeaponId } from '../../game/entities/components';
 import { world } from '../../game/entities/world';
+import { WEAPON_MODEL_ASSETS } from '../../game/systems/AssetRegistry';
 import { useGameStore } from '../../state/GameStore';
+import { cloneModel, isModelLoaded, loadModels } from '../systems/ModelLoader';
 import { getReloadProgress } from './WeaponSystem';
 
 // ---------------------------------------------------------------------------
@@ -32,7 +36,21 @@ interface WeaponVisualConfig {
   color: string;
   /** Emissive color. */
   emissive: string;
+  /** Asset key in WEAPON_MODEL_ASSETS */
+  modelKey: string;
+  /** Scale applied to the GLB model */
+  modelScale: number;
+  /** Extra rotation [x, y, z] in radians applied to the GLB model */
+  modelRotation: [number, number, number];
 }
+
+/** Map from WeaponId to asset key in WEAPON_MODEL_ASSETS */
+const WEAPON_MODEL_KEY: Record<WeaponId, string> = {
+  hellPistol: 'weapon-pistol',
+  brimShotgun: 'weapon-shotgun',
+  hellfireCannon: 'weapon-cannon',
+  goatsBane: 'weapon-launcher',
+};
 
 const WEAPON_VISUALS: Record<WeaponId, WeaponVisualConfig> = {
   hellPistol: {
@@ -40,24 +58,36 @@ const WEAPON_VISUALS: Record<WeaponId, WeaponVisualConfig> = {
     offset: new THREE.Vector3(0.2, -0.15, -0.35),
     color: '#555555',
     emissive: '#331100',
+    modelKey: 'weapon-pistol',
+    modelScale: 0.15,
+    modelRotation: [0, Math.PI, 0],
   },
   brimShotgun: {
     size: [0.06, 0.06, 0.45],
     offset: new THREE.Vector3(0.22, -0.18, -0.4),
     color: '#444444',
     emissive: '#001133',
+    modelKey: 'weapon-shotgun',
+    modelScale: 0.15,
+    modelRotation: [0, Math.PI, 0],
   },
   hellfireCannon: {
     size: [0.08, 0.08, 0.35],
     offset: new THREE.Vector3(0.18, -0.16, -0.38),
     color: '#553333',
     emissive: '#440000',
+    modelKey: 'weapon-cannon',
+    modelScale: 0.15,
+    modelRotation: [0, Math.PI, 0],
   },
   goatsBane: {
     size: [0.1, 0.1, 0.5],
     offset: new THREE.Vector3(0.2, -0.2, -0.45),
     color: '#444455',
     emissive: '#220044',
+    modelKey: 'weapon-launcher',
+    modelScale: 0.18,
+    modelRotation: [0, Math.PI, 0],
   },
 };
 
@@ -89,14 +119,36 @@ export function WeaponViewModel() {
 
   // Refs for managed objects
   const groupRef = useRef<THREE.Group | null>(null);
-  const meshRef = useRef<THREE.Mesh | null>(null);
+  const weaponContainerRef = useRef<THREE.Object3D | null>(null);
   const currentWeaponRef = useRef<WeaponId>('hellPistol');
+  const modelsLoadedRef = useRef(false);
 
   // Animation state
   const recoilRef = useRef(0); // 0..1, decays to 0
   const switchProgressRef = useRef(0); // 0..1, 0 = done
   const switchDirectionRef = useRef<'down' | 'up'>('up');
   const pendingWeaponRef = useRef<WeaponId | null>(null);
+
+  // Load weapon models on mount
+  useEffect(() => {
+    let cancelled = false;
+
+    const entries = Object.entries(WEAPON_MODEL_ASSETS) as [string, number][];
+    loadModels(entries).then(() => {
+      if (!cancelled) {
+        modelsLoadedRef.current = true;
+        // Upgrade current weapon mesh if it was a placeholder
+        const group = groupRef.current;
+        if (group) {
+          swapWeaponMesh(group, currentWeaponRef.current, weaponContainerRef, true);
+        }
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // Create the weapon group and parent to camera
   useEffect(() => {
@@ -107,26 +159,24 @@ export function WeaponViewModel() {
     camera.add(group);
     groupRef.current = group;
 
-    // Build initial weapon mesh
-    const config = WEAPON_VISUALS.hellPistol;
-    const mesh = buildWeaponMesh(config);
-    group.add(mesh);
-    meshRef.current = mesh;
+    // Build initial weapon
+    const container = buildWeaponObject('hellPistol', modelsLoadedRef.current);
+    group.add(container);
+    weaponContainerRef.current = container;
 
     return () => {
       camera.remove(group);
-      if (mesh.geometry) mesh.geometry.dispose();
-      if (mesh.material instanceof THREE.Material) mesh.material.dispose();
+      disposeWeaponObject(container);
       groupRef.current = null;
-      meshRef.current = null;
+      weaponContainerRef.current = null;
     };
   }, [camera]);
 
   // Per-frame animation
   useFrame((_state, delta) => {
     const group = groupRef.current;
-    const mesh = meshRef.current;
-    if (!group || !mesh) return;
+    const container = weaponContainerRef.current;
+    if (!group || !container) return;
 
     const dt = Math.min(delta, 0.1);
     const screen = useGameStore.getState().screen;
@@ -167,7 +217,7 @@ export function WeaponViewModel() {
         if (switchDirectionRef.current === 'down') {
           // At bottom of drop — swap the weapon mesh
           const newWeaponId = pendingWeaponRef.current ?? currentWeapon;
-          swapWeaponMesh(group, newWeaponId, meshRef);
+          swapWeaponMesh(group, newWeaponId, weaponContainerRef, modelsLoadedRef.current);
           currentWeaponRef.current = newWeaponId;
           pendingWeaponRef.current = null;
 
@@ -204,10 +254,10 @@ export function WeaponViewModel() {
     if (switchProgressRef.current > 0) {
       const t = switchProgressRef.current;
       if (switchDirectionRef.current === 'down') {
-        // Dropping: t goes 1→0, we want drop to increase
+        // Dropping: t goes 1->0, we want drop to increase
         switchDrop = (1 - t) * SWITCH_DROP_DEPTH;
       } else {
-        // Rising: t goes 1→0, we want drop to decrease
+        // Rising: t goes 1->0, we want drop to decrease
         switchDrop = t * SWITCH_DROP_DEPTH;
       }
     }
@@ -224,7 +274,72 @@ export function WeaponViewModel() {
 // Helpers
 // ---------------------------------------------------------------------------
 
-function buildWeaponMesh(config: WeaponVisualConfig): THREE.Mesh {
+/**
+ * Build a weapon Object3D — either a GLB model or a placeholder box.
+ */
+function buildWeaponObject(weaponId: WeaponId, useGlb: boolean): THREE.Object3D {
+  const config = WEAPON_VISUALS[weaponId];
+
+  if (useGlb) {
+    const glbMesh = buildGlbWeapon(weaponId, config);
+    if (glbMesh) return glbMesh;
+  }
+
+  // Fallback: placeholder box
+  return buildPlaceholderWeapon(config);
+}
+
+/**
+ * Build a GLB-based weapon model.
+ */
+function buildGlbWeapon(weaponId: WeaponId, config: WeaponVisualConfig): THREE.Group | null {
+  const modelKey = WEAPON_MODEL_KEY[weaponId];
+  if (!isModelLoaded(modelKey)) return null;
+
+  const cloned = cloneModel(modelKey);
+  if (!cloned) return null;
+
+  const wrapper = new THREE.Group();
+  wrapper.name = `weaponModel-${weaponId}`;
+
+  // Scale the model
+  cloned.scale.setScalar(config.modelScale);
+
+  // Apply rotation (models face +Z by default, weapon should face -Z in camera space)
+  cloned.rotation.set(...config.modelRotation);
+
+  // Apply emissive tinting for hellish look
+  cloned.traverse((child) => {
+    if (child instanceof THREE.Mesh && child.material) {
+      const applyEmissive = (mat: THREE.Material) => {
+        if (
+          mat instanceof THREE.MeshStandardMaterial ||
+          mat instanceof THREE.MeshPhysicalMaterial
+        ) {
+          mat.emissive = new THREE.Color(config.emissive);
+          mat.emissiveIntensity = 0.5;
+        }
+      };
+      if (Array.isArray(child.material)) {
+        for (const m of child.material) applyEmissive(m);
+      } else {
+        applyEmissive(child.material);
+      }
+      // Render on top for first-person weapon
+      child.renderOrder = 999;
+    }
+  });
+
+  wrapper.add(cloned);
+  wrapper.userData = { isGlb: true };
+  wrapper.renderOrder = 999;
+  return wrapper;
+}
+
+/**
+ * Build a placeholder box mesh for a weapon.
+ */
+function buildPlaceholderWeapon(config: WeaponVisualConfig): THREE.Mesh {
   const geometry = new THREE.BoxGeometry(...config.size);
   const material = new THREE.MeshStandardMaterial({
     color: new THREE.Color(config.color),
@@ -239,27 +354,43 @@ function buildWeaponMesh(config: WeaponVisualConfig): THREE.Mesh {
   mesh.castShadow = false;
   mesh.receiveShadow = false;
   mesh.renderOrder = 999; // render on top
+  mesh.userData = { isGlb: false };
   return mesh;
+}
+
+/**
+ * Dispose a weapon object (either GLB group or placeholder mesh).
+ */
+function disposeWeaponObject(obj: THREE.Object3D): void {
+  obj.traverse((child) => {
+    if (child instanceof THREE.Mesh) {
+      if (child.geometry) child.geometry.dispose();
+      if (child.material) {
+        if (Array.isArray(child.material)) {
+          for (const m of child.material) m.dispose();
+        } else {
+          child.material.dispose();
+        }
+      }
+    }
+  });
 }
 
 function swapWeaponMesh(
   group: THREE.Group,
   weaponId: WeaponId,
-  meshRef: React.MutableRefObject<THREE.Mesh | null>,
+  containerRef: React.MutableRefObject<THREE.Object3D | null>,
+  useGlb: boolean,
 ): void {
-  // Remove old mesh
-  const oldMesh = meshRef.current;
-  if (oldMesh) {
-    group.remove(oldMesh);
-    oldMesh.geometry.dispose();
-    if (oldMesh.material instanceof THREE.Material) {
-      oldMesh.material.dispose();
-    }
+  // Remove old
+  const old = containerRef.current;
+  if (old) {
+    group.remove(old);
+    disposeWeaponObject(old);
   }
 
-  // Build new mesh
-  const config = WEAPON_VISUALS[weaponId];
-  const newMesh = buildWeaponMesh(config);
-  group.add(newMesh);
-  meshRef.current = newMesh;
+  // Build new
+  const newObj = buildWeaponObject(weaponId, useGlb);
+  group.add(newObj);
+  containerRef.current = newObj;
 }

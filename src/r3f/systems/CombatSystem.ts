@@ -11,9 +11,11 @@ import { world } from '../../game/entities/world';
 import { registerKill } from '../../game/systems/KillStreakSystem';
 import { useGameStore } from '../../state/GameStore';
 import { playSound } from '../audio/AudioSystem';
+import { spawnDamageNumber } from '../entities/DamageNumbers';
 import { HapticEvent, haptics } from '../input/HapticsService';
 import { triggerDamageFlash } from '../rendering/PostProcessing';
 import { createBloodSplash, createDeathBurst } from './ParticleEffects';
+import { triggerScreenShake } from './ScreenShake';
 
 // ---------------------------------------------------------------------------
 // Scene reference — set by the game loop component
@@ -93,13 +95,31 @@ export function damageEnemy(entityId: string, damage: number, isHeadshot?: boole
     }
   }
 
+  // Damage number at enemy position (negate Z for Three.js coords)
+  if (entity.position) {
+    spawnDamageNumber(
+      damage,
+      {
+        x: entity.position.x,
+        y: entity.position.y + 1,
+        z: -entity.position.z,
+      },
+      isHeadshot,
+    );
+  }
+
   if (enemy.hp <= 0) {
     handleEnemyKill(entity);
+    // Strong screen shake on kill
+    triggerScreenShake(0.3);
     return { killed: true, damage };
   }
 
   // Enemy survived — play hurt feedback
   playSound('hit');
+
+  // Light screen shake on hit
+  triggerScreenShake(0.1);
 
   // Blood splash at enemy position (negate Z for Three.js coords)
   if (combatScene && entity.position) {
@@ -129,6 +149,19 @@ export function damageEnemyEntity(entity: Entity, damage: number, _isCrit?: bool
   }
 
   enemy.hp -= damage;
+
+  // Damage number at enemy position (negate Z for Three.js coords)
+  if (entity.position) {
+    spawnDamageNumber(
+      damage,
+      {
+        x: entity.position.x,
+        y: entity.position.y + 1,
+        z: -entity.position.z,
+      },
+      _isCrit,
+    );
+  }
 
   // Stagger on heavy hits (>25% max HP)
   if (damage > enemy.maxHp * 0.25 && enemy.hp > 0) {
@@ -210,6 +243,7 @@ export function damagePlayer(damage: number): boolean {
 
   // Visual feedback
   triggerDamageFlash();
+  triggerScreenShake(0.4);
 
   // Haptic feedback
   haptics.trigger(HapticEvent.DamageTaken);
