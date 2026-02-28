@@ -67,8 +67,11 @@ import {
 import type {WallType} from './rendering/Materials';
 import {
   createLavaLights,
+  createMuzzleFlashLight,
   createPlayerSpotlight,
+  disposeMuzzleFlash,
   updateFlickerLights,
+  updateMuzzleFlash,
 } from './rendering/Lighting';
 import type {DynamicLight} from './rendering/Lighting';
 import {
@@ -595,6 +598,9 @@ export function GameEngine() {
     // Set up player spotlight with dynamic shadows
     spotlightRef.current = createPlayerSpotlight(scene);
 
+    // Create muzzle flash dynamic light
+    createMuzzleFlashLight(scene);
+
     // Create Babylon.js GUI HUD, 3D damage numbers, weapon viewmodel, and screen overlays
     const hud = new BabylonHUD(scene);
     const screens = new BabylonScreens(scene);
@@ -683,8 +689,11 @@ export function GameEngine() {
       // 5. Screen effects (shake, flash, etc.)
       updateScreenEffects(scene, dt);
 
-      // 6. Flicker lava lights
+      // 6. Flicker lava lights + muzzle flash
       updateFlickerLights(lavaLightsRef.current, now * 0.001);
+      if (scene.activeCamera) {
+        updateMuzzleFlash(scene.activeCamera, player.player?.currentWeapon);
+      }
 
       // 7. Update player spotlight position to follow camera
       if (spotlightRef.current && scene.activeCamera) {
@@ -823,6 +832,7 @@ export function GameEngine() {
         spotlightRef.current.shadowGen.dispose();
         spotlightRef.current.light.dispose();
       }
+      disposeMuzzleFlash();
     };
   }, [scene, reinitCounter, assetsReady]);
 

@@ -29,6 +29,7 @@ interface GoatConfig {
   emissiveHex: string;
   emissiveIntensity: number;
   eyeColor: string;
+  baseVisibility?: number; // 0-1, defaults to 1
 }
 
 const GOAT_CONFIGS: Record<string, GoatConfig> = {
@@ -68,6 +69,7 @@ const GOAT_CONFIGS: Record<string, GoatConfig> = {
     emissiveHex: '#110033',
     emissiveIntensity: 0.3,
     eyeColor: '#8888ff',
+    baseVisibility: 0.4, // semi-transparent stealth ambusher
   },
   // === Boss models (unique silhouettes for gameplay clarity) ===
   archGoat: {
@@ -188,6 +190,14 @@ export function createGoatMesh(
   const mesh = cloneModelHierarchy(template, `mesh-enemy-${id}`, scene);
   mesh.isVisible = true;
   mesh.scaling = new Vector3(config.scale, config.scale, config.scale);
+
+  // Apply base visibility for ghostly/stealth enemies
+  if (config.baseVisibility !== undefined && config.baseVisibility < 1) {
+    mesh.visibility = config.baseVisibility;
+    for (const child of mesh.getChildMeshes(false)) {
+      child.visibility = config.baseVisibility;
+    }
+  }
 
   // Emissive eyes as children
   const eyeMat = getEyeMaterial(type as string, scene);
