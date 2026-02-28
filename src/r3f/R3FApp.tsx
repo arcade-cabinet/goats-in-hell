@@ -38,7 +38,20 @@ export function R3FApp({ children }: { children?: React.ReactNode }) {
           canvas: canvas as HTMLCanvasElement,
           antialias: false, // postprocessing handles AA via FXAA
         });
-        await renderer.init();
+        try {
+          await renderer.init();
+        } catch (err) {
+          console.warn('[R3FApp] WebGPURenderer.init() failed, falling back to WebGL2:', err);
+          // Dispose the failed renderer and create a WebGL2 fallback
+          renderer.dispose();
+          const fallback = new THREE.WebGPURenderer({
+            canvas: canvas as HTMLCanvasElement,
+            antialias: false,
+            forceWebGL: true,
+          });
+          await fallback.init();
+          return fallback;
+        }
         return renderer;
       }}
       onCreated={({ gl }) => {

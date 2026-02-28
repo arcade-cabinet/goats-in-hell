@@ -379,6 +379,11 @@ export function EnemyRenderer() {
       // Spawn mesh for new enemies
       if (!spawned.has(entity.id)) {
         spawnEnemyMesh(entity, scene, spawned, modelsLoadedRef.current);
+        // If a fallback capsule was created after models loaded, resume upgrade checks
+        const justSpawned = spawned.get(entity.id);
+        if (modelsLoadedRef.current && justSpawned && !justSpawned.userData.isGlb) {
+          allUpgradedRef.current = false;
+        }
       }
 
       // If models just finished loading, upgrade any fallback capsules to GLB.
@@ -455,7 +460,8 @@ function spawnEnemyMesh(
     if (glbMesh) {
       mesh = glbMesh;
     } else {
-      // Model failed to load — use fallback capsule
+      // Model failed to load — use fallback capsule.
+      // A new fallback after models loaded means upgrade checks must resume.
       const template = getFallbackTemplate(type);
       mesh = cloneFallbackTemplate(template);
     }

@@ -250,4 +250,24 @@ export class ProjectilePool {
     slot.mesh.visible = false;
     slot.life = 0;
   }
+
+  /**
+   * Dispose shared geometry and material caches. Call on app teardown
+   * to free GPU resources. After calling this, new ProjectilePool
+   * instances will recreate the shared resources.
+   */
+  static disposeProjectilePoolResources(): void {
+    if (sharedBulletGeometry) {
+      sharedBulletGeometry.dispose();
+      sharedBulletGeometry = null;
+    }
+    if (sharedRocketGeometry) {
+      sharedRocketGeometry.dispose();
+      sharedRocketGeometry = null;
+    }
+    for (const mat of materialCache.values()) {
+      mat.dispose();
+    }
+    materialCache.clear();
+  }
 }

@@ -95,7 +95,7 @@ export function ProjectileManager() {
       _bridgeDir.set(direction.x, direction.y, -direction.z).normalize();
       // Convert per-frame speed (at 60fps) to units/sec
       const speedPerSec = speed * 60;
-      pool.spawn(
+      const slotIndex = pool.spawn(
         _bridgeOrigin,
         _bridgeDir,
         speedPerSec,
@@ -105,6 +105,9 @@ export function ProjectileManager() {
         PROJECTILE_COLORS.enemy,
         false,
       );
+      if (slotIndex === -1) {
+        console.warn('[ProjectileManager] Pool exhausted — enemy projectile dropped');
+      }
     });
 
     return () => {

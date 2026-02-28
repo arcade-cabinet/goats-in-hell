@@ -157,9 +157,9 @@ function meleeHitPlayer(_player: Entity, damage: number, sourcePos?: Vec3): void
 /**
  * Spawn an enemy projectile with VISIBLE mesh via the ProjectilePool bridge.
  *
- * Converts from ECS/Babylon coordinates (positive Z = forward) to Three.js
- * coordinates (negative Z = forward) for the visual pool. Speed is converted
- * from per-frame (at 60fps) to per-second for the pool's physics model.
+ * Coordinate conversion and speed normalization are handled by the bridge
+ * callback in Projectile.tsx. This function simply forwards the ECS-space
+ * parameters.
  */
 function spawnProjectile(origin: Vec3, direction: Vec3, damage: number, speed: number): void {
   spawnEnemyProjectile(origin, direction, damage, speed);

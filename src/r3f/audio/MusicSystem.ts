@@ -118,14 +118,14 @@ export function playTrack(track: MusicTrack): void {
     const buffer = bufferMap.get(assetKey);
     if (!buffer) return;
 
-    // Set currentTrack only after confirming we can actually play
-    currentTrack = track;
-
     const source = c.createBufferSource();
     source.buffer = buffer;
     source.loop = true;
     source.connect(musicGain!);
     source.start();
+    // Set currentTrack and activeSource only AFTER source.start() succeeds
+    // to avoid stale references if start() throws
+    currentTrack = track;
     activeSource = source;
   } catch (err) {
     console.warn('[MusicSystem] playTrack error:', err);
@@ -161,7 +161,7 @@ export function stopMusic(): void {
           /* ignore */
         }
         // Only reset gain if it's still our gain node (not disposed)
-        if (gain) {
+        if (musicGain === gain) {
           gain.gain.cancelScheduledValues(0);
           gain.gain.value = MUSIC_VOLUME;
         }

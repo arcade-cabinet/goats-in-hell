@@ -452,10 +452,15 @@ export function combatSystemUpdate(deltaTime: number): void {
   // projectile processing has been removed.
   //
   // Clean up any stale ECS projectile entities that might linger from
-  // previous sessions or edge cases.
+  // previous sessions or edge cases. Collect first, then remove to avoid
+  // mutating world.entities while iterating.
+  const staleProjectiles: Entity[] = [];
   for (const entity of world.entities) {
     if (entity.projectile) {
-      removeEntity(entity);
+      staleProjectiles.push(entity);
     }
+  }
+  for (const entity of staleProjectiles) {
+    removeEntity(entity);
   }
 }

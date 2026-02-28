@@ -20,8 +20,6 @@ export function R3FScene({ children }: { children?: React.ReactNode }) {
 
     // All lighting is handled by DynamicLighting — no lights here to avoid
     // overlapping/stacking with theme-based lights.
-
-    return () => {};
   }, [scene]);
 
   return <>{children}</>;

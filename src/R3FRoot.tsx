@@ -126,6 +126,7 @@ function GameScene() {
   const levelDataRef = useRef<LevelData | null>(null);
   const graceTimerRef = useRef(2000); // Start active to prevent race with entity spawn useEffect
   const floorKeyRef = useRef(0);
+  const snapshotTimerRef = useRef(0); // Throttle savePlayerSnapshot to once per second
 
   // Subscribe to store
   const stage = useGameStore((s) => s.stage);
@@ -361,16 +362,21 @@ function GameScene() {
       waveSystemUpdate(deltaMs, ARENA_SIZE);
     }
 
-    // Snapshot player state for save system (runs every frame, but cheap)
-    const playerEntity = world.entities.find((e) => e.type === 'player' && e.player);
-    if (playerEntity?.player && playerEntity.ammo) {
-      savePlayerSnapshot({
-        playerHp: playerEntity.player.hp,
-        currentWeapon: playerEntity.player.currentWeapon,
-        ammoReserves: Object.fromEntries(
-          Object.entries(playerEntity.ammo).map(([k, v]) => [k, v.reserve]),
-        ),
-      });
+    // Snapshot player state for save system — throttled to once per second
+    // to avoid per-frame Object.fromEntries/Object.entries allocation overhead
+    snapshotTimerRef.current += deltaMs;
+    if (snapshotTimerRef.current >= 1000) {
+      snapshotTimerRef.current = 0;
+      const playerEntity = world.entities.find((e) => e.type === 'player' && e.player);
+      if (playerEntity?.player && playerEntity.ammo) {
+        savePlayerSnapshot({
+          playerHp: playerEntity.player.hp,
+          currentWeapon: playerEntity.player.currentWeapon,
+          ammoReserves: Object.fromEntries(
+            Object.entries(playerEntity.ammo).map(([k, v]) => [k, v.reserve]),
+          ),
+        });
+      }
     }
 
     // Progression check — floor cleared?

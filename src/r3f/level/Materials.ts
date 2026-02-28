@@ -215,58 +215,68 @@ function applyTextureSet(
   tileY: number,
 ): void {
   // Color (diffuse/albedo) map
-  loadTexture(texSet.color).then((tex) => {
-    if (tex) {
-      const t = tex.clone();
-      configureTiling(t, tileX, tileY);
-      mat.map = t;
-      mat.needsUpdate = true;
-    }
-  });
-
-  // Normal map (data texture — not color)
-  loadTexture(texSet.normal).then((tex) => {
-    if (tex) {
-      const t = tex.clone();
-      configureTiling(t, tileX, tileY, false);
-      mat.normalMap = t;
-      mat.normalScale.set(1.0, 1.0);
-      mat.needsUpdate = true;
-    }
-  });
-
-  // Roughness map (data texture — not color)
-  loadTexture(texSet.roughness).then((tex) => {
-    if (tex) {
-      const t = tex.clone();
-      configureTiling(t, tileX, tileY, false);
-      mat.roughnessMap = t;
-      mat.needsUpdate = true;
-    }
-  });
-
-  // Emission map (optional — e.g. lava, this IS a color map)
-  if (texSet.emission) {
-    loadTexture(texSet.emission).then((tex) => {
+  loadTexture(texSet.color)
+    .then((tex) => {
       if (tex) {
         const t = tex.clone();
         configureTiling(t, tileX, tileY);
-        mat.emissiveMap = t;
+        mat.map = t;
         mat.needsUpdate = true;
       }
-    });
+    })
+    .catch((err) => console.warn(`[Materials] Color texture load error for "${texSet.color}":`, err));
+
+  // Normal map (data texture — not color)
+  loadTexture(texSet.normal)
+    .then((tex) => {
+      if (tex) {
+        const t = tex.clone();
+        configureTiling(t, tileX, tileY, false);
+        mat.normalMap = t;
+        mat.normalScale.set(1.0, 1.0);
+        mat.needsUpdate = true;
+      }
+    })
+    .catch((err) => console.warn(`[Materials] Normal texture load error for "${texSet.normal}":`, err));
+
+  // Roughness map (data texture — not color)
+  loadTexture(texSet.roughness)
+    .then((tex) => {
+      if (tex) {
+        const t = tex.clone();
+        configureTiling(t, tileX, tileY, false);
+        mat.roughnessMap = t;
+        mat.needsUpdate = true;
+      }
+    })
+    .catch((err) => console.warn(`[Materials] Roughness texture load error for "${texSet.roughness}":`, err));
+
+  // Emission map (optional — e.g. lava, this IS a color map)
+  if (texSet.emission) {
+    loadTexture(texSet.emission)
+      .then((tex) => {
+        if (tex) {
+          const t = tex.clone();
+          configureTiling(t, tileX, tileY);
+          mat.emissiveMap = t;
+          mat.needsUpdate = true;
+        }
+      })
+      .catch((err) => console.warn(`[Materials] Emission texture load error for "${texSet.emission}":`, err));
   }
 
   // Metalness map (data texture — not color)
   if (texSet.metalness) {
-    loadTexture(texSet.metalness).then((tex) => {
-      if (tex) {
-        const t = tex.clone();
-        configureTiling(t, tileX, tileY, false);
-        mat.metalnessMap = t;
-        mat.needsUpdate = true;
-      }
-    });
+    loadTexture(texSet.metalness)
+      .then((tex) => {
+        if (tex) {
+          const t = tex.clone();
+          configureTiling(t, tileX, tileY, false);
+          mat.metalnessMap = t;
+          mat.needsUpdate = true;
+        }
+      })
+      .catch((err) => console.warn(`[Materials] Metalness texture load error for "${texSet.metalness}":`, err));
   }
 }
 

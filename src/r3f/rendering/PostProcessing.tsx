@@ -203,6 +203,13 @@ export function PostProcessingEffects(): React.JSX.Element | null {
   return (
     <EffectErrorBoundary>
       <EffectComposer multisampling={0}>
+        <Bloom
+          ref={bloomRef}
+          intensity={0.8}
+          luminanceThreshold={0.6}
+          luminanceSmoothing={0.3}
+          mipmapBlur
+        />
         <Vignette
           ref={vignetteRef}
           offset={0.3}

@@ -59,7 +59,10 @@ function releaseCanvas(canvas: HTMLCanvasElement): void {
 function createTextTexture(text: string, color: string): { texture: THREE.CanvasTexture; canvas: HTMLCanvasElement } {
   const canvas = acquireCanvas();
   const ctx = canvas.getContext('2d');
-  if (!ctx) return { texture: new THREE.CanvasTexture(canvas), canvas };
+  if (!ctx) {
+    console.warn('[DamageNumbers] getContext("2d") returned null — damage number will be blank');
+    return { texture: new THREE.CanvasTexture(canvas), canvas };
+  }
 
   ctx.clearRect(0, 0, 128, 64);
   ctx.font = 'bold 48px monospace';

@@ -169,6 +169,8 @@ export class LevelGenerator {
       for (let e = 0; e < 2; e++) {
         const ex = furthestRoom.x + 1 + Math.floor(rng() * Math.max(1, furthestRoom.w - 2));
         const ez = furthestRoom.z + 1 + Math.floor(rng() * Math.max(1, furthestRoom.h - 2));
+        // Validate the cell is walkable (EMPTY) before spawning
+        if (this.grid[ez]?.[ex] !== MapCell.EMPTY) continue;
         const type = theme.enemyTypes[Math.floor(rng() * theme.enemyTypes.length)];
         this.spawns.push({ x: ex * CELL_SIZE, z: ez * CELL_SIZE, type });
       }

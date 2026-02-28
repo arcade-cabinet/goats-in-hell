@@ -160,6 +160,17 @@ export function PickupRenderer(): null {
 // Mesh creation helper
 // ---------------------------------------------------------------------------
 
+/**
+ * Dispose shared pickup geometry. Call on app teardown to free GPU resources.
+ * After calling this, new pickups will recreate the shared geometry.
+ */
+export function disposePickupResources(): void {
+  if (sharedRingGeometry) {
+    sharedRingGeometry.dispose();
+    sharedRingGeometry = null;
+  }
+}
+
 function createPickupMesh(entity: Entity, scene: THREE.Scene): TrackedPickup | null {
   if (!entity.pickup || !entity.position || !entity.id) return null;
 
