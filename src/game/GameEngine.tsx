@@ -160,9 +160,9 @@ export function GameEngine() {
   useEffect(() => {
     let prevScreen = '';
     return GameState.subscribe(state => {
-      // Detect transitions INTO 'playing' from victory/bossIntro screens
+      // Detect transitions INTO 'playing' — regenerate level for all entry points
       if (state.screen === 'playing' && gameInitialized.current) {
-        if (prevScreen === 'victory' || prevScreen === 'bossIntro' || prevScreen === 'menu') {
+        if (prevScreen === 'victory' || prevScreen === 'bossIntro' || prevScreen === 'menu' || prevScreen === 'dead' || prevScreen === 'newGame') {
           gameInitialized.current = false;
           setReinitCounter(n => n + 1);
         }
@@ -203,7 +203,6 @@ export function GameEngine() {
         setAssetsReady(true);
       } catch (err) {
         console.error('Asset loading FAILED:', err);
-        throw err;
       }
     })();
   }, [scene]);

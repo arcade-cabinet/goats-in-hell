@@ -380,6 +380,13 @@ export class TouchControls {
     if (this.disposed) return;
     this.disposed = true;
     this.gui.dispose();
+    // Reset shared touch state to prevent stuck movement across scene teardown
+    touchInput.moveX = 0;
+    touchInput.moveZ = 0;
+    touchInput.lookDeltaX = 0;
+    touchInput.lookDeltaY = 0;
+    touchInput.fire = false;
+    touchInput.reload = false;
   }
 }
 

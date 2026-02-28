@@ -90,12 +90,7 @@ export function setupPostProcessing(scene: Scene, camera: Camera): void {
 }
 
 export function updateScreenEffects(scene: Scene, deltaMs: number): void {
-  if (!pipeline) {
-    throw new Error(
-      'PostProcessing pipeline not initialized. ' +
-      'Call setupPostProcessing() before updateScreenEffects().'
-    );
-  }
+  if (!pipeline) return; // Pipeline not yet initialized — skip gracefully
 
   const state = GameState.get();
   const camera = scene.activeCamera;

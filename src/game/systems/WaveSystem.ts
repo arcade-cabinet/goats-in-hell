@@ -318,9 +318,10 @@ export function waveSystemUpdate(deltaTime: number, arenaSize: number): void {
       scoreMultiplier = 1;
     }
 
-    // Apply score multiplier bonus for streak kills
+    // Apply flat streak bonus per kill (avoids runaway score inflation)
     if (scoreMultiplier > 1) {
-      const bonus = Math.floor(state.score * (scoreMultiplier - 1) * 0.01 * newKills);
+      const bonusPerKill = Math.floor(50 * (scoreMultiplier - 1));
+      const bonus = bonusPerKill * newKills;
       if (bonus > 0) {
         GameState.set({score: state.score + bonus});
       }

@@ -99,10 +99,10 @@ export const VictoryScreen: React.FC = () => {
       patch({score: score + bonus});
     }
     advanceStage();
-    // advanceStage sets screen to 'bossIntro' for boss encounters —
-    // only transition to 'playing' if it's not a boss intro
+    // advanceStage may set screen to 'bossIntro' or 'gameComplete' —
+    // only transition to 'playing' if neither of those was set
     const nextScreen = useGameStore.getState().screen;
-    if (nextScreen !== 'bossIntro') {
+    if (nextScreen !== 'bossIntro' && nextScreen !== 'gameComplete') {
       patch({screen: 'playing', startTime: Date.now()});
     }
   };

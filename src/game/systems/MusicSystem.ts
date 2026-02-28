@@ -78,7 +78,6 @@ export function setMusicBuffers(buffers: Map<MusicAssetKey, AudioBuffer>): void 
 export function playTrack(track: MusicTrack): void {
   if (track === currentTrack) return;
   stopMusic();
-  currentTrack = track;
 
   if (!ctx) initMusic();
   const c = ctx!;
@@ -88,6 +87,9 @@ export function playTrack(track: MusicTrack): void {
   const assetKey = TRACK_TO_ASSET[track];
   const buffer = bufferMap.get(assetKey);
   if (!buffer) return;
+
+  // Set currentTrack only after confirming we can actually play
+  currentTrack = track;
 
   const source = c.createBufferSource();
   source.buffer = buffer;

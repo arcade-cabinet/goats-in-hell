@@ -192,6 +192,9 @@ async function loadAudioBuffer(
 ): Promise<AudioBuffer> {
   const uri = resolveAssetUri(moduleId);
   const response = await fetch(uri);
+  if (!response.ok) {
+    throw new Error(`Audio fetch failed: ${response.status} ${response.statusText} for ${uri}`);
+  }
   const arrayBuffer = await response.arrayBuffer();
   return audioCtx.decodeAudioData(arrayBuffer);
 }

@@ -469,7 +469,8 @@ export class BabylonScreens {
         }
         s.advanceStage();
         const nextScreen = useGameStore.getState().screen;
-        if (nextScreen !== 'bossIntro') {
+        // Don't override if advanceStage() set gameComplete or bossIntro
+        if (nextScreen !== 'bossIntro' && nextScreen !== 'gameComplete') {
           s.patch({screen: 'playing', startTime: Date.now()});
         }
       },

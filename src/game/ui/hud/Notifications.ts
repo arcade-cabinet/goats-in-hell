@@ -168,7 +168,12 @@ export function createNotifications(gui: AdvancedDynamicTexture): NotificationCo
   let shownHints = new Set<string>();
   try {
     const stored = localStorage.getItem('goats-in-hell-hints');
-    if (stored) shownHints = new Set(JSON.parse(stored));
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed)) {
+        shownHints = new Set(parsed.filter((x: unknown) => typeof x === 'string'));
+      }
+    }
   } catch { /* ignore */ }
 
   const tutorialText = new TextBlock('tutorial', '');

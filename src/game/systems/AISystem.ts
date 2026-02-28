@@ -323,8 +323,9 @@ function postSteeringVoidGoat(
   }
 
   // Phase 2: spawn shadow clones (weak shadowGoats) occasionally — capped at 6
+  // Normalize spawn chance to ~0.18/s regardless of frame rate (0.003 * 60fps)
   const voidCloneCount = world.entities.filter(e => e.id?.startsWith('voidClone')).length;
-  if (isPhase2 && voidCloneCount < 6 && rng() < 0.003) {
+  if (isPhase2 && voidCloneCount < 6 && rng() < 0.003 * dtScale) {
     const ox = (rng() - 0.5) * 5;
     const oz = (rng() - 0.5) * 5;
     world.add({
@@ -441,9 +442,10 @@ function postSteeringArchGoat(
   }
 
   // Minion spawn: more frequent in phase 3 — capped at 8
+  // Normalize spawn chance by dtScale for frame-rate independence
   const archMinionCount = world.entities.filter(e => e.id?.startsWith('archMinion')).length;
   const spawnChance = isPhase3 ? 0.005 : isPhase2 ? 0.002 : 0;
-  if (spawnChance > 0 && archMinionCount < 8 && rng() < spawnChance) {
+  if (spawnChance > 0 && archMinionCount < 8 && rng() < spawnChance * dtScale) {
     const ox = (rng() - 0.5) * 6;
     const oz = (rng() - 0.5) * 6;
     const minionType = isPhase3 && rng() < 0.3 ? 'hellgoat' : 'goat';
