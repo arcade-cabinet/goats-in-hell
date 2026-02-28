@@ -14,6 +14,10 @@ export class Vector3 {
     return a.x * b.x + a.y * b.y + a.z * b.z;
   }
 
+  static Zero(): Vector3 {
+    return new Vector3(0, 0, 0);
+  }
+
   clone() {
     return new Vector3(this.x, this.y, this.z);
   }
