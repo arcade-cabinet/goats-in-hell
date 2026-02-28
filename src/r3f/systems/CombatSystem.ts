@@ -310,9 +310,11 @@ function checkPlayerProjectileCollisions(projectile: Entity): boolean {
 
       damageEnemyEntity(entity, projData.damage);
 
-      if (entity.enemy.hp <= 0) {
-        handleEnemyKill(entity);
-      } else {
+      // Track direct hit kill — defer world.remove() until AFTER AoE to
+      // avoid modifying world.entities mid-iteration.
+      const directKill = entity.enemy.hp <= 0;
+
+      if (!directKill) {
         playSound('hit');
         // Blood splash
         if (combatScene && entity.position) {
@@ -329,6 +331,8 @@ function checkPlayerProjectileCollisions(projectile: Entity): boolean {
         const aoeKillList: Entity[] = [];
         for (const other of world.entities) {
           if (!other.enemy || !other.position || other === entity) continue;
+          // Skip already-dead entities (from earlier kills this frame)
+          if (other.enemy.hp <= 0) continue;
 
           const aoeDist = distanceBetween(projPos, other.position);
           if (aoeDist < projData.aoe) {
@@ -341,7 +345,7 @@ function checkPlayerProjectileCollisions(projectile: Entity): boolean {
           }
         }
 
-        // Process deferred kills after iteration
+        // Process deferred kills after iteration (AoE kills)
         for (const killed of aoeKillList) {
           handleEnemyKill(killed);
         }
@@ -360,6 +364,11 @@ function checkPlayerProjectileCollisions(projectile: Entity): boolean {
             });
           }
         }
+      }
+
+      // Now safe to process direct hit kill (after AoE iteration is done)
+      if (directKill) {
+        handleEnemyKill(entity);
       }
 
       break; // Projectile consumed on first direct hit
