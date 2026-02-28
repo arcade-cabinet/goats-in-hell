@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {View, Text, StyleSheet, Animated} from 'react-native';
+import {View, Text, StyleSheet, Animated, type DimensionValue} from 'react-native';
 import {useGameStore, DIFFICULTY_PRESETS} from '../state/GameStore';
 import {world} from '../game/entities/world';
 import {weapons} from '../game/weapons/weapons';
@@ -142,7 +142,7 @@ export const HUD: React.FC = () => {
               style={[
                 styles.healthBarInner,
                 {
-                  width: `${hpRatio * 100}%` as any,
+                  width: `${hpRatio * 100}%` as DimensionValue,
                   backgroundColor: healthColor,
                 },
                 isLowHp && {opacity: lowHpAnim},
@@ -152,7 +152,7 @@ export const HUD: React.FC = () => {
             {[0.25, 0.5, 0.75].map(p => (
               <View
                 key={p}
-                style={[styles.healthTick, {left: `${p * 100}%` as any}]}
+                style={[styles.healthTick, {left: `${p * 100}%` as DimensionValue}]}
               />
             ))}
           </View>
@@ -183,7 +183,7 @@ export const HUD: React.FC = () => {
                 <View
                   style={[
                     styles.reloadBarInner,
-                    {width: `${reloadProgress * 100}%` as any},
+                    {width: `${reloadProgress * 100}%` as DimensionValue},
                   ]}
                 />
               </View>
@@ -230,7 +230,7 @@ export const HUD: React.FC = () => {
             <View
               style={[
                 styles.xpBarInner,
-                {width: `${Math.min(100, xpProgress * 100)}%` as any},
+                {width: `${Math.min(100, xpProgress * 100)}%` as DimensionValue},
               ]}
             />
           </View>
@@ -457,7 +457,7 @@ const DamageNumbers: React.FC = () => {
               {
                 opacity,
                 transform: [{translateY: translateY + offsetY}],
-                left: `${50}%` as any,
+                left: '50%' as DimensionValue,
                 marginLeft: offsetX,
               },
             ]}>
@@ -498,14 +498,14 @@ const BossHealthBar: React.FC = () => {
         <View
           style={[
             styles.bossBarInner,
-            {width: `${ratio * 100}%` as any, backgroundColor: barColor},
+            {width: `${ratio * 100}%` as DimensionValue, backgroundColor: barColor},
           ]}
         />
         {/* Tick marks at 25%, 50%, 75% */}
         {[0.25, 0.5, 0.75].map(p => (
           <View
             key={p}
-            style={[styles.bossBarTick, {left: `${p * 100}%` as any}]}
+            style={[styles.bossBarTick, {left: `${p * 100}%` as DimensionValue}]}
           />
         ))}
       </View>
@@ -559,13 +559,13 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   healthBarInner: {
-    height: '100%' as any,
+    height: '100%' as DimensionValue,
   },
   healthTick: {
     position: 'absolute',
     top: 0,
     width: 1,
-    height: '100%' as any,
+    height: '100%' as DimensionValue,
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
   healthTextRow: {
@@ -665,7 +665,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   reloadBarInner: {
-    height: '100%' as any,
+    height: '100%' as DimensionValue,
     backgroundColor: '#ffaa00',
   },
 
@@ -749,7 +749,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   xpBarInner: {
-    height: '100%' as any,
+    height: '100%' as DimensionValue,
     backgroundColor: '#8855cc',
   },
   xpText: {
@@ -899,8 +899,8 @@ const styles = StyleSheet.create({
   // -- Crosshair --
   crosshairContainer: {
     position: 'absolute',
-    top: '50%' as any,
-    left: '50%' as any,
+    top: '50%' as DimensionValue,
+    left: '50%' as DimensionValue,
     width: 0,
     height: 0,
   },
@@ -962,7 +962,7 @@ const styles = StyleSheet.create({
   // -- Damage numbers --
   dmgNumber: {
     position: 'absolute',
-    top: '45%' as any,
+    top: '45%' as DimensionValue,
     fontFamily: 'Courier',
     fontSize: 16,
     fontWeight: 'bold',
@@ -980,8 +980,8 @@ const styles = StyleSheet.create({
   bossBarContainer: {
     position: 'absolute',
     top: 70,
-    left: '25%' as any,
-    right: '25%' as any,
+    left: '25%' as DimensionValue,
+    right: '25%' as DimensionValue,
     alignItems: 'center',
   },
   bossName: {
@@ -996,7 +996,7 @@ const styles = StyleSheet.create({
     textShadowRadius: 6,
   },
   bossBarOuter: {
-    width: '100%' as any,
+    width: '100%' as DimensionValue,
     height: 10,
     backgroundColor: '#1a0505',
     borderWidth: 1,
@@ -1004,13 +1004,13 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   bossBarInner: {
-    height: '100%' as any,
+    height: '100%' as DimensionValue,
   },
   bossBarTick: {
     position: 'absolute',
     top: 0,
     width: 1,
-    height: '100%' as any,
+    height: '100%' as DimensionValue,
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
   bossHpText: {

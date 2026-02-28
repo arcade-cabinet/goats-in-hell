@@ -72,10 +72,6 @@ export const ENEMY_MODEL_ASSETS = {
   'enemy-infernoGoat': require('../../../assets/models/enemies/spider.glb'),
   'enemy-voidGoat': require('../../../assets/models/enemies/character-ghost.glb'),
   'enemy-ironGoat': require('../../../assets/models/enemies/Skeleton_Mage.glb'),
-  // Skeleton trash mobs (for future horde variants)
-  'enemy-skeleton': require('../../../assets/models/enemies/Skeleton_Minion.glb'),
-  'enemy-skeletonWarrior': require('../../../assets/models/enemies/Skeleton_Warrior.glb'),
-  'enemy-skeletonRogue': require('../../../assets/models/enemies/Skeleton_Rogue.glb'),
 } as const;
 
 export type EnemyModelKey = keyof typeof ENEMY_MODEL_ASSETS;
@@ -95,7 +91,6 @@ export const PROP_MODEL_ASSETS = {
   'prop-bowl': require('../../../assets/models/props/detail-bowl.glb'),
   'prop-spikes': require('../../../assets/models/props/floor_tile_big_spikes.glb'),
   'prop-barrel': require('../../../assets/models/props/barrel_large.glb'),
-  'prop-barrel-small': require('../../../assets/models/props/barrel_small.glb'),
   'prop-torch-lit': require('../../../assets/models/props/torch_lit.glb'),
   'prop-torch-mounted': require('../../../assets/models/props/torch_mounted.glb'),
   'prop-chest': require('../../../assets/models/props/chest.glb'),

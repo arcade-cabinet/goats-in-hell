@@ -6,6 +6,7 @@ export type EntityType =
   | 'archGoat' | 'infernoGoat' | 'voidGoat' | 'ironGoat'
   | 'projectile'
   | 'health' | 'ammo' | 'weaponPickup'
+  | 'powerup'
   | 'door' | 'decoration'
   | 'hazard_spikes' | 'hazard_barrel';
 

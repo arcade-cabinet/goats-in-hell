@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef, useCallback} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Animated} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Animated, type DimensionValue} from 'react-native';
 import {
   useGameStore,
   generateSeedPhrase,
@@ -330,7 +330,7 @@ const SettingsScreen: React.FC = () => {
             <Text style={s.sliderBtnText}>-</Text>
           </TouchableOpacity>
           <View style={s.sliderTrack}>
-            <View style={[s.sliderFill, {width: `${volumePercent}%` as any}]} />
+            <View style={[s.sliderFill, {width: `${volumePercent}%` as DimensionValue}]} />
           </View>
           <TouchableOpacity onPress={() => adjustVolume(0.1)} style={s.sliderBtn}>
             <Text style={s.sliderBtnText}>+</Text>
@@ -347,7 +347,7 @@ const SettingsScreen: React.FC = () => {
             <Text style={s.sliderBtnText}>-</Text>
           </TouchableOpacity>
           <View style={s.sliderTrack}>
-            <View style={[s.sliderFill, {width: `${sensitivityPercent}%` as any}]} />
+            <View style={[s.sliderFill, {width: `${sensitivityPercent}%` as DimensionValue}]} />
           </View>
           <TouchableOpacity onPress={() => adjustSensitivity(0.1)} style={s.sliderBtn}>
             <Text style={s.sliderBtnText}>+</Text>
@@ -432,7 +432,7 @@ const s = StyleSheet.create({
   },
 
   // Title
-  titleWrap: {alignItems: 'center', justifyContent: 'center', height: 50, marginBottom: 4, width: '100%' as any},
+  titleWrap: {alignItems: 'center', justifyContent: 'center', height: 50, marginBottom: 4, width: '100%' as DimensionValue},
   title: {
     position: 'absolute',
     fontSize: 36,
@@ -748,7 +748,7 @@ const s = StyleSheet.create({
     overflow: 'hidden' as const,
   },
   sliderFill: {
-    height: '100%' as any,
+    height: '100%' as DimensionValue,
     backgroundColor: '#cc0000',
   },
   sliderValue: {

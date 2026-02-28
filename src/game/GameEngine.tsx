@@ -37,10 +37,10 @@ import {
   checkPlayerDeath,
   triggerDeath,
 } from './systems/ProgressionSystem';
-import {initAudio, setMasterVolume, playSound as playSfx, setSfxBuffers} from './systems/AudioSystem';
-import {initMusic, setMusicMasterVolume, updateMusic, disposeMusic, setMusicBuffers} from './systems/MusicSystem';
+import {initAudio, setMasterVolume, playSound as playSfx} from './systems/AudioSystem';
+import {initMusic, setMusicMasterVolume, updateMusic, disposeMusic} from './systems/MusicSystem';
 import {updateAmbientSound, disposeAmbientSound} from './systems/AmbientSoundSystem';
-import {loadAllMusic, loadAllSfx} from './systems/AssetLoader';
+import {loadAllAssets} from './systems/AssetPipeline';
 import {
   waveSystemUpdate,
   resetWaveSystem,
@@ -52,7 +52,7 @@ import {resetKillStreaks} from './systems/KillStreakSystem';
 import {checkSecretWalls, resetSecrets, getSecretsFound} from './systems/SecretRoomSystem';
 import {powerUpSystemUpdate, resetPowerUps, getSpeedMultiplier} from './systems/PowerUpSystem';
 import {tickGameClock, resetGameClock, getGameTime} from './systems/GameClock';
-import {initPhysics, disposeAllEnemyColliders, removeEnemyCollider} from './systems/PhysicsSetup';
+import {disposeAllEnemyColliders, removeEnemyCollider} from './systems/PhysicsSetup';
 import {
   tryShoot,
   tryReload,
@@ -92,19 +92,15 @@ import {
   createGoatMesh,
   disposeGoatMesh,
   disposeGoatCache,
-  loadAllEnemyTemplates,
 } from './rendering/GoatMeshFactory';
-import {
-  createProp,
-  loadAllProps,
-} from './rendering/DungeonProps';
+import {createProp} from './rendering/DungeonProps';
 import type {PropType} from './rendering/DungeonProps';
 import {createLoreMessage, clearLoreRegistry} from './rendering/LoreMessages';
 import {AIGovernor} from './systems/AIGovernor';
 import {BabylonHUD, resetBossPhase, triggerEnvKill, showFloorStats, isFloorStatsActive} from './ui/BabylonHUD';
 import {BabylonScreens} from './ui/BabylonScreens';
 import {DamageNumbers3D} from './ui/DamageNumbers3D';
-import {WeaponViewModel, loadAllWeapons, triggerLandingDip} from './ui/WeaponViewModel';
+import {WeaponViewModel, triggerLandingDip} from './ui/WeaponViewModel';
 import {LoadingScreen} from './ui/LoadingScreen';
 import {TouchControls, touchInput, resetTouchInput, isTouchDevice} from './ui/TouchControls';
 import {useGameStore, DIFFICULTY_PRESETS, getLevelBonuses} from '../state/GameStore';
@@ -112,6 +108,12 @@ import {useGameStore, DIFFICULTY_PRESETS, getLevelBonuses} from '../state/GameSt
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
+
+/** WeakMap to store glow ring references on pickup meshes (avoids `as any` casts). */
+const meshGlowRings = new WeakMap<Mesh, Mesh>();
+
+/** WeakMap to store cleanup callbacks on cameras (avoids `as any` casts). */
+const cameraCleanups = new WeakMap<UniversalCamera, () => void>();
 
 const ENEMY_TYPES: EntityType[] = [
   'goat',
@@ -237,45 +239,12 @@ export function GameEngine() {
     if (assetsLoadedRef.current) return;
     assetsLoadedRef.current = true;
 
-    initAudio();
-    initMusic();
-
     (async () => {
       try {
-        let loaded = 0;
-        const total = 6;
-        const tick = (label: string) => {
-          loaded++;
-          setLoadProgress(loaded / total);
+        await loadAllAssets(scene, (pct, label) => {
+          setLoadProgress(pct);
           setLoadLabel(label);
-        };
-
-        // Initialize Havok physics engine (WASM load)
-        setLoadLabel('Initializing physics...');
-        await initPhysics(scene);
-        tick('Forging weapons...');
-
-        // Load asset categories sequentially so progress bar advances visibly
-        const audioCtx = new AudioContext();
-
-        await loadAllWeapons(scene);
-        tick('Summoning enemies...');
-
-        await loadAllEnemyTemplates(scene);
-        tick('Placing props...');
-
-        await loadAllProps(scene);
-        tick('Loading music...');
-
-        const musicBuffers = await loadAllMusic(audioCtx);
-        tick('Loading sounds...');
-
-        const sfxBufferMap = await loadAllSfx(audioCtx);
-        tick('Ready.');
-
-        // Wire the decoded audio buffers into the playback systems
-        setMusicBuffers(musicBuffers);
-        setSfxBuffers(sfxBufferMap);
+        });
         setAssetsReady(true);
       } catch (err) {
         console.error('Asset loading FAILED:', err);
@@ -322,7 +291,7 @@ export function GameEngine() {
       };
     } else if (encounterType === 'boss') {
       const bossId = storeState.stage.bossId ?? 'archGoat';
-      const bossTypeForArena = (ENEMY_TYPES.includes(bossId as EntityType) ? bossId : 'archGoat') as EntityType;
+      const bossTypeForArena: EntityType = ENEMY_TYPES.includes(bossId as EntityType) ? (bossId as EntityType) : 'archGoat';
       const bossGrid = generateBossArena(bossTypeForArena) as MapCell[][];
       levelData = {
         width: BOSS_ARENA_SIZE,
@@ -454,7 +423,7 @@ export function GameEngine() {
         const scaledValue = Math.max(1, Math.round(baseValue * Math.min(1.5, diffMods.pickupDensityMult)));
         world.add({
           id: `pickup-${idx}`,
-          type: spawn.type as EntityType,
+          type: entityType,
           position: new Vector3(spawn.x, 0.5, spawn.z),
           pickup: {
             pickupType: spawn.type as 'health' | 'ammo',
@@ -481,7 +450,7 @@ export function GameEngine() {
         const pType = powerUpTypes[Math.floor(seededRng() * powerUpTypes.length)];
         world.add({
           id: `powerup-${idx}`,
-          type: 'powerup' as EntityType,
+          type: 'powerup',
           position: new Vector3(spawn.x, 0.8, spawn.z),
           pickup: {
             pickupType: 'powerup',
@@ -494,7 +463,7 @@ export function GameEngine() {
         // Spike trap: uses spike GLB, deals damage when player walks over
         world.add({
           id: `hazard-spike-${idx}`,
-          type: 'hazard_spikes' as EntityType,
+          type: 'hazard_spikes',
           position: new Vector3(spawn.x, 0, spawn.z),
           hazard: {hazardType: 'spikes', damage: 10, cooldown: 0},
         });
@@ -502,7 +471,7 @@ export function GameEngine() {
         // Explosive barrel: shoots to explode, damages nearby enemies + player
         world.add({
           id: `hazard-barrel-${idx}`,
-          type: 'hazard_barrel' as EntityType,
+          type: 'hazard_barrel',
           position: new Vector3(spawn.x, 0.5, spawn.z),
           hazard: {hazardType: 'barrel', damage: 50, cooldown: 0, hp: 20},
         });
@@ -531,7 +500,7 @@ export function GameEngine() {
     // --- Spawn boss entity for boss encounters ---
     if (encounterType === 'boss') {
       const bossId = storeState.stage.bossId ?? 'archGoat';
-      const bossType = (ENEMY_TYPES.includes(bossId as EntityType) ? bossId : 'archGoat') as EntityType;
+      const bossType: EntityType = ENEMY_TYPES.includes(bossId as EntityType) ? (bossId as EntityType) : 'archGoat';
       const bossStats = getEnemyStats(bossType);
       const scaledBossHp = Math.ceil(bossStats.hp * diffMods.enemyHpMult * 1.5);
       const scaledBossMaxHp = Math.ceil(bossStats.maxHp * diffMods.enemyHpMult * 1.5);
@@ -569,7 +538,7 @@ export function GameEngine() {
         if (spec.type === 'health' && isNightmare) return;
         world.add({
           id: `boss-pickup-${i}`,
-          type: spec.type as EntityType,
+          type: spec.type,
           position: new Vector3(px * CELL_SIZE, 0.5, pz * CELL_SIZE),
           pickup: {
             pickupType: spec.type,
@@ -878,7 +847,7 @@ export function GameEngine() {
           // Boss: complete when no boss entity remains
           const bossTypes: EntityType[] = ['archGoat', 'infernoGoat', 'voidGoat', 'ironGoat'];
           const bossEntity = world.entities.find(
-            e => bossTypes.includes(e.type as EntityType) && e.enemy,
+            e => e.type != null && bossTypes.includes(e.type) && e.enemy,
           );
           // Mid-fight resupply: spawn 2 ammo pickups when boss drops to 50% HP
           if (bossEntity?.enemy && !bossResupplyTriggered) {
@@ -1415,7 +1384,7 @@ const PlayerController = ({level}: {level: LevelData}) => {
         window.addEventListener('keyup', handleKeyUp);
       }
 
-      (camera as any).__cleanup = () => {
+      cameraCleanups.set(camera, () => {
         scene.onBeforeRenderObservable.removeCallback(syncLoop);
         scene.onPointerDown = undefined;
         if (typeof window !== 'undefined') {
@@ -1429,13 +1398,15 @@ const PlayerController = ({level}: {level: LevelData}) => {
         if (touchControls) {
           touchControls.dispose();
         }
-      };
+      });
     });
 
     return () => {
       scene.onBeforeRenderObservable.remove(waitForPlayer);
-      if ((camera as any).__cleanup) {
-        (camera as any).__cleanup();
+      const cleanup = cameraCleanups.get(camera);
+      if (cleanup) {
+        cleanup();
+        cameraCleanups.delete(camera);
       }
       camera.detachControl();
       camera.dispose();
@@ -1555,7 +1526,7 @@ const EnemyRenderer = () => {
         if (!mesh) {
           mesh = createGoatMesh(
             enemy.id,
-            enemy.type as EntityType,
+            enemy.type!,
             scene,
           );
           meshMap.set(enemy.id, mesh);
@@ -1843,10 +1814,11 @@ const PickupRenderer = () => {
       for (const [id, mesh] of meshMap) {
         if (!activeIds.has(id)) {
           // Clean up glow ring if present
-          const ring = (mesh as any).__glowRing as Mesh | undefined;
+          const ring = meshGlowRings.get(mesh);
           if (ring) {
             ring.material?.dispose();
             ring.dispose();
+            meshGlowRings.delete(mesh);
           }
           mesh.material?.dispose();
           mesh.dispose();
@@ -1904,7 +1876,7 @@ const PickupRenderer = () => {
             ring.position.set(pickup.position.x, 0.05, pickup.position.z);
             ring.isPickable = false;
             // Store ring reference on the mesh for cleanup
-            (mesh as any).__glowRing = ring;
+            meshGlowRings.set(mesh, ring);
           }
         }
 
@@ -1931,10 +1903,11 @@ const PickupRenderer = () => {
     return () => {
       clearInterval(interval);
       for (const mesh of meshMap.values()) {
-        const ring = (mesh as any).__glowRing as Mesh | undefined;
+        const ring = meshGlowRings.get(mesh);
         if (ring) {
           ring.material?.dispose();
           ring.dispose();
+          meshGlowRings.delete(mesh);
         }
         mesh.material?.dispose();
         mesh.dispose();
