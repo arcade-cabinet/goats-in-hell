@@ -42,6 +42,22 @@ const SWAY_ROT_AMP = 0.008; // subtle Z-axis tilt
 const STRAFE_TILT_MAX = 0.07; // ~4 degrees max tilt
 const STRAFE_TILT_LERP = 0.1; // smoothing factor
 
+// Weapon switch animation
+const SWITCH_LOWER_SPEED = 0.08; // frames to lower (0→1)
+const SWITCH_RAISE_SPEED = 0.06; // frames to raise (1→0)
+const SWITCH_DROP_DIST = 0.35; // how far below screen to drop
+
+// Landing dip
+const LANDING_DIP_DECAY = 0.88;
+
+// Module-level landing dip state (set externally, consumed by WeaponViewModel)
+let landingDipAmount = 0;
+
+/** Trigger a weapon dip on jump landing. Intensity 0-1. */
+export function triggerLandingDip(intensity: number): void {
+  landingDipAmount = intensity * 0.06;
+}
+
 /** Maps weapon IDs to their model registry key and emissive tint. */
 const WEAPON_CONFIG: Record<WeaponId, {
   modelKey: WeaponModelKey;
@@ -127,6 +143,11 @@ export class WeaponViewModel {
   private lastPlayerPos = Vector3.Zero();
   private lastFireTime = 0;
 
+  // Weapon switch animation
+  private switchState: 'idle' | 'lowering' | 'raising' = 'idle';
+  private switchProgress = 0; // 0 = fully up, 1 = fully lowered
+  private pendingWeapon: WeaponId | null = null;
+
   constructor(scene: Scene) {
     this.scene = scene;
     this.root = new TransformNode('vm-root', scene);
@@ -144,9 +165,19 @@ export class WeaponViewModel {
     if (!player?.player) return;
 
     const weaponId = player.player.currentWeapon;
-    if (weaponId !== this.currentWeapon) {
-      this.switchWeapon(weaponId);
+    if (weaponId !== this.currentWeapon && this.switchState === 'idle') {
+      if (this.currentWeapon === null) {
+        // First weapon equip — instant, no animation
+        this.instantSwap(weaponId);
+      } else {
+        // Start lowering animation, swap happens at the bottom
+        this.pendingWeapon = weaponId;
+        this.switchState = 'lowering';
+      }
     }
+
+    // Drive weapon switch animation
+    this.updateSwitchAnimation();
 
     // Bob based on movement + strafe tilt tracking
     let isMoving = false;
@@ -204,8 +235,14 @@ export class WeaponViewModel {
     const targetTilt = -Math.sign(lateralSpeed) * Math.min(Math.abs(lateralSpeed) * 2, 1) * STRAFE_TILT_MAX;
     this.strafeTilt += (targetTilt - this.strafeTilt) * STRAFE_TILT_LERP;
 
+    // Landing dip — decays each frame
+    landingDipAmount *= LANDING_DIP_DECAY;
+
+    // Smooth ease-in-out curve for switch animation
+    const switchY = -this.switchProgress * this.switchProgress * SWITCH_DROP_DIST;
+
     this.root.position.x = BASE_POS.x + bobX + swayX;
-    this.root.position.y = BASE_POS.y + bobY + jumpBob + this.kickOffset + swayY;
+    this.root.position.y = BASE_POS.y + bobY + jumpBob + this.kickOffset + swayY + switchY - landingDipAmount;
     this.root.position.z = BASE_POS.z - this.kickOffset * 0.5;
 
     if (player.player.isReloading) {
@@ -216,7 +253,24 @@ export class WeaponViewModel {
     this.root.rotation.z = swayRot + this.strafeTilt;
   }
 
-  private switchWeapon(weaponId: WeaponId): void {
+  private updateSwitchAnimation(): void {
+    if (this.switchState === 'lowering') {
+      this.switchProgress = Math.min(1, this.switchProgress + SWITCH_LOWER_SPEED);
+      if (this.switchProgress >= 1 && this.pendingWeapon) {
+        // At the nadir — swap the model
+        this.instantSwap(this.pendingWeapon);
+        this.pendingWeapon = null;
+        this.switchState = 'raising';
+      }
+    } else if (this.switchState === 'raising') {
+      this.switchProgress = Math.max(0, this.switchProgress - SWITCH_RAISE_SPEED);
+      if (this.switchProgress <= 0) {
+        this.switchState = 'idle';
+      }
+    }
+  }
+
+  private instantSwap(weaponId: WeaponId): void {
     // Dispose old instance
     if (this.weaponMesh) {
       this.weaponMesh.getChildMeshes(false).forEach(m => m.dispose());

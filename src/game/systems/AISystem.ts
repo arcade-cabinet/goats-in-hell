@@ -26,6 +26,7 @@ import {GameState} from '../../state/GameState';
 import {useGameStore} from '../../state/GameStore';
 import {playSound} from './AudioSystem';
 import {getGameTime} from './GameClock';
+import {registerDamageDirection} from '../ui/BabylonHUD';
 
 /** Shorthand for the store's seeded PRNG. */
 function rng(): number {
@@ -135,10 +136,11 @@ function directionTo(from: Vector3, to: Vector3): Vector3 {
   return dir.scaleInPlace(1 / len);
 }
 
-function meleeHitPlayer(player: Entity, damage: number): void {
+function meleeHitPlayer(player: Entity, damage: number, sourcePos?: Vector3): void {
   player.player!.hp -= damage;
   GameState.set({damageFlash: 1.0, screenShake: 10});
   playSound('hurt');
+  if (sourcePos) registerDamageDirection(sourcePos);
 }
 
 function spawnProjectile(
@@ -173,7 +175,7 @@ function postSteeringBasicGoat(
 ): void {
   const enemy = entity.enemy!;
   if (dist <= enemy.attackRange && enemy.attackCooldown <= 0) {
-    meleeHitPlayer(player, enemy.damage);
+    meleeHitPlayer(player, enemy.damage, entity.position);
     enemy.attackCooldown = ATTACK_COOLDOWN_FRAMES;
   }
 }
@@ -208,7 +210,7 @@ function postSteeringShadowGoat(
   enemy.visibilityAlpha = 0.15 + t * 0.85;
 
   if (dist <= enemy.attackRange && enemy.attackCooldown <= 0) {
-    meleeHitPlayer(player, enemy.damage);
+    meleeHitPlayer(player, enemy.damage, entity.position);
     enemy.attackCooldown = ATTACK_COOLDOWN_FRAMES;
   }
 }
@@ -220,7 +222,7 @@ function postSteeringGoatKnight(
 ): void {
   const enemy = entity.enemy!;
   if (dist <= enemy.attackRange && enemy.attackCooldown <= 0) {
-    meleeHitPlayer(player, enemy.damage);
+    meleeHitPlayer(player, enemy.damage, entity.position);
     enemy.attackCooldown = Math.floor(ATTACK_COOLDOWN_FRAMES * 1.5);
   }
 }
@@ -237,7 +239,7 @@ function postSteeringInfernoGoat(
 
   // Melee
   if (dist <= enemy.attackRange && enemy.attackCooldown <= 0) {
-    meleeHitPlayer(player, enemy.damage);
+    meleeHitPlayer(player, enemy.damage, entity.position);
     enemy.attackCooldown = ATTACK_COOLDOWN_FRAMES;
   }
 
@@ -316,7 +318,7 @@ function postSteeringVoidGoat(
 
   // Melee
   if (dist <= enemy.attackRange && enemy.attackCooldown <= 0) {
-    meleeHitPlayer(player, enemy.damage);
+    meleeHitPlayer(player, enemy.damage, entity.position);
     enemy.attackCooldown = ATTACK_COOLDOWN_FRAMES;
   }
 
@@ -359,7 +361,7 @@ function postSteeringIronGoat(
 
   // Slow but devastating melee with longer cooldown
   if (dist <= enemy.attackRange && enemy.attackCooldown <= 0) {
-    meleeHitPlayer(player, enemy.damage);
+    meleeHitPlayer(player, enemy.damage, entity.position);
     enemy.attackCooldown = Math.floor(ATTACK_COOLDOWN_FRAMES * 2);
     GameState.set({screenShake: 15});
   }
@@ -378,7 +380,7 @@ function postSteeringIronGoat(
     enemy._slamCd -= dtScale;
     if (enemy._slamCd <= 0 && dist < 5) {
       // Ground slam: heavy damage + big screen shake
-      meleeHitPlayer(player, Math.ceil(enemy.damage * 1.5));
+      meleeHitPlayer(player, Math.ceil(enemy.damage * 1.5), entity.position);
       GameState.set({screenShake: 25, damageFlash: 0.5});
       enemy._slamCd = 300;
       playSound('explosion');
@@ -408,7 +410,7 @@ function postSteeringArchGoat(
   // Melee
   if (dist <= enemy.attackRange && enemy.attackCooldown <= 0) {
     const dmg = isPhase3 ? Math.ceil(enemy.damage * 1.5) : enemy.damage;
-    meleeHitPlayer(player, dmg);
+    meleeHitPlayer(player, dmg, entity.position);
     enemy.attackCooldown = isPhase3
       ? Math.floor(ATTACK_COOLDOWN_FRAMES * 0.7)
       : ATTACK_COOLDOWN_FRAMES;

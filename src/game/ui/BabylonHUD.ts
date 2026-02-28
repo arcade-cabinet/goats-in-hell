@@ -27,6 +27,32 @@ import type {Entity, WeaponId} from '../entities/components';
 import {getGameTime} from '../systems/GameClock';
 import {getAnnouncement} from '../systems/KillStreakSystem';
 import {getActiveBuffs} from '../systems/PowerUpSystem';
+import {Vector3} from '@babylonjs/core';
+
+// ---------------------------------------------------------------------------
+// Damage direction indicator — module-level state
+// ---------------------------------------------------------------------------
+
+/** Directions: 0=front, 1=right, 2=back, 3=left. Intensity decays each frame. */
+const damageIndicators = [0, 0, 0, 0]; // front, right, back, left
+const INDICATOR_DECAY = 0.97;
+
+/**
+ * Register a damage hit from a world-space source position.
+ * Call this from any system that damages the player.
+ */
+export function registerDamageDirection(sourcePos: Vector3): void {
+  // We need the camera to compute relative direction — defer to update if unavailable
+  pendingDamageSources.push(sourcePos.clone());
+}
+
+const pendingDamageSources: Vector3[] = [];
+
+/** Reset damage indicators between floors. */
+export function resetDamageIndicators(): void {
+  damageIndicators[0] = damageIndicators[1] = damageIndicators[2] = damageIndicators[3] = 0;
+  pendingDamageSources.length = 0;
+}
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -170,6 +196,9 @@ export class BabylonHUD {
   private shownHints: Set<string> = new Set();
   private tutorialFrameCount = 0;
 
+  // Damage direction indicators (front, right, back, left)
+  private damageArcs: Rectangle[] = [];
+
   constructor(scene: Scene) {
     this.gui = AdvancedDynamicTexture.CreateFullscreenUI('HUD', true, scene);
     this.gui.idealHeight = 900;
@@ -191,6 +220,7 @@ export class BabylonHUD {
     this.createKillFeedback();
     this.createWeaponPickupNotification();
     this.createTutorialHints();
+    this.createDamageDirectionIndicators();
   }
 
   // =========================================================================
@@ -886,6 +916,7 @@ export class BabylonHUD {
     this.updateWeaponPickup(player);
     this.updateTutorialHints(player, storeState);
     this.updateBuffIcons();
+    this.updateDamageDirection();
   }
 
   private updateHealth(player: Entity): void {
@@ -1324,6 +1355,75 @@ export class BabylonHUD {
     // Show sprint hint later
     if (this.tutorialFrameCount === 600 && !this.shownHints.has('sprint')) {
       this.showHint('sprint', 'Hold SHIFT to sprint');
+    }
+  }
+
+  // =========================================================================
+  // Damage direction indicators
+  // =========================================================================
+
+  private createDamageDirectionIndicators(): void {
+    // 4 thin red gradient bars at screen edges: top (front), right, bottom (back), left
+    const configs = [
+      {name: 'dmgTop', hAlign: Control.HORIZONTAL_ALIGNMENT_CENTER, vAlign: Control.VERTICAL_ALIGNMENT_TOP, w: '40%', h: '6px', rot: 0},
+      {name: 'dmgRight', hAlign: Control.HORIZONTAL_ALIGNMENT_RIGHT, vAlign: Control.VERTICAL_ALIGNMENT_CENTER, w: '6px', h: '40%', rot: 0},
+      {name: 'dmgBottom', hAlign: Control.HORIZONTAL_ALIGNMENT_CENTER, vAlign: Control.VERTICAL_ALIGNMENT_BOTTOM, w: '40%', h: '6px', rot: 0},
+      {name: 'dmgLeft', hAlign: Control.HORIZONTAL_ALIGNMENT_LEFT, vAlign: Control.VERTICAL_ALIGNMENT_CENTER, w: '6px', h: '40%', rot: 0},
+    ];
+    for (const cfg of configs) {
+      const bar = new Rectangle(cfg.name);
+      bar.width = cfg.w;
+      bar.height = cfg.h;
+      bar.horizontalAlignment = cfg.hAlign;
+      bar.verticalAlignment = cfg.vAlign;
+      bar.background = 'rgba(255, 0, 0, 0.7)';
+      bar.thickness = 0;
+      bar.cornerRadius = 3;
+      bar.alpha = 0;
+      bar.isHitTestVisible = false;
+      this.gui.addControl(bar);
+      this.damageArcs.push(bar);
+    }
+  }
+
+  private updateDamageDirection(): void {
+    const scene = this.gui.getScene();
+    if (!scene?.activeCamera) return;
+
+    const cam = scene.activeCamera as import('@babylonjs/core').FreeCamera;
+    const camYaw = cam.rotation.y;
+
+    // Process pending damage sources → convert to directional indicators
+    while (pendingDamageSources.length > 0) {
+      const src = pendingDamageSources.pop()!;
+      const dx = src.x - cam.position.x;
+      const dz = src.z - cam.position.z;
+
+      // Angle from camera forward to damage source
+      const sourceAngle = Math.atan2(dx, dz);
+      let relAngle = sourceAngle - camYaw;
+
+      // Normalize to [-PI, PI]
+      while (relAngle > Math.PI) relAngle -= Math.PI * 2;
+      while (relAngle < -Math.PI) relAngle += Math.PI * 2;
+
+      // Map angle to quadrant: front=0, right=1, back=2, left=3
+      if (relAngle >= -Math.PI / 4 && relAngle < Math.PI / 4) {
+        damageIndicators[0] = Math.max(damageIndicators[0], 1); // front
+      } else if (relAngle >= Math.PI / 4 && relAngle < 3 * Math.PI / 4) {
+        damageIndicators[1] = Math.max(damageIndicators[1], 1); // right
+      } else if (relAngle >= -3 * Math.PI / 4 && relAngle < -Math.PI / 4) {
+        damageIndicators[3] = Math.max(damageIndicators[3], 1); // left
+      } else {
+        damageIndicators[2] = Math.max(damageIndicators[2], 1); // back
+      }
+    }
+
+    // Update visual + decay
+    for (let i = 0; i < 4; i++) {
+      this.damageArcs[i].alpha = damageIndicators[i];
+      damageIndicators[i] *= INDICATOR_DECAY;
+      if (damageIndicators[i] < 0.01) damageIndicators[i] = 0;
     }
   }
 

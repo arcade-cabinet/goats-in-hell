@@ -95,7 +95,7 @@ import {AIGovernor} from './systems/AIGovernor';
 import {BabylonHUD} from './ui/BabylonHUD';
 import {BabylonScreens} from './ui/BabylonScreens';
 import {DamageNumbers3D} from './ui/DamageNumbers3D';
-import {WeaponViewModel, loadAllWeapons} from './ui/WeaponViewModel';
+import {WeaponViewModel, loadAllWeapons, triggerLandingDip} from './ui/WeaponViewModel';
 import {LoadingScreen} from './ui/LoadingScreen';
 import {TouchControls, touchInput, resetTouchInput, isTouchDevice} from './ui/TouchControls';
 import {useGameStore, DIFFICULTY_PRESETS, getLevelBonuses} from '../state/GameStore';
@@ -1095,6 +1095,12 @@ const PlayerController = ({level}: {level: LevelData}) => {
             jumpVelocity -= 0.012; // gravity acceleration per frame
             // Detect landing: camera stops falling when gravity collision kicks in
             if (jumpVelocity < 0 && camera.position.y <= GROUND_Y + 0.1) {
+              // Landing impact — shake proportional to fall speed
+              const impactForce = Math.abs(jumpVelocity);
+              if (impactForce > 0.04) {
+                GameState.set({screenShake: Math.min(15, impactForce * 80)});
+                triggerLandingDip(Math.min(1, impactForce * 5));
+              }
               jumpVelocity = 0;
               isGrounded = true;
             }

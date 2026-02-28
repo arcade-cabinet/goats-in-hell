@@ -8,6 +8,7 @@ import {pushDamageEvent} from './damageEvents';
 import {damageBarrel} from './HazardSystem';
 import {registerKill} from './KillStreakSystem';
 import {absorbDamage} from './PowerUpSystem';
+import {registerDamageDirection} from '../ui/BabylonHUD';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -163,6 +164,7 @@ function checkEnemyProjectileCollision(
     const flashIntensity = remaining > 0 ? 0.8 : 0.2;
     GameState.set({damageFlash: flashIntensity, screenShake: remaining > 0 ? 8 : 3});
     playSound('hurt');
+    if (projectile.position) registerDamageDirection(projectile.position);
 
     return true;
   }
