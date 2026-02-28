@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/arcade-cabinet/goats-in-hell/compare/v1.1.0...v1.1.1) (2026-02-28)
+
+
+### Bug Fixes
+
+* WebGPU GLB material rendering + CI pnpm ([#13](https://github.com/arcade-cabinet/goats-in-hell/issues/13)) ([fcb18b1](https://github.com/arcade-cabinet/goats-in-hell/commit/fcb18b143448d8156ae4372ba6abf429ad3b7a03))
+
 ## [1.1.0](https://github.com/arcade-cabinet/goats-in-hell/compare/v1.0.0...v1.1.0) (2026-02-28)
 
 
