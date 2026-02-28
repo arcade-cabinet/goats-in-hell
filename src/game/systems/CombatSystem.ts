@@ -8,7 +8,7 @@ import {pushDamageEvent} from './damageEvents';
 import {damageBarrel} from './HazardSystem';
 import {registerKill} from './KillStreakSystem';
 import {absorbDamage} from './PowerUpSystem';
-import {registerDamageDirection} from '../ui/BabylonHUD';
+import {registerDamageDirection, triggerBloodSplatter} from '../ui/BabylonHUD';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -29,7 +29,7 @@ export function removeEntity(entity: Entity): void {
  * Apply damage to an enemy, factoring in armor if present.
  * Returns the actual damage dealt to HP.
  */
-export function damageEnemy(entity: Entity, damage: number): number {
+export function damageEnemy(entity: Entity, damage: number, isCrit?: boolean): number {
   const enemy = entity.enemy!;
 
   // Armored enemies absorb damage with armor first
@@ -43,7 +43,7 @@ export function damageEnemy(entity: Entity, damage: number): number {
 
   // Emit floating damage number
   if (damage > 0 && entity.position) {
-    pushDamageEvent(damage, entity.position);
+    pushDamageEvent(damage, entity.position, isCrit);
   }
 
   return damage;
@@ -164,6 +164,7 @@ function checkEnemyProjectileCollision(
     const flashIntensity = remaining > 0 ? 0.8 : 0.2;
     GameState.set({damageFlash: flashIntensity, screenShake: remaining > 0 ? 8 : 3});
     playSound('hurt');
+    if (remaining > 0) triggerBloodSplatter(Math.min(1, remaining / 30));
     if (projectile.position) registerDamageDirection(projectile.position);
 
     return true;

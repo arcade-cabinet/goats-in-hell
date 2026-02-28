@@ -49,6 +49,7 @@ import {
 import {doorSystemUpdate, resetDoorSystem} from './systems/DoorSystem';
 import {hazardSystemUpdate, resetHazardSystem, setHazardScene} from './systems/HazardSystem';
 import {resetKillStreaks} from './systems/KillStreakSystem';
+import {checkSecretWalls, resetSecrets} from './systems/SecretRoomSystem';
 import {powerUpSystemUpdate, resetPowerUps, getSpeedMultiplier} from './systems/PowerUpSystem';
 import {tickGameClock, resetGameClock, getGameTime} from './systems/GameClock';
 import {initPhysics, disposeAllEnemyColliders, removeEnemyCollider} from './systems/PhysicsSetup';
@@ -95,7 +96,7 @@ import {
   loadAllProps,
 } from './rendering/DungeonProps';
 import type {PropType} from './rendering/DungeonProps';
-import {createLoreMessage} from './rendering/LoreMessages';
+import {createLoreMessage, clearLoreRegistry} from './rendering/LoreMessages';
 import {AIGovernor} from './systems/AIGovernor';
 import {BabylonHUD, resetBossPhase} from './ui/BabylonHUD';
 import {BabylonScreens} from './ui/BabylonScreens';
@@ -133,7 +134,7 @@ const FOOTSTEP_DISTANCE = 1.5;
 // Level data interface (unifies LevelGenerator, ArenaGenerator, BossArenas)
 // ---------------------------------------------------------------------------
 
-interface LevelData {
+export interface LevelData {
   width: number;
   depth: number;
   floor: number;
@@ -147,7 +148,7 @@ interface LevelData {
 // Helpers
 // ---------------------------------------------------------------------------
 
-function mapCellToWallType(cell: MapCell): WallType | null {
+function mapCellToWallType(cell: MapCell, theme?: FloorTheme): WallType | null {
   switch (cell) {
     case MapCell.WALL_STONE:
       return 'stone';
@@ -159,6 +160,9 @@ function mapCellToWallType(cell: MapCell): WallType | null {
       return 'obsidian';
     case MapCell.DOOR:
       return 'door';
+    case MapCell.WALL_SECRET:
+      // Secret walls look like the theme's primary wall
+      return theme ? mapCellToWallType(theme.primaryWall as MapCell) ?? 'stone' : 'stone';
     default:
       return null;
   }
@@ -361,6 +365,8 @@ export function GameEngine() {
     resetKillStreaks();
     resetPowerUps();
     resetBossPhase();
+    clearLoreRegistry();
+    resetSecrets();
     setHazardScene(scene);
     setPickupScene(scene);
 
@@ -720,6 +726,11 @@ export function GameEngine() {
       // 3b. Door proximity check and animation
       doorSystemUpdate(scene, levelData.grid, dt);
 
+      // 3c. Secret wall discovery
+      if (player.position) {
+        checkSecretWalls(scene, player.position, levelData, levelMeshesRef.current);
+      }
+
       // 4. Weapon reload
       updateReload(player);
 
@@ -979,7 +990,7 @@ export function GameEngine() {
           continue;
         }
 
-        const wallType = mapCellToWallType(cell);
+        const wallType = mapCellToWallType(cell, level.theme);
         if (!wallType) continue;
 
         const wall = MeshBuilder.CreateBox(
@@ -992,6 +1003,12 @@ export function GameEngine() {
         wall.checkCollisions = true;
         wall.material = materials[wallType];
         created.push(wall);
+
+        // Track secret walls for discovery system
+        if (cell === MapCell.WALL_SECRET) {
+          wall.name = `secret-wall-${x}-${z}`;
+          wall.metadata = {...(wall.metadata ?? {}), isSecret: true, gridX: x, gridZ: z};
+        }
       }
     }
 

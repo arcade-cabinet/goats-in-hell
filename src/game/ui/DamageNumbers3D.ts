@@ -140,8 +140,8 @@ export class DamageNumbers3D {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
     ctx.fillText(`${ev.amount}`, TEXTURE_SIZE / 2 + 2, TEXTURE_SIZE / 2 + 2);
 
-    // Main text
-    ctx.fillStyle = isBig ? '#ff4400' : '#ffcc00';
+    // Main text — gold for crits/headshots, red for big hits, yellow for normal
+    ctx.fillStyle = ev.isCrit ? '#ffdd00' : isBig ? '#ff4400' : '#ffcc00';
     ctx.fillText(`${ev.amount}`, TEXTURE_SIZE / 2, TEXTURE_SIZE / 2);
 
     texture.update();

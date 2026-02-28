@@ -277,7 +277,7 @@ function performHitscan(
       }
     }
 
-    applyDamageToEnemy(hit.entityId, damage);
+    applyDamageToEnemy(hit.entityId, damage, isHeadshot);
 
     if (isHeadshot) {
       GameState.set({hitMarker: 10}); // extra-strong hit marker for headshots
@@ -356,7 +356,7 @@ function spawnProjectile(
  * Uses shared damageEnemy() for armor absorption and handleEnemyKill()
  * for score/XP/sound on kill.
  */
-function applyDamageToEnemy(entityId: string, damage: number): void {
+function applyDamageToEnemy(entityId: string, damage: number, isCrit?: boolean): void {
   const entity = world.entities.find(e => e.id === entityId && e.enemy);
 
   if (!entity || !entity.enemy) {
@@ -369,7 +369,7 @@ function applyDamageToEnemy(entityId: string, damage: number): void {
   const scaled = Math.ceil(damage * bonuses.damageMult * getDamageMultiplier());
 
   // Apply damage with armor absorption
-  damageEnemy(entity, scaled);
+  damageEnemy(entity, scaled, isCrit);
 
   // Hit marker feedback
   GameState.set({hitMarker: 6});

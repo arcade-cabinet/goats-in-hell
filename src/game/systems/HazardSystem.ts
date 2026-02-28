@@ -13,7 +13,7 @@ import {playSound} from './AudioSystem';
 import {pushDamageEvent} from './damageEvents';
 import {removeEntity} from './CombatSystem';
 import {getGameTime} from './GameClock';
-import {registerDamageDirection} from '../ui/BabylonHUD';
+import {registerDamageDirection, triggerBloodSplatter} from '../ui/BabylonHUD';
 import {createExplosionBurst} from '../rendering/Particles';
 
 const SPIKE_RANGE = 1.2;
@@ -53,6 +53,7 @@ export function hazardSystemUpdate(): void {
           hazardCooldowns.set(hazard.id!, now);
           GameState.set({damageFlash: 0.5, screenShake: 4});
           playSound('hurt');
+          triggerBloodSplatter(Math.min(1, hz.damage / 20));
           registerDamageDirection(pos);
         }
       }

@@ -21,6 +21,7 @@ export enum MapCell {
   FLOOR_LAVA = 6,
   FLOOR_RAISED = 7,    // Elevated platform floor
   RAMP = 8,            // Connects ground to raised platform
+  WALL_SECRET = 9,     // Looks like normal wall but can be opened
 }
 
 export type SpawnData = {x: number; z: number; type: string; weaponId?: string; rotation?: number; elevation?: number};
@@ -188,6 +189,9 @@ export class LevelGenerator {
 
     // Place environmental hazards
     this.placeHazards(playerCellX, playerCellZ);
+
+    // Place secret treasure rooms
+    this.placeSecretRooms(playerCellX, playerCellZ);
   }
 
   // ---------------------------------------------------------------------------
@@ -686,7 +690,8 @@ export class LevelGenerator {
       cell === MapCell.WALL_STONE ||
       cell === MapCell.WALL_FLESH ||
       cell === MapCell.WALL_LAVA ||
-      cell === MapCell.WALL_OBSIDIAN
+      cell === MapCell.WALL_OBSIDIAN ||
+      cell === MapCell.WALL_SECRET
     );
   }
 
@@ -775,6 +780,139 @@ export class LevelGenerator {
           });
         }
       }
+    }
+  }
+
+  /**
+   * Place 0-2 secret rooms per floor. A secret room is a small 3x3 space
+   * carved behind a wall, connected to the dungeon by a single WALL_SECRET
+   * cell. Contains guaranteed rare loot.
+   */
+  private placeSecretRooms(playerCellX: number, playerCellZ: number) {
+    if (this.floor < 2) return; // No secrets on floor 1
+
+    // 0-2 secret rooms per floor
+    const count = rng() < 0.4 ? 2 : rng() < 0.6 ? 1 : 0;
+    if (count === 0) return;
+
+    // Find candidate positions: wall cells adjacent to an empty corridor cell
+    // with enough space behind the wall for a 3x3 room
+    interface SecretCandidate {
+      wallX: number; wallZ: number;
+      roomCenterX: number; roomCenterZ: number;
+      direction: 'n' | 's' | 'e' | 'w';
+    }
+
+    const candidates: SecretCandidate[] = [];
+
+    for (let z = 4; z < this.depth - 4; z++) {
+      for (let x = 4; x < this.width - 4; x++) {
+        if (!this.isWall(x, z)) continue;
+
+        const distFromSpawn = Math.abs(x - playerCellX) + Math.abs(z - playerCellZ);
+        if (distFromSpawn < 8) continue;
+
+        // Check each direction: wall cell has open corridor on one side
+        // and enough solid wall behind it for a 3x3 room
+        const dirs: {dx: number; dz: number; dir: SecretCandidate['direction']}[] = [
+          {dx: 0, dz: -1, dir: 'n'}, // corridor to the north, room to the south
+          {dx: 0, dz: 1, dir: 's'},
+          {dx: -1, dz: 0, dir: 'w'},
+          {dx: 1, dz: 0, dir: 'e'},
+        ];
+
+        for (const {dx, dz, dir} of dirs) {
+          // Corridor cell adjacent to the wall
+          const corridorX = x + dx;
+          const corridorZ = z + dz;
+          if (!this.inBounds(corridorX, corridorZ)) continue;
+          if (this.grid[corridorZ][corridorX] !== MapCell.EMPTY) continue;
+
+          // Room center is 2 cells behind the wall (opposite direction from corridor)
+          const roomCenterX = x - dx * 2;
+          const roomCenterZ = z - dz * 2;
+
+          // Check if 3x3 area behind is all solid wall
+          let canPlace = true;
+          for (let rz = -1; rz <= 1; rz++) {
+            for (let rx = -1; rx <= 1; rx++) {
+              const cx = roomCenterX + rx;
+              const cz = roomCenterZ + rz;
+              if (!this.inBounds(cx, cz) || !this.isWall(cx, cz)) {
+                canPlace = false;
+                break;
+              }
+            }
+            if (!canPlace) break;
+          }
+
+          if (canPlace) {
+            candidates.push({wallX: x, wallZ: z, roomCenterX, roomCenterZ, direction: dir});
+          }
+        }
+      }
+    }
+
+    // Shuffle and pick
+    for (let i = candidates.length - 1; i > 0; i--) {
+      const j = Math.floor(rng() * (i + 1));
+      [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+    }
+
+    let placed = 0;
+    for (const c of candidates) {
+      if (placed >= count) break;
+
+      // Carve 3x3 room
+      for (let rz = -1; rz <= 1; rz++) {
+        for (let rx = -1; rx <= 1; rx++) {
+          this.grid[c.roomCenterZ + rz][c.roomCenterX + rx] = MapCell.EMPTY;
+        }
+      }
+
+      // Place secret wall at the connection point
+      this.grid[c.wallZ][c.wallX] = MapCell.WALL_SECRET;
+
+      // Also carve the cell between wall and room center (the "throat")
+      const throatX = c.wallX + (c.roomCenterX - c.wallX > 0 ? 1 : c.roomCenterX - c.wallX < 0 ? -1 : 0);
+      const throatZ = c.wallZ + (c.roomCenterZ - c.wallZ > 0 ? 1 : c.roomCenterZ - c.wallZ < 0 ? -1 : 0);
+      if (this.inBounds(throatX, throatZ)) {
+        this.grid[throatZ][throatX] = MapCell.EMPTY;
+      }
+
+      // Spawn rare loot in the room center
+      const lootTypes = ['weaponPickup', 'powerup', 'ammo', 'health'];
+      const lootType = lootTypes[Math.floor(rng() * lootTypes.length)];
+
+      if (lootType === 'weaponPickup') {
+        const weaponIds = ['brimShotgun', 'hellfireCannon', 'goatsBane'];
+        this.spawns.push({
+          x: c.roomCenterX * CELL_SIZE,
+          z: c.roomCenterZ * CELL_SIZE,
+          type: 'weaponPickup',
+          weaponId: weaponIds[Math.floor(rng() * weaponIds.length)],
+        });
+      } else if (lootType === 'powerup') {
+        this.spawns.push({
+          x: c.roomCenterX * CELL_SIZE,
+          z: c.roomCenterZ * CELL_SIZE,
+          type: 'powerup',
+        });
+      } else {
+        // Generous ammo + health combo
+        this.spawns.push({
+          x: (c.roomCenterX - 1) * CELL_SIZE,
+          z: c.roomCenterZ * CELL_SIZE,
+          type: 'ammo',
+        });
+        this.spawns.push({
+          x: (c.roomCenterX + 1) * CELL_SIZE,
+          z: c.roomCenterZ * CELL_SIZE,
+          type: 'health',
+        });
+      }
+
+      placed++;
     }
   }
 

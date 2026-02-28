@@ -29,6 +29,8 @@ import {getGameTime} from '../systems/GameClock';
 import {getAnnouncement} from '../systems/KillStreakSystem';
 import {getActiveBuffs} from '../systems/PowerUpSystem';
 import {getHeadshotTimer, tickHeadshotTimer} from '../weapons/WeaponSystem';
+import {getLoreEntries} from '../rendering/LoreMessages';
+import {getSecretNotifyTimer, tickSecretTimer} from '../systems/SecretRoomSystem';
 import {Vector3} from '@babylonjs/core';
 
 // ---------------------------------------------------------------------------
@@ -49,6 +51,17 @@ export function registerDamageDirection(sourcePos: Vector3): void {
 }
 
 const pendingDamageSources: Vector3[] = [];
+
+// ---------------------------------------------------------------------------
+// Blood splatter callback — set by HUD, called by combat/hazard systems
+// ---------------------------------------------------------------------------
+
+let bloodSplatterCallback: ((intensity: number) => void) | null = null;
+
+/** Trigger blood splatter effect from any system. Intensity 0-1. */
+export function triggerBloodSplatter(intensity: number): void {
+  if (bloodSplatterCallback) bloodSplatterCallback(intensity);
+}
 
 /** Reset damage indicators between floors. */
 export function resetDamageIndicators(): void {
@@ -220,6 +233,20 @@ export class BabylonHUD {
   // Damage direction indicators (front, right, back, left)
   private damageArcs: Rectangle[] = [];
 
+  // Lore proximity overlay
+  private loreOverlay!: Rectangle;
+  private loreHeaderText!: TextBlock;
+  private loreBodyText!: TextBlock;
+  private lorePromptText!: TextBlock;
+  private loreVisible = false;
+
+  // Secret room notification
+  private secretText!: TextBlock;
+
+  // Blood splatter overlay
+  private bloodSplatter!: Rectangle;
+  private bloodAlpha = 0;
+
   constructor(scene: Scene) {
     this.gui = AdvancedDynamicTexture.CreateFullscreenUI('HUD', true, scene);
     this.gui.idealHeight = 900;
@@ -244,6 +271,12 @@ export class BabylonHUD {
     this.createDamageDirectionIndicators();
     this.createFloorAnnouncement();
     this.createHeadshotNotification();
+    this.createLoreOverlay();
+    this.createSecretNotification();
+    this.createBloodSplatter();
+
+    // Register blood splatter callback so combat systems can trigger it
+    bloodSplatterCallback = (intensity: number) => this.triggerBloodSplatter(intensity);
   }
 
   // =========================================================================
@@ -942,6 +975,9 @@ export class BabylonHUD {
     this.updateDamageDirection();
     this.updateFloorAnnouncement(storeState);
     this.updateHeadshotNotification();
+    this.updateLoreOverlay(player);
+    this.updateSecretNotification();
+    this.updateBloodSplatter();
   }
 
   private updateHealth(player: Entity): void {
@@ -1183,6 +1219,12 @@ export class BabylonHUD {
           case 6: ctx.fillStyle = '#ff4400'; break; // lava floor hazard
           case 7: ctx.fillStyle = '#556677'; break; // raised platform
           case 8: ctx.fillStyle = '#667755'; break; // ramp
+          case 9: { // secret wall — subtle shimmer hint
+            const shimmer = Math.sin(Date.now() * 0.005) * 0.3 + 0.7;
+            const g = Math.floor(40 * shimmer);
+            ctx.fillStyle = `rgb(${50 + g}, ${30 + g}, ${60 + g})`;
+            break;
+          }
           default: ctx.fillStyle = '#333333';
         }
         ctx.fillRect(x * cellPx, z * cellPx, cellPx, cellPx);
@@ -1589,6 +1631,181 @@ export class BabylonHUD {
     } else {
       this.floorAnnounceText.alpha = 0;
       this.floorAnnounceSubText.alpha = 0;
+    }
+  }
+
+  // =========================================================================
+  // Lore proximity overlay
+  // =========================================================================
+
+  private createLoreOverlay(): void {
+    // Semi-transparent background panel
+    this.loreOverlay = new Rectangle('loreOverlay');
+    this.loreOverlay.width = '500px';
+    this.loreOverlay.height = '200px';
+    this.loreOverlay.verticalAlignment = Control.VERTICAL_ALIGNMENT_CENTER;
+    this.loreOverlay.top = 80;
+    this.loreOverlay.thickness = 1;
+    this.loreOverlay.color = 'rgba(180, 40, 0, 0.6)';
+    this.loreOverlay.background = 'rgba(10, 0, 0, 0.85)';
+    this.loreOverlay.cornerRadius = 4;
+    this.loreOverlay.isVisible = false;
+    this.gui.addControl(this.loreOverlay);
+
+    // Header — the wall inscription text
+    this.loreHeaderText = new TextBlock('loreHeader', '');
+    this.loreHeaderText.fontFamily = FONT;
+    this.loreHeaderText.fontSize = 22;
+    this.loreHeaderText.color = '#cc3300';
+    this.loreHeaderText.textWrapping = true;
+    this.loreHeaderText.top = -50;
+    this.loreHeaderText.heightInPixels = 40;
+    this.loreOverlay.addControl(this.loreHeaderText);
+
+    // Body — extended lore narrative
+    this.loreBodyText = new TextBlock('loreBody', '');
+    this.loreBodyText.fontFamily = FONT;
+    this.loreBodyText.fontSize = 14;
+    this.loreBodyText.color = '#aa8866';
+    this.loreBodyText.textWrapping = true;
+    this.loreBodyText.top = 15;
+    this.loreBodyText.heightInPixels = 100;
+    this.loreBodyText.paddingLeftInPixels = 20;
+    this.loreBodyText.paddingRightInPixels = 20;
+    this.loreOverlay.addControl(this.loreBodyText);
+
+    // Prompt hint near crosshair
+    this.lorePromptText = new TextBlock('lorePrompt', '');
+    this.lorePromptText.fontFamily = FONT;
+    this.lorePromptText.fontSize = 12;
+    this.lorePromptText.color = 'rgba(200, 150, 100, 0.8)';
+    this.lorePromptText.top = 40;
+    this.lorePromptText.isVisible = false;
+    this.gui.addControl(this.lorePromptText);
+  }
+
+  private updateLoreOverlay(player: Entity): void {
+    const entries = getLoreEntries();
+    if (entries.length === 0 || !player.position) {
+      this.loreOverlay.isVisible = false;
+      this.lorePromptText.isVisible = false;
+      this.loreVisible = false;
+      return;
+    }
+
+    // Find closest lore entry
+    let closest: (typeof entries)[number] | null = null;
+    let closestDist = Infinity;
+    for (const entry of entries) {
+      const dist = Vector3.Distance(player.position, entry.position);
+      if (dist < closestDist) {
+        closestDist = dist;
+        closest = entry;
+      }
+    }
+
+    const PROXIMITY = 3.5;
+    const SHOW_PROMPT = 5.0;
+
+    if (closest && closestDist < SHOW_PROMPT) {
+      // Show approach prompt
+      this.lorePromptText.isVisible = true;
+      this.lorePromptText.text = closestDist < PROXIMITY ? '[ READING... ]' : '[ APPROACH TO READ ]';
+      this.lorePromptText.alpha = Math.min(1, (SHOW_PROMPT - closestDist) / (SHOW_PROMPT - PROXIMITY));
+    } else {
+      this.lorePromptText.isVisible = false;
+    }
+
+    if (closest && closestDist < PROXIMITY) {
+      if (!this.loreVisible) {
+        this.loreVisible = true;
+        this.loreHeaderText.text = `"${closest.text}"`;
+        this.loreBodyText.text = closest.extendedText;
+      }
+      // Fade in
+      const alpha = Math.min(1, (PROXIMITY - closestDist) / 1.5);
+      this.loreOverlay.isVisible = true;
+      this.loreOverlay.alpha = alpha;
+    } else {
+      this.loreOverlay.isVisible = false;
+      this.loreVisible = false;
+    }
+  }
+
+  // =========================================================================
+  // Secret room notification
+  // =========================================================================
+
+  private createSecretNotification(): void {
+    this.secretText = new TextBlock('secretText', 'SECRET FOUND!');
+    this.secretText.fontFamily = FONT;
+    this.secretText.fontSize = 32;
+    this.secretText.color = '#ffdd00';
+    this.secretText.outlineWidth = 2;
+    this.secretText.outlineColor = '#884400';
+    this.secretText.shadowColor = '#ff8800';
+    this.secretText.shadowOffsetX = 0;
+    this.secretText.shadowOffsetY = 0;
+    this.secretText.shadowBlur = 12;
+    this.secretText.top = -120;
+    this.secretText.alpha = 0;
+    this.gui.addControl(this.secretText);
+  }
+
+  private updateSecretNotification(): void {
+    const timer = getSecretNotifyTimer();
+    tickSecretTimer();
+
+    if (timer > 0) {
+      // Fade in fast, hold, fade out
+      let alpha: number;
+      if (timer > 100) {
+        alpha = (120 - timer) / 20; // fade in
+      } else if (timer > 30) {
+        alpha = 1; // hold
+      } else {
+        alpha = timer / 30; // fade out
+      }
+      this.secretText.alpha = alpha;
+
+      // Slight scale pulse
+      const pulse = 1 + 0.05 * Math.sin(timer * 0.15);
+      this.secretText.scaleX = pulse;
+      this.secretText.scaleY = pulse;
+    } else {
+      this.secretText.alpha = 0;
+    }
+  }
+
+  // =========================================================================
+  // Blood splatter overlay
+  // =========================================================================
+
+  private createBloodSplatter(): void {
+    this.bloodSplatter = new Rectangle('bloodSplatter');
+    this.bloodSplatter.width = 1;
+    this.bloodSplatter.height = 1;
+    this.bloodSplatter.thickness = 0;
+    this.bloodSplatter.background = 'rgba(120, 0, 0, 0)';
+    this.bloodSplatter.isVisible = false;
+    this.bloodSplatter.isHitTestVisible = false;
+    this.gui.addControl(this.bloodSplatter);
+  }
+
+  /** Trigger blood splatter effect. Intensity 0-1 based on damage severity. */
+  triggerBloodSplatter(intensity: number): void {
+    this.bloodAlpha = Math.min(0.5, intensity * 0.5);
+    this.bloodSplatter.isVisible = true;
+  }
+
+  private updateBloodSplatter(): void {
+    if (this.bloodAlpha > 0.01) {
+      this.bloodAlpha *= 0.96; // decay
+      this.bloodSplatter.background = `rgba(120, 0, 0, ${this.bloodAlpha.toFixed(3)})`;
+      this.bloodSplatter.isVisible = true;
+    } else {
+      this.bloodSplatter.isVisible = false;
+      this.bloodAlpha = 0;
     }
   }
 
