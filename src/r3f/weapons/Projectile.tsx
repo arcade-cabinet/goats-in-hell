@@ -5,7 +5,7 @@
  * Collision detection:
  *   - For each active projectile, cast a short Rapier ray along velocity
  *   - On enemy hit: apply damage via callback
- *   - On wall hit: release projectile (impact particles TBD)
+ *   - On wall hit: release projectile + spawn impact sparks
  *   - On rocket hit: area damage to nearby enemies
  *
  * Exports pool ref for WeaponSystem to call spawn().

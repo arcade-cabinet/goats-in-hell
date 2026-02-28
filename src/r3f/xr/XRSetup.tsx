@@ -60,10 +60,6 @@ export function XRSetup({ children }: XRSetupProps) {
           Position can be overridden by the player controller for teleportation. */}
       <XROrigin />
 
-      {/* Placeholder: Hand tracking support via <Hands />
-          TODO: Add <Hands /> component for hand-tracking input when
-          hand tracking is implemented as a stretch goal. */}
-
       {children}
     </XR>
   );
