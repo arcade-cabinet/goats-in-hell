@@ -1,4 +1,4 @@
-import {Scene, Vector3} from '@babylonjs/core';
+import {Color3, PointLight, Scene, Vector3} from '@babylonjs/core';
 import type {Entity, WeaponId} from '../entities/components';
 import {world} from '../entities/world';
 import {GameState} from '../../state/GameState';
@@ -129,6 +129,15 @@ export function tryShoot(scene: Scene, player: Entity): boolean {
 
   // Play weapon-specific firing sound
   playSound(weaponSoundMap[weaponId]);
+
+  // Brief muzzle flash PointLight at camera position
+  const muzzleFlash = new PointLight('muzzleFlash', origin.clone(), scene);
+  muzzleFlash.diffuse = new Color3(1, 0.8, 0.3);
+  muzzleFlash.intensity = 18;
+  muzzleFlash.range = 8;
+  setTimeout(() => {
+    muzzleFlash.dispose();
+  }, 60);
 
   return true;
 }
