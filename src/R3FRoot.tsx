@@ -18,7 +18,12 @@ import type { LevelData } from './game/levels/LevelData';
 import { LevelGenerator, type MapCell } from './game/levels/LevelGenerator';
 import { AIGovernor } from './game/systems/AIGovernor';
 import { aiSystemReset, aiSystemUpdate } from './game/systems/AISystem';
+import { doorSystemUpdate, resetDoorSystem } from './game/systems/DoorSystem';
 import { spawnBoss, spawnLevelEntities } from './game/systems/EntitySpawner';
+import { resetGameClock, tickGameClock } from './game/systems/GameClock';
+import { hazardSystemUpdate, resetHazardSystem } from './game/systems/HazardSystem';
+import { resetKillStreaks } from './game/systems/KillStreakSystem';
+import { powerUpSystemUpdate, resetPowerUps } from './game/systems/PowerUpSystem';
 import { advanceFloor, checkFloorComplete } from './game/systems/ProgressionSystem';
 import { getWaveInfo, resetWaveSystem, waveSystemUpdate } from './game/systems/WaveSystem';
 import { initAmbientSound, updateAmbientSound } from './r3f/audio/AmbientSoundSystem';
@@ -36,12 +41,12 @@ import { PlayerController } from './r3f/PlayerController';
 import { R3FApp } from './r3f/R3FApp';
 import { DynamicLighting } from './r3f/rendering/Lighting';
 import { PostProcessingEffects, triggerFloorFadeIn } from './r3f/rendering/PostProcessing';
-import { clearCombatScene, combatSystemUpdate, setCombatScene } from './r3f/systems/CombatSystem';
+import { clearCombatScene, combatSystemUpdate, damageEnemy, setCombatScene } from './r3f/systems/CombatSystem';
 import { updateParticles } from './r3f/systems/ParticleEffects';
 import { pickupSystemUpdate } from './r3f/systems/PickupSystem';
 import { resetScreenShake } from './r3f/systems/ScreenShake';
 import { MuzzleFlashEffect } from './r3f/weapons/MuzzleFlash';
-import { ProjectileManager } from './r3f/weapons/Projectile';
+import { ProjectileManager, setDamageEnemyCallback } from './r3f/weapons/Projectile';
 import { WeaponViewModel } from './r3f/weapons/WeaponViewModel';
 import { DIFFICULTY_PRESETS, useGameStore } from './state/GameStore';
 
@@ -81,7 +86,7 @@ function generateLevelData(
   }
 
   if (encounterType === 'arena') {
-    const size = 24;
+    const size = ARENA_SIZE;
     const grid = generateArena(size, floor) as MapCell[][];
     const spawn = getArenaPlayerSpawn(size);
     return {
@@ -116,7 +121,7 @@ function generateLevelData(
 function GameScene() {
   const scene = useThree((s) => s.scene);
   const levelDataRef = useRef<LevelData | null>(null);
-  const graceTimerRef = useRef(0);
+  const graceTimerRef = useRef(2000); // Start active to prevent race with entity spawn useEffect
   const floorKeyRef = useRef(0);
 
   // Subscribe to store
@@ -153,8 +158,13 @@ function GameScene() {
 
   // Spawn entities + player on level change
   useEffect(() => {
-    // Reset AI system before clearing entities
+    // Reset all systems before clearing entities
     aiSystemReset();
+    resetGameClock();
+    resetHazardSystem();
+    resetDoorSystem();
+    resetPowerUps();
+    resetKillStreaks();
     clearDamageNumbers();
     resetScreenShake();
 
@@ -245,10 +255,16 @@ function GameScene() {
     };
   }, [autoplay, levelData]);
 
-  // Wire combat scene ref
+  // Wire combat scene ref + projectile damage callback
   useEffect(() => {
     setCombatScene(scene);
-    return () => clearCombatScene();
+    setDamageEnemyCallback((entityId, damage, _isAoe) => {
+      damageEnemy(entityId, damage);
+    });
+    return () => {
+      clearCombatScene();
+      setDamageEnemyCallback(() => {});
+    };
   }, [scene]);
 
   // One-time: load SFX + music audio buffers asynchronously
@@ -291,6 +307,9 @@ function GameScene() {
     const screen = useGameStore.getState().screen;
     if (screen !== 'playing') return;
 
+    // Advance game clock — MUST be first, all systems depend on getGameTime()
+    tickGameClock(deltaMs);
+
     // Grace period — skip AI/combat/progression checks
     if (graceTimerRef.current > 0) {
       graceTimerRef.current -= deltaMs;
@@ -302,6 +321,9 @@ function GameScene() {
     aiSystemUpdate(deltaMs);
     combatSystemUpdate(deltaMs);
     pickupSystemUpdate();
+    hazardSystemUpdate();
+    powerUpSystemUpdate();
+    doorSystemUpdate(levelData.grid, deltaMs);
     updateParticles(deltaMs);
 
     // Arena wave spawning — only runs during arena encounters

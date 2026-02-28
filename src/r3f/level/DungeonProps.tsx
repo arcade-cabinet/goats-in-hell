@@ -316,9 +316,9 @@ export function DungeonProps({ spawns }: DungeonPropsProps): null {
       if (config.emitsLight && totalLightsPlaced < MAX_PROP_LIGHTS) {
         // Spread lights evenly across instances if there are many
         const lightCount = Math.min(positions.length, MAX_PROP_LIGHTS - totalLightsPlaced);
-        const step = Math.max(1, Math.floor(positions.length / lightCount));
 
-        for (let i = 0; i < positions.length && totalLightsPlaced < MAX_PROP_LIGHTS; i += step) {
+        for (let n = 0; n < lightCount && totalLightsPlaced < MAX_PROP_LIGHTS; n++) {
+          const i = Math.floor((n * positions.length) / lightCount);
           const pos = positions[i];
           const worldX = pos.x;
           const worldZ = -pos.z;

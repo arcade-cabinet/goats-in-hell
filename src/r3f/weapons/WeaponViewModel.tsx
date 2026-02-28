@@ -166,7 +166,12 @@ export function WeaponViewModel() {
 
     return () => {
       camera.remove(group);
-      disposeWeaponObject(container);
+      // Use the live ref instead of the closure-captured variable to avoid
+      // disposing the mount-time container after weapon swaps
+      const current = weaponContainerRef.current;
+      if (current) {
+        disposeWeaponObject(current);
+      }
       groupRef.current = null;
       weaponContainerRef.current = null;
     };

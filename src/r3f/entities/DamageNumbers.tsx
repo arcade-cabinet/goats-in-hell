@@ -30,32 +30,34 @@ const MAX_ACTIVE = 30;
 const activeNumbers: DamageNumber[] = [];
 let sceneRef: THREE.Scene | null = null;
 
-// Canvas for rendering text textures
-const textCanvas = document.createElement('canvas');
-textCanvas.width = 128;
-textCanvas.height = 64;
-const textCtx = textCanvas.getContext('2d')!;
-
 // ---------------------------------------------------------------------------
 // Canvas texture helper
 // ---------------------------------------------------------------------------
 
 function createTextTexture(text: string, color: string): THREE.CanvasTexture {
-  textCtx.clearRect(0, 0, 128, 64);
-  textCtx.font = 'bold 48px monospace';
-  textCtx.textAlign = 'center';
-  textCtx.textBaseline = 'middle';
+  // Create a fresh canvas per texture to avoid shared-canvas race conditions
+  // during burst spawns where multiple sprites render in the same frame.
+  const canvas = document.createElement('canvas');
+  canvas.width = 128;
+  canvas.height = 64;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return new THREE.CanvasTexture(canvas);
+
+  ctx.clearRect(0, 0, 128, 64);
+  ctx.font = 'bold 48px monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
 
   // Black outline for readability
-  textCtx.strokeStyle = '#000';
-  textCtx.lineWidth = 4;
-  textCtx.strokeText(text, 64, 32);
+  ctx.strokeStyle = '#000';
+  ctx.lineWidth = 4;
+  ctx.strokeText(text, 64, 32);
 
   // Colored fill
-  textCtx.fillStyle = color;
-  textCtx.fillText(text, 64, 32);
+  ctx.fillStyle = color;
+  ctx.fillText(text, 64, 32);
 
-  const texture = new THREE.CanvasTexture(textCanvas);
+  const texture = new THREE.CanvasTexture(canvas);
   texture.needsUpdate = true;
   return texture;
 }

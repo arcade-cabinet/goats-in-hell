@@ -96,13 +96,13 @@ function configureTiling(
   texture: THREE.Texture,
   repeatX: number,
   repeatY: number,
-  isNormal = false,
+  isColorMap = true,
 ): void {
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
   texture.repeat.set(repeatX, repeatY);
-  // Color maps need sRGB; normal/roughness maps are linear data
-  texture.colorSpace = isNormal ? THREE.LinearSRGBColorSpace : THREE.SRGBColorSpace;
+  // Color maps need sRGB; normal/roughness/metalness maps store data, not color
+  texture.colorSpace = isColorMap ? THREE.SRGBColorSpace : THREE.NoColorSpace;
   texture.needsUpdate = true;
 }
 
@@ -224,28 +224,28 @@ function applyTextureSet(
     }
   });
 
-  // Normal map
+  // Normal map (data texture — not color)
   loadTexture(texSet.normal).then((tex) => {
     if (tex) {
       const t = tex.clone();
-      configureTiling(t, tileX, tileY, true);
+      configureTiling(t, tileX, tileY, false);
       mat.normalMap = t;
       mat.normalScale.set(1.0, 1.0);
       mat.needsUpdate = true;
     }
   });
 
-  // Roughness map
+  // Roughness map (data texture — not color)
   loadTexture(texSet.roughness).then((tex) => {
     if (tex) {
       const t = tex.clone();
-      configureTiling(t, tileX, tileY, true);
+      configureTiling(t, tileX, tileY, false);
       mat.roughnessMap = t;
       mat.needsUpdate = true;
     }
   });
 
-  // Emission map (optional — e.g. lava)
+  // Emission map (optional — e.g. lava, this IS a color map)
   if (texSet.emission) {
     loadTexture(texSet.emission).then((tex) => {
       if (tex) {
@@ -257,12 +257,12 @@ function applyTextureSet(
     });
   }
 
-  // Metalness map (optional — e.g. metal doors)
+  // Metalness map (data texture — not color)
   if (texSet.metalness) {
     loadTexture(texSet.metalness).then((tex) => {
       if (tex) {
         const t = tex.clone();
-        configureTiling(t, tileX, tileY, true);
+        configureTiling(t, tileX, tileY, false);
         mat.metalnessMap = t;
         mat.needsUpdate = true;
       }
@@ -707,7 +707,8 @@ export function createPlatformMaterial(): THREE.MeshStandardMaterial {
 }
 
 /**
- * Dispose all cached materials and textures. Call on app teardown.
+ * Dispose all cached materials. Textures are intentionally retained
+ * as they are shared across floor transitions. Call on app teardown.
  */
 export function disposeCachedMaterials(): void {
   for (const mat of wallCache.values()) mat.dispose();

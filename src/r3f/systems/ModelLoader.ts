@@ -76,6 +76,7 @@ export async function loadModel(
   const promise = (async () => {
     try {
       const uri = resolveAssetUri(moduleId);
+      console.log(`[ModelLoader] Loading "${key}" from:`, uri);
       const loader = getLoader();
 
       const gltf = await new Promise<{ scene: THREE.Group }>((resolve, reject) => {
@@ -99,9 +100,10 @@ export async function loadModel(
       });
 
       modelCache.set(key, template);
+      console.log(`[ModelLoader] Loaded "${key}" — ${template.children.length} children`);
       return template;
     } catch (err) {
-      console.warn(`[ModelLoader] Failed to load model "${key}":`, err);
+      console.error(`[ModelLoader] FAILED to load "${key}":`, err);
       return null;
     } finally {
       loadingPromises.delete(key);
@@ -135,13 +137,19 @@ export function cloneModel(key: string): THREE.Group | null {
 
   const clone = template.clone(true);
 
-  // Deep-clone materials so each instance can have independent opacity/color
+  // Deep-clone geometry AND materials so each instance is fully independent.
+  // Without geometry cloning, disposing one instance corrupts all other clones.
   clone.traverse((child) => {
-    if (child instanceof THREE.Mesh && child.material) {
-      if (Array.isArray(child.material)) {
-        child.material = child.material.map((m: THREE.Material) => m.clone());
-      } else {
-        child.material = child.material.clone();
+    if (child instanceof THREE.Mesh) {
+      if (child.geometry) {
+        child.geometry = child.geometry.clone();
+      }
+      if (child.material) {
+        if (Array.isArray(child.material)) {
+          child.material = child.material.map((m: THREE.Material) => m.clone());
+        } else {
+          child.material = child.material.clone();
+        }
       }
     }
   });

@@ -23,7 +23,9 @@ const MAX_OFFSET = 0.15; // max pixel offset in world units
  * If a shake is already in progress, takes the max of current and new.
  */
 export function triggerScreenShake(intensity: number): void {
-  shakeIntensity = Math.max(shakeIntensity, Math.min(1, intensity));
+  if (!Number.isFinite(intensity)) return;
+  const clamped = Math.max(0, Math.min(1, intensity));
+  shakeIntensity = Math.max(shakeIntensity, clamped);
 }
 
 /**

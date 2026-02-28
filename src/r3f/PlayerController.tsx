@@ -98,8 +98,8 @@ export function PlayerController({ spawnPosition = [0, PLAYER_HEIGHT, 0] }: Play
   }, [rapierWorld]);
 
   // Register input providers once on mount
+  const autoplay = useGameStore((s) => s.autoplay);
   useEffect(() => {
-    const autoplay = useGameStore.getState().autoplay;
     // AI provider is registered by R3FRoot (needs level data).
     // Here we only register manual-play providers.
     if (autoplay) return;
@@ -114,7 +114,7 @@ export function PlayerController({ spawnPosition = [0, PLAYER_HEIGHT, 0] }: Play
       kbm.dispose();
       gp.dispose();
     };
-  }, []);
+  }, [autoplay]);
 
   // Pointer lock management
   const requestPointerLock = useCallback(() => {
@@ -210,9 +210,12 @@ export function PlayerController({ spawnPosition = [0, PLAYER_HEIGHT, 0] }: Play
 
     // --- Sync camera to rigid body position ---
     const bodyPos = rb.translation();
-    camera.position.set(bodyPos.x, bodyPos.y + PLAYER_HEIGHT * 0.5, bodyPos.z);
+    const camX = bodyPos.x;
+    const camY = bodyPos.y + PLAYER_HEIGHT * 0.5;
+    const camZ = bodyPos.z;
+    camera.position.set(camX, camY, camZ);
 
-    // --- Screen shake ---
+    // --- Screen shake (visual-only, applied AFTER storing base position) ---
     const shakeOffset = getScreenShakeOffset(dt);
     camera.position.x += shakeOffset.x;
     camera.position.y += shakeOffset.y;
@@ -229,14 +232,14 @@ export function PlayerController({ spawnPosition = [0, PLAYER_HEIGHT, 0] }: Play
       footstepTimerRef.current = 0;
     }
 
-    // --- Sync to ECS player entity ---
+    // --- Sync to ECS player entity (use unshaken base position) ---
     const playerEntity = world.entities.find((e: Entity) => e.type === 'player');
     if (playerEntity?.position) {
       // Convert Three.js camera position → Babylon/level coords (negate Z)
       // so all ECS positions share the same coordinate convention as the grid
-      playerEntity.position.x = camera.position.x;
-      playerEntity.position.y = camera.position.y;
-      playerEntity.position.z = -camera.position.z;
+      playerEntity.position.x = camX;
+      playerEntity.position.y = camY;
+      playerEntity.position.z = -camZ;
     }
 
     // --- Bounds check ---
@@ -285,7 +288,10 @@ export function PlayerController({ spawnPosition = [0, PLAYER_HEIGHT, 0] }: Play
         const owned = playerEntity.player.weapons;
         if (owned.length > 1) {
           const currentIdx = owned.indexOf(playerEntity.player.currentWeapon);
-          const nextIdx = (currentIdx + input.weaponCycle + owned.length) % owned.length;
+          const nextIdx =
+            currentIdx === -1
+              ? 0
+              : (currentIdx + input.weaponCycle + owned.length) % owned.length;
           const cycleSound = switchWeapon(playerEntity, owned[nextIdx]);
           if (cycleSound) playSound(cycleSound);
         }
