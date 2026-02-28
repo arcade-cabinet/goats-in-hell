@@ -59,7 +59,11 @@ export function R3FApp({ children }: { children?: React.ReactNode }) {
         }
         return renderer;
       }}
-      onCreated={({ gl }) => {
+      onCreated={({ gl, scene, camera }) => {
+        // Add camera to scene graph so camera-parented objects (WeaponViewModel)
+        // are traversed during rendering. R3F v9 does NOT add the camera to the
+        // scene by default — without this, camera.add(child) objects are invisible.
+        scene.add(camera);
         const name = gl.constructor.name;
         const backend = (gl as any).backend?.constructor?.name ?? 'unknown';
         console.log(`[R3FApp] Renderer: ${name}, backend: ${backend}`);
@@ -72,7 +76,7 @@ export function R3FApp({ children }: { children?: React.ReactNode }) {
         height: '100%',
         touchAction: 'none',
       }}
-      camera={{ fov: 75, near: 0.1, far: 100, position: [0, 1.6, 0] }}
+      camera={{ fov: 75, near: 0.3, far: 100, position: [0, 1.6, 0] }}
     >
       <Suspense fallback={null}>
         <Physics gravity={[0, -9.81, 0]} timeStep="vary">

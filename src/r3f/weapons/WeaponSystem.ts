@@ -116,7 +116,7 @@ export function initPlayerAmmo(): Record<
   return {
     hellPistol: {
       current: weapons.hellPistol.magSize,
-      reserve: 48,
+      reserve: 120,
       magSize: weapons.hellPistol.magSize,
     },
     brimShotgun: { current: 0, reserve: 0, magSize: weapons.brimShotgun.magSize },

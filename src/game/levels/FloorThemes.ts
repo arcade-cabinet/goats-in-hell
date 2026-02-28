@@ -23,8 +23,8 @@ const firePits: FloorTheme = {
   primaryWall: WALL_STONE,
   accentWalls: [WALL_LAVA, WALL_LAVA],
   enemyTypes: ['goat', 'goat', 'hellgoat', 'fireGoat'],
-  enemyDensity: 0.3,
-  pickupDensity: 0.3,
+  enemyDensity: 0.8,
+  pickupDensity: 0.6,
   ambientColor: '#ff4422',
 };
 
@@ -34,8 +34,8 @@ const fleshCaverns: FloorTheme = {
   primaryWall: WALL_FLESH,
   accentWalls: [WALL_STONE, WALL_LAVA],
   enemyTypes: ['goat', 'hellgoat', 'hellgoat', 'shadowGoat'],
-  enemyDensity: 0.4,
-  pickupDensity: 0.3,
+  enemyDensity: 1.0,
+  pickupDensity: 0.6,
   ambientColor: '#cc2244',
 };
 
@@ -45,8 +45,8 @@ const obsidianFortress: FloorTheme = {
   primaryWall: WALL_OBSIDIAN,
   accentWalls: [WALL_STONE, WALL_LAVA],
   enemyTypes: ['hellgoat', 'goatKnight', 'goatKnight', 'fireGoat'],
-  enemyDensity: 0.5,
-  pickupDensity: 0.3,
+  enemyDensity: 1.2,
+  pickupDensity: 0.6,
   ambientColor: '#6622aa',
 };
 
@@ -56,8 +56,8 @@ const theVoid: FloorTheme = {
   primaryWall: WALL_OBSIDIAN,
   accentWalls: [WALL_FLESH, WALL_OBSIDIAN],
   enemyTypes: ['shadowGoat', 'goatKnight', 'fireGoat', 'hellgoat'],
-  enemyDensity: 0.6,
-  pickupDensity: 0.3,
+  enemyDensity: 1.5,
+  pickupDensity: 0.6,
   ambientColor: '#220044',
 };
 

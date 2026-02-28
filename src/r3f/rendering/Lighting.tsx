@@ -27,17 +27,17 @@ interface ThemeLightConfig {
 }
 
 const THEME_LIGHTS: Record<string, ThemeLightConfig> = {
-  firePits: { color: '#ff4400', intensity: 1.2, distance: 8 },
-  fleshCaverns: { color: '#cc3333', intensity: 0.8, distance: 6 },
-  obsidianFortress: { color: '#4466aa', intensity: 1.0, distance: 8 },
-  theVoid: { color: '#6600cc', intensity: 1.2, distance: 10 },
+  firePits: { color: '#ff4400', intensity: 2.0, distance: 16 },
+  fleshCaverns: { color: '#cc3333', intensity: 2.0, distance: 16 },
+  obsidianFortress: { color: '#4466aa', intensity: 2.0, distance: 16 },
+  theVoid: { color: '#6600cc', intensity: 2.2, distance: 18 },
 };
 
 // Default fallback for unknown themes
 const DEFAULT_THEME_LIGHT: ThemeLightConfig = {
   color: '#ff4400',
-  intensity: 1.0,
-  distance: 8,
+  intensity: 1.8,
+  distance: 14,
 };
 
 // ---------------------------------------------------------------------------
@@ -154,6 +154,7 @@ export function DynamicLighting({ theme, grid, width, depth }: DynamicLightingPr
   const roomLightsRef = useRef<TrackedPointLight[]>([]);
   const spotlightRef = useRef<THREE.SpotLight | null>(null);
   const ambientRef = useRef<THREE.AmbientLight | null>(null);
+  const hemiRef = useRef<THREE.HemisphereLight | null>(null);
 
   // Store scene reference for muzzle flash system
   useEffect(() => {
@@ -167,15 +168,29 @@ export function DynamicLighting({ theme, grid, width, depth }: DynamicLightingPr
   // Create ambient light — very dim, warm reddish for hell atmosphere
   // -------------------------------------------------------------------------
   useEffect(() => {
-    const ambient = new THREE.AmbientLight(theme.ambientColor, 0.12);
+    const ambient = new THREE.AmbientLight(theme.ambientColor, 0.5);
     ambient.name = 'ambientLight';
     scene.add(ambient);
     ambientRef.current = ambient;
+
+    // Hemisphere light — sky color from theme, ground color warm (lava glow)
+    // Provides soft fill so no surface is ever pure black
+    const hemi = new THREE.HemisphereLight(
+      '#443333', // sky — dim warm grey (cavern ceiling bounce)
+      theme.ambientColor, // ground — theme color (lava/flesh/void glow from below)
+      0.4,
+    );
+    hemi.name = 'hemisphereLight';
+    scene.add(hemi);
+    hemiRef.current = hemi;
 
     return () => {
       scene.remove(ambient);
       ambient.dispose();
       ambientRef.current = null;
+      scene.remove(hemi);
+      hemi.dispose();
+      hemiRef.current = null;
     };
   }, [scene, theme]);
 
@@ -186,8 +201,8 @@ export function DynamicLighting({ theme, grid, width, depth }: DynamicLightingPr
     const config = THEME_LIGHTS[theme.name] ?? DEFAULT_THEME_LIGHT;
     const lights: TrackedPointLight[] = [];
 
-    const LIGHT_SPACING = 4; // grid-cell stride between candidate positions
-    const MAX_ROOM_LIGHTS = 8;
+    const LIGHT_SPACING = 3; // grid-cell stride between candidate positions
+    const MAX_ROOM_LIGHTS = 32;
 
     const positions = pickFloorLightPositions(grid, width, depth, LIGHT_SPACING, MAX_ROOM_LIGHTS);
 
@@ -232,10 +247,10 @@ export function DynamicLighting({ theme, grid, width, depth }: DynamicLightingPr
   useEffect(() => {
     const spotlight = new THREE.SpotLight(
       '#fff5e0', // warm white
-      0.5, // subtle intensity
-      15, // distance
-      0.4, // angle (radians) — narrow cone
-      0.3, // penumbra — soft edge
+      1.2, // bright enough to see surroundings
+      30, // distance — lights up more of the dungeon ahead
+      0.9, // angle (radians) — wide cone for peripheral visibility
+      0.5, // penumbra — soft edge
     );
     spotlight.name = 'playerSpotlight';
     spotlight.position.copy(camera.position);
