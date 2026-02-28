@@ -5,8 +5,8 @@
  * The viewmodel bobs with player movement and kicks upward on fire.
  */
 import {
-  Camera,
   Color3,
+  FreeCamera,
   Mesh,
   PBRMaterial,
   StandardMaterial,
@@ -37,6 +37,10 @@ const SWAY_AMP_X = 0.003;
 const SWAY_AMP_Y = 0.002;
 const SWAY_FREQ = 0.0012; // slow ~5s cycle
 const SWAY_ROT_AMP = 0.008; // subtle Z-axis tilt
+
+// Strafe tilt — weapon tilts opposite to lateral movement direction
+const STRAFE_TILT_MAX = 0.07; // ~4 degrees max tilt
+const STRAFE_TILT_LERP = 0.1; // smoothing factor
 
 /** Maps weapon IDs to their model registry key and emissive tint. */
 const WEAPON_CONFIG: Record<WeaponId, {
@@ -109,7 +113,7 @@ export function disposeWeaponCache(): void {
 
 export class WeaponViewModel {
   private scene: Scene;
-  private camera: Camera | null = null;
+  private camera: FreeCamera | null = null;
   private root: TransformNode;
   private currentWeapon: WeaponId | null = null;
   private weaponMesh: Mesh | null = null;
@@ -119,6 +123,7 @@ export class WeaponViewModel {
   private swayPhase = 0;
   private idleTime = 0; // frames spent idle (blends sway in/out)
   private kickOffset = 0;
+  private strafeTilt = 0; // current Z-rotation from strafing
   private lastPlayerPos = Vector3.Zero();
   private lastFireTime = 0;
 
@@ -129,7 +134,7 @@ export class WeaponViewModel {
 
   update(): void {
     if (!this.camera && this.scene.activeCamera) {
-      this.camera = this.scene.activeCamera;
+      this.camera = this.scene.activeCamera as FreeCamera;
       this.root.parent = this.camera;
       this.root.position = BASE_POS.clone();
     }
@@ -143,13 +148,22 @@ export class WeaponViewModel {
       this.switchWeapon(weaponId);
     }
 
-    // Bob based on movement + idle sway tracking
+    // Bob based on movement + strafe tilt tracking
     let isMoving = false;
+    let lateralSpeed = 0;
     if (player.position) {
-      const moved = Vector3.Distance(player.position, this.lastPlayerPos);
+      const dx = player.position.x - this.lastPlayerPos.x;
+      const dz = player.position.z - this.lastPlayerPos.z;
+      const moved = Math.sqrt(dx * dx + dz * dz);
       if (moved > 0.001) {
         this.bobPhase += BOB_FREQ * 60;
         isMoving = true;
+
+        // Project movement onto camera right vector to isolate lateral motion
+        const yaw = this.camera!.rotation.y;
+        const rightX = Math.cos(yaw);
+        const rightZ = -Math.sin(yaw);
+        lateralSpeed = dx * rightX + dz * rightZ;
       }
       this.lastPlayerPos = player.position.clone();
     }
@@ -186,6 +200,10 @@ export class WeaponViewModel {
     }
     this.kickOffset *= KICK_DECAY;
 
+    // Strafe tilt — weapon leans opposite to lateral movement
+    const targetTilt = -Math.sign(lateralSpeed) * Math.min(Math.abs(lateralSpeed) * 2, 1) * STRAFE_TILT_MAX;
+    this.strafeTilt += (targetTilt - this.strafeTilt) * STRAFE_TILT_LERP;
+
     this.root.position.x = BASE_POS.x + bobX + swayX;
     this.root.position.y = BASE_POS.y + bobY + jumpBob + this.kickOffset + swayY;
     this.root.position.z = BASE_POS.z - this.kickOffset * 0.5;
@@ -195,7 +213,7 @@ export class WeaponViewModel {
     } else {
       this.root.rotation.x = -this.kickOffset * 3;
     }
-    this.root.rotation.z = swayRot;
+    this.root.rotation.z = swayRot + this.strafeTilt;
   }
 
   private switchWeapon(weaponId: WeaponId): void {

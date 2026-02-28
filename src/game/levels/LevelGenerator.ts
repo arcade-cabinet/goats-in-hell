@@ -183,6 +183,9 @@ export class LevelGenerator {
     // Place decorative props
     this.placeProps(playerCellX, playerCellZ);
 
+    // Place lore messages on walls
+    this.placeLoreMessages(playerCellX, playerCellZ);
+
     // Place environmental hazards
     this.placeHazards(playerCellX, playerCellZ);
   }
@@ -772,6 +775,46 @@ export class LevelGenerator {
           });
         }
       }
+    }
+  }
+
+  private placeLoreMessages(playerCellX: number, playerCellZ: number) {
+    // 1-3 lore messages per floor, starting floor 2
+    if (this.floor < 2) return;
+    const count = 1 + Math.floor(rng() * 3);
+    let placed = 0;
+    const candidates: {x: number; z: number; rotation: number}[] = [];
+
+    // Find wall-adjacent empty cells where a plaque could hang
+    for (let z = 2; z < this.depth - 2; z++) {
+      for (let x = 2; x < this.width - 2; x++) {
+        if (this.grid[z][x] !== MapCell.EMPTY) continue;
+        const distFromSpawn = Math.abs(x - playerCellX) + Math.abs(z - playerCellZ);
+        if (distFromSpawn < 6) continue;
+
+        // Check each wall neighbor — pick one direction the text faces away from
+        if (this.isWall(x, z - 1)) candidates.push({x, z, rotation: 0}); // faces +Z
+        else if (this.isWall(x, z + 1)) candidates.push({x, z, rotation: Math.PI}); // faces -Z
+        else if (this.isWall(x - 1, z)) candidates.push({x, z, rotation: Math.PI / 2}); // faces +X
+        else if (this.isWall(x + 1, z)) candidates.push({x, z, rotation: -Math.PI / 2}); // faces -X
+      }
+    }
+
+    // Shuffle and pick
+    for (let i = candidates.length - 1; i > 0; i--) {
+      const j = Math.floor(rng() * (i + 1));
+      [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+    }
+
+    for (const c of candidates) {
+      if (placed >= count) break;
+      this.spawns.push({
+        x: c.x * CELL_SIZE,
+        z: c.z * CELL_SIZE,
+        type: 'lore_message',
+        rotation: c.rotation,
+      });
+      placed++;
     }
   }
 }

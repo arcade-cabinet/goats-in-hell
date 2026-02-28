@@ -90,6 +90,7 @@ import {
   loadAllProps,
 } from './rendering/DungeonProps';
 import type {PropType} from './rendering/DungeonProps';
+import {createLoreMessage} from './rendering/LoreMessages';
 import {AIGovernor} from './systems/AIGovernor';
 import {BabylonHUD} from './ui/BabylonHUD';
 import {BabylonScreens} from './ui/BabylonScreens';
@@ -499,6 +500,15 @@ export function GameEngine() {
         if (propMesh) {
           propMeshesRef.current.push(propMesh);
         }
+      } else if (spawn.type === 'lore_message') {
+        const loreMesh = createLoreMessage(
+          new Vector3(spawn.x, 0, spawn.z),
+          spawn.rotation ?? 0,
+          floor,
+          levelData.theme.name,
+          scene,
+        );
+        propMeshesRef.current.push(loreMesh);
       }
     });
 
