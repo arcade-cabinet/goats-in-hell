@@ -207,6 +207,12 @@ export class BabylonHUD {
   private shownHints: Set<string> = new Set();
   private tutorialFrameCount = 0;
 
+  // Floor announcement (centered, fades out)
+  private floorAnnounceText!: TextBlock;
+  private floorAnnounceSubText!: TextBlock;
+  private floorAnnounceTimer = 0;
+  private lastAnnouncedFloor = 0;
+
   // Damage direction indicators (front, right, back, left)
   private damageArcs: Rectangle[] = [];
 
@@ -232,6 +238,7 @@ export class BabylonHUD {
     this.createWeaponPickupNotification();
     this.createTutorialHints();
     this.createDamageDirectionIndicators();
+    this.createFloorAnnouncement();
   }
 
   // =========================================================================
@@ -928,6 +935,7 @@ export class BabylonHUD {
     this.updateTutorialHints(player, storeState);
     this.updateBuffIcons();
     this.updateDamageDirection();
+    this.updateFloorAnnouncement(storeState);
   }
 
   private updateHealth(player: Entity): void {
@@ -1463,6 +1471,83 @@ export class BabylonHUD {
       this.damageArcs[i].alpha = damageIndicators[i];
       damageIndicators[i] *= INDICATOR_DECAY;
       if (damageIndicators[i] < 0.01) damageIndicators[i] = 0;
+    }
+  }
+
+  // =========================================================================
+  // Floor announcement
+  // =========================================================================
+
+  private createFloorAnnouncement(): void {
+    // Large centered floor number
+    this.floorAnnounceText = new TextBlock('floorAnnounce', '');
+    this.floorAnnounceText.fontFamily = FONT;
+    this.floorAnnounceText.fontSize = 48;
+    this.floorAnnounceText.fontWeight = 'bold';
+    this.floorAnnounceText.color = '#cc0000';
+    this.floorAnnounceText.shadowColor = 'rgba(0, 0, 0, 0.8)';
+    this.floorAnnounceText.shadowBlur = 12;
+    this.floorAnnounceText.shadowOffsetX = 2;
+    this.floorAnnounceText.shadowOffsetY = 2;
+    this.floorAnnounceText.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_CENTER;
+    this.floorAnnounceText.verticalAlignment = Control.VERTICAL_ALIGNMENT_CENTER;
+    this.floorAnnounceText.top = -30;
+    this.floorAnnounceText.alpha = 0;
+    this.floorAnnounceText.isHitTestVisible = false;
+    this.gui.addControl(this.floorAnnounceText);
+
+    // Theme name subtitle
+    this.floorAnnounceSubText = new TextBlock('floorAnnounceSub', '');
+    this.floorAnnounceSubText.fontFamily = FONT;
+    this.floorAnnounceSubText.fontSize = 18;
+    this.floorAnnounceSubText.color = '#884433';
+    this.floorAnnounceSubText.shadowColor = 'rgba(0, 0, 0, 0.6)';
+    this.floorAnnounceSubText.shadowBlur = 8;
+    this.floorAnnounceSubText.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_CENTER;
+    this.floorAnnounceSubText.verticalAlignment = Control.VERTICAL_ALIGNMENT_CENTER;
+    this.floorAnnounceSubText.top = 20;
+    this.floorAnnounceSubText.alpha = 0;
+    this.floorAnnounceSubText.isHitTestVisible = false;
+    this.gui.addControl(this.floorAnnounceSubText);
+  }
+
+  private updateFloorAnnouncement(state: ReturnType<typeof useGameStore.getState>): void {
+    const floor = state.stage.floor;
+    if (floor !== this.lastAnnouncedFloor && state.screen === 'playing') {
+      this.lastAnnouncedFloor = floor;
+      const theme = getThemeForFloor(floor);
+      const encounter = state.stage.encounterType;
+
+      let title: string;
+      if (encounter === 'boss') {
+        title = `BOSS FIGHT`;
+      } else if (encounter === 'arena') {
+        title = `ARENA — FLOOR ${floor}`;
+      } else {
+        title = `FLOOR ${floor}`;
+      }
+
+      this.floorAnnounceText.text = title;
+      this.floorAnnounceSubText.text = theme.displayName;
+      this.floorAnnounceTimer = 180; // ~3 seconds at 60fps
+    }
+
+    if (this.floorAnnounceTimer > 0) {
+      this.floorAnnounceTimer--;
+      // Fade in for 30 frames, hold, fade out for 40 frames
+      let alpha: number;
+      if (this.floorAnnounceTimer > 150) {
+        alpha = (180 - this.floorAnnounceTimer) / 30; // fade in
+      } else if (this.floorAnnounceTimer > 40) {
+        alpha = 1; // hold
+      } else {
+        alpha = this.floorAnnounceTimer / 40; // fade out
+      }
+      this.floorAnnounceText.alpha = alpha;
+      this.floorAnnounceSubText.alpha = alpha * 0.8;
+    } else {
+      this.floorAnnounceText.alpha = 0;
+      this.floorAnnounceSubText.alpha = 0;
     }
   }
 

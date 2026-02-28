@@ -1361,16 +1361,28 @@ interface DeathAnim {
 
 const SPAWN_ANIM_FRAMES = 18; // ~0.3s at 60fps
 
+// Enemy health bar: small billboard bar above damaged enemies
+interface EnemyHealthBar {
+  bg: Mesh;
+  fill: Mesh;
+  fillMat: StandardMaterial;
+  showTimer: number; // frames remaining to show (fades out)
+}
+
 const EnemyRenderer = () => {
   const scene = useScene();
   const meshMapRef = useRef<Map<string, Mesh>>(new Map());
   const deathAnimsRef = useRef<DeathAnim[]>([]);
   const spawnAnimsRef = useRef<Map<string, number>>(new Map());
+  const healthBarsRef = useRef<Map<string, EnemyHealthBar>>(new Map());
+  const lastHpRef = useRef<Map<string, number>>(new Map());
 
   useEffect(() => {
     const meshMap = meshMapRef.current;
     const deathAnims = deathAnimsRef.current;
     const spawnAnims = spawnAnimsRef.current;
+    const healthBars = healthBarsRef.current;
+    const lastHp = lastHpRef.current;
 
     const update = () => {
       const currentEnemies = world.entities.filter(
@@ -1483,6 +1495,87 @@ const EnemyRenderer = () => {
 
         // Visibility (shadowGoat transparency)
         mesh.visibility = enemy.enemy?.visibilityAlpha ?? 1;
+
+        // Enemy health bar — show when damaged, hide after a few seconds
+        if (enemy.enemy) {
+          const {hp, maxHp} = enemy.enemy;
+          const prevHp = lastHp.get(enemy.id) ?? maxHp;
+          const damaged = hp < maxHp;
+          const justHit = hp < prevHp;
+          lastHp.set(enemy.id, hp);
+
+          let bar = healthBars.get(enemy.id);
+
+          if (damaged && !bar) {
+            // Create health bar billboard
+            const bgMesh = MeshBuilder.CreatePlane(`hpBg-${enemy.id}`, {width: 0.8, height: 0.08}, scene);
+            bgMesh.billboardMode = Mesh.BILLBOARDMODE_ALL;
+            bgMesh.isPickable = false;
+            const bgMat = new StandardMaterial(`hpBgMat-${enemy.id}`, scene);
+            bgMat.diffuseColor = new Color3(0.1, 0, 0);
+            bgMat.emissiveColor = new Color3(0.1, 0, 0);
+            bgMat.disableLighting = true;
+            bgMesh.material = bgMat;
+
+            const fillMesh = MeshBuilder.CreatePlane(`hpFill-${enemy.id}`, {width: 0.76, height: 0.05}, scene);
+            fillMesh.billboardMode = Mesh.BILLBOARDMODE_ALL;
+            fillMesh.isPickable = false;
+            const fillMat = new StandardMaterial(`hpFillMat-${enemy.id}`, scene);
+            fillMat.diffuseColor = new Color3(0.8, 0, 0);
+            fillMat.emissiveColor = new Color3(0.8, 0, 0);
+            fillMat.disableLighting = true;
+            fillMesh.material = fillMat;
+
+            bar = {bg: bgMesh, fill: fillMesh, fillMat, showTimer: 180};
+            healthBars.set(enemy.id, bar);
+          }
+
+          if (bar) {
+            if (justHit) bar.showTimer = 180; // refresh on hit
+
+            const ratio = maxHp > 0 ? hp / maxHp : 0;
+            const barHeight = (mesh.metadata?.baseScale ?? 1) * 1.7;
+
+            // Position above enemy
+            bar.bg.position.set(mesh.position.x, barHeight, mesh.position.z);
+            bar.fill.position.set(
+              mesh.position.x - 0.38 * (1 - ratio),
+              barHeight,
+              mesh.position.z,
+            );
+            bar.fill.scaling.x = Math.max(0.01, ratio);
+
+            // Color: green → yellow → red
+            const r = ratio > 0.5 ? (1 - ratio) * 2 : 1;
+            const g = ratio > 0.5 ? 1 : ratio * 2;
+            bar.fillMat.emissiveColor = new Color3(r, g, 0);
+            bar.fillMat.diffuseColor = new Color3(r, g, 0);
+
+            // Fade timer
+            bar.showTimer--;
+            const alpha = bar.showTimer > 30 ? 1 : Math.max(0, bar.showTimer / 30);
+            bar.bg.visibility = alpha * 0.7;
+            bar.fill.visibility = alpha;
+
+            if (bar.showTimer <= 0) {
+              bar.bg.dispose();
+              bar.fill.dispose();
+              bar.fillMat.dispose();
+              healthBars.delete(enemy.id);
+            }
+          }
+        }
+      }
+
+      // Clean up health bars for dead enemies
+      for (const [id, bar] of healthBars) {
+        if (!currentIds.has(id)) {
+          bar.bg.dispose();
+          bar.fill.dispose();
+          bar.fillMat.dispose();
+          healthBars.delete(id);
+          lastHp.delete(id);
+        }
       }
     };
 
@@ -1494,6 +1587,14 @@ const EnemyRenderer = () => {
         disposeGoatMesh(mesh);
       }
       meshMap.clear();
+      // Clean up health bars
+      for (const [, bar] of healthBars) {
+        bar.bg.dispose();
+        bar.fill.dispose();
+        bar.fillMat.dispose();
+      }
+      healthBars.clear();
+      lastHp.clear();
       // Clean up any in-progress death animations
       for (const anim of deathAnims) {
         anim.mesh.dispose();
