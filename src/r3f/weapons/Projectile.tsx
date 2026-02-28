@@ -193,10 +193,21 @@ function checkProjectileCollision(
       const distSq = dx * dx + dy * dy + dz * dz;
 
       if (distSq < 2.25) {
-        // 1.5² = 2.25 — hit!
-        damagePlayer(slot.damage);
-        pool.release(index);
-        return;
+        // 1.5² = 2.25 — potential hit! Verify line-of-sight (wall occlusion).
+        _hitNormal.subVectors(_playerPos, projPos).normalize();
+        const losRay = new rapier.Ray(
+          { x: projPos.x, y: projPos.y, z: projPos.z },
+          { x: _hitNormal.x, y: _hitNormal.y, z: _hitNormal.z },
+        );
+        const dist = Math.sqrt(distSq);
+        const losHit = rapierWorld.castRay(losRay, dist, true);
+        if (losHit && losHit.timeOfImpact < dist * 0.9) {
+          // Wall between projectile and player — no damage
+        } else {
+          damagePlayer(slot.damage);
+          pool.release(index);
+          return;
+        }
       }
     }
 

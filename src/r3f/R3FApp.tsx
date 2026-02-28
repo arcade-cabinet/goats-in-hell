@@ -44,13 +44,18 @@ export function R3FApp({ children }: { children?: React.ReactNode }) {
           console.warn('[R3FApp] WebGPURenderer.init() failed, falling back to WebGL2:', err);
           // Dispose the failed renderer and create a WebGL2 fallback
           renderer.dispose();
-          const fallback = new THREE.WebGPURenderer({
-            canvas: canvas as HTMLCanvasElement,
-            antialias: false,
-            forceWebGL: true,
-          });
-          await fallback.init();
-          return fallback;
+          try {
+            const fallback = new THREE.WebGPURenderer({
+              canvas: canvas as HTMLCanvasElement,
+              antialias: false,
+              forceWebGL: true,
+            });
+            await fallback.init();
+            return fallback;
+          } catch (fallbackErr) {
+            console.error('[R3FApp] WebGL2 fallback also failed:', fallbackErr);
+            throw fallbackErr;
+          }
         }
         return renderer;
       }}

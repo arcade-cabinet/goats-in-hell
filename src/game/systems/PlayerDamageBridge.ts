@@ -27,5 +27,6 @@ export function clearPlayerDamageBridge(): void {
  */
 export function bridgeDamagePlayer(damage: number): boolean {
   if (bridgeCallback) return bridgeCallback(damage);
+  console.warn('[PlayerDamageBridge] No damage callback registered — melee damage dropped');
   return false;
 }
