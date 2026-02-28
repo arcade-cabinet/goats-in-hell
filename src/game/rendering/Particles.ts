@@ -326,6 +326,61 @@ export function createPickupBurst(
   return system;
 }
 
+/**
+ * Hitscan tracer — brief streak of particles along the bullet path.
+ * Used for shotgun pellets and other hitscan weapons to show the shot path.
+ */
+export function createHitscanTracer(
+  origin: Vector3,
+  hitPoint: Vector3,
+  scene: Scene,
+): ParticleSystem {
+  // Emit from the midpoint; direction pushes particles toward the hit
+  const mid = Vector3.Center(origin, hitPoint);
+  const dir = hitPoint.subtract(origin).normalize();
+  const dist = Vector3.Distance(origin, hitPoint);
+
+  const system = new ParticleSystem('tracer', 6, scene);
+  system.particleTexture = getParticleTexture(scene);
+  system.emitter = mid;
+  system.manualEmitCount = 6;
+
+  system.minLifeTime = 0.04;
+  system.maxLifeTime = 0.1;
+
+  // Stretch along the shot direction
+  const spread = 0.1;
+  system.direction1 = new Vector3(
+    dir.x * dist * 0.4 - spread,
+    dir.y * dist * 0.4 - spread,
+    dir.z * dist * 0.4 - spread,
+  );
+  system.direction2 = new Vector3(
+    dir.x * dist * 0.4 + spread,
+    dir.y * dist * 0.4 + spread,
+    dir.z * dist * 0.4 + spread,
+  );
+
+  system.minEmitPower = 2;
+  system.maxEmitPower = 5;
+
+  system.minSize = 0.015;
+  system.maxSize = 0.035;
+
+  // White-hot tracer color
+  system.color1 = new Color4(1, 0.95, 0.8, 0.7);
+  system.color2 = new Color4(1, 0.8, 0.5, 0.5);
+  system.colorDead = new Color4(1, 0.5, 0.2, 0);
+
+  system.disposeOnStop = true;
+  system.targetStopDuration = 0.15;
+
+  system.start();
+  system.stop();
+
+  return system;
+}
+
 /** Hitscan impact sparks — bright yellow/orange sparks flying off the hit surface. */
 export function createImpactSparks(
   hitPoint: Vector3,

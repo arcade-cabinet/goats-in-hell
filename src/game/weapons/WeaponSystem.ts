@@ -10,12 +10,28 @@ import {damageBarrel} from '../systems/HazardSystem';
 import {useGameStore, getLevelBonuses} from '../../state/GameStore';
 import {physicsRaycast} from '../systems/PhysicsSetup';
 import {getGameTime} from '../systems/GameClock';
-import {createImpactSparks} from '../rendering/Particles';
+import {createImpactSparks, createHitscanTracer} from '../rendering/Particles';
 import {getDamageMultiplier} from '../systems/PowerUpSystem';
 
 /** Shorthand for the store's seeded PRNG. */
 function rng(): number {
   return useGameStore.getState().rng();
+}
+
+// ---------------------------------------------------------------------------
+// Shot tracking — used for floor completion stats
+// ---------------------------------------------------------------------------
+
+let shotsFired = 0;
+let shotsHit = 0;
+
+export function getShotStats(): {fired: number; hit: number} {
+  return {fired: shotsFired, hit: shotsHit};
+}
+
+export function resetShotStats(): void {
+  shotsFired = 0;
+  shotsHit = 0;
 }
 
 // Track last fire time per weapon to enforce fire rate cooldown
@@ -88,6 +104,7 @@ export function tryShoot(scene: Scene, player: Entity): boolean {
 
   // Trigger gun flash effect
   GameState.set({gunFlash: 6});
+  shotsFired++;
 
   // Get camera forward direction for aiming
   const camera = scene.activeCamera;
@@ -278,6 +295,7 @@ function performHitscan(
     }
 
     applyDamageToEnemy(hit.entityId, damage, isHeadshot);
+    shotsHit++;
 
     if (isHeadshot) {
       GameState.set({hitMarker: 10}); // extra-strong hit marker for headshots
@@ -286,6 +304,11 @@ function performHitscan(
 
     // Impact sparks at hit point
     createImpactSparks(hit.hitPoint, hit.hitNormal, scene);
+
+    // Tracer trail for multi-pellet weapons (shotgun)
+    if (def.pellets > 1) {
+      createHitscanTracer(origin, hit.hitPoint, scene);
+    }
   } else {
     // No physics hit — check barrels via proximity (no physics body)
     checkBarrelHitscan(origin, direction, def.range, def.damage);

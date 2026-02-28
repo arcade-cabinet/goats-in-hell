@@ -106,6 +106,7 @@ function checkPlayerProjectileCollisions(projectile: Entity): boolean {
       if (projData.aoe !== undefined && projData.aoe > 0) {
         playSound('explosion');
 
+        let aoeKills = 0;
         for (const other of [...world.entities]) {
           if (!other.enemy || !other.position || other === entity) {
             continue;
@@ -117,7 +118,20 @@ function checkPlayerProjectileCollisions(projectile: Entity): boolean {
 
             if (other.enemy.hp <= 0) {
               handleEnemyKill(other);
+              aoeKills++;
             }
+          }
+        }
+
+        // Screen shake proportional to explosion proximity + kill count
+        const player = world.entities.find(e => e.type === 'player');
+        if (player?.position) {
+          const playerDist = Vector3.Distance(projPos, player.position);
+          if (playerDist < projData.aoe * 2) {
+            const proximity = 1 - playerDist / (projData.aoe * 2);
+            const killBonus = Math.min(aoeKills * 2, 8);
+            const shake = Math.ceil(proximity * 8 + killBonus);
+            GameState.set({screenShake: Math.max(GameState.get().screenShake, shake)});
           }
         }
       }

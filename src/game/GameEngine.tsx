@@ -49,7 +49,7 @@ import {
 import {doorSystemUpdate, resetDoorSystem} from './systems/DoorSystem';
 import {hazardSystemUpdate, resetHazardSystem, setHazardScene} from './systems/HazardSystem';
 import {resetKillStreaks} from './systems/KillStreakSystem';
-import {checkSecretWalls, resetSecrets} from './systems/SecretRoomSystem';
+import {checkSecretWalls, resetSecrets, getSecretsFound} from './systems/SecretRoomSystem';
 import {powerUpSystemUpdate, resetPowerUps, getSpeedMultiplier} from './systems/PowerUpSystem';
 import {tickGameClock, resetGameClock, getGameTime} from './systems/GameClock';
 import {initPhysics, disposeAllEnemyColliders, removeEnemyCollider} from './systems/PhysicsSetup';
@@ -59,6 +59,8 @@ import {
   updateReload,
   switchWeapon,
   initPlayerAmmo,
+  getShotStats,
+  resetShotStats,
 } from './weapons/WeaponSystem';
 
 // Rendering
@@ -99,7 +101,7 @@ import {
 import type {PropType} from './rendering/DungeonProps';
 import {createLoreMessage, clearLoreRegistry} from './rendering/LoreMessages';
 import {AIGovernor} from './systems/AIGovernor';
-import {BabylonHUD, resetBossPhase} from './ui/BabylonHUD';
+import {BabylonHUD, resetBossPhase, triggerEnvKill, showFloorStats, isFloorStatsActive} from './ui/BabylonHUD';
 import {BabylonScreens} from './ui/BabylonScreens';
 import {DamageNumbers3D} from './ui/DamageNumbers3D';
 import {WeaponViewModel, loadAllWeapons, triggerLandingDip} from './ui/WeaponViewModel';
@@ -646,6 +648,28 @@ export function GameEngine() {
     let deathSlowMoTimer = 0;           // 0 = not dying, >0 = ms remaining
     let deathSlowMoActive = false;
 
+    // Floor completion stats — show briefly before transitioning
+    let floorCompleteTriggered = false;
+    let floorStartTime = getGameTime();
+
+    function triggerFloorComplete(): void {
+      if (floorCompleteTriggered) return;
+      floorCompleteTriggered = true;
+
+      const shotStats = getShotStats();
+      const accuracy = shotStats.fired > 0
+        ? Math.round((shotStats.hit / shotStats.fired) * 100)
+        : 0;
+      const elapsed = Math.round((getGameTime() - floorStartTime) / 1000);
+
+      showFloorStats({
+        kills: useGameStore.getState().kills,
+        accuracy,
+        secrets: getSecretsFound(),
+        timeSeconds: elapsed,
+      });
+    }
+
     // Main game loop
     let lastTime = performance.now();
     const gameLoop = () => {
@@ -817,6 +841,7 @@ export function GameEngine() {
             ez >= 0 && ez < levelData.depth &&
             levelData.grid[ez]?.[ex] === MapCell.FLOOR_VOID
           ) {
+            if (enemy.enemy.hp > 0) triggerEnvKill('void');
             enemy.enemy.hp = 0;
           }
         }
@@ -847,7 +872,7 @@ export function GameEngine() {
           const waveInfo = getWaveInfo();
           const enemyCount = world.entities.filter(e => e.enemy).length;
           if (waveInfo.wave >= 5 && enemyCount === 0 && !waveInfo.waveActive && waveInfo.enemiesSpawnedThisWave > 0) {
-            advanceFloor();
+            triggerFloorComplete();
           }
         } else if (encounterType === 'boss') {
           // Boss: complete when no boss entity remains
@@ -879,14 +904,21 @@ export function GameEngine() {
               useGameStore.getState().defeatBoss(bossId);
               playSfx('boss_defeat');
             }
-            advanceFloor();
+            triggerFloorComplete();
           }
         } else {
           // Explore: standard floor-complete check
           if (checkFloorComplete()) {
-            advanceFloor();
+            triggerFloorComplete();
           }
         }
+      }
+
+      // 9b. Floor completion stats delay — transition after stats display finishes
+      if (floorCompleteTriggered && !isFloorStatsActive()) {
+        floorCompleteTriggered = false;
+        resetShotStats();
+        advanceFloor();
       }
 
       // 10. Update Babylon.js GUI HUD, 3D damage numbers, and weapon viewmodel
@@ -1744,9 +1776,21 @@ const ProjectileRenderer = () => {
           meshMap.set(proj.id, mesh);
 
           // Attach particle trail to projectile mesh
+          const isRocket = isPlayer && (proj.projectile.aoe ?? 0) > 0;
           const trailColor = isPlayer ? playerTrailColor : enemyTrailColor;
           const trail = createProjectileTrail(scene, trailColor);
           trail.emitter = mesh;
+          if (isRocket) {
+            // Thicker smoke trail for rockets
+            trail.minSize = 0.1;
+            trail.maxSize = 0.25;
+            trail.emitRate = 60;
+            trail.minLifeTime = 0.2;
+            trail.maxLifeTime = 0.5;
+            // Add smoke color component
+            trail.color2 = new Color4(0.4, 0.3, 0.2, 0.6);
+            trail.colorDead = new Color4(0.2, 0.15, 0.1, 0);
+          }
           trail.start();
           trailMap.set(proj.id, trail);
         }

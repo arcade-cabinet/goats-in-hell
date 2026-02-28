@@ -13,7 +13,7 @@ import {playSound} from './AudioSystem';
 import {pushDamageEvent} from './damageEvents';
 import {removeEntity} from './CombatSystem';
 import {getGameTime} from './GameClock';
-import {registerDamageDirection, triggerBloodSplatter} from '../ui/BabylonHUD';
+import {registerDamageDirection, triggerBloodSplatter, triggerEnvKill} from '../ui/BabylonHUD';
 import {createExplosionBurst} from '../rendering/Particles';
 
 const SPIKE_RANGE = 1.2;
@@ -108,6 +108,18 @@ function explodeBarrel(barrel: Entity): void {
       pushDamageEvent(actualDmg, entity.position!);
       if (entity.enemy.hp <= 0) {
         removeEntity(entity);
+        triggerEnvKill('barrel');
+        // Barrel explosion screen shake for nearby enemy kills
+        const player = world.entities.find((e: Entity) => e.type === 'player');
+        if (player?.position) {
+          const playerDist = Vector3.Distance(player.position, pos);
+          if (playerDist < BARREL_EXPLOSION_RANGE * 2) {
+            const proximity = 1 - playerDist / (BARREL_EXPLOSION_RANGE * 2);
+            const shake = Math.ceil(proximity * 6);
+            const cur = GameState.get().screenShake;
+            GameState.set({screenShake: Math.max(cur, shake)});
+          }
+        }
       }
     } else if (entity.hazard?.hazardType === 'barrel' && entity.hazard.hp !== undefined) {
       // Chain explosion: damage nearby barrels

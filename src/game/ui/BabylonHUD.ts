@@ -63,6 +63,53 @@ export function triggerBloodSplatter(intensity: number): void {
   if (bloodSplatterCallback) bloodSplatterCallback(intensity);
 }
 
+// ---------------------------------------------------------------------------
+// Environmental kill messages — triggered by GameEngine/HazardSystem
+// ---------------------------------------------------------------------------
+
+const ENV_KILL_MESSAGES: Record<string, string[]> = {
+  void: ['VOID CLAIMED', 'INTO THE ABYSS', 'CONSUMED BY DARKNESS'],
+  lava: ['LAVA BATH', 'SMELTED', 'MAGMA DIP'],
+  barrel: ['BARREL BLAST', 'CHAIN REACTION', 'KABLOOM'],
+};
+
+let envKillMessage = '';
+let envKillTimer = 0;
+const ENV_KILL_DURATION = 90; // ~1.5s at 60fps
+
+// ---------------------------------------------------------------------------
+// Floor completion stats — shown briefly when a floor is cleared
+// ---------------------------------------------------------------------------
+
+interface FloorStats {
+  kills: number;
+  accuracy: number; // 0-100
+  secrets: number;
+  timeSeconds: number;
+}
+
+let floorStatsData: FloorStats | null = null;
+let floorStatsTimer = 0;
+const FLOOR_STATS_DURATION = 100; // ~1.7s at 60fps
+
+/** Trigger the floor completion stats overlay. */
+export function showFloorStats(stats: FloorStats): void {
+  floorStatsData = stats;
+  floorStatsTimer = FLOOR_STATS_DURATION;
+}
+
+/** Returns true if floor stats are currently displaying. */
+export function isFloorStatsActive(): boolean {
+  return floorStatsTimer > 0;
+}
+
+/** Push an environmental kill notification. */
+export function triggerEnvKill(type: 'void' | 'lava' | 'barrel'): void {
+  const msgs = ENV_KILL_MESSAGES[type] ?? ['ENVIRONMENTAL KILL'];
+  envKillMessage = msgs[Math.floor(Math.random() * msgs.length)];
+  envKillTimer = ENV_KILL_DURATION;
+}
+
 /** Reset damage indicators between floors. */
 export function resetDamageIndicators(): void {
   damageIndicators[0] = damageIndicators[1] = damageIndicators[2] = damageIndicators[3] = 0;
@@ -248,6 +295,13 @@ export class BabylonHUD {
   private bloodSplatter!: Rectangle;
   private bloodAlpha = 0;
 
+  // Environmental kill message
+  private envKillText!: TextBlock;
+
+  // Floor completion stats
+  private floorStatsPanel!: Rectangle;
+  private floorStatsTexts: TextBlock[] = [];
+
   constructor(scene: Scene) {
     this.gui = AdvancedDynamicTexture.CreateFullscreenUI('HUD', true, scene);
     this.gui.idealHeight = 900;
@@ -275,6 +329,8 @@ export class BabylonHUD {
     this.createLoreOverlay();
     this.createSecretNotification();
     this.createBloodSplatter();
+    this.createEnvKillMessage();
+    this.createFloorStatsPanel();
 
     // Register blood splatter callback so combat systems can trigger it
     bloodSplatterCallback = (intensity: number) => this.triggerBloodSplatter(intensity);
@@ -979,6 +1035,8 @@ export class BabylonHUD {
     this.updateLoreOverlay(player);
     this.updateSecretNotification();
     this.updateBloodSplatter();
+    this.updateEnvKillMessage();
+    this.updateFloorStats();
   }
 
   private updateHealth(player: Entity): void {
@@ -1825,6 +1883,105 @@ export class BabylonHUD {
     } else {
       this.bloodSplatter.isVisible = false;
       this.bloodAlpha = 0;
+    }
+  }
+
+  // =========================================================================
+  // Floor completion stats panel
+  // =========================================================================
+
+  private createFloorStatsPanel(): void {
+    this.floorStatsPanel = new Rectangle('floorStats');
+    this.floorStatsPanel.width = '280px';
+    this.floorStatsPanel.height = '120px';
+    this.floorStatsPanel.background = 'rgba(0, 0, 0, 0.7)';
+    this.floorStatsPanel.thickness = 1;
+    this.floorStatsPanel.color = 'rgba(255, 100, 50, 0.6)';
+    this.floorStatsPanel.cornerRadius = 4;
+    this.floorStatsPanel.top = -60;
+    this.floorStatsPanel.isVisible = false;
+    this.floorStatsPanel.isHitTestVisible = false;
+    this.gui.addControl(this.floorStatsPanel);
+
+    // Header
+    const header = new TextBlock('fsHeader', 'FLOOR CLEARED');
+    header.color = '#ff6633';
+    header.fontSize = 16;
+    header.fontWeight = 'bold';
+    header.textHorizontalAlignment = Control.HORIZONTAL_ALIGNMENT_CENTER;
+    header.top = -42;
+    this.floorStatsPanel.addControl(header);
+    this.floorStatsTexts.push(header);
+
+    // Stats lines
+    const lineNames = ['fsKills', 'fsAccuracy', 'fsSecrets', 'fsTime'];
+    for (let i = 0; i < 4; i++) {
+      const line = new TextBlock(lineNames[i], '');
+      line.color = '#cccccc';
+      line.fontSize = 13;
+      line.textHorizontalAlignment = Control.HORIZONTAL_ALIGNMENT_CENTER;
+      line.top = -20 + i * 18;
+      this.floorStatsPanel.addControl(line);
+      this.floorStatsTexts.push(line);
+    }
+  }
+
+  private updateFloorStats(): void {
+    if (floorStatsTimer > 0 && floorStatsData) {
+      floorStatsTimer--;
+      this.floorStatsPanel.isVisible = true;
+
+      // Fade in first 15 frames, hold, fade out last 20
+      const fadeIn = Math.min(1, (FLOOR_STATS_DURATION - floorStatsTimer) / 15);
+      const fadeOut = Math.min(1, floorStatsTimer / 20);
+      this.floorStatsPanel.alpha = Math.min(fadeIn, fadeOut);
+
+      // Update text content
+      const s = floorStatsData;
+      this.floorStatsTexts[1].text = `KILLS: ${s.kills}`;
+      this.floorStatsTexts[2].text = `ACCURACY: ${s.accuracy}%`;
+      this.floorStatsTexts[3].text = `SECRETS: ${s.secrets}`;
+      this.floorStatsTexts[4].text = `TIME: ${s.timeSeconds}s`;
+    } else {
+      this.floorStatsPanel.isVisible = false;
+    }
+  }
+
+  // =========================================================================
+  // Environmental kill message
+  // =========================================================================
+
+  private createEnvKillMessage(): void {
+    this.envKillText = new TextBlock('envKill', '');
+    this.envKillText.color = '#ff6633';
+    this.envKillText.fontSize = 20;
+    this.envKillText.fontWeight = 'bold';
+    this.envKillText.textHorizontalAlignment = Control.HORIZONTAL_ALIGNMENT_CENTER;
+    this.envKillText.textVerticalAlignment = Control.VERTICAL_ALIGNMENT_CENTER;
+    this.envKillText.top = 60;
+    this.envKillText.outlineWidth = 2;
+    this.envKillText.outlineColor = '#000000';
+    this.envKillText.isVisible = false;
+    this.gui.addControl(this.envKillText);
+  }
+
+  private updateEnvKillMessage(): void {
+    if (envKillTimer > 0) {
+      envKillTimer--;
+      this.envKillText.text = envKillMessage;
+      this.envKillText.isVisible = true;
+
+      // Fade in first 10 frames, hold, fade out last 20
+      const fadeIn = Math.min(1, (ENV_KILL_DURATION - envKillTimer) / 10);
+      const fadeOut = Math.min(1, envKillTimer / 20);
+      const alpha = Math.min(fadeIn, fadeOut);
+      this.envKillText.alpha = alpha;
+
+      // Slide down slightly from above
+      const slideIn = 1 - fadeIn;
+      this.envKillText.top = 60 - slideIn * 15;
+    } else {
+      this.envKillText.isVisible = false;
     }
   }
 
