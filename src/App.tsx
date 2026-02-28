@@ -6,12 +6,6 @@ import {Scene} from 'reactylon';
 import {EngineWrapper} from './EngineWrapper';
 import {GameEngine} from './game/GameEngine';
 import {MainMenu} from './ui/MainMenu';
-import {HUD} from './ui/HUD';
-import {DeathScreen} from './ui/DeathScreen';
-import {VictoryScreen} from './ui/VictoryScreen';
-import {PauseMenu} from './ui/PauseMenu';
-import {AutoplayOverlay} from './ui/AutoplayOverlay';
-import {BossIntroScreen} from './ui/BossIntroScreen';
 import {useGameStore, generateSeedPhrase} from './state/GameStore';
 import type {Difficulty} from './state/GameStore';
 
@@ -61,25 +55,39 @@ const App = () => {
     return () => clearTimeout(timer);
   }, [autoplay, screen, startNewGame]);
 
-  // Autoplay: auto-advance on victory (descend to next floor)
+  // Autoplay: auto-advance on victory / bossIntro / gameComplete
   const advanceStage = useGameStore(s => s.advanceStage);
   useEffect(() => {
     if (!autoplay) return;
     if (screen === 'victory') {
       const timer = setTimeout(() => {
         advanceStage();
-        patch({screen: 'playing', startTime: Date.now()});
+        const nextScreen = useGameStore.getState().screen;
+        if (nextScreen !== 'bossIntro' && nextScreen !== 'gameComplete') {
+          patch({screen: 'playing', startTime: Date.now()});
+        }
       }, 2000);
       return () => clearTimeout(timer);
     }
     if (screen === 'bossIntro') {
-      // Auto-enter boss fight after brief delay
       const timer = setTimeout(() => {
         patch({screen: 'playing', startTime: Date.now()});
       }, 2000);
       return () => clearTimeout(timer);
     }
-  }, [autoplay, screen, advanceStage, patch]);
+    if (screen === 'gameComplete') {
+      // Auto-restart after completing the game
+      const timer = setTimeout(() => {
+        const s = useGameStore.getState();
+        startNewGame(
+          s.difficulty,
+          s.nightmareFlags,
+          generateSeedPhrase(),
+        );
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [autoplay, screen, advanceStage, patch, startNewGame]);
 
   // Handle ESC key for pause (manual mode only)
   useEffect(() => {
@@ -105,7 +113,8 @@ const App = () => {
     screen === 'paused' ||
     screen === 'dead' ||
     screen === 'victory' ||
-    screen === 'bossIntro';
+    screen === 'bossIntro' ||
+    screen === 'gameComplete';
 
   return (
     <View style={styles.container}>
@@ -122,12 +131,6 @@ const App = () => {
       {(screen === 'mainMenu' || screen === 'newGame' || screen === 'settings') && (
         <MainMenu />
       )}
-      {screen === 'playing' && <HUD />}
-      {screen === 'playing' && autoplay && <AutoplayOverlay />}
-      {screen === 'paused' && <PauseMenu />}
-      {screen === 'dead' && <DeathScreen />}
-      {screen === 'victory' && <VictoryScreen />}
-      {screen === 'bossIntro' && <BossIntroScreen />}
     </View>
   );
 };

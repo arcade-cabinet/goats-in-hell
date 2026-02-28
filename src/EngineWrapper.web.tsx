@@ -12,7 +12,7 @@ export const EngineWrapper: React.FC<EngineWrapperProps> = ({ children }) => {
     React.useEffect(() => {
         const style = document.createElement('style');
         style.type = 'text/css';
-        style.innerHTML = `
+        style.textContent = `
             #renderCanvas {
                 width: 100%;
                 height: 100%;

@@ -21,7 +21,7 @@ import type {Entity, WeaponId} from '../entities/components';
 import {world} from '../entities/world';
 import {tryShoot, tryReload, switchWeapon} from '../weapons/WeaponSystem';
 import {weapons} from '../weapons/weapons';
-import {MapCell} from '../levels/LevelGenerator';
+import {LevelGenerator, MapCell} from '../levels/LevelGenerator';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -479,7 +479,7 @@ export class AIGovernor {
     const gz = Math.floor(pos.z / this.cellSize);
 
     if (gz < 0 || gz >= this.gridH || gx < 0 || gx >= this.gridW) return false;
-    return this.grid[gz][gx] === MapCell.EMPTY;
+    return LevelGenerator.isWalkable(this.grid[gz][gx]);
   }
 
   // -----------------------------------------------------------------------

@@ -99,8 +99,12 @@ export const VictoryScreen: React.FC = () => {
       patch({score: score + bonus});
     }
     advanceStage();
-    // Transition to playing after advance (advanceStage sets 'victory' or 'bossIntro')
-    patch({screen: 'playing', startTime: Date.now()});
+    // advanceStage may set screen to 'bossIntro' or 'gameComplete' —
+    // only transition to 'playing' if neither of those was set
+    const nextScreen = useGameStore.getState().screen;
+    if (nextScreen !== 'bossIntro' && nextScreen !== 'gameComplete') {
+      patch({screen: 'playing', startTime: Date.now()});
+    }
   };
 
   const handleExit = () => {

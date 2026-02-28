@@ -1,10 +1,31 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import {useGameStore} from '../state/GameStore';
+import {useGameStore, writeSettings} from '../state/GameStore';
+import {setMasterVolume} from '../game/systems/AudioSystem';
+import {setMusicMasterVolume} from '../game/systems/MusicSystem';
 
 export const PauseMenu: React.FC = () => {
   const patch = useGameStore(s => s.patch);
   const resetToMenu = useGameStore(s => s.resetToMenu);
+  const masterVolume = useGameStore(s => s.masterVolume);
+  const mouseSensitivity = useGameStore(s => s.mouseSensitivity);
+
+  const volumePercent = Math.round(masterVolume * 100);
+  const sensitivityPercent = Math.round(mouseSensitivity * 100);
+
+  const adjustVolume = (delta: number) => {
+    const newVol = Math.max(0, Math.min(1, masterVolume + delta));
+    patch({masterVolume: newVol});
+    setMasterVolume(newVol);
+    setMusicMasterVolume(newVol);
+    writeSettings(newVol, mouseSensitivity);
+  };
+
+  const adjustSensitivity = (delta: number) => {
+    const newSens = Math.max(0.1, Math.min(1, mouseSensitivity + delta));
+    patch({mouseSensitivity: newSens});
+    writeSettings(masterVolume, newSens);
+  };
 
   return (
     <View style={styles.overlay} pointerEvents="box-none">
@@ -41,6 +62,46 @@ export const PauseMenu: React.FC = () => {
             activeOpacity={0.7}>
             <Text style={styles.quitButtonText}>QUIT TO MENU</Text>
           </TouchableOpacity>
+        </View>
+
+        {/* Divider before settings */}
+        <View style={styles.dividerSmall}>
+          <View style={styles.dividerLineSmall} />
+        </View>
+
+        {/* Settings */}
+        <View style={styles.settingsContainer}>
+          <View style={styles.settingRow}>
+            <Text style={styles.settingLabel}>VOLUME</Text>
+            <View style={styles.sliderRow}>
+              <TouchableOpacity onPress={() => adjustVolume(-0.1)} style={styles.sliderBtn}>
+                <Text style={styles.sliderBtnText}>-</Text>
+              </TouchableOpacity>
+              <View style={styles.sliderTrack}>
+                <View style={[styles.sliderFill, {width: `${volumePercent}%` as any}]} />
+              </View>
+              <TouchableOpacity onPress={() => adjustVolume(0.1)} style={styles.sliderBtn}>
+                <Text style={styles.sliderBtnText}>+</Text>
+              </TouchableOpacity>
+              <Text style={styles.sliderValue}>{volumePercent}%</Text>
+            </View>
+          </View>
+
+          <View style={styles.settingRow}>
+            <Text style={styles.settingLabel}>SENSITIVITY</Text>
+            <View style={styles.sliderRow}>
+              <TouchableOpacity onPress={() => adjustSensitivity(-0.1)} style={styles.sliderBtn}>
+                <Text style={styles.sliderBtnText}>-</Text>
+              </TouchableOpacity>
+              <View style={styles.sliderTrack}>
+                <View style={[styles.sliderFill, {width: `${sensitivityPercent}%` as any}]} />
+              </View>
+              <TouchableOpacity onPress={() => adjustSensitivity(0.1)} style={styles.sliderBtn}>
+                <Text style={styles.sliderBtnText}>+</Text>
+              </TouchableOpacity>
+              <Text style={styles.sliderValue}>{sensitivityPercent}%</Text>
+            </View>
+          </View>
         </View>
 
         {/* Divider before controls */}
@@ -204,6 +265,63 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#776655',
     letterSpacing: 3,
+  },
+
+  // Settings
+  settingsContainer: {
+    alignItems: 'center',
+    width: 280,
+  },
+  settingRow: {
+    marginBottom: 14,
+    width: '100%',
+  },
+  settingLabel: {
+    fontFamily: 'Courier',
+    fontSize: 10,
+    color: '#776655',
+    letterSpacing: 3,
+    marginBottom: 6,
+  },
+  sliderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  sliderBtn: {
+    width: 26,
+    height: 26,
+    borderWidth: 1,
+    borderColor: '#554433',
+    backgroundColor: 'rgba(85, 68, 51, 0.15)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  sliderBtnText: {
+    fontFamily: 'Courier',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#776655',
+  },
+  sliderTrack: {
+    flex: 1,
+    height: 10,
+    backgroundColor: '#1a0a0a',
+    borderWidth: 1,
+    borderColor: 'rgba(136, 85, 51, 0.25)',
+    overflow: 'hidden' as const,
+  },
+  sliderFill: {
+    height: '100%' as any,
+    backgroundColor: '#884422',
+  },
+  sliderValue: {
+    fontFamily: 'Courier',
+    fontSize: 11,
+    color: '#776655',
+    fontWeight: 'bold',
+    width: 36,
+    textAlign: 'right' as const,
   },
 
   // Controls reference

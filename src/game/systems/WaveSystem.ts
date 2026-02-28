@@ -1,7 +1,16 @@
 import {Vector3} from '@babylonjs/core';
-import type {Entity, EntityType} from '../entities/components';
+import type {Entity, EntityType, WeaponId} from '../entities/components';
 import {world} from '../entities/world';
 import {GameState} from '../../state/GameState';
+import {useGameStore, DIFFICULTY_PRESETS} from '../../state/GameStore';
+import {getEnemyStats} from '../entities/enemyStats';
+import {getGameTime} from './GameClock';
+import type {PowerUpType} from './PowerUpSystem';
+
+/** Shorthand for the store's seeded PRNG — deterministic per-seed. */
+function rng(): number {
+  return useGameStore.getState().rng();
+}
 
 // ---------------------------------------------------------------------------
 // Module state
@@ -16,6 +25,8 @@ let killStreak = 0;
 let lastKillTime = 0;
 let scoreMultiplier = 1;
 let lastKnownKills = 0;
+let waveSpawnCounter = 0;
+let arenaPickupCounter = 0;
 
 // ---------------------------------------------------------------------------
 // Reset
@@ -32,6 +43,8 @@ export function resetWaveSystem(): void {
   lastKillTime = 0;
   scoreMultiplier = 1;
   lastKnownKills = 0;
+  waveSpawnCounter = 0;
+  arenaPickupCounter = 0;
 }
 
 // ---------------------------------------------------------------------------
@@ -46,6 +59,7 @@ export function startNextWave(): void {
   enemiesSpawnedThisWave = 0;
   totalEnemiesForWave = Math.min(30, 3 + currentWave * 2);
 }
+
 
 // ---------------------------------------------------------------------------
 // Enemy type selection
@@ -69,101 +83,114 @@ export function getEnemyTypeForWave(wave: number): EntityType {
   }
 
   // Every 5th wave has a 10% chance for an archGoat
-  if (wave % 5 === 0 && Math.random() < 0.1) {
+  if (wave % 5 === 0 && rng() < 0.1) {
     return 'archGoat';
   }
 
-  return pool[Math.floor(Math.random() * pool.length)];
+  return pool[Math.floor(rng() * pool.length)];
 }
 
 // ---------------------------------------------------------------------------
-// Enemy stats
+// Arena pickups between waves
 // ---------------------------------------------------------------------------
 
-type EnemyStats = {
-  hp: number;
-  maxHp: number;
-  damage: number;
-  speed: number;
-  attackRange: number;
-  scoreValue: number;
-  canShoot?: boolean;
-  isInvisible?: boolean;
-  isArmored?: boolean;
-  armorHp?: number;
-};
-
-/** Return base stats for the given enemy type. */
-export function getEnemyStats(type: EntityType): EnemyStats {
-  switch (type) {
-    case 'goat':
-      return {
-        hp: 5,
-        maxHp: 5,
-        damage: 5,
-        speed: 0.04,
-        attackRange: 2,
-        scoreValue: 100,
-      };
-    case 'hellgoat':
-      return {
-        hp: 8,
-        maxHp: 8,
-        damage: 8,
-        speed: 0.06,
-        attackRange: 2,
-        scoreValue: 250,
-      };
-    case 'fireGoat':
-      return {
-        hp: 6,
-        maxHp: 6,
-        damage: 4,
-        speed: 0.03,
-        attackRange: 2,
-        scoreValue: 200,
-        canShoot: true,
-      };
-    case 'shadowGoat':
-      return {
-        hp: 4,
-        maxHp: 4,
-        damage: 10,
-        speed: 0.07,
-        attackRange: 1.5,
-        scoreValue: 300,
-        isInvisible: true,
-      };
-    case 'goatKnight':
-      return {
-        hp: 15,
-        maxHp: 15,
-        damage: 12,
-        speed: 0.03,
-        attackRange: 2,
-        scoreValue: 400,
-        isArmored: true,
-        armorHp: 5,
-      };
-    case 'archGoat':
-      return {
-        hp: 100,
-        maxHp: 100,
-        damage: 15,
-        speed: 0.02,
-        attackRange: 3,
-        scoreValue: 1000,
-      };
-    default:
-      return {
-        hp: 5,
-        maxHp: 5,
-        damage: 5,
-        speed: 0.04,
-        attackRange: 2,
-        scoreValue: 100,
-      };
+function spawnArenaPickups(arenaSize: number): void {
+  // Remove uncollected arena pickups from previous wave to prevent entity accumulation
+  const stalePickups = world.entities.filter(e => e.id?.startsWith('arena-pickup-'));
+  for (const p of stalePickups) {
+    world.remove(p);
   }
+
+  const storeState = useGameStore.getState();
+  const isNightmare = storeState.nightmareFlags.nightmare || storeState.nightmareFlags.ultraNightmare;
+
+  // Spawn 2-3 ammo pickups
+  const ammoCount = 2 + Math.floor(rng() * 2);
+  for (let i = 0; i < ammoCount; i++) {
+    const sx = 3 + Math.floor(rng() * (arenaSize - 6));
+    const sz = 3 + Math.floor(rng() * (arenaSize - 6));
+    arenaPickupCounter++;
+    world.add({
+      id: `arena-pickup-${arenaPickupCounter}`,
+      type: 'ammo',
+      position: new Vector3(sx * 2, 0.5, sz * 2),
+      pickup: {
+        pickupType: 'ammo',
+        value: 18,
+        active: true,
+      },
+    });
+  }
+
+  // Spawn 1 health pickup (reduced in nightmare mode)
+  if (!isNightmare) {
+    const hx = 3 + Math.floor(rng() * (arenaSize - 6));
+    const hz = 3 + Math.floor(rng() * (arenaSize - 6));
+    arenaPickupCounter++;
+    world.add({
+      id: `arena-pickup-${arenaPickupCounter}`,
+      type: 'health',
+      position: new Vector3(hx * 2, 0.5, hz * 2),
+      pickup: {
+        pickupType: 'health',
+        value: 25,
+        active: true,
+      },
+    });
+  } else if (currentWave % 3 === 0) {
+    // Nightmare: trickle 1 small health pickup every 3 waves (brutal but survivable)
+    const hx = 3 + Math.floor(rng() * (arenaSize - 6));
+    const hz = 3 + Math.floor(rng() * (arenaSize - 6));
+    arenaPickupCounter++;
+    world.add({
+      id: `arena-pickup-${arenaPickupCounter}`,
+      type: 'health',
+      position: new Vector3(hx * 2, 0.5, hz * 2),
+      pickup: {
+        pickupType: 'health',
+        value: 15,
+        active: true,
+      },
+    });
+  }
+}
+
+function spawnArenaPowerUp(arenaSize: number): void {
+  const types: PowerUpType[] = ['quadDamage', 'hellSpeed', 'demonShield'];
+  const pType = types[Math.floor(rng() * types.length)];
+  const px = 3 + Math.floor(rng() * (arenaSize - 6));
+  const pz = 3 + Math.floor(rng() * (arenaSize - 6));
+  arenaPickupCounter++;
+  world.add({
+    id: `arena-pickup-${arenaPickupCounter}`,
+    type: 'powerup' as EntityType,
+    position: new Vector3(px * 2, 0.8, pz * 2),
+    pickup: {
+      pickupType: 'powerup',
+      value: 0,
+      active: true,
+      powerUpType: pType,
+    },
+  });
+}
+
+function spawnArenaWeaponPickup(arenaSize: number): void {
+  const weaponPool: WeaponId[] = ['brimShotgun', 'hellfireCannon', 'goatsBane'];
+  const weaponId = weaponPool[Math.floor(rng() * weaponPool.length)];
+  const wx = 3 + Math.floor(rng() * (arenaSize - 6));
+  const wz = 3 + Math.floor(rng() * (arenaSize - 6));
+  arenaPickupCounter++;
+  world.add({
+    id: `arena-pickup-${arenaPickupCounter}`,
+    type: 'weaponPickup',
+    position: new Vector3(wx * 2, 0.5, wz * 2),
+    pickup: {
+      pickupType: 'weapon',
+      value: 0,
+      active: true,
+      weaponId,
+    },
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -188,6 +215,18 @@ export function waveSystemUpdate(deltaTime: number, arenaSize: number): void {
   // If no enemies remain and the wave is not actively spawning, start next
   // ------------------------------------------------------------------
   if (enemyCount === 0 && !waveActive) {
+    // Drop pickups between waves (every wave after the first)
+    if (currentWave > 0) {
+      spawnArenaPickups(arenaSize);
+    }
+    // Drop a weapon pickup every 3rd wave for arsenal diversity
+    if (currentWave > 0 && currentWave % 3 === 0) {
+      spawnArenaWeaponPickup(arenaSize);
+    }
+    // Drop a power-up every 3rd wave (starting wave 3)
+    if (currentWave >= 3 && currentWave % 3 === 0) {
+      spawnArenaPowerUp(arenaSize);
+    }
     startNextWave();
   }
 
@@ -195,52 +234,56 @@ export function waveSystemUpdate(deltaTime: number, arenaSize: number): void {
   // Spawn enemies while the wave is active
   // ------------------------------------------------------------------
   if (waveActive && enemiesSpawnedThisWave < totalEnemiesForWave) {
-    spawnTimer--;
+    const dtScale = deltaTime / 16;
+    spawnTimer -= dtScale;
 
     if (spawnTimer <= 0) {
       // Pick a random edge spawn point
-      const edge = Math.floor(Math.random() * 4);
+      const edge = Math.floor(rng() * 4);
       let sx: number;
       let sz: number;
 
       switch (edge) {
         case 0: // top edge
-          sx = 2 + Math.floor(Math.random() * (arenaSize - 4));
+          sx = 2 + Math.floor(rng() * (arenaSize - 4));
           sz = 1;
           break;
         case 1: // bottom edge
-          sx = 2 + Math.floor(Math.random() * (arenaSize - 4));
+          sx = 2 + Math.floor(rng() * (arenaSize - 4));
           sz = arenaSize - 2;
           break;
         case 2: // left edge
           sx = 1;
-          sz = 2 + Math.floor(Math.random() * (arenaSize - 4));
+          sz = 2 + Math.floor(rng() * (arenaSize - 4));
           break;
         default: // right edge
           sx = arenaSize - 2;
-          sz = 2 + Math.floor(Math.random() * (arenaSize - 4));
+          sz = 2 + Math.floor(rng() * (arenaSize - 4));
           break;
       }
 
       const enemyType = getEnemyTypeForWave(currentWave);
       const stats = getEnemyStats(enemyType);
 
+      // Apply difficulty scaling
+      const storeState = useGameStore.getState();
+      const diffMods = DIFFICULTY_PRESETS[storeState.difficulty];
+      const nightmareDmgMult =
+        storeState.nightmareFlags.nightmare || storeState.nightmareFlags.ultraNightmare ? 2 : 1;
+
+      waveSpawnCounter++;
       const entity: Entity = {
+        id: `wave-${currentWave}-${waveSpawnCounter}`,
         type: enemyType,
-        position: new Vector3(sx * 2, 0, sz * 2), // multiply by CELL_SIZE (2)
+        position: new Vector3(sx * 2, 1, sz * 2), // multiply by CELL_SIZE (2)
         enemy: {
-          hp: stats.hp,
-          maxHp: stats.maxHp,
-          damage: stats.damage,
-          speed: stats.speed,
-          attackRange: stats.attackRange,
+          ...stats,
+          hp: Math.ceil(stats.hp * diffMods.enemyHpMult),
+          maxHp: Math.ceil(stats.maxHp * diffMods.enemyHpMult),
+          damage: Math.ceil(stats.damage * diffMods.enemyDmgMult * nightmareDmgMult),
+          speed: stats.speed * diffMods.enemySpeedMult,
           alert: true, // arena enemies are always alert
           attackCooldown: 0,
-          scoreValue: stats.scoreValue,
-          canShoot: stats.canShoot,
-          isArmored: stats.isArmored,
-          armorHp: stats.armorHp,
-          isInvisible: stats.isInvisible,
         },
       };
 
@@ -260,22 +303,33 @@ export function waveSystemUpdate(deltaTime: number, arenaSize: number): void {
   // Kill streak tracking
   // ------------------------------------------------------------------
   const currentKills = state.kills;
-  const now = Date.now();
+  const gameTime = getGameTime();
 
   if (currentKills > lastKnownKills) {
     // A kill just happened
-    if (now - lastKillTime < 3000) {
+    const newKills = currentKills - lastKnownKills;
+    if (gameTime - lastKillTime < 3000) {
       // Within 3 seconds of last kill - extend the streak
-      killStreak += currentKills - lastKnownKills;
+      killStreak += newKills;
       scoreMultiplier = Math.min(3, 1 + killStreak * 0.1);
     } else {
       // Streak broken - reset
       killStreak = 1;
       scoreMultiplier = 1;
     }
-    lastKillTime = now;
+
+    // Apply flat streak bonus per kill (avoids runaway score inflation)
+    if (scoreMultiplier > 1) {
+      const bonusPerKill = Math.floor(50 * (scoreMultiplier - 1));
+      const bonus = bonusPerKill * newKills;
+      if (bonus > 0) {
+        GameState.set({score: state.score + bonus});
+      }
+    }
+
+    lastKillTime = gameTime;
     lastKnownKills = currentKills;
-  } else if (now - lastKillTime >= 3000 && killStreak > 0) {
+  } else if (gameTime - lastKillTime >= 3000 && killStreak > 0) {
     // No kills for 3 seconds - reset streak
     killStreak = 0;
     scoreMultiplier = 1;
@@ -286,15 +340,19 @@ export function waveSystemUpdate(deltaTime: number, arenaSize: number): void {
 // HUD info
 // ---------------------------------------------------------------------------
 
-/** Return current wave state for HUD display. */
+/** Return current wave state for HUD display and game logic. */
 export function getWaveInfo(): {
   wave: number;
   multiplier: number;
   streak: number;
+  waveActive: boolean;
+  enemiesSpawnedThisWave: number;
 } {
   return {
     wave: currentWave,
     multiplier: scoreMultiplier,
     streak: killStreak,
+    waveActive,
+    enemiesSpawnedThisWave,
   };
 }

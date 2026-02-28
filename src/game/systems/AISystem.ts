@@ -23,7 +23,15 @@ import {Vector3} from '@babylonjs/core';
 import type {Entity} from '../entities/components';
 import {world} from '../entities/world';
 import {GameState} from '../../state/GameState';
+import {useGameStore} from '../../state/GameStore';
 import {playSound} from './AudioSystem';
+import {getGameTime} from './GameClock';
+import {registerDamageDirection} from '../ui/BabylonHUD';
+
+/** Shorthand for the store's seeded PRNG. */
+function rng(): number {
+  return useGameStore.getState().rng();
+}
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -85,8 +93,19 @@ function createVehicleForEnemy(entity: Entity): Vehicle {
       v.steering.add(seek);
       break;
     }
-    case 'archGoat': {
-      // Boss — slower but strong. Phase transitions handled in update.
+    case 'archGoat':
+    case 'infernoGoat':
+    case 'ironGoat': {
+      // Boss types — seek player directly. Phase transitions handled in post-steering.
+      const seek = new SeekBehavior(playerTarget);
+      seek.active = true;
+      v.steering.add(seek);
+      break;
+    }
+    case 'voidGoat': {
+      // Void boss — fast seek with teleporting handled in post-steering.
+      v.maxSpeed = enemy.speed * 1.3;
+      v.maxForce = enemy.speed * 3;
       const seek = new SeekBehavior(playerTarget);
       seek.active = true;
       v.steering.add(seek);
@@ -117,10 +136,11 @@ function directionTo(from: Vector3, to: Vector3): Vector3 {
   return dir.scaleInPlace(1 / len);
 }
 
-function meleeHitPlayer(player: Entity, damage: number): void {
+function meleeHitPlayer(player: Entity, damage: number, sourcePos?: Vector3): void {
   player.player!.hp -= damage;
   GameState.set({damageFlash: 1.0, screenShake: 10});
   playSound('hurt');
+  if (sourcePos) registerDamageDirection(sourcePos);
 }
 
 function spawnProjectile(
@@ -131,6 +151,7 @@ function spawnProjectile(
 ): void {
   const vel = direction.scale(speed);
   world.add({
+    id: `eproj-${getGameTime().toFixed(0)}-${rng().toString(36).slice(2, 6)}`,
     type: 'projectile',
     position: origin.clone(),
     velocity: new Vector3(vel.x, vel.y, vel.z),
@@ -154,7 +175,7 @@ function postSteeringBasicGoat(
 ): void {
   const enemy = entity.enemy!;
   if (dist <= enemy.attackRange && enemy.attackCooldown <= 0) {
-    meleeHitPlayer(player, enemy.damage);
+    meleeHitPlayer(player, enemy.damage, entity.position);
     enemy.attackCooldown = ATTACK_COOLDOWN_FRAMES;
   }
 }
@@ -189,7 +210,7 @@ function postSteeringShadowGoat(
   enemy.visibilityAlpha = 0.15 + t * 0.85;
 
   if (dist <= enemy.attackRange && enemy.attackCooldown <= 0) {
-    meleeHitPlayer(player, enemy.damage);
+    meleeHitPlayer(player, enemy.damage, entity.position);
     enemy.attackCooldown = ATTACK_COOLDOWN_FRAMES;
   }
 }
@@ -201,8 +222,170 @@ function postSteeringGoatKnight(
 ): void {
   const enemy = entity.enemy!;
   if (dist <= enemy.attackRange && enemy.attackCooldown <= 0) {
-    meleeHitPlayer(player, enemy.damage);
+    meleeHitPlayer(player, enemy.damage, entity.position);
     enemy.attackCooldown = Math.floor(ATTACK_COOLDOWN_FRAMES * 1.5);
+  }
+}
+
+function postSteeringInfernoGoat(
+  entity: Entity,
+  player: Entity,
+  dist: number,
+  dtScale: number,
+): void {
+  const enemy = entity.enemy!;
+  const hpPercent = enemy.hp / enemy.maxHp;
+  const isEnraged = hpPercent <= 0.3;
+
+  // Melee
+  if (dist <= enemy.attackRange && enemy.attackCooldown <= 0) {
+    meleeHitPlayer(player, enemy.damage, entity.position);
+    enemy.attackCooldown = ATTACK_COOLDOWN_FRAMES;
+  }
+
+  // Rapid fire projectiles (faster when enraged)
+  if (enemy.shootCooldown === undefined) enemy.shootCooldown = 60;
+  enemy.shootCooldown -= dtScale;
+
+  if (enemy.shootCooldown <= 0 && dist < ALERT_RADIUS) {
+    const dir = directionTo(entity.position!, player.position!);
+    const count = isEnraged ? 5 : 3;
+    const spreadAngle = isEnraged ? 0.3 : 0.15;
+    for (let i = 0; i < count; i++) {
+      const angle = (i - (count - 1) / 2) * spreadAngle;
+      const cos = Math.cos(angle);
+      const sin = Math.sin(angle);
+      const rotated = new Vector3(
+        dir.x * cos - dir.z * sin,
+        0,
+        dir.x * sin + dir.z * cos,
+      );
+      spawnProjectile(entity.position!, rotated, enemy.damage, 0.1);
+    }
+    enemy.shootCooldown = isEnraged ? 40 : 60;
+  }
+
+  // Fire ring attack: spawn projectiles in 360° burst (enraged only, ~every 6 sec)
+  if (isEnraged) {
+    if (enemy._fireRingCd === undefined) enemy._fireRingCd = 360;
+    enemy._fireRingCd -= dtScale;
+    if (enemy._fireRingCd <= 0) {
+      const ringCount = 12;
+      for (let i = 0; i < ringCount; i++) {
+        const a = (i / ringCount) * Math.PI * 2;
+        const ringDir = new Vector3(Math.cos(a), 0, Math.sin(a));
+        spawnProjectile(entity.position!, ringDir, Math.ceil(enemy.damage * 0.6), 0.07);
+      }
+      enemy._fireRingCd = 360;
+      playSound('explosion');
+    }
+  }
+}
+
+function postSteeringVoidGoat(
+  entity: Entity,
+  player: Entity,
+  dist: number,
+  dtScale: number,
+  vehicle: Vehicle,
+): void {
+  const enemy = entity.enemy!;
+  const hpPercent = enemy.hp / enemy.maxHp;
+  const isPhase2 = hpPercent <= 0.4;
+
+  // Visibility: flicker faster in phase 2
+  const flickerSpeed = isPhase2 ? 0.012 : 0.005;
+  const flickerPhase = Math.sin(getGameTime() * flickerSpeed);
+  enemy.visibilityAlpha = isPhase2
+    ? 0.1 + Math.abs(flickerPhase) * 0.5
+    : 0.3 + Math.abs(flickerPhase) * 0.7;
+
+  // Teleport: randomly jump near player (faster in phase 2)
+  const teleportCd = isPhase2 ? 120 : 240;
+  if (enemy.shootCooldown === undefined) enemy.shootCooldown = teleportCd;
+  enemy.shootCooldown -= dtScale;
+  if (enemy.shootCooldown <= 0 && dist > 3) {
+    const angle = rng() * Math.PI * 2;
+    const teleportDist = 3 + rng() * 3;
+    const nx = player.position!.x + Math.cos(angle) * teleportDist;
+    const nz = player.position!.z + Math.sin(angle) * teleportDist;
+    entity.position!.x = nx;
+    entity.position!.z = nz;
+    vehicle.position.set(nx, 0, nz);
+    enemy.shootCooldown = teleportCd;
+    playSound('door'); // whoosh
+  }
+
+  // Melee
+  if (dist <= enemy.attackRange && enemy.attackCooldown <= 0) {
+    meleeHitPlayer(player, enemy.damage, entity.position);
+    enemy.attackCooldown = ATTACK_COOLDOWN_FRAMES;
+  }
+
+  // Phase 2: spawn shadow clones (weak shadowGoats) occasionally — capped at 6
+  // Normalize spawn chance to ~0.18/s regardless of frame rate (0.003 * 60fps)
+  const voidCloneCount = world.entities.filter(e => e.id?.startsWith('voidClone')).length;
+  if (isPhase2 && voidCloneCount < 6 && rng() < 0.003 * dtScale) {
+    const ox = (rng() - 0.5) * 5;
+    const oz = (rng() - 0.5) * 5;
+    world.add({
+      id: `voidClone-${getGameTime().toFixed(0)}-${rng().toString(36).slice(2, 6)}`,
+      type: 'shadowGoat',
+      position: new Vector3(
+        entity.position!.x + ox,
+        entity.position!.y,
+        entity.position!.z + oz,
+      ),
+      enemy: {
+        hp: 8,
+        maxHp: 8,
+        damage: 3,
+        speed: 0.06,
+        attackRange: 1.8,
+        alert: true,
+        attackCooldown: 0,
+        scoreValue: 25,
+        visibilityAlpha: 0.4,
+      },
+    });
+  }
+}
+
+function postSteeringIronGoat(
+  entity: Entity,
+  player: Entity,
+  dist: number,
+  dtScale: number,
+): void {
+  const enemy = entity.enemy!;
+  const hpPercent = enemy.hp / enemy.maxHp;
+
+  // Slow but devastating melee with longer cooldown
+  if (dist <= enemy.attackRange && enemy.attackCooldown <= 0) {
+    meleeHitPlayer(player, enemy.damage, entity.position);
+    enemy.attackCooldown = Math.floor(ATTACK_COOLDOWN_FRAMES * 2);
+    GameState.set({screenShake: 15});
+  }
+
+  // Armor regeneration: slowly regain armor over time
+  if (enemy.isArmored && enemy.armorHp !== undefined && enemy.armorMaxHp !== undefined) {
+    if (enemy.armorHp < enemy.armorMaxHp) {
+      // Regen 0.5 armor per second
+      enemy.armorHp = Math.min(enemy.armorMaxHp, enemy.armorHp + 0.5 * dtScale / 60);
+    }
+  }
+
+  // Ground slam AoE at < 50% HP: every ~5 seconds, damages player if within range
+  if (hpPercent <= 0.5) {
+    if (enemy._slamCd === undefined) enemy._slamCd = 300;
+    enemy._slamCd -= dtScale;
+    if (enemy._slamCd <= 0 && dist < 5) {
+      // Ground slam: heavy damage + big screen shake
+      meleeHitPlayer(player, Math.ceil(enemy.damage * 1.5), entity.position);
+      GameState.set({screenShake: 25, damageFlash: 0.5});
+      enemy._slamCd = 300;
+      playSound('explosion');
+    }
   }
 }
 
@@ -216,25 +399,36 @@ function postSteeringArchGoat(
   const enemy = entity.enemy!;
   const hpPercent = enemy.hp / enemy.maxHp;
   const isPhase2 = hpPercent <= 0.5;
+  const isPhase3 = hpPercent <= 0.25;
 
-  // Phase transition: boost speed
-  vehicle.maxSpeed = isPhase2 ? enemy.speed * 1.5 : enemy.speed;
+  // Phase transitions: boost speed
+  vehicle.maxSpeed = isPhase3
+    ? enemy.speed * 2
+    : isPhase2
+      ? enemy.speed * 1.5
+      : enemy.speed;
 
   // Melee
   if (dist <= enemy.attackRange && enemy.attackCooldown <= 0) {
-    meleeHitPlayer(player, enemy.damage);
-    enemy.attackCooldown = ATTACK_COOLDOWN_FRAMES;
+    const dmg = isPhase3 ? Math.ceil(enemy.damage * 1.5) : enemy.damage;
+    meleeHitPlayer(player, dmg, entity.position);
+    enemy.attackCooldown = isPhase3
+      ? Math.floor(ATTACK_COOLDOWN_FRAMES * 0.7)
+      : ATTACK_COOLDOWN_FRAMES;
   }
 
-  // Ranged: spread projectiles
+  // Ranged: spread projectiles (more in later phases)
   if (enemy.shootCooldown === undefined) {
-    enemy.shootCooldown = isPhase2 ? 60 : 120;
+    enemy.shootCooldown = isPhase3 ? 40 : isPhase2 ? 60 : 120;
   }
   enemy.shootCooldown -= dtScale;
 
   if (enemy.shootCooldown <= 0 && dist < ALERT_RADIUS) {
     const baseDir = directionTo(entity.position!, player.position!);
-    for (const angle of [-0.2, 0, 0.2]) {
+    const angles = isPhase3
+      ? [-0.4, -0.2, 0, 0.2, 0.4]
+      : [-0.2, 0, 0.2];
+    for (const angle of angles) {
       const cos = Math.cos(angle);
       const sin = Math.sin(angle);
       const rotated = new Vector3(
@@ -242,25 +436,31 @@ function postSteeringArchGoat(
         0,
         baseDir.x * sin + baseDir.z * cos,
       );
-      spawnProjectile(entity.position!, rotated, enemy.damage, 0.08);
+      spawnProjectile(entity.position!, rotated, enemy.damage, isPhase3 ? 0.1 : 0.08);
     }
-    enemy.shootCooldown = isPhase2 ? 60 : 120;
+    enemy.shootCooldown = isPhase3 ? 40 : isPhase2 ? 60 : 120;
   }
 
-  // Phase 2: occasional minion spawn
-  if (isPhase2 && Math.random() < 0.002) {
-    const ox = (Math.random() - 0.5) * 6;
-    const oz = (Math.random() - 0.5) * 6;
+  // Minion spawn: more frequent in phase 3 — capped at 8
+  // Normalize spawn chance by dtScale for frame-rate independence
+  const archMinionCount = world.entities.filter(e => e.id?.startsWith('archMinion')).length;
+  const spawnChance = isPhase3 ? 0.005 : isPhase2 ? 0.002 : 0;
+  if (spawnChance > 0 && archMinionCount < 8 && rng() < spawnChance * dtScale) {
+    const ox = (rng() - 0.5) * 6;
+    const oz = (rng() - 0.5) * 6;
+    const minionType = isPhase3 && rng() < 0.3 ? 'hellgoat' : 'goat';
+    const minionHp = minionType === 'hellgoat' ? 30 : 20;
     world.add({
-      type: 'goat',
+      id: `archMinion-${getGameTime().toFixed(0)}-${rng().toString(36).slice(2, 6)}`,
+      type: minionType,
       position: new Vector3(
         entity.position!.x + ox,
         entity.position!.y,
         entity.position!.z + oz,
       ),
       enemy: {
-        hp: 20,
-        maxHp: 20,
+        hp: minionHp,
+        maxHp: minionHp,
         damage: 5,
         speed: 0.04,
         attackRange: 1.8,
@@ -334,6 +534,18 @@ export function aiSystemUpdate(deltaTime: number): void {
     const vehicle = vehicleMap.get(id);
     if (!vehicle) continue;
 
+    // Stagger check — skip movement and attacks while staggered
+    if (entity.enemy.staggerTimer && entity.enemy.staggerTimer > 0) {
+      entity.enemy.staggerTimer -= deltaTime;
+      // Apply knockback drift during stagger
+      const knockStr = 0.03 * dtScale;
+      entity.position.x += (entity.enemy.staggerDirX ?? 0) * knockStr;
+      entity.position.z += (entity.enemy.staggerDirZ ?? 0) * knockStr;
+      // Keep YUKA in sync so it doesn't teleport back
+      vehicle.position.set(entity.position.x, 0, entity.position.z);
+      continue;
+    }
+
     // Apply YUKA steering result to ECS position
     entity.position.x = vehicle.position.x;
     entity.position.z = vehicle.position.z;
@@ -357,6 +569,15 @@ export function aiSystemUpdate(deltaTime: number): void {
         break;
       case 'archGoat':
         postSteeringArchGoat(entity, player, dist, dtScale, vehicle);
+        break;
+      case 'infernoGoat':
+        postSteeringInfernoGoat(entity, player, dist, dtScale);
+        break;
+      case 'voidGoat':
+        postSteeringVoidGoat(entity, player, dist, dtScale, vehicle);
+        break;
+      case 'ironGoat':
+        postSteeringIronGoat(entity, player, dist, dtScale);
         break;
     }
   }

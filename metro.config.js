@@ -8,4 +8,7 @@ const { getDefaultConfig } = require('expo/metro-config');
  */
 const config = getDefaultConfig(__dirname);
 
+// Register 3D model, audio, and physics WASM file extensions as static assets
+config.resolver.assetExts.push('glb', 'ogg', 'wasm');
+
 module.exports = config;

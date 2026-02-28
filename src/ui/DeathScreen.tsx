@@ -35,6 +35,8 @@ export const DeathScreen: React.FC = () => {
   const seed = useGameStore(s => s.seed);
   const startNewGame = useGameStore(s => s.startNewGame);
   const resetToMenu = useGameStore(s => s.resetToMenu);
+  const isPermadeath =
+    nightmareFlags.permadeath || nightmareFlags.ultraNightmare;
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const titleScale = useRef(new Animated.Value(0.5)).current;
@@ -154,15 +156,21 @@ export const DeathScreen: React.FC = () => {
 
       {/* Buttons */}
       <Animated.View style={[styles.buttonsContainer, {opacity: fadeAnim}]}>
-        <TouchableOpacity
-          style={styles.retryButton}
-          onPress={handleTryAgain}
-          activeOpacity={0.7}>
-          <Animated.View
-            style={[styles.retryButtonGlow, {opacity: pulseAnim}]}
-          />
-          <Text style={styles.retryButtonText}>TRY AGAIN</Text>
-        </TouchableOpacity>
+        {!isPermadeath && (
+          <TouchableOpacity
+            style={styles.retryButton}
+            onPress={handleTryAgain}
+            activeOpacity={0.7}>
+            <Animated.View
+              style={[styles.retryButtonGlow, {opacity: pulseAnim}]}
+            />
+            <Text style={styles.retryButtonText}>TRY AGAIN</Text>
+          </TouchableOpacity>
+        )}
+
+        {isPermadeath && (
+          <Text style={styles.permadeathText}>PERMADEATH — NO SECOND CHANCES</Text>
+        )}
 
         <TouchableOpacity
           style={styles.quitButton}
@@ -344,5 +352,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#776655',
     letterSpacing: 3,
+  },
+  permadeathText: {
+    fontFamily: 'Courier',
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#880000',
+    letterSpacing: 3,
+    marginBottom: 10,
   },
 });

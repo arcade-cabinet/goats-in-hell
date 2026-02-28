@@ -4,13 +4,18 @@ import {world} from '../entities/world';
 import {GameState} from '../../state/GameState';
 import {useGameStore} from '../../state/GameStore';
 import {playSound} from './AudioSystem';
+import {pushDamageEvent} from './damageEvents';
+import {damageBarrel} from './HazardSystem';
+import {registerKill} from './KillStreakSystem';
+import {absorbDamage} from './PowerUpSystem';
+import {registerDamageDirection, triggerBloodSplatter} from '../ui/BabylonHUD';
 
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
 /** Safely remove an entity from the world, disposing its mesh if present. */
-function removeEntity(entity: Entity): void {
+export function removeEntity(entity: Entity): void {
   if (entity.mesh) {
     entity.mesh.dispose();
   }
@@ -24,7 +29,7 @@ function removeEntity(entity: Entity): void {
  * Apply damage to an enemy, factoring in armor if present.
  * Returns the actual damage dealt to HP.
  */
-function damageEnemy(entity: Entity, damage: number): number {
+export function damageEnemy(entity: Entity, damage: number, isCrit?: boolean): number {
   const enemy = entity.enemy!;
 
   // Armored enemies absorb damage with armor first
@@ -35,6 +40,26 @@ function damageEnemy(entity: Entity, damage: number): number {
   }
 
   enemy.hp -= damage;
+
+  // Emit floating damage number
+  if (damage > 0 && entity.position) {
+    pushDamageEvent(damage, entity.position, isCrit);
+  }
+
+  // Stagger on heavy hits (>25% max HP) — pause AI + visual knockback
+  if (damage > enemy.maxHp * 0.25 && enemy.hp > 0) {
+    enemy.staggerTimer = 300; // 300ms stagger
+    // Knockback direction: away from player
+    const player = world.entities.find(e => e.type === 'player');
+    if (player?.position && entity.position) {
+      const dx = entity.position.x - player.position.x;
+      const dz = entity.position.z - player.position.z;
+      const len = Math.sqrt(dx * dx + dz * dz) || 1;
+      enemy.staggerDirX = dx / len;
+      enemy.staggerDirZ = dz / len;
+    }
+  }
+
   return damage;
 }
 
@@ -42,7 +67,7 @@ function damageEnemy(entity: Entity, damage: number): number {
  * Handle an enemy being killed: update score/kills, play sound, and remove
  * the entity from the world.
  */
-function handleEnemyKill(entity: Entity): void {
+export function handleEnemyKill(entity: Entity): void {
   const state = GameState.get();
   const scoreValue = entity.enemy?.scoreValue ?? 0;
 
@@ -54,6 +79,9 @@ function handleEnemyKill(entity: Entity): void {
 
   // Award XP for the kill (logarithmic leveling)
   useGameStore.getState().awardXp(scoreValue);
+
+  // Track kill streak
+  registerKill();
 
   playSound('goat_die');
   removeEntity(entity);
@@ -92,6 +120,7 @@ function checkPlayerProjectileCollisions(projectile: Entity): boolean {
       if (projData.aoe !== undefined && projData.aoe > 0) {
         playSound('explosion');
 
+        let aoeKills = 0;
         for (const other of [...world.entities]) {
           if (!other.enemy || !other.position || other === entity) {
             continue;
@@ -103,12 +132,39 @@ function checkPlayerProjectileCollisions(projectile: Entity): boolean {
 
             if (other.enemy.hp <= 0) {
               handleEnemyKill(other);
+              aoeKills++;
             }
+          }
+        }
+
+        // Screen shake proportional to explosion proximity + kill count
+        const player = world.entities.find(e => e.type === 'player');
+        if (player?.position) {
+          const playerDist = Vector3.Distance(projPos, player.position);
+          if (playerDist < projData.aoe * 2) {
+            const proximity = 1 - playerDist / (projData.aoe * 2);
+            const killBonus = Math.min(aoeKills * 2, 8);
+            const shake = Math.ceil(proximity * 8 + killBonus);
+            GameState.set({screenShake: Math.max(GameState.get().screenShake, shake)});
           }
         }
       }
 
       break; // Projectile consumed on first direct hit
+    }
+  }
+
+  // Also check barrel hits (projectile can hit a barrel instead of an enemy)
+  if (!hitSomething) {
+    for (const entity of [...world.entities]) {
+      if (entity.hazard?.hazardType !== 'barrel' || !entity.position) continue;
+      const dist = Vector3.Distance(projPos, entity.position);
+      if (dist < 1.2) {
+        hitSomething = true;
+        damageBarrel(entity, projData.damage);
+        playSound('hit');
+        break;
+      }
     }
   }
 
@@ -127,10 +183,17 @@ function checkEnemyProjectileCollision(
   const dist = Vector3.Distance(projectile.position!, player.position);
 
   if (dist < 1.5) {
-    player.player.hp -= projectile.projectile!.damage;
+    // Demon Shield absorbs damage before it hits HP
+    const rawDmg = projectile.projectile!.damage;
+    const remaining = absorbDamage(rawDmg);
+    player.player.hp -= remaining;
 
-    GameState.set({damageFlash: 0.8, screenShake: 8});
+    // Reduced flash if shield absorbed all damage
+    const flashIntensity = remaining > 0 ? 0.8 : 0.2;
+    GameState.set({damageFlash: flashIntensity, screenShake: remaining > 0 ? 8 : 3});
     playSound('hurt');
+    if (remaining > 0) triggerBloodSplatter(Math.min(1, remaining / 30));
+    if (projectile.position) registerDamageDirection(projectile.position);
 
     return true;
   }
@@ -169,8 +232,8 @@ export function combatSystemUpdate(deltaTime: number): void {
     pos.y += vel.y * dtScale;
     pos.z += vel.z * dtScale;
 
-    // Decrement lifetime
-    proj.life -= 1;
+    // Decrement lifetime (delta-time scaled so range is framerate-independent)
+    proj.life -= dtScale;
 
     if (proj.life <= 0) {
       removeEntity(projectile);

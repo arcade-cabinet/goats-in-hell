@@ -1,9 +1,13 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {View, Text, StyleSheet, Animated} from 'react-native';
-import {useGameStore} from '../state/GameStore';
+import {View, Text, StyleSheet, Animated, type DimensionValue} from 'react-native';
+import {useGameStore, DIFFICULTY_PRESETS} from '../state/GameStore';
 import {world} from '../game/entities/world';
 import {weapons} from '../game/weapons/weapons';
 import {getThemeForFloor} from '../game/levels/FloorThemes';
+import {getWaveInfo} from '../game/systems/WaveSystem';
+import {getActiveLevel} from '../game/levels/activeLevelRef';
+import {consumeDamageEvents} from '../game/systems/damageEvents';
+import {CELL_SIZE, MapCell} from '../game/levels/LevelGenerator';
 import type {Entity, WeaponId} from '../game/entities/components';
 
 function getPlayer(): Entity | undefined {
@@ -109,9 +113,14 @@ export const HUD: React.FC = () => {
   const encounterType = storeState.stage.encounterType;
   const kills = storeState.kills;
   const leveling = storeState.leveling;
+  const difficulty = storeState.difficulty;
+  const nightmareFlags = storeState.nightmareFlags;
   const theme = getThemeForFloor(floor);
   const elapsed = Date.now() - storeState.startTime;
   const xpProgress = leveling.xpToNext > 0 ? leveling.xp / leveling.xpToNext : 0;
+  const diffLabel = DIFFICULTY_PRESETS[difficulty].label.toUpperCase();
+  const hitMarker = storeState.hitMarker ?? 0;
+  const crosshairHit = hitMarker > 0;
 
   // Reload progress (0 to 1)
   const reloadProgress = isReloading
@@ -133,7 +142,7 @@ export const HUD: React.FC = () => {
               style={[
                 styles.healthBarInner,
                 {
-                  width: `${hpRatio * 100}%` as any,
+                  width: `${hpRatio * 100}%` as DimensionValue,
                   backgroundColor: healthColor,
                 },
                 isLowHp && {opacity: lowHpAnim},
@@ -143,7 +152,7 @@ export const HUD: React.FC = () => {
             {[0.25, 0.5, 0.75].map(p => (
               <View
                 key={p}
-                style={[styles.healthTick, {left: `${p * 100}%` as any}]}
+                style={[styles.healthTick, {left: `${p * 100}%` as DimensionValue}]}
               />
             ))}
           </View>
@@ -174,7 +183,7 @@ export const HUD: React.FC = () => {
                 <View
                   style={[
                     styles.reloadBarInner,
-                    {width: `${reloadProgress * 100}%` as any},
+                    {width: `${reloadProgress * 100}%` as DimensionValue},
                   ]}
                 />
               </View>
@@ -202,6 +211,17 @@ export const HUD: React.FC = () => {
               {encounterType === 'arena' ? 'ARENA' : 'BOSS'}
             </Text>
           )}
+          {encounterType === 'arena' && (() => {
+            const waveInfo = getWaveInfo();
+            return (
+              <View style={styles.waveRow}>
+                <Text style={styles.waveText}>WAVE {waveInfo.wave}</Text>
+                {waveInfo.multiplier > 1 && (
+                  <Text style={styles.streakText}>x{waveInfo.multiplier.toFixed(1)}</Text>
+                )}
+              </View>
+            );
+          })()}
         </View>
         {/* Level / XP bar */}
         <View style={styles.levelPanel}>
@@ -210,13 +230,29 @@ export const HUD: React.FC = () => {
             <View
               style={[
                 styles.xpBarInner,
-                {width: `${Math.min(100, xpProgress * 100)}%` as any},
+                {width: `${Math.min(100, xpProgress * 100)}%` as DimensionValue},
               ]}
             />
           </View>
           <Text style={styles.xpText}>
             {leveling.xp}/{leveling.xpToNext}
           </Text>
+        </View>
+        {/* Difficulty / Nightmare indicators */}
+        <View style={styles.diffIndicatorRow}>
+          <Text style={[
+            styles.diffTag,
+            difficulty === 'hard' && styles.diffTagHard,
+          ]}>{diffLabel}</Text>
+          {nightmareFlags.ultraNightmare && (
+            <Text style={styles.nightmareTagUltra}>ULTRA</Text>
+          )}
+          {nightmareFlags.nightmare && !nightmareFlags.ultraNightmare && (
+            <Text style={styles.nightmareTag}>NIGHTMARE</Text>
+          )}
+          {nightmareFlags.permadeath && !nightmareFlags.ultraNightmare && (
+            <Text style={styles.permadeathTag}>PERMA</Text>
+          )}
         </View>
       </View>
 
@@ -258,14 +294,224 @@ export const HUD: React.FC = () => {
         )}
       </View>
 
-      {/* Crosshair - center */}
+      {/* Boss HP bar - top center (boss encounters only) */}
+      {encounterType === 'boss' && <BossHealthBar />}
+
+      {/* Minimap - bottom center-right (explore mode only) */}
+      {encounterType === 'explore' && <Minimap />}
+
+      {/* Damage numbers (center area) */}
+      <DamageNumbers />
+
+      {/* Crosshair - center (flashes white on hit) */}
       <View style={styles.crosshairContainer}>
-        <View style={[styles.crosshairArm, styles.crosshairTop]} />
-        <View style={[styles.crosshairArm, styles.crosshairBottom]} />
-        <View style={[styles.crosshairArm, styles.crosshairLeft]} />
-        <View style={[styles.crosshairArm, styles.crosshairRight]} />
-        <View style={styles.crosshairDot} />
+        <View style={[styles.crosshairArm, styles.crosshairTop, crosshairHit && styles.crosshairHit]} />
+        <View style={[styles.crosshairArm, styles.crosshairBottom, crosshairHit && styles.crosshairHit]} />
+        <View style={[styles.crosshairArm, styles.crosshairLeft, crosshairHit && styles.crosshairHit]} />
+        <View style={[styles.crosshairArm, styles.crosshairRight, crosshairHit && styles.crosshairHit]} />
+        <View style={[styles.crosshairDot, crosshairHit && styles.crosshairDotHit]} />
       </View>
+    </View>
+  );
+};
+
+// ---------------------------------------------------------------------------
+// Minimap
+// ---------------------------------------------------------------------------
+
+const MINIMAP_SIZE = 120;
+const MINIMAP_RADIUS = 12; // cells visible in each direction
+
+const Minimap: React.FC = () => {
+  const level = getActiveLevel();
+  if (!level) return null;
+
+  const player = getPlayer();
+  if (!player?.position) return null;
+
+  const {grid, width, depth} = level;
+  const px = Math.floor(player.position.x / CELL_SIZE);
+  const pz = Math.floor(player.position.z / CELL_SIZE);
+
+  // Visible window centered on player
+  const minX = Math.max(0, px - MINIMAP_RADIUS);
+  const maxX = Math.min(width - 1, px + MINIMAP_RADIUS);
+  const minZ = Math.max(0, pz - MINIMAP_RADIUS);
+  const maxZ = Math.min(depth - 1, pz + MINIMAP_RADIUS);
+
+  const visW = maxX - minX + 1;
+  const visH = maxZ - minZ + 1;
+  const cellPx = MINIMAP_SIZE / (MINIMAP_RADIUS * 2 + 1);
+
+  // Build pixel data
+  const cells: React.JSX.Element[] = [];
+  for (let z = minZ; z <= maxZ; z++) {
+    for (let x = minX; x <= maxX; x++) {
+      const cell = grid[z]?.[x];
+      if (cell === undefined) continue;
+      const isWall = cell >= MapCell.WALL_STONE && cell <= MapCell.DOOR;
+      if (!isWall) continue;
+
+      const color = cell === MapCell.WALL_LAVA ? '#552200'
+        : cell === MapCell.WALL_FLESH ? '#331111'
+        : cell === MapCell.DOOR ? '#554422'
+        : '#333333';
+
+      cells.push(
+        <View
+          key={`${x}-${z}`}
+          style={{
+            position: 'absolute',
+            left: (x - minX) * cellPx,
+            top: (z - minZ) * cellPx,
+            width: cellPx,
+            height: cellPx,
+            backgroundColor: color,
+          }}
+        />,
+      );
+    }
+  }
+
+  // Enemy dots
+  const enemies = world.entities.filter(e => e.enemy && e.position);
+  const enemyDots: React.JSX.Element[] = [];
+  for (const e of enemies) {
+    const ex = Math.floor(e.position!.x / CELL_SIZE);
+    const ez = Math.floor(e.position!.z / CELL_SIZE);
+    if (ex < minX || ex > maxX || ez < minZ || ez > maxZ) continue;
+    enemyDots.push(
+      <View
+        key={`e-${e.id}`}
+        style={{
+          position: 'absolute',
+          left: (ex - minX) * cellPx + cellPx / 2 - 2,
+          top: (ez - minZ) * cellPx + cellPx / 2 - 2,
+          width: 4,
+          height: 4,
+          backgroundColor: '#ff3333',
+          borderRadius: 2,
+        }}
+      />,
+    );
+  }
+
+  // Player dot position
+  const playerDotLeft = (px - minX) * cellPx + cellPx / 2 - 3;
+  const playerDotTop = (pz - minZ) * cellPx + cellPx / 2 - 3;
+
+  return (
+    <View style={styles.minimapContainer}>
+      <View style={styles.minimapBorder}>
+        <View style={styles.minimapInner}>
+          {cells}
+          {enemyDots}
+          {/* Player dot */}
+          <View
+            style={{
+              position: 'absolute',
+              left: playerDotLeft,
+              top: playerDotTop,
+              width: 6,
+              height: 6,
+              backgroundColor: '#44ff44',
+              borderRadius: 3,
+            }}
+          />
+        </View>
+      </View>
+    </View>
+  );
+};
+
+// ---------------------------------------------------------------------------
+// Damage Numbers
+// ---------------------------------------------------------------------------
+
+const DMG_FLOAT_DIST = 60; // pixels to float upward
+const DMG_LIFETIME = 1200; // matches MAX_AGE in damageEvents.ts
+
+const DamageNumbers: React.FC = () => {
+  const events = consumeDamageEvents();
+  if (events.length === 0) return null;
+
+  const now = Date.now();
+
+  return (
+    <>
+      {events.map(ev => {
+        const age = now - ev.time;
+        const progress = Math.min(1, age / DMG_LIFETIME);
+        const opacity = 1 - progress;
+        const translateY = -progress * DMG_FLOAT_DIST;
+        // Stable random offset derived from event id
+        const offsetX = ((ev.id * 7919) % 120) - 60;
+        const offsetY = ((ev.id * 6271) % 40) - 20;
+
+        return (
+          <Text
+            key={ev.id}
+            style={[
+              styles.dmgNumber,
+              ev.amount >= 30 && styles.dmgNumberBig,
+              {
+                opacity,
+                transform: [{translateY: translateY + offsetY}],
+                left: '50%' as DimensionValue,
+                marginLeft: offsetX,
+              },
+            ]}>
+            {ev.amount}
+          </Text>
+        );
+      })}
+    </>
+  );
+};
+
+// ---------------------------------------------------------------------------
+// Boss Health Bar
+// ---------------------------------------------------------------------------
+
+const BOSS_TYPES = new Set(['archGoat', 'infernoGoat', 'voidGoat', 'ironGoat']);
+const BOSS_DISPLAY_NAMES: Record<string, string> = {
+  infernoGoat: 'INFERNO GOAT',
+  voidGoat: 'VOID GOAT',
+  ironGoat: 'IRON GOAT',
+  archGoat: 'ARCH GOAT',
+};
+
+const BossHealthBar: React.FC = () => {
+  const boss = world.entities.find(e => e.enemy && BOSS_TYPES.has(e.type ?? ''));
+  if (!boss?.enemy) return null;
+
+  const {hp, maxHp} = boss.enemy;
+  const ratio = maxHp > 0 ? hp / maxHp : 0;
+  const name = BOSS_DISPLAY_NAMES[boss.type ?? ''] ?? 'BOSS';
+
+  const barColor = ratio > 0.5 ? '#cc0000' : ratio > 0.25 ? '#ff6600' : '#ff2200';
+
+  return (
+    <View style={styles.bossBarContainer}>
+      <Text style={styles.bossName}>{name}</Text>
+      <View style={styles.bossBarOuter}>
+        <View
+          style={[
+            styles.bossBarInner,
+            {width: `${ratio * 100}%` as DimensionValue, backgroundColor: barColor},
+          ]}
+        />
+        {/* Tick marks at 25%, 50%, 75% */}
+        {[0.25, 0.5, 0.75].map(p => (
+          <View
+            key={p}
+            style={[styles.bossBarTick, {left: `${p * 100}%` as DimensionValue}]}
+          />
+        ))}
+      </View>
+      <Text style={styles.bossHpText}>
+        {hp} / {maxHp}
+      </Text>
     </View>
   );
 };
@@ -313,13 +559,13 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   healthBarInner: {
-    height: '100%' as any,
+    height: '100%' as DimensionValue,
   },
   healthTick: {
     position: 'absolute',
     top: 0,
     width: 1,
-    height: '100%' as any,
+    height: '100%' as DimensionValue,
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
   healthTextRow: {
@@ -419,7 +665,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   reloadBarInner: {
-    height: '100%' as any,
+    height: '100%' as DimensionValue,
     backgroundColor: '#ffaa00',
   },
 
@@ -457,6 +703,25 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
     marginTop: 2,
   },
+  waveRow: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    gap: 6,
+    marginTop: 2,
+  },
+  waveText: {
+    fontFamily: 'Courier',
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: '#ff6644',
+    letterSpacing: 1,
+  },
+  streakText: {
+    fontFamily: 'Courier',
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: '#ffcc00',
+  },
   levelPanel: {
     backgroundColor: 'rgba(10, 5, 5, 0.75)',
     borderWidth: 1,
@@ -484,13 +749,72 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   xpBarInner: {
-    height: '100%' as any,
+    height: '100%' as DimensionValue,
     backgroundColor: '#8855cc',
   },
   xpText: {
     fontFamily: 'Courier',
     fontSize: 8,
     color: '#665588',
+  },
+
+  // -- Difficulty/Nightmare indicators --
+  diffIndicatorRow: {
+    flexDirection: 'row',
+    gap: 4,
+    marginTop: 4,
+  },
+  diffTag: {
+    fontFamily: 'Courier',
+    fontSize: 8,
+    fontWeight: 'bold',
+    color: '#887766',
+    letterSpacing: 1,
+    backgroundColor: 'rgba(10, 5, 5, 0.6)',
+    borderWidth: 1,
+    borderColor: 'rgba(136, 119, 102, 0.2)',
+    paddingHorizontal: 4,
+    paddingVertical: 1,
+  },
+  diffTagHard: {
+    color: '#cc4400',
+    borderColor: 'rgba(204, 68, 0, 0.3)',
+  },
+  nightmareTag: {
+    fontFamily: 'Courier',
+    fontSize: 8,
+    fontWeight: 'bold',
+    color: '#ff6600',
+    letterSpacing: 1,
+    backgroundColor: 'rgba(40, 10, 0, 0.6)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 102, 0, 0.3)',
+    paddingHorizontal: 4,
+    paddingVertical: 1,
+  },
+  nightmareTagUltra: {
+    fontFamily: 'Courier',
+    fontSize: 8,
+    fontWeight: 'bold',
+    color: '#ff0000',
+    letterSpacing: 1,
+    backgroundColor: 'rgba(40, 0, 0, 0.7)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 0, 0, 0.4)',
+    paddingHorizontal: 4,
+    paddingVertical: 1,
+  },
+  permadeathTag: {
+    fontFamily: 'Courier',
+    fontSize: 8,
+    fontWeight: 'bold',
+    color: '#880000',
+    letterSpacing: 1,
+    backgroundColor: 'rgba(30, 0, 0, 0.6)',
+    borderWidth: 1,
+    borderColor: 'rgba(136, 0, 0, 0.3)',
+    paddingHorizontal: 4,
+    paddingVertical: 1,
   },
 
   // -- Score/kills/time (top center) --
@@ -575,8 +899,8 @@ const styles = StyleSheet.create({
   // -- Crosshair --
   crosshairContainer: {
     position: 'absolute',
-    top: '50%' as any,
-    left: '50%' as any,
+    top: '50%' as DimensionValue,
+    left: '50%' as DimensionValue,
     width: 0,
     height: 0,
   },
@@ -615,5 +939,96 @@ const styles = StyleSheet.create({
     backgroundColor: CROSSHAIR_COLOR,
     left: -1,
     top: -1,
+  },
+  // -- Minimap --
+  minimapContainer: {
+    position: 'absolute',
+    bottom: 80,
+    right: 20,
+  },
+  minimapBorder: {
+    borderWidth: 1,
+    borderColor: 'rgba(204, 0, 0, 0.3)',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    padding: 2,
+  },
+  minimapInner: {
+    width: MINIMAP_SIZE,
+    height: MINIMAP_SIZE,
+    backgroundColor: '#0a0505',
+    overflow: 'hidden' as const,
+  },
+
+  // -- Damage numbers --
+  dmgNumber: {
+    position: 'absolute',
+    top: '45%' as DimensionValue,
+    fontFamily: 'Courier',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#ffcc00',
+    textShadowColor: 'rgba(0, 0, 0, 0.8)',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 2,
+  },
+  dmgNumberBig: {
+    fontSize: 22,
+    color: '#ff4400',
+  },
+
+  // -- Boss health bar --
+  bossBarContainer: {
+    position: 'absolute',
+    top: 70,
+    left: '25%' as DimensionValue,
+    right: '25%' as DimensionValue,
+    alignItems: 'center',
+  },
+  bossName: {
+    fontFamily: 'Courier',
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#cc0000',
+    letterSpacing: 4,
+    marginBottom: 4,
+    textShadowColor: 'rgba(255, 0, 0, 0.5)',
+    textShadowOffset: {width: 0, height: 0},
+    textShadowRadius: 6,
+  },
+  bossBarOuter: {
+    width: '100%' as DimensionValue,
+    height: 10,
+    backgroundColor: '#1a0505',
+    borderWidth: 1,
+    borderColor: 'rgba(204, 0, 0, 0.4)',
+    overflow: 'hidden',
+  },
+  bossBarInner: {
+    height: '100%' as DimensionValue,
+  },
+  bossBarTick: {
+    position: 'absolute',
+    top: 0,
+    width: 1,
+    height: '100%' as DimensionValue,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  },
+  bossHpText: {
+    fontFamily: 'Courier',
+    fontSize: 10,
+    color: '#887766',
+    letterSpacing: 1,
+    marginTop: 2,
+  },
+
+  crosshairHit: {
+    backgroundColor: '#ffffff',
+  },
+  crosshairDotHit: {
+    backgroundColor: '#ffffff',
+    width: 4,
+    height: 4,
+    left: -2,
+    top: -2,
   },
 });

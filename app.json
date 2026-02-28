@@ -1,4 +1,14 @@
 {
-  "name": "app",
-  "displayName": "app"
+  "expo": {
+    "name": "Goats in Hell",
+    "slug": "goats-in-hell",
+    "version": "1.0.0",
+    "orientation": "landscape",
+    "userInterfaceStyle": "dark",
+    "web": {
+      "bundler": "metro",
+      "output": "single"
+    },
+    "platforms": ["web"]
+  }
 }

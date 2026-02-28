@@ -2,10 +2,13 @@ import {Mesh, Vector3, ParticleSystem} from '@babylonjs/core';
 
 export type EntityType =
   | 'player'
-  | 'goat' | 'hellgoat' | 'fireGoat' | 'shadowGoat' | 'goatKnight' | 'archGoat'
+  | 'goat' | 'hellgoat' | 'fireGoat' | 'shadowGoat' | 'goatKnight'
+  | 'archGoat' | 'infernoGoat' | 'voidGoat' | 'ironGoat'
   | 'projectile'
   | 'health' | 'ammo' | 'weaponPickup'
-  | 'door' | 'decoration';
+  | 'powerup'
+  | 'door' | 'decoration'
+  | 'hazard_spikes' | 'hazard_barrel';
 
 export type WeaponId = 'hellPistol' | 'brimShotgun' | 'hellfireCannon' | 'goatsBane';
 
@@ -50,8 +53,16 @@ export type Entity = {
     shootCooldown?: number;
     isArmored?: boolean;
     armorHp?: number;
+    armorMaxHp?: number;
     isInvisible?: boolean;
     visibilityAlpha?: number;
+    // Stagger state
+    staggerTimer?: number; // ms remaining of stagger
+    staggerDirX?: number;  // knockback direction
+    staggerDirZ?: number;
+    // Boss-specific ability cooldowns
+    _fireRingCd?: number;
+    _slamCd?: number;
   };
 
   // Weapon ammo (per-weapon)
@@ -68,12 +79,21 @@ export type Entity = {
 
   // Pickup
   pickup?: {
-    pickupType: 'health' | 'ammo' | 'weapon';
+    pickupType: 'health' | 'ammo' | 'weapon' | 'powerup';
     value: number;
     weaponId?: WeaponId;
+    powerUpType?: import('../systems/PowerUpSystem').PowerUpType;
     active: boolean;
   };
 
   // Door
   door?: {open: boolean; opening: boolean; openProgress: number};
+
+  // Environmental hazard
+  hazard?: {
+    hazardType: 'spikes' | 'barrel';
+    damage: number;
+    cooldown: number;
+    hp?: number; // for destructible hazards like barrels
+  };
 };
