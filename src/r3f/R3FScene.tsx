@@ -1,7 +1,7 @@
 import { useThree } from '@react-three/fiber';
 import type React from 'react';
 import { useEffect } from 'react';
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 
 /**
  * Scene setup — lighting, fog, background.
@@ -20,8 +20,6 @@ export function R3FScene({ children }: { children?: React.ReactNode }) {
 
     // All lighting is handled by DynamicLighting — no lights here to avoid
     // overlapping/stacking with theme-based lights.
-
-    return () => {};
   }, [scene]);
 
   return <>{children}</>;

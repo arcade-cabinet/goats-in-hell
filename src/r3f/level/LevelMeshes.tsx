@@ -13,7 +13,7 @@
 import { useThree } from '@react-three/fiber';
 import { CuboidCollider, RigidBody } from '@react-three/rapier';
 import { useEffect, useMemo } from 'react';
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 import { CELL_SIZE, WALL_HEIGHT } from '../../constants';
 import type { FloorTheme } from '../../game/levels/FloorThemes';
 import { MapCell, PLATFORM_HEIGHT } from '../../game/levels/LevelGenerator';

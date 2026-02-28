@@ -14,6 +14,7 @@ import { world } from '../entities/world';
 import { BOSS_ARENA_PICKUP_POSITIONS } from '../levels/BossArenas';
 import type { LevelData } from '../levels/LevelData';
 import { CELL_SIZE } from '../levels/LevelGenerator';
+import { trackEnemySpawn } from '../systems/ProgressionSystem';
 import type { PowerUpType } from '../systems/PowerUpSystem';
 
 const ENEMY_TYPES: EntityType[] = [
@@ -72,6 +73,7 @@ export function spawnLevelEntities(
           attackCooldown: 0,
         },
       });
+      trackEnemySpawn();
     } else if (spawn.type === 'health' || spawn.type === 'ammo') {
       if (
         diffMods.pickupDensityMult < 1 &&
@@ -174,6 +176,7 @@ export function spawnBoss(
       attackCooldown: 0,
     },
   });
+  trackEnemySpawn();
 
   // Spawn initial pickups in boss arena at corner positions
   const bossPickups: { type: 'ammo' | 'health'; value: number }[] = [

@@ -461,6 +461,7 @@ function playGameComplete(ctx: AudioContext): void {
 // ---------------------------------------------------------------------------
 
 export function playSound(type: SoundType): void {
+  try {
   if (!audioCtx) {
     initAudio();
   }
@@ -545,6 +546,9 @@ export function playSound(type: SoundType): void {
       playGameComplete(ctx);
       break;
   }
+  } catch (err) {
+    console.warn('[AudioSystem] playSound error:', err);
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -586,7 +590,7 @@ export async function loadAllSfx(ctx: AudioContext): Promise<Map<string, AudioBu
   const map = new Map<string, AudioBuffer[]>();
   const entries = Object.entries(SFX_ASSETS) as [SfxAssetKey, number][];
 
-  await Promise.all(
+  const results = await Promise.allSettled(
     entries.map(async ([key, moduleId]) => {
       const buffer = await loadAudioBuffer(moduleId, ctx);
       // Group by prefix: 'sfx-pistol-0' -> 'sfx-pistol'
@@ -597,6 +601,12 @@ export async function loadAllSfx(ctx: AudioContext): Promise<Map<string, AudioBu
       map.get(groupKey)!.push(buffer);
     }),
   );
+  // Log individual failures without killing the whole SFX load
+  for (let i = 0; i < results.length; i++) {
+    if (results[i].status === 'rejected') {
+      console.warn(`[AudioSystem] Failed to load SFX "${entries[i][0]}":`, (results[i] as PromiseRejectedResult).reason);
+    }
+  }
   return map;
 }
 

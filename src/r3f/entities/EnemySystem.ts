@@ -6,7 +6,7 @@
  *
  * Called each frame from the R3F game loop via EnemyRenderer's useFrame.
  */
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 import { world } from '../../game/entities/world';
 
 /**

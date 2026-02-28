@@ -35,7 +35,10 @@ import {
 import { world } from '../entities/world';
 import { registerDamageDirection } from '../ui/HUDEvents';
 import { playSound } from './AudioSystem';
+import { bridgeDamagePlayer } from './PlayerDamageBridge';
 import { getGameTime } from './GameClock';
+import { spawnEnemyProjectile } from './EnemyProjectileBridge';
+import { trackEnemySpawn } from './ProgressionSystem';
 
 /** Shorthand for the store's seeded PRNG. */
 function rng(): number {
@@ -145,27 +148,21 @@ function directionTo(from: Vec3, to: Vec3): Vec3 {
   return vec3ScaleInPlace(dir, 1 / len);
 }
 
-function meleeHitPlayer(player: Entity, damage: number, sourcePos?: Vec3): void {
-  player.player!.hp -= damage;
-  GameState.set({ damageFlash: 1.0, screenShake: 10 });
-  playSound('hurt');
+function meleeHitPlayer(_player: Entity, damage: number, sourcePos?: Vec3): void {
+  // Route through centralized damage pipeline for death guard + permadeath
+  bridgeDamagePlayer(damage);
   if (sourcePos) registerDamageDirection(sourcePos);
 }
 
+/**
+ * Spawn an enemy projectile with VISIBLE mesh via the ProjectilePool bridge.
+ *
+ * Coordinate conversion and speed normalization are handled by the bridge
+ * callback in Projectile.tsx. This function simply forwards the ECS-space
+ * parameters.
+ */
 function spawnProjectile(origin: Vec3, direction: Vec3, damage: number, speed: number): void {
-  const vel = vec3Scale(direction, speed);
-  world.add({
-    id: `eproj-${getGameTime().toFixed(0)}-${rng().toString(36).slice(2, 6)}`,
-    type: 'projectile',
-    position: vec3Clone(origin),
-    velocity: vec3(vel.x, vel.y, vel.z),
-    projectile: {
-      life: 120,
-      damage,
-      speed,
-      owner: 'enemy',
-    },
-  });
+  spawnEnemyProjectile(origin, direction, damage, speed);
 }
 
 // ---------------------------------------------------------------------------
@@ -327,6 +324,7 @@ function postSteeringVoidGoat(
         visibilityAlpha: 0.4,
       },
     });
+    trackEnemySpawn();
   }
 }
 
@@ -429,6 +427,7 @@ function postSteeringArchGoat(
         scoreValue: 50,
       },
     });
+    trackEnemySpawn();
   }
 }
 

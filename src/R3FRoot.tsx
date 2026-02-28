@@ -24,12 +24,12 @@ import { resetGameClock, tickGameClock } from './game/systems/GameClock';
 import { hazardSystemUpdate, resetHazardSystem } from './game/systems/HazardSystem';
 import { resetKillStreaks } from './game/systems/KillStreakSystem';
 import { powerUpSystemUpdate, resetPowerUps } from './game/systems/PowerUpSystem';
-import { advanceFloor, checkFloorComplete } from './game/systems/ProgressionSystem';
+import { advanceFloor, checkFloorComplete, resetFloorProgression } from './game/systems/ProgressionSystem';
 import { getWaveInfo, resetWaveSystem, waveSystemUpdate } from './game/systems/WaveSystem';
 import { initAmbientSound, updateAmbientSound } from './r3f/audio/AmbientSoundSystem';
 import { getAudioContext, initAudio, loadAllSfx, setSfxBuffers } from './r3f/audio/AudioSystem';
 import { initMusic, loadAllMusic, setMusicBuffers, updateMusic } from './r3f/audio/MusicSystem';
-import { clearDamageNumbers, DamageNumbers } from './r3f/entities/DamageNumbers';
+import { clearDamageNumbers, clearDamageNumbersSceneRef, DamageNumbers } from './r3f/entities/DamageNumbers';
 import { EnemyColliders } from './r3f/entities/EnemyColliders';
 import { EnemyRenderer } from './r3f/entities/EnemyMesh';
 import { PickupRenderer } from './r3f/entities/PickupMesh';
@@ -41,14 +41,17 @@ import { PlayerController } from './r3f/PlayerController';
 import { R3FApp } from './r3f/R3FApp';
 import { DynamicLighting } from './r3f/rendering/Lighting';
 import { PostProcessingEffects, triggerFloorFadeIn } from './r3f/rendering/PostProcessing';
-import { clearCombatScene, combatSystemUpdate, damageEnemy, setCombatScene } from './r3f/systems/CombatSystem';
-import { updateParticles } from './r3f/systems/ParticleEffects';
+import { clearCombatScene, combatSystemUpdate, damageEnemy, damagePlayer, setCombatScene } from './r3f/systems/CombatSystem';
+import { disposeParticleResources, updateParticles } from './r3f/systems/ParticleEffects';
 import { pickupSystemUpdate } from './r3f/systems/PickupSystem';
 import { resetScreenShake } from './r3f/systems/ScreenShake';
 import { MuzzleFlashEffect } from './r3f/weapons/MuzzleFlash';
 import { ProjectileManager, setDamageEnemyCallback } from './r3f/weapons/Projectile';
 import { WeaponViewModel } from './r3f/weapons/WeaponViewModel';
-import { DIFFICULTY_PRESETS, useGameStore } from './state/GameStore';
+import { clearPlayerDamageBridge, setPlayerDamageBridge } from './game/systems/PlayerDamageBridge';
+import { DIFFICULTY_PRESETS, savePlayerSnapshot, useGameStore } from './state/GameStore';
+import { initPlayerAmmo, resetFireCooldowns } from './r3f/weapons/WeaponSystem';
+import { getProjectilePool } from './r3f/weapons/Projectile';
 
 // ---------------------------------------------------------------------------
 // Arena constants
@@ -123,6 +126,7 @@ function GameScene() {
   const levelDataRef = useRef<LevelData | null>(null);
   const graceTimerRef = useRef(2000); // Start active to prevent race with entity spawn useEffect
   const floorKeyRef = useRef(0);
+  const snapshotTimerRef = useRef(0); // Throttle savePlayerSnapshot to once per second
 
   // Subscribe to store
   const stage = useGameStore((s) => s.stage);
@@ -158,6 +162,15 @@ function GameScene() {
 
   // Spawn entities + player on level change
   useEffect(() => {
+    // --- Capture player state BEFORE clearing entities ---
+    // This preserves HP, weapons, and ammo across floor transitions.
+    const oldPlayer = world.entities.find((e) => e.type === 'player' && e.player);
+    const carryoverHp = oldPlayer?.player?.hp;
+    const carryoverMaxHp = oldPlayer?.player?.maxHp;
+    const carryoverWeapon = oldPlayer?.player?.currentWeapon;
+    const carryoverWeapons = oldPlayer?.player?.weapons;
+    const carryoverAmmo = oldPlayer?.ammo;
+
     // Reset all systems before clearing entities
     aiSystemReset();
     resetGameClock();
@@ -165,8 +178,13 @@ function GameScene() {
     resetDoorSystem();
     resetPowerUps();
     resetKillStreaks();
+    resetFloorProgression();
     clearDamageNumbers();
     resetScreenShake();
+    resetFireCooldowns();
+
+    // Release all active projectiles (stale meshes from previous floor)
+    getProjectilePool()?.releaseAll();
 
     // Clear all existing entities
     const existing = [...world.entities];
@@ -174,11 +192,14 @@ function GameScene() {
       world.remove(e);
     }
 
-    // Create player entity
+    // Create player entity — carry over state from previous floor or restore from save
     const store = useGameStore.getState();
     const restored = store.restoredPlayerState;
-    const playerHp = restored?.playerHp ?? diffMods.playerStartHp;
-    const playerMaxHp = diffMods.playerStartHp;
+    const playerMaxHp = carryoverMaxHp ?? diffMods.playerStartHp;
+    const playerHp = carryoverHp ?? restored?.playerHp ?? diffMods.playerStartHp;
+    const currentWeapon = (carryoverWeapon ?? restored?.currentWeapon ?? 'hellPistol') as WeaponId;
+    const weapons = carryoverWeapons ?? [currentWeapon];
+    const ammo = carryoverAmmo ?? initPlayerAmmo();
     world.add({
       id: 'player',
       type: 'player',
@@ -188,17 +209,12 @@ function GameScene() {
         maxHp: playerMaxHp,
         speed: 5,
         sprintMult: 1.5,
-        currentWeapon: (restored?.currentWeapon as WeaponId) ?? 'hellPistol',
-        weapons: [(restored?.currentWeapon as WeaponId) ?? 'hellPistol'],
+        currentWeapon: currentWeapon,
+        weapons: [...weapons],
         isReloading: false,
         reloadStart: 0,
       },
-      ammo: {
-        hellPistol: { current: 12, reserve: 48, magSize: 12 },
-        brimShotgun: { current: 0, reserve: 0, magSize: 6 },
-        hellfireCannon: { current: 0, reserve: 0, magSize: 30 },
-        goatsBane: { current: 0, reserve: 0, magSize: 3 },
-      },
+      ammo,
     });
 
     // Spawn level entities
@@ -255,17 +271,31 @@ function GameScene() {
     };
   }, [autoplay, levelData]);
 
-  // Wire combat scene ref + projectile damage callback
+  // Wire combat scene ref + damage callbacks
   useEffect(() => {
     setCombatScene(scene);
     setDamageEnemyCallback((entityId, damage, _isAoe) => {
       damageEnemy(entityId, damage);
     });
+    // Bridge for engine-agnostic AI melee → centralized damagePlayer()
+    setPlayerDamageBridge((damage) => {
+      return damagePlayer(damage);
+    });
     return () => {
       clearCombatScene();
       setDamageEnemyCallback(() => {});
+      clearPlayerDamageBridge();
     };
   }, [scene]);
+
+  // Full teardown on unmount — dispose all imperative Three.js resources
+  useEffect(() => {
+    return () => {
+      clearDamageNumbers();
+      clearDamageNumbersSceneRef();
+      disposeParticleResources();
+    };
+  }, []);
 
   // One-time: load SFX + music audio buffers asynchronously
   useEffect(() => {
@@ -330,6 +360,23 @@ function GameScene() {
     const currentEncounter = useGameStore.getState().stage.encounterType;
     if (currentEncounter === 'arena') {
       waveSystemUpdate(deltaMs, ARENA_SIZE);
+    }
+
+    // Snapshot player state for save system — throttled to once per second
+    // to avoid per-frame Object.fromEntries/Object.entries allocation overhead
+    snapshotTimerRef.current += deltaMs;
+    if (snapshotTimerRef.current >= 1000) {
+      snapshotTimerRef.current = 0;
+      const playerEntity = world.entities.find((e) => e.type === 'player' && e.player);
+      if (playerEntity?.player && playerEntity.ammo) {
+        savePlayerSnapshot({
+          playerHp: playerEntity.player.hp,
+          currentWeapon: playerEntity.player.currentWeapon,
+          ammoReserves: Object.fromEntries(
+            Object.entries(playerEntity.ammo).map(([k, v]) => [k, v.reserve]),
+          ),
+        });
+      }
     }
 
     // Progression check — floor cleared?

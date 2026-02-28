@@ -245,7 +245,7 @@ export class XRControllerProvider implements IInputProvider {
 
 // We use THREE types from the global scope since @react-three/xr already
 // depends on three. Import lazily to avoid issues in non-3D contexts.
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 
 const _tempVec3A = new THREE.Vector3();
 const _tempVec3B = new THREE.Vector3();

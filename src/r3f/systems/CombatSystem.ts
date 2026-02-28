@@ -5,7 +5,7 @@
  * Uses Miniplex ECS world, Zustand game store, and imperative Three.js
  * particle effects. No Babylon.js dependencies.
  */
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 import type { Entity } from '../../game/entities/components';
 import { world } from '../../game/entities/world';
 import { registerKill } from '../../game/systems/KillStreakSystem';
@@ -13,6 +13,7 @@ import { useGameStore } from '../../state/GameStore';
 import { playSound } from '../audio/AudioSystem';
 import { spawnDamageNumber } from '../entities/DamageNumbers';
 import { HapticEvent, haptics } from '../input/HapticsService';
+import { triggerDeath } from '../../game/systems/ProgressionSystem';
 import { triggerDamageFlash } from '../rendering/PostProcessing';
 import { createBloodSplash, createDeathBurst } from './ParticleEffects';
 import { triggerScreenShake } from './ScreenShake';
@@ -236,6 +237,9 @@ export function damagePlayer(damage: number): boolean {
 
   if (!player || !player.player) return false;
 
+  // Death guard — prevent ghost damage after player is already dead
+  if (player.player.hp <= 0) return true;
+
   player.player.hp -= damage;
 
   // Audio feedback
@@ -257,9 +261,9 @@ export function damagePlayer(damage: number): boolean {
   if (player.player.hp <= 0) {
     player.player.hp = 0;
 
-    // Trigger death — set game screen to dead
+    // Trigger death — handles screen transition + permadeath save deletion
     playSound('death_sting');
-    useGameStore.getState().patch({ screen: 'dead' });
+    triggerDeath();
 
     return true;
   }
@@ -306,9 +310,11 @@ function checkPlayerProjectileCollisions(projectile: Entity): boolean {
 
       damageEnemyEntity(entity, projData.damage);
 
-      if (entity.enemy.hp <= 0) {
-        handleEnemyKill(entity);
-      } else {
+      // Track direct hit kill — defer world.remove() until AFTER AoE to
+      // avoid modifying world.entities mid-iteration.
+      const directKill = entity.enemy.hp <= 0;
+
+      if (!directKill) {
         playSound('hit');
         // Blood splash
         if (combatScene && entity.position) {
@@ -325,6 +331,8 @@ function checkPlayerProjectileCollisions(projectile: Entity): boolean {
         const aoeKillList: Entity[] = [];
         for (const other of world.entities) {
           if (!other.enemy || !other.position || other === entity) continue;
+          // Skip already-dead entities (from earlier kills this frame)
+          if (other.enemy.hp <= 0) continue;
 
           const aoeDist = distanceBetween(projPos, other.position);
           if (aoeDist < projData.aoe) {
@@ -337,7 +345,7 @@ function checkPlayerProjectileCollisions(projectile: Entity): boolean {
           }
         }
 
-        // Process deferred kills after iteration
+        // Process deferred kills after iteration (AoE kills)
         for (const killed of aoeKillList) {
           handleEnemyKill(killed);
         }
@@ -358,6 +366,11 @@ function checkPlayerProjectileCollisions(projectile: Entity): boolean {
         }
       }
 
+      // Now safe to process direct hit kill (after AoE iteration is done)
+      if (directKill) {
+        handleEnemyKill(entity);
+      }
+
       break; // Projectile consumed on first direct hit
     }
   }
@@ -372,27 +385,8 @@ function checkEnemyProjectileCollision(projectile: Entity, player: Entity): bool
   const dist = distanceBetween(projectile.position!, player.position);
 
   if (dist < 1.5) {
-    const rawDmg = projectile.projectile!.damage;
-    player.player.hp -= rawDmg;
-
-    // Visual feedback
-    triggerDamageFlash();
-    const store = useGameStore.getState();
-    store.patch({
-      damageFlash: rawDmg > 0 ? 0.8 : 0.2,
-      screenShake: rawDmg > 0 ? 8 : 3,
-    });
-
-    playSound('hurt');
-    haptics.trigger(HapticEvent.DamageTaken);
-
-    // Check for death
-    if (player.player.hp <= 0) {
-      player.player.hp = 0;
-      playSound('death_sting');
-      store.patch({ screen: 'dead' });
-    }
-
+    // Route through centralized damagePlayer() for death guard + permadeath
+    damagePlayer(projectile.projectile!.damage);
     return true;
   }
 
@@ -416,7 +410,6 @@ export function combatSystemUpdate(deltaTime: number): void {
   // Frame-rate normalization factor: 1.0 at 60fps (16ms), proportionally
   // larger/smaller at other rates so movement and lifetimes stay consistent.
   const dtFactor = deltaTime / 16;
-  const _dtSeconds = deltaTime / 1000;
 
   const player = world.entities.find((e: Entity) => e.type === 'player' && e.player);
 
@@ -452,40 +445,21 @@ export function combatSystemUpdate(deltaTime: number): void {
     }
   }
 
-  // --- Projectile processing ---
-  const projectiles = world.entities.filter(
-    (e: Entity) => e.projectile && e.position && e.velocity,
-  );
-
-  for (const projectile of projectiles) {
-    const proj = projectile.projectile!;
-    const pos = projectile.position!;
-    const vel = projectile.velocity!;
-
-    // Move projectile
-    pos.x += vel.x * dtFactor;
-    pos.y += vel.y * dtFactor;
-    pos.z += vel.z * dtFactor;
-
-    // Decrement lifetime (delta-time scaled so range is framerate-independent)
-    proj.life -= dtFactor;
-
-    if (proj.life <= 0) {
-      removeEntity(projectile);
-      continue;
+  // Note: Projectile movement and collision is handled entirely by
+  // ProjectileManager (Projectile.tsx) via the ProjectilePool. Both player
+  // and enemy projectiles use visible pool meshes. The previous ECS-based
+  // projectile processing has been removed.
+  //
+  // Clean up any stale ECS projectile entities that might linger from
+  // previous sessions or edge cases. Collect first, then remove to avoid
+  // mutating world.entities while iterating.
+  const staleProjectiles: Entity[] = [];
+  for (const entity of world.entities) {
+    if (entity.projectile) {
+      staleProjectiles.push(entity);
     }
-
-    // Collision detection based on owner
-    let hit = false;
-
-    if (proj.owner === 'player') {
-      hit = checkPlayerProjectileCollisions(projectile);
-    } else if (proj.owner === 'enemy' && player) {
-      hit = checkEnemyProjectileCollision(projectile, player);
-    }
-
-    if (hit) {
-      removeEntity(projectile);
-    }
+  }
+  for (const entity of staleProjectiles) {
+    removeEntity(entity);
   }
 }

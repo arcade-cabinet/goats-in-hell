@@ -10,7 +10,7 @@
  *   - Coordinates are right-handed (no Z negation needed within R3F)
  */
 
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 import type { Entity, WeaponId } from '../../game/entities/components';
 import { getGameTime } from '../../game/systems/GameClock';
 import { getDamageMultiplier } from '../../game/systems/PowerUpSystem';
@@ -18,6 +18,7 @@ import { weapons } from '../../game/weapons/weapons';
 import { getLevelBonuses, useGameStore } from '../../state/GameStore';
 import type { ProjectilePool } from './ProjectilePool';
 import { PROJECTILE_COLORS } from './ProjectilePool';
+import { triggerScreenShake } from '../systems/ScreenShake';
 
 // ---------------------------------------------------------------------------
 // PRNG shorthand
@@ -219,6 +220,15 @@ export function tryShoot(
 
   // Update gun flash effect
   useGameStore.getState().patch({ gunFlash: 6 });
+
+  // Per-shot screen shake — proportional to weapon power
+  const WEAPON_SHAKE: Record<WeaponId, number> = {
+    hellPistol: 0.05,
+    brimShotgun: 0.20,
+    hellfireCannon: 0.03,
+    goatsBane: 0.35,
+  };
+  triggerScreenShake(WEAPON_SHAKE[weaponId] ?? 0.05);
 
   return weaponSoundMap[weaponId];
 }

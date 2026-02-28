@@ -8,7 +8,7 @@ const { getDefaultConfig } = require('expo/metro-config');
  */
 const config = getDefaultConfig(__dirname);
 
-// Register 3D model, audio, and physics WASM file extensions as static assets
-config.resolver.assetExts.push('glb', 'gltf', 'ogg', 'wasm');
+// Register 3D model, audio, physics WASM, and WebGPU shader file extensions as static assets
+config.resolver.assetExts.push('glb', 'gltf', 'ogg', 'wasm', 'wgsl');
 
 module.exports = config;

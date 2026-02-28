@@ -7,7 +7,7 @@
 
 import { useFrame, useThree } from '@react-three/fiber';
 import { useRef } from 'react';
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -15,6 +15,7 @@ import * as THREE from 'three';
 
 interface DamageNumber {
   sprite: THREE.Sprite;
+  canvas: HTMLCanvasElement;
   age: number;
   startY: number;
 }
@@ -31,17 +32,37 @@ const activeNumbers: DamageNumber[] = [];
 let sceneRef: THREE.Scene | null = null;
 
 // ---------------------------------------------------------------------------
-// Canvas texture helper
+// Canvas pool — reuse canvases to prevent DOM element memory leaks
 // ---------------------------------------------------------------------------
 
-function createTextTexture(text: string, color: string): THREE.CanvasTexture {
-  // Create a fresh canvas per texture to avoid shared-canvas race conditions
-  // during burst spawns where multiple sprites render in the same frame.
+const canvasPool: HTMLCanvasElement[] = [];
+
+function acquireCanvas(): HTMLCanvasElement {
+  if (canvasPool.length > 0) return canvasPool.pop()!;
   const canvas = document.createElement('canvas');
   canvas.width = 128;
   canvas.height = 64;
+  return canvas;
+}
+
+function releaseCanvas(canvas: HTMLCanvasElement): void {
+  // Cap pool size to prevent unbounded growth
+  if (canvasPool.length < MAX_ACTIVE) {
+    canvasPool.push(canvas);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Canvas texture helper
+// ---------------------------------------------------------------------------
+
+function createTextTexture(text: string, color: string): { texture: THREE.CanvasTexture; canvas: HTMLCanvasElement } {
+  const canvas = acquireCanvas();
   const ctx = canvas.getContext('2d');
-  if (!ctx) return new THREE.CanvasTexture(canvas);
+  if (!ctx) {
+    console.warn('[DamageNumbers] getContext("2d") returned null — damage number will be blank');
+    return { texture: new THREE.CanvasTexture(canvas), canvas };
+  }
 
   ctx.clearRect(0, 0, 128, 64);
   ctx.font = 'bold 48px monospace';
@@ -59,7 +80,7 @@ function createTextTexture(text: string, color: string): THREE.CanvasTexture {
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.needsUpdate = true;
-  return texture;
+  return { texture, canvas };
 }
 
 // ---------------------------------------------------------------------------
@@ -83,7 +104,7 @@ export function spawnDamageNumber(
 
   const color = isCrit ? '#ffff00' : '#ff3333';
   const text = String(Math.round(damage));
-  const texture = createTextTexture(text, color);
+  const { texture, canvas } = createTextTexture(text, color);
 
   const material = new THREE.SpriteMaterial({
     map: texture,
@@ -100,6 +121,7 @@ export function spawnDamageNumber(
 
   activeNumbers.push({
     sprite,
+    canvas,
     age: 0,
     startY: position.y + 0.5,
   });
@@ -127,11 +149,12 @@ export function DamageNumbers(): null {
       dn.age += dt;
 
       if (dn.age >= LIFETIME) {
-        // Remove expired number
+        // Remove expired number and return canvas to pool
         scene.remove(dn.sprite);
         const mat = dn.sprite.material as THREE.SpriteMaterial;
         mat.map?.dispose();
         mat.dispose();
+        releaseCanvas(dn.canvas);
         activeNumbers.splice(i, 1);
         continue;
       }
@@ -163,6 +186,14 @@ export function clearDamageNumbers(): void {
     const mat = dn.sprite.material as THREE.SpriteMaterial;
     mat.map?.dispose();
     mat.dispose();
+    releaseCanvas(dn.canvas);
   }
   activeNumbers.length = 0;
+}
+
+/**
+ * Clear the scene ref. Call on full teardown to prevent stale references.
+ */
+export function clearDamageNumbersSceneRef(): void {
+  sceneRef = null;
 }
