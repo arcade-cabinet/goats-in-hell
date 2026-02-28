@@ -83,7 +83,7 @@ import {
   setSprinting,
   triggerFloorFadeIn,
 } from './rendering/PostProcessing';
-import {createDeathBurst, createMuzzleFlash, createLavaEmbers, createProjectileTrail, createSpawnEffect} from './rendering/Particles';
+import {createDeathBurst, createMuzzleFlash, createLavaEmbers, createProjectileTrail, createSpawnEffect, createBiomeParticles} from './rendering/Particles';
 import {
   createGoatMesh,
   disposeGoatMesh,
@@ -97,7 +97,7 @@ import {
 import type {PropType} from './rendering/DungeonProps';
 import {createLoreMessage} from './rendering/LoreMessages';
 import {AIGovernor} from './systems/AIGovernor';
-import {BabylonHUD} from './ui/BabylonHUD';
+import {BabylonHUD, resetBossPhase} from './ui/BabylonHUD';
 import {BabylonScreens} from './ui/BabylonScreens';
 import {DamageNumbers3D} from './ui/DamageNumbers3D';
 import {WeaponViewModel, loadAllWeapons, triggerLandingDip} from './ui/WeaponViewModel';
@@ -360,6 +360,7 @@ export function GameEngine() {
     resetHazardSystem();
     resetKillStreaks();
     resetPowerUps();
+    resetBossPhase();
     setHazardScene(scene);
     setPickupScene(scene);
 
@@ -597,6 +598,9 @@ export function GameEngine() {
       lavaParticles.push(createLavaEmbers(dl.light.position.clone(), scene));
     }
 
+    // Biome ambient particles — follow camera for always-visible atmosphere
+    const biomeParticleSystem = createBiomeParticles(levelData.theme.name, scene);
+
     // Set up player spotlight with dynamic shadows
     spotlightRef.current = createPlayerSpotlight(scene);
 
@@ -722,10 +726,14 @@ export function GameEngine() {
       // 5. Screen effects (shake, flash, etc.)
       updateScreenEffects(scene, dt);
 
-      // 6. Flicker lava lights + muzzle flash
+      // 6. Flicker lava lights + muzzle flash + biome particles
       updateFlickerLights(lavaLightsRef.current, now * 0.001);
       if (scene.activeCamera) {
         updateMuzzleFlash(scene.activeCamera, player.player?.currentWeapon);
+        // Move biome particles to follow camera
+        if (biomeParticleSystem) {
+          (biomeParticleSystem.emitter as Vector3).copyFrom(scene.activeCamera.position);
+        }
       }
 
       // 7. Update player spotlight position to follow camera
@@ -860,6 +868,7 @@ export function GameEngine() {
       clearActiveLevel();
       lavaLightsRef.current.forEach(dl => dl.light.dispose());
       lavaParticles.forEach(p => p.dispose());
+      if (biomeParticleSystem) biomeParticleSystem.dispose();
       propMeshesRef.current.forEach(m => {
         m.getChildMeshes(false).forEach(c => c.dispose());
         m.dispose();

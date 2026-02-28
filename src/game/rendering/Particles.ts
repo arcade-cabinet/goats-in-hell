@@ -455,3 +455,117 @@ export function createSpawnEffect(
 
   return system;
 }
+
+// ---------------------------------------------------------------------------
+// Biome ambient particles — subtle floating particles for atmosphere
+// ---------------------------------------------------------------------------
+
+interface BiomeParticleConfig {
+  emitRate: number;
+  minSize: number;
+  maxSize: number;
+  minLife: number;
+  maxLife: number;
+  color1: Color4;
+  color2: Color4;
+  colorDead: Color4;
+  dir1: Vector3;
+  dir2: Vector3;
+  gravity: Vector3;
+  minPower: number;
+  maxPower: number;
+}
+
+const BIOME_PARTICLES: Record<string, BiomeParticleConfig> = {
+  firePits: {
+    emitRate: 8,
+    minSize: 0.015, maxSize: 0.04,
+    minLife: 2, maxLife: 4,
+    color1: new Color4(1, 0.5, 0.1, 0.6),
+    color2: new Color4(1, 0.3, 0, 0.4),
+    colorDead: new Color4(0.3, 0.1, 0, 0),
+    dir1: new Vector3(-1, 0.5, -1),
+    dir2: new Vector3(1, 2, 1),
+    gravity: new Vector3(0, 0.3, 0),
+    minPower: 0.2, maxPower: 0.8,
+  },
+  fleshCaverns: {
+    emitRate: 5,
+    minSize: 0.02, maxSize: 0.06,
+    minLife: 3, maxLife: 5,
+    color1: new Color4(0.8, 0.2, 0.3, 0.4),
+    color2: new Color4(0.6, 0.1, 0.2, 0.3),
+    colorDead: new Color4(0.2, 0, 0.05, 0),
+    dir1: new Vector3(-0.5, -0.3, -0.5),
+    dir2: new Vector3(0.5, 0.5, 0.5),
+    gravity: new Vector3(0, -0.1, 0),
+    minPower: 0.1, maxPower: 0.4,
+  },
+  obsidianFortress: {
+    emitRate: 4,
+    minSize: 0.01, maxSize: 0.03,
+    minLife: 4, maxLife: 7,
+    color1: new Color4(0.6, 0.6, 0.7, 0.3),
+    color2: new Color4(0.4, 0.4, 0.5, 0.2),
+    colorDead: new Color4(0.2, 0.2, 0.25, 0),
+    dir1: new Vector3(-1, 0.1, -1),
+    dir2: new Vector3(1, 0.3, 1),
+    gravity: new Vector3(0.05, 0.02, 0),
+    minPower: 0.05, maxPower: 0.2,
+  },
+  theVoid: {
+    emitRate: 6,
+    minSize: 0.01, maxSize: 0.05,
+    minLife: 3, maxLife: 6,
+    color1: new Color4(0.4, 0.2, 0.8, 0.4),
+    color2: new Color4(0.2, 0.1, 0.6, 0.3),
+    colorDead: new Color4(0.1, 0, 0.2, 0),
+    dir1: new Vector3(-0.8, -0.5, -0.8),
+    dir2: new Vector3(0.8, 1, 0.8),
+    gravity: new Vector3(0, 0.15, 0),
+    minPower: 0.1, maxPower: 0.5,
+  },
+};
+
+/**
+ * Create ambient floating particles for a biome.
+ * Emitter follows the camera so particles are always visible.
+ */
+export function createBiomeParticles(
+  themeName: string,
+  scene: Scene,
+): ParticleSystem | null {
+  const config = BIOME_PARTICLES[themeName];
+  if (!config) return null;
+
+  const system = new ParticleSystem('biomeAmbient', 80, scene);
+  system.particleTexture = getParticleTexture(scene);
+
+  // Emitter will be moved to camera position each frame
+  system.emitter = Vector3.Zero();
+  system.minEmitBox = new Vector3(-8, 0, -8);
+  system.maxEmitBox = new Vector3(8, 3, 8);
+
+  system.emitRate = config.emitRate;
+
+  system.minLifeTime = config.minLife;
+  system.maxLifeTime = config.maxLife;
+
+  system.direction1 = config.dir1;
+  system.direction2 = config.dir2;
+
+  system.minEmitPower = config.minPower;
+  system.maxEmitPower = config.maxPower;
+
+  system.minSize = config.minSize;
+  system.maxSize = config.maxSize;
+
+  system.color1 = config.color1;
+  system.color2 = config.color2;
+  system.colorDead = config.colorDead;
+
+  system.gravity = config.gravity;
+
+  system.start();
+  return system;
+}

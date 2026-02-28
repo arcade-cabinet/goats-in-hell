@@ -23,6 +23,7 @@ import {getWaveInfo} from '../systems/WaveSystem';
 import {getActiveLevel} from '../levels/activeLevelRef';
 import {CELL_SIZE, MapCell} from '../levels/LevelGenerator';
 import {useGameStore, DIFFICULTY_PRESETS, getLevelBonuses} from '../../state/GameStore';
+import {GameState} from '../../state/GameState';
 import type {Entity, WeaponId} from '../entities/components';
 import {getGameTime} from '../systems/GameClock';
 import {getAnnouncement} from '../systems/KillStreakSystem';
@@ -66,6 +67,16 @@ const BOSS_DISPLAY_NAMES: Record<string, string> = {
   ironGoat: 'IRON GOAT',
   archGoat: 'ARCH GOAT',
 };
+
+// Boss phase transition tracking
+let bossPhase2Triggered = false;
+let bossBarFlashTimer = 0; // frames of flash remaining
+
+/** Reset boss phase tracking (call on floor transition). */
+export function resetBossPhase(): void {
+  bossPhase2Triggered = false;
+  bossBarFlashTimer = 0;
+}
 
 // ---------------------------------------------------------------------------
 // Helper
@@ -1082,6 +1093,7 @@ export class BabylonHUD {
   private updateBossBar(state: ReturnType<typeof useGameStore.getState>): void {
     if (state.stage.encounterType !== 'boss') {
       this.bossContainer.isVisible = false;
+      bossPhase2Triggered = false;
       return;
     }
 
@@ -1095,12 +1107,30 @@ export class BabylonHUD {
     const {hp, maxHp} = boss.enemy;
     const ratio = maxHp > 0 ? hp / maxHp : 0;
     const name = BOSS_DISPLAY_NAMES[boss.type ?? ''] ?? 'BOSS';
-    const barColor = ratio > 0.5 ? '#cc0000' : ratio > 0.25 ? '#ff6600' : '#ff2200';
 
-    this.bossNameText.text = name;
+    // Phase 2 transition: flash when boss drops below 50%
+    if (ratio <= 0.5 && !bossPhase2Triggered) {
+      bossPhase2Triggered = true;
+      bossBarFlashTimer = 30; // 0.5s flash at 60fps
+      GameState.set({screenShake: 8});
+    }
+
+    // Bar color: normal → phase2 orange → critical red, with flash overlay
+    let barColor: string;
+    if (bossBarFlashTimer > 0) {
+      bossBarFlashTimer--;
+      // Pulsing white-red flash
+      const pulse = Math.sin(bossBarFlashTimer * 0.6) * 0.5 + 0.5;
+      barColor = pulse > 0.5 ? '#ffffff' : '#ff4400';
+      this.bossNameText.text = `⚡ ${name} — PHASE 2 ⚡`;
+    } else {
+      barColor = ratio > 0.5 ? '#cc0000' : ratio > 0.25 ? '#ff6600' : '#ff2200';
+      this.bossNameText.text = ratio <= 0.5 ? `${name} — ENRAGED` : name;
+    }
+
     this.bossBarInner.width = ratio;
     this.bossBarInner.background = barColor;
-    this.bossHpText.text = `${hp} / ${maxHp}`;
+    this.bossHpText.text = `${Math.ceil(hp)} / ${maxHp}`;
   }
 
   private updateMinimapVisibility(state: ReturnType<typeof useGameStore.getState>): void {
