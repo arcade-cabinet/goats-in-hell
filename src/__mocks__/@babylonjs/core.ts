@@ -34,6 +34,13 @@ export class Vector3 {
     const len = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z) || 1;
     return new Vector3(this.x / len, this.y / len, this.z / len);
   }
+
+  addInPlace(other: Vector3) {
+    this.x += other.x;
+    this.y += other.y;
+    this.z += other.z;
+    return this;
+  }
 }
 
 export class Scene {}
