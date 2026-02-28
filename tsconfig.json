@@ -11,12 +11,11 @@
     "isolatedModules": true,
     "strict": true,
     "moduleResolution": "bundler",
+    "verbatimModuleSyntax": true,
     "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "forceConsistentCasingInFileNames": false
+    "forceConsistentCasingInFileNames": true
   },
   "exclude": [
     "node_modules",

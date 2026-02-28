@@ -16,25 +16,49 @@ import { BOSS_ARENA_SIZE, generateBossArena } from './game/levels/BossArenas';
 import { getThemeForFloor } from './game/levels/FloorThemes';
 import type { LevelData } from './game/levels/LevelData';
 import { LevelGenerator, type MapCell } from './game/levels/LevelGenerator';
+import { AIGovernor } from './game/systems/AIGovernor';
 import { aiSystemReset, aiSystemUpdate } from './game/systems/AISystem';
+import { doorSystemUpdate, resetDoorSystem } from './game/systems/DoorSystem';
 import { spawnBoss, spawnLevelEntities } from './game/systems/EntitySpawner';
+import { resetGameClock, tickGameClock } from './game/systems/GameClock';
+import { hazardSystemUpdate, resetHazardSystem } from './game/systems/HazardSystem';
+import { resetKillStreaks } from './game/systems/KillStreakSystem';
+import { powerUpSystemUpdate, resetPowerUps } from './game/systems/PowerUpSystem';
 import { advanceFloor, checkFloorComplete } from './game/systems/ProgressionSystem';
-import { initAudio } from './r3f/audio/AudioSystem';
+import { getWaveInfo, resetWaveSystem, waveSystemUpdate } from './game/systems/WaveSystem';
+import { initAmbientSound, updateAmbientSound } from './r3f/audio/AmbientSoundSystem';
+import { getAudioContext, initAudio, loadAllSfx, setSfxBuffers } from './r3f/audio/AudioSystem';
+import { initMusic, loadAllMusic, setMusicBuffers, updateMusic } from './r3f/audio/MusicSystem';
+import { clearDamageNumbers, DamageNumbers } from './r3f/entities/DamageNumbers';
 import { EnemyColliders } from './r3f/entities/EnemyColliders';
 import { EnemyRenderer } from './r3f/entities/EnemyMesh';
 import { PickupRenderer } from './r3f/entities/PickupMesh';
+import { inputManager } from './r3f/input/InputManager';
+import { AIProvider } from './r3f/input/providers/AIProvider';
+import { DungeonProps } from './r3f/level/DungeonProps';
 import { extractColliderData, LevelColliders, LevelMeshes } from './r3f/level/LevelMeshes';
 import { PlayerController } from './r3f/PlayerController';
 import { R3FApp } from './r3f/R3FApp';
 import { DynamicLighting } from './r3f/rendering/Lighting';
 import { PostProcessingEffects, triggerFloorFadeIn } from './r3f/rendering/PostProcessing';
-import { clearCombatScene, combatSystemUpdate, setCombatScene } from './r3f/systems/CombatSystem';
+import { clearCombatScene, combatSystemUpdate, damageEnemy, setCombatScene } from './r3f/systems/CombatSystem';
 import { updateParticles } from './r3f/systems/ParticleEffects';
 import { pickupSystemUpdate } from './r3f/systems/PickupSystem';
+import { resetScreenShake } from './r3f/systems/ScreenShake';
 import { MuzzleFlashEffect } from './r3f/weapons/MuzzleFlash';
-import { ProjectileManager } from './r3f/weapons/Projectile';
+import { ProjectileManager, setDamageEnemyCallback } from './r3f/weapons/Projectile';
 import { WeaponViewModel } from './r3f/weapons/WeaponViewModel';
 import { DIFFICULTY_PRESETS, useGameStore } from './state/GameStore';
+
+// ---------------------------------------------------------------------------
+// Arena constants
+// ---------------------------------------------------------------------------
+
+/** Arena grid size (must match the value used in generateLevelData). */
+const ARENA_SIZE = 24;
+
+/** Minimum number of waves the player must survive before an arena completes. */
+const ARENA_MIN_WAVES = 5;
 
 // ---------------------------------------------------------------------------
 // Level generation
@@ -62,7 +86,7 @@ function generateLevelData(
   }
 
   if (encounterType === 'arena') {
-    const size = 24;
+    const size = ARENA_SIZE;
     const grid = generateArena(size, floor) as MapCell[][];
     const spawn = getArenaPlayerSpawn(size);
     return {
@@ -97,7 +121,7 @@ function generateLevelData(
 function GameScene() {
   const scene = useThree((s) => s.scene);
   const levelDataRef = useRef<LevelData | null>(null);
-  const graceTimerRef = useRef(0);
+  const graceTimerRef = useRef(2000); // Start active to prevent race with entity spawn useEffect
   const floorKeyRef = useRef(0);
 
   // Subscribe to store
@@ -120,6 +144,12 @@ function GameScene() {
     [levelData],
   );
 
+  // Extract prop spawns for dungeon decoration rendering
+  const propSpawns = useMemo(
+    () => levelData.spawns.filter((s) => s.type.startsWith('prop_')),
+    [levelData.spawns],
+  );
+
   // Convert player spawn to Three.js coordinates (negate Z)
   const spawnPosition = useMemo<[number, number, number]>(
     () => [levelData.playerSpawn.x, levelData.playerSpawn.y, -levelData.playerSpawn.z],
@@ -128,8 +158,15 @@ function GameScene() {
 
   // Spawn entities + player on level change
   useEffect(() => {
-    // Reset AI system before clearing entities
+    // Reset all systems before clearing entities
     aiSystemReset();
+    resetGameClock();
+    resetHazardSystem();
+    resetDoorSystem();
+    resetPowerUps();
+    resetKillStreaks();
+    clearDamageNumbers();
+    resetScreenShake();
 
     // Clear all existing entities
     const existing = [...world.entities];
@@ -170,7 +207,10 @@ function GameScene() {
     } else if (stage.encounterType === 'boss' && stage.bossId) {
       spawnBoss(stage.bossId, levelData, diffMods, nightmareDmgMult, nightmareFlags.nightmare);
     }
-    // Arena mode uses WaveSystem for dynamic spawning
+    // Arena mode: reset and prepare the WaveSystem for dynamic spawning
+    if (stage.encounterType === 'arena') {
+      resetWaveSystem();
+    }
 
     // Set grace period and trigger floor fade-in
     graceTimerRef.current = 2000; // 2 seconds
@@ -180,21 +220,95 @@ function GameScene() {
     floorKeyRef.current++;
     levelDataRef.current = levelData;
 
-    // Init audio on first interaction
+    // Init all audio subsystems on first interaction
     initAudio();
+    initMusic();
+    initAmbientSound();
+
+    // Trigger music/ambient update for the new level
+    updateMusic();
+    updateAmbientSound();
   }, [levelData, stage, diffMods, nightmareDmgMult, nightmareFlags]);
 
-  // Wire combat scene ref
+  // Autoplay: register AI provider with AIGovernor for each level
+  const autoplay = useGameStore((s) => s.autoplay);
+  useEffect(() => {
+    if (!autoplay) return;
+
+    // Find the player entity (just created in the effect above)
+    const player = world.entities.find((e) => e.type === 'player');
+    if (!player) return;
+
+    // Create a proxy camera that reads from the player's ECS position
+    const aiCamera = {
+      position: player.position ?? { x: 0, y: 1.6, z: 0 },
+      rotation: { x: 0, y: 0 },
+    };
+
+    const governor = new AIGovernor(aiCamera, player, levelData.grid, CELL_SIZE);
+    const aiProvider = new AIProvider(governor);
+    inputManager.register(aiProvider);
+
+    return () => {
+      inputManager.unregister(aiProvider);
+      aiProvider.dispose();
+    };
+  }, [autoplay, levelData]);
+
+  // Wire combat scene ref + projectile damage callback
   useEffect(() => {
     setCombatScene(scene);
-    return () => clearCombatScene();
+    setDamageEnemyCallback((entityId, damage, _isAoe) => {
+      damageEnemy(entityId, damage);
+    });
+    return () => {
+      clearCombatScene();
+      setDamageEnemyCallback(() => {});
+    };
   }, [scene]);
+
+  // One-time: load SFX + music audio buffers asynchronously
+  useEffect(() => {
+    let cancelled = false;
+    async function loadAudioBuffers() {
+      try {
+        initAudio();
+        initMusic();
+        const ctx = getAudioContext();
+        const [sfxMap, musicMap] = await Promise.all([loadAllSfx(ctx), loadAllMusic(ctx)]);
+        if (cancelled) return;
+        setSfxBuffers(sfxMap);
+        setMusicBuffers(musicMap);
+        // Now that buffers are loaded, trigger music for the current state
+        updateMusic();
+      } catch (err) {
+        console.warn('[R3FRoot] Audio buffer loading failed:', err);
+      }
+    }
+    loadAudioBuffers();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Update music + ambient when screen changes (menu, death, victory, etc.)
+  // `screen` is an intentional trigger — these functions read from the store
+  // but we need the effect to re-fire whenever screen transitions occur.
+  const screen = useGameStore((s) => s.screen);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: screen is an intentional trigger
+  useEffect(() => {
+    updateMusic();
+    updateAmbientSound();
+  }, [screen]);
 
   // Per-frame game loop
   useFrame((_state, delta) => {
     const deltaMs = delta * 1000;
     const screen = useGameStore.getState().screen;
     if (screen !== 'playing') return;
+
+    // Advance game clock — MUST be first, all systems depend on getGameTime()
+    tickGameClock(deltaMs);
 
     // Grace period — skip AI/combat/progression checks
     if (graceTimerRef.current > 0) {
@@ -207,10 +321,26 @@ function GameScene() {
     aiSystemUpdate(deltaMs);
     combatSystemUpdate(deltaMs);
     pickupSystemUpdate();
+    hazardSystemUpdate();
+    powerUpSystemUpdate();
+    doorSystemUpdate(levelData.grid, deltaMs);
     updateParticles(deltaMs);
 
+    // Arena wave spawning — only runs during arena encounters
+    const currentEncounter = useGameStore.getState().stage.encounterType;
+    if (currentEncounter === 'arena') {
+      waveSystemUpdate(deltaMs, ARENA_SIZE);
+    }
+
     // Progression check — floor cleared?
-    if (checkFloorComplete()) {
+    // For arena mode, require minimum waves completed AND no enemies remaining.
+    // For explore/boss, the existing checkFloorComplete() (no enemies) is sufficient.
+    if (currentEncounter === 'arena') {
+      const waveInfo = getWaveInfo();
+      if (waveInfo.wave >= ARENA_MIN_WAVES && !waveInfo.waveActive && checkFloorComplete()) {
+        advanceFloor();
+      }
+    } else if (checkFloorComplete()) {
       advanceFloor();
     }
   });
@@ -224,6 +354,7 @@ function GameScene() {
         width={levelData.width}
         depth={levelData.depth}
       />
+      <DungeonProps key={`props-${floorKeyRef.current}`} spawns={propSpawns} />
       <LevelColliders
         key={`col-${floorKeyRef.current}`}
         wallPositions={colliderData.wallPositions}
@@ -242,7 +373,13 @@ function GameScene() {
       <ProjectileManager />
       <WeaponViewModel />
       <MuzzleFlashEffect />
-      <DynamicLighting theme={levelData.theme} />
+      <DamageNumbers />
+      <DynamicLighting
+        theme={levelData.theme}
+        grid={levelData.grid}
+        width={levelData.width}
+        depth={levelData.depth}
+      />
       <PostProcessingEffects />
     </>
   );

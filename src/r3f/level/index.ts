@@ -1,3 +1,5 @@
+export type { DungeonPropsProps, PropSpawn } from './DungeonProps';
+export { DungeonProps } from './DungeonProps';
 export type {
   ColliderData,
   LevelCollidersProps,

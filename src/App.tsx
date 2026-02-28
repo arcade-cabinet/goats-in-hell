@@ -3,7 +3,12 @@ import { StyleSheet, View } from 'react-native';
 import R3FRoot from './R3FRoot';
 import type { Difficulty } from './state/GameStore';
 import { generateSeedPhrase, useGameStore } from './state/GameStore';
+import { BossIntroScreen } from './ui/BossIntroScreen';
+import { DeathScreen } from './ui/DeathScreen';
+import { HUD } from './ui/HUD';
 import { MainMenu } from './ui/MainMenu';
+import { PauseMenu } from './ui/PauseMenu';
+import { VictoryScreen } from './ui/VictoryScreen';
 
 const App = () => {
   const screen = useGameStore((s) => s.screen);
@@ -107,6 +112,11 @@ const App = () => {
   return (
     <View style={styles.container}>
       {isGameActive && <R3FRoot />}
+      {screen === 'playing' && <HUD />}
+      {screen === 'paused' && <PauseMenu />}
+      {screen === 'dead' && <DeathScreen />}
+      {screen === 'victory' && <VictoryScreen />}
+      {screen === 'bossIntro' && <BossIntroScreen />}
       {(screen === 'mainMenu' || screen === 'newGame' || screen === 'settings') && <MainMenu />}
     </View>
   );

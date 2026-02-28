@@ -56,19 +56,34 @@ export class AIProvider implements IInputProvider {
 
   poll(dt: number): Partial<InputFrame> {
     // Tick the AI governor. This will invoke our output callback.
-    this.governor.update(dt);
+    // R3F passes dt in seconds (~0.016) but the governor expects milliseconds (~16).
+    this.governor.update(dt * 1000);
 
     const frame = this.lastFrame;
     if (!frame) return {};
 
     // --- Movement ---
-    // Negate moveZ for Three.js coordinate system (Babylon Z+ forward -> Three Z- forward)
-    const moveX = frame.moveX;
-    const moveZ = -frame.moveZ;
+    // The governor outputs Babylon world-space moveX/moveZ (because
+    // aiCamera.rotation.y is always 0, so the governor's
+    // displacementToMoveXZ is an identity transform).
+    //
+    // Convert to Three.js camera-relative using our tracked camera yaw.
+    // Formula: project Babylon world displacement onto Three.js camera axes.
+    const y = this.currentYaw;
+    const cosY = Math.cos(y);
+    const sinY = Math.sin(y);
+    const rawMoveX = frame.moveX * cosY + frame.moveZ * sinY;
+    const rawMoveZ = -frame.moveX * sinY + frame.moveZ * cosY;
+
+    // Normalize to unit length — the governor outputs tiny displacements
+    // but InputFrame moveX/moveZ should be -1..1 where 1 = full walk speed.
+    const moveLen = Math.sqrt(rawMoveX * rawMoveX + rawMoveZ * rawMoveZ);
+    const moveX = moveLen > 0.001 ? rawMoveX / moveLen : 0;
+    const moveZ = moveLen > 0.001 ? rawMoveZ / moveLen : 0;
 
     // --- Look ---
     // The governor outputs absolute target yaw/pitch in Babylon.js convention.
-    // Negate yaw for Three.js (Babylon yaw rotates opposite to Three.js).
+    // Negate yaw for Three.js (Babylon yaw=0 faces +Z, Three.js yaw=0 faces -Z).
     const targetYaw = -frame.lookYaw;
     const targetPitch = frame.lookPitch;
 
@@ -76,17 +91,18 @@ export class AIProvider implements IInputProvider {
     const deltaYaw = angleDelta(this.currentYaw, targetYaw) * this.aimLerp;
     const deltaPitch = angleDelta(this.currentPitch, targetPitch) * this.aimLerp;
 
-    // Advance current orientation
+    // Advance current orientation (tracks effective Three.js camera yaw)
     this.currentYaw += deltaYaw;
     this.currentPitch += deltaPitch;
 
     // --- Actions ---
-    // Weapon slot and other actions pass through directly
+    // PlayerController does `yawRef -= lookDeltaX`, so we negate our deltas
+    // so that positive deltaYaw → positive yawRef change.
     return {
       moveX,
       moveZ,
-      lookDeltaX: deltaYaw,
-      lookDeltaY: deltaPitch,
+      lookDeltaX: -deltaYaw,
+      lookDeltaY: -deltaPitch,
       fire: frame.fire,
       reload: frame.reload,
       sprint: frame.sprint,
