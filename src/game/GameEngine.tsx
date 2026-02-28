@@ -12,18 +12,15 @@ import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useScene} from 'reactylon';
 import type {Entity, EntityType, WeaponId} from './entities/components';
 import {world} from './entities/world';
-import {getEnemyStats} from './entities/enemyStats';
 import {
   CELL_SIZE,
   LevelGenerator,
   MapCell,
-  PLATFORM_HEIGHT,
-  WALL_HEIGHT,
 } from './levels/LevelGenerator';
 import type {FloorTheme} from './levels/FloorThemes';
 import {getThemeForFloor} from './levels/FloorThemes';
 import {generateArena, getArenaPlayerSpawn} from './levels/ArenaGenerator';
-import {generateBossArena, BOSS_ARENA_PICKUP_POSITIONS, BOSS_ARENA_SIZE} from './levels/BossArenas';
+import {generateBossArena, BOSS_ARENA_SIZE} from './levels/BossArenas';
 import {setActiveLevel, clearActiveLevel} from './levels/activeLevelRef';
 import {GameState} from '../state/GameState';
 
@@ -41,6 +38,7 @@ import {initAudio, setMasterVolume, playSound as playSfx} from './systems/AudioS
 import {initMusic, setMusicMasterVolume, updateMusic, disposeMusic} from './systems/MusicSystem';
 import {updateAmbientSound, disposeAmbientSound} from './systems/AmbientSoundSystem';
 import {loadAllAssets} from './systems/AssetPipeline';
+import {spawnLevelEntities, spawnBoss, ENEMY_TYPES} from './systems/EntitySpawner';
 import {
   waveSystemUpdate,
   resetWaveSystem,
@@ -69,7 +67,7 @@ import {
   createFloorMaterial,
   createCeilingMaterial,
 } from './rendering/Materials';
-import type {WallType} from './rendering/Materials';
+import {buildLevelMeshes, disposeLevelMeshes} from './rendering/LevelMeshBuilder';
 import {
   createLavaLights,
   createMuzzleFlashLight,
@@ -93,9 +91,7 @@ import {
   disposeGoatMesh,
   disposeGoatCache,
 } from './rendering/GoatMeshFactory';
-import {createProp} from './rendering/DungeonProps';
-import type {PropType} from './rendering/DungeonProps';
-import {createLoreMessage, clearLoreRegistry} from './rendering/LoreMessages';
+import {clearLoreRegistry} from './rendering/LoreMessages';
 import {AIGovernor} from './systems/AIGovernor';
 import {BabylonHUD, resetBossPhase, triggerEnvKill, showFloorStats, isFloorStatsActive} from './ui/BabylonHUD';
 import {BabylonScreens} from './ui/BabylonScreens';
@@ -115,23 +111,6 @@ const meshGlowRings = new WeakMap<Mesh, Mesh>();
 /** WeakMap to store cleanup callbacks on cameras (avoids `as any` casts). */
 const cameraCleanups = new WeakMap<UniversalCamera, () => void>();
 
-const ENEMY_TYPES: EntityType[] = [
-  'goat',
-  'hellgoat',
-  'fireGoat',
-  'shadowGoat',
-  'goatKnight',
-  'archGoat',
-  'infernoGoat',
-  'voidGoat',
-  'ironGoat',
-];
-
-const PROP_TYPES = new Set([
-  'prop_firebasket', 'prop_candle', 'prop_candle_multi', 'prop_altar',
-  'prop_coffin', 'prop_column', 'prop_chalice', 'prop_bowl',
-]);
-
 /** Footstep distance threshold (world units). */
 const FOOTSTEP_DISTANCE = 1.5;
 
@@ -147,30 +126,6 @@ export interface LevelData {
   playerSpawn: Vector3;
   spawns: Array<{type: string; x: number; z: number; weaponId?: string; rotation?: number}>;
   theme: FloorTheme;
-}
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-function mapCellToWallType(cell: MapCell, theme?: FloorTheme): WallType | null {
-  switch (cell) {
-    case MapCell.WALL_STONE:
-      return 'stone';
-    case MapCell.WALL_FLESH:
-      return 'flesh';
-    case MapCell.WALL_LAVA:
-      return 'lava';
-    case MapCell.WALL_OBSIDIAN:
-      return 'obsidian';
-    case MapCell.DOOR:
-      return 'door';
-    case MapCell.WALL_SECRET:
-      // Secret walls look like the theme's primary wall
-      return theme ? mapCellToWallType(theme.primaryWall as MapCell) ?? 'stone' : 'stone';
-    default:
-      return null;
-  }
 }
 
 // Re-export for backward compatibility
@@ -390,163 +345,13 @@ export function GameEngine() {
 
     // --- Spawn entities from level data (with difficulty scaling) ---
     const isNightmare = storeState.nightmareFlags.nightmare || storeState.nightmareFlags.ultraNightmare;
-    levelData.spawns.forEach((spawn, idx) => {
-      // Nightmare mode: skip health pickups entirely
-      if (isNightmare && spawn.type === 'health') return;
-
-      const entityType = spawn.type as EntityType;
-      if (ENEMY_TYPES.includes(entityType)) {
-        const stats = getEnemyStats(entityType);
-        const scaledHp = Math.ceil(stats.hp * diffMods.enemyHpMult);
-        const scaledMaxHp = Math.ceil(stats.maxHp * diffMods.enemyHpMult);
-        const scaledDmg = Math.ceil(stats.damage * diffMods.enemyDmgMult * nightmareDmgMult);
-        const scaledSpeed = stats.speed * diffMods.enemySpeedMult;
-        world.add({
-          id: `enemy-${idx}`,
-          type: entityType,
-          position: new Vector3(spawn.x, 1, spawn.z),
-          enemy: {
-            ...stats,
-            hp: scaledHp,
-            maxHp: scaledMaxHp,
-            damage: scaledDmg,
-            speed: scaledSpeed,
-            alert: false,
-            attackCooldown: 0,
-          },
-        });
-      } else if (spawn.type === 'health' || spawn.type === 'ammo') {
-        // Apply pickup density multiplier — skip some pickups on lower density
-        if (diffMods.pickupDensityMult < 1 && useGameStore.getState().rng() > diffMods.pickupDensityMult) return;
-        const baseValue = spawn.type === 'health' ? 25 : 8;
-        // On easy, pickups give more; on hard, less
-        const scaledValue = Math.max(1, Math.round(baseValue * Math.min(1.5, diffMods.pickupDensityMult)));
-        world.add({
-          id: `pickup-${idx}`,
-          type: entityType,
-          position: new Vector3(spawn.x, 0.5, spawn.z),
-          pickup: {
-            pickupType: spawn.type as 'health' | 'ammo',
-            value: scaledValue,
-            active: true,
-          },
-        });
-      } else if (spawn.type === 'weaponPickup' && spawn.weaponId) {
-        world.add({
-          id: `weapon-${idx}`,
-          type: 'weaponPickup',
-          position: new Vector3(spawn.x, 0.5, spawn.z),
-          pickup: {
-            pickupType: 'weapon',
-            value: 0,
-            active: true,
-            weaponId: spawn.weaponId as WeaponId,
-          },
-        });
-      } else if (spawn.type === 'powerup') {
-        // Power-up pickup (rare — spawned by level generator)
-        const powerUpTypes: import('./systems/PowerUpSystem').PowerUpType[] = ['quadDamage', 'hellSpeed', 'demonShield'];
-        const seededRng = useGameStore.getState().rng;
-        const pType = powerUpTypes[Math.floor(seededRng() * powerUpTypes.length)];
-        world.add({
-          id: `powerup-${idx}`,
-          type: 'powerup',
-          position: new Vector3(spawn.x, 0.8, spawn.z),
-          pickup: {
-            pickupType: 'powerup',
-            value: 0,
-            active: true,
-            powerUpType: pType,
-          },
-        });
-      } else if (spawn.type === 'hazard_spikes') {
-        // Spike trap: uses spike GLB, deals damage when player walks over
-        world.add({
-          id: `hazard-spike-${idx}`,
-          type: 'hazard_spikes',
-          position: new Vector3(spawn.x, 0, spawn.z),
-          hazard: {hazardType: 'spikes', damage: 10, cooldown: 0},
-        });
-      } else if (spawn.type === 'hazard_barrel') {
-        // Explosive barrel: shoots to explode, damages nearby enemies + player
-        world.add({
-          id: `hazard-barrel-${idx}`,
-          type: 'hazard_barrel',
-          position: new Vector3(spawn.x, 0.5, spawn.z),
-          hazard: {hazardType: 'barrel', damage: 50, cooldown: 0, hp: 20},
-        });
-      } else if (PROP_TYPES.has(spawn.type)) {
-        const propMesh = createProp(
-          spawn.type as PropType,
-          new Vector3(spawn.x, 0, spawn.z),
-          spawn.rotation ?? 0,
-          scene,
-        );
-        if (propMesh) {
-          propMeshesRef.current.push(propMesh);
-        }
-      } else if (spawn.type === 'lore_message') {
-        const loreMesh = createLoreMessage(
-          new Vector3(spawn.x, 0, spawn.z),
-          spawn.rotation ?? 0,
-          floor,
-          levelData.theme.name,
-          scene,
-        );
-        propMeshesRef.current.push(loreMesh);
-      }
-    });
+    const spawnedPropMeshes = spawnLevelEntities(levelData, diffMods, nightmareDmgMult, isNightmare, scene);
+    propMeshesRef.current.push(...spawnedPropMeshes);
 
     // --- Spawn boss entity for boss encounters ---
     if (encounterType === 'boss') {
       const bossId = storeState.stage.bossId ?? 'archGoat';
-      const bossType: EntityType = ENEMY_TYPES.includes(bossId as EntityType) ? (bossId as EntityType) : 'archGoat';
-      const bossStats = getEnemyStats(bossType);
-      const scaledBossHp = Math.ceil(bossStats.hp * diffMods.enemyHpMult * 1.5);
-      const scaledBossMaxHp = Math.ceil(bossStats.maxHp * diffMods.enemyHpMult * 1.5);
-      const scaledBossDmg = Math.ceil(bossStats.damage * diffMods.enemyDmgMult * nightmareDmgMult);
-      world.add({
-        id: `boss-${bossType}-${floor}`,
-        type: bossType,
-        position: new Vector3(
-          Math.floor(levelData.width / 2) * CELL_SIZE,
-          1,
-          Math.floor(levelData.depth / 2) * CELL_SIZE,
-        ),
-        enemy: {
-          ...bossStats,
-          hp: scaledBossHp,
-          maxHp: scaledBossMaxHp,
-          damage: scaledBossDmg,
-          speed: bossStats.speed * diffMods.enemySpeedMult,
-          alert: true,
-          attackCooldown: 0,
-        },
-      });
-
-      // Spawn initial pickups in boss arena at corner positions
-      const bossPickups: {type: 'ammo' | 'health'; value: number}[] = [
-        {type: 'ammo', value: 18},
-        {type: 'ammo', value: 18},
-        {type: 'ammo', value: 18},
-        {type: 'health', value: 30},
-      ];
-      BOSS_ARENA_PICKUP_POSITIONS.forEach((pos, i) => {
-        const [px, pz] = pos;
-        const spec = bossPickups[i];
-        // Skip health pickup in nightmare mode
-        if (spec.type === 'health' && isNightmare) return;
-        world.add({
-          id: `boss-pickup-${i}`,
-          type: spec.type,
-          position: new Vector3(px * CELL_SIZE, 0.5, pz * CELL_SIZE),
-          pickup: {
-            pickupType: spec.type,
-            value: spec.value,
-            active: true,
-          },
-        });
-      });
+      spawnBoss(bossId, levelData, diffMods, nightmareDmgMult, isNightmare);
     }
 
     // Set up post-processing - retry until camera exists
@@ -945,131 +750,10 @@ export function GameEngine() {
   useEffect(() => {
     if (!level || !materials || !scene) return;
 
-    const created: Mesh[] = [];
-
-    // Floor
-    const floorMesh = MeshBuilder.CreateGround(
-      'floor',
-      {width: level.width * CELL_SIZE, height: level.depth * CELL_SIZE},
-      scene,
-    );
-    floorMesh.position = new Vector3(
-      (level.width * CELL_SIZE) / 2, 0, (level.depth * CELL_SIZE) / 2,
-    );
-    floorMesh.receiveShadows = true;
-    floorMesh.checkCollisions = true;
-    floorMesh.material = materials.floor;
-    created.push(floorMesh);
-
-    // Ceiling
-    const ceilingMesh = MeshBuilder.CreateGround(
-      'ceiling',
-      {width: level.width * CELL_SIZE, height: level.depth * CELL_SIZE},
-      scene,
-    );
-    ceilingMesh.position = new Vector3(
-      (level.width * CELL_SIZE) / 2, WALL_HEIGHT, (level.depth * CELL_SIZE) / 2,
-    );
-    ceilingMesh.rotation = new Vector3(Math.PI, 0, 0);
-    ceilingMesh.material = materials.ceiling;
-    created.push(ceilingMesh);
-
-    // Walls + lava floor tiles
-    for (let z = 0; z < level.depth; z++) {
-      for (let x = 0; x < level.width; x++) {
-        const cell = level.grid[z][x];
-
-        if (cell === MapCell.FLOOR_LAVA) {
-          const lava = MeshBuilder.CreateBox(
-            `lava-${x}-${z}`,
-            {width: CELL_SIZE, height: 0.05, depth: CELL_SIZE},
-            scene,
-          );
-          lava.position = new Vector3(x * CELL_SIZE, 0.03, z * CELL_SIZE);
-          lava.receiveShadows = false;
-          lava.material = materials.lava;
-          created.push(lava);
-          continue;
-        }
-
-        // Raised platform: solid block at ground level for elevation
-        if (cell === MapCell.FLOOR_RAISED) {
-          const platform = MeshBuilder.CreateBox(
-            `platform-${x}-${z}`,
-            {width: CELL_SIZE, height: PLATFORM_HEIGHT, depth: CELL_SIZE},
-            scene,
-          );
-          platform.position = new Vector3(x * CELL_SIZE, PLATFORM_HEIGHT / 2, z * CELL_SIZE);
-          platform.receiveShadows = true;
-          platform.checkCollisions = true;
-          platform.material = materials.obsidian;
-          created.push(platform);
-          continue;
-        }
-
-        // Void pit: dark transparent opening in the floor
-        if (cell === MapCell.FLOOR_VOID) {
-          const voidPit = MeshBuilder.CreateBox(
-            `void-${x}-${z}`,
-            {width: CELL_SIZE, height: 0.05, depth: CELL_SIZE},
-            scene,
-          );
-          voidPit.position = new Vector3(x * CELL_SIZE, -0.02, z * CELL_SIZE);
-          voidPit.receiveShadows = false;
-          voidPit.isPickable = false;
-          // Dark purple void material
-          const voidMat = new StandardMaterial(`voidMat-${x}-${z}`, scene);
-          voidMat.diffuseColor = new Color3(0.05, 0, 0.1);
-          voidMat.emissiveColor = new Color3(0.15, 0, 0.25);
-          voidMat.alpha = 0.6;
-          voidPit.material = voidMat;
-          created.push(voidPit);
-          continue;
-        }
-
-        // Ramp: angled surface connecting ground to raised platform
-        if (cell === MapCell.RAMP) {
-          const ramp = MeshBuilder.CreateBox(
-            `ramp-${x}-${z}`,
-            {width: CELL_SIZE, height: PLATFORM_HEIGHT * 0.5, depth: CELL_SIZE},
-            scene,
-          );
-          ramp.position = new Vector3(x * CELL_SIZE, PLATFORM_HEIGHT * 0.25, z * CELL_SIZE);
-          ramp.receiveShadows = true;
-          ramp.checkCollisions = true;
-          ramp.material = materials.stone;
-          created.push(ramp);
-          continue;
-        }
-
-        const wallType = mapCellToWallType(cell, level.theme);
-        if (!wallType) continue;
-
-        const wall = MeshBuilder.CreateBox(
-          `wall-${x}-${z}`,
-          {width: CELL_SIZE, height: WALL_HEIGHT, depth: CELL_SIZE},
-          scene,
-        );
-        wall.position = new Vector3(x * CELL_SIZE, WALL_HEIGHT / 2, z * CELL_SIZE);
-        wall.receiveShadows = true;
-        wall.checkCollisions = true;
-        wall.material = materials[wallType];
-        created.push(wall);
-
-        // Track secret walls for discovery system
-        if (cell === MapCell.WALL_SECRET) {
-          wall.name = `secret-wall-${x}-${z}`;
-          wall.metadata = {...(wall.metadata ?? {}), isSecret: true, gridX: x, gridZ: z};
-        }
-      }
-    }
-
-    levelMeshesRef.current = created;
+    levelMeshesRef.current = buildLevelMeshes(level, materials, scene);
 
     return () => {
-      for (const m of levelMeshesRef.current) {
-        m.dispose();
-      }
+      disposeLevelMeshes(levelMeshesRef.current);
       levelMeshesRef.current = [];
     };
   }, [level, materials, scene]);
