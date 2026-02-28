@@ -11,6 +11,7 @@
 !default.perspectivev3
 .cxx/
 .DS_Store
+.worktrees/
 .env*
 .expo/
 .gradle
