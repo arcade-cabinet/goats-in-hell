@@ -1083,6 +1083,21 @@ export class BabylonHUD {
       const mag = ammoData?.magSize ?? weaponDef?.magSize ?? 0;
       const reserve = ammoData?.reserve ?? 0;
       this.ammoText.text = `${current}/${mag} | ${reserve}`;
+
+      // Low ammo visual warning
+      const ammoRatio = mag > 0 ? current / mag : 1;
+      if (current === 0) {
+        // Empty: rapid red flash
+        const flash = Math.sin(getGameTime() * 0.03) > 0;
+        this.ammoText.color = flash ? '#ff2200' : '#880000';
+      } else if (ammoRatio <= 0.25) {
+        // Low: pulsing red
+        const pulse = 0.6 + Math.sin(getGameTime() * 0.015) * 0.4;
+        const r = Math.round(255 * pulse);
+        this.ammoText.color = `rgb(${r}, ${Math.round(80 * pulse)}, 0)`;
+      } else {
+        this.ammoText.color = '#ffffff';
+      }
     }
 
     this.weaponNameText.text = weaponDef?.name?.toUpperCase() ?? 'UNKNOWN';

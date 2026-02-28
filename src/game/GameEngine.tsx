@@ -1842,6 +1842,13 @@ const PickupRenderer = () => {
       // Remove meshes for despawned pickups
       for (const [id, mesh] of meshMap) {
         if (!activeIds.has(id)) {
+          // Clean up glow ring if present
+          const ring = (mesh as any).__glowRing as Mesh | undefined;
+          if (ring) {
+            ring.material?.dispose();
+            ring.dispose();
+          }
+          mesh.material?.dispose();
           mesh.dispose();
           meshMap.delete(id);
         }
@@ -1881,11 +1888,37 @@ const PickupRenderer = () => {
           mat.alpha = isPowerUp ? 0.95 : 0.85;
           mesh.material = mat;
           meshMap.set(id, mesh);
+
+          // Weapon pickups: glow ring on the ground
+          if (isWeapon && pickup.position) {
+            const ring = MeshBuilder.CreateTorus(
+              `mesh-pickup-ring-${id}`,
+              {diameter: 1.2, thickness: 0.04, tessellation: 24},
+              scene,
+            );
+            const ringMat = new StandardMaterial(`pickupRingMat-${id}`, scene);
+            ringMat.emissiveColor = Color3.FromHexString('#ff44ff');
+            ringMat.diffuseColor = Color3.FromHexString('#441144');
+            ringMat.alpha = 0.5;
+            ring.material = ringMat;
+            ring.position.set(pickup.position.x, 0.05, pickup.position.z);
+            ring.isPickable = false;
+            // Store ring reference on the mesh for cleanup
+            (mesh as any).__glowRing = ring;
+          }
         }
 
         mesh.position.x = pickup.position.x;
-        mesh.position.y = (isPowerUp ? 0.8 : 0.5) + bobOffset;
+        // Weapon pickups: higher + slower bob; power-ups: highest
+        const yBase = isPowerUp ? 0.8 : isWeapon ? 0.7 : 0.5;
+        const weaponBob = isWeapon ? Math.sin(getGameTime() * 0.002) * 0.2 : bobOffset;
+        mesh.position.y = yBase + (isWeapon ? weaponBob : bobOffset);
         mesh.position.z = pickup.position.z;
+
+        // Weapon pickups: slow rotation for visibility
+        if (isWeapon) {
+          mesh.rotation.y = getGameTime() * 0.002;
+        }
 
         // Power-ups pulse in size for emphasis
         if (isPowerUp) {
@@ -1898,6 +1931,11 @@ const PickupRenderer = () => {
     return () => {
       clearInterval(interval);
       for (const mesh of meshMap.values()) {
+        const ring = (mesh as any).__glowRing as Mesh | undefined;
+        if (ring) {
+          ring.material?.dispose();
+          ring.dispose();
+        }
         mesh.material?.dispose();
         mesh.dispose();
       }

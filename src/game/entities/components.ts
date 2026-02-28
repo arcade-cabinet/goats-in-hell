@@ -55,6 +55,10 @@ export type Entity = {
     armorMaxHp?: number;
     isInvisible?: boolean;
     visibilityAlpha?: number;
+    // Stagger state
+    staggerTimer?: number; // ms remaining of stagger
+    staggerDirX?: number;  // knockback direction
+    staggerDirZ?: number;
     // Boss-specific ability cooldowns
     _fireRingCd?: number;
     _slamCd?: number;

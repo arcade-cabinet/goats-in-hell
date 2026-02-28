@@ -532,6 +532,18 @@ export function aiSystemUpdate(deltaTime: number): void {
     const vehicle = vehicleMap.get(id);
     if (!vehicle) continue;
 
+    // Stagger check — skip movement and attacks while staggered
+    if (entity.enemy.staggerTimer && entity.enemy.staggerTimer > 0) {
+      entity.enemy.staggerTimer -= deltaTime;
+      // Apply knockback drift during stagger
+      const knockStr = 0.03 * dtScale;
+      entity.position.x += (entity.enemy.staggerDirX ?? 0) * knockStr;
+      entity.position.z += (entity.enemy.staggerDirZ ?? 0) * knockStr;
+      // Keep YUKA in sync so it doesn't teleport back
+      vehicle.position.set(entity.position.x, 0, entity.position.z);
+      continue;
+    }
+
     // Apply YUKA steering result to ECS position
     entity.position.x = vehicle.position.x;
     entity.position.z = vehicle.position.z;

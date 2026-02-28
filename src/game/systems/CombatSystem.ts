@@ -46,6 +46,20 @@ export function damageEnemy(entity: Entity, damage: number, isCrit?: boolean): n
     pushDamageEvent(damage, entity.position, isCrit);
   }
 
+  // Stagger on heavy hits (>25% max HP) — pause AI + visual knockback
+  if (damage > enemy.maxHp * 0.25 && enemy.hp > 0) {
+    enemy.staggerTimer = 300; // 300ms stagger
+    // Knockback direction: away from player
+    const player = world.entities.find(e => e.type === 'player');
+    if (player?.position && entity.position) {
+      const dx = entity.position.x - player.position.x;
+      const dz = entity.position.z - player.position.z;
+      const len = Math.sqrt(dx * dx + dz * dz) || 1;
+      enemy.staggerDirX = dx / len;
+      enemy.staggerDirZ = dz / len;
+    }
+  }
+
   return damage;
 }
 

@@ -102,6 +102,8 @@ function explodeBarrel(barrel: Entity): void {
     if (entity.type === 'player' && entity.player) {
       entity.player.hp -= actualDmg;
       GameState.set({damageFlash: 0.8, screenShake: 12});
+      registerDamageDirection(pos);
+      triggerBloodSplatter(Math.min(1, actualDmg / 30));
       playSound('hurt');
     } else if (entity.enemy) {
       entity.enemy.hp -= actualDmg;
