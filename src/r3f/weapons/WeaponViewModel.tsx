@@ -95,12 +95,15 @@ const WEAPON_VISUALS: Record<WeaponId, WeaponVisualConfig> = {
 // Animation constants
 // ---------------------------------------------------------------------------
 
-/** Recoil: how far the weapon kicks back on fire. */
-const RECOIL_KICK_BACK = 0.04;
-/** Recoil: how far the weapon kicks up on fire. */
-const RECOIL_KICK_UP = 0.02;
+/** Per-weapon recoil config for satisfying feedback. */
+const WEAPON_RECOIL: Record<WeaponId, { kickBack: number; kickUp: number }> = {
+  hellPistol: { kickBack: 0.08, kickUp: 0.04 },
+  brimShotgun: { kickBack: 0.18, kickUp: 0.10 },
+  hellfireCannon: { kickBack: 0.05, kickUp: 0.02 },
+  goatsBane: { kickBack: 0.25, kickUp: 0.15 },
+};
 /** Recoil spring-back speed (units/sec). */
-const RECOIL_RECOVERY_SPEED = 8;
+const RECOIL_RECOVERY_SPEED = 6;
 
 /** Reload bob depth (how far down the weapon goes). */
 const RELOAD_BOB_DEPTH = 0.15;
@@ -249,10 +252,11 @@ export function WeaponViewModel() {
       }
     }
 
-    // Recoil offset
+    // Recoil offset — per-weapon kick for satisfying feedback
     const recoilT = recoilRef.current;
-    const recoilBack = recoilT * RECOIL_KICK_BACK;
-    const recoilUp = recoilT * RECOIL_KICK_UP;
+    const recoilConfig = WEAPON_RECOIL[currentWeaponRef.current];
+    const recoilBack = recoilT * recoilConfig.kickBack;
+    const recoilUp = recoilT * recoilConfig.kickUp;
 
     // Switch drop
     let switchDrop = 0;

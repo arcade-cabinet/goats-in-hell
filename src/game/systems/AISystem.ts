@@ -36,6 +36,8 @@ import { world } from '../entities/world';
 import { registerDamageDirection } from '../ui/HUDEvents';
 import { playSound } from './AudioSystem';
 import { getGameTime } from './GameClock';
+import { spawnEnemyProjectile } from './EnemyProjectileBridge';
+import { trackEnemySpawn } from './ProgressionSystem';
 
 /** Shorthand for the store's seeded PRNG. */
 function rng(): number {
@@ -152,20 +154,15 @@ function meleeHitPlayer(player: Entity, damage: number, sourcePos?: Vec3): void 
   if (sourcePos) registerDamageDirection(sourcePos);
 }
 
+/**
+ * Spawn an enemy projectile with VISIBLE mesh via the ProjectilePool bridge.
+ *
+ * Converts from ECS/Babylon coordinates (positive Z = forward) to Three.js
+ * coordinates (negative Z = forward) for the visual pool. Speed is converted
+ * from per-frame (at 60fps) to per-second for the pool's physics model.
+ */
 function spawnProjectile(origin: Vec3, direction: Vec3, damage: number, speed: number): void {
-  const vel = vec3Scale(direction, speed);
-  world.add({
-    id: `eproj-${getGameTime().toFixed(0)}-${rng().toString(36).slice(2, 6)}`,
-    type: 'projectile',
-    position: vec3Clone(origin),
-    velocity: vec3(vel.x, vel.y, vel.z),
-    projectile: {
-      life: 120,
-      damage,
-      speed,
-      owner: 'enemy',
-    },
-  });
+  spawnEnemyProjectile(origin, direction, damage, speed);
 }
 
 // ---------------------------------------------------------------------------
@@ -327,6 +324,7 @@ function postSteeringVoidGoat(
         visibilityAlpha: 0.4,
       },
     });
+    trackEnemySpawn();
   }
 }
 
@@ -429,6 +427,7 @@ function postSteeringArchGoat(
         scoreValue: 50,
       },
     });
+    trackEnemySpawn();
   }
 }
 

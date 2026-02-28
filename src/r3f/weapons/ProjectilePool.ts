@@ -41,9 +41,9 @@ export interface ProjectileSlot {
 
 const POOL_SIZE = 100;
 
-// Bullet: small sphere
-const BULLET_RADIUS = 0.05;
-const ROCKET_RADIUS = 0.15;
+// Bullet: visible sphere (bigger = more satisfying visual feedback)
+const BULLET_RADIUS = 0.08;
+const ROCKET_RADIUS = 0.2;
 
 let sharedBulletGeometry: THREE.SphereGeometry | null = null;
 let sharedRocketGeometry: THREE.SphereGeometry | null = null;

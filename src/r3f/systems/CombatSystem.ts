@@ -452,40 +452,16 @@ export function combatSystemUpdate(deltaTime: number): void {
     }
   }
 
-  // --- Projectile processing ---
-  const projectiles = world.entities.filter(
-    (e: Entity) => e.projectile && e.position && e.velocity,
-  );
-
-  for (const projectile of projectiles) {
-    const proj = projectile.projectile!;
-    const pos = projectile.position!;
-    const vel = projectile.velocity!;
-
-    // Move projectile
-    pos.x += vel.x * dtFactor;
-    pos.y += vel.y * dtFactor;
-    pos.z += vel.z * dtFactor;
-
-    // Decrement lifetime (delta-time scaled so range is framerate-independent)
-    proj.life -= dtFactor;
-
-    if (proj.life <= 0) {
-      removeEntity(projectile);
-      continue;
-    }
-
-    // Collision detection based on owner
-    let hit = false;
-
-    if (proj.owner === 'player') {
-      hit = checkPlayerProjectileCollisions(projectile);
-    } else if (proj.owner === 'enemy' && player) {
-      hit = checkEnemyProjectileCollision(projectile, player);
-    }
-
-    if (hit) {
-      removeEntity(projectile);
+  // Note: Projectile movement and collision is handled entirely by
+  // ProjectileManager (Projectile.tsx) via the ProjectilePool. Both player
+  // and enemy projectiles use visible pool meshes. The previous ECS-based
+  // projectile processing has been removed.
+  //
+  // Clean up any stale ECS projectile entities that might linger from
+  // previous sessions or edge cases.
+  for (const entity of world.entities) {
+    if (entity.projectile) {
+      removeEntity(entity);
     }
   }
 }
