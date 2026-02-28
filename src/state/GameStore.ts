@@ -185,6 +185,8 @@ export interface GameStoreState {
   // --- Save/Load ---
   /** Whether a saved run exists in localStorage. */
   hasSave: boolean;
+  /** Restored player state from save (consumed by GameEngine on load). */
+  restoredPlayerState: PlayerSnapshot | null;
   /** Continue a saved run. */
   continueGame: () => void;
   /** Delete the saved run (permadeath or manual). */
@@ -287,6 +289,7 @@ const SAVE_KEY = 'goats-in-hell-save';
 const SETTINGS_KEY = 'goats-in-hell-settings';
 
 interface SaveData {
+  version: number;
   difficulty: Difficulty;
   nightmareFlags: NightmareFlags;
   seed: string;
@@ -296,10 +299,29 @@ interface SaveData {
   score: number;
   totalKills: number;
   elapsedMs: number; // accumulated play time
+  playerHp?: number;
+  currentWeapon?: string;
+  ammoReserves?: Record<string, number>;
+}
+
+/** Optional player state from ECS, passed in when available. */
+interface PlayerSnapshot {
+  playerHp?: number;
+  currentWeapon?: string;
+  ammoReserves?: Record<string, number>;
+}
+
+/** Last known player snapshot, updated by game engine via savePlayerSnapshot(). */
+let cachedPlayerSnapshot: PlayerSnapshot = {};
+
+/** Called by the game engine to cache player ECS state for the next save. */
+export function savePlayerSnapshot(snapshot: PlayerSnapshot): void {
+  cachedPlayerSnapshot = snapshot;
 }
 
 function writeSave(state: GameStoreState): void {
   const data: SaveData = {
+    version: 2,
     difficulty: state.difficulty,
     nightmareFlags: state.nightmareFlags,
     seed: state.seed,
@@ -309,6 +331,9 @@ function writeSave(state: GameStoreState): void {
     score: state.score,
     totalKills: state.totalKills,
     elapsedMs: Date.now() - state.startTime,
+    playerHp: cachedPlayerSnapshot.playerHp,
+    currentWeapon: cachedPlayerSnapshot.currentWeapon,
+    ammoReserves: cachedPlayerSnapshot.ammoReserves,
   };
   try {
     localStorage.setItem(SAVE_KEY, JSON.stringify(data));
@@ -320,7 +345,7 @@ function writeSave(state: GameStoreState): void {
 function isValidSave(data: unknown): data is SaveData {
   if (!data || typeof data !== 'object') return false;
   const d = data as Record<string, unknown>;
-  return (
+  const baseValid =
     typeof d.difficulty === 'string' &&
     ['easy', 'normal', 'hard'].includes(d.difficulty) &&
     typeof d.seed === 'string' &&
@@ -330,8 +355,17 @@ function isValidSave(data: unknown): data is SaveData {
     d.stage !== null && typeof d.stage === 'object' &&
     d.leveling !== null && typeof d.leveling === 'object' &&
     d.nightmareFlags !== null && typeof d.nightmareFlags === 'object' &&
-    Array.isArray(d.bossesDefeated)
-  );
+    Array.isArray(d.bossesDefeated);
+  if (!baseValid) return false;
+
+  // Version 1 (legacy, no version field) — accept as-is
+  if (d.version === undefined) {
+    (d as any).version = 1;
+    return true;
+  }
+
+  // New fields are optional — no extra validation needed
+  return typeof d.version === 'number';
 }
 
 function readSave(): SaveData | null {
@@ -340,6 +374,7 @@ function readSave(): SaveData | null {
     if (!raw) return null;
     const parsed = JSON.parse(raw);
     if (!isValidSave(parsed)) return null;
+    // Version 1 saves won't have player state fields — they stay undefined
     return parsed;
   } catch {
     return null;
@@ -439,10 +474,12 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
       new URLSearchParams(window.location?.search ?? '').has('autoplay'),
 
     hasSave: hasSavedGame(),
+    restoredPlayerState: null,
 
     // --- Actions ---
 
     startNewGame: (difficulty, nightmareFlags, seed) => {
+      cachedPlayerSnapshot = {};
       set({
         screen: 'playing',
         difficulty,
@@ -462,6 +499,7 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
         screenShake: 0,
         gunFlash: 0,
         hitMarker: 0,
+        restoredPlayerState: null,
       });
     },
 
@@ -524,6 +562,16 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
       const save = readSave();
       if (!save) return;
 
+      // Restore player state from v2+ saves
+      const restoredPlayerState: PlayerSnapshot | null =
+        save.version >= 2 && (save.playerHp !== undefined || save.currentWeapon !== undefined)
+          ? {
+              playerHp: save.playerHp,
+              currentWeapon: save.currentWeapon,
+              ammoReserves: save.ammoReserves,
+            }
+          : null;
+
       set({
         screen: 'playing',
         difficulty: save.difficulty,
@@ -543,6 +591,7 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
         screenShake: 0,
         gunFlash: 0,
         hitMarker: 0,
+        restoredPlayerState,
       });
     },
 

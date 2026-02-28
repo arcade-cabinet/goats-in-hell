@@ -12,6 +12,7 @@ export type SoundType =
   | 'pickup'
   | 'hurt'
   | 'door'
+  | 'doorClose'
   | 'empty'
   | 'reload'
   | 'reload_complete'
@@ -61,7 +62,7 @@ function getOutput(ctx: AudioContext): AudioNode {
 }
 
 /** Play a random variant from a buffer group. */
-function playBufferSound(groupKey: string, gain: number = 1.0): void {
+function playBufferSound(groupKey: string, gain: number = 1.0, playbackRate: number = 1.0): void {
   if (!audioCtx || !sfxBuffers) return;
   const buffers = sfxBuffers.get(groupKey);
   if (!buffers || buffers.length === 0) return;
@@ -70,6 +71,7 @@ function playBufferSound(groupKey: string, gain: number = 1.0): void {
   const buffer = buffers[Math.floor(r() * buffers.length)];
   const source = audioCtx.createBufferSource();
   source.buffer = buffer;
+  source.playbackRate.value = playbackRate;
 
   const gainNode = audioCtx.createGain();
   gainNode.gain.value = gain;
@@ -168,11 +170,18 @@ function scheduleNoise(
 function playGoatDie(ctx: AudioContext): void {
   const t = ctx.currentTime;
   const dest = getOutput(ctx);
+  const rngFn = useGameStore.getState().rng;
   // Randomize pitch and duration for variety
-  const pitchVar = 320 + useGameStore.getState().rng() * 200; // 320-520 Hz
-  const endPitch = 40 + useGameStore.getState().rng() * 40; // 40-80 Hz
-  const dur = 0.3 + useGameStore.getState().rng() * 0.15; // 0.3-0.45s
-  scheduleOsc(ctx, 'sawtooth', pitchVar, endPitch, 0.4, dur, dest, t);
+  const pitchVar = 320 + rngFn() * 200; // 320-520 Hz
+  const endPitch = 40 + rngFn() * 40; // 40-80 Hz
+  const dur = 0.45 + rngFn() * 0.15; // 0.45-0.6s (longer decay)
+
+  // Primary descending sawtooth
+  scheduleOsc(ctx, 'sawtooth', pitchVar, endPitch, dur, 0.3, dest, t);
+  // Sub-bass one octave lower for meatiness
+  scheduleOsc(ctx, 'sawtooth', pitchVar / 2, endPitch / 2, dur, 0.2, dest, t);
+  // Short noise burst for attack transient
+  scheduleNoise(ctx, 0.08, 0.25, 30, dest, t);
 }
 
 function playGoatAlert(ctx: AudioContext): void {
@@ -181,38 +190,98 @@ function playGoatAlert(ctx: AudioContext): void {
   const rngFn = useGameStore.getState().rng;
   const basePitch = 160 + rngFn() * 100; // 160-260 Hz
   const peakPitch = basePitch + 100 + rngFn() * 100; // +100-200 Hz
-  const dur = 0.25 + rngFn() * 0.1;
+  const dur = 0.3 + rngFn() * 0.1; // slightly longer sustain
 
-  const osc = ctx.createOscillator();
-  osc.type = 'sawtooth';
-  osc.frequency.setValueAtTime(basePitch, t);
-  osc.frequency.linearRampToValueAtTime(peakPitch, t + dur * 0.5);
-  osc.frequency.linearRampToValueAtTime(basePitch, t + dur);
+  // Waveshaper for aggressive distortion
+  const shaper = ctx.createWaveShaper();
+  const curve = new Float32Array(256);
+  for (let i = 0; i < 256; i++) {
+    const x = (i / 128) - 1;
+    curve[i] = (Math.PI + 3) * x / (Math.PI + 3 * Math.abs(x));
+  }
+  shaper.curve = curve;
+  shaper.oversample = '2x';
+  shaper.connect(dest);
 
-  const gainNode = ctx.createGain();
-  gainNode.gain.setValueAtTime(0.25, t);
-  gainNode.gain.exponentialRampToValueAtTime(0.001, t + dur);
+  // Primary sawtooth — ascending bark
+  const osc1 = ctx.createOscillator();
+  osc1.type = 'sawtooth';
+  osc1.frequency.setValueAtTime(basePitch, t);
+  osc1.frequency.linearRampToValueAtTime(peakPitch, t + dur * 0.5);
+  osc1.frequency.linearRampToValueAtTime(basePitch, t + dur);
 
-  osc.connect(gainNode);
-  gainNode.connect(dest);
+  const gain1 = ctx.createGain();
+  gain1.gain.setValueAtTime(0.2, t);
+  gain1.gain.exponentialRampToValueAtTime(0.001, t + dur);
+  osc1.connect(gain1);
+  gain1.connect(shaper);
+  osc1.start(t);
+  osc1.stop(t + dur);
 
-  osc.start(t);
-  osc.stop(t + dur);
+  // 3rd harmonic for aggressive overtone
+  const osc2 = ctx.createOscillator();
+  osc2.type = 'sawtooth';
+  osc2.frequency.setValueAtTime(basePitch * 3, t);
+  osc2.frequency.linearRampToValueAtTime(peakPitch * 3, t + dur * 0.5);
+  osc2.frequency.linearRampToValueAtTime(basePitch * 3, t + dur);
+
+  const gain2 = ctx.createGain();
+  gain2.gain.setValueAtTime(0.1, t);
+  gain2.gain.exponentialRampToValueAtTime(0.001, t + dur);
+  osc2.connect(gain2);
+  gain2.connect(shaper);
+  osc2.start(t);
+  osc2.stop(t + dur);
 }
 
 function playPickup(ctx: AudioContext): void {
   const t = ctx.currentTime;
   const dest = getOutput(ctx);
-  const noteDuration = 0.1;
-  scheduleOsc(ctx, 'sine', 440, 440, noteDuration, 0.2, dest, t);
-  scheduleOsc(ctx, 'sine', 660, 660, noteDuration, 0.2, dest, t + noteDuration);
-  scheduleOsc(ctx, 'sine', 880, 880, noteDuration, 0.2, dest, t + noteDuration * 2);
+  // Quick major chord arpeggio (C5-E5-G5-C6)
+  const notes = [523, 659, 784, 1047];
+  const step = 0.07;
+  for (let i = 0; i < notes.length; i++) {
+    scheduleOsc(ctx, 'sine', notes[i], notes[i], 0.12, 0.2, dest, t + i * step);
+  }
+  // Shimmer: high-frequency triangle at low volume
+  scheduleOsc(ctx, 'triangle', 3000, 4000, 0.35, 0.06, dest, t);
 }
 
 function playHurt(ctx: AudioContext): void {
   const t = ctx.currentTime;
   const dest = getOutput(ctx);
-  scheduleOsc(ctx, 'square', 100, 40, 0.2, 0.3, dest, t);
+
+  // Low-frequency thump (sine at 60Hz, short decay)
+  scheduleOsc(ctx, 'sine', 60, 30, 0.15, 0.35, dest, t);
+
+  // Crunchy bandpass-filtered noise
+  const noiseDur = 0.12;
+  const sampleRate = ctx.sampleRate;
+  const length = Math.floor(sampleRate * noiseDur);
+  const buffer = ctx.createBuffer(1, length, sampleRate);
+  const data = buffer.getChannelData(0);
+  const rngFn = useGameStore.getState().rng;
+  for (let i = 0; i < length; i++) {
+    const tSample = i / sampleRate;
+    data[i] = (rngFn() * 2 - 1) * Math.exp(-20 * tSample);
+  }
+  const source = ctx.createBufferSource();
+  source.buffer = buffer;
+
+  const bandpass = ctx.createBiquadFilter();
+  bandpass.type = 'bandpass';
+  bandpass.frequency.value = 800;
+  bandpass.Q.value = 2.5;
+
+  const gainNode = ctx.createGain();
+  gainNode.gain.setValueAtTime(0.3, t);
+  gainNode.gain.exponentialRampToValueAtTime(0.001, t + noiseDur);
+
+  source.connect(bandpass);
+  bandpass.connect(gainNode);
+  gainNode.connect(dest);
+  source.start(t);
+  source.stop(t + noiseDur);
 }
 
 function playEmpty(ctx: AudioContext): void {
@@ -315,10 +384,10 @@ export function playSound(type: SoundType): void {
       playBufferSound('sfx-shotgun', 0.7);
       break;
     case 'rapid':
-      playBufferSound('sfx-pistol', 0.4);
+      playBufferSound('sfx-pistol', 0.5, 0.6);
       break;
     case 'bigshot':
-      playBufferSound('sfx-cannon', 0.8);
+      playBufferSound('sfx-cannon', 0.8, 0.9 + Math.random() * 0.2);
       break;
     case 'hit':
       playBufferSound('sfx-impact', 0.5);
@@ -331,6 +400,9 @@ export function playSound(type: SoundType): void {
       break;
     case 'door':
       playBufferSound('sfx-doorOpen', 0.5);
+      break;
+    case 'doorClose':
+      playBufferSound('sfx-doorClose', 0.5);
       break;
     case 'explosion':
       playBufferSound('sfx-explosion', 0.7);

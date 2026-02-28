@@ -9,7 +9,7 @@ export {GameState} from './GameStore';
 
 // Legacy screen type that old consumers expect
 export type GameScreen = 'menu' | 'playing' | 'paused' | 'dead' | 'victory' | 'modeSelect';
-export type GameMode = 'roguelike' | 'arena' | 'campaign';
+export type GameMode = 'roguelike' | 'arena';
 
 export type GameStateData = {
   screen: GameScreen;
