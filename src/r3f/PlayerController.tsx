@@ -16,6 +16,8 @@ import { world } from '../game/entities/world';
 import { getLevelBonuses, useGameStore } from '../state/GameStore';
 import { playSound } from './audio/AudioSystem';
 import { inputManager } from './input/InputManager';
+import { GamepadProvider } from './input/providers/GamepadProvider';
+import { KeyboardMouseProvider } from './input/providers/KeyboardMouseProvider';
 import { getScreenShakeOffset } from './systems/ScreenShake';
 import { getProjectilePool } from './weapons/Projectile';
 import { switchWeapon, tryReload, tryShoot, updateReload } from './weapons/WeaponSystem';
@@ -94,6 +96,25 @@ export function PlayerController({ spawnPosition = [0, PLAYER_HEIGHT, 0] }: Play
       characterControllerRef.current = null;
     };
   }, [rapierWorld]);
+
+  // Register input providers once on mount
+  useEffect(() => {
+    const autoplay = useGameStore.getState().autoplay;
+    // AI provider is registered by R3FRoot (needs level data).
+    // Here we only register manual-play providers.
+    if (autoplay) return;
+
+    const kbm = new KeyboardMouseProvider();
+    const gp = new GamepadProvider();
+    inputManager.register(kbm);
+    inputManager.register(gp);
+    return () => {
+      inputManager.unregister(kbm);
+      inputManager.unregister(gp);
+      kbm.dispose();
+      gp.dispose();
+    };
+  }, []);
 
   // Pointer lock management
   const requestPointerLock = useCallback(() => {
@@ -211,10 +232,11 @@ export function PlayerController({ spawnPosition = [0, PLAYER_HEIGHT, 0] }: Play
     // --- Sync to ECS player entity ---
     const playerEntity = world.entities.find((e: Entity) => e.type === 'player');
     if (playerEntity?.position) {
-      // Three.js right-handed → store as-is (level generation will handle coordinate convention)
+      // Convert Three.js camera position → Babylon/level coords (negate Z)
+      // so all ECS positions share the same coordinate convention as the grid
       playerEntity.position.x = camera.position.x;
       playerEntity.position.y = camera.position.y;
-      playerEntity.position.z = camera.position.z;
+      playerEntity.position.z = -camera.position.z;
     }
 
     // --- Bounds check ---

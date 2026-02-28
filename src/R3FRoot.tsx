@@ -16,6 +16,7 @@ import { BOSS_ARENA_SIZE, generateBossArena } from './game/levels/BossArenas';
 import { getThemeForFloor } from './game/levels/FloorThemes';
 import type { LevelData } from './game/levels/LevelData';
 import { LevelGenerator, type MapCell } from './game/levels/LevelGenerator';
+import { AIGovernor } from './game/systems/AIGovernor';
 import { aiSystemReset, aiSystemUpdate } from './game/systems/AISystem';
 import { spawnBoss, spawnLevelEntities } from './game/systems/EntitySpawner';
 import { advanceFloor, checkFloorComplete } from './game/systems/ProgressionSystem';
@@ -27,6 +28,8 @@ import { clearDamageNumbers, DamageNumbers } from './r3f/entities/DamageNumbers'
 import { EnemyColliders } from './r3f/entities/EnemyColliders';
 import { EnemyRenderer } from './r3f/entities/EnemyMesh';
 import { PickupRenderer } from './r3f/entities/PickupMesh';
+import { inputManager } from './r3f/input/InputManager';
+import { AIProvider } from './r3f/input/providers/AIProvider';
 import { DungeonProps } from './r3f/level/DungeonProps';
 import { extractColliderData, LevelColliders, LevelMeshes } from './r3f/level/LevelMeshes';
 import { PlayerController } from './r3f/PlayerController';
@@ -216,6 +219,31 @@ function GameScene() {
     updateMusic();
     updateAmbientSound();
   }, [levelData, stage, diffMods, nightmareDmgMult, nightmareFlags]);
+
+  // Autoplay: register AI provider with AIGovernor for each level
+  const autoplay = useGameStore((s) => s.autoplay);
+  useEffect(() => {
+    if (!autoplay) return;
+
+    // Find the player entity (just created in the effect above)
+    const player = world.entities.find((e) => e.type === 'player');
+    if (!player) return;
+
+    // Create a proxy camera that reads from the player's ECS position
+    const aiCamera = {
+      position: player.position ?? { x: 0, y: 1.6, z: 0 },
+      rotation: { x: 0, y: 0 },
+    };
+
+    const governor = new AIGovernor(aiCamera, player, levelData.grid, CELL_SIZE);
+    const aiProvider = new AIProvider(governor);
+    inputManager.register(aiProvider);
+
+    return () => {
+      inputManager.unregister(aiProvider);
+      aiProvider.dispose();
+    };
+  }, [autoplay, levelData]);
 
   // Wire combat scene ref
   useEffect(() => {
