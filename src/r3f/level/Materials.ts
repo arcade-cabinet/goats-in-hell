@@ -224,7 +224,9 @@ function applyTextureSet(
         mat.needsUpdate = true;
       }
     })
-    .catch((err) => console.warn(`[Materials] Color texture load error for "${texSet.color}":`, err));
+    .catch((err) =>
+      console.warn(`[Materials] Color texture load error for "${texSet.color}":`, err),
+    );
 
   // Normal map (data texture — not color)
   loadTexture(texSet.normal)
@@ -237,7 +239,9 @@ function applyTextureSet(
         mat.needsUpdate = true;
       }
     })
-    .catch((err) => console.warn(`[Materials] Normal texture load error for "${texSet.normal}":`, err));
+    .catch((err) =>
+      console.warn(`[Materials] Normal texture load error for "${texSet.normal}":`, err),
+    );
 
   // Roughness map (data texture — not color)
   loadTexture(texSet.roughness)
@@ -249,7 +253,9 @@ function applyTextureSet(
         mat.needsUpdate = true;
       }
     })
-    .catch((err) => console.warn(`[Materials] Roughness texture load error for "${texSet.roughness}":`, err));
+    .catch((err) =>
+      console.warn(`[Materials] Roughness texture load error for "${texSet.roughness}":`, err),
+    );
 
   // Emission map (optional — e.g. lava, this IS a color map)
   if (texSet.emission) {
@@ -262,7 +268,9 @@ function applyTextureSet(
           mat.needsUpdate = true;
         }
       })
-      .catch((err) => console.warn(`[Materials] Emission texture load error for "${texSet.emission}":`, err));
+      .catch((err) =>
+        console.warn(`[Materials] Emission texture load error for "${texSet.emission}":`, err),
+      );
   }
 
   // Metalness map (data texture — not color)
@@ -276,7 +284,9 @@ function applyTextureSet(
           mat.needsUpdate = true;
         }
       })
-      .catch((err) => console.warn(`[Materials] Metalness texture load error for "${texSet.metalness}":`, err));
+      .catch((err) =>
+        console.warn(`[Materials] Metalness texture load error for "${texSet.metalness}":`, err),
+      );
   }
 }
 

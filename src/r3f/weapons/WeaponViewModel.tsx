@@ -98,7 +98,7 @@ const WEAPON_VISUALS: Record<WeaponId, WeaponVisualConfig> = {
 /** Per-weapon recoil config for satisfying feedback. */
 const WEAPON_RECOIL: Record<WeaponId, { kickBack: number; kickUp: number }> = {
   hellPistol: { kickBack: 0.08, kickUp: 0.04 },
-  brimShotgun: { kickBack: 0.18, kickUp: 0.10 },
+  brimShotgun: { kickBack: 0.18, kickUp: 0.1 },
   hellfireCannon: { kickBack: 0.05, kickUp: 0.02 },
   goatsBane: { kickBack: 0.25, kickUp: 0.15 },
 };

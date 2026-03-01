@@ -6,7 +6,7 @@ import React from 'react';
 import 'react-native';
 
 // Note: import explicitly to use the types shipped with jest.
-import {it, expect, jest} from '@jest/globals';
+import { expect, it, jest } from '@jest/globals';
 
 // Mock Babylon.js and Reactylon — these require WebGL/native bindings
 // unavailable in jsdom test environment.

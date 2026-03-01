@@ -56,7 +56,10 @@ function releaseCanvas(canvas: HTMLCanvasElement): void {
 // Canvas texture helper
 // ---------------------------------------------------------------------------
 
-function createTextTexture(text: string, color: string): { texture: THREE.CanvasTexture; canvas: HTMLCanvasElement } {
+function createTextTexture(
+  text: string,
+  color: string,
+): { texture: THREE.CanvasTexture; canvas: HTMLCanvasElement } {
   const canvas = acquireCanvas();
   const ctx = canvas.getContext('2d');
   if (!ctx) {

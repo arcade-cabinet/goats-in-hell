@@ -24,8 +24,7 @@ import {
 } from '../../game/systems/EnemyProjectileBridge';
 import { damagePlayer } from '../systems/CombatSystem';
 import { createBloodSplash, createImpactSparks } from '../systems/ParticleEffects';
-import { PROJECTILE_COLORS, type ProjectileSlot } from './ProjectilePool';
-import { ProjectilePool } from './ProjectilePool';
+import { PROJECTILE_COLORS, ProjectilePool, type ProjectileSlot } from './ProjectilePool';
 import { recordHit } from './WeaponSystem';
 
 // ---------------------------------------------------------------------------

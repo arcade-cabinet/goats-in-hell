@@ -289,9 +289,7 @@ export function PlayerController({ spawnPosition = [0, PLAYER_HEIGHT, 0] }: Play
         if (owned.length > 1) {
           const currentIdx = owned.indexOf(playerEntity.player.currentWeapon);
           const nextIdx =
-            currentIdx === -1
-              ? 0
-              : (currentIdx + input.weaponCycle + owned.length) % owned.length;
+            currentIdx === -1 ? 0 : (currentIdx + input.weaponCycle + owned.length) % owned.length;
           const cycleSound = switchWeapon(playerEntity, owned[nextIdx]);
           if (cycleSound) playSound(cycleSound);
         }

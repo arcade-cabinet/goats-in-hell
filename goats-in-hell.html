@@ -109,7 +109,7 @@ let currentLevel = 0;
 let score = 0;
 let kills = 0;
 let totalKills = 0;
-let keys = {};
+const keys = {};
 let mouseMovX = 0;
 let lastShot = 0;
 let isReloading = false;
@@ -368,7 +368,7 @@ function playSound(type) {
   gain.connect(audioCtx.destination);
 
   switch(type) {
-    case 'shoot':
+    case 'shoot': {
       osc.type = 'sawtooth';
       osc.frequency.setValueAtTime(150, now);
       osc.frequency.exponentialRampToValueAtTime(40, now + 0.15);
@@ -387,6 +387,7 @@ function playSound(type) {
       noise.connect(ng); ng.connect(audioCtx.destination);
       noise.start(now);
       break;
+    }
     case 'hit':
       osc.type = 'square';
       osc.frequency.setValueAtTime(200, now);
@@ -535,7 +536,7 @@ class Enemy {
     if (this.alert) {
       // Move toward player
       const ang = Math.atan2(player.y - this.y, player.x - this.x);
-      let wobble = Math.sin(this.moveTimer * 0.05) * 0.3;
+      const wobble = Math.sin(this.moveTimer * 0.05) * 0.3;
       const moveAng = ang + wobble;
 
       if (dist > this.attackRange * 0.8) {
