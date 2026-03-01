@@ -1,16 +1,13 @@
 #!/usr/bin/env bash
-# Post-edit hook: verify build scripts compile and validate against a temp DB
+# PostToolUse hook (Edit|Write): verify build scripts compile and validate
 # Scoped to: scripts/build-circle-*.ts
 # BLOCKING — exits non-zero if build fails
 set -euo pipefail
 
-FILE="${1:-}"
-if [ -z "$FILE" ]; then
-  echo "No file specified"
-  exit 0
-fi
-
-if [ ! -f "$FILE" ]; then
+# Read event JSON from stdin, extract file path
+INPUT=$(cat)
+FILE=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty' 2>/dev/null)
+if [ -z "$FILE" ] || [ ! -f "$FILE" ]; then
   exit 0
 fi
 

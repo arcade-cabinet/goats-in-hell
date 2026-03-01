@@ -1,31 +1,42 @@
 {
   "hooks": {
-    "PreCommit": [
+    "PreToolUse": [
       {
-        "matcher": "",
-        "command": ".claude/hooks/pre-commit-quality.sh"
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/pre-commit-quality.sh",
+            "timeout": 60
+          }
+        ]
       }
     ],
-    "PostEdit": [
+    "PostToolUse": [
       {
-        "matcher": "src/db/**/*.ts",
-        "command": ".claude/hooks/level-typecheck.sh"
-      },
-      {
-        "matcher": "scripts/build-circle-*.ts",
-        "command": ".claude/hooks/level-typecheck.sh"
-      },
-      {
-        "matcher": "**/*.ts",
-        "command": ".claude/hooks/coordinate-validator.sh"
-      },
-      {
-        "matcher": "**/*.tsx",
-        "command": ".claude/hooks/performance-sentinel.sh"
-      },
-      {
-        "matcher": "scripts/build-circle-*.ts",
-        "command": ".claude/hooks/level-build-verify.sh"
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/level-typecheck.sh",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/coordinate-validator.sh",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/performance-sentinel.sh",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/level-build-verify.sh",
+            "timeout": 60
+          }
+        ]
       }
     ]
   }
