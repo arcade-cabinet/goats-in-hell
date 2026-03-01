@@ -134,11 +134,13 @@ export class LevelGenerator {
       // Reduced from 5 to 3 so small maps still get enemy rooms.
       if (distFromSpawn < 3) continue;
 
-      // Enemies: scale count by room area, floor, and theme density
+      // Enemies: scale count by room area, floor, and theme density.
+      // Math.max(1, ...) guarantees at least 1 enemy per qualifying room —
+      // without this, low densities + Math.floor produce 0 for small rooms.
       const roomArea = room.w * room.h;
       const baseEnemies = Math.max(1, Math.floor(roomArea / 12));
       const floorScale = 1 + (this.floor - 1) * 0.1;
-      const enemyCount = Math.floor(baseEnemies * theme.enemyDensity * floorScale);
+      const enemyCount = Math.max(1, Math.floor(baseEnemies * theme.enemyDensity * floorScale));
 
       for (let e = 0; e < enemyCount; e++) {
         const ex = room.x + 1 + Math.floor(rng() * Math.max(1, room.w - 2));
