@@ -1,17 +1,20 @@
 #!/usr/bin/env bash
-# Post-edit hook: detect potential grid/world coordinate mismatches
-# Non-blocking — outputs warnings only
+# PostToolUse hook (Edit|Write): detect potential grid/world coordinate mismatches
+# Non-blocking — outputs warnings only (always exits 0)
 set -uo pipefail
 
-FILE="${1:-}"
-if [ -z "$FILE" ]; then
-  echo "No file specified"
+# Read event JSON from stdin, extract file path
+INPUT=$(cat)
+FILE=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty' 2>/dev/null)
+if [ -z "$FILE" ] || [ ! -f "$FILE" ]; then
   exit 0
 fi
 
-if [ ! -f "$FILE" ]; then
-  exit 0
-fi
+# Only check TypeScript files in level-related directories
+case "$FILE" in
+  */src/db/*.ts|*/scripts/build-circle-*.ts) ;;
+  *) exit 0 ;;
+esac
 
 WARNINGS=0
 
