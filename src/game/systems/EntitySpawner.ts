@@ -14,8 +14,8 @@ import { world } from '../entities/world';
 import { BOSS_ARENA_PICKUP_POSITIONS } from '../levels/BossArenas';
 import type { LevelData } from '../levels/LevelData';
 import { CELL_SIZE } from '../levels/LevelGenerator';
-import { trackEnemySpawn } from '../systems/ProgressionSystem';
 import type { PowerUpType } from '../systems/PowerUpSystem';
+import { trackEnemySpawn } from '../systems/ProgressionSystem';
 
 const ENEMY_TYPES: EntityType[] = [
   'goat',

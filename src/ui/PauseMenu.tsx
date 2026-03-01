@@ -1,3 +1,11 @@
+/**
+ * PauseMenu -- in-game pause overlay with resume, quit, and quick settings.
+ *
+ * Shown when the player presses ESC during gameplay. Provides a "RESUME"
+ * button, "QUIT TO MENU" option, inline volume/sensitivity sliders (persisted
+ * to localStorage on change), and a controls reference grid. Uses muted amber
+ * tones to visually distinguish from the red-themed death screen.
+ */
 import type React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { setMasterVolume } from '../game/systems/AudioSystem';

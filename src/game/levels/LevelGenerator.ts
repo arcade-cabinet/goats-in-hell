@@ -1,3 +1,12 @@
+/**
+ * LevelGenerator -- procedural BSP dungeon generator.
+ *
+ * Produces a 2D MapCell grid, player spawn, and entity spawn list for
+ * a single dungeon floor. Uses Binary Space Partitioning to carve rooms,
+ * then connects them with L-shaped corridors. Boss arenas, doors, weapon
+ * pickups, power-ups, props, hazards, secret rooms, lore plaques, and
+ * void pits are placed in post-processing passes.
+ */
 import { CELL_SIZE, WALL_HEIGHT } from '../../constants';
 import { useGameStore } from '../../state/GameStore';
 import type { Vec3 } from '../entities/components';
@@ -13,26 +22,45 @@ function rng(): number {
   return useGameStore.getState().rng();
 }
 
+/**
+ * Cell types in the 2D dungeon grid.
+ * Each cell in `grid[z][x]` holds one of these values.
+ * Wall types double as material selectors for the renderer.
+ */
 export enum MapCell {
+  /** Walkable open floor at ground level. */
   EMPTY = 0,
   WALL_STONE = 1,
   WALL_FLESH = 2,
   WALL_LAVA = 3,
   WALL_OBSIDIAN = 4,
+  /** Openable door — blocks movement until triggered. */
   DOOR = 5,
+  /** Lava floor — deals damage-over-time to anything standing on it. */
   FLOOR_LAVA = 6,
-  FLOOR_RAISED = 7, // Elevated platform floor
-  RAMP = 8, // Connects ground to raised platform
-  WALL_SECRET = 9, // Looks like normal wall but can be opened
-  FLOOR_VOID = 10, // Void pit — instant death for anything that falls in
+  /** Elevated platform floor (Y + PLATFORM_HEIGHT). */
+  FLOOR_RAISED = 7,
+  /** Ramp connecting ground level to a raised platform. */
+  RAMP = 8,
+  /** Disguised wall that can be revealed/opened as a secret passage. */
+  WALL_SECRET = 9,
+  /** Void pit — instant death for anything that falls in. */
+  FLOOR_VOID = 10,
 }
 
+/** A queued entity spawn produced during level generation (world coordinates). */
 export type SpawnData = {
+  /** World-space X position. */
   x: number;
+  /** World-space Z position. */
   z: number;
+  /** Entity type identifier (e.g. 'hellgoat', 'health', 'weaponPickup'). */
   type: string;
+  /** For weapon pickups — which weapon this grants. */
   weaponId?: string;
+  /** Y-axis rotation in radians (for props/decorations). */
   rotation?: number;
+  /** Floor elevation tier (0 = ground, 1 = raised platform). */
   elevation?: number;
 };
 
@@ -50,15 +78,41 @@ export const PLATFORM_HEIGHT = 2;
 
 /** MapCell values for multi-height geometry. */
 
+/**
+ * Procedural BSP dungeon generator.
+ *
+ * Instantiate with grid dimensions and floor number, then call `generate()`
+ * to populate `grid`, `spawns`, and `playerSpawn`. The grid uses row-major
+ * indexing: `grid[z][x]`.
+ *
+ * @example
+ * ```ts
+ * const gen = new LevelGenerator(30, 30, 3);
+ * gen.generate();
+ * // gen.grid, gen.spawns, gen.playerSpawn are now ready
+ * ```
+ */
 export class LevelGenerator {
+  /** Grid width in cells (may be expanded based on floor number, capped at 50). */
   width: number;
+  /** Grid depth in cells. */
   depth: number;
+  /** 1-based floor number — affects difficulty scaling, enemy roster, and grid size. */
   floor: number;
+  /** Visual/gameplay theme for this floor. */
   theme: FloorTheme;
+  /** 2D cell grid, populated by `generate()`. Indexed as `grid[z][x]`. */
   grid: MapCell[][] = [];
+  /** Entity spawn list, populated by `generate()`. Positions in world coordinates. */
   spawns: SpawnData[] = [];
+  /** Player start position in world coordinates, set by `generate()`. */
   playerSpawn: Vec3 = vec3Zero();
 
+  /**
+   * @param width - Base grid width in cells (will grow with floor number).
+   * @param depth - Base grid depth in cells (will grow with floor number).
+   * @param floor - 1-based floor number for difficulty/theme selection.
+   */
   constructor(width: number, depth: number, floor: number = 1) {
     this.floor = floor;
     this.theme = getThemeForFloor(floor);
@@ -81,6 +135,11 @@ export class LevelGenerator {
   // BSP Dungeon Generation
   // ---------------------------------------------------------------------------
 
+  /**
+   * Run the full dungeon generation pipeline.
+   * Populates `this.grid`, `this.spawns`, and `this.playerSpawn`.
+   * Must be called exactly once after construction.
+   */
   generate() {
     const theme = this.theme;
 

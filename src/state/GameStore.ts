@@ -129,6 +129,12 @@ export interface GameStoreState {
   // --- Screen & flow ---
   screen: GameScreen;
 
+  // --- Level database ---
+  /** True once the SQLite level DB has been initialized and is queryable. */
+  dbReady: boolean;
+  /** Whether to load levels from the database or use procedural generation. */
+  levelSource: 'procedural' | 'database';
+
   // --- Run configuration (set during New Game) ---
   difficulty: Difficulty;
   nightmareFlags: NightmareFlags;
@@ -186,6 +192,10 @@ export interface GameStoreState {
   awardXp: (amount: number) => void;
   /** Record a boss defeat. */
   defeatBoss: (bossId: string) => void;
+  /** Set the DB readiness flag. */
+  setDbReady: (ready: boolean) => void;
+  /** Switch between procedural and database level sources. */
+  setLevelSource: (source: 'procedural' | 'database') => void;
   /** Set partial state (for effects, kills, etc.). */
   patch: (partial: Partial<GameStoreState>) => void;
   /** Full reset to main menu. */
@@ -562,6 +572,9 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
   // --- Defaults ---
   screen: 'mainMenu',
 
+  dbReady: false,
+  levelSource: 'procedural',
+
   difficulty: 'normal',
   nightmareFlags: { nightmare: false, permadeath: false, ultraNightmare: false },
   seed: initialSeed,
@@ -676,6 +689,9 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
     set((s) => ({ bossesDefeated: [...s.bossesDefeated, bossId] }));
     writeSave(get());
   },
+
+  setDbReady: (ready) => set({ dbReady: ready }),
+  setLevelSource: (source) => set({ levelSource: source }),
 
   patch: (partial) => set(partial as any),
 

@@ -1,3 +1,10 @@
+/**
+ * ProgressionSystem -- floor completion and player death detection.
+ *
+ * Tracks how many enemies were spawned on the current floor and provides
+ * checks for floor completion (all enemies killed) and player death (HP <= 0).
+ * Handles permadeath save deletion on death.
+ */
 import { GameState } from '../../state/GameState';
 import { useGameStore } from '../../state/GameStore';
 import type { Entity } from '../entities/components';

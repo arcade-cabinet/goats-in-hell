@@ -1,3 +1,11 @@
+/**
+ * BossArenas -- hand-designed arena layouts tailored to each boss archetype.
+ *
+ * Each boss has a unique 19x19 arena that complements its combat style:
+ * infernoGoat gets lava channels with cover, voidGoat gets an open pit with
+ * thin bridges, ironGoat gets tight corridors for kiting, and archGoat gets
+ * an elevated colosseum ring for ranged duels.
+ */
 import type { EntityType } from '../entities/components';
 import { MapCell } from './LevelGenerator';
 

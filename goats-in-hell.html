@@ -62,21 +62,21 @@ canvas { display: block; }
     E — Open Doors<br>
     Shift — Sprint
   </div>
-  <button class="start-btn" onclick="startGame()">⛧ ENTER HELL ⛧</button>
+  <button type="button" class="start-btn" onclick="startGame()">⛧ ENTER HELL ⛧</button>
 </div>
 
 <div id="death-screen">
   <h1>YOU DIED</h1>
   <p>The goats have claimed your soul...</p>
   <p id="death-score"></p>
-  <button class="start-btn" onclick="startGame()">TRY AGAIN</button>
+  <button type="button" class="start-btn" onclick="startGame()">TRY AGAIN</button>
 </div>
 
 <div id="win-screen">
   <h1>🐐 HELL CONQUERED 🐐</h1>
   <p>You have vanquished the demonic goats!</p>
   <p id="win-score"></p>
-  <button class="start-btn" onclick="startGame()">PLAY AGAIN</button>
+  <button type="button" class="start-btn" onclick="startGame()">PLAY AGAIN</button>
 </div>
 
 <div id="level-flash"></div>
@@ -109,7 +109,7 @@ let currentLevel = 0;
 let score = 0;
 let kills = 0;
 let totalKills = 0;
-let keys = {};
+const keys = {};
 let mouseMovX = 0;
 let lastShot = 0;
 let isReloading = false;
@@ -368,7 +368,7 @@ function playSound(type) {
   gain.connect(audioCtx.destination);
 
   switch(type) {
-    case 'shoot':
+    case 'shoot': {
       osc.type = 'sawtooth';
       osc.frequency.setValueAtTime(150, now);
       osc.frequency.exponentialRampToValueAtTime(40, now + 0.15);
@@ -387,6 +387,7 @@ function playSound(type) {
       noise.connect(ng); ng.connect(audioCtx.destination);
       noise.start(now);
       break;
+    }
     case 'hit':
       osc.type = 'square';
       osc.frequency.setValueAtTime(200, now);
@@ -535,7 +536,7 @@ class Enemy {
     if (this.alert) {
       // Move toward player
       const ang = Math.atan2(player.y - this.y, player.x - this.x);
-      let wobble = Math.sin(this.moveTimer * 0.05) * 0.3;
+      const wobble = Math.sin(this.moveTimer * 0.05) * 0.3;
       const moveAng = ang + wobble;
 
       if (dist > this.attackRange * 0.8) {

@@ -1,3 +1,13 @@
+/**
+ * App -- top-level application shell and screen router.
+ *
+ * Reads the current `screen` state from the Zustand store and conditionally
+ * renders the appropriate overlay (MainMenu, HUD, PauseMenu, DeathScreen,
+ * VictoryScreen, BossIntroScreen, GameCompleteScreen) on top of the R3F
+ * canvas. Also handles autoplay mode (auto-start, auto-restart on death,
+ * auto-advance through victory/boss-intro/game-complete) and ESC key
+ * pause toggling for manual play.
+ */
 import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import R3FRoot from './R3FRoot';

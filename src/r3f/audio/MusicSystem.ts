@@ -269,7 +269,10 @@ export async function loadAllMusic(
   // Log any individual track failures without killing the whole load
   for (let i = 0; i < results.length; i++) {
     if (results[i].status === 'rejected') {
-      console.warn(`[MusicSystem] Failed to load track "${entries[i][0]}":`, (results[i] as PromiseRejectedResult).reason);
+      console.warn(
+        `[MusicSystem] Failed to load track "${entries[i][0]}":`,
+        (results[i] as PromiseRejectedResult).reason,
+      );
     }
   }
   return map;

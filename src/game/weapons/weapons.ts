@@ -1,20 +1,33 @@
+/** Weapons -- weapon definitions and the canonical weapon registry. */
 import type { WeaponId } from '../entities/components';
 
+/** Static definition of a weapon type — immutable stats looked up by WeaponSystem. */
 export interface WeaponDef {
   id: WeaponId;
   name: string;
+  /** Base damage per pellet (before difficulty/level scaling). */
   damage: number;
-  pellets: number; // 1 for single, 6 for shotgun
-  spread: number; // radians
+  /** Number of pellets per shot (1 for single, 7 for shotgun spread). */
+  pellets: number;
+  /** Pellet spread cone half-angle in radians. */
+  spread: number;
+  /** Rounds per magazine before reload. */
   magSize: number;
-  fireRate: number; // ms between shots
-  reloadTime: number; // ms
+  /** Minimum milliseconds between consecutive shots. */
+  fireRate: number;
+  /** Reload duration in milliseconds. */
+  reloadTime: number;
+  /** Maximum effective range in world units. */
   range: number;
-  isProjectile: boolean; // true = spawns entity, false = hitscan
+  /** True = spawns a visible projectile entity; false = instant hitscan. */
+  isProjectile: boolean;
+  /** Projectile travel speed in world-units/frame (only if isProjectile). */
   projectileSpeed?: number;
-  aoe?: number; // area of effect radius
+  /** Area-of-effect blast radius in world units (e.g. rocket launcher). */
+  aoe?: number;
 }
 
+/** Complete weapon registry — keyed by WeaponId, used by WeaponSystem and HUD. */
 export const weapons: Record<WeaponId, WeaponDef> = {
   hellPistol: {
     id: 'hellPistol',

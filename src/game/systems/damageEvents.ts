@@ -1,3 +1,9 @@
+/**
+ * DamageEvents -- lightweight event bus for floating damage numbers.
+ *
+ * CombatSystem pushes events when damage is dealt; the DamageNumbers React
+ * component consumes them each frame to render floating 3D text.
+ */
 import type { Vec3 } from '../entities/components';
 import { vec3Clone } from '../entities/vec3';
 import { getGameTime } from './GameClock';

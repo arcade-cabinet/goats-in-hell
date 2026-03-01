@@ -2,10 +2,7 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "lib": [
-      "esnext",
-      "dom"
-    ],
+    "lib": ["esnext", "dom"],
     "jsx": "react-jsx",
     "noEmit": true,
     "isolatedModules": true,
@@ -17,9 +14,6 @@
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true
   },
-  "exclude": [
-    "node_modules",
-    "__tests__"
-  ],
+  "exclude": ["node_modules", "__tests__"],
   "extends": "expo/tsconfig.base"
 }

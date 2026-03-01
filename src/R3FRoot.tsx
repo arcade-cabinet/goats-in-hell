@@ -6,8 +6,12 @@
  */
 
 import { useFrame, useThree } from '@react-three/fiber';
+import { and, eq } from 'drizzle-orm';
 import { useEffect, useMemo, useRef } from 'react';
 import { CELL_SIZE } from './constants';
+import type { DrizzleDb } from './db/connection';
+import { toLevelData } from './db/LevelDbAdapter';
+import * as schema from './db/schema';
 import type { WeaponId } from './game/entities/components';
 import { vec3 } from './game/entities/vec3';
 import { world } from './game/entities/world';
@@ -23,13 +27,22 @@ import { spawnBoss, spawnLevelEntities } from './game/systems/EntitySpawner';
 import { resetGameClock, tickGameClock } from './game/systems/GameClock';
 import { hazardSystemUpdate, resetHazardSystem } from './game/systems/HazardSystem';
 import { resetKillStreaks } from './game/systems/KillStreakSystem';
+import { clearPlayerDamageBridge, setPlayerDamageBridge } from './game/systems/PlayerDamageBridge';
 import { powerUpSystemUpdate, resetPowerUps } from './game/systems/PowerUpSystem';
-import { advanceFloor, checkFloorComplete, resetFloorProgression } from './game/systems/ProgressionSystem';
+import {
+  advanceFloor,
+  checkFloorComplete,
+  resetFloorProgression,
+} from './game/systems/ProgressionSystem';
 import { getWaveInfo, resetWaveSystem, waveSystemUpdate } from './game/systems/WaveSystem';
 import { initAmbientSound, updateAmbientSound } from './r3f/audio/AmbientSoundSystem';
 import { getAudioContext, initAudio, loadAllSfx, setSfxBuffers } from './r3f/audio/AudioSystem';
 import { initMusic, loadAllMusic, setMusicBuffers, updateMusic } from './r3f/audio/MusicSystem';
-import { clearDamageNumbers, clearDamageNumbersSceneRef, DamageNumbers } from './r3f/entities/DamageNumbers';
+import {
+  clearDamageNumbers,
+  clearDamageNumbersSceneRef,
+  DamageNumbers,
+} from './r3f/entities/DamageNumbers';
 import { EnemyColliders } from './r3f/entities/EnemyColliders';
 import { EnemyRenderer } from './r3f/entities/EnemyMesh';
 import { PickupRenderer } from './r3f/entities/PickupMesh';
@@ -41,17 +54,25 @@ import { PlayerController } from './r3f/PlayerController';
 import { R3FApp } from './r3f/R3FApp';
 import { DynamicLighting } from './r3f/rendering/Lighting';
 import { PostProcessingEffects, triggerFloorFadeIn } from './r3f/rendering/PostProcessing';
-import { clearCombatScene, combatSystemUpdate, damageEnemy, damagePlayer, setCombatScene } from './r3f/systems/CombatSystem';
+import {
+  clearCombatScene,
+  combatSystemUpdate,
+  damageEnemy,
+  damagePlayer,
+  setCombatScene,
+} from './r3f/systems/CombatSystem';
 import { disposeParticleResources, updateParticles } from './r3f/systems/ParticleEffects';
 import { pickupSystemUpdate } from './r3f/systems/PickupSystem';
 import { resetScreenShake } from './r3f/systems/ScreenShake';
 import { MuzzleFlashEffect } from './r3f/weapons/MuzzleFlash';
-import { ProjectileManager, setDamageEnemyCallback } from './r3f/weapons/Projectile';
-import { WeaponViewModel } from './r3f/weapons/WeaponViewModel';
-import { clearPlayerDamageBridge, setPlayerDamageBridge } from './game/systems/PlayerDamageBridge';
-import { DIFFICULTY_PRESETS, savePlayerSnapshot, useGameStore } from './state/GameStore';
+import {
+  getProjectilePool,
+  ProjectileManager,
+  setDamageEnemyCallback,
+} from './r3f/weapons/Projectile';
 import { initPlayerAmmo, resetFireCooldowns } from './r3f/weapons/WeaponSystem';
-import { getProjectilePool } from './r3f/weapons/Projectile';
+import { WeaponViewModel } from './r3f/weapons/WeaponViewModel';
+import { DIFFICULTY_PRESETS, savePlayerSnapshot, useGameStore } from './state/GameStore';
 
 // ---------------------------------------------------------------------------
 // Arena constants
@@ -64,14 +85,116 @@ const ARENA_SIZE = 24;
 const ARENA_MIN_WAVES = 5;
 
 // ---------------------------------------------------------------------------
-// Level generation
+// Level database — lazy singleton
 // ---------------------------------------------------------------------------
+
+let _levelDb: DrizzleDb | null = null;
+
+/**
+ * Initialize the level database lazily, run migrations/seeds, and set
+ * the GameStore.dbReady flag. Safe to call multiple times — only the
+ * first call does work.
+ */
+async function ensureLevelDb(): Promise<DrizzleDb | null> {
+  if (_levelDb) return _levelDb;
+  try {
+    const { getDb } = await import('./db/connection');
+    const { migrateAndSeed } = await import('./db/migrate');
+    const db = await getDb();
+    await migrateAndSeed(db);
+    _levelDb = db;
+    useGameStore.getState().setDbReady(true);
+    return _levelDb;
+  } catch (err) {
+    console.warn('[R3FRoot] DB init failed, using procedural levels:', err);
+    return null;
+  }
+}
+
+/**
+ * Try to load a level from the database matching the given encounter/floor.
+ * Maps encounterType to the DB's levelType field:
+ *   explore -> 'procedural' or 'circle'
+ *   arena   -> 'arena'
+ *   boss    -> 'boss'
+ * Returns null if no matching level is found or the DB is unavailable.
+ */
+function tryLoadFromDb(
+  db: DrizzleDb,
+  encounterType: 'explore' | 'arena' | 'boss',
+  floor: number,
+  bossId: string | null,
+): LevelData | null {
+  // For explore, match 'procedural' or 'circle' types
+  let rows: (typeof schema.levels.$inferSelect)[];
+  if (encounterType === 'explore') {
+    rows = db
+      .select()
+      .from(schema.levels)
+      .where(eq(schema.levels.floor, floor))
+      .all()
+      .filter(
+        (l) =>
+          (l.levelType === 'procedural' || l.levelType === 'circle') && l.compiledGrid !== null,
+      );
+  } else {
+    rows = db
+      .select()
+      .from(schema.levels)
+      .where(and(eq(schema.levels.levelType, encounterType), eq(schema.levels.floor, floor)))
+      .all()
+      .filter((l) => l.compiledGrid !== null);
+  }
+
+  if (rows.length === 0) return null;
+
+  // For boss encounters, prefer a level matching the specific bossId via guardian field
+  let levelId: string;
+  if (encounterType === 'boss' && bossId) {
+    const bossMatch = rows.find((l) => l.guardian === bossId);
+    levelId = bossMatch ? bossMatch.id : rows[0].id;
+  } else {
+    // Pick a random matching level (supports multiple hand-crafted variants)
+    levelId = rows[Math.floor(Math.random() * rows.length)].id;
+  }
+
+  try {
+    return toLevelData(db, levelId);
+  } catch (err) {
+    console.warn(`[R3FRoot] Failed to load level ${levelId} from DB:`, err);
+    return null;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Level generation (DB-backed with in-memory fallback)
+// ---------------------------------------------------------------------------
+
+/**
+ * Load a single level from the database by ID.
+ * Returns null if the level is missing or the query fails.
+ */
+function _generateLevelDataFromDb(db: DrizzleDb, levelId: string): LevelData | null {
+  try {
+    return toLevelData(db, levelId);
+  } catch {
+    return null;
+  }
+}
 
 function generateLevelData(
   encounterType: 'explore' | 'arena' | 'boss',
   floor: number,
   bossId: string | null,
 ): LevelData {
+  // Try DB first if levelSource is 'database' and DB is ready
+  const { levelSource, dbReady } = useGameStore.getState();
+  if (levelSource === 'database' && dbReady && _levelDb) {
+    const dbLevel = tryLoadFromDb(_levelDb, encounterType, floor, bossId);
+    if (dbLevel) return dbLevel;
+  }
+
+  // Fallback: in-memory procedural generation
   const theme = getThemeForFloor(floor);
 
   if (encounterType === 'explore') {
@@ -132,14 +255,35 @@ function GameScene() {
   const stage = useGameStore((s) => s.stage);
   const difficulty = useGameStore((s) => s.difficulty);
   const nightmareFlags = useGameStore((s) => s.nightmareFlags);
+  const dbReady = useGameStore((s) => s.dbReady);
+  const levelSource = useGameStore((s) => s.levelSource);
 
   const diffMods = DIFFICULTY_PRESETS[difficulty];
   const nightmareDmgMult = nightmareFlags.nightmare || nightmareFlags.ultraNightmare ? 2 : 1;
 
-  // Generate level when floor/encounterType changes
+  // Kick off lazy DB initialization on mount
+  useEffect(() => {
+    let cancelled = false;
+    async function initDb() {
+      try {
+        const db = await ensureLevelDb();
+        if (!db || cancelled) return;
+      } catch (err) {
+        console.warn('[R3FRoot] DB init failed, using procedural levels:', err);
+      }
+    }
+    initDb();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Generate level when floor/encounterType changes, when DB becomes ready,
+  // or when levelSource changes
+  // biome-ignore lint/correctness/useExhaustiveDependencies: dbReady and levelSource trigger re-gen from DB
   const levelData = useMemo(
     () => generateLevelData(stage.encounterType, stage.floor, stage.bossId),
-    [stage.encounterType, stage.floor, stage.bossId],
+    [stage.encounterType, stage.floor, stage.bossId, dbReady, levelSource],
   );
 
   // Extract collider data

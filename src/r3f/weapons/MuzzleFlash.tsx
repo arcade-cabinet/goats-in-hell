@@ -18,7 +18,7 @@ import { triggerMuzzleFlash as triggerDynamicLight } from '../rendering/Lighting
 // Constants
 // ---------------------------------------------------------------------------
 
-const FLASH_DURATION = 0.10; // 100ms in seconds — punchier feedback
+const FLASH_DURATION = 0.1; // 100ms in seconds — punchier feedback
 const FLASH_SIZE = 0.22; // world-space size of the flash quad — more visible
 const FLASH_OFFSET_Z = -0.55; // forward from camera (camera looks -Z)
 const FLASH_OFFSET_X = 0.2; // right from camera center (barrel position)

@@ -1,3 +1,11 @@
+/**
+ * CombatSystem -- projectile movement, lifetime, and collision detection.
+ *
+ * Handles player-owned projectiles hitting enemies (with AoE splash) and
+ * enemy-owned projectiles hitting the player. Also includes helper functions
+ * for damaging enemies (armor absorption, stagger, floating numbers) and
+ * processing kills (score, XP, kill-streak).
+ */
 import { GameState } from '../../state/GameState';
 import { useGameStore } from '../../state/GameStore';
 import type { Entity } from '../entities/components';

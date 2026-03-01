@@ -1,3 +1,15 @@
+---
+title: "Goats in Hell Transformation Design (Babylon.js)"
+status: superseded
+created: "2026-02-26"
+updated: "2026-02-26"
+domain: plans
+plan_type: design
+superseded_by: docs/plans/2026-02-28-dante-circles-level-system-design.md
+related:
+  - docs/plans/2026-02-26-goats-in-hell-implementation.md
+---
+
 # Goats in Hell - Game Transformation Design
 
 **Date:** 2026-02-26

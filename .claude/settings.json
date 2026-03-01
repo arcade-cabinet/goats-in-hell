@@ -1,0 +1,32 @@
+{
+  "hooks": {
+    "PreCommit": [
+      {
+        "matcher": "",
+        "command": ".claude/hooks/pre-commit-quality.sh"
+      }
+    ],
+    "PostEdit": [
+      {
+        "matcher": "src/db/**/*.ts",
+        "command": ".claude/hooks/level-typecheck.sh"
+      },
+      {
+        "matcher": "scripts/build-circle-*.ts",
+        "command": ".claude/hooks/level-typecheck.sh"
+      },
+      {
+        "matcher": "**/*.ts",
+        "command": ".claude/hooks/coordinate-validator.sh"
+      },
+      {
+        "matcher": "**/*.tsx",
+        "command": ".claude/hooks/performance-sentinel.sh"
+      },
+      {
+        "matcher": "scripts/build-circle-*.ts",
+        "command": ".claude/hooks/level-build-verify.sh"
+      }
+    ]
+  }
+}

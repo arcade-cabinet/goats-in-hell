@@ -17,12 +17,12 @@ const localStorageMock = (() => {
   };
 })();
 
-Object.defineProperty(global, 'localStorage', {value: localStorageMock});
+Object.defineProperty(global, 'localStorage', { value: localStorageMock });
 
 // window.location mock for autoplay detection
 if (typeof window !== 'undefined' && !window.location) {
   Object.defineProperty(window, 'location', {
-    value: {search: ''},
+    value: { search: '' },
     writable: true,
   });
 }

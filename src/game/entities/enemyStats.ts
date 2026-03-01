@@ -1,6 +1,14 @@
+/** EnemyStats -- canonical base stats for every enemy type in the game. */
 import type { Entity, EntityType } from './components';
 
-/** Canonical enemy stats — single source of truth for all spawning paths. */
+/**
+ * Return the base combat stats for a given enemy type.
+ * These are the pre-difficulty-scaling values used by EntitySpawner.
+ * Alert state and attack cooldown are initialized separately at spawn time.
+ *
+ * @param type - The entity type to look up stats for.
+ * @returns Base enemy stats excluding runtime state fields.
+ */
 export function getEnemyStats(
   type: EntityType,
 ): Omit<NonNullable<Entity['enemy']>, 'alert' | 'attackCooldown'> {

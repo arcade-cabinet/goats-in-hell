@@ -462,90 +462,90 @@ function playGameComplete(ctx: AudioContext): void {
 
 export function playSound(type: SoundType): void {
   try {
-  if (!audioCtx) {
-    initAudio();
-  }
-  const ctx = audioCtx!;
+    if (!audioCtx) {
+      initAudio();
+    }
+    const ctx = audioCtx!;
 
-  if (ctx.state === 'suspended') {
-    ctx.resume();
-  }
+    if (ctx.state === 'suspended') {
+      ctx.resume();
+    }
 
-  switch (type) {
-    // File-based sounds
-    case 'shoot':
-      playBufferSound('sfx-pistol', 0.6);
-      break;
-    case 'shotgun':
-      playBufferSound('sfx-shotgun', 0.7);
-      break;
-    case 'rapid':
-      playBufferSound('sfx-pistol', 0.5, 0.6);
-      break;
-    case 'bigshot':
-      // Math.random() is intentional — cosmetic variation doesn't need deterministic seeding
-      playBufferSound('sfx-cannon', 0.8, 0.9 + Math.random() * 0.2);
-      break;
-    case 'hit':
-      playBufferSound('sfx-impact', 0.5);
-      break;
-    case 'boss_hit':
-      playBufferSound('sfx-impact', 0.7);
-      break;
-    case 'headshot':
-      playHeadshot(ctx);
-      break;
-    case 'door':
-      playBufferSound('sfx-doorOpen', 0.5);
-      break;
-    case 'doorClose':
-      playBufferSound('sfx-doorClose', 0.5);
-      break;
-    case 'explosion':
-      playBufferSound('sfx-explosion', 0.7);
-      break;
-    case 'footstep':
-      playBufferVaried('sfx-footstep', 0.3, 0.1);
-      break;
+    switch (type) {
+      // File-based sounds
+      case 'shoot':
+        playBufferSound('sfx-pistol', 0.6);
+        break;
+      case 'shotgun':
+        playBufferSound('sfx-shotgun', 0.7);
+        break;
+      case 'rapid':
+        playBufferSound('sfx-pistol', 0.5, 0.6);
+        break;
+      case 'bigshot':
+        // Math.random() is intentional — cosmetic variation doesn't need deterministic seeding
+        playBufferSound('sfx-cannon', 0.8, 0.9 + Math.random() * 0.2);
+        break;
+      case 'hit':
+        playBufferSound('sfx-impact', 0.5);
+        break;
+      case 'boss_hit':
+        playBufferSound('sfx-impact', 0.7);
+        break;
+      case 'headshot':
+        playHeadshot(ctx);
+        break;
+      case 'door':
+        playBufferSound('sfx-doorOpen', 0.5);
+        break;
+      case 'doorClose':
+        playBufferSound('sfx-doorClose', 0.5);
+        break;
+      case 'explosion':
+        playBufferSound('sfx-explosion', 0.7);
+        break;
+      case 'footstep':
+        playBufferVaried('sfx-footstep', 0.3, 0.1);
+        break;
 
-    // Procedural stings (kept)
-    case 'goat_die':
-      playGoatDie(ctx);
-      break;
-    case 'goat_alert':
-      playGoatAlert(ctx);
-      break;
-    case 'pickup':
-      playPickup(ctx);
-      break;
-    case 'hurt':
-      playHurt(ctx);
-      break;
-    case 'empty':
-      playEmpty(ctx);
-      break;
-    case 'reload':
-      playReload(ctx);
-      break;
-    case 'reload_complete':
-      playReloadComplete(ctx);
-      break;
-    case 'weapon_switch':
-      playWeaponSwitch(ctx);
-      break;
-    case 'death_sting':
-      playDeathSting(ctx);
-      break;
-    case 'victory_sting':
-      playVictorySting(ctx);
-      break;
-    case 'boss_defeat':
-      playBossDefeat(ctx);
-      break;
-    case 'game_complete':
-      playGameComplete(ctx);
-      break;
-  }
+      // Procedural stings (kept)
+      case 'goat_die':
+        playGoatDie(ctx);
+        break;
+      case 'goat_alert':
+        playGoatAlert(ctx);
+        break;
+      case 'pickup':
+        playPickup(ctx);
+        break;
+      case 'hurt':
+        playHurt(ctx);
+        break;
+      case 'empty':
+        playEmpty(ctx);
+        break;
+      case 'reload':
+        playReload(ctx);
+        break;
+      case 'reload_complete':
+        playReloadComplete(ctx);
+        break;
+      case 'weapon_switch':
+        playWeaponSwitch(ctx);
+        break;
+      case 'death_sting':
+        playDeathSting(ctx);
+        break;
+      case 'victory_sting':
+        playVictorySting(ctx);
+        break;
+      case 'boss_defeat':
+        playBossDefeat(ctx);
+        break;
+      case 'game_complete':
+        playGameComplete(ctx);
+        break;
+    }
   } catch (err) {
     console.warn('[AudioSystem] playSound error:', err);
   }
@@ -604,7 +604,10 @@ export async function loadAllSfx(ctx: AudioContext): Promise<Map<string, AudioBu
   // Log individual failures without killing the whole SFX load
   for (let i = 0; i < results.length; i++) {
     if (results[i].status === 'rejected') {
-      console.warn(`[AudioSystem] Failed to load SFX "${entries[i][0]}":`, (results[i] as PromiseRejectedResult).reason);
+      console.warn(
+        `[AudioSystem] Failed to load SFX "${entries[i][0]}":`,
+        (results[i] as PromiseRejectedResult).reason,
+      );
     }
   }
   return map;

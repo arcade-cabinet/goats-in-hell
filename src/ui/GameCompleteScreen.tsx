@@ -1,3 +1,11 @@
+/**
+ * GameCompleteScreen -- victory overlay shown after defeating the final boss.
+ *
+ * Displays "YOU ESCAPED" with a gold-themed glow, a comprehensive stats panel
+ * (final score, total kills, floors cleared, playtime, difficulty, bosses
+ * slain, nightmare mode), and a "RETURN TO THE SURFACE" button that navigates
+ * back to the main menu.
+ */
 import type React from 'react';
 import { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';

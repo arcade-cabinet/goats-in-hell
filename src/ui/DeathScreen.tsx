@@ -1,3 +1,11 @@
+/**
+ * DeathScreen -- game-over overlay shown when the player's HP reaches zero.
+ *
+ * Presents a "YOU DIED" title with layered glow effects, an ASCII skull, and
+ * a run-summary stats panel (score, kills, floor reached, survival time, XP
+ * level). Offers "TRY AGAIN" (restarts with same seed/difficulty) unless
+ * permadeath is active, plus "QUIT TO MENU" to return to the title screen.
+ */
 import type React from 'react';
 import { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';

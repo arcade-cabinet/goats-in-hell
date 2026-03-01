@@ -35,9 +35,9 @@ import {
 import { world } from '../entities/world';
 import { registerDamageDirection } from '../ui/HUDEvents';
 import { playSound } from './AudioSystem';
-import { bridgeDamagePlayer } from './PlayerDamageBridge';
-import { getGameTime } from './GameClock';
 import { spawnEnemyProjectile } from './EnemyProjectileBridge';
+import { getGameTime } from './GameClock';
+import { bridgeDamagePlayer } from './PlayerDamageBridge';
 import { trackEnemySpawn } from './ProgressionSystem';
 
 /** Shorthand for the store's seeded PRNG. */

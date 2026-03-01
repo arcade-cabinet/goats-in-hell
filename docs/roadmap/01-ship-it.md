@@ -1,3 +1,15 @@
+---
+title: "Ship It (Production)"
+status: in-progress
+created: "2026-02-27"
+updated: "2026-02-27"
+domain: roadmap
+priority: critical
+roadmap_order: 1
+related:
+  - docs/roadmap/README.md
+---
+
 # Domain 1: Ship It (Production)
 
 > Get the game deployable and playable by anyone with a URL.

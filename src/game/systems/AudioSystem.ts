@@ -1,5 +1,13 @@
+/**
+ * AudioSystem -- procedural and file-based SFX playback via Web Audio API.
+ *
+ * Mixes pre-loaded buffer-based sounds (weapons, impacts, doors) with
+ * procedurally generated stings (goat death/alert, pickups, UI events).
+ * Master volume is controlled by the Zustand game store.
+ */
 import { useGameStore } from '../../state/GameStore';
 
+/** Union of all sound effect identifiers that can be played. */
 export type SoundType =
   | 'shoot'
   | 'shotgun'
@@ -31,6 +39,7 @@ let masterGain: GainNode | null = null;
 /** Pre-loaded SFX buffer groups, keyed by prefix (e.g. 'sfx-pistol'). */
 let sfxBuffers: Map<string, AudioBuffer[]> | null = null;
 
+/** Initialize the shared AudioContext and master gain node. Idempotent. */
 export function initAudio(): void {
   if (!audioCtx) {
     audioCtx = new AudioContext();
@@ -40,6 +49,7 @@ export function initAudio(): void {
   }
 }
 
+/** Set the master gain node volume (0-1 clamped). */
 export function setMasterVolume(volume: number): void {
   if (masterGain) {
     masterGain.gain.value = Math.max(0, Math.min(1, volume));
@@ -362,6 +372,10 @@ function playGameComplete(ctx: AudioContext): void {
 // Public API
 // ---------------------------------------------------------------------------
 
+/**
+ * Play a sound effect by type. Lazily initializes AudioContext on first call.
+ * File-based sounds use pre-loaded buffers; stings are generated procedurally.
+ */
 export function playSound(type: SoundType): void {
   if (!audioCtx) {
     initAudio();

@@ -1,3 +1,15 @@
+---
+title: "Missing Features"
+status: in-progress
+created: "2026-02-27"
+updated: "2026-02-27"
+domain: roadmap
+priority: medium
+roadmap_order: 3
+related:
+  - docs/roadmap/README.md
+---
+
 # Domain 3: Missing Features
 
 > Features that are planned, referenced, or expected but not yet implemented.

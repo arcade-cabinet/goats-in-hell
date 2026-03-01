@@ -1,3 +1,19 @@
+---
+title: "Development Roadmap"
+status: in-progress
+created: "2026-02-27"
+updated: "2026-02-27"
+domain: roadmap
+roadmap_order: 0
+related:
+  - docs/roadmap/01-ship-it.md
+  - docs/roadmap/02-bug-fixes.md
+  - docs/roadmap/03-missing-features.md
+  - docs/roadmap/04-architecture.md
+  - docs/roadmap/05-testing.md
+  - docs/roadmap/06-polish.md
+---
+
 # Goats in Hell — Development Roadmap
 
 Development is organized into 6 domains, ordered by priority. Each domain has its own doc with concrete tasks, file paths, and acceptance criteria.

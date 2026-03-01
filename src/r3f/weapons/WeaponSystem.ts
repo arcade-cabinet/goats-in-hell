@@ -16,9 +16,9 @@ import { getGameTime } from '../../game/systems/GameClock';
 import { getDamageMultiplier } from '../../game/systems/PowerUpSystem';
 import { weapons } from '../../game/weapons/weapons';
 import { getLevelBonuses, useGameStore } from '../../state/GameStore';
+import { triggerScreenShake } from '../systems/ScreenShake';
 import type { ProjectilePool } from './ProjectilePool';
 import { PROJECTILE_COLORS } from './ProjectilePool';
-import { triggerScreenShake } from '../systems/ScreenShake';
 
 // ---------------------------------------------------------------------------
 // PRNG shorthand
@@ -224,7 +224,7 @@ export function tryShoot(
   // Per-shot screen shake — proportional to weapon power
   const WEAPON_SHAKE: Record<WeaponId, number> = {
     hellPistol: 0.05,
-    brimShotgun: 0.20,
+    brimShotgun: 0.2,
     hellfireCannon: 0.03,
     goatsBane: 0.35,
   };

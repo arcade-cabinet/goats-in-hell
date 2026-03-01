@@ -60,21 +60,55 @@ export type WeaponModelKey = keyof typeof WEAPON_MODEL_ASSETS;
 // ---------------------------------------------------------------------------
 
 export const ENEMY_MODEL_ASSETS = {
-  // Goat variants — all use the DemonicGoat base model at different scales/materials
-  'enemy-goat': require('../../../assets/models/enemies/demonic-goat.glb'),
-  'enemy-hellgoat': require('../../../assets/models/enemies/demonic-goat.glb'),
-  'enemy-goatKnight': require('../../../assets/models/enemies/demonic-goat.glb'),
-  // Specialized enemy models — distinct silhouettes for gameplay readability
-  'enemy-fireGoat': require('../../../assets/models/enemies/phantom.glb'),
-  'enemy-shadowGoat': require('../../../assets/models/enemies/wraith.glb'),
-  // Boss models — unique per boss for visual impact
-  'enemy-archGoat': require('../../../assets/models/enemies/alienmonster.glb'),
-  'enemy-infernoGoat': require('../../../assets/models/enemies/spider.glb'),
-  'enemy-voidGoat': require('../../../assets/models/enemies/character-ghost.glb'),
-  'enemy-ironGoat': require('../../../assets/models/enemies/Skeleton_Mage.glb'),
+  // Trash mobs — Goatman variants (animated, 11 anims each)
+  'enemy-goat': require('../../../assets/models/enemies/goatman-brown.glb'),
+  'enemy-hellgoat': require('../../../assets/models/enemies/goatman-crimson.glb'),
+  'enemy-fireGoat': require('../../../assets/models/enemies/goatman-dark.glb'),
+  'enemy-shadowGoat': require('../../../assets/models/enemies/goatman-gray.glb'),
+  'enemy-goatKnight': require('../../../assets/models/enemies/goatman-blue.glb'),
+  // Circle-specific mob variant (Gluttony, etc.)
+  'enemy-plagueGoat': require('../../../assets/models/enemies/goatman-green.glb'),
+  // Boss models — Dainir variants (one per circle, crafted from DAZ base)
+  'enemy-archGoat': require('../../../assets/models/bosses/boss-azazel.glb'),
+  'enemy-infernoGoat': require('../../../assets/models/bosses/boss-furia.glb'),
+  'enemy-voidGoat': require('../../../assets/models/bosses/boss-profano.glb'),
+  'enemy-ironGoat': require('../../../assets/models/bosses/boss-il-macello.glb'),
 } as const;
 
 export type EnemyModelKey = keyof typeof ENEMY_MODEL_ASSETS;
+
+// ---------------------------------------------------------------------------
+// Models — Circle Bosses (Dainir for Genesis 9, one per circle of Hell)
+// ---------------------------------------------------------------------------
+
+export const BOSS_MODEL_ASSETS = {
+  'boss-il-vecchio': require('../../../assets/models/bosses/boss-il-vecchio.glb'),
+  'boss-caprone': require('../../../assets/models/bosses/boss-caprone.glb'),
+  'boss-vorago': require('../../../assets/models/bosses/boss-vorago.glb'),
+  'boss-aureo': require('../../../assets/models/bosses/boss-aureo.glb'),
+  'boss-furia': require('../../../assets/models/bosses/boss-furia.glb'),
+  'boss-profano': require('../../../assets/models/bosses/boss-profano.glb'),
+  'boss-il-macello': require('../../../assets/models/bosses/boss-il-macello.glb'),
+  'boss-inganno': require('../../../assets/models/bosses/boss-inganno.glb'),
+  'boss-azazel': require('../../../assets/models/bosses/boss-azazel.glb'),
+} as const;
+
+export type BossModelKey = keyof typeof BOSS_MODEL_ASSETS;
+
+/**
+ * Map circle number (1-9) to the boss model key for that circle.
+ */
+export const CIRCLE_BOSS_MAP: Record<number, BossModelKey> = {
+  1: 'boss-il-vecchio',
+  2: 'boss-caprone',
+  3: 'boss-vorago',
+  4: 'boss-aureo',
+  5: 'boss-furia',
+  6: 'boss-profano',
+  7: 'boss-il-macello',
+  8: 'boss-inganno',
+  9: 'boss-azazel',
+};
 
 // ---------------------------------------------------------------------------
 // Models — Dungeon Props (Kenney Graveyard)

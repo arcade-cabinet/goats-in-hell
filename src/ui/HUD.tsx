@@ -1,3 +1,12 @@
+/**
+ * HUD -- in-game heads-up display rendered as a React Native overlay.
+ *
+ * Composites health bar (bottom-left), ammo/weapon info (bottom-right), floor
+ * and XP indicators (top-left), score/kills/time (top-center), weapon slots
+ * (top-right), crosshair (center), and conditionally a boss health bar, a
+ * player-centered minimap, and floating damage numbers. Polls ECS state at
+ * 60 ms intervals for responsive updates without an R3F render dependency.
+ */
 import type React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Animated, type DimensionValue, StyleSheet, Text, View } from 'react-native';

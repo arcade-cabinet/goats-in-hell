@@ -12,8 +12,6 @@ module.exports = {
     '<rootDir>/__tests__/App.test.tsx',
     '<rootDir>/.claude/',
   ],
-  modulePathIgnorePatterns: [
-    '<rootDir>/.claude/',
-  ],
+  modulePathIgnorePatterns: ['<rootDir>/.claude/'],
   setupFiles: ['<rootDir>/jest.setup.js'],
 };

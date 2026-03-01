@@ -473,8 +473,10 @@ export class AIGovernor {
     const closest = this.nearest(enemies);
     if (closest?.position) {
       const d = this.distToEntity(closest);
-      if (d < weapons[this.player.player!.currentWeapon].range * 0.5
-        && this.hasLineOfSight(this.camera.position, closest.position)) {
+      if (
+        d < weapons[this.player.player!.currentWeapon].range * 0.5 &&
+        this.hasLineOfSight(this.camera.position, closest.position)
+      ) {
         this.aimAt(closest.position);
         this.tryFire();
       }
@@ -497,8 +499,10 @@ export class AIGovernor {
     if (closest?.position) {
       this.aimAt(closest.position);
       const d = this.distToEntity(closest);
-      if (d < weapons[this.player.player!.currentWeapon].range * 0.6
-        && this.hasLineOfSight(this.camera.position, closest.position)) {
+      if (
+        d < weapons[this.player.player!.currentWeapon].range * 0.6 &&
+        this.hasLineOfSight(this.camera.position, closest.position)
+      ) {
         this.tryFire();
       }
     }
@@ -533,8 +537,10 @@ export class AIGovernor {
       this.aimAt(nearestEnemy.position);
       // If we have LOS and range, switch to hunt
       const dist = this.distToEntity(nearestEnemy);
-      if (dist < weapons[this.player.player!.currentWeapon].range * SHOOT_RANGE_FACTOR
-        && this.hasLineOfSight(this.camera.position, nearestEnemy.position)) {
+      if (
+        dist < weapons[this.player.player!.currentWeapon].range * SHOOT_RANGE_FACTOR &&
+        this.hasLineOfSight(this.camera.position, nearestEnemy.position)
+      ) {
         this.setState('hunt', nearestEnemy);
       }
       return;
@@ -543,9 +549,10 @@ export class AIGovernor {
     // Priority 2: Grab nearby pickups
     const wpnPickup = this.nearestPickup('weapon');
     const ammoPickup = this.nearestPickup('ammo');
-    const nearPickup = wpnPickup && (!ammoPickup || this.distToEntity(wpnPickup) < this.distToEntity(ammoPickup))
-      ? wpnPickup
-      : ammoPickup;
+    const nearPickup =
+      wpnPickup && (!ammoPickup || this.distToEntity(wpnPickup) < this.distToEntity(ammoPickup))
+        ? wpnPickup
+        : ammoPickup;
     if (nearPickup?.position && this.distToEntity(nearPickup) < 20) {
       this.navigateToEntity(nearPickup, MOVE_SPEED, dt);
       this.aimAt(nearPickup.position);
@@ -797,8 +804,8 @@ export class AIGovernor {
     const stepY = y0 < y1 ? 1 : -1;
 
     // Steps along the ray using DDA
-    let tMaxX = dx === 0 ? Infinity : ((stepX > 0 ? x + 1 - x0 : x0 - x) / dx);
-    let tMaxY = dy === 0 ? Infinity : ((stepY > 0 ? y + 1 - y0 : y0 - y) / dy);
+    let tMaxX = dx === 0 ? Infinity : (stepX > 0 ? x + 1 - x0 : x0 - x) / dx;
+    let tMaxY = dy === 0 ? Infinity : (stepY > 0 ? y + 1 - y0 : y0 - y) / dy;
     const tDeltaX = dx === 0 ? Infinity : 1 / dx;
     const tDeltaY = dy === 0 ? Infinity : 1 / dy;
 
@@ -859,8 +866,14 @@ export class AIGovernor {
     visited.add(key(sx, sy));
 
     const dirs = [
-      [1, 0], [-1, 0], [0, 1], [0, -1],
-      [1, 1], [1, -1], [-1, 1], [-1, -1], // diagonals
+      [1, 0],
+      [-1, 0],
+      [0, 1],
+      [0, -1],
+      [1, 1],
+      [1, -1],
+      [-1, 1],
+      [-1, -1], // diagonals
     ];
 
     let found = false;
@@ -954,9 +967,10 @@ export class AIGovernor {
     if (!target.position) return;
 
     // Recompute path every ~60 frames or if no path exists
-    const needRepath = this.waypoints.length === 0
-      || this.waypointIndex >= this.waypoints.length
-      || this.frameCount % 60 === 0;
+    const needRepath =
+      this.waypoints.length === 0 ||
+      this.waypointIndex >= this.waypoints.length ||
+      this.frameCount % 60 === 0;
 
     if (needRepath) {
       this.waypoints = this.findPath(target.position);

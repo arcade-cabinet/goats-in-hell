@@ -1,3 +1,13 @@
+/**
+ * MainMenu -- title screen, new-game setup, and settings panels.
+ *
+ * Routes between three sub-screens based on store state: TitleScreen (goat
+ * skull ASCII art, NEW GAME / CONTINUE / SETTINGS buttons), NewGameScreen
+ * (difficulty grid, nightmare modifiers, seeded PRNG phrase selector), and
+ * SettingsScreen (volume, mouse/touch/gamepad sensitivity, gyroscope toggle,
+ * haptics toggle, key bindings reference). All settings are persisted to
+ * localStorage on change.
+ */
 import type React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {

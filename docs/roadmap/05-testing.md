@@ -1,3 +1,15 @@
+---
+title: "Testing"
+status: superseded
+created: "2026-02-27"
+updated: "2026-02-27"
+domain: roadmap
+priority: medium
+roadmap_order: 5
+related:
+  - docs/roadmap/README.md
+---
+
 # Domain 5: Testing
 
 > Zero test coverage today. Build a test suite that catches real bugs.
