@@ -17,7 +17,14 @@ function inBounds(x: number, z: number, width: number, depth: number): boolean {
   return x >= 0 && x < width && z >= 0 && z < depth;
 }
 
-/** Carve a 2-wide horizontal segment at row `z`, from `x1` to `x2`. */
+/**
+ * Carve a 2-wide horizontal segment at row `z`, from `x1` to `x2`.
+ *
+ * NOTE: Corridor width is currently hardcoded to 2 cells. The Connection schema
+ * carries a `corridorWidth` field but carving arbitrary widths is not yet
+ * implemented. All connections currently default to width=2 which matches this
+ * implementation. See `validateCorridorWidth()` for the runtime guard.
+ */
 function carveHLine(
   grid: MapCell[][],
   x1: number,
@@ -35,7 +42,12 @@ function carveHLine(
   }
 }
 
-/** Carve a 2-wide vertical segment at column `x`, from `z1` to `z2`. */
+/**
+ * Carve a 2-wide vertical segment at column `x`, from `z1` to `z2`.
+ *
+ * NOTE: Corridor width is currently hardcoded to 2 cells. See carveHLine
+ * and `validateCorridorWidth()` for details.
+ */
 function carveVLine(
   grid: MapCell[][],
   z1: number,
@@ -178,6 +190,21 @@ function placeJumpPadConnection(
   }
 }
 
+/**
+ * Validate that a connection's corridorWidth is the default (2).
+ * Throws if a non-default width is specified, since the carving functions
+ * currently hardcode 2-cell thickness. This prevents silently ignoring
+ * authored widths — callers will get a clear error instead.
+ */
+function validateCorridorWidth(conn: Connection): void {
+  if (conn.corridorWidth !== 2) {
+    throw new Error(
+      `Connection ${conn.id} (${conn.fromRoomId} → ${conn.toRoomId}) specifies corridorWidth=${conn.corridorWidth}, ` +
+        `but only width=2 is currently implemented. Custom corridor widths are not yet supported.`,
+    );
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Public API
 // ---------------------------------------------------------------------------
@@ -262,6 +289,9 @@ export function compileGrid(
     const to = roomById.get(conn.toRoomId);
     if (!from || !to) continue;
 
+    // Fail loudly if a non-default corridor width is specified
+    validateCorridorWidth(conn);
+
     switch (conn.connectionType) {
       case 'corridor':
         carveCorridorConnection(grid, from, to, width, depth);
@@ -283,6 +313,11 @@ export function compileGrid(
       case 'jump_pad':
         placeJumpPadConnection(grid, from, to, width, depth);
         break;
+      case 'portal':
+        throw new Error(
+          `Portal connections are not yet implemented. ` +
+            `Connection ${conn.id} (${conn.fromRoomId} → ${conn.toRoomId}) uses type 'portal'.`,
+        );
     }
   }
 

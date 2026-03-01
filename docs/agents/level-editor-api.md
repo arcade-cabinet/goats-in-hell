@@ -1361,7 +1361,7 @@ For reference, these are the SQLite tables. You should not need to write SQL dir
 | Table | Primary Key | Key Columns |
 |-------|-------------|-------------|
 | `themes` | `id` (text) | name, primaryWall, accentWalls, fogDensity, ambientColor |
-| `levels` | `id` (text) | name, levelType, width, depth, floor, themeId, spawnX, spawnZ, compiledGrid |
+| `levels` | `id` (text) | name, levelType, width, depth, floor, themeId, spawnX, spawnZ, compiled_grid |
 | `rooms` | `id` (UUID) | levelId, name, roomType, boundsX, boundsZ, boundsW, boundsH, floorCell, wallCell |
 | `connections` | `id` (UUID) | levelId, fromRoomId, toRoomId, connectionType, corridorWidth |
 | `entities` | `id` (UUID) | levelId, roomId, entityType, x, z, spawnCategory, triggerId, patrol, surfaceAnchor |

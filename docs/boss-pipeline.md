@@ -341,7 +341,7 @@ Save the pre-export .blend with packed textures for future editing.
 
 ### Overview
 
-Auto Rigger Pro (ARP) Smart is a Blender addon that detects body landmarks on a mesh and creates a complete animation rig with IK/FK chains, roll bones, stretch bones, and facial controls. The process requires 6 anatomical markers placed on the mesh, then ARP's detection algorithm builds the full skeleton.
+Auto Rigger Pro (ARP) Smart is a Blender add-on that detects body landmarks on a mesh and creates a complete animation rig with IK/FK chains, roll bones, stretch bones, and facial controls. The process requires 6 anatomical markers placed on the mesh, then ARP's detection algorithm builds the full skeleton.
 
 ### Prerequisites
 
@@ -439,6 +439,14 @@ def markers_from_dainir(armature):
     neck = get_pos('neck1')
     chin_bone = get_pos('chin')
 
+    # Validate all required bones were found
+    missing = [name for name, pos in [
+        ('hip', hip), ('l_upperarm', l_upperarm), ('l_hand', l_hand),
+        ('l_foot', l_foot), ('neck1', neck), ('chin', chin_bone),
+    ] if pos is None]
+    if missing:
+        raise ValueError(f"Missing bones: {', '.join(missing)}")
+
     return {
         # Root: hip center, zeroed X for symmetry
         'root': (0.0, hip.y, hip.z),
@@ -474,10 +482,13 @@ When selecting the boss mesh for rigging, fur meshes must be excluded. A naive f
 # WRONG: 'fur' in 'furia'.lower() == True → excludes the boss mesh!
 if 'fur' not in obj.name.lower():
 
-# CORRECT: Check for actual fur mesh naming pattern
+# CORRECT: Check for actual fur mesh naming pattern (e.g. "Leg Fur", "Hoof Fur")
+# but exclude boss names that contain "fur" (e.g. "Furia")
 def is_fur_mesh(name):
     lower = name.lower()
-    return 'fur mesh' in lower or 'fur_mesh' in lower
+    # Actual fur meshes are named like "Leg Fur", "Hoof Fur"
+    fur_patterns = ['leg fur', 'hoof fur', 'fur mesh', 'fur_mesh']
+    return any(p in lower for p in fur_patterns)
 ```
 
 ### ARP Configuration

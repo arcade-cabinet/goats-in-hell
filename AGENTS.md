@@ -21,7 +21,7 @@ This document describes the bespoke Claude Code agent infrastructure for the Goa
 
 ## Agent Architecture Overview
 
-```
+```text
 User Request
   │
   ├─ "build circle 3" ───────────> /build-circle 3
@@ -55,6 +55,7 @@ User Request
 ## Custom Agents
 
 ### `@level-builder`
+
 **Location:** `.claude/agents/level-builder.md`
 **Purpose:** Reads a circle design document (`docs/circles/0N-*.md`) and translates it into a TypeScript build script (`scripts/build-circle-N.ts`) using the LevelEditor API.
 
@@ -66,18 +67,21 @@ User Request
 **Output:** `scripts/build-circle-N.ts` — executable TypeScript that populates SQLite
 
 ### `@level-reviewer`
+
 **Location:** `.claude/agents/level-reviewer.md`
 **Purpose:** Cross-references a build script against its design document, checking every room, connection, entity, trigger, and environment zone.
 
 **Output:** Structured PASS/FAIL report with itemized discrepancies
 
 ### `@playtest-analyst`
+
 **Location:** `.claude/agents/playtest-analyst.md`
 **Purpose:** Runs the headless A* playtest simulation on compiled levels and analyzes completability, pacing, and resource economy.
 
 **Output:** Playtest report with statistics and recommendations
 
 ### `@game-designer`
+
 **Location:** `.claude/agents/game-designer.md`
 **Purpose:** Designs and modifies circle level designs following the GAME-BIBLE and player journey conventions.
 

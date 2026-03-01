@@ -175,7 +175,7 @@ procedural animation in Three.js, or hand-keyed in Blender.
 
 ## Technical Architecture (Implemented)
 
-- **SQLite/Drizzle ORM** level database (PR #20, merged)
+- **SQLite/Drizzle ORM** level database (PR #20, open)
 - **LevelEditor API** for hand-crafting each circle individually
 - **DAG room graph** — rooms as nodes, connections as edges
 - **GridCompiler** — rooms + connections → MapCell[][] BLOB

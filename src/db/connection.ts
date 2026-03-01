@@ -31,24 +31,40 @@ export type DrizzleDb = BetterSQLite3Database<typeof schema>;
 // ---------------------------------------------------------------------------
 
 let _db: DrizzleDb | null = null;
+let _dbInitPromise: Promise<DrizzleDb> | null = null;
 
 /**
  * Get the shared database handle, initializing lazily on first call.
  * In Node.js (tests/tooling), uses better-sqlite3.
  * In the browser, uses sql.js WASM.
+ *
+ * Uses a promise-based singleton guard so concurrent callers await the
+ * same initialization — preventing the race condition where multiple
+ * calls trigger parallel database init (CWE-362).
  */
 export async function getDb(): Promise<DrizzleDb> {
   if (_db) return _db;
 
-  if (typeof window === 'undefined') {
-    // Node.js environment — better-sqlite3
-    _db = await initBetterSqlite();
-  } else {
-    // Browser environment — sql.js WASM
-    _db = await initSqlJs();
-  }
+  if (_dbInitPromise) return _dbInitPromise;
 
-  return _db;
+  _dbInitPromise = (async () => {
+    try {
+      if (typeof window === 'undefined') {
+        // Node.js environment — better-sqlite3
+        _db = await initBetterSqlite();
+      } else {
+        // Browser environment — sql.js WASM
+        _db = await initSqlJs();
+      }
+      return _db;
+    } catch (err) {
+      // Clear the promise so subsequent calls can retry
+      _dbInitPromise = null;
+      throw err;
+    }
+  })();
+
+  return _dbInitPromise;
 }
 
 /**
@@ -65,6 +81,7 @@ export function initFromBetterSqlite(sqliteDb: import('better-sqlite3').Database
  */
 export function resetDb(): void {
   _db = null;
+  _dbInitPromise = null;
 }
 
 // ---------------------------------------------------------------------------

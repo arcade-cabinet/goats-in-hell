@@ -85,9 +85,9 @@ async function main() {
   }
 
   if (levelIds.length === 0) {
-    console.log('No levels found in database');
+    console.error(`${RED}No levels found in database${RESET}`);
     sqliteDb.close();
-    process.exit(0);
+    process.exit(1);
   }
 
   console.log(

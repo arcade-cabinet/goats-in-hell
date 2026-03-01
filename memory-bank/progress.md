@@ -44,7 +44,8 @@ tags: [memory-bank, progress, milestones]
 - DAZ Genesis 9 / Dainir rigging workflow documented
 - ARP Smart rigging with bone mapping
 - GLB export pipeline (decimate, bake atlas, Draco compress)
-- Documented in `docs/boss-pipeline.md` and `docs/DAZ-PIPELINE.md`
+- Documented in `docs/boss-pipeline.md` (in-progress) and `docs/DAZ-PIPELINE.md`
+- Note: pipeline is documented but no boss GLB models have been exported yet (see Not Started)
 
 ### Tooling Migration
 - pnpm replaced npm (disk efficiency, strict deps)

@@ -14,7 +14,7 @@ related:
 ## Quick Reference
 
 ```bash
-pnpm test          # Jest (262 tests, 23 suites)
+pnpm test          # Jest (268 tests, 22 suites)
 pnpm lint          # Biome check
 pnpm lint:fix      # Biome auto-fix
 pnpm format        # Biome format

@@ -250,7 +250,7 @@ Use `ENEMY_TYPES` constants for standard types:
 - `ENEMY_TYPES.SHADOW_GOAT` --> `'shadowGoat'`
 - `ENEMY_TYPES.GOAT_KNIGHT` --> `'goatKnight'`
 
-For boss entities, use the boss GLB name as the type string (e.g., `'il-vecchio'`).
+For boss entities, use the boss GLB name as the type string (e.g., `'il_vecchio'`).
 
 ### "Entities > Pickups" --> `spawnPickup()` calls
 
@@ -602,7 +602,7 @@ export async function buildCircle1(dbPath: string) {
   //   Room bounds: (14, 42, 12, 12) -> center: (20, 48)
   //   Boss faces north (toward entrance), so facing = 0
 
-  editor.spawnBoss(LEVEL_ID, 'il-vecchio', 20, 48, {
+  editor.spawnBoss(LEVEL_ID, 'il_vecchio', 20, 48, {
     roomId: bossChamberId,
     facing: 0,
   });

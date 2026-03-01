@@ -56,6 +56,15 @@ export function toLevelData(db: DrizzleDb, levelId: string): LevelData {
   const rawGrid = level.compiledGrid;
   const gridBlob =
     rawGrid instanceof Uint8Array ? rawGrid : new Uint8Array(rawGrid as ArrayBufferLike);
+
+  const expectedSize = level.width * level.depth;
+  if (gridBlob.length !== expectedSize) {
+    throw new Error(
+      `Level ${levelId} compiled grid blob size mismatch: ` +
+        `expected ${expectedSize} bytes (${level.width}x${level.depth}), got ${gridBlob.length}`,
+    );
+  }
+
   const grid = unpackGrid(gridBlob, level.width, level.depth);
 
   // Fetch entities that are NOT trigger-gated (trigger_id IS NULL)

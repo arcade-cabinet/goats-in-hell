@@ -165,7 +165,7 @@ related:
 
 ### Grid Dimensions
 
-**60 wide x 90 deep** (120 x 180 world units at CELL_SIZE=2)
+**60 wide x 110 deep** (120 x 220 world units at CELL_SIZE=2)
 
 ### Room Placement (grid coordinates)
 
@@ -503,7 +503,7 @@ related:
 
 ## Entities
 
-### Enemies (22 total + boss)
+### Enemies (24 total + boss)
 
 | Room | Type | Count | Behavior | Variant |
 |------|------|-------|----------|---------|

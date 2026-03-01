@@ -138,7 +138,7 @@ related:
 
 ### Grid Dimensions
 
-**45 wide × 80 deep** (90 × 160 world units at CELL_SIZE=2)
+**45 wide × 95 deep** (90 × 190 world units at CELL_SIZE=2)
 
 ### Room Placement (grid coordinates)
 

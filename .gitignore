@@ -44,7 +44,10 @@ ios/
 
 # Claude Code worktrees
 .worktrees/
-.claude/
+
+# Blender source files (boss pipeline — only export GLBs)
+*.blend
+*.blend1
 
 # Playwright MCP
 .playwright-mcp/

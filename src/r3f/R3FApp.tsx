@@ -8,7 +8,7 @@
 import { Canvas, extend, type ThreeToJSXElements } from '@react-three/fiber';
 import { Physics } from '@react-three/rapier';
 import type React from 'react';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useCallback, useEffect, useState } from 'react';
 import * as THREE from 'three/webgpu';
 import { R3FScene } from './R3FScene';
 
@@ -49,6 +49,7 @@ function LoadingFallback() {
  */
 export function R3FApp({ children }: { children?: React.ReactNode }) {
   const [rendererReady, setRendererReady] = useState(false);
+  const onReady = useCallback(() => setRendererReady(true), []);
 
   return (
     <>
@@ -126,7 +127,7 @@ export function R3FApp({ children }: { children?: React.ReactNode }) {
         camera={{ fov: 75, near: 0.3, far: 100, position: [0, 1.6, 0] }}
       >
         <Suspense fallback={<LoadingFallback />}>
-          <ReadySignal onReady={() => setRendererReady(true)} />
+          <ReadySignal onReady={onReady} />
           <Physics gravity={[0, -9.81, 0]} timeStep="vary">
             <R3FScene>{children}</R3FScene>
           </Physics>
