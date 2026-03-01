@@ -1,3 +1,10 @@
+/**
+ * WaveSystem -- arena survival mode wave spawning and kill-streak tracking.
+ *
+ * Manages the wave counter, enemy spawn timing, between-wave pickup drops,
+ * and kill-streak score multiplier. Enemy types escalate with each wave,
+ * and difficulty modifiers are applied to spawned enemies.
+ */
 import { GameState } from '../../state/GameState';
 import { DIFFICULTY_PRESETS, useGameStore } from '../../state/GameStore';
 import type { Entity, EntityType, WeaponId } from '../entities/components';

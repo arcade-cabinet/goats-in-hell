@@ -1,3 +1,10 @@
+/**
+ * PickupSystem -- proximity-based pickup collection with magnet pull.
+ *
+ * Each frame, checks player distance to all active pickups. Nearby pickups
+ * are magnetically attracted toward the player. On contact, applies the
+ * pickup effect (health, ammo, weapon grant, or power-up activation).
+ */
 import type { Entity, WeaponId } from '../entities/components';
 import {
   vec3AddInPlace,

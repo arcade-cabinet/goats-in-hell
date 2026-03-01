@@ -1,3 +1,15 @@
+---
+title: "Architecture Refactor"
+status: superseded
+created: "2026-02-27"
+updated: "2026-02-27"
+domain: roadmap
+priority: medium
+roadmap_order: 4
+related:
+  - docs/roadmap/README.md
+---
+
 # Domain 4: Architecture Refactor
 
 > Split the god-files, reduce coupling, improve maintainability.

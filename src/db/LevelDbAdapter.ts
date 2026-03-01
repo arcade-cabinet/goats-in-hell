@@ -67,11 +67,12 @@ export function toLevelData(db: DrizzleDb, levelId: string): LevelData {
     .filter((e) => e.triggerId === null);
 
   // Convert entity rows to SpawnData format
+  // Entity positions in DB are grid coordinates; SpawnData uses world coordinates
   const spawns = entityRows.map((e) => {
     const spawn: { type: string; x: number; z: number; weaponId?: string; rotation?: number } = {
       type: e.entityType,
-      x: e.x,
-      z: e.z,
+      x: e.x * CELL_SIZE,
+      z: e.z * CELL_SIZE,
     };
 
     // Include optional fields only when present

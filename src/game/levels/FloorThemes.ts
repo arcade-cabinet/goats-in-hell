@@ -1,3 +1,10 @@
+/**
+ * FloorThemes -- visual and gameplay configuration for each dungeon biome.
+ *
+ * Themes cycle every 4 floors: Fire Pits -> Flesh Caverns -> Obsidian Fortress
+ * -> The Void. Each theme controls wall materials, enemy pools, spawn densities,
+ * and ambient lighting color.
+ */
 import type { EntityType } from '../entities/components';
 
 // MapCell values from LevelGenerator.ts
@@ -6,14 +13,23 @@ const WALL_FLESH = 2;
 const WALL_LAVA = 3;
 const WALL_OBSIDIAN = 4;
 
+/** Per-biome configuration that controls both visuals and gameplay tuning. */
 export interface FloorTheme {
+  /** Internal key used for asset lookups and ambient sound selection. */
   name: string;
+  /** All-caps display name shown on the HUD floor transition screen. */
   displayName: string;
+  /** MapCell value for the biome's primary wall material. */
   primaryWall: number;
+  /** MapCell values randomly chosen for accent/decorative walls. */
   accentWalls: number[];
+  /** Weighted enemy pool -- duplicates increase spawn probability. */
   enemyTypes: EntityType[];
+  /** Multiplier on base enemy count per room (1.0 = default density). */
   enemyDensity: number;
+  /** Multiplier on base pickup count per room (1.0 = default density). */
   pickupDensity: number;
+  /** CSS hex color for ambient/fog tinting in the 3D scene. */
   ambientColor: string;
 }
 
@@ -63,6 +79,11 @@ const theVoid: FloorTheme = {
 
 const themes: FloorTheme[] = [firePits, fleshCaverns, obsidianFortress, theVoid];
 
+/**
+ * Return the biome theme for a given floor number (1-indexed, cycles every 4).
+ *
+ * @param floor - 1-indexed floor number.
+ */
 export function getThemeForFloor(floor: number): FloorTheme {
   const index = (floor - 1) % themes.length;
   return themes[index];

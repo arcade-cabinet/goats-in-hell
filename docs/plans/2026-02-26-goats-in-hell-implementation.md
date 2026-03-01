@@ -1,3 +1,15 @@
+---
+title: "Goats in Hell Implementation Plan (Babylon.js)"
+status: superseded
+created: "2026-02-26"
+updated: "2026-02-26"
+domain: plans
+plan_type: implementation
+superseded_by: docs/plans/2026-02-28-dante-circles-implementation-plan.md
+related:
+  - docs/plans/2026-02-26-goats-in-hell-transformation-design.md
+---
+
 # Goats in Hell - Implementation Plan
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.

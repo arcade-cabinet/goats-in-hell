@@ -1,3 +1,10 @@
+/**
+ * ArenaGenerator -- procedural arena layouts for survival mode encounters.
+ *
+ * Generates varied combat arenas (crucible, colosseum, gauntlet, hellpit) that
+ * cycle based on the current floor. Each layout encourages a distinct play-style
+ * while maintaining DOOM-style "skate park" circular combat flow.
+ */
 import { useGameStore } from '../../state/GameStore';
 import { MapCell } from './LevelGenerator';
 

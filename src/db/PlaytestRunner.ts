@@ -14,15 +14,23 @@ import type { Room } from './schema';
 // Types
 // ---------------------------------------------------------------------------
 
+/** Outcome of a headless playtest run — pass/fail plus diagnostic detail. */
 export interface PlaytestResult {
+  /** True if the agent visited all reachable rooms or killed all enemies without fatal softlocks. */
   passed: boolean;
-  duration: number; // simulated seconds
+  /** Total simulated time in seconds. */
+  duration: number;
+  /** IDs of rooms the agent physically entered. */
   roomsVisited: string[];
+  /** Total number of rooms in the level. */
   roomsTotal: number;
   enemiesKilled: number;
   enemiesTotal: number;
-  softlocks: string[]; // "Player stuck at (12, 8) for 15s"
+  /** Human-readable softlock descriptions (e.g. "Player stuck at (12, 8) for 10s"). */
+  softlocks: string[];
+  /** Room IDs proven unreachable via BFS from player spawn. */
   unreachableRooms: string[];
+  /** Chronological log of pathfinding failures, softlocks, and abort reasons. */
   diagnostics: string[];
 }
 
@@ -213,6 +221,17 @@ function roomCenter(room: Room): GridPos {
 // Main simulation
 // ---------------------------------------------------------------------------
 
+/**
+ * Run a headless playtest simulation on a compiled level.
+ *
+ * A simple AI agent walks room-to-room using A* pathfinding, then hunts
+ * remaining enemies. Detects softlocks, unreachable rooms, and path failures.
+ *
+ * @param levelData - Compiled level data (grid, spawns, player spawn).
+ * @param rooms - Room definitions for visit tracking and center calculations.
+ * @param opts.maxDuration - Simulation time limit in seconds (default 120).
+ * @returns Playtest result with pass/fail, diagnostics, and coverage metrics.
+ */
 export function runPlaytest(
   levelData: LevelData,
   rooms: Room[],
@@ -244,6 +263,8 @@ export function runPlaytest(
 
   // --- Room tracking ---
   const visitedRoomIds = new Set<string>();
+  const unreachableRoomIdxs = new Set<number>(); // rooms where A* failed
+  const unreachableEnemyIdxs = new Set<number>(); // enemies where A* failed
   const roomCount = rooms.length;
 
   // --- Path state ---
@@ -277,15 +298,17 @@ export function runPlaytest(
     }
 
     // --- Pick target ---
-    const allRoomsVisitedNow = visitedRoomIds.size === roomCount;
+    // Count rooms as "done" if visited OR proven unreachable
+    const allRoomsVisitedNow = visitedRoomIds.size + unreachableRoomIdxs.size >= roomCount;
 
     if (!allRoomsVisitedNow) {
-      // Phase 1: visit all rooms
+      // Phase 1: visit all rooms (skip rooms where A* already failed)
       if (agent.targetRoom === null || visitedRoomIds.has(rooms[agent.targetRoom]?.id)) {
         let bestDist = Infinity;
         let bestIdx: number | null = null;
         for (let i = 0; i < rooms.length; i++) {
           if (visitedRoomIds.has(rooms[i].id)) continue;
+          if (unreachableRoomIdxs.has(i)) continue;
           const center = roomCenter(rooms[i]);
           const dist = Math.abs(center.x - agent.x) + Math.abs(center.z - agent.z);
           if (dist < bestDist) {
@@ -298,12 +321,13 @@ export function runPlaytest(
         currentPath = null;
       }
     } else if (enemiesAlive.size > 0) {
-      // Phase 2: hunt remaining enemies
+      // Phase 2: hunt remaining enemies (skip unreachable ones)
       agent.targetRoom = null;
       if (agent.targetEnemy === null || !enemiesAlive.has(agent.targetEnemy)) {
         let bestDist = Infinity;
         let bestIdx: number | null = null;
         for (const ei of enemiesAlive) {
+          if (unreachableEnemyIdxs.has(ei)) continue;
           const spawn = enemySpawns[ei];
           const ex = spawn.x / CELL_SIZE;
           const ez = spawn.z / CELL_SIZE;
@@ -339,6 +363,13 @@ export function runPlaytest(
               ? `room ${rooms[agent.targetRoom].id}`
               : `enemy ${agent.targetEnemy}`;
           diagnostics.push(`No path to ${label} from (${startGrid.x}, ${startGrid.z})`);
+          // Mark this target as unreachable so AI doesn't retry it every tick
+          if (agent.targetRoom !== null) {
+            unreachableRoomIdxs.add(agent.targetRoom);
+          }
+          if (agent.targetEnemy !== null) {
+            unreachableEnemyIdxs.add(agent.targetEnemy);
+          }
           agent.targetRoom = null;
           agent.targetEnemy = null;
           simTime += dt;
@@ -433,8 +464,8 @@ export function runPlaytest(
 
     simTime += dt;
 
-    // Early exit if all rooms visited and all enemies killed
-    if (visitedRoomIds.size === roomCount && enemiesAlive.size === 0) {
+    // Early exit if all reachable rooms visited and all enemies killed
+    if (visitedRoomIds.size + unreachableRoomIdxs.size >= roomCount && enemiesAlive.size === 0) {
       break;
     }
   }

@@ -26,6 +26,13 @@ describe('Integration: LevelEditor -> compile -> LevelDbAdapter -> PlaytestRunne
     db = createTestDb();
     await migrateAndSeed(db);
     editor = new LevelEditor(db);
+    editor.createTheme(THEME_ID, {
+      name: 'firePits',
+      displayName: 'THE FIRE PITS',
+      primaryWall: 1,
+      accentWalls: [3, 3],
+      ambientColor: '#ff4422',
+    });
   });
 
   /**

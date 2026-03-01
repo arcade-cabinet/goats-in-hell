@@ -1,3 +1,15 @@
+---
+title: "Bug Fixes"
+status: in-progress
+created: "2026-02-27"
+updated: "2026-02-27"
+domain: roadmap
+priority: high
+roadmap_order: 2
+related:
+  - docs/roadmap/README.md
+---
+
 # Domain 2: Bug Fixes
 
 > Known bugs that affect gameplay or correctness.

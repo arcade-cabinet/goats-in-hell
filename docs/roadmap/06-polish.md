@@ -1,3 +1,15 @@
+---
+title: "Polish"
+status: in-progress
+created: "2026-02-27"
+updated: "2026-02-27"
+domain: roadmap
+priority: low
+roadmap_order: 6
+related:
+  - docs/roadmap/README.md
+---
+
 # Domain 6: Polish
 
 > Quality-of-life improvements and sensory refinements.

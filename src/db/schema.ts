@@ -208,29 +208,47 @@ export const cellMetadata = sqliteTable('cell_metadata', {
 // TypeScript types derived from schema
 // ---------------------------------------------------------------------------
 
+/** Selected (read) shape of the levels table. */
 export type Level = typeof levels.$inferSelect;
+/** Insert shape of the levels table. */
 export type NewLevel = typeof levels.$inferInsert;
 
+/** Selected (read) shape of the themes table. */
 export type Theme = typeof themes.$inferSelect;
+/** Insert shape of the themes table. */
 export type NewTheme = typeof themes.$inferInsert;
 
+/** Selected (read) shape of the rooms table. */
 export type Room = typeof rooms.$inferSelect;
+/** Insert shape of the rooms table. */
 export type NewRoom = typeof rooms.$inferInsert;
 
+/** Selected (read) shape of the connections table. */
 export type Connection = typeof connections.$inferSelect;
+/** Insert shape of the connections table. */
 export type NewConnection = typeof connections.$inferInsert;
 
+/** Selected (read) shape of the materials table. */
 export type Material = typeof materials.$inferSelect;
+/** Insert shape of the materials table. */
 export type NewMaterial = typeof materials.$inferInsert;
 
+/** Selected (read) shape of the entities table. */
 export type Entity = typeof entities.$inferSelect;
+/** Insert shape of the entities table. */
 export type NewEntity = typeof entities.$inferInsert;
 
+/** Selected (read) shape of the triggers table. */
 export type Trigger = typeof triggers.$inferSelect;
+/** Insert shape of the triggers table. */
 export type NewTrigger = typeof triggers.$inferInsert;
 
+/** Selected (read) shape of the environment_zones table. */
 export type EnvironmentZone = typeof environmentZones.$inferSelect;
+/** Insert shape of the environment_zones table. */
 export type NewEnvironmentZone = typeof environmentZones.$inferInsert;
 
+/** Selected (read) shape of the cell_metadata table. */
 export type CellMeta = typeof cellMetadata.$inferSelect;
+/** Insert shape of the cell_metadata table. */
 export type NewCellMeta = typeof cellMetadata.$inferInsert;

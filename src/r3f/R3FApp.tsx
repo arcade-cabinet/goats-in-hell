@@ -1,3 +1,10 @@
+/**
+ * R3FApp -- top-level React Three Fiber canvas wrapper.
+ *
+ * Sets up the WebGPU renderer (with WebGL2 fallback), shadow maps, Rapier
+ * physics, and Suspense-based asset loading. Shows an HTML overlay while
+ * models and textures are downloading.
+ */
 import { Canvas, extend, type ThreeToJSXElements } from '@react-three/fiber';
 import { Physics } from '@react-three/rapier';
 import type React from 'react';

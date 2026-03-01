@@ -1,6 +1,11 @@
+/** Constants -- shared numeric and color constants used across rendering and level generation. */
+
+/** Width/depth of one grid cell in world units. 1 grid cell = 2 world units. */
 export const CELL_SIZE = 2;
+/** Height of dungeon walls in world units. */
 export const WALL_HEIGHT = 3;
 
+/** Canonical color palette for environment, enemies, pickups, and UI elements. */
 export const COLORS = {
   // Environment
   floor: '#220505',

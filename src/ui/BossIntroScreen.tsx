@@ -1,3 +1,10 @@
+/**
+ * BossIntroScreen -- cinematic boss reveal overlay before arena encounters.
+ *
+ * Displays the boss name and flavor taunt text with animated fade-in, spring
+ * title scaling, and a pulsing "ENTER THE ARENA" button. Shown between the
+ * exploration phase and the boss fight to build tension.
+ */
 import type React from 'react';
 import { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';

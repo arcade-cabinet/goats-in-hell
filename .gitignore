@@ -17,6 +17,7 @@ yarn-error.log
 # Build output
 build/
 dist/
+docs/api/
 
 # Expo
 .expo/

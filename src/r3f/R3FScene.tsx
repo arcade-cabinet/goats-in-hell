@@ -1,3 +1,9 @@
+/**
+ * R3FScene -- scene-level setup for the R3F canvas.
+ *
+ * Sets the dark hellfire background color and exponential fog. Actual lighting
+ * is handled entirely by the DynamicLighting component to avoid overlap.
+ */
 import { useThree } from '@react-three/fiber';
 import type React from 'react';
 import { useEffect } from 'react';

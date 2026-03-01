@@ -1,3 +1,11 @@
+/**
+ * VictoryScreen -- floor-clear overlay shown after all enemies are defeated.
+ *
+ * Displays the cleared floor number with a gold glow, per-floor stats (kills,
+ * score, time, XP level), and a speed-bonus indicator if the floor was cleared
+ * under 60 seconds. The "DESCEND DEEPER" button advances to the next floor
+ * (or routes to bossIntro / gameComplete as appropriate).
+ */
 import type React from 'react';
 import { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';

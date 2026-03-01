@@ -2,14 +2,14 @@
  * Database migration and seeding.
  *
  * Creates all tables from the Drizzle schema and populates seed data
- * (cell metadata, materials, themes). Idempotent — safe to run repeatedly.
+ * (cell metadata, materials). Themes are created per-level via the
+ * LevelEditor — each circle defines its own theme individually.
  */
 import { sql } from 'drizzle-orm';
 import type { DrizzleDb } from './connection';
 import * as schema from './schema';
 import { CELL_METADATA_SEED } from './seed/cellMetadata';
 import { MATERIALS_SEED } from './seed/materials';
-import { THEMES_SEED } from './seed/themes';
 
 /**
  * Run migrations: create tables + seed data.
@@ -187,9 +187,5 @@ export async function migrateAndSeed(db: DrizzleDb): Promise<void> {
 
   for (const material of MATERIALS_SEED) {
     db.insert(schema.materials).values(material).onConflictDoNothing().run();
-  }
-
-  for (const theme of THEMES_SEED) {
-    db.insert(schema.themes).values(theme).onConflictDoNothing().run();
   }
 }

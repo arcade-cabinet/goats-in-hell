@@ -4,6 +4,7 @@ import { CELL_SIZE } from '../../constants';
 import { MapCell } from '../../game/levels/LevelGenerator';
 import { packGrid } from '../GridCompiler';
 import { toFloorTheme, toLevelData } from '../LevelDbAdapter';
+import { LevelEditor } from '../LevelEditor';
 import { migrateAndSeed } from '../migrate';
 import * as schema from '../schema';
 
@@ -11,6 +12,25 @@ function createTestDb() {
   const sqliteDb = new BetterSqlite3(':memory:');
   const db = drizzle(sqliteDb, { schema });
   return db;
+}
+
+function seedTestTheme(db: ReturnType<typeof createTestDb>) {
+  const editor = new LevelEditor(db);
+  editor.createTheme('fire-pits', {
+    name: 'firePits',
+    displayName: 'THE FIRE PITS',
+    primaryWall: 1,
+    accentWalls: [3, 3],
+    fogDensity: 0.03,
+    fogColor: '#1a0500',
+    ambientColor: '#ff4422',
+    ambientIntensity: 0.3,
+    skyColor: '#110000',
+    particleEffect: 'embers',
+    enemyTypes: ['goat', 'hellgoat', 'fireGoat'],
+    enemyDensity: 0.8,
+    pickupDensity: 0.6,
+  });
 }
 
 /** Build a simple 4x4 grid with walls on the border and empty inside. */
@@ -36,6 +56,7 @@ describe('LevelDbAdapter', () => {
   beforeEach(async () => {
     db = createTestDb();
     await migrateAndSeed(db);
+    seedTestTheme(db);
   });
 
   describe('toFloorTheme', () => {
@@ -204,14 +225,15 @@ describe('LevelDbAdapter', () => {
 
       const goatSpawn = levelData.spawns.find((s) => s.type === 'goat');
       expect(goatSpawn).toBeDefined();
-      expect(goatSpawn!.x).toBe(4);
-      expect(goatSpawn!.z).toBe(8);
+      // DB stores grid coords; adapter converts to world coords (× CELL_SIZE=2)
+      expect(goatSpawn!.x).toBe(8);
+      expect(goatSpawn!.z).toBe(16);
       expect(goatSpawn!.rotation).toBe(1.5);
 
       const healthSpawn = levelData.spawns.find((s) => s.type === 'health');
       expect(healthSpawn).toBeDefined();
-      expect(healthSpawn!.x).toBe(6);
-      expect(healthSpawn!.z).toBe(6);
+      expect(healthSpawn!.x).toBe(12);
+      expect(healthSpawn!.z).toBe(12);
     });
 
     it('includes weaponId from overrides', () => {

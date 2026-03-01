@@ -1,3 +1,4 @@
+/** Barrel exports for the R3F level rendering subsystem. */
 export type { DungeonPropsProps, PropSpawn } from './DungeonProps';
 export { DungeonProps } from './DungeonProps';
 export type {

@@ -1,3 +1,15 @@
+---
+title: "Dante's 9 Circles Level System — Design"
+status: implemented
+created: "2026-02-28"
+updated: "2026-02-28"
+domain: plans
+plan_type: design
+related:
+  - docs/plans/2026-02-28-dante-circles-implementation-plan.md
+  - docs/circles/00-player-journey.md
+---
+
 # Dante's 9 Circles Level System — Design Document
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:writing-plans to create the implementation plan from this design.

@@ -17,13 +17,21 @@ describe('LevelEditor', () => {
   let db: ReturnType<typeof createTestDb>;
   let editor: LevelEditor;
 
-  const THEME_ID = 'fire-pits'; // Seeded by migrateAndSeed
+  const THEME_ID = 'fire-pits';
   const LEVEL_ID = 'test-level';
 
   beforeEach(async () => {
     db = createTestDb();
     await migrateAndSeed(db);
     editor = new LevelEditor(db);
+    // Seed test theme
+    editor.createTheme(THEME_ID, {
+      name: 'firePits',
+      displayName: 'THE FIRE PITS',
+      primaryWall: 1,
+      accentWalls: [3, 3],
+      ambientColor: '#ff4422',
+    });
   });
 
   // -------------------------------------------------------------------------
