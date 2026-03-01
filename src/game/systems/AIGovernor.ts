@@ -155,6 +155,13 @@ export class AIGovernor {
   private readonly STUCK_STRIKES_BURST = 1;
   /** Strikes needed before forcing explore state. */
   private readonly STUCK_STRIKES_EXPLORE = 2;
+  /** Cooldown (ms) after forced explore to prevent decide() from switching back. */
+  private forceExploreCooldown = 0;
+  private readonly FORCE_EXPLORE_DURATION = 4000;
+  /** Active random burst direction (persists for BURST_DURATION ms). */
+  private burstDirection: { x: number; z: number } | null = null;
+  private burstTimer = 0;
+  private readonly BURST_DURATION = 800;
 
   constructor(camera: AICamera, player: Entity, grid: MapCell[][], cellSize: number) {
     this.camera = camera;
@@ -244,35 +251,9 @@ export class AIGovernor {
       this.lastDecisionTime = now;
     }
 
-    // --- Stuck detection: periodic check if AI has moved enough ---
-    // Wall sliding can cause small frame-to-frame movement that defeats simple checks.
-    // Instead, every STUCK_CHECK_INTERVAL ms we verify the AI moved at least 2 units
-    // from its checkpoint position. Consecutive failures trigger escalating responses.
-    const pos = this.player.position;
-    this.stuckCheckTimer += dt;
-    if (this.stuckCheckTimer >= this.STUCK_CHECK_INTERVAL) {
-      this.stuckCheckTimer = 0;
-      const dx = pos.x - this.stuckCheckpoint.x;
-      const dz = pos.z - this.stuckCheckpoint.z;
-      const distSq = dx * dx + dz * dz;
-      if (distSq < this.STUCK_MIN_DIST_SQ) {
-        this.stuckStrikes++;
-        if (this.stuckStrikes >= this.STUCK_STRIKES_EXPLORE) {
-          // Hard reset: force explore with cleared path
-          this.setState('explore', null);
-          this.stuckStrikes = 0;
-        } else if (this.stuckStrikes >= this.STUCK_STRIKES_BURST) {
-          // Random movement burst to unstick
-          const angle = Math.random() * Math.PI * 2;
-          this.outputFrame.moveX = Math.cos(angle);
-          this.outputFrame.moveZ = Math.sin(angle);
-          this.waypoints = [];
-        }
-      } else {
-        // Making progress — reset strikes
-        this.stuckStrikes = 0;
-      }
-      this.stuckCheckpoint = vec3(pos.x, pos.y, pos.z);
+    // Tick down force-explore cooldown
+    if (this.forceExploreCooldown > 0) {
+      this.forceExploreCooldown -= dt;
     }
 
     // --- Execute behaviour ---
@@ -299,6 +280,51 @@ export class AIGovernor {
     // Auto-reload
     this.handleReload();
 
+    // --- Stuck detection (AFTER state executor so burst overrides movement) ---
+    // Wall sliding can cause positional drift that defeats simple checks.
+    // Every STUCK_CHECK_INTERVAL ms we verify the AI moved at least 2 units.
+    // Consecutive failures trigger escalating responses.
+    const pos = this.player.position;
+    this.stuckCheckTimer += dt;
+    if (this.stuckCheckTimer >= this.STUCK_CHECK_INTERVAL) {
+      this.stuckCheckTimer = 0;
+      const dx = pos.x - this.stuckCheckpoint.x;
+      const dz = pos.z - this.stuckCheckpoint.z;
+      const distSq = dx * dx + dz * dz;
+      if (distSq < this.STUCK_MIN_DIST_SQ) {
+        this.stuckStrikes++;
+        if (this.stuckStrikes >= this.STUCK_STRIKES_EXPLORE) {
+          // Hard reset: force explore with cooldown so decide() can't override
+          this.setState('explore', null);
+          this.forceExploreCooldown = this.FORCE_EXPLORE_DURATION;
+          this.stuckStrikes = 0;
+          this.waypoints = [];
+        }
+        // Start a random burst that persists for BURST_DURATION ms
+        const angle = Math.random() * Math.PI * 2;
+        this.burstDirection = { x: Math.cos(angle), z: Math.sin(angle) };
+        this.burstTimer = this.BURST_DURATION;
+        this.waypoints = [];
+      } else {
+        // Making progress — reset strikes
+        this.stuckStrikes = 0;
+      }
+      this.stuckCheckpoint = vec3(pos.x, pos.y, pos.z);
+    }
+
+    // Apply active burst direction — overrides state executor output
+    if (this.burstTimer > 0) {
+      this.burstTimer -= dt;
+      if (this.burstDirection) {
+        this.outputFrame.moveX = this.burstDirection.x;
+        this.outputFrame.moveZ = this.burstDirection.z;
+        this.outputFrame.sprint = true;
+      }
+      if (this.burstTimer <= 0) {
+        this.burstDirection = null;
+      }
+    }
+
     // --- Emit output frame if in callback mode ---
     if (this.outputCallback) {
       this.outputFrame.sprint = this.sprintRequested;
@@ -316,6 +342,11 @@ export class AIGovernor {
   // -----------------------------------------------------------------------
 
   private decide(): void {
+    // If we were force-explored by stuck detection, don't override until cooldown expires
+    if (this.forceExploreCooldown > 0 && this._state === 'explore') {
+      return;
+    }
+
     const hp = this.player.player!.hp;
     const maxHp = this.player.player!.maxHp;
     const hpRatio = hp / maxHp;
@@ -479,6 +510,21 @@ export class AIGovernor {
   }
 
   private execExplore(dt: number): void {
+    // During forced explore (stuck recovery), use YUKA wander to go random directions.
+    // Pathfinding to enemies likely leads back to the same stuck spot.
+    if (this.forceExploreCooldown > 0) {
+      this.wanderBehavior.active = true;
+      this.arriveBehavior.active = false;
+      this.applySteeringMovement(dt, SPRINT_SPEED);
+      this.sprintRequested = true;
+      const vel = this.vehicle.velocity;
+      if (vel.squaredLength() > 0.0001) {
+        const p = this.camera.position;
+        this.aimAt(vec3(p.x + vel.x * 5, p.y, p.z + vel.z * 5));
+      }
+      return;
+    }
+
     // Priority 1: If enemies exist anywhere, pathfind toward the nearest one
     const enemies = this.getEnemies();
     const nearestEnemy = this.nearest(enemies);
