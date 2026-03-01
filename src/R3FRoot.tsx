@@ -164,12 +164,16 @@ function GameScene() {
   useEffect(() => {
     // --- Capture player state BEFORE clearing entities ---
     // This preserves HP, weapons, and ammo across floor transitions.
+    // IMPORTANT: Only carry over from a LIVING player (hp > 0).
+    // A dead player's 0 HP must NOT be carried over to a new game,
+    // because `0 ?? fallback` = 0 (nullish coalescing skips 0).
     const oldPlayer = world.entities.find((e) => e.type === 'player' && e.player);
-    const carryoverHp = oldPlayer?.player?.hp;
-    const carryoverMaxHp = oldPlayer?.player?.maxHp;
-    const carryoverWeapon = oldPlayer?.player?.currentWeapon;
-    const carryoverWeapons = oldPlayer?.player?.weapons;
-    const carryoverAmmo = oldPlayer?.ammo;
+    const isAlive = (oldPlayer?.player?.hp ?? 0) > 0;
+    const carryoverHp = isAlive ? oldPlayer?.player?.hp : undefined;
+    const carryoverMaxHp = isAlive ? oldPlayer?.player?.maxHp : undefined;
+    const carryoverWeapon = isAlive ? oldPlayer?.player?.currentWeapon : undefined;
+    const carryoverWeapons = isAlive ? oldPlayer?.player?.weapons : undefined;
+    const carryoverAmmo = isAlive ? oldPlayer?.ammo : undefined;
 
     // Reset all systems before clearing entities
     aiSystemReset();
