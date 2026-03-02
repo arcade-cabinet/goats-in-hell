@@ -19,6 +19,7 @@
 import { eq } from 'drizzle-orm';
 
 import { MapCell } from '../game/levels/LevelGenerator';
+import { getAvailableEnemiesForCircle, getAvailablePropsForCircle } from './AssetDiscovery';
 import type { DrizzleDb } from './connection';
 import { compileGrid, packGrid } from './GridCompiler';
 import * as schema from './schema';
@@ -1228,5 +1229,72 @@ export class LevelEditor {
       })
       .where(eq(schema.levels.id, levelId))
       .run();
+  }
+
+  // -------------------------------------------------------------------------
+  // Asset discovery — delegate to AssetDiscovery module
+  // -------------------------------------------------------------------------
+
+  /**
+   * Get Meshy AI prop asset IDs available for a given circle.
+   * Merges general props with circle-specific props.
+   * @param circle - Circle number (1-9).
+   * @returns Sorted array of asset ID strings (e.g. 'hellfire-brazier', 'fog-lantern').
+   */
+  getAvailableProps(circle: number): string[] {
+    return getAvailablePropsForCircle(circle);
+  }
+
+  /**
+   * Get Meshy AI enemy asset IDs available for a given circle.
+   * Merges general enemies with circle-specific enemies and bosses.
+   * @param circle - Circle number (1-9).
+   * @returns Sorted array of asset ID strings (e.g. 'goat-brute', 'boss-azazel').
+   */
+  getAvailableEnemies(circle: number): string[] {
+    return getAvailableEnemiesForCircle(circle);
+  }
+
+  // -------------------------------------------------------------------------
+  // decorateRoom — batch prop placement
+  // -------------------------------------------------------------------------
+
+  /**
+   * Batch-place multiple decorative props in a room via `spawnProp()`.
+   * @param levelId - Parent level ID.
+   * @param roomId - Room to decorate.
+   * @param decorations - Array of prop specifications with type, position, and optional surface anchor.
+   * @returns Array of generated entity IDs (one per decoration).
+   */
+  decorateRoom(
+    levelId: string,
+    roomId: string,
+    decorations: Array<{
+      type: string;
+      x: number;
+      z: number;
+      elevation?: number;
+      facing?: number;
+      surfaceAnchor?: {
+        face: string;
+        offsetX: number;
+        offsetY: number;
+        offsetZ: number;
+        rotation: number[];
+        scale: number;
+      };
+    }>,
+  ): string[] {
+    const ids: string[] = [];
+    for (const dec of decorations) {
+      const id = this.spawnProp(levelId, dec.type, dec.x, dec.z, {
+        roomId,
+        elevation: dec.elevation,
+        facing: dec.facing,
+        surfaceAnchor: dec.surfaceAnchor,
+      });
+      ids.push(id);
+    }
+    return ids;
   }
 }
