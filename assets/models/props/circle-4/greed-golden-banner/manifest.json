@@ -2,6 +2,29 @@
   "id": "greed-golden-banner",
   "name": "Golden Wealth Banner",
   "type": "prop",
+  "seed": 3276887636,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac8f-0ec7-7178-a6f0-a256fec6526e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac8f-0ec7-7178-a6f0-a256fec6526e"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac90-6f19-71b4-85be-bb54ce5f09ab",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac90-6f19-71b4-85be-bb54ce5f09ab"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A wall-mounted rigid solid banner made of hammered gold sheet metal, embossed with a goat skull and coin motifs, mounted on a dark iron rod with ornate end caps, solid rigid wall decoration, game prop, isolated object, dark background, front orientation view",

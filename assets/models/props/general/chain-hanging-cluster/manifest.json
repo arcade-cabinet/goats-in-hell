@@ -2,6 +2,29 @@
   "id": "chain-hanging-cluster",
   "name": "Hanging Chain Cluster",
   "type": "prop",
+  "seed": 3961432285,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac79-3b70-7db4-9f36-e2ce11434f07",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac79-3b70-7db4-9f36-e2ce11434f07"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac7c-1b79-7976-9db9-decdf673a7aa",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac7c-1b79-7976-9db9-decdf673a7aa"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A cluster of 3-4 heavy iron chains hanging from ceiling anchor points at different lengths, solid rigid chain links with hooks and shackles, dungeon torture chamber decoration, dark fantasy game prop, ceiling-mounted hanging down, isolated object, dark background",

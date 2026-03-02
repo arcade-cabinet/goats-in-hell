@@ -2,6 +2,29 @@
   "id": "gluttony-meat-carcass",
   "name": "Hanging Meat Carcass",
   "type": "prop",
+  "seed": 3779791852,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac8b-2ebf-7b16-8eed-f0e3ea6a98f4",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac8b-2ebf-7b16-8eed-f0e3ea6a98f4"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac8d-0412-7c70-9444-018bae6dc8f3",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac8d-0412-7c70-9444-018bae6dc8f3"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A large unidentifiable meat carcass hanging from a ceiling hook on a chain, dark reddish-brown with sickly green rot patches, ribcage exposed, solid sculpted drip of greenish fluid at the bottom, dark fantasy gluttony-themed game prop, isolated object, dark background, hanging view",

@@ -2,6 +2,29 @@
   "id": "treachery-frozen-stalactite",
   "name": "Frozen Stalactite Cluster",
   "type": "prop",
+  "seed": 1814621150,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac92-1618-7bcf-bcf5-ffcf789a6911",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac92-1618-7bcf-bcf5-ffcf789a6911"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac94-19e8-7c4b-9be1-e5790001b3c6",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac94-19e8-7c4b-9be1-e5790001b3c6"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A cluster of long hanging frozen stalactites formed from dark ice, jagged icicle formations hanging from a ceiling mount point, translucent blue-black ice drips frozen in time, ceiling hazard decoration, dark fantasy game prop, isolated object, dark background, bottom-up orientation view",

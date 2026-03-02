@@ -1,0 +1,41 @@
+{
+  "id": "limbo-ritual-circle",
+  "name": "Floor Ritual Circle",
+  "type": "prop",
+  "seed": 2672604346,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac91-016f-7cf1-b0b4-488bcb8ca93e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac91-016f-7cf1-b0b4-488bcb8ca93e"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac92-697c-7bda-adfc-1ac542f5528e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac92-697c-7bda-adfc-1ac542f5528e"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A circular ritual marking carved into a stone floor slab, concentric rings with arcane runes and geometric patterns etched into dark granite, faintly glowing pale blue lines in the carved grooves, approximately 2 meters diameter, flat relief carving not raised, ancient and worn with some symbols partially eroded, dark fantasy dungeon game prop, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark granite base, carved groove lines with faint pale blue luminescence, worn arcane runes, centuries of erosion on stone surface",
+    "enablePbr": true
+  }
+}

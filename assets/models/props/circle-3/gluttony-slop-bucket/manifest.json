@@ -2,6 +2,29 @@
   "id": "gluttony-slop-bucket",
   "name": "Slop Bucket",
   "type": "prop",
+  "seed": 3031615420,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacae-5588-740a-a1c8-9f6539c7225e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacae-5588-740a-a1c8-9f6539c7225e"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacaf-d868-754a-b35e-5549e8a002bb",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacaf-d868-754a-b35e-5549e8a002bb"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A wooden bucket tipped on its side with solid sculpted green-brown slop spilling out across the floor, rusted iron handle, stained dark wood, nauseating refuse, dark fantasy gluttony-themed floor decoration game prop, isolated object, dark background, side view",

@@ -2,6 +2,29 @@
   "id": "ornate-mirror",
   "name": "Ornate Mirror",
   "type": "prop",
+  "seed": 3030451295,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacac-9ef9-73c1-ab27-914766a65bbb",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacac-9ef9-73c1-ab27-914766a65bbb"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacad-ab23-74ff-9117-d5f7884dcbaa",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacad-ab23-74ff-9117-d5f7884dcbaa"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A tall ornate standing mirror with a cracked reflective surface, gilded frame with demonic goat head carvings at the top, baroque style, lust and vanity theme, stylized low poly game prop, dark fantasy, isometric view",

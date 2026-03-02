@@ -2,6 +2,29 @@
   "id": "stalactite-cluster",
   "name": "Stalactite Cluster",
   "type": "prop",
+  "seed": 402122633,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacf8-2885-7c82-8aeb-014d58b71ae2",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacf8-2885-7c82-8aeb-014d58b71ae2"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacfc-f3f5-7c7c-9791-e5d1f99ffdf3",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacfc-f3f5-7c7c-9791-e5d1f99ffdf3"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A cluster of stone stalactites hanging down from a ceiling mount point, 4-5 pointed mineral formations of varying lengths, natural cave dungeon ceiling decoration, dark fantasy game prop, ceiling-mounted hanging down, isolated object, dark background",

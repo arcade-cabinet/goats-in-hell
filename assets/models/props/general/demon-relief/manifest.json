@@ -2,6 +2,29 @@
   "id": "demon-relief",
   "name": "Demonic Wall Relief",
   "type": "prop",
+  "seed": 1966307278,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cad6e-bb6a-798f-8160-af4c3c49f260",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad6e-bb6a-798f-8160-af4c3c49f260"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cad70-8ea6-77e1-a4b2-cf9f97bb7bdc",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad70-8ea6-77e1-a4b2-cf9f97bb7bdc"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A stone wall relief carving of a demonic face with horns and fanged mouth, rectangular stone panel with deeply carved grotesque hellish visage, dungeon wall decoration, dark fantasy game prop, wall-mounted flat-backed, isolated object, dark background",
@@ -9,7 +32,7 @@
     "targetPolycount": 6000,
     "topology": "quad",
     "shouldRemesh": true,
-    "symmetryMode": "bilateral"
+    "symmetryMode": "auto"
   },
   "textTo3DRefineTask": {
     "texturePrompt": "Dark carved stone with deep shadow in eye sockets, worn nose and horn tips, faint red glow in eyes",

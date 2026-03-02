@@ -9,6 +9,7 @@ import BetterSqlite3 from 'better-sqlite3';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import {
   CONNECTION_TYPES,
+  DECAL_TYPES,
   ENEMY_TYPES,
   ENV_TYPES,
   LevelEditor,
@@ -376,556 +377,481 @@ export async function buildCircle3(dbPath: string) {
 
   // --- Gullet (bounds: 17, 2, 6, 14) ---
   //   Interior: x=[18..21], z=[3..14]
-  // 4x Lantern_Wall (walls, alternating E/W)
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 18, 4, {
+  //   From 3D Spatial Design: 15 assets total
+  // Structural: 2x gluttony-bloated-arch, 2x gluttony-flesh-door-frame
+  editor.spawnProp(LEVEL_ID, 'gluttony-bloated-arch', 20, 2, { roomId: gulletId }); // north entrance
+  editor.spawnProp(LEVEL_ID, 'gluttony-flesh-door-frame', 19, 8, { roomId: gulletId }); // first narrow-to-wide
+  editor.spawnProp(LEVEL_ID, 'gluttony-flesh-door-frame', 19, 11, { roomId: gulletId }); // second constriction
+  editor.spawnProp(LEVEL_ID, 'gluttony-bloated-arch', 20, 15, { roomId: gulletId }); // south exit widens
+  // 4x gluttony-lantern-wall-green (walls)
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 17, 3, {
     roomId: gulletId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.9 },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 21, 7, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 22, 3, {
     roomId: gulletId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.9 },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 18, 10, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 17, 9, {
     roomId: gulletId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.9 },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 21, 13, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 22, 12, {
     roomId: gulletId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.9 },
   });
-  // 2x Bucket_Wooden (floor, in wide sections)
-  editor.spawnProp(LEVEL_ID, 'Bucket_Wooden', 19, 5, { roomId: gulletId });
-  editor.spawnProp(LEVEL_ID, 'Bucket_Wooden', 20, 12, { roomId: gulletId });
-  // 1x Rope_1 (hanging, narrow section)
-  editor.spawnProp(LEVEL_ID, 'Rope_1', 19, 9, { roomId: gulletId });
+  // 2x gluttony-slop-bucket (floor, wide sections)
+  editor.spawnProp(LEVEL_ID, 'gluttony-slop-bucket', 18, 5, { roomId: gulletId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-slop-bucket', 21, 10, { roomId: gulletId });
+  // 1x gluttony-rope-tendril (ceiling, narrow section)
+  editor.spawnProp(LEVEL_ID, 'gluttony-rope-tendril', 19, 7, { roomId: gulletId });
+  // 2x gluttony-stomach-wall-growth (wall surfaces)
+  editor.spawnProp(LEVEL_ID, 'gluttony-stomach-wall-growth', 17, 6, {
+    roomId: gulletId,
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.7 },
+  });
+  editor.spawnProp(LEVEL_ID, 'gluttony-stomach-wall-growth', 22, 10, {
+    roomId: gulletId,
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.7 },
+  });
+  // 2x gluttony-dripping-stalactite (ceiling)
+  editor.spawnProp(LEVEL_ID, 'gluttony-dripping-stalactite', 19, 4, { roomId: gulletId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-dripping-stalactite', 20, 11, { roomId: gulletId });
+  // 1x gluttony-mucus-web (narrow section corner)
+  editor.spawnProp(LEVEL_ID, 'gluttony-mucus-web', 22, 7, { roomId: gulletId });
+  // 1x gluttony-maggot-mound (exit wide section floor)
+  editor.spawnProp(LEVEL_ID, 'gluttony-maggot-mound', 18, 13, { roomId: gulletId });
 
   // --- Feast Hall (bounds: 13, 20, 14, 10) ---
   //   Interior: x=[14..25], z=[21..28]
-  // 4x Lantern_Wall (walls, corners)
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 14, 21, {
+  //   From 3D Spatial Design: 19 unique assets
+  // Structural: 2x gluttony-bloated-arch, 1x gluttony-flesh-door-frame
+  editor.spawnProp(LEVEL_ID, 'gluttony-bloated-arch', 20, 20, { roomId: feastHallId }); // north entrance
+  editor.spawnProp(LEVEL_ID, 'gluttony-bloated-arch', 20, 29, { roomId: feastHallId }); // south exit
+  editor.spawnProp(LEVEL_ID, 'gluttony-flesh-door-frame', 13, 27, { roomId: feastHallId }); // west wall secret
+  // 4x gluttony-lantern-wall-green (corners)
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 13, 20, {
     roomId: feastHallId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 25, 21, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 26, 20, {
     roomId: feastHallId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 14, 28, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 13, 29, {
     roomId: feastHallId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 25, 28, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 26, 29, {
     roomId: feastHallId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  // 1x Chandelier (ceiling center)
-  editor.spawnProp(LEVEL_ID, 'Chandelier', 20, 25, { roomId: feastHallId });
-  // 1x Table_Large (center axis, from (17,24) to (25,26))
-  editor.spawnProp(LEVEL_ID, 'Table_Large', 20, 25, { roomId: feastHallId });
-  // 4x Table_Plate (on table, evenly spaced)
-  editor.spawnProp(LEVEL_ID, 'Table_Plate', 18, 25, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'Table_Plate', 20, 25, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'Table_Plate', 22, 25, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'Table_Plate', 24, 25, { roomId: feastHallId });
-  // 4x Table_Fork + 4x Table_Knife + 4x Table_Spoon (on table, place settings)
-  editor.spawnProp(LEVEL_ID, 'Table_Fork', 18, 24, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'Table_Fork', 20, 24, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'Table_Fork', 22, 24, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'Table_Fork', 24, 24, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'Table_Knife', 18, 26, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'Table_Knife', 20, 26, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'Table_Knife', 22, 26, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'Table_Knife', 24, 26, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'Table_Spoon', 19, 24, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'Table_Spoon', 21, 24, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'Table_Spoon', 23, 24, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'Table_Spoon', 25, 24, { roomId: feastHallId });
-  // 2x Cauldron (flanking table ends)
-  editor.spawnProp(LEVEL_ID, 'Cauldron', 16, 25, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'Cauldron', 25, 25, { roomId: feastHallId });
-  // 2x FarmCrate_Apple (NW and NE)
-  editor.spawnProp(LEVEL_ID, 'FarmCrate_Apple', 14, 21, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'FarmCrate_Apple', 25, 21, { roomId: feastHallId });
-  // 3x Barrel_Apples (along N wall)
-  editor.spawnProp(LEVEL_ID, 'Barrel_Apples', 16, 21, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'Barrel_Apples', 19, 21, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'Barrel_Apples', 22, 21, { roomId: feastHallId });
-  // 4x SmallBottles_1 (on table and floor)
-  editor.spawnProp(LEVEL_ID, 'SmallBottles_1', 17, 25, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'SmallBottles_1', 21, 25, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'SmallBottles_1', 15, 23, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'SmallBottles_1', 24, 27, { roomId: feastHallId });
-  // 6x Mug (scattered on table and floor)
-  editor.spawnProp(LEVEL_ID, 'Mug', 18, 25, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'Mug', 20, 26, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'Mug', 22, 25, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'Mug', 16, 23, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'Mug', 23, 28, { roomId: feastHallId });
-  editor.spawnProp(LEVEL_ID, 'Mug', 15, 27, { roomId: feastHallId });
+  // 1x feast-table (center, (17,24)-(25,26))
+  editor.spawnProp(LEVEL_ID, 'feast-table', 20, 25, { roomId: feastHallId });
+  // 1x lust-chandelier (ceiling center, warm overhead)
+  editor.spawnProp(LEVEL_ID, 'lust-chandelier', 20, 24, { roomId: feastHallId });
+  // 2x bile-cauldron (flanking table ends)
+  editor.spawnProp(LEVEL_ID, 'bile-cauldron', 16, 25, { roomId: feastHallId });
+  editor.spawnProp(LEVEL_ID, 'bile-cauldron', 26, 25, { roomId: feastHallId });
+  // 3x gluttony-rotting-barrel (north wall, overflowing)
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotting-barrel', 14, 21, { roomId: feastHallId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotting-barrel', 17, 21, { roomId: feastHallId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotting-barrel', 25, 21, { roomId: feastHallId });
+  // 2x gluttony-rotten-crate (near table ends)
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotten-crate', 14, 22, { roomId: feastHallId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotten-crate', 25, 22, { roomId: feastHallId });
+  // 4x gluttony-overflowing-goblet (on table, scattered)
+  editor.spawnProp(LEVEL_ID, 'gluttony-overflowing-goblet', 18, 25, { roomId: feastHallId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-overflowing-goblet', 20, 25, { roomId: feastHallId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-overflowing-goblet', 22, 25, { roomId: feastHallId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-overflowing-goblet', 24, 25, { roomId: feastHallId });
+  // 4x gluttony-bone-plate (on table, place settings)
+  editor.spawnProp(LEVEL_ID, 'gluttony-bone-plate', 19, 24, { roomId: feastHallId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-bone-plate', 21, 24, { roomId: feastHallId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-bone-plate', 23, 24, { roomId: feastHallId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-bone-plate', 19, 26, { roomId: feastHallId });
+  // 1x gluttony-swollen-cask (SW corner)
+  editor.spawnProp(LEVEL_ID, 'gluttony-swollen-cask', 14, 28, { roomId: feastHallId });
+  // 1x gluttony-slop-bucket (SE corner)
+  editor.spawnProp(LEVEL_ID, 'gluttony-slop-bucket', 26, 28, { roomId: feastHallId });
+  // 2x gluttony-fungus-pillar (flanking table center)
+  editor.spawnProp(LEVEL_ID, 'gluttony-fungus-pillar', 14, 24, { roomId: feastHallId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-fungus-pillar', 26, 24, { roomId: feastHallId });
+  // 1x gluttony-meat-carcass (hanging near table north)
+  editor.spawnProp(LEVEL_ID, 'gluttony-meat-carcass', 16, 22, { roomId: feastHallId });
+  // 1x gluttony-dripping-stalactite (ceiling above table)
+  editor.spawnProp(LEVEL_ID, 'gluttony-dripping-stalactite', 20, 21, { roomId: feastHallId });
 
   // --- Larder (bounds: 15, 34, 10, 12) ---
   //   Interior: x=[16..23], z=[35..44]
-  // 8x Shelf_Arch (walls, 2 per platform level, alternating E/W)
-  editor.spawnProp(LEVEL_ID, 'Shelf_Arch', 16, 36, {
+  //   From 3D Spatial Design: ~35 assets
+  // Structural: 2x gluttony-bloated-arch
+  editor.spawnProp(LEVEL_ID, 'gluttony-bloated-arch', 20, 34, { roomId: larderId }); // north entrance
+  editor.spawnProp(LEVEL_ID, 'gluttony-bloated-arch', 20, 45, { roomId: larderId }); // south exit
+  // 8x gluttony-shelf-arch (walls, 2 per platform level)
+  editor.spawnProp(LEVEL_ID, 'gluttony-shelf-arch', 15, 35, {
     roomId: larderId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 0.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Shelf_Arch', 23, 36, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-shelf-arch', 24, 35, {
     roomId: larderId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 0.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Shelf_Arch', 16, 38, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-shelf-arch', 15, 38, {
     roomId: larderId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 0.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Shelf_Arch', 23, 38, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-shelf-arch', 24, 38, {
     roomId: larderId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 0.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Shelf_Arch', 16, 40, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-shelf-arch', 15, 41, {
     roomId: larderId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 0.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Shelf_Arch', 23, 40, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-shelf-arch', 24, 41, {
     roomId: larderId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 0.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Shelf_Arch', 16, 42, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-shelf-arch', 15, 44, {
     roomId: larderId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 0.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Shelf_Arch', 23, 42, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-shelf-arch', 24, 44, {
     roomId: larderId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 0.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  // 6x Barrel (on shelves, stacked)
-  editor.spawnProp(LEVEL_ID, 'Barrel', 17, 36, { roomId: larderId });
-  editor.spawnProp(LEVEL_ID, 'Barrel', 22, 36, { roomId: larderId });
-  editor.spawnProp(LEVEL_ID, 'Barrel', 17, 40, { roomId: larderId });
-  editor.spawnProp(LEVEL_ID, 'Barrel', 22, 40, { roomId: larderId });
-  editor.spawnProp(LEVEL_ID, 'Barrel', 17, 43, { roomId: larderId });
-  editor.spawnProp(LEVEL_ID, 'Barrel', 22, 43, { roomId: larderId });
-  // 6x Crate_Wooden (on shelves, stacked)
-  editor.spawnProp(LEVEL_ID, 'Crate_Wooden', 18, 36, { roomId: larderId });
-  editor.spawnProp(LEVEL_ID, 'Crate_Wooden', 21, 36, { roomId: larderId });
-  editor.spawnProp(LEVEL_ID, 'Crate_Wooden', 18, 39, { roomId: larderId });
-  editor.spawnProp(LEVEL_ID, 'Crate_Wooden', 21, 39, { roomId: larderId });
-  editor.spawnProp(LEVEL_ID, 'Crate_Wooden', 18, 42, { roomId: larderId });
-  editor.spawnProp(LEVEL_ID, 'Crate_Wooden', 21, 42, { roomId: larderId });
-  // 4x FarmCrate_Apple (on shelves, overflowing)
-  editor.spawnProp(LEVEL_ID, 'FarmCrate_Apple', 19, 37, { roomId: larderId });
-  editor.spawnProp(LEVEL_ID, 'FarmCrate_Apple', 20, 39, { roomId: larderId });
-  editor.spawnProp(LEVEL_ID, 'FarmCrate_Apple', 19, 41, { roomId: larderId });
-  editor.spawnProp(LEVEL_ID, 'FarmCrate_Apple', 20, 43, { roomId: larderId });
-  // 3x Rope_1 (hanging between levels, safe path markers)
-  editor.spawnProp(LEVEL_ID, 'Rope_1', 17, 37, { roomId: larderId });
-  editor.spawnProp(LEVEL_ID, 'Rope_1', 20, 40, { roomId: larderId });
-  editor.spawnProp(LEVEL_ID, 'Rope_1', 19, 43, { roomId: larderId });
-  // 2x Rope_2 (alternate paths)
-  editor.spawnProp(LEVEL_ID, 'Rope_2', 22, 38, { roomId: larderId });
-  editor.spawnProp(LEVEL_ID, 'Rope_2', 21, 42, { roomId: larderId });
-  // 1x Rope_3 (coiled on bottom platform)
-  editor.spawnProp(LEVEL_ID, 'Rope_3', 20, 44, { roomId: larderId });
-  // 4x Lantern_Wall (one per platform level)
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 16, 35, {
+  // 6x gluttony-rotting-barrel (on shelf surfaces, stacked)
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotting-barrel', 17, 36, { roomId: larderId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotting-barrel', 22, 36, { roomId: larderId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotting-barrel', 17, 40, { roomId: larderId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotting-barrel', 22, 40, { roomId: larderId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotting-barrel', 17, 43, { roomId: larderId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotting-barrel', 22, 43, { roomId: larderId });
+  // 6x gluttony-rotten-crate (on shelf surfaces, stacked)
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotten-crate', 18, 36, { roomId: larderId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotten-crate', 21, 36, { roomId: larderId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotten-crate', 18, 39, { roomId: larderId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotten-crate', 21, 39, { roomId: larderId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotten-crate', 18, 42, { roomId: larderId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotten-crate', 21, 42, { roomId: larderId });
+  // 3x gluttony-rope-tendril (hanging, safe path markers)
+  editor.spawnProp(LEVEL_ID, 'gluttony-rope-tendril', 17, 37, { roomId: larderId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-rope-tendril', 20, 40, { roomId: larderId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-rope-tendril', 19, 43, { roomId: larderId });
+  // 2x gluttony-rope-tendril (alternate path markers)
+  editor.spawnProp(LEVEL_ID, 'gluttony-rope-tendril', 22, 38, { roomId: larderId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-rope-tendril', 21, 42, { roomId: larderId });
+  // 4x gluttony-lantern-wall-green (one per platform level)
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 15, 36, {
     roomId: larderId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.0, offsetZ: 0, rotation: [0, 0, 0], scale: 0.9 },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 23, 38, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 24, 39, {
     roomId: larderId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.0, offsetZ: 0, rotation: [0, 0, 0], scale: 0.9 },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 16, 41, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 15, 42, {
     roomId: larderId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.0, offsetZ: 0, rotation: [0, 0, 0], scale: 0.9 },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 23, 44, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 24, 44, {
     roomId: larderId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.0, offsetZ: 0, rotation: [0, 0, 0], scale: 0.9 },
   });
-  // 4x SmallBottle (scattered on shelves)
-  editor.spawnProp(LEVEL_ID, 'SmallBottle', 19, 36, { roomId: larderId });
-  editor.spawnProp(LEVEL_ID, 'SmallBottle', 21, 38, { roomId: larderId });
-  editor.spawnProp(LEVEL_ID, 'SmallBottle', 18, 41, { roomId: larderId });
-  editor.spawnProp(LEVEL_ID, 'SmallBottle', 22, 44, { roomId: larderId });
+  // 2x gluttony-overflowing-goblet (on shelves)
+  editor.spawnProp(LEVEL_ID, 'gluttony-overflowing-goblet', 16, 36, { roomId: larderId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-overflowing-goblet', 23, 40, { roomId: larderId });
+  // 2x gluttony-dripping-stalactite (ceiling at upper levels)
+  editor.spawnProp(LEVEL_ID, 'gluttony-dripping-stalactite', 19, 35, { roomId: larderId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-dripping-stalactite', 21, 41, { roomId: larderId });
+  // 1x gluttony-meat-carcass (hanging from ceiling)
+  editor.spawnProp(LEVEL_ID, 'gluttony-meat-carcass', 23, 36, { roomId: larderId });
 
   // --- Bile Cistern (bounds: 14, 50, 12, 10) ---
   //   Interior: x=[15..24], z=[51..58]
-  // 4x Lantern_Wall (walls, corners)
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 15, 51, {
+  //   From 3D Spatial Design: 14 assets
+  // Structural: 2x gluttony-bloated-arch
+  editor.spawnProp(LEVEL_ID, 'gluttony-bloated-arch', 20, 50, { roomId: bileCisternId }); // north entrance
+  editor.spawnProp(LEVEL_ID, 'gluttony-bloated-arch', 20, 59, { roomId: bileCisternId }); // south exit
+  // 4x gluttony-lantern-wall-green (corners)
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 14, 50, {
     roomId: bileCisternId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 24, 51, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 25, 50, {
     roomId: bileCisternId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 15, 58, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 14, 59, {
     roomId: bileCisternId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 24, 58, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 25, 59, {
     roomId: bileCisternId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  // 3x Bucket_Wooden (on walkways, tipped)
-  editor.spawnProp(LEVEL_ID, 'Bucket_Wooden', 17, 53, { roomId: bileCisternId });
-  editor.spawnProp(LEVEL_ID, 'Bucket_Wooden', 21, 55, { roomId: bileCisternId });
-  editor.spawnProp(LEVEL_ID, 'Bucket_Wooden', 19, 57, { roomId: bileCisternId });
-  // 2x Barrel (on walkway intersections)
-  editor.spawnProp(LEVEL_ID, 'Barrel', 18, 54, { roomId: bileCisternId });
-  editor.spawnProp(LEVEL_ID, 'Barrel', 23, 56, { roomId: bileCisternId });
-  // 2x Cauldron (on walkways, bubbling acid-adjacent)
-  editor.spawnProp(LEVEL_ID, 'Cauldron', 16, 52, { roomId: bileCisternId });
-  editor.spawnProp(LEVEL_ID, 'Cauldron', 22, 56, { roomId: bileCisternId });
+  // 3x gluttony-slop-bucket (on walkways, tipped)
+  editor.spawnProp(LEVEL_ID, 'gluttony-slop-bucket', 16, 52, { roomId: bileCisternId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-slop-bucket', 22, 55, { roomId: bileCisternId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-slop-bucket', 24, 57, { roomId: bileCisternId });
+  // 2x gluttony-rotting-barrel (walkway intersections)
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotting-barrel', 18, 53, { roomId: bileCisternId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotting-barrel', 23, 56, { roomId: bileCisternId });
+  // 2x bile-cauldron (on walkways, bubbling acid-adjacent)
+  editor.spawnProp(LEVEL_ID, 'bile-cauldron', 16, 52, { roomId: bileCisternId });
+  editor.spawnProp(LEVEL_ID, 'bile-cauldron', 22, 56, { roomId: bileCisternId });
+  // gluttony-acid-pool-edge (walkway edges throughout -- decorative)
+  editor.spawnProp(LEVEL_ID, 'gluttony-acid-pool-edge', 19, 52, { roomId: bileCisternId });
+  // gluttony-bile-pool-surface (acid floor areas between walkways)
+  editor.spawnProp(LEVEL_ID, 'gluttony-bile-pool-surface', 20, 54, { roomId: bileCisternId });
+  // 2x gluttony-mucus-web (walkway corners)
+  editor.spawnProp(LEVEL_ID, 'gluttony-mucus-web', 15, 54, { roomId: bileCisternId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-mucus-web', 24, 53, { roomId: bileCisternId });
+  // 2x gluttony-stomach-wall-growth (wall surfaces)
+  editor.spawnProp(LEVEL_ID, 'gluttony-stomach-wall-growth', 14, 54, {
+    roomId: bileCisternId,
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.8 },
+  });
+  editor.spawnProp(LEVEL_ID, 'gluttony-stomach-wall-growth', 25, 56, {
+    roomId: bileCisternId,
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.8 },
+  });
 
   // --- Gut Arena (bounds: 14, 64, 12, 12) ---
   //   Interior: x=[15..24], z=[65..74]
-  // 4x Lantern_Wall (walls, N/S/E/W)
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 15, 65, {
+  //   From 3D Spatial Design: 17 assets
+  // Structural: 2x gluttony-bloated-arch, 4x gluttony-organic-column
+  editor.spawnProp(LEVEL_ID, 'gluttony-bloated-arch', 20, 64, { roomId: gutArenaId }); // north entrance
+  editor.spawnProp(LEVEL_ID, 'gluttony-bloated-arch', 20, 75, { roomId: gutArenaId }); // south exit
+  editor.spawnProp(LEVEL_ID, 'gluttony-organic-column', 15, 65, { roomId: gutArenaId }); // outer corners
+  editor.spawnProp(LEVEL_ID, 'gluttony-organic-column', 25, 65, { roomId: gutArenaId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-organic-column', 15, 75, { roomId: gutArenaId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-organic-column', 25, 75, { roomId: gutArenaId });
+  // 4x gluttony-lantern-wall-green (N/S/E/W walls)
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 14, 65, {
     roomId: gutArenaId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 24, 65, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 25, 65, {
     roomId: gutArenaId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 15, 74, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 14, 75, {
     roomId: gutArenaId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 24, 74, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 25, 75, {
     roomId: gutArenaId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  // 4x Bucket_Wooden (on outer ring, one per quadrant)
-  editor.spawnProp(LEVEL_ID, 'Bucket_Wooden', 16, 66, { roomId: gutArenaId });
-  editor.spawnProp(LEVEL_ID, 'Bucket_Wooden', 23, 66, { roomId: gutArenaId });
-  editor.spawnProp(LEVEL_ID, 'Bucket_Wooden', 16, 73, { roomId: gutArenaId });
-  editor.spawnProp(LEVEL_ID, 'Bucket_Wooden', 23, 73, { roomId: gutArenaId });
-  // 2x Cauldron (on middle ring, N and S bridges)
-  editor.spawnProp(LEVEL_ID, 'Cauldron', 20, 66, { roomId: gutArenaId });
-  editor.spawnProp(LEVEL_ID, 'Cauldron', 20, 73, { roomId: gutArenaId });
+  // 4x gluttony-slop-bucket (outer ring, one per quadrant)
+  editor.spawnProp(LEVEL_ID, 'gluttony-slop-bucket', 16, 66, { roomId: gutArenaId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-slop-bucket', 23, 66, { roomId: gutArenaId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-slop-bucket', 16, 73, { roomId: gutArenaId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-slop-bucket', 23, 73, { roomId: gutArenaId });
+  // 2x bile-cauldron (middle ring, N and S bridges)
+  editor.spawnProp(LEVEL_ID, 'bile-cauldron', 20, 67, { roomId: gutArenaId });
+  editor.spawnProp(LEVEL_ID, 'bile-cauldron', 20, 73, { roomId: gutArenaId });
+  // gluttony-acid-pool-edge (ring channel edges -- decorative)
+  editor.spawnProp(LEVEL_ID, 'gluttony-acid-pool-edge', 19, 68, { roomId: gutArenaId });
+  // gluttony-bile-pool-surface (acid channels between rings)
+  editor.spawnProp(LEVEL_ID, 'gluttony-bile-pool-surface', 19, 70, { roomId: gutArenaId });
+  // 2x gluttony-maggot-mound (inner ring, submerges wave 2)
+  editor.spawnProp(LEVEL_ID, 'gluttony-maggot-mound', 18, 69, { roomId: gutArenaId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-maggot-mound', 22, 69, { roomId: gutArenaId });
+  // 2x gluttony-fungus-pillar (middle ring, sightline cover)
+  editor.spawnProp(LEVEL_ID, 'gluttony-fungus-pillar', 17, 67, { roomId: gutArenaId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-fungus-pillar', 23, 71, { roomId: gutArenaId });
+  // 3x gluttony-dripping-stalactite (ceiling, organic horror)
+  editor.spawnProp(LEVEL_ID, 'gluttony-dripping-stalactite', 20, 66, { roomId: gutArenaId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-dripping-stalactite', 20, 74, { roomId: gutArenaId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-dripping-stalactite', 16, 70, { roomId: gutArenaId });
+  // 2x gluttony-stomach-wall-growth (walls, foreshadow boss room)
+  editor.spawnProp(LEVEL_ID, 'gluttony-stomach-wall-growth', 14, 68, {
+    roomId: gutArenaId,
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.7 },
+  });
+  editor.spawnProp(LEVEL_ID, 'gluttony-stomach-wall-growth', 25, 72, {
+    roomId: gutArenaId,
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.7 },
+  });
 
   // --- Pantry (bounds: 3, 32, 6, 6) ---
   //   Interior: x=[4..7], z=[33..36]
-  // 4x Lantern_Wall (walls, corners)
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 4, 33, {
+  //   From 3D Spatial Design: 8 assets
+  // Structural: 1x gluttony-bloated-arch
+  editor.spawnProp(LEVEL_ID, 'gluttony-bloated-arch', 8, 35, { roomId: pantryId }); // east entry from Feast Hall
+  // 4x gluttony-lantern-wall-green (corners, warmer light)
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 3, 32, {
     roomId: pantryId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.8 },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 7, 33, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 8, 32, {
     roomId: pantryId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.8 },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 4, 36, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 3, 37, {
     roomId: pantryId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.8 },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 7, 36, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 8, 37, {
     roomId: pantryId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.8 },
   });
-  // 3x Barrel (clean, sealed)
-  editor.spawnProp(LEVEL_ID, 'Barrel', 4, 34, { roomId: pantryId });
-  editor.spawnProp(LEVEL_ID, 'Barrel', 4, 36, { roomId: pantryId });
-  editor.spawnProp(LEVEL_ID, 'Barrel', 7, 36, { roomId: pantryId });
-  // 1x Shelf_Arch (N wall, holds Scroll_2)
-  editor.spawnProp(LEVEL_ID, 'Shelf_Arch', 5, 33, {
+  // 3x gluttony-rotting-barrel (clean sealed barrels)
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotting-barrel', 4, 34, { roomId: pantryId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotting-barrel', 4, 36, { roomId: pantryId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotting-barrel', 7, 36, { roomId: pantryId });
+  // 1x gluttony-shelf-arch (north wall, holds lore scroll)
+  editor.spawnProp(LEVEL_ID, 'gluttony-shelf-arch', 5, 32, {
     roomId: pantryId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 1.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'north', offsetX: 0, offsetY: 1.0, offsetZ: 0, rotation: [0, 0, 0], scale: 0.9 },
   });
-  // 1x Scroll_2 (on shelf)
-  editor.spawnProp(LEVEL_ID, 'Scroll_2', 5, 33, { roomId: pantryId });
-  // 1x Crate_Wooden (sealed supply crate)
-  editor.spawnProp(LEVEL_ID, 'Crate_Wooden', 6, 34, { roomId: pantryId });
+  // 1x gluttony-rotten-crate (sealed supply crate, intact)
+  editor.spawnProp(LEVEL_ID, 'gluttony-rotten-crate', 6, 34, { roomId: pantryId });
+  // 1x gluttony-pantry-chest (hero piece, treasure chest)
+  editor.spawnProp(LEVEL_ID, 'gluttony-pantry-chest', 6, 36, { roomId: pantryId });
 
   // --- Vorago's Maw (bounds: 13, 80, 14, 14) ---
   //   Interior: x=[14..25], z=[81..92]
-  // 4x Lantern_Wall (walls, N/S/E/W, high-mounted, pulsing pink-red)
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 14, 82, {
+  //   From 3D Spatial Design: 17+ assets
+  // Structural: 1x gluttony-flesh-door-frame, 2x gluttony-organic-column (entry)
+  editor.spawnProp(LEVEL_ID, 'gluttony-flesh-door-frame', 20, 80, { roomId: voragosMawId }); // mouth-shaped entry
+  editor.spawnProp(LEVEL_ID, 'gluttony-organic-column', 14, 82, { roomId: voragosMawId }); // flanking entry
+  editor.spawnProp(LEVEL_ID, 'gluttony-organic-column', 26, 82, { roomId: voragosMawId });
+  // 4x gluttony-lantern-wall-green (N/S/E/W high, pulsing pink-red recolor)
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 13, 81, {
     roomId: voragosMawId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 2.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 2.0, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 25, 82, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 26, 81, {
     roomId: voragosMawId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 2.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 2.0, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 14, 90, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 13, 93, {
     roomId: voragosMawId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 2.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 2.0, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 25, 90, {
+  editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 26, 93, {
     roomId: voragosMawId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 2.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 2.0, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  // 2x Cauldron (on entry ledge, flanking entrance)
-  editor.spawnProp(LEVEL_ID, 'Cauldron', 16, 81, { roomId: voragosMawId });
-  editor.spawnProp(LEVEL_ID, 'Cauldron', 24, 81, { roomId: voragosMawId });
-  // 2x Chain_Coil (hanging from ceiling, organic tendon-like)
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 17, 84, { roomId: voragosMawId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 23, 84, { roomId: voragosMawId });
-  // 1x Bucket_Wooden (on central platform, tipped)
-  editor.spawnProp(LEVEL_ID, 'Bucket_Wooden', 20, 86, { roomId: voragosMawId });
+  // 2x bile-cauldron (entry ledge, flanking entrance)
+  editor.spawnProp(LEVEL_ID, 'bile-cauldron', 15, 81, { roomId: voragosMawId });
+  editor.spawnProp(LEVEL_ID, 'bile-cauldron', 25, 81, { roomId: voragosMawId });
+  // 2x gluttony-rope-tendril (ceiling-hung, near platform)
+  editor.spawnProp(LEVEL_ID, 'gluttony-rope-tendril', 17, 84, { roomId: voragosMawId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-rope-tendril', 23, 84, { roomId: voragosMawId });
+  // 1x gluttony-slop-bucket (central platform, tipped)
+  editor.spawnProp(LEVEL_ID, 'gluttony-slop-bucket', 19, 84, { roomId: voragosMawId });
+  // 4x gluttony-stomach-wall-growth (walls, pulsing)
+  editor.spawnProp(LEVEL_ID, 'gluttony-stomach-wall-growth', 13, 85, {
+    roomId: voragosMawId,
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+  });
+  editor.spawnProp(LEVEL_ID, 'gluttony-stomach-wall-growth', 26, 85, {
+    roomId: voragosMawId,
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+  });
+  editor.spawnProp(LEVEL_ID, 'gluttony-stomach-wall-growth', 13, 89, {
+    roomId: voragosMawId,
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+  });
+  editor.spawnProp(LEVEL_ID, 'gluttony-stomach-wall-growth', 26, 89, {
+    roomId: voragosMawId,
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+  });
+  // gluttony-acid-pool-edge (platform edges and entry ledge edges)
+  editor.spawnProp(LEVEL_ID, 'gluttony-acid-pool-edge', 18, 83, { roomId: voragosMawId });
+  // gluttony-bile-pool-surface (full acid floor between structures)
+  editor.spawnProp(LEVEL_ID, 'gluttony-bile-pool-surface', 20, 86, { roomId: voragosMawId });
+  // 3x gluttony-dripping-stalactite (ceiling, dripping into acid)
+  editor.spawnProp(LEVEL_ID, 'gluttony-dripping-stalactite', 18, 82, { roomId: voragosMawId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-dripping-stalactite', 22, 82, { roomId: voragosMawId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-dripping-stalactite', 20, 92, { roomId: voragosMawId });
+  // 2x gluttony-meat-carcass (wall-hung, partially digested)
+  editor.spawnProp(LEVEL_ID, 'gluttony-meat-carcass', 14, 88, {
+    roomId: voragosMawId,
+    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.0, offsetZ: 0, rotation: [0, 0, 0], scale: 0.9 },
+  });
+  editor.spawnProp(LEVEL_ID, 'gluttony-meat-carcass', 26, 88, {
+    roomId: voragosMawId,
+    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.0, offsetZ: 0, rotation: [0, 0, 0], scale: 0.9 },
+  });
+  // 2x gluttony-maggot-mound (small platforms)
+  editor.spawnProp(LEVEL_ID, 'gluttony-maggot-mound', 16, 84, { roomId: voragosMawId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-maggot-mound', 24, 90, { roomId: voragosMawId });
+  // 2x gluttony-mucus-web (wall-to-platform bridging)
+  editor.spawnProp(LEVEL_ID, 'gluttony-mucus-web', 15, 86, { roomId: voragosMawId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-mucus-web', 25, 86, { roomId: voragosMawId });
+  // 2x gluttony-rope-tendril (ceiling-hung over platform)
+  editor.spawnProp(LEVEL_ID, 'gluttony-rope-tendril', 19, 88, { roomId: voragosMawId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-rope-tendril', 21, 88, { roomId: voragosMawId });
+  // 2x gluttony-organic-column (central platform edges, structural cover)
+  editor.spawnProp(LEVEL_ID, 'gluttony-organic-column', 18, 85, { roomId: voragosMawId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-organic-column', 22, 85, { roomId: voragosMawId });
+
+  // =========================================================================
+  // 5d. DECALS (bile/organic seepage stains, acid erosion cracks)
+  // =========================================================================
+
+  // --- Gullet (bounds: 17, 2, 6, 14) ---
+  // Organic moisture seeping through walls
+  editor.placeDecals(LEVEL_ID, gulletId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 17, z: 5, surface: 'wall', opacity: 0.5 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 22, z: 9, surface: 'wall', opacity: 0.5 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 17, z: 12, surface: 'wall', opacity: 0.4 },
+  ]);
+
+  // --- Feast Hall (bounds: 13, 20, 14, 10) ---
+  // Moisture everywhere — organic theme, spilled slop
+  editor.placeDecals(LEVEL_ID, feastHallId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 13, z: 23, surface: 'wall', opacity: 0.6 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 26, z: 25, surface: 'wall', opacity: 0.5 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 20, z: 28, opacity: 0.4 },
+  ]);
+
+  // --- Pantry (bounds: 3, 32, 6, 6) ---
+  // Relatively clean — just light moisture
+  editor.placeDecals(LEVEL_ID, pantryId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 3, z: 35, surface: 'wall', opacity: 0.4 },
+  ]);
+
+  // --- Larder (bounds: 15, 34, 10, 12) ---
+  // Dripping moisture from above, seepage on walls
+  editor.placeDecals(LEVEL_ID, larderId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 15, z: 37, surface: 'wall', opacity: 0.5 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 24, z: 40, surface: 'wall', opacity: 0.5 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 19, z: 44, opacity: 0.4 },
+  ]);
+
+  // --- Bile Cistern (bounds: 14, 50, 12, 10) ---
+  // Acid erosion cracks on walkways, bile stains liberally
+  editor.placeDecals(LEVEL_ID, bileCisternId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 14, z: 53, surface: 'wall', opacity: 0.6 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 25, z: 55, surface: 'wall', opacity: 0.5 },
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 17, z: 52, opacity: 0.5 },
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 23, z: 57, opacity: 0.5 },
+  ]);
+
+  // --- Gut Arena (bounds: 14, 64, 12, 12) ---
+  // Acid erosion, organic seepage
+  editor.placeDecals(LEVEL_ID, gutArenaId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 14, z: 68, surface: 'wall', opacity: 0.5 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 25, z: 72, surface: 'wall', opacity: 0.5 },
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 19, z: 69, opacity: 0.4 },
+  ]);
+
+  // --- Vorago's Maw (bounds: 13, 80, 14, 14) ---
+  // Heavy moisture, acid erosion everywhere
+  editor.placeDecals(LEVEL_ID, voragosMawId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 13, z: 84, surface: 'wall', opacity: 0.6 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 26, z: 87, surface: 'wall', opacity: 0.6 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 20, z: 92, opacity: 0.5 },
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 18, z: 83, opacity: 0.5 },
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 22, z: 90, opacity: 0.5 },
+  ]);
 
   // =========================================================================
   // 6. TRIGGERS (from "Triggers" table)

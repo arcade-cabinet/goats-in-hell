@@ -2,6 +2,29 @@
   "id": "torture-rack",
   "name": "Torture Rack",
   "type": "prop",
+  "seed": 1480406027,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac72-5756-78fa-b8bc-94337820f54d",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac72-5756-78fa-b8bc-94337820f54d"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac74-6bd0-7edd-8d01-fba3a844903b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac74-6bd0-7edd-8d01-fba3a844903b"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A medieval torture rack made of dark iron and bone, chains and shackles hanging from the frame, blood stains on the wood, sinister hell dungeon furniture, stylized low poly game prop, dark fantasy, isometric view",

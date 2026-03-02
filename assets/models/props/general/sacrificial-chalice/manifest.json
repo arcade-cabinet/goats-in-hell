@@ -2,6 +2,29 @@
   "id": "sacrificial-chalice",
   "name": "Sacrificial Chalice",
   "type": "prop",
+  "seed": 746970115,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacde-8b76-7904-960a-cd782ae6f7b7",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacde-8b76-7904-960a-cd782ae6f7b7"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cace0-21e8-762a-b2df-c5817ed22db6",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cace0-21e8-762a-b2df-c5817ed22db6"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A golden sacrificial chalice filled with dark blood, ornate goat head engravings on the stem, sitting on a small bone pedestal, dark fantasy game prop, stylized low poly, isometric view",

@@ -2,6 +2,29 @@
   "id": "bile-cauldron",
   "name": "Bile Cauldron",
   "type": "prop",
+  "seed": 4262564485,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac6d-6c2d-7dae-8990-07ce5bdae314",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac6d-6c2d-7dae-8990-07ce5bdae314"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac6e-d5da-7722-b1d2-213f192d0888",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac6e-d5da-7722-b1d2-213f192d0888"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A large iron cauldron on a tripod stand, filled with bubbling green bile, steam rising, chunks of unidentifiable meat floating, gluttony kitchen of hell, stylized low poly game prop, dark fantasy, isometric view",

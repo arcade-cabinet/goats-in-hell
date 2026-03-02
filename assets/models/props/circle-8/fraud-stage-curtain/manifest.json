@@ -2,6 +2,29 @@
   "id": "fraud-stage-curtain",
   "name": "Rigid Stage Curtain",
   "type": "prop",
+  "seed": 160175659,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caca9-8794-74a1-9be7-a7277bbf7d6f",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca9-8794-74a1-9be7-a7277bbf7d6f"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacab-e5a1-7115-aa8d-ed7fcbdb6ea5",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacab-e5a1-7115-aa8d-ed7fcbdb6ea5"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A theatrical stage curtain made of rigid sculpted fabric frozen in draped folds, rich crimson and gold silk curtain panel hanging from a brass rod, solid sculpted fabric folds not cloth simulation, dark fantasy game prop, isolated object, dark background, front orientation view",

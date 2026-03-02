@@ -2,6 +2,29 @@
   "id": "heresy-confessional-booth",
   "name": "Corrupted Confessional Booth",
   "type": "prop",
+  "seed": 1435519383,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac82-d144-7ed6-bed8-ea0be9c07abd",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac82-d144-7ed6-bed8-ea0be9c07abd"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac83-e70e-7a24-b78b-02b7a4f50069",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac83-e70e-7a24-b78b-02b7a4f50069"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A tall narrow wooden confessional booth structure with a pointed top, dark wood panels with a carved inverted cross on the door, a small latticed window on one side, the wood is cracked and stained dark, heretical church confession box, game prop, isolated object, dark background, three quarter view",

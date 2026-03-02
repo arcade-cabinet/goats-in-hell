@@ -2,6 +2,7 @@
   "id": "goat-scout",
   "name": "Goat Scout",
   "type": "character",
+  "seed": 2911364918,
   "pipeline": "enemy",
   "description": "Fast flanking enemy. Low HP but high speed, darts in for quick attacks.",
   "textToImageTask": {
@@ -33,5 +34,77 @@
       "Fighting.GettingHit.Face_Punch_Reaction_2",
       "Fighting.Dying.Electrocuted_Fall"
     ]
+  },
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cadc9-adf5-76ce-868e-a2120bc8281f",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadc9-adf5-76ce-868e-a2120bc8281f"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cadca-39d3-781f-bf8a-1b9e1e301a3c",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadca-39d3-781f-bf8a-1b9e1e301a3c"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cadcb-5f6c-7837-8f02-d6a319135f11",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadcb-5f6c-7837-8f02-d6a319135f11"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cadcc-b412-7d1f-b729-3b5677490289",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadcc-b412-7d1f-b729-3b5677490289"
+      },
+      "artifacts": {}
+    },
+    "animations": {
+      "WalkAndRun.Running.Lean_Forward_Sprint": {
+        "taskId": "019cadcd-6047-7d37-af2c-abec6e4b267c",
+        "status": "SUCCEEDED",
+        "actionId": 509,
+        "artifact": "animations/Lean_Forward_Sprint.glb"
+      },
+      "DailyActions.Idle.Angry_Ground_Stomp": {
+        "taskId": "019cadcd-d9fd-7781-80ee-88a45b99ce03",
+        "status": "SUCCEEDED",
+        "actionId": 255,
+        "artifact": "animations/Angry_Ground_Stomp.glb"
+      },
+      "Fighting.AttackingwithWeapon.Thrust_Slash": {
+        "taskId": "019cadce-5417-77ac-b60d-05dccb382c67",
+        "status": "SUCCEEDED",
+        "actionId": 240,
+        "artifact": "animations/Thrust_Slash.glb"
+      },
+      "Fighting.Punching.Fast_Punch_Combo": {
+        "taskId": "019cadce-9343-7259-9271-2902ee4350c0",
+        "status": "SUCCEEDED",
+        "actionId": 198,
+        "artifact": "animations/Fast_Punch_Combo.glb"
+      },
+      "Fighting.GettingHit.Face_Punch_Reaction_2": {
+        "taskId": "019cadcf-48ad-77df-8b62-540f5117a595",
+        "status": "SUCCEEDED",
+        "actionId": 176,
+        "artifact": "animations/Face_Punch_Reaction_2.glb"
+      },
+      "Fighting.Dying.Electrocuted_Fall": {
+        "taskId": "019cadcf-c770-7263-af65-64a8dfd667d6",
+        "status": "SUCCEEDED",
+        "actionId": 181,
+        "artifact": "animations/Electrocuted_Fall.glb"
+      }
+    }
   }
 }

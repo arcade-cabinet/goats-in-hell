@@ -2,6 +2,29 @@
   "id": "heresy-profane-symbol",
   "name": "Profane Symbol Wall Carving",
   "type": "prop",
+  "seed": 2523159973,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac9c-c434-7317-a6a8-e281ad6ab7fa",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9c-c434-7317-a6a8-e281ad6ab7fa"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac9e-b79f-7336-9351-844a81439736",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9e-b79f-7336-9351-844a81439736"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A circular stone wall medallion with a deeply carved inverted pentagram surrounded by heretical runes, the outer ring has goat skull motifs, dark obsidian stone set into lighter marble, solid rigid wall decoration, game prop, isolated object, dark background, front orientation view",

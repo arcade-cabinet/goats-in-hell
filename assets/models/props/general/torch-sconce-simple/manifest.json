@@ -2,6 +2,29 @@
   "id": "torch-sconce-simple",
   "name": "Simple Torch Sconce",
   "type": "prop",
+  "seed": 486728624,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cad0b-9b96-7b0b-9fff-28b7298dbc8c",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad0b-9b96-7b0b-9fff-28b7298dbc8c"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cad0c-d410-7edc-b59c-3dcd36951eca",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad0c-d410-7edc-b59c-3dcd36951eca"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A simple wall-mounted torch sconce bracket, utilitarian iron L-shaped holder with a ring to grip the torch, basic dungeon wall lighting fixture, dark fantasy game prop, wall-mounted, isolated object, dark background",

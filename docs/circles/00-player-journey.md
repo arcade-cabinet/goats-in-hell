@@ -115,9 +115,9 @@ You descend into organic architecture. The walls are no longer stone — they're
 
 The Gullet is a winding corridor that narrows and widens like a throat swallowing. The ceiling drops in places — you crouch. The floor is uneven with raised and lowered sections. Green goatmen (sickly olive, red eyes) wait in the wider chambers.
 
-The Feast Hall is a large rectangular room with a long stone table running its center. The table is covered with props (Barrel_Apples, Pot_1, SmallBottles). Health pickups are scattered everywhere — but half are poisoned. The player learns to be selective, to question abundance. Gluttony's lesson: **not everything that heals you is good for you.**
+The Feast Hall is a large rectangular room with a long stone table running its center. The table is covered with props (rotting barrels, cauldrons, bottles). Health pickups are scattered everywhere — but half are poisoned. The player learns to be selective, to question abundance. Gluttony's lesson: **not everything that heals you is good for you.**
 
-The Larder descends. A vertical room — shelving carved into the walls (Shelf_Arch props) stacked with barrels and crates. You descend on narrow platforms between shelves. Enemies on different shelf levels fire across the gap. One misstep = fall two stories. Ropes (Rope_1/2/3) hang between shelves — decorative but they mark safe paths.
+The Larder descends. A vertical room — shelving carved into the walls stacked with barrels and crates. You descend on narrow platforms between shelves. Enemies on different shelf levels fire across the gap. One misstep = fall two stories. Organic rope-tendrils hang between shelves — decorative but they mark safe paths.
 
 The Bile Cistern is a flooded room. The floor is a pool of acid (FLOOR_LAVA reskinned with green tint). Raised stone walkways crisscross the pool. Enemies stand on different walkways. Poisoned pickups sit tantalizingly on dead-end walkways — lures for the greedy.
 
@@ -148,15 +148,15 @@ The player has weapons, knows the combat, understands the patterns. Now the game
 **Rooms:** 6 — Vault Entrance → Treasury → Weight Room → Auction Hall (arena) → Reliquary (secret) → Aureo's Court
 
 **The Experience:**
-Gold. Everything gleams. The walls are polished metal with gold accents (Metal textures with warm tint). DiamondPlate floors reflect torchlight. Coin_Pile props are scattered on every surface. The abundance is overwhelming. And the game punishes you for wanting it.
+Gold. Everything gleams. The walls are polished metal with gold accents (Metal textures with warm tint). DiamondPlate floors reflect torchlight. Coin piles are scattered on every surface. The abundance is overwhelming. And the game punishes you for wanting it.
 
 Ammo pickups are everywhere — far more than other circles. But every pickup beyond 150% capacity slows you. goatKnights (Dark, armored, slow) appear for the first time. They're tanky — you want every bullet. The tension: **you need ammo to kill the armored enemies, but carrying it slows you enough that they catch you.**
 
-The Treasury is a vast room lined with Chest_Wood props on pedestals. goatKnights patrol between rows. The room has two levels — a ground floor and a mezzanine balcony accessed by ramps on each side. Ammo pickups line the balcony. Do you go up for the ammo (slow = exposed on the ramp) or stay lean on the ground?
+The Treasury is a vast room lined with treasure chests on pedestals. goatKnights patrol between rows. The room has two levels — a ground floor and a mezzanine balcony accessed by ramps on each side. Ammo pickups line the balcony. Do you go up for the ammo (slow = exposed on the ramp) or stay lean on the ground?
 
 The Weight Room is a puzzle-platforming room. The floor is divided into pressure plate sections. Walking on them with heavy ammo (high weight) causes them to sink — blocking the exit. You must DROP ammo to cross. But what you drop stays dropped. Greed's lesson: **let go.**
 
-The Auction Hall arena. goatKnights and hellgoats in mixed waves. The room has four pillars with Coin_Pile props at their bases. Destroying the coin piles drops the pillars — opening sightlines but removing cover. The room reshapes itself as you fight.
+The Auction Hall arena. goatKnights and hellgoats in mixed waves. The room has four pillars with coin pile props at their bases. Destroying the coin piles drops the pillars — opening sightlines but removing cover. The room reshapes itself as you fight.
 
 Aureo's Court. A circular throne room. Gold marble floor, gleaming metal walls. Aureo stands in the center adorned in gold chains and crowns (modeled onto the Dainir female base). Phase 1: summons coin projectile storms — they spread in arcs, hard to dodge. Phase 2: she steals your current weapon — it vanishes, you switch to the next one. She uses your stolen weapon against you. Phase 3: she steals ALL weapons. You must use melee (running into her) or find the discarded weapons scattered at the room's edges. The player must become weightless — possessionless — to win.
 
@@ -179,7 +179,7 @@ Aureo's Court. A circular throne room. Gold marble floor, gleaming metal walls. 
 **Rooms:** 8 — Gate of Dis → Blood Marsh → Rage Pit → Arsenal → Berserker Arena → Gauntlet → Shrine of Fury (secret) → Furia's Colosseum
 
 **The Experience:**
-Red. Everything is red. Cracked concrete stained with blood (Concrete textures with red-brown tint). Brick walls (dark Bricks variants). Metal chains everywhere (Chain_Coil props). The ambient lighting shifts from blue (Limbo) to furious orange-red.
+Red. Everything is red. Cracked concrete stained with blood (Concrete textures with red-brown tint). Brick walls (dark Bricks variants). Metal chains everywhere (wrath-chain-curtain props). The ambient lighting shifts from blue (Limbo) to furious orange-red.
 
 The escalation mechanic creates urgency. Every fight has a clock — the longer you take, the faster and more dangerous enemies become. The lesson: **kill fast or be overwhelmed.** This circle rewards aggression, punishes hesitation.
 
@@ -187,13 +187,13 @@ The Gate of Dis is a massive doorway flanked by Anvil props. Through it, the Blo
 
 The Rage Pit is a circular pit with descending stone tiers — an amphitheater. Enemies spawn on higher tiers and charge downward. You fight from the bottom up. Each tier cleared is a tier of elevation gained. The vertical combat tests spatial awareness.
 
-The Arsenal is a long narrow room with weapon displays (WeaponStand props, Shield_Wooden, Sword_Bronze on walls). The Goat's Bane sits on a pedestal at the far end. Enemies guard it. This is the "run and grab" room — do you fight or sprint? Escalation punishes fighting here; sprinting to the Bane and then using it is the intended play.
+The Arsenal is a long narrow room with weapon displays (wrath-shattered-weapon-rack props on walls). The Goat's Bane sits on a pedestal at the far end. Enemies guard it. This is the "run and grab" room — do you fight or sprint? Escalation punishes fighting here; sprinting to the Bane and then using it is the intended play.
 
 The Berserker Arena is the main arena. Three rounds, escalating. Round 1: fireGoats. Round 2: goatKnights. Round 3: mixed + a mini-boss (larger hellgoat with 40HP). The Goat's Bane shines here — rockets clear groups before escalation ramps them to lethal speed. The arena has destructible Barrel props that explode for area damage.
 
 The Gauntlet is a long corridor with enemies spawning behind you as you advance. You cannot stop — standing still means the escalated enemies behind you catch up. Forward, always forward. Ramps create elevation changes — you shoot downhill at enemies ahead while the horde chases from behind.
 
-Furia's Colosseum. An open circular arena with a sand floor (Ground textures). Chains hang from the ceiling (Chain_Coil). Furia is enormous — the Dainir male base pushed to maximum musculature morphs. Phase 1: bull-rush charges with antlers lowered. Dodge sideways — he hits the wall, stunned for 3 seconds. Phase 2: he rips chains from the ceiling and swings them as whip weapons. Wider attack range, must stay far. Phase 3 (below 25%): berserker mode. He's faster than you. The arena walls start closing in (literal — the room shrinks). You must kill him before the arena crushes you both.
+Furia's Colosseum. An open circular arena with a sand floor (Ground textures). Chains hang from the ceiling. Furia is enormous — the Dainir male base pushed to maximum musculature morphs. Phase 1: bull-rush charges with antlers lowered. Dodge sideways — he hits the wall, stunned for 3 seconds. Phase 2: he rips chains from the ceiling and swings them as whip weapons. Wider attack range, must stay far. Phase 3 (below 25%): berserker mode. He's faster than you. The arena walls start closing in (literal — the room shrinks). You must kill him before the arena crushes you both.
 
 **Title card:** *CIRCLE THE SIXTH — HERESY*
 
@@ -214,7 +214,7 @@ Furia's Colosseum. An open circular arena with a sand floor (Ground textures). C
 **Rooms:** 8 — Narthex → Nave of Lies → Confessional → Catacombs → Trial Chamber (arena) → Ossuary → Heretic's Library (secret) → Profano's Chapel
 
 **The Experience:**
-A defiled temple. PavingStones floors (ancient), Marble walls with sections cracked and stained. The architecture looks sacred — arched doorways, vaulted ceilings — but everything is inverted. Crosses hang upside-down (Banner_2 props). Candles burn black.
+A defiled temple. PavingStones floors (ancient), Marble walls with sections cracked and stained. The architecture looks sacred — arched doorways, vaulted ceilings — but everything is inverted. Crosses hang upside-down (heresy-inverted-cross props). Candles burn black.
 
 The illusion mechanic: WALL_SECRET cells are scattered throughout. Some walls that LOOK solid are walkable — you discover passages by walking into walls. Some FLOORS that look solid are FLOOR_VOID covered by a visual trick — step on them and you fall. The player must test everything. Trust nothing.
 
@@ -228,7 +228,7 @@ The Catacombs are a maze. Low ceilings, narrow corridors, skull props. Multiple 
 
 The Trial Chamber arena. A church courtroom. The judge's bench is elevated — enemies spawn on the high platform and fire down. To reach them, you must find the illusory walls that lead to the ramp behind the bench. Two waves — the second wave includes shadowGoats that appear INSIDE illusory walls, walking through them to flank you.
 
-Profano's Chapel. A circular ritual space with a pentagram on the floor (Tile pattern). Profano stands at the altar (BookStand + Candle props). Phase 1: she creates 3 illusion copies of herself. Only one is real — hitting a fake does nothing. The real one attacks. You must find her by watching which one casts actual projectiles. Phase 2: she inverts the room — the visual flips upside down (camera rotation effect). You're disoriented. Controls reverse briefly. Phase 3: the floor itself becomes unreliable — random tiles become FLOOR_VOID for 3 seconds, then reform. The ground cannot be trusted.
+Profano's Chapel. A circular ritual space with a pentagram on the floor (Tile pattern). Profano stands at the altar (heretic-tome + blood-candle props). Phase 1: she creates 3 illusion copies of herself. Only one is real — hitting a fake does nothing. The real one attacks. You must find her by watching which one casts actual projectiles. Phase 2: she inverts the room — the visual flips upside down (camera rotation effect). You're disoriented. Controls reverse briefly. Phase 3: the floor itself becomes unreliable — random tiles become FLOOR_VOID for 3 seconds, then reform. The ground cannot be trusted.
 
 **Title card:** *CIRCLE THE SEVENTH — VIOLENCE*
 
@@ -269,9 +269,9 @@ The Burning Shore is an open expanse — sandstone floor (Ground textures), fire
 
 The Flamethrower Shrine. A small room, almost a tomb. The Brimstone Flamethrower sits on a stone altar. When you pick it up, the inscription reads: *"The wilderness gave you fire. Use it."* This is THE weapon — the one from the game's premise. The goat with the flamethrower. It changes everything: continuous stream, short range, sets enemies on fire (DOT). From here on, combat shifts from peek-and-shoot to push-and-burn.
 
-The Slaughterhouse arena. An industrial space — meat hooks (Chain_Coil hanging from ceiling), metal grating floors (Metal textures), rusted walls. Three waves: goatKnights, then fireGoats, then both. The flamethrower excels here — the close quarters are its domain. Between waves, meat hooks drop from the ceiling as new hazards.
+The Slaughterhouse arena. An industrial space — meat hooks hanging from ceiling, metal grating floors (Metal textures), rusted walls. Three waves: goatKnights, then fireGoats, then both. The flamethrower excels here — the close quarters are its domain. Between waves, meat hooks drop from the ceiling as new hazards.
 
-Il Macello's Abattoir. A massive room — the floor is a metal grating over a void (FLOOR_VOID visible through grate). Meat hooks hang at intervals. Il Macello is enormous — the Dainir male base at maximum size, wielding a cleaver. Phase 1: overhead cleave attacks. Dodge sideways. He gets stuck in the grating for 2 seconds after missing. Phase 2: he hooks a Chain_Coil and uses it as a grapple — pulls you toward him across the arena. You must shoot while being dragged. Phase 3: he activates the "processing line" — sections of the floor grating retract, revealing the void below. The arena literally shrinks as floor panels disappear. Final stand on the remaining floor.
+Il Macello's Abattoir. A massive room — the floor is a metal grating over a void (FLOOR_VOID visible through grate). Meat hooks hang at intervals. Il Macello is enormous — the Dainir male base at maximum size, wielding a cleaver. Phase 1: overhead cleave attacks. Dodge sideways. He gets stuck in the grating for 2 seconds after missing. Phase 2: he hooks a chain and uses it as a grapple — pulls you toward him across the arena. You must shoot while being dragged. Phase 3: he activates the "processing line" — sections of the floor grating retract, revealing the void below. The arena literally shrinks as floor panels disappear. Final stand on the remaining floor.
 
 **Title card:** *CIRCLE THE EIGHTH — FRAUD*
 
@@ -292,7 +292,7 @@ Il Macello's Abattoir. A massive room — the floor is a metal grating over a vo
 **Rooms:** 9 — Portico → Hall of Mirrors → Bolgia of Flatterers → Bolgia of Thieves → Shifting Maze → Counterfeit Arena → Mimic's Den → Serenissima (secret) → Inganno's Parlor
 
 **The Experience:**
-Beautiful. That's the first impression. Polished marble floors, silk-draped walls (Fabric textures), soft candlelight (Candle, CandleStick_Triple props). It looks like a palace. It's all a lie.
+Beautiful. That's the first impression. Polished marble floors, silk-draped walls (Fabric textures), soft candlelight (blood-candle, candelabrum-tall props). It looks like a palace. It's all a lie.
 
 Mimic enemies look exactly like health/ammo pickups until you're within 2 cells. Then they attack — high damage, fast. The player must be paranoid. Every pickup is suspicious. The flamethrower's area-of-effect becomes defensive — sweep an area before approaching pickups to trigger mimics at safe distance.
 
@@ -306,7 +306,7 @@ The Shifting Maze. Walls move. Not illusion walls — walls that physically shif
 
 The Counterfeit Arena. Looks like a previous arena (Columns from Circle 1 — deliberate callback). But the columns are mimics. When you approach for cover, they attack. The real cover is the floor elevation changes — ramps and platforms. Two waves of mixed enemies + mimics. Nothing is what it appears.
 
-Inganno's Parlor. An elegant sitting room with chaise lounges and bookshelves (Bookcase_2, Chair_1, Table_Large). Inganno sits in a chair, beautiful (Dainir female base, minimal horror — intentionally appealing). Phase 1: she speaks pleasantly, doesn't attack. Walking too close triggers the fight. She summons mimic pickups throughout the room — they explode into enemies. Phase 2: she creates a mirror clone of the player. You fight yourself — same weapons, same speed. Phase 3: Inganno reveals her true form — Geryon-like, serpentine lower body. The room's elegant facade crumbles (Marble → Rust texture swap visual). The truth beneath the beauty.
+Inganno's Parlor. An elegant sitting room with chaise lounges and bookshelves (fraud-golden-lectern, fraud-gilded-throne, fraud-ornate-writing-desk). Inganno sits in a throne, beautiful (Dainir female base, minimal horror — intentionally appealing). Phase 1: she speaks pleasantly, doesn't attack. Walking too close triggers the fight. She summons mimic pickups throughout the room — they explode into enemies. Phase 2: she creates a mirror clone of the player. You fight yourself — same weapons, same speed. Phase 3: Inganno reveals her true form — Geryon-like, serpentine lower body. The room's elegant facade crumbles (Marble → Rust texture swap visual). The truth beneath the beauty.
 
 **Title card:** *CIRCLE THE NINTH — TREACHERY*
 
@@ -339,7 +339,7 @@ Caina (betrayers of family). A frozen lake room. The floor is slippery ice. Blue
 
 Antenora (betrayers of country). A fortress interior — ice-covered stone walls, Metal textures with frost overlay. Narrow corridors. The reflected shots make corridor combat lethal — bullets bounce back and forth down the length. The flamethrower is essential here. shadowGoats ambush from frozen alcoves.
 
-Ptolomea (betrayers of guests). A banquet hall encased in ice. A frozen feast table (Table_Large, chairs, plates — all frost-covered). Enemies frozen at the table thaw and attack when you enter. The ceiling is low — no room for arcing shots. Everything reflects. Pure close-quarters combat.
+Ptolomea (betrayers of guests). A banquet hall encased in ice. A frozen feast table (treachery-frozen-feast-table, chairs, plates — all frost-covered). Enemies frozen at the table thaw and attack when you enter. The ceiling is low — no room for arcing shots. Everything reflects. Pure close-quarters combat.
 
 Giudecca (betrayers of lords — Judas, Brutus, Cassius). The arena. A vast frozen chamber with a frozen waterfall on the back wall. Three waves: Blue goatKnights, then mixed shadowGoat+fireGoat, then ALL types simultaneously. The waterfall cracks during the fight — chunks of ice fall as hazards. The floor cracks too — some sections break, revealing the void below Cocytus. Platforming + combat on fragmenting ice.
 

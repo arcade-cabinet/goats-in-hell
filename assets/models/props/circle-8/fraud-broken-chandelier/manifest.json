@@ -2,6 +2,29 @@
   "id": "fraud-broken-chandelier",
   "name": "Broken Chandelier",
   "type": "prop",
+  "seed": 2625730692,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac70-ed8b-7e03-8836-7d0560dbc002",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac70-ed8b-7e03-8836-7d0560dbc002"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac72-f788-77ce-a608-3843f5f7d023",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac72-f788-77ce-a608-3843f5f7d023"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A grand golden chandelier with several arms broken and crystal pieces missing, damaged palatial ceiling light fixture hanging at a tilt, bent gold arms and shattered crystal drops, dark fantasy game prop, isolated object, dark background, bottom-up orientation view",

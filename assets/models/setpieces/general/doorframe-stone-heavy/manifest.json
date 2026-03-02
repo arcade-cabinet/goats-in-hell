@@ -1,0 +1,41 @@
+{
+  "id": "doorframe-stone-heavy",
+  "name": "Heavy Stone Doorframe",
+  "type": "prop",
+  "seed": 1658951890,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cada1-4fff-7f11-8b18-0b0315167dab",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cada1-4fff-7f11-8b18-0b0315167dab"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cadae-86ad-732c-aa34-b3aa3550252d",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadae-86ad-732c-aa34-b3aa3550252d"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A heavy stone doorframe with thick oversized lintel and deep-set jambs, massive dark stone construction suggesting reinforced dungeon entrance, dark fantasy game prop, front-facing, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Massive dark stone blocks with iron reinforcement bands, heavy bolt holes, torch scorch marks",
+    "enablePbr": true
+  }
+}

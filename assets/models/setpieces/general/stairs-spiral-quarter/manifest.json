@@ -1,0 +1,41 @@
+{
+  "id": "stairs-spiral-quarter",
+  "name": "Quarter-Turn Spiral Staircase",
+  "type": "prop",
+  "seed": 3412699134,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caced-6ead-77b1-8724-2bbc0706dd4e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caced-6ead-77b1-8724-2bbc0706dd4e"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacef-14d7-7937-824b-830d862aec16",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacef-14d7-7937-824b-830d862aec16"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A quarter-turn spiral stone staircase section curving 90 degrees, central stone newel post with wedge-shaped treads, dungeon tower stairwell segment, dark fantasy game prop, floor-placed, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark stone spiral steps with polished tread surfaces, rough-cut risers, iron handrail brackets",
+    "enablePbr": true
+  }
+}

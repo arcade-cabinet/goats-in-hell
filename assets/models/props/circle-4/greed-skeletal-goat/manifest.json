@@ -1,0 +1,41 @@
+{
+  "id": "greed-skeletal-goat",
+  "name": "Skeletal Goat Remains",
+  "type": "prop",
+  "seed": 2435356734,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacac-6995-7fd3-b869-2f0e96a4fd1d",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacac-6995-7fd3-b869-2f0e96a4fd1d"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacad-e458-7161-a64b-13c69ce4b0e7",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacad-e458-7161-a64b-13c69ce4b0e7"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "Skeletal remains of a goat lying on its side, bleached white bones partially covered in tarnished gold dust, ribcage exposed, small curved horns, posed as if collapsed under a heavy burden, scattered gold coins embedded between the bones, dark fantasy dungeon game prop, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Aged bone material with yellowed patina, gold dust residue in crevices, tarnished metallic gold coin textures, subtle dark staining on lower surfaces",
+    "enablePbr": true
+  }
+}

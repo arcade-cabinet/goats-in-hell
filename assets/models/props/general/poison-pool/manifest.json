@@ -2,6 +2,29 @@
   "id": "poison-pool",
   "name": "Toxic Floor Pool",
   "type": "prop",
+  "seed": 2295760215,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacc7-531a-7449-b55d-b197af1e239d",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacc7-531a-7449-b55d-b197af1e239d"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacc8-abfa-7620-8ef1-52612f47f182",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacc8-abfa-7620-8ef1-52612f47f182"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A small floor-level pool with sculpted solid toxic liquid surface, irregular stone rim with corroded edges, the liquid surface is a solid sculpted bumpy plane with no actual fluid, dungeon floor hazard, dark fantasy game prop, floor-placed, isolated object, dark background",

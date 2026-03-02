@@ -1,0 +1,41 @@
+{
+  "id": "limbo-wall-sconce",
+  "name": "Stone Wall Sconce",
+  "type": "prop",
+  "seed": 1371493621,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacb2-2af4-7462-8c9c-0c1c0ddbf784",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb2-2af4-7462-8c9c-0c1c0ddbf784"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacb4-95a2-749c-9287-be0b676a137a",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb4-95a2-749c-9287-be0b676a137a"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A carved stone wall sconce shaped like an open goat mouth holding a flickering candle, gray-blue stone with soot stains above, wall-mounted, dark fantasy dungeon game prop, isolated object, dark background, wall-mounted view",
+    "artStyle": "realistic",
+    "targetPolycount": 3500,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Gray-blue carved stone, goat mouth detail, soot blackening above, warm candle wax drips, wall-mount flat back",
+    "enablePbr": true
+  }
+}

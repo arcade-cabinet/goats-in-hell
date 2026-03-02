@@ -1,0 +1,41 @@
+{
+  "id": "arch-stone-small",
+  "name": "Small Stone Archway",
+  "type": "prop",
+  "seed": 691097269,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cad9a-44c2-7df0-bb0b-6019c9a986e8",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad9a-44c2-7df0-bb0b-6019c9a986e8"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cada3-2784-7188-9f69-e0849d5d3b11",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cada3-2784-7188-9f69-e0849d5d3b11"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A small stone archway frame approximately 2 meters wide, rough-hewn dark stone blocks with mortar joints, suitable for narrow dungeon doorways, dark fantasy game prop, front-facing, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark gray weathered stone blocks with crumbling mortar, soot stains, moss in crevices",
+    "enablePbr": true
+  }
+}

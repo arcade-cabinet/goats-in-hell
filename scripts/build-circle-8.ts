@@ -9,6 +9,7 @@ import BetterSqlite3 from 'better-sqlite3';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import {
   CONNECTION_TYPES,
+  DECAL_TYPES,
   ENEMY_TYPES,
   ENV_TYPES,
   LevelEditor,
@@ -415,56 +416,17 @@ export async function buildCircle8(dbPath: string) {
   // =========================================================================
 
   // --- Portico (bounds: 25, 2, 10, 6) ---
-  // 2x Chandelier (ceiling)
-  editor.spawnProp(LEVEL_ID, 'Chandelier', 28, 3, { roomId: porticoId });
-  editor.spawnProp(LEVEL_ID, 'Chandelier', 32, 3, { roomId: porticoId });
-  // 4x CandleStick_Triple (walls N/S)
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 27, 3, {
-    roomId: porticoId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 33, 3, {
-    roomId: porticoId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 27, 6, {
-    roomId: porticoId,
-    surfaceAnchor: {
-      face: 'south',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 33, 6, {
-    roomId: porticoId,
-    surfaceAnchor: {
-      face: 'south',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  // 2x Banner_1 (E/W walls)
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 26, 4, {
+  // 2x chandelier-iron (ceiling)
+  editor.spawnProp(LEVEL_ID, 'chandelier-iron', 28, 3, { roomId: porticoId });
+  editor.spawnProp(LEVEL_ID, 'chandelier-iron', 32, 3, { roomId: porticoId });
+  // 1x fraud-ornate-arch (south corridor entrance)
+  editor.spawnProp(LEVEL_ID, 'fraud-ornate-arch', 30, 7, { roomId: porticoId });
+  // 1x fraud-ornate-railing (flanking entrance N wall)
+  editor.spawnProp(LEVEL_ID, 'fraud-ornate-railing', 30, 3, { roomId: porticoId });
+  // 1x fraud-two-faced-bust (NW pedestal)
+  editor.spawnProp(LEVEL_ID, 'fraud-two-faced-bust', 27, 3, { roomId: porticoId });
+  // 2x fraud-golden-banner (E/W walls)
+  editor.spawnProp(LEVEL_ID, 'fraud-golden-banner', 26, 4, {
     roomId: porticoId,
     surfaceAnchor: {
       face: 'west',
@@ -475,7 +437,7 @@ export async function buildCircle8(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 33, 4, {
+  editor.spawnProp(LEVEL_ID, 'fraud-golden-banner', 33, 4, {
     roomId: porticoId,
     surfaceAnchor: {
       face: 'east',
@@ -486,69 +448,41 @@ export async function buildCircle8(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 2x Vase_4 (floor, flanking entrance)
-  editor.spawnProp(LEVEL_ID, 'Vase_4', 26, 3, { roomId: porticoId });
-  editor.spawnProp(LEVEL_ID, 'Vase_4', 33, 3, { roomId: porticoId });
+  // 2x fraud-marble-pedestal (flanking entrance)
+  editor.spawnProp(LEVEL_ID, 'fraud-marble-pedestal', 26, 3, { roomId: porticoId });
+  editor.spawnProp(LEVEL_ID, 'fraud-marble-pedestal', 34, 3, { roomId: porticoId });
 
   // --- Hall of Mirrors (bounds: 23, 12, 14, 10) ---
-  // 4x CandleStick_Triple (walls, all faces)
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 24, 14, {
-    roomId: hallOfMirrorsId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 35, 14, {
-    roomId: hallOfMirrorsId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 24, 20, {
-    roomId: hallOfMirrorsId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 35, 20, {
-    roomId: hallOfMirrorsId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  // 2x Vase_2 (floor, near columns)
-  editor.spawnProp(LEVEL_ID, 'Vase_2', 26, 17, { roomId: hallOfMirrorsId });
-  editor.spawnProp(LEVEL_ID, 'Vase_2', 33, 17, { roomId: hallOfMirrorsId });
+  // 6x fraud-onyx-wall-panel (N/S walls, structural)
+  editor.spawnProp(LEVEL_ID, 'fraud-onyx-wall-panel', 25, 13, { roomId: hallOfMirrorsId });
+  editor.spawnProp(LEVEL_ID, 'fraud-onyx-wall-panel', 30, 13, { roomId: hallOfMirrorsId });
+  editor.spawnProp(LEVEL_ID, 'fraud-onyx-wall-panel', 35, 13, { roomId: hallOfMirrorsId });
+  editor.spawnProp(LEVEL_ID, 'fraud-onyx-wall-panel', 25, 20, { roomId: hallOfMirrorsId });
+  editor.spawnProp(LEVEL_ID, 'fraud-onyx-wall-panel', 30, 20, { roomId: hallOfMirrorsId });
+  editor.spawnProp(LEVEL_ID, 'fraud-onyx-wall-panel', 35, 20, { roomId: hallOfMirrorsId });
+  // 2x fraud-ornate-arch (west/east exit corridors)
+  editor.spawnProp(LEVEL_ID, 'fraud-ornate-arch', 24, 17, { roomId: hallOfMirrorsId });
+  editor.spawnProp(LEVEL_ID, 'fraud-ornate-arch', 35, 17, { roomId: hallOfMirrorsId });
+  // 3x fraud-mirror-shard (between onyx panels)
+  editor.spawnProp(LEVEL_ID, 'fraud-mirror-shard', 27, 15, { roomId: hallOfMirrorsId });
+  editor.spawnProp(LEVEL_ID, 'fraud-mirror-shard', 32, 16, { roomId: hallOfMirrorsId });
+  editor.spawnProp(LEVEL_ID, 'fraud-mirror-shard', 29, 19, { roomId: hallOfMirrorsId });
+  // 2x fraud-marble-pedestal (near columns)
+  editor.spawnProp(LEVEL_ID, 'fraud-marble-pedestal', 25, 14, { roomId: hallOfMirrorsId });
+  editor.spawnProp(LEVEL_ID, 'fraud-marble-pedestal', 35, 14, { roomId: hallOfMirrorsId });
 
   // --- Bolgia of Flatterers (bounds: 8, 26, 12, 8) ---
-  // 1x Table_Large (center)
-  editor.spawnProp(LEVEL_ID, 'Table_Large', 14, 31, { roomId: bolgiaFlatId });
-  // 3x Chalice (on table)
-  editor.spawnProp(LEVEL_ID, 'Chalice', 13, 31, { roomId: bolgiaFlatId });
-  editor.spawnProp(LEVEL_ID, 'Chalice', 14, 31, { roomId: bolgiaFlatId });
-  editor.spawnProp(LEVEL_ID, 'Chalice', 15, 31, { roomId: bolgiaFlatId });
-  // 2x Banner_2 (wall, N)
-  editor.spawnProp(LEVEL_ID, 'Banner_2', 11, 27, {
+  // 1x fraud-ornate-arch (north entrance)
+  editor.spawnProp(LEVEL_ID, 'fraud-ornate-arch', 14, 27, { roomId: bolgiaFlatId });
+  // 1x fraud-ramp-platform (north end, +0.5 elevation)
+  editor.spawnProp(LEVEL_ID, 'fraud-ramp-platform', 10, 26, { roomId: bolgiaFlatId });
+  // 4x fraud-silhouette-prop (north platform, narrative critical)
+  editor.spawnProp(LEVEL_ID, 'fraud-silhouette-prop', 10, 27, { roomId: bolgiaFlatId });
+  editor.spawnProp(LEVEL_ID, 'fraud-silhouette-prop', 12, 27, { roomId: bolgiaFlatId });
+  editor.spawnProp(LEVEL_ID, 'fraud-silhouette-prop', 14, 27, { roomId: bolgiaFlatId });
+  editor.spawnProp(LEVEL_ID, 'fraud-silhouette-prop', 16, 27, { roomId: bolgiaFlatId });
+  // 2x fraud-golden-banner (N wall, one conceals ammo)
+  editor.spawnProp(LEVEL_ID, 'fraud-golden-banner', 11, 27, {
     roomId: bolgiaFlatId,
     surfaceAnchor: {
       face: 'north',
@@ -559,7 +493,7 @@ export async function buildCircle8(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Banner_2', 16, 27, {
+  editor.spawnProp(LEVEL_ID, 'fraud-golden-banner', 16, 27, {
     roomId: bolgiaFlatId,
     surfaceAnchor: {
       face: 'north',
@@ -570,69 +504,36 @@ export async function buildCircle8(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 1x Scroll_1 (on table)
-  editor.spawnProp(LEVEL_ID, 'Scroll_1', 14, 32, { roomId: bolgiaFlatId });
-  // 2x CandleStick_Triple (E/W walls)
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 9, 30, {
-    roomId: bolgiaFlatId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 18, 30, {
-    roomId: bolgiaFlatId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
+  // 1x fraud-forked-tongue-relief (south wall)
+  editor.spawnProp(LEVEL_ID, 'fraud-forked-tongue-relief', 10, 30, { roomId: bolgiaFlatId });
+  // 1x fraud-coin-pile (near table)
+  editor.spawnProp(LEVEL_ID, 'fraud-coin-pile', 14, 29, { roomId: bolgiaFlatId });
 
   // --- Bolgia of Thieves (bounds: 34, 26, 10, 8) ---
-  // 3x Coin_Pile (floor, decoy)
-  editor.spawnProp(LEVEL_ID, 'Coin_Pile', 36, 28, { roomId: bolgiaThievesId });
-  editor.spawnProp(LEVEL_ID, 'Coin_Pile', 39, 30, { roomId: bolgiaThievesId });
-  editor.spawnProp(LEVEL_ID, 'Coin_Pile', 42, 28, { roomId: bolgiaThievesId });
-  // 2x Chest_Wood (floor)
-  editor.spawnProp(LEVEL_ID, 'Chest_Wood', 37, 32, { roomId: bolgiaThievesId });
-  editor.spawnProp(LEVEL_ID, 'Chest_Wood', 41, 32, { roomId: bolgiaThievesId });
-  // 2x CandleStick_Triple (N/S walls)
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 38, 27, {
-    roomId: bolgiaThievesId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 40, 32, {
-    roomId: bolgiaThievesId,
-    surfaceAnchor: {
-      face: 'south',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  // 1x Chalice (pedestal)
-  editor.spawnProp(LEVEL_ID, 'Chalice', 39, 29, { roomId: bolgiaThievesId });
+  // 1x fraud-ornate-arch (north entrance)
+  editor.spawnProp(LEVEL_ID, 'fraud-ornate-arch', 39, 27, { roomId: bolgiaThievesId });
+  // 3x fraud-coin-pile (floor, decoy)
+  editor.spawnProp(LEVEL_ID, 'fraud-coin-pile', 36, 28, { roomId: bolgiaThievesId });
+  editor.spawnProp(LEVEL_ID, 'fraud-coin-pile', 39, 30, { roomId: bolgiaThievesId });
+  editor.spawnProp(LEVEL_ID, 'fraud-coin-pile', 42, 28, { roomId: bolgiaThievesId });
+  // 2x trick-chest (floor, deception)
+  editor.spawnProp(LEVEL_ID, 'trick-chest', 36, 28, { roomId: bolgiaThievesId });
+  editor.spawnProp(LEVEL_ID, 'trick-chest', 40, 32, { roomId: bolgiaThievesId });
+  // 1x fraud-marble-pedestal (center)
+  editor.spawnProp(LEVEL_ID, 'fraud-marble-pedestal', 38, 30, { roomId: bolgiaThievesId });
+  // 1x false-door (east wall, deception)
+  editor.spawnProp(LEVEL_ID, 'false-door', 42, 30, { roomId: bolgiaThievesId });
 
   // --- Shifting Maze (bounds: 32, 38, 14, 14) ---
-  // 2x Torch_Metal (walls)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 33, 40, {
+  // 6x fraud-shifting-wall-segment (moveable walls)
+  editor.spawnProp(LEVEL_ID, 'fraud-shifting-wall-segment', 35, 40, { roomId: shiftingMazeId });
+  editor.spawnProp(LEVEL_ID, 'fraud-shifting-wall-segment', 40, 42, { roomId: shiftingMazeId });
+  editor.spawnProp(LEVEL_ID, 'fraud-shifting-wall-segment', 37, 44, { roomId: shiftingMazeId });
+  editor.spawnProp(LEVEL_ID, 'fraud-shifting-wall-segment', 42, 46, { roomId: shiftingMazeId });
+  editor.spawnProp(LEVEL_ID, 'fraud-shifting-wall-segment', 35, 48, { roomId: shiftingMazeId });
+  editor.spawnProp(LEVEL_ID, 'fraud-shifting-wall-segment', 40, 50, { roomId: shiftingMazeId });
+  // 2x torch-sconce-ornate (fixed outer walls, only reliable landmarks)
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 33, 40, {
     roomId: shiftingMazeId,
     surfaceAnchor: {
       face: 'west',
@@ -643,7 +544,7 @@ export async function buildCircle8(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 44, 48, {
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 44, 48, {
     roomId: shiftingMazeId,
     surfaceAnchor: {
       face: 'east',
@@ -654,18 +555,27 @@ export async function buildCircle8(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 4x Vase_Rubble (floor, breadcrumbs)
-  editor.spawnProp(LEVEL_ID, 'Vase_Rubble', 35, 42, { roomId: shiftingMazeId });
-  editor.spawnProp(LEVEL_ID, 'Vase_Rubble', 40, 45, { roomId: shiftingMazeId });
-  editor.spawnProp(LEVEL_ID, 'Vase_Rubble', 37, 49, { roomId: shiftingMazeId });
-  editor.spawnProp(LEVEL_ID, 'Vase_Rubble', 43, 41, { roomId: shiftingMazeId });
+  // 4x fraud-cracked-mosaic-floor (breadcrumbs, shift with walls)
+  editor.spawnProp(LEVEL_ID, 'fraud-cracked-mosaic-floor', 35, 42, { roomId: shiftingMazeId });
+  editor.spawnProp(LEVEL_ID, 'fraud-cracked-mosaic-floor', 40, 45, { roomId: shiftingMazeId });
+  editor.spawnProp(LEVEL_ID, 'fraud-cracked-mosaic-floor', 37, 49, { roomId: shiftingMazeId });
+  editor.spawnProp(LEVEL_ID, 'fraud-cracked-mosaic-floor', 43, 41, { roomId: shiftingMazeId });
 
   // --- Counterfeit Arena (bounds: 22, 56, 12, 12) ---
-  // 2x fake columns (the other 4 are mimics)
-  editor.spawnProp(LEVEL_ID, 'Column_Stone', 31, 58, { roomId: counterfeitArenaId });
-  editor.spawnProp(LEVEL_ID, 'Column_Stone', 31, 64, { roomId: counterfeitArenaId });
-  // 2x Torch_Metal (N/S walls)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 23, 57, {
+  // 6x fraud-fake-column (2 rows of 3; 4 are mimic hosts, 2 real)
+  editor.spawnProp(LEVEL_ID, 'fraud-fake-column', 25, 58, { roomId: counterfeitArenaId });
+  editor.spawnProp(LEVEL_ID, 'fraud-fake-column', 28, 58, { roomId: counterfeitArenaId });
+  editor.spawnProp(LEVEL_ID, 'fraud-fake-column', 31, 58, { roomId: counterfeitArenaId });
+  editor.spawnProp(LEVEL_ID, 'fraud-fake-column', 25, 64, { roomId: counterfeitArenaId });
+  editor.spawnProp(LEVEL_ID, 'fraud-fake-column', 28, 64, { roomId: counterfeitArenaId });
+  editor.spawnProp(LEVEL_ID, 'fraud-fake-column', 31, 64, { roomId: counterfeitArenaId });
+  // 2x fraud-ramp-platform (center, real cover, +1 cell elevation)
+  editor.spawnProp(LEVEL_ID, 'fraud-ramp-platform', 26, 61, { roomId: counterfeitArenaId });
+  editor.spawnProp(LEVEL_ID, 'fraud-ramp-platform', 30, 61, { roomId: counterfeitArenaId });
+  // 1x fraud-ornate-arch (north entrance, twin archways)
+  editor.spawnProp(LEVEL_ID, 'fraud-ornate-arch', 27, 57, { roomId: counterfeitArenaId });
+  // 2x torch-sconce-ornate (N/S walls)
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 23, 57, {
     roomId: counterfeitArenaId,
     surfaceAnchor: {
       face: 'north',
@@ -676,7 +586,7 @@ export async function buildCircle8(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 32, 66, {
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 32, 66, {
     roomId: counterfeitArenaId,
     surfaceAnchor: {
       face: 'south',
@@ -687,12 +597,14 @@ export async function buildCircle8(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 1x Barrel (NE corner)
-  editor.spawnProp(LEVEL_ID, 'Barrel', 32, 57, { roomId: counterfeitArenaId });
+  // 1x fraud-cracked-mosaic-floor (center, callback to Circle 1)
+  editor.spawnProp(LEVEL_ID, 'fraud-cracked-mosaic-floor', 28, 61, { roomId: counterfeitArenaId });
+  // 1x fraud-crumbling-facade (near entrance, visual decay)
+  editor.spawnProp(LEVEL_ID, 'fraud-crumbling-facade', 22, 57, { roomId: counterfeitArenaId });
 
   // --- Mimic's Den (bounds: 24, 72, 8, 8) ---
-  // 2x Torch_Metal (E/W walls)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 25, 75, {
+  // 2x torch-sconce-ornate (E/W walls)
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 25, 75, {
     roomId: mimicDenId,
     surfaceAnchor: {
       face: 'west',
@@ -703,7 +615,7 @@ export async function buildCircle8(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 30, 75, {
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 30, 75, {
     roomId: mimicDenId,
     surfaceAnchor: {
       face: 'east',
@@ -714,28 +626,47 @@ export async function buildCircle8(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 1x Cauldron (center)
-  editor.spawnProp(LEVEL_ID, 'Cauldron', 28, 76, { roomId: mimicDenId });
-  // 2x Coin_Pile (floor)
-  editor.spawnProp(LEVEL_ID, 'Coin_Pile', 26, 78, { roomId: mimicDenId });
-  editor.spawnProp(LEVEL_ID, 'Coin_Pile', 29, 78, { roomId: mimicDenId });
+  // 1x fraud-gambling-table (center, the "one honest object")
+  editor.spawnProp(LEVEL_ID, 'fraud-gambling-table', 28, 76, { roomId: mimicDenId });
+  // 2x fraud-coin-pile (floor, mixed with pickups)
+  editor.spawnProp(LEVEL_ID, 'fraud-coin-pile', 26, 78, { roomId: mimicDenId });
+  editor.spawnProp(LEVEL_ID, 'fraud-coin-pile', 29, 78, { roomId: mimicDenId });
+  // 1x fraud-forked-tongue-relief (N wall, deception symbol)
+  editor.spawnProp(LEVEL_ID, 'fraud-forked-tongue-relief', 28, 73, {
+    roomId: mimicDenId,
+    surfaceAnchor: {
+      face: 'north',
+      offsetX: 0,
+      offsetY: 1.2,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.7,
+    },
+  });
 
   // --- Serenissima (bounds: 36, 72, 6, 6) ---
-  // 1x Chest_Wood (center)
-  editor.spawnProp(LEVEL_ID, 'Chest_Wood', 39, 75, { roomId: serenissimaId });
-  // 1x BookStand
-  editor.spawnProp(LEVEL_ID, 'BookStand', 39, 76, { roomId: serenissimaId });
-  // 2x Candle_1 (flanking chest)
-  editor.spawnProp(LEVEL_ID, 'Candle_1', 38, 74, { roomId: serenissimaId });
-  editor.spawnProp(LEVEL_ID, 'Candle_1', 40, 74, { roomId: serenissimaId });
-  // 1x Potion_4 (shelf)
-  editor.spawnProp(LEVEL_ID, 'Potion_4', 37, 73, { roomId: serenissimaId });
+  // 1x chest-gold (center, the genuine treasure)
+  editor.spawnProp(LEVEL_ID, 'chest-gold', 39, 75, { roomId: serenissimaId });
+  // 1x book-open (beside chest, lore scroll)
+  editor.spawnProp(LEVEL_ID, 'book-open', 39, 76, { roomId: serenissimaId });
+  // 2x candle (flanking chest, warm light)
+  editor.spawnProp(LEVEL_ID, 'candle', 38, 74, { roomId: serenissimaId });
+  editor.spawnProp(LEVEL_ID, 'candle', 40, 74, { roomId: serenissimaId });
+  // 1x carpet (floor, under chest, warmth)
+  editor.spawnProp(LEVEL_ID, 'carpet', 39, 75, { roomId: serenissimaId });
+  // 2x cobweb (upper corners, undisturbed)
+  editor.spawnProp(LEVEL_ID, 'cobweb', 37, 73, { roomId: serenissimaId });
+  editor.spawnProp(LEVEL_ID, 'cobweb', 41, 73, { roomId: serenissimaId });
 
   // --- Inganno's Parlor (bounds: 21, 84, 14, 14) ---
-  // 1x Chandelier (ceiling, grand)
-  editor.spawnProp(LEVEL_ID, 'Chandelier', 28, 94, { roomId: ingannoParlerId });
-  // 2x Bookcase_2 (E/W walls)
-  editor.spawnProp(LEVEL_ID, 'Bookcase_2', 22, 89, {
+  // 1x fraud-ornate-arch (north entrance, grand stairway descent)
+  editor.spawnProp(LEVEL_ID, 'fraud-ornate-arch', 28, 85, { roomId: ingannoParlerId });
+  // 1x fraud-ornate-railing (north stair descent)
+  editor.spawnProp(LEVEL_ID, 'fraud-ornate-railing', 28, 86, { roomId: ingannoParlerId });
+  // 1x fraud-broken-chandelier (ceiling, grand, damages in phase 3)
+  editor.spawnProp(LEVEL_ID, 'fraud-broken-chandelier', 28, 91, { roomId: ingannoParlerId });
+  // 2x bookcase (E/W walls)
+  editor.spawnProp(LEVEL_ID, 'bookcase', 22, 89, {
     roomId: ingannoParlerId,
     surfaceAnchor: {
       face: 'west',
@@ -746,7 +677,7 @@ export async function buildCircle8(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Bookcase_2', 33, 89, {
+  editor.spawnProp(LEVEL_ID, 'bookcase', 33, 89, {
     roomId: ingannoParlerId,
     surfaceAnchor: {
       face: 'east',
@@ -757,12 +688,72 @@ export async function buildCircle8(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 1x Chair_1 (Inganno's seat, center-N)
-  editor.spawnProp(LEVEL_ID, 'Chair_1', 28, 88, { roomId: ingannoParlerId });
-  // 1x Table_Large (beside chair)
-  editor.spawnProp(LEVEL_ID, 'Table_Large', 30, 88, { roomId: ingannoParlerId });
-  // 4x CandleStick_Triple (all faces)
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 22, 86, {
+  // 2x fraud-golden-banner (N wall, flanking Inganno's seat)
+  editor.spawnProp(LEVEL_ID, 'fraud-golden-banner', 25, 85, {
+    roomId: ingannoParlerId,
+    surfaceAnchor: {
+      face: 'north',
+      offsetX: 0,
+      offsetY: 2.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.2,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'fraud-golden-banner', 31, 85, {
+    roomId: ingannoParlerId,
+    surfaceAnchor: {
+      face: 'north',
+      offsetX: 0,
+      offsetY: 2.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.2,
+    },
+  });
+  // 1x fraud-two-faced-bust (near entrance, thematic foreshadowing)
+  editor.spawnProp(LEVEL_ID, 'fraud-two-faced-bust', 22, 85, { roomId: ingannoParlerId });
+  // 1x fraud-crumbling-facade (walls, phase 3 reveal)
+  editor.spawnProp(LEVEL_ID, 'fraud-crumbling-facade', 33, 92, { roomId: ingannoParlerId });
+  // 1x fraud-marble-debris (floor scatter, phase 3 obstacles)
+  editor.spawnProp(LEVEL_ID, 'fraud-marble-debris', 26, 93, { roomId: ingannoParlerId });
+  // 2x fraud-stage-curtain (E/W walls behind bookcases)
+  editor.spawnProp(LEVEL_ID, 'fraud-stage-curtain', 22, 92, {
+    roomId: ingannoParlerId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'fraud-stage-curtain', 33, 92, {
+    roomId: ingannoParlerId,
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  // 1x fraud-forked-tongue-relief (behind Inganno's seat)
+  editor.spawnProp(LEVEL_ID, 'fraud-forked-tongue-relief', 28, 85, {
+    roomId: ingannoParlerId,
+    surfaceAnchor: {
+      face: 'north',
+      offsetX: 0,
+      offsetY: 1.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.6,
+    },
+  });
+  // 4x candelabrum-tall (all faces)
+  editor.spawnProp(LEVEL_ID, 'candelabrum-tall', 22, 86, {
     roomId: ingannoParlerId,
     surfaceAnchor: {
       face: 'west',
@@ -773,7 +764,7 @@ export async function buildCircle8(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 33, 86, {
+  editor.spawnProp(LEVEL_ID, 'candelabrum-tall', 33, 86, {
     roomId: ingannoParlerId,
     surfaceAnchor: {
       face: 'east',
@@ -784,7 +775,7 @@ export async function buildCircle8(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 22, 96, {
+  editor.spawnProp(LEVEL_ID, 'candelabrum-tall', 22, 96, {
     roomId: ingannoParlerId,
     surfaceAnchor: {
       face: 'west',
@@ -795,7 +786,7 @@ export async function buildCircle8(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 33, 96, {
+  editor.spawnProp(LEVEL_ID, 'candelabrum-tall', 33, 96, {
     roomId: ingannoParlerId,
     surfaceAnchor: {
       face: 'east',
@@ -806,32 +797,73 @@ export async function buildCircle8(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 2x Banner_1 (N wall)
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 25, 85, {
-    roomId: ingannoParlerId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 2.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 31, 85, {
-    roomId: ingannoParlerId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 2.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  // 2x Vase_4 (floor, flanking entrance)
-  editor.spawnProp(LEVEL_ID, 'Vase_4', 23, 85, { roomId: ingannoParlerId });
-  editor.spawnProp(LEVEL_ID, 'Vase_4', 33, 85, { roomId: ingannoParlerId });
+
+  // =========================================================================
+  // 5d. DECALS (rust patches, water stains — Fraud theme, subtle opacity)
+  // =========================================================================
+  // Thematically: fraud = beautiful facade hiding corruption.
+  // Rust patches on floors near wall seams (truth bleeding through).
+  // Water stains on walls near ceiling in Bolgia rooms (moisture/decay).
+  // All decals are SUBTLE — opacity 0.3-0.4.
+
+  // --- Portico (bounds: 25, 2, 10, 6) ---
+  // Subtle rust beneath pristine marble near pedestal bases
+  editor.placeDecals(LEVEL_ID, porticoId, [
+    { type: DECAL_TYPES.RUST_PATCH, x: 26, z: 3, opacity: 0.3 },
+    { type: DECAL_TYPES.RUST_PATCH, x: 34, z: 3, opacity: 0.3 },
+  ]);
+
+  // --- Hall of Mirrors (bounds: 23, 12, 14, 10) ---
+  // Rust seeping at floor seams near onyx panels
+  editor.placeDecals(LEVEL_ID, hallOfMirrorsId, [
+    { type: DECAL_TYPES.RUST_PATCH, x: 25, z: 13, opacity: 0.35 },
+    { type: DECAL_TYPES.RUST_PATCH, x: 35, z: 20, opacity: 0.35 },
+  ]);
+
+  // --- Bolgia of Flatterers (bounds: 8, 26, 12, 8) ---
+  // Water stains on walls (ceiling moisture), rust on floor
+  editor.placeDecals(LEVEL_ID, bolgiaFlatId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 9, z: 27, surface: 'wall', opacity: 0.4 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 18, z: 30, surface: 'wall', opacity: 0.35 },
+    { type: DECAL_TYPES.RUST_PATCH, x: 14, z: 32, opacity: 0.3 },
+  ]);
+
+  // --- Bolgia of Thieves (bounds: 34, 26, 10, 8) ---
+  // Water stains near ceiling, rust under coin piles
+  editor.placeDecals(LEVEL_ID, bolgiaThievesId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 35, z: 27, surface: 'wall', opacity: 0.35 },
+    { type: DECAL_TYPES.RUST_PATCH, x: 39, z: 30, opacity: 0.3 },
+  ]);
+
+  // --- Shifting Maze (bounds: 32, 38, 14, 14) ---
+  // Rust on floor near wall segments (the facade cracking)
+  editor.placeDecals(LEVEL_ID, shiftingMazeId, [
+    { type: DECAL_TYPES.RUST_PATCH, x: 35, z: 40, opacity: 0.4 },
+    { type: DECAL_TYPES.RUST_PATCH, x: 42, z: 46, opacity: 0.3 },
+  ]);
+
+  // --- Counterfeit Arena (bounds: 22, 56, 12, 12) ---
+  // Rust around fake columns, water stains on walls
+  editor.placeDecals(LEVEL_ID, counterfeitArenaId, [
+    { type: DECAL_TYPES.RUST_PATCH, x: 25, z: 58, opacity: 0.35 },
+    { type: DECAL_TYPES.RUST_PATCH, x: 31, z: 64, opacity: 0.35 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 23, z: 60, surface: 'wall', opacity: 0.3 },
+  ]);
+
+  // --- Mimic's Den (bounds: 24, 72, 8, 8) ---
+  // Rust under gambling table
+  editor.placeDecals(LEVEL_ID, mimicDenId, [
+    { type: DECAL_TYPES.RUST_PATCH, x: 28, z: 76, opacity: 0.4 },
+  ]);
+
+  // --- Inganno's Parlor (bounds: 21, 84, 14, 14) ---
+  // Rust and water stains — the beautiful room decaying
+  editor.placeDecals(LEVEL_ID, ingannoParlerId, [
+    { type: DECAL_TYPES.RUST_PATCH, x: 26, z: 93, w: 3, h: 3, opacity: 0.4 },
+    { type: DECAL_TYPES.RUST_PATCH, x: 33, z: 92, opacity: 0.35 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 22, z: 89, surface: 'wall', opacity: 0.3 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 33, z: 89, surface: 'wall', opacity: 0.3 },
+  ]);
 
   // =========================================================================
   // 6. TRIGGERS (from "Triggers" table)

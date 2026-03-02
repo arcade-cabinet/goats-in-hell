@@ -1,0 +1,41 @@
+{
+  "id": "arch-stone-large",
+  "name": "Large Stone Archway",
+  "type": "prop",
+  "seed": 2248377236,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cad7b-2a20-7de0-bbdb-e4fe9efbc2cb",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad7b-2a20-7de0-bbdb-e4fe9efbc2cb"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cad7c-9de5-79c2-a3c1-83874e071cfd",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad7c-9de5-79c2-a3c1-83874e071cfd"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large stone archway frame approximately 4 meters wide, imposing dark stone construction with thick pillars and heavy keystone, grand dungeon entrance archway, dark fantasy game prop, front-facing, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark weathered stone with deep cracks, iron reinforcement bands, ancient soot deposits",
+    "enablePbr": true
+  }
+}

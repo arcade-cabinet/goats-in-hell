@@ -1,0 +1,41 @@
+{
+  "id": "fraud-ramp-platform",
+  "name": "Arena Ramp Platform",
+  "type": "prop",
+  "seed": 1113941702,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caca1-1179-7f11-827d-e33aeca5ad52",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca1-1179-7f11-827d-e33aeca5ad52"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019caca2-9965-73b5-9013-69ab6e7da9bd",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca2-9965-73b5-9013-69ab6e7da9bd"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A utilitarian stone ramp platform rising to a flat elevated surface, plain functional raised combat platform with rough stone construction, no decoration, honest and sturdy, arena cover structure, dark fantasy game prop, isolated object, dark background, three-quarter orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Rough-cut gray stone blocks, unpolished functional surface, plain sturdy construction, no ornamentation, utilitarian",
+    "enablePbr": true
+  }
+}

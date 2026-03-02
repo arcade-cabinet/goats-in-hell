@@ -2,6 +2,29 @@
   "id": "fire-pit-small",
   "name": "Small Fire Pit",
   "type": "prop",
+  "seed": 4219631558,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac93-b2e6-71fc-a21f-ef9a9fc7fc4c",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac93-b2e6-71fc-a21f-ef9a9fc7fc4c"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac96-25e6-7143-8c30-dbf06ed3267d",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac96-25e6-7143-8c30-dbf06ed3267d"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A small stone-rimmed fire pit at floor level with charred logs and ash bed inside, circular stone border ring, dungeon campfire location, dark fantasy game prop, floor-placed, isolated object, dark background",

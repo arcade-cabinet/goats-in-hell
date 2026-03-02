@@ -2,6 +2,29 @@
   "id": "offering-skull-bowl",
   "name": "Offering Skull Bowl",
   "type": "prop",
+  "seed": 883737703,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacb0-b00e-71ba-8322-4440814f7006",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb0-b00e-71ba-8322-4440814f7006"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacb1-f687-757a-9d8a-0416a59946a5",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb1-f687-757a-9d8a-0416a59946a5"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A large goat skull turned upside down used as a bowl, filled with dark embers and ash, cracked horns as handles, sitting on the ground, hell dungeon decoration, stylized low poly, dark fantasy, isometric view",

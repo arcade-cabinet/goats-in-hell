@@ -2,6 +2,29 @@
   "id": "blood-trough",
   "name": "Blood Trough",
   "type": "prop",
+  "seed": 437484243,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac6d-b7e1-7db7-8922-cdbc62164f02",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac6d-b7e1-7db7-8922-cdbc62164f02"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac6e-da0d-7722-81ed-1e24493eb542",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac6e-da0d-7722-81ed-1e24493eb542"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A long stone trough filled with dark congealed blood, drainage channels carved into the sides, industrial slaughterhouse floor fixture, violence butchery theme, stylized low poly game prop, dark fantasy, isometric view",

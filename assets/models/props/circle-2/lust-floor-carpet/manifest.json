@@ -1,0 +1,41 @@
+{
+  "id": "lust-floor-carpet",
+  "name": "Crimson Floor Carpet",
+  "type": "prop",
+  "seed": 3610997535,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac81-ce03-7e91-ab47-6bb69f1bdad9",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac81-ce03-7e91-ab47-6bb69f1bdad9"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac83-7bcd-7efa-9488-dad6b38c7e1e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac83-7bcd-7efa-9488-dad6b38c7e1e"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A luxurious crimson and gold woven carpet lying flat on a marble floor, rectangular with ornate border patterns and central medallion design, rich deep red fabric with golden thread accents, slightly worn edges showing age, fringe tassels at both short ends, seductive luxury in a hellish palace, dark fantasy dungeon game prop, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Deep crimson woven fabric, golden thread border patterns, central medallion design, slightly worn pile, warm color against marble",
+    "enablePbr": true
+  }
+}

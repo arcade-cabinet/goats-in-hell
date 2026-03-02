@@ -1,0 +1,41 @@
+{
+  "id": "bone-column",
+  "name": "Bone Column",
+  "type": "prop",
+  "seed": 2165707692,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac72-cd9c-7906-afcc-a781e1c72473",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac72-cd9c-7906-afcc-a781e1c72473"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac74-1c3c-7ea4-80f3-1db86c349d65",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac74-1c3c-7ea4-80f3-1db86c349d65"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tall pillar made of fused bones and skulls, dark marrow oozing between joints, twisted goat horns spiraling up the column, infernal dungeon architecture prop, stylized low poly, dark fantasy, isometric view",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Yellowed bone surface with dark marrow stains, rough textured skulls, slight emissive red in eye sockets",
+    "enablePbr": true
+  }
+}

@@ -2,6 +2,91 @@
   "id": "boss-il-macello",
   "name": "Il Macello — The Slaughter",
   "type": "character",
+  "seed": 2255442197,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cad58-820e-76c0-9654-dd4491234275",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad58-820e-76c0-9654-dd4491234275"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cada2-2163-7117-bd8a-e5de5eba258e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cada2-2163-7117-bd8a-e5de5eba258e"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cada9-c663-7248-ba5d-6f032a71a005",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cada9-c663-7248-ba5d-6f032a71a005"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cadb7-378e-73d0-9a06-ee8c3f9edbf5",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadb7-378e-73d0-9a06-ee8c3f9edbf5"
+      },
+      "artifacts": {}
+    },
+    "animations": {
+      "WalkAndRun.Walking.Zombie_Walk": {
+        "taskId": "019cadb8-3592-743a-acba-de46c31f791e",
+        "status": "SUCCEEDED",
+        "actionId": 112,
+        "artifact": "animations/Zombie_Walk.glb"
+      },
+      "DailyActions.Idle.Angry_Ground_Stomp": {
+        "taskId": "019cadb8-afaf-7650-9848-1dada410f68f",
+        "status": "SUCCEEDED",
+        "actionId": 255,
+        "artifact": "animations/Angry_Ground_Stomp.glb"
+      },
+      "Fighting.AttackingwithWeapon.Axe_Spin_Attack": {
+        "taskId": "019cadb8-ef43-7453-8135-d1f15d856bda",
+        "status": "SUCCEEDED",
+        "actionId": 238,
+        "artifact": "animations/Axe_Spin_Attack.glb"
+      },
+      "Fighting.AttackingwithWeapon.Charged_Axe_Chop": {
+        "taskId": "019cadb9-6a67-765b-9a09-39c36a15be01",
+        "status": "SUCCEEDED",
+        "actionId": 237,
+        "artifact": "animations/Charged_Axe_Chop.glb"
+      },
+      "Fighting.CastingSpell.Charged_Ground_Slam": {
+        "taskId": "019cadb9-e4ad-73f6-a339-57e9ec09058a",
+        "status": "SUCCEEDED",
+        "actionId": 127,
+        "artifact": "animations/Charged_Ground_Slam.glb"
+      },
+      "BodyMovements.Acting.Zombie_Scream": {
+        "taskId": "019cadba-23ee-71e4-9e5c-ac01afc8cd93",
+        "status": "SUCCEEDED",
+        "actionId": 386,
+        "artifact": "animations/Zombie_Scream.glb"
+      },
+      "Fighting.GettingHit.BeHit_FlyUp": {
+        "taskId": "019cadba-62f2-7400-9528-d67fb933a6d9",
+        "status": "SUCCEEDED",
+        "actionId": 7,
+        "artifact": "animations/BeHit_FlyUp.glb"
+      },
+      "Fighting.Dying.Knock_Down": {
+        "taskId": "019cadbb-17d8-7679-b787-800051875ae4",
+        "status": "SUCCEEDED",
+        "actionId": 187,
+        "artifact": "animations/Knock_Down.glb"
+      }
+    }
+  },
   "pipeline": "enemy",
   "description": "Circle 7 Boss (Violence). Industrial nightmare goat, a walking slaughterhouse.",
   "textToImageTask": {
@@ -21,7 +106,9 @@
     "texturePrompt": "Raw flesh and rusted industrial iron merged, visible rivets and bolts, spinning blade textures, barbed wire wraps, dark fluid tubes, single burning orange eye through iron mask crack",
     "enablePbr": true
   },
-  "riggingTask": { "heightMeters": 3.2 },
+  "riggingTask": {
+    "heightMeters": 3.2
+  },
   "animationTask": {
     "animations": [
       "WalkAndRun.Walking.Zombie_Walk",

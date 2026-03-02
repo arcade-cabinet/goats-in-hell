@@ -2,6 +2,29 @@
   "id": "violence-bone-grinder",
   "name": "Bone Grinder",
   "type": "prop",
+  "seed": 2206012463,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac83-3011-7edc-8a9d-d83ec2c299c6",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac83-3011-7edc-8a9d-d83ec2c299c6"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac85-3511-7a4b-8da5-e874e5f0396c",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac85-3511-7a4b-8da5-e874e5f0396c"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A large solid iron bone grinding machine with heavy gears and a hopper funnel, industrial meat processing equipment, rusted crank handle and grinding wheels, bloodstained, dark fantasy game prop, isolated object, dark background, three-quarter orientation view",

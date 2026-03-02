@@ -205,6 +205,26 @@ export const cellMetadata = sqliteTable('cell_metadata', {
 });
 
 // ---------------------------------------------------------------------------
+// Decals — surface decoration textures (cracks, frost, stains, etc.)
+// ---------------------------------------------------------------------------
+
+export const decals = sqliteTable('decals', {
+  id: text('id').primaryKey(),
+  levelId: text('level_id')
+    .notNull()
+    .references(() => levels.id, { onDelete: 'cascade' }),
+  roomId: text('room_id').references(() => rooms.id),
+  decalType: text('decal_type').notNull(), // Texture name, e.g. 'ice-frost', 'concrete-crack', 'blood-stain'
+  x: real('x').notNull(), // Grid X coordinate (center)
+  z: real('z').notNull(), // Grid Z coordinate (center)
+  w: real('w').notNull().default(2), // Width in grid cells
+  h: real('h').notNull().default(2), // Height/depth in grid cells
+  rotation: real('rotation').notNull().default(0), // Radians
+  opacity: real('opacity').notNull().default(0.8),
+  surface: text('surface').notNull().default('floor'), // 'floor' | 'wall' | 'ceiling'
+});
+
+// ---------------------------------------------------------------------------
 // TypeScript types derived from schema
 // ---------------------------------------------------------------------------
 
@@ -252,3 +272,8 @@ export type NewEnvironmentZone = typeof environmentZones.$inferInsert;
 export type CellMeta = typeof cellMetadata.$inferSelect;
 /** Insert shape of the cell_metadata table. */
 export type NewCellMeta = typeof cellMetadata.$inferInsert;
+
+/** Selected (read) shape of the decals table. */
+export type Decal = typeof decals.$inferSelect;
+/** Insert shape of the decals table. */
+export type NewDecal = typeof decals.$inferInsert;

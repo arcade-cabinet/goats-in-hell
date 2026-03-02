@@ -2,6 +2,29 @@
   "id": "wrath-chain-curtain",
   "name": "Hanging Chain Curtain",
   "type": "prop",
+  "seed": 1622878257,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac7d-0c53-79a6-8d94-83c453ab9839",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac7d-0c53-79a6-8d94-83c453ab9839"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac80-34d1-701f-8368-9ecbb3d93021",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac80-34d1-701f-8368-9ecbb3d93021"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "Multiple heavy iron chains hanging vertically from a ceiling-mounted iron bar, chains of varying lengths creating a curtain effect, each chain link thick and corroded with rust, industrial chain screen divider, game prop, isolated object, dark background, front orientation view",

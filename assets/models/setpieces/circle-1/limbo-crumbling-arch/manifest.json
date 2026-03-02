@@ -1,0 +1,41 @@
+{
+  "id": "limbo-crumbling-arch",
+  "name": "Crumbling Stone Arch",
+  "type": "prop",
+  "seed": 2035067863,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cad71-32f7-7c7a-9fe0-7287fd934f14",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad71-32f7-7c7a-9fe0-7287fd934f14"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cad72-d19c-7a4f-828b-cb64a2169896",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad72-d19c-7a4f-828b-cb64a2169896"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A crumbling ancient stone archway with broken keystone, rough hewn gray-blue limestone blocks, cracks and missing chunks revealing dark interior, moss in crevices, dark fantasy dungeon game prop, isolated object, dark background, front-facing view",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "on"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Cold gray-blue rough limestone, deep cracks with dark interiors, green moss in joints, weathered ancient surface",
+    "enablePbr": true
+  }
+}

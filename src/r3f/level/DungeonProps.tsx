@@ -15,7 +15,12 @@
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three/webgpu';
-import { PROP_MODEL_ASSETS, type PropModelKey } from '../../game/systems/AssetRegistry';
+import {
+  PROP_MODEL_ASSETS,
+  SETPIECE_MODEL_ASSETS,
+  type PropModelKey,
+  type SetpieceModelKey,
+} from '../../game/systems/AssetRegistry';
 import { cloneModel, isModelLoaded, loadModels } from '../systems/ModelLoader';
 
 // ---------------------------------------------------------------------------
@@ -133,31 +138,61 @@ function getSharedFallbackGeo(): THREE.BoxGeometry {
 // ---------------------------------------------------------------------------
 
 /**
- * Convert a spawn type like `prop_firebasket` to asset key `prop-firebasket`.
- * Returns null if the key doesn't exist in PROP_MODEL_ASSETS.
+ * Resolve a spawn entity type to an asset key and require() value.
+ *
+ * Handles three formats:
+ *   - Procedural (LevelGenerator): `prop_firebasket` → `prop-firebasket` in PROP_MODEL_ASSETS
+ *   - Meshy prop (build scripts):   `limbo-stone-bench` → `prop-limbo-stone-bench` in PROP_MODEL_ASSETS
+ *   - Meshy setpiece (build scripts): `limbo-crumbling-arch` → `setpiece-limbo-crumbling-arch` in SETPIECE_MODEL_ASSETS
+ *
+ * Returns null if the type resolves to no known asset.
  */
-function spawnTypeToAssetKey(type: string): PropModelKey | null {
-  const key = type.replace(/_/g, '-') as PropModelKey;
-  if (key in PROP_MODEL_ASSETS) return key;
+function resolveAsset(type: string): { key: string; value: number | string } | null {
+  // Procedural: prop_firebasket → prop-firebasket
+  const dashKey = type.replace(/_/g, '-');
+  if (dashKey in PROP_MODEL_ASSETS) {
+    return { key: dashKey, value: PROP_MODEL_ASSETS[dashKey as PropModelKey] };
+  }
+  // Meshy prop: limbo-stone-bench → prop-limbo-stone-bench
+  const meshyPropKey = `prop-${dashKey}`;
+  if (meshyPropKey in PROP_MODEL_ASSETS) {
+    return { key: meshyPropKey, value: PROP_MODEL_ASSETS[meshyPropKey as PropModelKey] };
+  }
+  // Meshy setpiece: limbo-crumbling-arch → setpiece-limbo-crumbling-arch
+  const meshySpKey = `setpiece-${dashKey}`;
+  if (meshySpKey in SETPIECE_MODEL_ASSETS) {
+    return { key: meshySpKey, value: SETPIECE_MODEL_ASSETS[meshySpKey as SetpieceModelKey] };
+  }
   return null;
 }
 
 /**
- * Collect unique asset keys needed for the current spawn list.
+ * Returns true for spawn types this component can render:
+ * - Procedural `prop_*` types
+ * - DB-authored Meshy prop or setpiece IDs
+ */
+function isSupportedPropType(type: string): boolean {
+  if (type.startsWith('prop_')) return true;
+  return resolveAsset(type) !== null;
+}
+
+/**
+ * Collect unique (key, requireValue) pairs for the current spawn list.
+ * Metro require() values are numbers (asset IDs) at runtime.
  */
 function collectNeededAssets(spawns: PropSpawn[]): [string, number | string][] {
   const seen = new Set<string>();
   const entries: [string, number | string][] = [];
 
   for (const spawn of spawns) {
-    if (!spawn.type.startsWith('prop_')) continue;
-
     const config = PROP_GLB_CONFIGS[spawn.type];
-    const assetKey = config?.assetKey ?? spawnTypeToAssetKey(spawn.type);
-    if (!assetKey || seen.has(assetKey)) continue;
+    const resolved = config
+      ? { key: config.assetKey as string, value: PROP_MODEL_ASSETS[config.assetKey] as number | string }
+      : resolveAsset(spawn.type);
+    if (!resolved || seen.has(resolved.key)) continue;
 
-    seen.add(assetKey);
-    entries.push([assetKey, PROP_MODEL_ASSETS[assetKey]]);
+    seen.add(resolved.key);
+    entries.push([resolved.key, resolved.value as number | string]);
   }
 
   return entries;
@@ -232,8 +267,8 @@ function buildGlbPropMesh(assetKey: string, scale: number): THREE.Group | null {
 export function DungeonProps({ spawns }: DungeonPropsProps): null {
   const scene = useThree((state) => state.scene);
 
-  // Filter to prop_ spawns once
-  const propSpawns = useMemo(() => spawns.filter((s) => s.type.startsWith('prop_')), [spawns]);
+  // Filter to renderable prop/setpiece spawns (procedural prop_* + Meshy authored IDs)
+  const propSpawns = useMemo(() => spawns.filter((s) => isSupportedPropType(s.type)), [spawns]);
 
   // Track all scene objects for cleanup
   const sceneObjectsRef = useRef<THREE.Object3D[]>([]);
@@ -276,7 +311,10 @@ export function DungeonProps({ spawns }: DungeonPropsProps): null {
 
     for (const spawn of propSpawns) {
       const config = PROP_GLB_CONFIGS[spawn.type];
-      const assetKey = config?.assetKey ?? spawnTypeToAssetKey(spawn.type);
+      const resolved = config
+        ? { key: config.assetKey as string }
+        : resolveAsset(spawn.type);
+      const assetKey = resolved?.key ?? null;
       const scale = config?.scale ?? 0.7;
 
       // Build the prop mesh: GLB if loaded, fallback box otherwise

@@ -1,0 +1,41 @@
+{
+  "id": "limbo-ancient-pillar",
+  "name": "Ancient Stone Pillar",
+  "type": "prop",
+  "seed": 2123977806,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac62-0cb5-7c80-a1cb-0ab2305defb0",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac62-0cb5-7c80-a1cb-0ab2305defb0"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac63-839c-7a43-8acb-96d66401835b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac63-839c-7a43-8acb-96d66401835b"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tall ancient stone pillar with worn Doric capital, gray-blue limestone surface with deep weathering, vertical cracks running full height, base partially buried in rubble, dark fantasy dungeon game prop, isolated object, dark background, front-facing view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Cold gray-blue polished stone with weathered surface, deep vertical cracks, ancient worn capital details",
+    "enablePbr": true
+  }
+}

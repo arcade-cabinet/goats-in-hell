@@ -2,6 +2,79 @@
   "id": "goat-butcher",
   "name": "Goat Butcher",
   "type": "character",
+  "seed": 3659413118,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cadc0-b4b5-72b9-94ee-1b93c822ae72",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadc0-b4b5-72b9-94ee-1b93c822ae72"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cadc3-64aa-774c-84e3-6e22640c9ee6",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadc3-64aa-774c-84e3-6e22640c9ee6"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cadc5-368b-7795-afb4-770a9265fd07",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadc5-368b-7795-afb4-770a9265fd07"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cadc6-c383-77c9-8af7-9cf77818ec24",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadc6-c383-77c9-8af7-9cf77818ec24"
+      },
+      "artifacts": {}
+    },
+    "animations": {
+      "WalkAndRun.Walking.Zombie_Walk": {
+        "taskId": "019cadc7-8450-7677-85ba-4b5c3c91a692",
+        "status": "SUCCEEDED",
+        "actionId": 112,
+        "artifact": "animations/Zombie_Walk.glb"
+      },
+      "DailyActions.Idle.Angry_Ground_Stomp": {
+        "taskId": "019cadc7-c2df-7582-ae13-337056f3bc30",
+        "status": "SUCCEEDED",
+        "actionId": 255,
+        "artifact": "animations/Angry_Ground_Stomp.glb"
+      },
+      "Fighting.AttackingwithWeapon.Charged_Axe_Chop": {
+        "taskId": "019cadc8-0197-7583-a74d-ead0e9db7d09",
+        "status": "SUCCEEDED",
+        "actionId": 237,
+        "artifact": "animations/Charged_Axe_Chop.glb"
+      },
+      "Fighting.AttackingwithWeapon.Left_Slash": {
+        "taskId": "019cadc8-da39-7801-b4cd-65e96f47e142",
+        "status": "SUCCEEDED",
+        "actionId": 97,
+        "artifact": "animations/Left_Slash.glb"
+      },
+      "Fighting.GettingHit.Face_Punch_Reaction_1": {
+        "taskId": "019cadc9-18c2-76c8-935c-c43a7c42cd8e",
+        "status": "SUCCEEDED",
+        "actionId": 175,
+        "artifact": "animations/Face_Punch_Reaction_1.glb"
+      },
+      "Fighting.Dying.Knock_Down_1": {
+        "taskId": "019cadc9-cde6-76d1-8908-6422d12fbbdf",
+        "status": "SUCCEEDED",
+        "actionId": 190,
+        "artifact": "animations/Knock_Down_1.glb"
+      }
+    }
+  },
   "pipeline": "enemy",
   "description": "Circle 7 (Violence) — industrial slaughterhouse goat. Heavy cleaver, blood-soaked, relentless.",
   "textToImageTask": {
@@ -21,7 +94,9 @@
     "texturePrompt": "Blood-matted dark red fur, rusty cleaver blade, blood-soaked brown leather apron, heavy chain with iron hook, black rubber boots, dead black eyes",
     "enablePbr": true
   },
-  "riggingTask": { "heightMeters": 1.9 },
+  "riggingTask": {
+    "heightMeters": 1.9
+  },
   "animationTask": {
     "animations": [
       "WalkAndRun.Walking.Zombie_Walk",

@@ -2,6 +2,29 @@
   "id": "gluttony-dripping-stalactite",
   "name": "Dripping Stalactite",
   "type": "prop",
+  "seed": 1286456107,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac7d-ac18-7fdb-b68b-f68fd8a2b8df",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac7d-ac18-7fdb-b68b-f68fd8a2b8df"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac7f-b288-7e48-849b-6ac2fabac20f",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac7f-b288-7e48-849b-6ac2fabac20f"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A thick organic stalactite hanging from the ceiling, glistening with sickly yellow-green moisture, bulbous tip with a solid sculpted drip forming at the end, surface covered in slime ridges, dark fantasy gluttony-themed ceiling game prop, isolated object, dark background, hanging view",

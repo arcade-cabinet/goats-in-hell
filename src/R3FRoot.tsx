@@ -11,7 +11,9 @@ import { useEffect, useMemo, useRef } from 'react';
 import { CELL_SIZE } from './constants';
 import type { DrizzleDb } from './db/connection';
 import {
+  type RuntimeDecal,
   type RuntimeEnvZone,
+  toDecals,
   toEnvironmentZones,
   toLevelData,
   toTriggersAndEntities,
@@ -58,6 +60,7 @@ import { EnemyRenderer } from './r3f/entities/EnemyMesh';
 import { PickupRenderer } from './r3f/entities/PickupMesh';
 import { inputManager } from './r3f/input/InputManager';
 import { AIProvider } from './r3f/input/providers/AIProvider';
+import { DecalSystem } from './r3f/level/DecalSystem';
 import { DungeonProps } from './r3f/level/DungeonProps';
 import { EnvironmentZones } from './r3f/level/EnvironmentZones';
 import { extractColliderData, LevelColliders, LevelMeshes } from './r3f/level/LevelMeshes';
@@ -340,6 +343,25 @@ function GameScene() {
     if (!_levelDb || !levelData.levelId) return [];
     try {
       return toEnvironmentZones(_levelDb, levelData.levelId);
+    } catch {
+      return [];
+    }
+  }, [
+    stage.encounterType,
+    stage.floor,
+    stage.bossId,
+    dbReady,
+    levelSource,
+    circleNumber,
+    levelData.levelId,
+  ]);
+
+  // Load decals from DB (empty array for procedural levels)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: same deps as levelData memo
+  const levelDecals = useMemo<RuntimeDecal[]>(() => {
+    if (!_levelDb || !levelData.levelId) return [];
+    try {
+      return toDecals(_levelDb, levelData.levelId);
     } catch {
       return [];
     }
@@ -647,6 +669,7 @@ function GameScene() {
       />
       <DungeonProps key={`props-${floorKeyRef.current}`} spawns={propSpawns} />
       <EnvironmentZones key={`envzones-${floorKeyRef.current}`} zones={envZones} />
+      <DecalSystem key={`decals-${floorKeyRef.current}`} decals={levelDecals} />
       <LevelColliders
         key={`col-${floorKeyRef.current}`}
         wallPositions={colliderData.wallPositions}

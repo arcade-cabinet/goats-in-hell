@@ -2,6 +2,29 @@
   "id": "greed-jeweled-pedestal",
   "name": "Jeweled Display Pedestal",
   "type": "prop",
+  "seed": 3057966076,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caca0-f9b3-7e1e-948a-0d6c2c6534db",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca0-f9b3-7e1e-948a-0d6c2c6534db"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019caca2-cf89-7f63-966b-92ae80d0e911",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca2-cf89-7f63-966b-92ae80d0e911"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A short stone display pedestal with embedded rubies and emeralds around the column, gold leaf accents on the flat top surface, museum-style treasure display stand, dark fantasy game prop, isolated object, dark background, three quarter view",

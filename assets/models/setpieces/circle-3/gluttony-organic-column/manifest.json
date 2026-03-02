@@ -1,0 +1,41 @@
+{
+  "id": "gluttony-organic-column",
+  "name": "Organic Flesh Column",
+  "type": "prop",
+  "seed": 1323304065,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac94-88b2-7c54-80e4-01eb885f95a9",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac94-88b2-7c54-80e4-01eb885f95a9"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac95-eb1f-7233-8732-fc3d10f54f83",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac95-eb1f-7233-8732-fc3d10f54f83"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A structural column made of twisted organic flesh and bone, pink-red meaty surface wrapped around a visible dark bone core, glistening with moisture, bulging veins running vertically, dark fantasy gluttony-themed structural game prop, isolated object, dark background, front-facing view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Pink-red meaty surface, visible dark bone core, glistening moisture, bulging blue-purple veins, organic structural form",
+    "enablePbr": true
+  }
+}

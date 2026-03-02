@@ -9,6 +9,7 @@ import BetterSqlite3 from 'better-sqlite3';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import {
   CONNECTION_TYPES,
+  DECAL_TYPES,
   ENEMY_TYPES,
   ENV_TYPES,
   LevelEditor,
@@ -385,8 +386,8 @@ export async function buildCircle7(dbPath: string) {
   // =========================================================================
 
   // --- Pier (bounds: 26, 2, 8, 6) ---
-  // 2x Torch_Metal (east/west walls)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 27, 3, {
+  // 2x torch-sconce-ornate (east/west walls)
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 27, 3, {
     roomId: pierId,
     surfaceAnchor: {
       face: 'west',
@@ -397,7 +398,7 @@ export async function buildCircle7(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 32, 3, {
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 32, 3, {
     roomId: pierId,
     surfaceAnchor: {
       face: 'east',
@@ -408,25 +409,59 @@ export async function buildCircle7(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 1x Rope_1 (railing edge)
-  editor.spawnProp(LEVEL_ID, 'Rope_1', 30, 3, { roomId: pierId });
-  // 1x Cauldron (floor)
-  editor.spawnProp(LEVEL_ID, 'Cauldron', 31, 5, { roomId: pierId });
-  // 1x Barrel (floor)
-  editor.spawnProp(LEVEL_ID, 'Barrel', 28, 6, { roomId: pierId });
+  // 1x violence-iron-railing (west pier edge)
+  editor.spawnProp(LEVEL_ID, 'violence-iron-railing', 27, 5, { roomId: pierId });
+  // 1x violence-blood-cauldron (floor, pier edge)
+  editor.spawnProp(LEVEL_ID, 'violence-blood-cauldron', 31, 4, { roomId: pierId });
+  // 1x blood-trough (near stairs)
+  editor.spawnProp(LEVEL_ID, 'blood-trough', 28, 6, { roomId: pierId });
+  // 1x bone-pile (NE corner)
+  editor.spawnProp(LEVEL_ID, 'bone-pile', 33, 3, { roomId: pierId });
+  // 1x violence-industrial-arch (south door)
+  editor.spawnProp(LEVEL_ID, 'violence-industrial-arch', 30, 7, { roomId: pierId });
+  // 1x violence-pier-overlook (east/west edges)
+  editor.spawnProp(LEVEL_ID, 'violence-pier-overlook', 27, 4, { roomId: pierId });
+  // 1x violence-walkway-pillar (south stair flanks)
+  editor.spawnProp(LEVEL_ID, 'violence-walkway-pillar', 32, 6, { roomId: pierId });
 
   // --- Blood River (bounds: 20, 12, 20, 14) ---
-  // 6x Torch_Metal (on walkway pillars)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 23, 14, { roomId: bloodRiverId });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 28, 16, { roomId: bloodRiverId });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 35, 15, { roomId: bloodRiverId });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 24, 20, { roomId: bloodRiverId });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 32, 22, { roomId: bloodRiverId });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 37, 23, { roomId: bloodRiverId });
+  // 6x violence-walkway-pillar (support pillars rising from blood)
+  editor.spawnProp(LEVEL_ID, 'violence-walkway-pillar', 23, 14, { roomId: bloodRiverId });
+  editor.spawnProp(LEVEL_ID, 'violence-walkway-pillar', 28, 16, { roomId: bloodRiverId });
+  editor.spawnProp(LEVEL_ID, 'violence-walkway-pillar', 35, 15, { roomId: bloodRiverId });
+  editor.spawnProp(LEVEL_ID, 'violence-walkway-pillar', 24, 20, { roomId: bloodRiverId });
+  editor.spawnProp(LEVEL_ID, 'violence-walkway-pillar', 32, 22, { roomId: bloodRiverId });
+  editor.spawnProp(LEVEL_ID, 'violence-walkway-pillar', 37, 23, { roomId: bloodRiverId });
+  // 6x torch-sconce-ornate (on walkway pillars)
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 23, 14, { roomId: bloodRiverId });
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 28, 16, { roomId: bloodRiverId });
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 35, 15, { roomId: bloodRiverId });
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 24, 20, { roomId: bloodRiverId });
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 32, 22, { roomId: bloodRiverId });
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 37, 23, { roomId: bloodRiverId });
+  // 1x violence-blood-river-arch (walkway junction hero piece)
+  editor.spawnProp(LEVEL_ID, 'violence-blood-river-arch', 30, 14, { roomId: bloodRiverId });
+  // 3x violence-rusted-walkway-platform (dead-end platforms)
+  editor.spawnProp(LEVEL_ID, 'violence-rusted-walkway-platform', 22, 18, { roomId: bloodRiverId });
+  editor.spawnProp(LEVEL_ID, 'violence-rusted-walkway-platform', 36, 24, { roomId: bloodRiverId });
+  editor.spawnProp(LEVEL_ID, 'violence-rusted-walkway-platform', 38, 16, { roomId: bloodRiverId });
+  // 2x violence-blood-pool (between walkways)
+  editor.spawnProp(LEVEL_ID, 'violence-blood-pool', 26, 18, { roomId: bloodRiverId });
+  editor.spawnProp(LEVEL_ID, 'violence-blood-pool', 34, 20, { roomId: bloodRiverId });
+  // 2x violence-iron-railing (walkway edges)
+  editor.spawnProp(LEVEL_ID, 'violence-iron-railing', 25, 16, { roomId: bloodRiverId });
+  editor.spawnProp(LEVEL_ID, 'violence-iron-railing', 33, 20, { roomId: bloodRiverId });
+  // 1x blood-trough (walkway edge)
+  editor.spawnProp(LEVEL_ID, 'blood-trough', 24, 18, { roomId: bloodRiverId });
+  // 2x violence-blood-gutter (drainage channels)
+  editor.spawnProp(LEVEL_ID, 'violence-blood-gutter', 26, 20, { roomId: bloodRiverId });
+  editor.spawnProp(LEVEL_ID, 'violence-blood-gutter', 32, 16, { roomId: bloodRiverId });
+  // 1x bone-pile (dead-end walkway)
+  editor.spawnProp(LEVEL_ID, 'bone-pile', 35, 22, { roomId: bloodRiverId });
 
   // --- River Banks (bounds: 8, 20, 8, 6) ---
-  // 1x Torch_Metal (north wall)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 12, 21, {
+  // 1x torch-sconce-ornate (north wall)
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 12, 21, {
     roomId: riverBanksId,
     surfaceAnchor: {
       face: 'north',
@@ -437,20 +472,37 @@ export async function buildCircle7(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 2x Barrel (floor)
-  editor.spawnProp(LEVEL_ID, 'Barrel', 14, 22, { roomId: riverBanksId });
-  editor.spawnProp(LEVEL_ID, 'Barrel', 14, 24, { roomId: riverBanksId });
-  // 1x Cauldron (floor)
-  editor.spawnProp(LEVEL_ID, 'Cauldron', 10, 23, { roomId: riverBanksId });
+  // 1x violence-industrial-arch (north door)
+  editor.spawnProp(LEVEL_ID, 'violence-industrial-arch', 12, 21, { roomId: riverBanksId });
+  // 1x violence-blood-cauldron (near north entrance)
+  editor.spawnProp(LEVEL_ID, 'violence-blood-cauldron', 10, 21, { roomId: riverBanksId });
+  // 1x bone-pile (south half)
+  editor.spawnProp(LEVEL_ID, 'bone-pile', 14, 23, { roomId: riverBanksId });
+  // 1x rubble-pile-small (west side)
+  editor.spawnProp(LEVEL_ID, 'rubble-pile-small', 9, 22, { roomId: riverBanksId });
 
   // --- Thorny Passage (bounds: 44, 18, 6, 16) ---
-  // 2x Rope_3 (hanging, marking safe path)
-  editor.spawnProp(LEVEL_ID, 'Rope_3', 47, 24, { roomId: thornyPassageId });
-  editor.spawnProp(LEVEL_ID, 'Rope_3', 47, 30, { roomId: thornyPassageId });
+  // 8x violence-thorn-column (along both walls)
+  editor.spawnProp(LEVEL_ID, 'violence-thorn-column', 45, 19, { roomId: thornyPassageId });
+  editor.spawnProp(LEVEL_ID, 'violence-thorn-column', 48, 20, { roomId: thornyPassageId });
+  editor.spawnProp(LEVEL_ID, 'violence-thorn-column', 45, 23, { roomId: thornyPassageId });
+  editor.spawnProp(LEVEL_ID, 'violence-thorn-column', 48, 24, { roomId: thornyPassageId });
+  editor.spawnProp(LEVEL_ID, 'violence-thorn-column', 45, 27, { roomId: thornyPassageId });
+  editor.spawnProp(LEVEL_ID, 'violence-thorn-column', 48, 28, { roomId: thornyPassageId });
+  editor.spawnProp(LEVEL_ID, 'violence-thorn-column', 45, 31, { roomId: thornyPassageId });
+  editor.spawnProp(LEVEL_ID, 'violence-thorn-column', 48, 32, { roomId: thornyPassageId });
+  // 1x violence-blood-pool (base of first ramp)
+  editor.spawnProp(LEVEL_ID, 'violence-blood-pool', 46, 22, { roomId: thornyPassageId });
+  // 2x rope-hanging (ceiling, passage midpoints)
+  editor.spawnProp(LEVEL_ID, 'rope-hanging', 47, 25, { roomId: thornyPassageId });
+  editor.spawnProp(LEVEL_ID, 'rope-hanging', 47, 29, { roomId: thornyPassageId });
+  // 2x spike-bed-small (ramp transitions)
+  editor.spawnProp(LEVEL_ID, 'spike-bed-small', 45, 20, { roomId: thornyPassageId });
+  editor.spawnProp(LEVEL_ID, 'spike-bed-small', 45, 32, { roomId: thornyPassageId });
 
   // --- Thornwood (bounds: 36, 38, 14, 12) ---
-  // 1x Torch_Metal (south wall)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 46, 48, {
+  // 1x torch-sconce-simple (south exit only)
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-simple', 46, 48, {
     roomId: thornwoodId,
     surfaceAnchor: {
       face: 'south',
@@ -461,15 +513,37 @@ export async function buildCircle7(dbPath: string) {
       scale: 1.0,
     },
   });
+  // 1x violence-sawblade-decoration (north wall)
+  editor.spawnProp(LEVEL_ID, 'violence-sawblade-decoration', 37, 39, { roomId: thornwoodId });
+  // 1x violence-blood-pool (center lane intersection)
+  editor.spawnProp(LEVEL_ID, 'violence-blood-pool', 40, 42, { roomId: thornwoodId });
+  // 4x bone-pile (at dead-end column clusters)
+  editor.spawnProp(LEVEL_ID, 'bone-pile', 39, 43, { roomId: thornwoodId });
+  editor.spawnProp(LEVEL_ID, 'bone-pile', 44, 41, { roomId: thornwoodId });
+  editor.spawnProp(LEVEL_ID, 'bone-pile', 37, 47, { roomId: thornwoodId });
+  editor.spawnProp(LEVEL_ID, 'bone-pile', 43, 49, { roomId: thornwoodId });
 
   // --- Burning Shore (bounds: 16, 54, 18, 10) ---
-  // None (deliberate emptiness)
+  // 6x violence-fire-geyser-vent (marking geyser eruption points)
+  editor.spawnProp(LEVEL_ID, 'violence-fire-geyser-vent', 18, 55, { roomId: burningShoreId });
+  editor.spawnProp(LEVEL_ID, 'violence-fire-geyser-vent', 28, 55, { roomId: burningShoreId });
+  editor.spawnProp(LEVEL_ID, 'violence-fire-geyser-vent', 23, 57, { roomId: burningShoreId });
+  editor.spawnProp(LEVEL_ID, 'violence-fire-geyser-vent', 18, 59, { roomId: burningShoreId });
+  editor.spawnProp(LEVEL_ID, 'violence-fire-geyser-vent', 30, 59, { roomId: burningShoreId });
+  editor.spawnProp(LEVEL_ID, 'violence-fire-geyser-vent', 24, 61, { roomId: burningShoreId });
+  // 2x fire-pit-small (between geysers)
+  editor.spawnProp(LEVEL_ID, 'fire-pit-small', 20, 56, { roomId: burningShoreId });
+  editor.spawnProp(LEVEL_ID, 'fire-pit-small', 26, 60, { roomId: burningShoreId });
+  // 1x rubble-pile-small (visual break)
+  editor.spawnProp(LEVEL_ID, 'rubble-pile-small', 22, 58, { roomId: burningShoreId });
 
   // --- Flamethrower Shrine (bounds: 22, 68, 6, 6) ---
-  // 1x CandleStick_Triple (altar)
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 25, 72, { roomId: flamethrowerShrineId });
-  // 2x Torch_Metal (east/west walls)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 23, 70, {
+  // 1x violence-stone-altar (center)
+  editor.spawnProp(LEVEL_ID, 'violence-stone-altar', 24, 71, { roomId: flamethrowerShrineId });
+  // 1x skull-candelabra (behind altar)
+  editor.spawnProp(LEVEL_ID, 'skull-candelabra', 24, 70, { roomId: flamethrowerShrineId });
+  // 2x torch-sconce-ornate (east/west walls, warm gold)
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 23, 70, {
     roomId: flamethrowerShrineId,
     surfaceAnchor: {
       face: 'west',
@@ -480,7 +554,7 @@ export async function buildCircle7(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 26, 70, {
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 26, 70, {
     roomId: flamethrowerShrineId,
     surfaceAnchor: {
       face: 'east',
@@ -491,11 +565,14 @@ export async function buildCircle7(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 1x Cauldron (floor)
-  editor.spawnProp(LEVEL_ID, 'Cauldron', 26, 72, { roomId: flamethrowerShrineId });
+  // 1x violence-blood-cauldron (cold, empty)
+  editor.spawnProp(LEVEL_ID, 'violence-blood-cauldron', 23, 72, { roomId: flamethrowerShrineId });
+  // 2x bone-column (flanking entrance)
+  editor.spawnProp(LEVEL_ID, 'bone-column', 23, 69, { roomId: flamethrowerShrineId });
+  editor.spawnProp(LEVEL_ID, 'bone-column', 25, 69, { roomId: flamethrowerShrineId });
 
   // --- Slaughterhouse (bounds: 18, 78, 14, 12) ---
-  // 9x Chain_Coil (ceiling, 3x3 grid)
+  // 9x meat-hook (ceiling, 3x3 grid)
   const chainPositions = [
     [21, 80],
     [25, 80],
@@ -508,10 +585,10 @@ export async function buildCircle7(dbPath: string) {
     [29, 87],
   ];
   for (const [cx, cz] of chainPositions) {
-    editor.spawnProp(LEVEL_ID, 'Chain_Coil', cx, cz, { roomId: slaughterhouseId });
+    editor.spawnProp(LEVEL_ID, 'meat-hook', cx, cz, { roomId: slaughterhouseId });
   }
-  // 4x Lantern_Wall (walls)
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 19, 80, {
+  // 4x torch-sconce-ornate (walls, industrial yellow)
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 19, 80, {
     roomId: slaughterhouseId,
     surfaceAnchor: {
       face: 'west',
@@ -522,7 +599,7 @@ export async function buildCircle7(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 30, 80, {
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 30, 80, {
     roomId: slaughterhouseId,
     surfaceAnchor: {
       face: 'east',
@@ -533,7 +610,7 @@ export async function buildCircle7(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 19, 86, {
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 19, 86, {
     roomId: slaughterhouseId,
     surfaceAnchor: {
       face: 'west',
@@ -544,7 +621,7 @@ export async function buildCircle7(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 30, 86, {
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 30, 86, {
     roomId: slaughterhouseId,
     surfaceAnchor: {
       face: 'east',
@@ -555,31 +632,34 @@ export async function buildCircle7(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 4x Crate_Metal (floor)
-  editor.spawnProp(LEVEL_ID, 'Crate_Metal', 20, 82, { roomId: slaughterhouseId });
-  editor.spawnProp(LEVEL_ID, 'Crate_Metal', 29, 82, { roomId: slaughterhouseId });
-  editor.spawnProp(LEVEL_ID, 'Crate_Metal', 20, 86, { roomId: slaughterhouseId });
-  editor.spawnProp(LEVEL_ID, 'Crate_Metal', 29, 86, { roomId: slaughterhouseId });
-  // 2x Workbench (floor)
-  editor.spawnProp(LEVEL_ID, 'Workbench', 24, 82, { roomId: slaughterhouseId });
-  editor.spawnProp(LEVEL_ID, 'Workbench', 24, 86, { roomId: slaughterhouseId });
-  // 1x Anvil (floor)
-  editor.spawnProp(LEVEL_ID, 'Anvil', 26, 83, { roomId: slaughterhouseId });
-  // 2x Bucket_Metal (floor)
-  editor.spawnProp(LEVEL_ID, 'Bucket_Metal', 22, 84, { roomId: slaughterhouseId });
-  editor.spawnProp(LEVEL_ID, 'Bucket_Metal', 27, 84, { roomId: slaughterhouseId });
+  // 4x violence-metal-crate-stack (floor, partial cover)
+  editor.spawnProp(LEVEL_ID, 'violence-metal-crate-stack', 20, 82, { roomId: slaughterhouseId });
+  editor.spawnProp(LEVEL_ID, 'violence-metal-crate-stack', 29, 82, { roomId: slaughterhouseId });
+  editor.spawnProp(LEVEL_ID, 'violence-metal-crate-stack', 20, 86, { roomId: slaughterhouseId });
+  editor.spawnProp(LEVEL_ID, 'violence-metal-crate-stack', 29, 86, { roomId: slaughterhouseId });
+  // 1x violence-butcher-block (center)
+  editor.spawnProp(LEVEL_ID, 'violence-butcher-block', 25, 83, { roomId: slaughterhouseId });
+  // 1x violence-rusted-anvil (NW corner)
+  editor.spawnProp(LEVEL_ID, 'violence-rusted-anvil', 19, 79, { roomId: slaughterhouseId });
+  // 1x violence-bone-grinder (SE area)
+  editor.spawnProp(LEVEL_ID, 'violence-bone-grinder', 30, 85, { roomId: slaughterhouseId });
+  // 1x violence-blood-gutter (center south)
+  editor.spawnProp(LEVEL_ID, 'violence-blood-gutter', 22, 86, { roomId: slaughterhouseId });
+  // 1x violence-hook-rack (north center)
+  editor.spawnProp(LEVEL_ID, 'violence-hook-rack', 25, 80, { roomId: slaughterhouseId });
+  // 1x violence-sawblade-decoration (west wall)
+  editor.spawnProp(LEVEL_ID, 'violence-sawblade-decoration', 18, 82, { roomId: slaughterhouseId });
+  // 1x violence-industrial-arch (north entrance)
+  editor.spawnProp(LEVEL_ID, 'violence-industrial-arch', 25, 79, { roomId: slaughterhouseId });
 
   // --- Butcher's Hook (bounds: 36, 82, 6, 6) ---
-  // 4x Crate_Metal
-  editor.spawnProp(LEVEL_ID, 'Crate_Metal', 37, 83, { roomId: butchersHookId });
-  editor.spawnProp(LEVEL_ID, 'Crate_Metal', 40, 83, { roomId: butchersHookId });
-  editor.spawnProp(LEVEL_ID, 'Crate_Metal', 37, 86, { roomId: butchersHookId });
-  editor.spawnProp(LEVEL_ID, 'Crate_Metal', 40, 86, { roomId: butchersHookId });
-  // 2x Barrel
-  editor.spawnProp(LEVEL_ID, 'Barrel', 38, 85, { roomId: butchersHookId });
-  editor.spawnProp(LEVEL_ID, 'Barrel', 39, 85, { roomId: butchersHookId });
-  // 1x Lantern_Wall (north wall)
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 39, 83, {
+  // 2x violence-metal-crate-stack (corners)
+  editor.spawnProp(LEVEL_ID, 'violence-metal-crate-stack', 37, 83, { roomId: butchersHookId });
+  editor.spawnProp(LEVEL_ID, 'violence-metal-crate-stack', 40, 83, { roomId: butchersHookId });
+  // 1x violence-blood-gutter (floor center)
+  editor.spawnProp(LEVEL_ID, 'violence-blood-gutter', 38, 85, { roomId: butchersHookId });
+  // 1x torch-sconce-simple (north wall)
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-simple', 39, 83, {
     roomId: butchersHookId,
     surfaceAnchor: {
       face: 'north',
@@ -592,7 +672,7 @@ export async function buildCircle7(dbPath: string) {
   });
 
   // --- Il Macello's Abattoir (bounds: 17, 94, 16, 16) ---
-  // 8x Chain_Coil (ceiling)
+  // 8x meat-hook (ceiling)
   const abattoirChains = [
     [21, 97],
     [28, 97],
@@ -604,10 +684,10 @@ export async function buildCircle7(dbPath: string) {
     [28, 100],
   ];
   for (const [cx, cz] of abattoirChains) {
-    editor.spawnProp(LEVEL_ID, 'Chain_Coil', cx, cz, { roomId: abattoirId });
+    editor.spawnProp(LEVEL_ID, 'meat-hook', cx, cz, { roomId: abattoirId });
   }
-  // 4x Torch_Metal (corners)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 18, 95, {
+  // 4x torch-sconce-ornate (corners, deep orange)
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 18, 95, {
     roomId: abattoirId,
     surfaceAnchor: {
       face: 'west',
@@ -618,7 +698,7 @@ export async function buildCircle7(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 31, 95, {
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 31, 95, {
     roomId: abattoirId,
     surfaceAnchor: {
       face: 'east',
@@ -629,7 +709,7 @@ export async function buildCircle7(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 18, 108, {
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 18, 108, {
     roomId: abattoirId,
     surfaceAnchor: {
       face: 'west',
@@ -640,7 +720,7 @@ export async function buildCircle7(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 31, 108, {
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 31, 108, {
     roomId: abattoirId,
     surfaceAnchor: {
       face: 'east',
@@ -651,10 +731,10 @@ export async function buildCircle7(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 1x Chandelier (ceiling center)
-  editor.spawnProp(LEVEL_ID, 'Chandelier', 25, 107, { roomId: abattoirId });
-  // 2x Sword_Bronze (south wall)
-  editor.spawnProp(LEVEL_ID, 'Sword_Bronze', 22, 108, {
+  // 1x chandelier-iron (ceiling center)
+  editor.spawnProp(LEVEL_ID, 'chandelier-iron', 25, 107, { roomId: abattoirId });
+  // 2x violence-sawblade-decoration (south wall trophies)
+  editor.spawnProp(LEVEL_ID, 'violence-sawblade-decoration', 22, 108, {
     roomId: abattoirId,
     surfaceAnchor: {
       face: 'south',
@@ -665,7 +745,7 @@ export async function buildCircle7(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Sword_Bronze', 28, 108, {
+  editor.spawnProp(LEVEL_ID, 'violence-sawblade-decoration', 28, 108, {
     roomId: abattoirId,
     surfaceAnchor: {
       face: 'south',
@@ -676,29 +756,106 @@ export async function buildCircle7(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 2x Shield_Wooden (south wall)
-  editor.spawnProp(LEVEL_ID, 'Shield_Wooden', 23, 108, {
-    roomId: abattoirId,
-    surfaceAnchor: {
-      face: 'south',
-      offsetX: 0,
-      offsetY: 2.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Shield_Wooden', 27, 108, {
-    roomId: abattoirId,
-    surfaceAnchor: {
-      face: 'south',
-      offsetX: 0,
-      offsetY: 2.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
+  // 2x violence-industrial-cage (north corners)
+  editor.spawnProp(LEVEL_ID, 'violence-industrial-cage', 19, 96, { roomId: abattoirId });
+  editor.spawnProp(LEVEL_ID, 'violence-industrial-cage', 31, 96, { roomId: abattoirId });
+  // 1x violence-blood-pool (center floor cosmetic)
+  editor.spawnProp(LEVEL_ID, 'violence-blood-pool', 25, 102, { roomId: abattoirId });
+  // 1x violence-bone-grinder (SW corner)
+  editor.spawnProp(LEVEL_ID, 'violence-bone-grinder', 19, 108, { roomId: abattoirId });
+  // 1x violence-blood-gutter (center floor)
+  editor.spawnProp(LEVEL_ID, 'violence-blood-gutter', 25, 100, { roomId: abattoirId });
+  // 1x violence-hook-rack (SE corner)
+  editor.spawnProp(LEVEL_ID, 'violence-hook-rack', 31, 108, { roomId: abattoirId });
+  // 1x violence-butcher-block (west side)
+  editor.spawnProp(LEVEL_ID, 'violence-butcher-block', 19, 103, { roomId: abattoirId });
+  // 1x violence-industrial-arch (north entrance, massive)
+  editor.spawnProp(LEVEL_ID, 'violence-industrial-arch', 25, 95, { roomId: abattoirId });
+  // 1x violence-chain-conveyor (ceiling, spanning N-S)
+  editor.spawnProp(LEVEL_ID, 'violence-chain-conveyor', 25, 100, { roomId: abattoirId });
+
+  // =========================================================================
+  // 5d. DECALS (blood stains, scorch marks — Violence theme)
+  // =========================================================================
+
+  // --- Pier (bounds: 26, 2, 8, 6) ---
+  // Blood seepage on walls near cauldron + blood trough
+  editor.placeDecals(LEVEL_ID, pierId, [
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 31, z: 4, w: 2, h: 2, surface: 'wall' },
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 28, z: 6, w: 2, h: 3 },
+  ]);
+
+  // --- Blood River (bounds: 20, 12, 20, 14) ---
+  // Heavy blood stains on walkway surfaces and walls
+  editor.placeDecals(LEVEL_ID, bloodRiverId, [
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 26, z: 18, w: 3, h: 3 },
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 34, z: 20, w: 3, h: 3 },
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 23, z: 14, w: 2, h: 2, surface: 'wall' },
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 37, z: 23, w: 2, h: 2, surface: 'wall' },
+  ]);
+
+  // --- River Banks (bounds: 8, 20, 8, 6) ---
+  // Blood pools near entrance
+  editor.placeDecals(LEVEL_ID, riverBanksId, [
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 12, z: 22, w: 3, h: 2 },
+  ]);
+
+  // --- Thorny Passage (bounds: 44, 18, 6, 16) ---
+  // Blood stains at ramp bases where thorns wound
+  editor.placeDecals(LEVEL_ID, thornyPassageId, [
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 46, z: 22, w: 2, h: 2 },
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 46, z: 30, w: 2, h: 2 },
+  ]);
+
+  // --- Thornwood (bounds: 36, 38, 14, 12) ---
+  // Blood pools at column dead-ends
+  editor.placeDecals(LEVEL_ID, thornwoodId, [
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 40, z: 42, w: 3, h: 3 },
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 44, z: 47, w: 2, h: 2 },
+  ]);
+
+  // --- Burning Shore (bounds: 16, 54, 18, 10) ---
+  // Scorch marks at fire geyser positions + blood stain near edges
+  editor.placeDecals(LEVEL_ID, burningShoreId, [
+    { type: DECAL_TYPES.SCORCH_MARK, x: 18, z: 55, w: 3, h: 3 },
+    { type: DECAL_TYPES.SCORCH_MARK, x: 28, z: 55, w: 3, h: 3 },
+    { type: DECAL_TYPES.SCORCH_MARK, x: 23, z: 57, w: 3, h: 3 },
+    { type: DECAL_TYPES.SCORCH_MARK, x: 18, z: 59, w: 3, h: 3 },
+    { type: DECAL_TYPES.SCORCH_MARK, x: 30, z: 59, w: 3, h: 3 },
+    { type: DECAL_TYPES.SCORCH_MARK, x: 24, z: 61, w: 3, h: 3 },
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 20, z: 62, w: 2, h: 2, opacity: 0.5 },
+  ]);
+
+  // --- Flamethrower Shrine (bounds: 22, 68, 6, 6) ---
+  // Scorch marks around altar
+  editor.placeDecals(LEVEL_ID, flamethrowerShrineId, [
+    { type: DECAL_TYPES.SCORCH_MARK, x: 24, z: 71, w: 2, h: 2, opacity: 0.6 },
+  ]);
+
+  // --- Slaughterhouse (bounds: 18, 78, 14, 12) ---
+  // Heavy blood stains on floor + wall seepage
+  editor.placeDecals(LEVEL_ID, slaughterhouseId, [
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 25, z: 83, w: 3, h: 3 },
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 22, z: 86, w: 2, h: 3 },
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 19, z: 82, w: 2, h: 2, surface: 'wall' },
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 30, z: 85, w: 2, h: 2, surface: 'wall' },
+  ]);
+
+  // --- Butcher's Hook (bounds: 36, 82, 6, 6) ---
+  // Blood stains near gutter
+  editor.placeDecals(LEVEL_ID, butchersHookId, [
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 38, z: 85, w: 3, h: 2 },
+  ]);
+
+  // --- Il Macello's Abattoir (bounds: 17, 94, 16, 16) ---
+  // Blood pools + scorch marks from fire geysers / boss arena
+  editor.placeDecals(LEVEL_ID, abattoirId, [
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 25, z: 102, w: 4, h: 4 },
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 19, z: 100, w: 2, h: 3, surface: 'wall' },
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 31, z: 100, w: 2, h: 3, surface: 'wall' },
+    { type: DECAL_TYPES.SCORCH_MARK, x: 22, z: 98, w: 3, h: 3, opacity: 0.6 },
+    { type: DECAL_TYPES.SCORCH_MARK, x: 28, z: 106, w: 3, h: 3, opacity: 0.6 },
+  ]);
 
   // =========================================================================
   // 6. TRIGGERS (from "Triggers" table)

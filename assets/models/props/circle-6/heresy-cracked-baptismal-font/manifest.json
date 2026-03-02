@@ -2,6 +2,29 @@
   "id": "heresy-cracked-baptismal-font",
   "name": "Cracked Baptismal Font",
   "type": "prop",
+  "seed": 1955606744,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac88-ab2c-7a99-a72d-09e5ebe356e1",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac88-ab2c-7a99-a72d-09e5ebe356e1"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac8a-dba5-712e-b300-ae205e651f6c",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac8a-dba5-712e-b300-ae205e651f6c"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A large stone baptismal font bowl on a carved pedestal column, the bowl is cracked with a large piece broken away, dark stains inside the basin, the pedestal has defaced angel carvings, desecrated church baptismal, game prop, isolated object, dark background, three quarter view",

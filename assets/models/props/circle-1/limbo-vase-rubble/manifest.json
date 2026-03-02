@@ -2,6 +2,29 @@
   "id": "limbo-vase-rubble",
   "name": "Shattered Vase Rubble",
   "type": "prop",
+  "seed": 492861778,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacaf-ba6c-702c-807e-721e11c0f3db",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacaf-ba6c-702c-807e-721e11c0f3db"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacb2-1b29-71e9-97ea-e95a251a79d1",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb2-1b29-71e9-97ea-e95a251a79d1"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "Fragments of a shattered ancient stone vase scattered on the ground, large curved shards and small debris, gray-blue stone with faded geometric carvings on the larger pieces, dark fantasy dungeon floor decoration game prop, isolated object, dark background, top-down angled view",

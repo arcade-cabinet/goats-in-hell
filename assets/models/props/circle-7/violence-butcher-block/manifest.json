@@ -2,6 +2,29 @@
   "id": "violence-butcher-block",
   "name": "Butcher's Block",
   "type": "prop",
+  "seed": 2476564862,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac87-0e84-70c6-b40b-b30937b5c065",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac87-0e84-70c6-b40b-b30937b5c065"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac88-3f3c-7f93-b228-2d1242642af8",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac88-3f3c-7f93-b228-2d1242642af8"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A heavy wooden butcher's chopping block with deep cleaver marks and dark bloodstains, thick solid wood slab on iron legs, industrial slaughterhouse work surface, dark fantasy game prop, isolated object, dark background, three-quarter orientation view",

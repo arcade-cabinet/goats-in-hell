@@ -2,6 +2,91 @@
   "id": "boss-il-vecchio",
   "name": "Il Vecchio — The Ancient",
   "type": "character",
+  "seed": 3114934276,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cad5e-bda0-77b7-832f-adf084db78f3",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad5e-bda0-77b7-832f-adf084db78f3"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cad5f-8cbe-7974-a87d-bfc6d1996376",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad5f-8cbe-7974-a87d-bfc6d1996376"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cad61-691e-798a-96e2-b164038bee74",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad61-691e-798a-96e2-b164038bee74"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cad62-f8e1-767d-ad0a-0848ec80507e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad62-f8e1-767d-ad0a-0848ec80507e"
+      },
+      "artifacts": {}
+    },
+    "animations": {
+      "WalkAndRun.Walking.Zombie_Walk": {
+        "taskId": "019cad71-b38d-7b11-a102-34812d3e2888",
+        "status": "SUCCEEDED",
+        "actionId": 112,
+        "artifact": "animations/Zombie_Walk.glb"
+      },
+      "BodyMovements.Acting.Mummy_Stagger": {
+        "taskId": "019cad71-f271-7a3e-8424-01f45f79d88d",
+        "status": "SUCCEEDED",
+        "actionId": 113,
+        "artifact": "animations/Mummy_Stagger.glb"
+      },
+      "DailyActions.Idle.Angry_Ground_Stomp": {
+        "taskId": "019cad72-6c63-7a44-a052-d010a3e78bc6",
+        "status": "SUCCEEDED",
+        "actionId": 255,
+        "artifact": "animations/Angry_Ground_Stomp.glb"
+      },
+      "Fighting.CastingSpell.Charged_Spell_Cast": {
+        "taskId": "019cad72-abc0-7831-ba37-8f69cf2fbdfd",
+        "status": "SUCCEEDED",
+        "actionId": 125,
+        "artifact": "animations/Charged_Spell_Cast.glb"
+      },
+      "Fighting.CastingSpell.Charged_Ground_Slam": {
+        "taskId": "019cad73-6128-783b-bc6e-86296aafdea1",
+        "status": "SUCCEEDED",
+        "actionId": 127,
+        "artifact": "animations/Charged_Ground_Slam.glb"
+      },
+      "BodyMovements.Acting.Zombie_Scream": {
+        "taskId": "019cad75-7a36-7b5c-ae86-d1dacc53e88c",
+        "status": "SUCCEEDED",
+        "actionId": 386,
+        "artifact": "animations/Zombie_Scream.glb"
+      },
+      "Fighting.GettingHit.BeHit_FlyUp": {
+        "taskId": "019cad75-f433-7b70-81e1-0769c646ee00",
+        "status": "SUCCEEDED",
+        "actionId": 7,
+        "artifact": "animations/BeHit_FlyUp.glb"
+      },
+      "Fighting.Dying.Dead": {
+        "taskId": "019cad76-6de2-7d2c-a983-62dbe566a59c",
+        "status": "SUCCEEDED",
+        "actionId": 8,
+        "artifact": "animations/Dead.glb"
+      }
+    }
+  },
   "pipeline": "enemy",
   "description": "Circle 1 Boss (Limbo). Ancient goat elder shrouded in mist, weary but impossibly powerful.",
   "textToImageTask": {
@@ -21,7 +106,9 @@
     "texturePrompt": "Patchy white elderly fur, rotting gray burial shroud fabric, lichen-green horn patina, petrified dark wood crook with iron bands, bone braid details, milky white blind eyes",
     "enablePbr": true
   },
-  "riggingTask": { "heightMeters": 3.0 },
+  "riggingTask": {
+    "heightMeters": 3
+  },
   "animationTask": {
     "animations": [
       "WalkAndRun.Walking.Zombie_Walk",

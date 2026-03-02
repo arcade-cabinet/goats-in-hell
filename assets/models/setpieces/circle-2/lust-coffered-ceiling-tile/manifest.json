@@ -1,0 +1,41 @@
+{
+  "id": "lust-coffered-ceiling-tile",
+  "name": "Coffered Ceiling Tile",
+  "type": "prop",
+  "seed": 4131389411,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cad71-32f6-77e6-bb8d-be6a20f55f1a",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad71-32f6-77e6-bb8d-be6a20f55f1a"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cad72-e01d-7cbf-ba63-00eba2ac54c1",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad72-e01d-7cbf-ba63-00eba2ac54c1"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A single square coffered ceiling tile panel with recessed center and ornate molding frame, warm cream marble with gold painted edges, classical Roman architectural detail, modular ceiling piece, dark fantasy lust-themed game prop, isolated object, dark background, bottom-up view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "on"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Warm cream marble, gold painted molding edges, recessed coffer center, classical Roman ceiling detail",
+    "enablePbr": true
+  }
+}

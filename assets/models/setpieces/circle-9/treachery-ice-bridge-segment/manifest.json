@@ -1,0 +1,41 @@
+{
+  "id": "treachery-ice-bridge-segment",
+  "name": "Ice Bridge Segment",
+  "type": "prop",
+  "seed": 2126631033,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caca7-9206-7303-8fd4-466bd133ee55",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca7-9206-7303-8fd4-466bd133ee55"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019caca9-5d6a-704a-965d-89a55fa6602a",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca9-5d6a-704a-965d-89a55fa6602a"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A narrow section of frozen ice bridge spanning over a dark void, smooth slippery ice walkway with no railings, translucent blue-black ice surface with embedded frozen silhouettes faintly visible below, dark fantasy game prop, isolated object, dark background, three-quarter orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Smooth dark blue-black ice surface, translucent depth with faint ghostly silhouettes below, frost white edges, slippery gloss finish",
+    "enablePbr": true
+  }
+}

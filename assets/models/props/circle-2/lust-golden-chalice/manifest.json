@@ -2,6 +2,29 @@
   "id": "lust-golden-chalice",
   "name": "Golden Chalice",
   "type": "prop",
+  "seed": 120491283,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac87-6514-70d1-ad80-15ca527411ce",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac87-6514-70d1-ad80-15ca527411ce"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac89-4eaf-7bf9-a8eb-ef184a86944a",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac89-4eaf-7bf9-a8eb-ef184a86944a"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "An ornate golden chalice with jewel-encrusted rim and wide bowl, stem with twisted grape vine motif, heavy base, polished gold with ruby-red inset stones, dark fantasy lust-themed decorative game prop, isolated object, dark background, three-quarter view",

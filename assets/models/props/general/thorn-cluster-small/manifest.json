@@ -2,6 +2,29 @@
   "id": "thorn-cluster-small",
   "name": "Small Thorn Cluster",
   "type": "prop",
+  "seed": 890595347,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cad05-ea92-7dbc-99e2-350e3bd1c81c",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad05-ea92-7dbc-99e2-350e3bd1c81c"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cad07-dcd9-7df7-a98a-fff0f3dc6254",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad07-dcd9-7df7-a98a-fff0f3dc6254"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A small cluster of rigid thorny demonic growths sprouting from the ground, twisted dark barbed tendrils with sharp spines, hellish organic floor hazard, dark fantasy game prop, floor-placed, isolated object, dark background",

@@ -2,6 +2,29 @@
   "id": "heresy-ritual-chandelier",
   "name": "Ritual Chandelier",
   "type": "prop",
+  "seed": 3243115203,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caca0-6b29-7f05-95d0-054c979dc589",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca0-6b29-7f05-95d0-054c979dc589"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019caca3-6696-7ec0-baf4-e11c14ee002e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca3-6696-7ec0-baf4-e11c14ee002e"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A large ornate iron chandelier with five arms arranged in a pentagram pattern, each arm holds a black candle, the central hub has an inverted cross design, hanging chains from a ceiling mount point, dark ritual lighting fixture, game prop, isolated object, dark background, three quarter view from below",

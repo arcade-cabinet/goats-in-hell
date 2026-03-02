@@ -2,6 +2,29 @@
   "id": "frozen-goat",
   "name": "Frozen Goat",
   "type": "prop",
+  "seed": 2152073714,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac6d-6c2e-76f1-b59e-aa87b435e598",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac6d-6c2e-76f1-b59e-aa87b435e598"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac6e-d1e5-785a-818b-baa447974b6a",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac6e-d1e5-785a-818b-baa447974b6a"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A demonic goat creature frozen solid in a block of translucent blue ice, arms outstretched in agony, horns visible through the ice, treachery punishment frozen in ice, stylized low poly game prop, dark fantasy, isometric view",

@@ -2,6 +2,27 @@
   "id": "limbo-stone-lectern",
   "name": "Stone Lectern",
   "type": "prop",
+  "seed": 3599168468,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caca7-5345-7011-ab4b-f1dffe34d8da",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca7-5345-7011-ab4b-f1dffe34d8da"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019caca9-2ad5-7f5f-bd72-b6a3065fb4bb",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca9-2ad5-7f5f-bd72-b6a3065fb4bb"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A stone lectern with angled reading surface, carved base with worn scroll motifs, gray-blue limestone, an open ancient scroll resting on top, dark fantasy dungeon game prop, isolated object, dark background, three-quarter view",

@@ -1,0 +1,41 @@
+{
+  "id": "gluttony-pantry-chest",
+  "name": "Pantry Treasure Chest",
+  "type": "prop",
+  "seed": 584147185,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac9b-952c-7e3d-8f79-90a3437f9b64",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9b-952c-7e3d-8f79-90a3437f9b64"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac9d-4676-7d93-9bd4-775c24508d66",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9d-4676-7d93-9bd4-775c24508d66"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A sturdy wooden treasure chest with iron reinforcements, closed lid with a heavy iron latch, clean dry wood contrasting with surrounding organic horror, iron corner brackets and hinges, slightly dusty but intact and sealed, a safe haven chest in a dangerous dungeon, dark fantasy dungeon game prop, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Clean dry oak wood planks, dark iron reinforcement brackets and hinges, iron latch mechanism, light dust coating, intact and sealed",
+    "enablePbr": true
+  }
+}

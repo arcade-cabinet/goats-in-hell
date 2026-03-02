@@ -1,0 +1,41 @@
+{
+  "id": "wrath-pit-tier-ring",
+  "name": "Rage Pit Tier Ring",
+  "type": "prop",
+  "seed": 3617741583,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac96-dd36-724a-9af9-368b9db6cb48",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac96-dd36-724a-9af9-368b9db6cb48"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac98-b583-7d0a-a7b6-957c859903f1",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac98-b583-7d0a-a7b6-957c859903f1"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A curved stone step segment forming part of a concentric amphitheater tier, rough cracked concrete surface with blood stains, the step edge is sharp and angular, a quarter-circle section of descending arena seating, game prop, isolated object, dark background, three quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Cracked dark concrete surface with dried blood stains, sharp angular step edge, rough industrial stone texture",
+    "enablePbr": true
+  }
+}

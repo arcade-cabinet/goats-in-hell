@@ -1,0 +1,41 @@
+{
+  "id": "arch-broken",
+  "name": "Broken Stone Archway",
+  "type": "prop",
+  "seed": 4132634247,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac6d-9220-7db6-898c-6e5cd280cb32",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac6d-9220-7db6-898c-6e5cd280cb32"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac6f-53d1-7860-9f27-3bbd71ed705f",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac6f-53d1-7860-9f27-3bbd71ed705f"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A partially collapsed stone archway with one side crumbling, rubble and broken stones scattered at the base, damaged dungeon architecture showing destruction, dark fantasy game prop, front-facing, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Cracked dark stone with exposed interior, dust and debris texture, broken mortar joints",
+    "enablePbr": true
+  }
+}

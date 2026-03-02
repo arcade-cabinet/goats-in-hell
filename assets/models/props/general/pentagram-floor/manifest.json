@@ -2,6 +2,29 @@
   "id": "pentagram-floor",
   "name": "Pentagram Floor Tile",
   "type": "prop",
+  "seed": 720579268,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacb3-900b-747e-975e-a616e2b96d59",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb3-900b-747e-975e-a616e2b96d59"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacb4-f3f6-7094-a351-2ed7d756c0ff",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb4-f3f6-7094-a351-2ed7d756c0ff"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A circular stone floor tile with a glowing red pentagram carved into the surface, dark stone with emissive red runic lines, flat decorative ground prop, hellish ritual marker, stylized low poly game prop, dark fantasy, top-down view",

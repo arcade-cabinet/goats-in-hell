@@ -1,0 +1,41 @@
+{
+  "id": "limbo-rubble-scatter",
+  "name": "Stone Rubble Scatter",
+  "type": "prop",
+  "seed": 2838007703,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac94-3015-7d50-a8d4-718f97193b24",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac94-3015-7d50-a8d4-718f97193b24"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac97-0acf-714b-aee7-4f81c9e41905",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac97-0acf-714b-aee7-4f81c9e41905"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A scattered pile of broken stone rubble and masonry fragments on a dungeon floor, irregular chunks of gray-blue limestone in various sizes from pebbles to fist-sized blocks, dust and grit around the edges, fallen from ancient walls or columns, dark fantasy dungeon game prop, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Gray-blue limestone fragments, dust and stone grit, irregular broken surfaces, mineral staining from centuries of moisture",
+    "enablePbr": true
+  }
+}

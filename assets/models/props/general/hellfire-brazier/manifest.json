@@ -2,6 +2,29 @@
   "id": "hellfire-brazier",
   "name": "Hellfire Brazier",
   "type": "prop",
+  "seed": 901314224,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacab-c1cb-74d7-88ac-66e70535b0a8",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacab-c1cb-74d7-88ac-66e70535b0a8"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacae-c28f-740c-b669-76e32a75e91b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacae-c28f-740c-b669-76e32a75e91b"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A demonic iron brazier overflowing with hellfire, twisted metal frame with goat horn motifs, glowing embers dripping down the sides, dark fantasy game prop, low poly stylized, isometric view, dark background",

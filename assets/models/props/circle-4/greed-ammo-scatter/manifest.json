@@ -1,0 +1,41 @@
+{
+  "id": "greed-ammo-scatter",
+  "name": "Decorative Ammo Scatter",
+  "type": "prop",
+  "seed": 1609203976,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac73-b8f0-77dc-84d6-459bff7761d0",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac73-b8f0-77dc-84d6-459bff7761d0"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac75-de4a-7976-bec6-9dbd927c2abf",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac75-de4a-7976-bec6-9dbd927c2abf"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "Small scattered pile of fantasy ammunition and brass shell casings on the ground, mixed with a few gold coins, approximately 6-8 loose cartridges and shells spread in a small cluster as if dropped carelessly, dark fantasy dungeon game prop, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Tarnished brass casings with oxidation, dull metallic gold coin surfaces, dark stone floor contact shadows, subtle dust accumulation",
+    "enablePbr": true
+  }
+}

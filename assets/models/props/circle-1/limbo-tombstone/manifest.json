@@ -2,6 +2,27 @@
   "id": "limbo-tombstone",
   "name": "Weathered Tombstone",
   "type": "prop",
+  "seed": 1437742511,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacaa-4087-7f80-b731-5c2cf30e6421",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacaa-4087-7f80-b731-5c2cf30e6421"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacab-aa69-74d0-8f9e-633983a061db",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacab-aa69-74d0-8f9e-633983a061db"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A weathered stone tombstone with eroded Latin inscriptions, slightly tilted, gray-blue limestone with lichen patches, chipped edges, sunken into cracked ground, dark fantasy graveyard game prop, isolated object, dark background, front-facing view",

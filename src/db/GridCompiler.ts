@@ -18,50 +18,48 @@ function inBounds(x: number, z: number, width: number, depth: number): boolean {
 }
 
 /**
- * Carve a 2-wide horizontal segment at row `z`, from `x1` to `x2`.
- *
- * NOTE: Corridor width is currently hardcoded to 2 cells. The Connection schema
- * carries a `corridorWidth` field but carving arbitrary widths is not yet
- * implemented. All connections currently default to width=2 which matches this
- * implementation. See `validateCorridorWidth()` for the runtime guard.
+ * Carve a horizontal segment at row `z`, from `x1` to `x2`.
+ * Carves `corridorWidth` cells deep (z through z+corridorWidth-1).
  */
 function carveHLine(
   grid: MapCell[][],
   x1: number,
   x2: number,
   z: number,
-  width: number,
-  depth: number,
+  gridW: number,
+  gridD: number,
   cell: MapCell = MapCell.EMPTY,
+  corridorWidth = 2,
 ): void {
   const minX = Math.min(x1, x2);
   const maxX = Math.max(x1, x2);
   for (let x = minX; x <= maxX; x++) {
-    if (inBounds(x, z, width, depth)) grid[z][x] = cell;
-    if (inBounds(x, z + 1, width, depth)) grid[z + 1][x] = cell;
+    for (let dz = 0; dz < corridorWidth; dz++) {
+      if (inBounds(x, z + dz, gridW, gridD)) grid[z + dz][x] = cell;
+    }
   }
 }
 
 /**
- * Carve a 2-wide vertical segment at column `x`, from `z1` to `z2`.
- *
- * NOTE: Corridor width is currently hardcoded to 2 cells. See carveHLine
- * and `validateCorridorWidth()` for details.
+ * Carve a vertical segment at column `x`, from `z1` to `z2`.
+ * Carves `corridorWidth` cells wide (x through x+corridorWidth-1).
  */
 function carveVLine(
   grid: MapCell[][],
   z1: number,
   z2: number,
   x: number,
-  width: number,
-  depth: number,
+  gridW: number,
+  gridD: number,
   cell: MapCell = MapCell.EMPTY,
+  corridorWidth = 2,
 ): void {
   const minZ = Math.min(z1, z2);
   const maxZ = Math.max(z1, z2);
   for (let z = minZ; z <= maxZ; z++) {
-    if (inBounds(x, z, width, depth)) grid[z][x] = cell;
-    if (inBounds(x + 1, z, width, depth)) grid[z][x + 1] = cell;
+    for (let dx = 0; dx < corridorWidth; dx++) {
+      if (inBounds(x + dx, z, gridW, gridD)) grid[z][x + dx] = cell;
+    }
   }
 }
 
@@ -77,20 +75,21 @@ function roomCenter(room: Room): { x: number; z: number } {
 // Connection carvers
 // ---------------------------------------------------------------------------
 
-/** Carve an L-shaped corridor between two rooms (2 cells wide). */
+/** Carve an L-shaped corridor between two rooms. */
 function carveCorridorConnection(
   grid: MapCell[][],
   from: Room,
   to: Room,
-  width: number,
-  depth: number,
+  gridW: number,
+  gridD: number,
+  corridorWidth = 2,
 ): void {
   const a = roomCenter(from);
   const b = roomCenter(to);
 
   // Always use horizontal-first L-bend (deterministic)
-  carveHLine(grid, a.x, b.x, a.z, width, depth);
-  carveVLine(grid, a.z, b.z, b.x, width, depth);
+  carveHLine(grid, a.x, b.x, a.z, gridW, gridD, MapCell.EMPTY, corridorWidth);
+  carveVLine(grid, a.z, b.z, b.x, gridW, gridD, MapCell.EMPTY, corridorWidth);
 }
 
 /** Place a DOOR cell at the midpoint between two rooms. */
@@ -118,8 +117,8 @@ function placeStairsConnection(
   width: number,
   depth: number,
 ): void {
-  // First carve a corridor so there's a walkable path
-  carveCorridorConnection(grid, from, to, width, depth);
+  // First carve a corridor so there's a walkable path (stairs always 2-wide)
+  carveCorridorConnection(grid, from, to, width, depth, 2);
 
   const a = roomCenter(from);
   const b = roomCenter(to);
@@ -190,20 +189,6 @@ function placeJumpPadConnection(
   }
 }
 
-/**
- * Validate that a connection's corridorWidth is the default (2).
- * Throws if a non-default width is specified, since the carving functions
- * currently hardcode 2-cell thickness. This prevents silently ignoring
- * authored widths — callers will get a clear error instead.
- */
-function validateCorridorWidth(conn: Connection): void {
-  if (conn.corridorWidth !== 2) {
-    throw new Error(
-      `Connection ${conn.id} (${conn.fromRoomId} → ${conn.toRoomId}) specifies corridorWidth=${conn.corridorWidth}, ` +
-        `but only width=2 is currently implemented. Custom corridor widths are not yet supported.`,
-    );
-  }
-}
 
 // ---------------------------------------------------------------------------
 // Public API
@@ -289,16 +274,15 @@ export function compileGrid(
     const to = roomById.get(conn.toRoomId);
     if (!from || !to) continue;
 
-    // Fail loudly if a non-default corridor width is specified
-    validateCorridorWidth(conn);
+    const cw = conn.corridorWidth ?? 2;
 
     switch (conn.connectionType) {
       case 'corridor':
-        carveCorridorConnection(grid, from, to, width, depth);
+        carveCorridorConnection(grid, from, to, width, depth, cw);
         break;
       case 'door':
         // Carve corridor first, then place door
-        carveCorridorConnection(grid, from, to, width, depth);
+        carveCorridorConnection(grid, from, to, width, depth, cw);
         placeDoorConnection(grid, from, to, width, depth);
         break;
       case 'stairs':

@@ -2,6 +2,29 @@
   "id": "spike-bed-large",
   "name": "Large Spike Trap",
   "type": "prop",
+  "seed": 1722766326,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cace4-4cc4-76ab-84ba-41d898580026",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cace4-4cc4-76ab-84ba-41d898580026"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cace5-a25e-7a66-ab33-09e113d60e4e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cace5-a25e-7a66-ab33-09e113d60e4e"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A large floor spike trap with many sharp iron spikes covering a wide recessed stone floor area, approximately 2 meters square, dangerous dungeon floor hazard, dark fantasy game prop, floor-placed, isolated object, dark background",

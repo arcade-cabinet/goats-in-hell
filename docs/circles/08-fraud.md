@@ -60,27 +60,14 @@ related:
 ### Lighting
 
 - Ambient: `#ffcc88` at intensity 0.20 (warm gold, inviting — a lie)
-- Point lights from Candle, CandleStick_Triple, Chandelier props (warm `#ffaa44`, radius 5 cells)
+- Point lights from blood-candle, candelabrum-tall, chandelier-iron props (warm `#ffaa44`, radius 5 cells)
 - Soft directional fill from above at intensity 0.08 (simulates palace skylights)
-- Boss chamber: Chandelier overhead (warm), shifts to cold blue `#4466cc` in phase 3 reveal
+- Boss chamber: chandelier-iron overhead (warm), shifts to cold blue `#4466cc` in phase 3 reveal
 - Hall of Mirrors: additional specular highlights from Onyx walls, intensity 0.25
 
-### Props (from Fantasy Props MegaKit)
+### Props (Meshy AI + General Library)
 
-| Prop | Placement | Purpose |
-|------|-----------|---------|
-| CandleStick_Triple | Tabletop and wall-mounted throughout | Primary light source, palatial atmosphere |
-| Chandelier | Ceiling-hung in large rooms (Portico, Parlor) | Grand lighting, visual anchor |
-| Banner_1, Banner_2 | Wall-mounted in corridors and halls | Fabric draping, hides WALL_SECRET entrances |
-| Bookcase_2 | Boss chamber, Serenissima | Furnishing, line-of-sight blocker |
-| Chair_1 | Boss chamber (Inganno's seat), Ptolomea-callback | Narrative prop |
-| Table_Large | Boss chamber, Bolgia of Flatterers | Furnishing |
-| Chalice | Tabletops, pedestals | Gold accent, greed callback |
-| Chest_Wood | Serenissima secret room | Genuine treasure container |
-| Vase_2, Vase_4 | Floor-standing, pedestals | Ornamental, breakable |
-| Coin_Pile | Floor scatter, pedestals | False wealth, some are mimic triggers |
-| Potion_1, Potion_2 | Shelves, tables | Some are mimic disguises |
-| Scroll_1 | Bolgia of Flatterers, Serenissima | Lore delivery |
+All props use bespoke Meshy AI-generated models or general library assets. See **## 3D Spatial Design** for per-room placement details and **### Prop Manifest Inventory** for the full asset list.
 
 ### Decals (from AmbientCG)
 
@@ -225,19 +212,20 @@ Mimics are a special enemy type unique to Circle 8:
 | Counterfeit Arena | fuel | Center, between waves | Arena resupply |
 | Inganno's Parlor | fuel | NE corner | Boss arena fuel |
 
-### Props (non-interactive)
+### Props (non-interactive, per room)
 
-| Room | Props |
-|------|-------|
-| Portico | 2× Chandelier (ceiling), 4× CandleStick_Triple (wall, surfaceAnchor: N/S, offsetY: 1.5), 2× Banner_1 (wall, surfaceAnchor: E/W, offsetY: 2.0), 2× Vase_4 (floor, flanking entrance) |
-| Hall of Mirrors | 4× CandleStick_Triple (walls, surfaceAnchor: all faces, offsetY: 1.5), 2× Vase_2 (floor, near columns), onyx wall panels (reflective material, structural) |
-| Bolgia of Flatterers | 1× Table_Large (center, with Chalice × 3), 2× Banner_2 (wall, surfaceAnchor: N, offsetY: 2.0), 1× Scroll_1 (on table), 2× CandleStick_Triple (wall, surfaceAnchor: E/W, offsetY: 1.5), 4× silhouette props (far end, deceptive NPC shapes) |
-| Bolgia of Thieves | 3× Coin_Pile (floor, decoy), 2× Chest_Wood (floor, some empty), 2× CandleStick_Triple (wall, surfaceAnchor: N/S, offsetY: 1.5), 1× Chalice (pedestal) |
-| Shifting Maze | 2× Torch_Metal (wall, surfaceAnchor: varies, offsetY: 1.8), 4× Vase_Rubble (floor, breadcrumbs), moveable wall segments (structural, WALL_STONE variant) |
-| Counterfeit Arena | 6× fake columns (structural, 4 are mimic hosts), 2× RAMP segments (floor, real cover), 2× Torch_Metal (wall, surfaceAnchor: N/S, offsetY: 1.8), 1× Barrel (floor, NE corner) |
-| Mimic's Den | 2× Torch_Metal (wall, surfaceAnchor: E/W, offsetY: 1.8), 1× Cauldron (floor, center), 2× Coin_Pile (floor, mixed with mimic pickups) |
-| Serenissima | 1× Chest_Wood (floor, center, contains real loot), 1× BookStand (floor, with Scroll_1), 2× Candle_1 (floor, flanking chest), 1× Potion_4 (shelf) |
-| Inganno's Parlor | 1× Chandelier (ceiling, grand), 2× Bookcase_2 (wall, surfaceAnchor: E/W, offsetY: 0), 1× Chair_1 (center, Inganno's seat), 1× Table_Large (beside chair, with Chalice, Book_5), 4× CandleStick_Triple (wall, all faces, surfaceAnchor: N/E/S/W, offsetY: 1.5), 2× Banner_1 (wall, surfaceAnchor: N, offsetY: 2.5), 2× Vase_4 (floor, flanking entrance) |
+| Room | Props (count) | Key Assets |
+|------|---------------|------------|
+| Portico | 12 props | fraud-ornate-arch, fraud-ornate-railing, fraud-two-faced-bust, fraud-golden-banner x2, fraud-marble-pedestal x2, chandelier-iron (general) x2, candelabrum-tall (general) x4 |
+| Hall of Mirrors | 14 props | fraud-onyx-wall-panel x6 (structural), fraud-ornate-arch x2, fraud-mirror-shard x3, fraud-marble-pedestal x2, candelabrum-tall (general) x4 |
+| Bolgia of Flatterers | 12 props | fraud-ornate-arch, fraud-ramp-platform, fraud-silhouette-prop x4, fraud-golden-banner x2, fraud-forked-tongue-relief, fraud-coin-pile, candelabrum-tall (general) x2 |
+| Bolgia of Thieves | 10 props | fraud-ornate-arch, fraud-coin-pile x3, fraud-marble-pedestal, trick-chest x2, false-door, candelabrum-tall (general) x2 |
+| Shifting Maze | 12 props | fraud-shifting-wall-segment x6 (structural), fraud-cracked-mosaic-floor x4, torch-sconce-ornate (general) x2 |
+| Counterfeit Arena | 11 props | fraud-fake-column x6 (4 mimic hosts), fraud-ramp-platform x2, fraud-ornate-arch x2, fraud-cracked-mosaic-floor, fraud-crumbling-facade |
+| Mimic's Den | 7 props | fraud-coin-pile x2, fraud-forked-tongue-relief, fraud-gambling-table, torch-sconce-ornate (general) x2 |
+| Serenissima | 7 props | chest-gold (general), carpet (general), book-open (general), candle (general) x2, cobweb (general) x2 |
+| Inganno's Parlor | 19 props | fraud-ornate-arch, fraud-ornate-railing, fraud-broken-chandelier, fraud-golden-banner x2, fraud-two-faced-bust, fraud-crumbling-facade, fraud-marble-debris x2, fraud-stage-curtain x2, fraud-forked-tongue-relief, bookcase (general) x2, candelabrum-tall (general) x4 |
+| **Total** | **~104 props** | **22 circle-specific + general library** |
 
 ---
 
@@ -260,8 +248,8 @@ Mimics are a special enemy type unique to Circle 8:
 ```
 
 - **Elevation:** Flat (0). Polished Tiles074 floor.
-- **Feel:** Grand foyer. Two chandeliers overhead cast warm pools of light. Candlesticks line the walls. Banners drape from east and west walls. Everything is beautiful. Safe pickups build false trust — the palace welcomes you.
-- **3D elements:** Tall ceiling (3 cells high), chandeliers hang at 2.5 cell height. Vases on low pedestals (0.3 cell height).
+- **Feel:** Grand foyer. fraud-ornate-arch frames the south entrance. Two chandelier-iron (general) overhead cast warm pools of light. candelabrum-tall (general) line the walls. fraud-golden-banner drape from east and west walls. fraud-two-faced-bust on a marble pedestal is the first subtle hint of deception. fraud-marble-pedestal display positions flank the entrance. fraud-ornate-railing provides decorative marble balustrade. Everything is beautiful. Safe pickups build false trust --- the palace welcomes you.
+- **3D elements:** Tall ceiling (3 cells high), chandeliers hang at 2.5 cell height. Pedestals at 0.3 cell height.
 
 ### Room 2: Hall of Mirrors (14×10)
 
@@ -284,8 +272,8 @@ Mimics are a special enemy type unique to Circle 8:
 ```
 
 - **Elevation:** Flat (0). Marble006 floor, Onyx002 wall panels.
-- **Mechanic:** Polished onyx walls create "reflections." shadowGoats are visible only as reflections on the wall panels — the actual enemy is on the opposite side of the room from its reflection. Player must shoot the real position, not the reflection. Shots that hit the reflective onyx panels bounce at 50% damage (lower than Circle 9's 75%). This is a gentler introduction to the reflected shots mechanic that fully manifests in Circle 9. A tooltip on the first reflected shot: *"These walls turn your weapons against you."*
-- **3D elements:** Onyx panels protrude 0.5 cells from walls, creating shallow alcoves between them. Ceiling at 2.5 cells. Candlestick light reflects off onyx creating specular highlights.
+- **Mechanic:** fraud-onyx-wall-panel (6 positions along N/S walls) create "reflections." shadowGoats are visible only as reflections on the wall panels --- the actual enemy is on the opposite side of the room from its reflection. Player must shoot the real position, not the reflection. Shots that hit the reflective onyx panels bounce at 50% damage (lower than Circle 9's 75%). fraud-ornate-arch frames the west/east exit corridors. fraud-mirror-shard clusters between onyx panels provide specular highlights. fraud-marble-pedestal near columns display positions. This is a gentler introduction to the reflected shots mechanic that fully manifests in Circle 9. A tooltip on the first reflected shot: *"These walls turn your weapons against you."*
+- **3D elements:** fraud-onyx-wall-panel protrude 0.5 cells from walls, creating shallow alcoves between them. Ceiling at 2.5 cells. candelabrum-tall (general, 4 positions) light reflects off onyx creating specular highlights.
 - **Flow:** Two exits — west to Bolgia of Flatterers, east to Bolgia of Thieves. Both paths eventually reconnect at the Counterfeit Arena.
 
 ### Room 3: Bolgia of Flatterers (12×8)
@@ -298,10 +286,10 @@ Mimics are a special enemy type unique to Circle 8:
   │                          │
   │   ☠mimic(hp) ☠mimic(am) │  ← Mimic pickups in center/E
   │                          │
-  │ ♦ammo                   │  ← Real ammo, hidden behind Banner_2 on W wall
+  │ ♦ammo                   │  ← Real ammo, hidden behind fraud-silk-drape on W wall
   │     (behind banner)      │
   │                          │
-  │   📜scroll   🍷chalice   │  ← Table_Large with props
+  │   📜scroll   🍷chalice   │  ← fraud-gilded-throne with props
   └────┬─────────────────────┘
        ↓ corridor S to Counterfeit Arena
        │
@@ -309,10 +297,10 @@ Mimics are a special enemy type unique to Circle 8:
 ```
 
 - **Elevation:** Flat (0), slight step-up (+0.5) at north end where silhouettes stand.
-- **Mechanic:** Four "friendly" NPC silhouettes at the far end wave and beckon. As the player approaches center, the mimic pickups attack and the silhouettes reveal as hellgoat enemies charging. The real exit is behind — a WALL_SECRET on the south wall that the player walked past on entry. The lesson: what invited you in wants to kill you; the way out is where you came from.
+- **Mechanic:** Four fraud-silhouette-prop "friendly NPC" cutouts at the far end wave and beckon. fraud-ornate-arch frames the north entrance. fraud-ramp-platform creates the +0.5 elevation north platform. As the player approaches center, the mimic pickups attack and the silhouettes reveal as hellgoat enemies charging. The real exit is behind --- a WALL_SECRET on the south wall that the player walked past on entry. The lesson: what invited you in wants to kill you; the way out is where you came from.
 - **Flamethrower counterplay teach:** After the player's first mimic encounter, a tooltip appears: *"The Flamethrower reveals what is hidden. Sweep before you reach."* The flamethrower's 3-cell range exceeds the mimic trigger radius (2 cells), allowing the player to safely expose mimics from outside their attack range.
 - **First mimic damage reduction:** The first mimic deals 10 damage (reduced from 15). Subsequent mimics deal 15 damage. This gives the player a survivable first surprise.
-- **3D elements:** North platform (+0.5 cells elevation) where silhouettes stand. Table_Large at center with Chalice and Scroll props. Banners drape from walls, one concealing the real ammo pickup.
+- **3D elements:** fraud-ramp-platform at north end (+0.5 cells elevation) where fraud-silhouette-prop stand. fraud-golden-banner on N wall (2 positions), one concealing the real ammo pickup. fraud-forked-tongue-relief on south wall. fraud-coin-pile near table. candelabrum-tall (general) on E/W walls for warm gold lighting.
 - **Flow:** Ingress from north (Hall of Mirrors), egress via south corridor to Counterfeit Arena OR back through WALL_SECRET.
 
 ### Room 4: Bolgia of Thieves (10×8)
@@ -333,9 +321,9 @@ Mimics are a special enemy type unique to Circle 8:
              ↓ corridor S to Shifting Maze
 ```
 
-- **Elevation:** Flat (0). Chest_Wood props on low pedestals (0.3 cells).
-- **Mechanic:** Trigger-based entity swapping. When the player approaches a pickup location, the pickup despawns and an enemy or empty space appears. When the player turns around (facing direction > 90 degrees from pickup), remaining pickups shuffle positions. Chest_Wood props open to reveal nothing — or a shadowGoat.
-- **3D elements:** Three Coin_Pile props on floor at varying heights on small raised platforms (0, 0.3, 0.5 cells). Chalice on pedestal in center.
+- **Elevation:** Flat (0). trick-chest props on low pedestals (0.3 cells).
+- **Mechanic:** Trigger-based entity swapping. When the player approaches a pickup location, the pickup despawns and an enemy or empty space appears. When the player turns around (facing direction > 90 degrees from pickup), remaining pickups shuffle positions. trick-chest props open to reveal nothing --- or a shadowGoat. fraud-ornate-arch frames the north entrance. false-door on east wall reinforces the deception theme.
+- **3D elements:** Three fraud-coin-pile props on floor at varying heights on small raised platforms (0, 0.3, 0.5 cells). fraud-marble-pedestal at center for display. candelabrum-tall (general) on N/S walls for lighting.
 - **Flow:** Ingress from north (Hall of Mirrors), egress south to Shifting Maze.
 
 ### Room 5: Shifting Maze (14×14)
@@ -360,7 +348,7 @@ Mimics are a special enemy type unique to Circle 8:
 ```
 
 - **Elevation:** Flat (0). Maze walls are WALL_STONE (1 cell thick, 2 cells high).
-- **Mechanic:** Maze walls shift position when the player is not looking at them (facing direction check per wall segment). Walls slide 1-2 cells laterally, opening and closing paths. The player cannot memorize the maze. Vase_Rubble props on the floor serve as unreliable breadcrumbs (they shift too). Torch_Metal props on fixed outer walls are the only reliable landmarks.
+- **Mechanic:** fraud-shifting-wall-segment (6 moveable wall sections) shift position when the player is not looking at them (facing direction check per wall segment). Walls slide 1-2 cells laterally, opening and closing paths. The player cannot memorize the maze. fraud-cracked-mosaic-floor on the floor serve as unreliable breadcrumbs (they shift too). torch-sconce-ornate (general) on fixed outer walls are the only reliable landmarks.
 - **Solvability guarantee:** The maze always maintains at least one valid path from entrance to exit. Walls shift positions when the player is not observing them (facing away), but the exit wall and entrance wall NEVER shift. A maximum of 3 walls shift per observation break. The maze has a maximum solve time of 60 seconds with direct pathing.
 - **3D elements:** Maze walls are full-height (2 cells). Some walls have gaps at the top (1.5 cells high) allowing the player to see over them from FLOOR_RAISED positions, but there are no raised floors in this room — the height gap is a tease.
 - **Enemies:** 4 shadowGoats patrol corridors, exploit wall shifts to ambush. 3 hellgoats guard key junctions (near pickups). Additional enemies prevent dead time during maze navigation.
@@ -387,8 +375,8 @@ Mimics are a special enemy type unique to Circle 8:
                ↓ corridor S to Mimic's Den
 ```
 
-- **Elevation:** Floor at 0. Two RAMP segments in center create raised platforms at +1 cell elevation. These are the ONLY real cover — columns are mimics.
-- **Mechanic:** Deliberate visual callback to Circle 1's Columns room. Six columns arranged in familiar pattern. But 4 of the 6 are mimic enemies. Approaching for cover triggers them. The player must learn that the ramps/platforms (ugly, utilitarian) are the true cover, not the elegant columns.
+- **Elevation:** Floor at 0. Two fraud-ramp-platform segments in center create raised platforms at +1 cell elevation. These are the ONLY real cover --- fraud-fake-column (6 positions) are mimic hosts.
+- **Mechanic:** Deliberate visual callback to Circle 1's Columns room. Six fraud-fake-column arranged in familiar pattern. But 4 of the 6 are mimic enemies. Approaching for cover triggers them. fraud-ornate-arch frames the twin north entrances. fraud-cracked-mosaic-floor ornate floor pattern at center (callback to Circle 1). fraud-crumbling-facade near entrance shows marble decay. torch-sconce-ornate (general) on N/S walls. The player must learn that the ramps/platforms (ugly, utilitarian) are the true cover, not the elegant columns.
 - **Arena sequence:**
   - Trigger on entry: doors lock
   - Wave 1: 3 hellgoats spawn from edges
@@ -418,9 +406,9 @@ Mimics are a special enemy type unique to Circle 8:
        ↓ to Boss   → to Serenissima
 ```
 
-- **Elevation:** Flat (0). Torches on east and west walls.
-- **Mechanic:** 8 pickups scattered across the room (4 health, 4 ammo). On each run, 4 are randomly selected as mimics. The player must use flamethrower sweeps to safely identify which are real. The Cauldron in the center is a fixed landmark — the one honest object.
-- **3D elements:** Cauldron sits on a slightly raised stone base (0.2 cells). Torch_Metal on walls at 1.8 cell height.
+- **Elevation:** Flat (0). torch-sconce-ornate (general) on east and west walls.
+- **Mechanic:** 8 pickups scattered across the room (4 health, 4 ammo). On each run, 4 are randomly selected as mimics. The player must use flamethrower sweeps to safely identify which are real. The fraud-gambling-table in the center is a fixed landmark --- the one honest object. fraud-coin-pile (2 positions) scattered with pickups. fraud-forked-tongue-relief on north wall.
+- **3D elements:** fraud-gambling-table sits on a slightly raised stone base (0.2 cells). torch-sconce-ornate (general) on walls at 1.8 cell height.
 - **Flow:** Ingress from north (Counterfeit Arena), egress via stairs south to Inganno's Parlor, or secret east wall to Serenissima.
 
 ### Room 8: Serenissima — Secret Room (6×6)
@@ -440,9 +428,9 @@ Mimics are a special enemy type unique to Circle 8:
      (dead end — return through secret wall)
 ```
 
-- **Elevation:** Flat (0). Marble001 walls — unfinished, rough, honest.
-- **Mechanic:** The irony of Circle 8. The secret room is the ONLY room where nothing is a lie. All pickups are genuine. The Chest_Wood contains bonus ammo. The BookStand holds a scroll: *"Truth hides where no one looks."* The room's raw, unfinished marble is the only honest surface in the entire circle.
-- **3D elements:** Low ceiling (1.5 cells) — intimate, cave-like. Candles on floor (0 height). BookStand at 1.0 cell height.
+- **Elevation:** Flat (0). Marble001 walls --- unfinished, rough, honest.
+- **Mechanic:** The irony of Circle 8. The secret room is the ONLY room where nothing is a lie. All pickups are genuine. The chest-gold (general) contains bonus ammo. The book-open (general) holds a scroll: *"Truth hides where no one looks."* carpet (general) on floor under the chest. cobweb (general) in upper corners --- undisturbed, no one comes here. The room's raw, unfinished marble is the only honest surface in the entire circle.
+- **3D elements:** Low ceiling (1.5 cells) --- intimate, cave-like. candle (general) on floor flanking chest (0 height). book-open at 1.0 cell height.
 - **Flow:** Ingress/egress via WALL_SECRET on west wall (back to Mimic's Den).
 
 ### Room 9: Inganno's Parlor — Boss Chamber (14×14)
@@ -457,10 +445,10 @@ Mimics are a special enemy type unique to Circle 8:
   │                                    │
   │     🎀banner    🎀banner          │  ← Banners on N wall
   │                                    │
-  │         🪑 INGANNO                │  ← Sits in Chair_1, center-N
-  │         (Chair_1 + Table_Large)    │
+  │         🪑 INGANNO                │  ← Sits in fraud-gilded-throne, center-N
+  │         (fraud-gilded-throne + table)│
   │                                    │
-  │    🕯candle    🕯candle    🕯candle│  ← CandleStick_Triple ring
+  │    🕯candle    🕯candle    🕯candle│  ← candelabrum-tall ring
   │                                    │
   │ 🕯candle                  🕯candle│
   │                                    │
@@ -472,13 +460,14 @@ Mimics are a special enemy type unique to Circle 8:
 ```
 
 - **Elevation:** -1 (descended via stairs). Floor is Tiles092. Ceiling at 3 cells (grand height).
+- **Props:** fraud-ornate-arch and fraud-ornate-railing frame the north stair descent. fraud-broken-chandelier overhead (intact initially, damaged phase 3). fraud-golden-banner (N wall, 2 positions) flanking Inganno's seat. fraud-two-faced-bust near entrance. fraud-crumbling-facade on walls (phase 3 reveal). fraud-marble-debris on floor scatter (phase 3 obstacles). fraud-stage-curtain on E/W walls behind bookcases. fraud-forked-tongue-relief behind Inganno's seat. bookcase (general) on E/W walls. candelabrum-tall (general, 4 positions) on walls.
 - **Boss Fight:**
-  - **Phase 1 — The Hostess (100%–60% HP):** Inganno sits in her chair. She speaks pleasantly: *"Welcome, little goat. You must be so tired. Sit. Rest."* She does not attack. Walking within 3 cells triggers the fight. She stands, summons 4 mimic pickups across the room that unfold into enemies. She fires slow charm projectiles (homing, pink glow, 8 damage) while mimics swarm.
+  - **Phase 1 --- The Hostess (100%--60% HP):** Inganno sits in her chair. She speaks pleasantly: *"Welcome, little goat. You must be so tired. Sit. Rest."* She does not attack. Walking within 3 cells triggers the fight. She stands, summons 4 mimic pickups across the room that unfold into enemies. She fires slow charm projectiles (homing, pink glow, 8 damage) while mimics swarm.
   - **Phase 2 — The Mirror (60%–30% HP):** Inganno creates a mirror clone of the player. The clone has the player's current weapon, same movement speed, same HP percentage. Player must fight themselves while Inganno continues firing charm projectiles. The clone mirrors the player's movement from 3 seconds prior (delayed replay). This makes the clone predictable: the player can exploit the delay by moving erratically, then positioning so the clone moves into their line of fire.
   - **Mirror clone weapon behavior:** The mirror clone uses whatever weapon the player was actively holding when Phase 2 triggered. The clone does NOT switch weapons — it commits to the weapon it was spawned with. If the player switches weapons during Phase 2, only THEIR weapon changes. The clone keeps its original weapon. Strategic play: trigger Phase 2 with the pistol (clone gets pistol, low DPS), then switch to flamethrower.
-  - **Phase 3 — The Truth (30%–0% HP):** Inganno's beautiful form cracks. Serpentine lower body unfolds (Geryon reference). Room textures swap: Marble006 → Rust003, Tiles092 → Rust007, Fabric026 → exposed Concrete015. Chandelier light shifts from warm `#ffaa44` to cold `#4466cc`. Fog clears to 0.01. She becomes fast — serpentine lunges across the room (charge attack, 20 damage). Vulnerable during charge recovery (2 seconds). The truth is ugly but killable.
+  - **Phase 3 — The Truth (30%–0% HP):** Inganno's beautiful form cracks. Serpentine lower body unfolds (Geryon reference). Room textures swap: Marble006 → Rust003, Tiles092 → Rust007, Fabric026 → exposed Concrete015. chandelier-iron light shifts from warm `#ffaa44` to cold `#4466cc`. Fog clears to 0.01. She becomes fast — serpentine lunges across the room (charge attack, 20 damage). Vulnerable during charge recovery (2 seconds). The truth is ugly but killable.
   - **Rust floor clarification:** When the room's facade crumbles and Marble textures swap to Rust textures, the floor does NOT become a damage zone. A brief text flash: *"The beauty falls away. The truth remains."* The rust floor is cosmetic — players who learned "rust = pain" in Circle 7 (Thorny Passage) may hesitate, but contact damage is absent. The change signals narrative truth, not mechanical danger.
-- **3D elements:** Chair_1 on raised platform (+0.5 cells) center-north. Table_Large beside chair. Bookcases against E/W walls (full height, 2 cells). Chandelier at 2.5 cell height. In Phase 3, debris from crumbling marble facade creates floor obstacles (0.3 cell height rubble).
+- **3D elements:** Chair on raised platform (+0.5 cells) center-north. Table beside chair. bookcase (general) against E/W walls (full height, 2 cells). fraud-broken-chandelier at 2.5 cell height (intact initially, cracks phase 3). In Phase 3, fraud-marble-debris from fraud-crumbling-facade creates floor obstacles (0.3 cell height rubble). fraud-stage-curtain panels fall from behind bookcases.
 - **Flow:** Ingress from north stairs. No exit until boss defeated. On defeat: south wall crumbles, revealing descent to Circle 9. Title card: *CIRCLE THE NINTH — TREACHERY*
 
 ---
@@ -582,7 +571,7 @@ editor.createTheme('circle-8-fraud', {
 9. Boss phase 3 texture swap (Marble → Rust) renders correctly at runtime
 10. PlaytestRunner AI can navigate from spawn to boss and defeat Inganno
 11. PBR materials from AmbientCG render on walls/floors (Marble, Onyx, Tiles, Fabric, Rust)
-12. At least 6 Fantasy Props visible as GLB instances in scene
+12. At least 6 Meshy props visible as GLB instances in scene (fraud-golden-lectern, fraud-mask-display, fraud-crystal-ball, fraud-counterfeit-coin-pile, fraud-forged-scroll-stack, fraud-broken-chandelier)
 13. Serenissima secret room is discoverable and contains genuine (non-mimic) pickups
 
 ---
@@ -592,7 +581,7 @@ editor.createTheme('circle-8-fraud', {
 - NOT a horror circle. Fraud is BEAUTIFUL — the horror comes from betrayal of trust, not from ugly things. The aesthetic is palatial, warm, inviting. The fear is that anything you trust might attack you.
 - NOT random mimic placement in every room. Mimics are concentrated in specific rooms (Flatterers, Arena, Den). Other rooms use different deception mechanics (reflections, vanishing items, shifting walls).
 - NOT using the procedural generator's `explore → arena → boss` cycle. The pacing is authored with two converging paths (west through Flatterers, east through Thieves/Maze) that merge at the Counterfeit Arena.
-- NOT using Kenney or KayKit assets. Fantasy Props MegaKit + AmbientCG PBR textures only.
+- NOT using generic CC0 asset packs. All props are bespoke Meshy AI-generated models (circle-specific) or general library Meshy props + AmbientCG PBR textures.
 - NOT a reuse of the reflection mechanic from Circle 9. The Hall of Mirrors uses visual reflections for enemy deception. Circle 9 uses projectile reflection as a combat hazard. Different mechanics, thematic continuity.
 
 ---
@@ -616,8 +605,10 @@ editor.createTheme('circle-8-fraud', {
 | fraud-golden-banner | east/west walls, 2 positions | 1.0 | Rich silk banners, palatial atmosphere |
 | fraud-marble-pedestal | (26, 3), (34, 3) flanking entrance | 0.8 | Low pedestals for vase display |
 
-**Lighting:** 2x Chandelier (ceiling, 2.5 cell height), warm gold `#ffaa44`, radius 6 cells. 4x CandleStick_Triple (walls, N/S, offsetY=1.5), warm gold, radius 3 cells. Tall ceiling (3 cells high).
+**Lighting:** 2x chandelier-iron (general, ceiling, 2.5 cell height), warm gold `#ffaa44`, radius 6 cells --- one normal, one subtly cracked (fraud-broken-chandelier swap candidate). 4x candelabrum-tall (general, walls, N/S, offsetY=1.5), warm gold, radius 3 cells. Tall ceiling (3 cells high).
 **Platforming:** Flat (elevation 0). Polished Tiles074 floor. No elevation changes.
+
+> **Playtest note:** Portico was well-dressed at 10 props in 60 cells. Added fraud-ornate-arch at entrance, fraud-two-faced-bust as first subtle hint of deception, carpet (general) on floor for palatial warmth. Now 12 props. One chandelier is subtly cracked --- the first hint of decay.
 
 ---
 
@@ -634,11 +625,14 @@ editor.createTheme('circle-8-fraud', {
 **Environmental Assets:**
 | Asset | Position | Scale | Purpose |
 |-------|----------|-------|---------|
-| fraud-mirror-shard | 2 positions, between onyx panels | 0.6 | Smaller reflective shard clusters for specular highlights |
-| fraud-marble-pedestal | (25, 14), (35, 14) near columns | 0.7 | Pedestals for vase display |
+| fraud-mirror-shard | 3 positions, between onyx panels | 0.6 | Reflective shard clusters for specular highlights and visual depth |
+| fraud-marble-pedestal | (25, 14), (35, 14) near columns | 0.7 | Pedestals for vase/chalice display |
+| cobweb (general) | (20, 10), (39, 10) upper corners | 0.3 | Subtle decay behind reflective surfaces |
 
-**Lighting:** 4x CandleStick_Triple (walls, all faces, offsetY=1.5), warm gold `#ffaa44`, radius 3 cells. Specular highlights reflect off onyx creating shimmer effect. Enhanced reflections intensity 0.6 in env zone.
+**Lighting:** 4x candelabrum-tall (general, walls, all faces, offsetY=1.5), warm gold `#ffaa44`, radius 3 cells. Specular highlights reflect off onyx creating shimmer effect. Enhanced reflections intensity 0.6 in env zone.
 **Platforming:** Flat (elevation 0). Marble006 floor. Onyx panels protrude 0.5 cells creating shallow alcoves. Ceiling at 2.5 cells.
+
+> **Playtest note:** Hall of Mirrors had only 6 props in 140 cells --- the thematically most important room was among the sparsest. Now 14 props: 6 onyx wall panels (structural, the room's identity), 3 mirror shards (reflective floor clusters), 2 pedestals, 2 archways, and cobwebs in corners. The onyx panels are the critical addition --- they sell the "polished black glass" reflective mechanic visually.
 
 ---
 
@@ -660,8 +654,10 @@ editor.createTheme('circle-8-fraud', {
 | fraud-forked-tongue-relief | (10, 30) south wall | 0.8 | Forked tongue relief --- deception symbol |
 | fraud-coin-pile | (14, 29) near table | 0.6 | Scattered coins, false wealth |
 
-**Lighting:** 2x CandleStick_Triple (E/W walls, offsetY=1.5), warm gold, radius 3 cells. North platform slightly dimmer to obscure silhouette details.
+**Lighting:** 2x candelabrum-tall (general, E/W walls, offsetY=1.5), warm gold, radius 3 cells. North platform slightly dimmer to obscure silhouette details.
 **Platforming:** Slight step-up (+0.5) at north end where silhouettes stand. WALL_SECRET on south wall --- real exit behind the player.
+
+> **Playtest note:** The 4x fraud-silhouette-prop at the north platform is the critical narrative addition --- these "friendly NPC" cutouts are the key deception moment. Without them, the room has no visual selling of the "welcoming figures beckoning." Added fraud-two-faced-bust on a pedestal and forked tongue relief. Now 12 props.
 
 ---
 
@@ -679,9 +675,13 @@ editor.createTheme('circle-8-fraud', {
 |-------|----------|-------|---------|
 | fraud-coin-pile | 3 positions (floor, varying heights) | 0.7 | Decoy coin piles on small raised platforms |
 | fraud-marble-pedestal | (38, 30) center | 0.8 | Pedestal for chalice display |
+| trick-chest | (36, 28), (40, 32) floor | 0.8 | Chests designed for this room --- some open to nothing, some to enemies |
+| false-door | (42, 30) east wall | 0.9 | Fake door on wall --- deception theme reinforcement |
 
-**Lighting:** 2x CandleStick_Triple (N/S walls, offsetY=1.5), warm gold, radius 3 cells. Chest_Wood props on low pedestals (0.3 cells).
+**Lighting:** 2x candelabrum-tall (general, N/S walls, offsetY=1.5), warm gold, radius 3 cells. trick-chest on low pedestals (0.3 cells).
 **Platforming:** Flat (elevation 0). Three small raised platforms (0, 0.3, 0.5 cells) for coin pile display. Ceiling higher (4 units) than bolgia rooms.
+
+> **Playtest note:** trick-chest (circle-specific, designed for deception) for chests. fraud-coin-pile for coin displays. Added false-door on east wall for deception reinforcement. Now 10 props.
 
 ---
 
@@ -699,8 +699,10 @@ editor.createTheme('circle-8-fraud', {
 |-------|----------|-------|---------|
 | fraud-cracked-mosaic-floor | 4 positions (scattered) | 0.8 | Breadcrumb floor tiles that shift with walls |
 
-**Lighting:** 2x Torch_Metal (fixed outer walls, offsetY=1.8), warm orange, radius 4 cells --- the ONLY reliable landmarks. Thick fog `#1a1208` density 0.06.
-**Platforming:** Flat (elevation 0). Maze walls are WALL_STONE, 1 cell thick, 2 cells high. Some walls have gaps at 1.5 cells high (tease --- no raised floors to exploit them). Maximum 3 walls shift per observation break.
+**Lighting:** 2x torch-sconce-ornate (general, fixed outer walls, offsetY=1.8), warm orange, radius 4 cells --- the ONLY reliable landmarks. Thick fog `#1a1208` density 0.06.
+**Platforming:** Flat (elevation 0). Maze walls are fraud-shifting-wall-segment (visually distinct from permanent walls), 1 cell thick, 2 cells high. Some walls have gaps at 1.5 cells high (tease --- no raised floors to exploit them). Maximum 3 walls shift per observation break.
+
+> **Playtest note:** Shifting Maze had 6 props in 196 cells. The key addition is replacing structural WALL_STONE with fraud-shifting-wall-segment props for visual distinction from permanent walls. Added fraud-cracked-mosaic-floor at dead ends as "wrong way" markers. Now 12 props. The 2 fixed torches remain the ONLY reliable landmarks --- this is intentional.
 
 ---
 
@@ -719,9 +721,12 @@ editor.createTheme('circle-8-fraud', {
 | Asset | Position | Scale | Purpose |
 |-------|----------|-------|---------|
 | fraud-cracked-mosaic-floor | center floor | 1.2 | Ornate floor pattern (callback to Circle 1) |
+| fraud-crumbling-facade | (22, 37) near entrance | 0.8 | Marble crumbling to reveal truth --- visual decay callback |
 
-**Lighting:** 2x Torch_Metal (N/S walls, offsetY=1.8), warm orange, radius 4 cells. Arena lighting brighter than maze.
-**Platforming:** Floor at 0. Two RAMP segments create raised platforms at +1 cell elevation (3x2 cells each). Columns are 0.5x0.5 cells, full height (2 cells). Player can stand on ramps to shoot over enemies.
+**Lighting:** 2x torch-sconce-ornate (general, N/S walls, offsetY=1.8), warm orange, radius 4 cells. Arena lighting brighter than maze.
+**Platforming:** Floor at 0. Two RAMP segments (fraud-ramp-platform) create raised platforms at +1 cell elevation (3x2 cells each). Columns are fraud-fake-column (0.5x0.5 cells, full height, 2 cells). Player can stand on ramps to shoot over enemies.
+
+> **Playtest note:** The critical change: fraud-fake-column for mimic hosts and fraud-theatrical-column for real columns. Visual distinction between "fake" and "real" cover. Added fraud-ramp-platform for RAMP segments and fraud-crumbling-facade near entrance. Now 11 props. The columns' visual identity teaches the Fraud lesson: beautiful things betray, ugly things save.
 
 ---
 
@@ -738,9 +743,13 @@ editor.createTheme('circle-8-fraud', {
 | Asset | Position | Scale | Purpose |
 |-------|----------|-------|---------|
 | fraud-coin-pile | 2 positions (floor, mixed with pickups) | 0.5 | Coin scatter, atmosphere |
+| fraud-forked-tongue-relief | (50, 58) north wall | 0.7 | Forked tongue relief --- deception symbol, wall decoration |
+| fraud-gambling-table | (48, 60) center | 0.8 | The "one honest object" --- gambling table as center landmark replacing generic Cauldron |
 
-**Lighting:** 2x Torch_Metal (E/W walls, offsetY=1.8), warm orange, radius 4 cells. Subtle audio tension cue, heartbeat SFX (danger env zone 0.8).
-**Platforming:** Flat (elevation 0). Cauldron on slightly raised stone base (0.2 cells). WALL_SECRET on east wall leads to Serenissima.
+**Lighting:** 2x torch-sconce-ornate (general, E/W walls, offsetY=1.8), warm orange, radius 4 cells. Subtle audio tension cue, heartbeat SFX (danger env zone 0.8).
+**Platforming:** Flat (elevation 0). fraud-gambling-table on slightly raised stone base (0.2 cells). WALL_SECRET on east wall leads to Serenissima.
+
+> **Playtest note:** Replaced generic Cauldron with fraud-gambling-table as center landmark (more thematic --- gambling with fate). Added fraud-forked-tongue-relief on wall. Now 7 props in 64 cells. The sparse design is correct --- the pickups ARE the visual content.
 
 ---
 
@@ -756,10 +765,15 @@ editor.createTheme('circle-8-fraud', {
 **Environmental Assets:**
 | Asset | Position | Scale | Purpose |
 |-------|----------|-------|---------|
-| (none beyond Fantasy Props) | --- | --- | Chest_Wood, BookStand, Candle_1 per design doc |
+| chest-gold (general) | center floor | 0.8 | The genuine treasure chest --- golden, honest, valuable |
+| book-open (general) | beside chest | 0.5 | Lore scroll: "Truth hides where no one looks" |
+| carpet (general) | floor, under chest | 1.0 | Warm carpet --- the honest room feels warm |
+| cobweb (general) | (52, 66), (56, 66) upper corners | 0.3 | Old, undisturbed cobwebs --- no one comes here |
 
-**Lighting:** 2x Candle_1 (floor, flanking chest), very warm `#ffcc88`, radius 2 cells. Low ceiling (1.5 cells). Intimate and dim.
+**Lighting:** 2x candle (general, floor, flanking chest), very warm `#ffcc88`, radius 2 cells. Low ceiling (1.5 cells). Intimate and dim.
 **Platforming:** Flat (elevation 0). Dead end --- return through WALL_SECRET.
+
+> **Playtest note:** Replaced generic chest with chest-gold (general library). Added carpet on floor and cobwebs in corners. The unadorned Marble001 walls remain --- the raw honesty is the design. Now 7 props in 36 cells.
 
 ---
 
@@ -784,5 +798,52 @@ editor.createTheme('circle-8-fraud', {
 | fraud-stage-curtain | E/W walls behind bookcases | 1.0 | Rigid silk curtain panels, theatrical backing |
 | fraud-forked-tongue-relief | (28, 85) near chair | 0.6 | Forked tongue relief behind Inganno's seat |
 
-**Lighting:** 1x Chandelier overhead, warm `#ffaa44`, radius 8 cells --- shifts to cold blue `#4466cc` in phase 3. 4x CandleStick_Triple (walls, all faces, offsetY=1.5). Phase 3: fog clears to 0.01, light color shifts.
-**Platforming:** Elevation -1 (descended via stairs). Chair_1 on raised platform (+0.5 cells) center-north. Ceiling at 3 cells (grand height). Phase 3: debris creates 0.3-cell-height floor obstacles.
+**Lighting:** 1x fraud-broken-chandelier overhead (starts intact, damages in phase 3), warm `#ffaa44`, radius 8 cells --- shifts to cold blue `#4466cc` in phase 3. 4x candelabrum-tall (general, walls, all faces, offsetY=1.5). Phase 3: fog clears to 0.01, light color shifts.
+**Platforming:** Elevation -1 (descended via stairs). Chair on raised platform (+0.5 cells) center-north. Ceiling at 3 cells (grand height). Phase 3: fraud-marble-debris creates 0.3-cell-height floor obstacles.
+
+> **Playtest note:** Boss room was adequate at 15 props in 196 cells. Added fraud-stage-curtain flanking entrance (phase 3: curtains fall), fraud-crumbling-facade on walls (phase 3 marble-to-rust reveal), fraud-marble-debris on floor (phase 3 obstacles), and fraud-forked-tongue-relief behind Inganno's seat. Now 19 props, all circle-specific Meshy models. The phase 3 transformation is the visual climax: chandelier cracks, curtains fall, marble crumbles to reveal rust.
+
+---
+
+### Prop Manifest Inventory
+
+| Prop ID | Name | Manifest | Used In |
+|---------|------|----------|---------|
+| false-door | False Door | exists | Bolgia of Thieves |
+| fraud-broken-chandelier | Broken Chandelier | exists | Inganno's Parlor (phase 3) |
+| fraud-coin-pile | Coin Pile | exists | Flatterers, Thieves, Mimic's Den |
+| fraud-cracked-mosaic-floor | Cracked Mosaic Floor | exists | Shifting Maze x4, Counterfeit Arena |
+| fraud-crumbling-facade | Crumbling Facade | exists | Counterfeit Arena, Inganno's Parlor (phase 3) |
+| fraud-fake-column | Fake Column | exists | Counterfeit Arena x6 (4 mimic hosts) |
+| fraud-forked-tongue-relief | Forked Tongue Relief | exists | Flatterers, Mimic's Den, Inganno's Parlor |
+| fraud-gambling-table | Gambling Table | exists | Mimic's Den (center landmark) |
+| fraud-golden-banner | Golden Banner | exists | Portico, Flatterers, Inganno's Parlor |
+| fraud-marble-debris | Marble Debris | exists | Inganno's Parlor (phase 3 floor obstacles) |
+| fraud-marble-pedestal | Marble Pedestal | exists | Portico, Hall of Mirrors, Thieves |
+| fraud-mirror-shard | Mirror Shard Cluster | exists | Hall of Mirrors x3 |
+| fraud-onyx-wall-panel | Onyx Wall Panel | exists | Hall of Mirrors x6 (structural) |
+| fraud-ornate-arch | Ornate Arch | exists | Portico, Hall of Mirrors, Flatterers, Thieves, Counterfeit Arena, Inganno's Parlor |
+| fraud-ornate-railing | Ornate Railing | exists | Portico, Inganno's Parlor |
+| fraud-ramp-platform | Ramp Platform | exists | Flatterers, Counterfeit Arena |
+| fraud-shifting-wall-segment | Shifting Wall Segment | exists | Shifting Maze x6 (structural) |
+| fraud-silhouette-prop | Silhouette Prop | exists | Bolgia of Flatterers x4 (narrative critical) |
+| fraud-stage-curtain | Stage Curtain | exists | Inganno's Parlor (phase 3 reveal) |
+| fraud-theatrical-column | Theatrical Column | exists | (available for Counterfeit Arena real columns) |
+| fraud-two-faced-bust | Two-Faced Bust | exists | Portico, Inganno's Parlor |
+| trick-chest | Trick Chest | exists | Bolgia of Thieves x2 |
+
+**General library props used in this circle:**
+
+| Prop ID | Name | Manifest | Used In |
+|---------|------|----------|---------|
+| book-open | Open Book | exists | Serenissima |
+| bookcase | Bookcase | exists | Inganno's Parlor x2 |
+| candelabrum-tall | Tall Candelabrum | exists | Portico, Hall of Mirrors, Flatterers, Thieves, Inganno's Parlor |
+| candle | Candle | exists | Serenissima x2 |
+| carpet | Carpet | exists | Serenissima |
+| chandelier-iron | Iron Chandelier | exists | Portico x2 |
+| chest-gold | Gold Chest | exists | Serenissima |
+| cobweb | Cobweb | exists | Hall of Mirrors, Serenissima |
+| torch-sconce-ornate | Ornate Torch Sconce | exists | Shifting Maze, Counterfeit Arena, Mimic's Den |
+
+**Summary:** All 22 circle-specific Meshy props have existing manifests. All general library props have existing manifests. No new manifests needed for Circle 8.

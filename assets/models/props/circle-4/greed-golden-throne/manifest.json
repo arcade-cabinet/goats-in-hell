@@ -2,6 +2,29 @@
   "id": "greed-golden-throne",
   "name": "Aureo's Golden Throne",
   "type": "prop",
+  "seed": 1956972789,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac9b-70b9-7e3b-8df4-599608663a8e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9b-70b9-7e3b-8df4-599608663a8e"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac9d-524e-7319-886a-5fe5479dc52e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9d-524e-7319-886a-5fe5479dc52e"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A large golden throne with tall back shaped like spread goat horns, golden coins embedded in the armrests, velvet red cushion on the seat, golden crown resting on the top, opulent boss room centerpiece, game prop, isolated object, dark background, front orientation view",

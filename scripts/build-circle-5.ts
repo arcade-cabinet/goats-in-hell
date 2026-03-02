@@ -3,6 +3,7 @@ import BetterSqlite3 from 'better-sqlite3';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import {
   CONNECTION_TYPES,
+  DECAL_TYPES,
   ENEMY_TYPES,
   ENV_TYPES,
   LevelEditor,
@@ -362,551 +363,236 @@ export async function buildCircle5(dbPath: string) {
   editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 30, 112);
 
   // =========================================================================
-  // 5c. ENTITIES: PROPS (from "Props" table)
+  // 5c. ENTITIES: PROPS (from 3D Spatial Design)
   // =========================================================================
 
   // --- Gate of Dis (bounds: 19, 2, 10, 6) ---
-  // 2x Anvil (flanking entrance, floor)
-  editor.spawnProp(LEVEL_ID, 'Anvil', 20, 3, { roomId: gateOfDisId });
-  editor.spawnProp(LEVEL_ID, 'Anvil', 27, 3, { roomId: gateOfDisId });
-  // 3x Torch_Metal (walls, surfaceAnchor: N/E/W)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 24, 3, {
-    roomId: gateOfDisId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 1.8,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 20, 5, {
-    roomId: gateOfDisId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.8,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 27, 5, {
-    roomId: gateOfDisId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.8,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  // 4x Chain_Coil (hanging from ceiling)
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 21, 4, { roomId: gateOfDisId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 26, 4, { roomId: gateOfDisId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 21, 6, { roomId: gateOfDisId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 26, 6, { roomId: gateOfDisId });
-  // 1x Banner_1 (above door)
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 24, 3, {
-    roomId: gateOfDisId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 2.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
+  // Structural: 1x wrath-jagged-arch (gate), 1x wrath-dented-iron-door (exit)
+  editor.spawnProp(LEVEL_ID, 'wrath-jagged-arch', 24, 2, { roomId: gateOfDisId });
+  editor.spawnProp(LEVEL_ID, 'wrath-dented-iron-door', 24, 7, { roomId: gateOfDisId });
+  // 2x wrath-anvil (flanking entrance)
+  editor.spawnProp(LEVEL_ID, 'wrath-anvil', 20, 3, { roomId: gateOfDisId });
+  editor.spawnProp(LEVEL_ID, 'wrath-anvil', 28, 3, { roomId: gateOfDisId });
+  // 4x wrath-chain-curtain (hanging from ceiling)
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 22, 3, { roomId: gateOfDisId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 26, 3, { roomId: gateOfDisId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 22, 6, { roomId: gateOfDisId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 26, 6, { roomId: gateOfDisId });
+  // 1x wrath-war-banner (above gate)
+  editor.spawnProp(LEVEL_ID, 'wrath-war-banner', 24, 2, { roomId: gateOfDisId });
+  // 1x wrath-anger-graffiti-slab (west wall)
+  editor.spawnProp(LEVEL_ID, 'wrath-anger-graffiti-slab', 20, 6, { roomId: gateOfDisId });
 
   // --- Blood Marsh (bounds: 16, 12, 16, 14) ---
-  // 3x Torch_Metal (on islands, floor-standing)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 19, 14, { roomId: bloodMarshId });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 24, 20, { roomId: bloodMarshId });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 27, 24, { roomId: bloodMarshId });
-  // 2x Cauldron (on central islands)
-  editor.spawnProp(LEVEL_ID, 'Cauldron', 23, 19, { roomId: bloodMarshId });
-  editor.spawnProp(LEVEL_ID, 'Cauldron', 20, 23, { roomId: bloodMarshId });
-  // 3x Cage_Small (on islands)
-  editor.spawnProp(LEVEL_ID, 'Cage_Small', 25, 15, { roomId: bloodMarshId });
-  editor.spawnProp(LEVEL_ID, 'Cage_Small', 19, 24, { roomId: bloodMarshId });
-  editor.spawnProp(LEVEL_ID, 'Cage_Small', 27, 23, { roomId: bloodMarshId });
-  // 6x Chain_Coil (hanging from ceiling)
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 18, 14, { roomId: bloodMarshId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 24, 14, { roomId: bloodMarshId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 30, 14, { roomId: bloodMarshId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 18, 22, { roomId: bloodMarshId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 24, 22, { roomId: bloodMarshId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 30, 22, { roomId: bloodMarshId });
+  // Structural: 5x wrath-stone-island
+  editor.spawnProp(LEVEL_ID, 'wrath-stone-island', 18, 14, { roomId: bloodMarshId });
+  editor.spawnProp(LEVEL_ID, 'wrath-stone-island', 24, 14, { roomId: bloodMarshId });
+  editor.spawnProp(LEVEL_ID, 'wrath-stone-island', 22, 19, { roomId: bloodMarshId });
+  editor.spawnProp(LEVEL_ID, 'wrath-stone-island', 18, 23, { roomId: bloodMarshId });
+  editor.spawnProp(LEVEL_ID, 'wrath-stone-island', 26, 23, { roomId: bloodMarshId });
+  // 3x wrath-rusted-cage (on islands)
+  editor.spawnProp(LEVEL_ID, 'wrath-rusted-cage', 19, 15, { roomId: bloodMarshId });
+  editor.spawnProp(LEVEL_ID, 'wrath-rusted-cage', 24, 20, { roomId: bloodMarshId });
+  editor.spawnProp(LEVEL_ID, 'wrath-rusted-cage', 27, 24, { roomId: bloodMarshId });
+  // 2x wrath-rage-furnace (on islands)
+  editor.spawnProp(LEVEL_ID, 'wrath-rage-furnace', 23, 19, { roomId: bloodMarshId });
+  editor.spawnProp(LEVEL_ID, 'wrath-rage-furnace', 19, 15, { roomId: bloodMarshId });
+  // 6x wrath-chain-curtain (hanging from ceiling)
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 20, 15, { roomId: bloodMarshId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 25, 15, { roomId: bloodMarshId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 22, 18, { roomId: bloodMarshId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 20, 22, { roomId: bloodMarshId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 26, 22, { roomId: bloodMarshId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 23, 21, { roomId: bloodMarshId });
+  // 2x wrath-blood-spattered-slab (walls)
+  editor.spawnProp(LEVEL_ID, 'wrath-blood-spattered-slab', 17, 18, { roomId: bloodMarshId });
+  editor.spawnProp(LEVEL_ID, 'wrath-blood-spattered-slab', 31, 22, { roomId: bloodMarshId });
+  // 2x wrath-corroded-pipe-pillar
+  editor.spawnProp(LEVEL_ID, 'wrath-corroded-pipe-pillar', 20, 19, { roomId: bloodMarshId });
+  editor.spawnProp(LEVEL_ID, 'wrath-corroded-pipe-pillar', 17, 14, { roomId: bloodMarshId });
+  // 1x wrath-smashed-barrier
+  editor.spawnProp(LEVEL_ID, 'wrath-smashed-barrier', 26, 15, { roomId: bloodMarshId });
+  // 1x wrath-iron-grate (on ISL3 center floor)
+  editor.spawnProp(LEVEL_ID, 'wrath-iron-grate', 22, 20, { roomId: bloodMarshId });
 
   // --- Rage Pit (bounds: 22, 30, 12, 12) ---
-  // 2x Torch_Metal (walls at rim)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 23, 31, {
-    roomId: ragePitId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 32, 31, {
-    roomId: ragePitId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  // 3x Cage_Small (on tier edges)
-  editor.spawnProp(LEVEL_ID, 'Cage_Small', 25, 33, { roomId: ragePitId });
-  editor.spawnProp(LEVEL_ID, 'Cage_Small', 31, 37, { roomId: ragePitId });
-  editor.spawnProp(LEVEL_ID, 'Cage_Small', 27, 40, { roomId: ragePitId });
-  // 4x Chain_Coil (hanging from ceiling center)
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 26, 34, { roomId: ragePitId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 30, 34, { roomId: ragePitId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 26, 38, { roomId: ragePitId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 30, 38, { roomId: ragePitId });
+  // Structural: 4x wrath-pit-tier-ring
+  editor.spawnProp(LEVEL_ID, 'wrath-pit-tier-ring', 23, 31, { roomId: ragePitId });
+  editor.spawnProp(LEVEL_ID, 'wrath-pit-tier-ring', 24, 32, { roomId: ragePitId });
+  editor.spawnProp(LEVEL_ID, 'wrath-pit-tier-ring', 25, 33, { roomId: ragePitId });
+  editor.spawnProp(LEVEL_ID, 'wrath-pit-tier-ring', 26, 34, { roomId: ragePitId });
+  // 3x wrath-rusted-cage (tier edges)
+  editor.spawnProp(LEVEL_ID, 'wrath-rusted-cage', 23, 31, { roomId: ragePitId });
+  editor.spawnProp(LEVEL_ID, 'wrath-rusted-cage', 33, 31, { roomId: ragePitId });
+  editor.spawnProp(LEVEL_ID, 'wrath-rusted-cage', 28, 38, { roomId: ragePitId });
+  // 4x wrath-chain-curtain (hanging from ceiling center)
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 27, 35, { roomId: ragePitId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 29, 35, { roomId: ragePitId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 27, 37, { roomId: ragePitId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 29, 37, { roomId: ragePitId });
+  // 2x wrath-smashed-barrier (tier debris)
+  editor.spawnProp(LEVEL_ID, 'wrath-smashed-barrier', 24, 36, { roomId: ragePitId });
+  editor.spawnProp(LEVEL_ID, 'wrath-smashed-barrier', 30, 34, { roomId: ragePitId });
+  // 1x wrath-blood-spattered-slab
+  editor.spawnProp(LEVEL_ID, 'wrath-blood-spattered-slab', 25, 39, { roomId: ragePitId });
+  // 2x wrath-corroded-pipe-pillar (rim)
+  editor.spawnProp(LEVEL_ID, 'wrath-corroded-pipe-pillar', 23, 31, { roomId: ragePitId });
+  editor.spawnProp(LEVEL_ID, 'wrath-corroded-pipe-pillar', 33, 41, { roomId: ragePitId });
+  // 1x wrath-iron-grate (pit center)
+  editor.spawnProp(LEVEL_ID, 'wrath-iron-grate', 27, 37, { roomId: ragePitId });
+  // 1x wrath-punching-bag-chain
+  editor.spawnProp(LEVEL_ID, 'wrath-punching-bag-chain', 28, 36, { roomId: ragePitId });
 
   // --- Arsenal (bounds: 14, 46, 12, 6) ---
-  // 6x WeaponStand (walls, 3 per side)
-  editor.spawnProp(LEVEL_ID, 'WeaponStand', 15, 47, {
-    roomId: arsenalId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 0.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'WeaponStand', 15, 49, {
-    roomId: arsenalId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 0.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'WeaponStand', 15, 50, {
-    roomId: arsenalId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 0.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'WeaponStand', 24, 47, {
-    roomId: arsenalId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 0.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'WeaponStand', 24, 49, {
-    roomId: arsenalId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 0.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'WeaponStand', 24, 50, {
-    roomId: arsenalId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 0.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  // 4x Shield_Wooden (walls, between stands)
-  editor.spawnProp(LEVEL_ID, 'Shield_Wooden', 15, 48, {
-    roomId: arsenalId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Shield_Wooden', 24, 48, {
-    roomId: arsenalId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Shield_Wooden', 15, 50, {
-    roomId: arsenalId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Shield_Wooden', 24, 50, {
-    roomId: arsenalId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  // 4x Sword_Bronze (walls, crossed pairs)
-  editor.spawnProp(LEVEL_ID, 'Sword_Bronze', 15, 47, {
-    roomId: arsenalId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.4,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Sword_Bronze', 24, 47, {
-    roomId: arsenalId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.4,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Sword_Bronze', 15, 49, {
-    roomId: arsenalId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.4,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Sword_Bronze', 24, 49, {
-    roomId: arsenalId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.4,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  // 2x Torch_Metal (walls near entrance)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 16, 47, {
-    roomId: arsenalId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 23, 47, {
-    roomId: arsenalId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
+  // Structural: 1x wrath-jagged-arch (entry), 1x wrath-weapon-pedestal (Goat's Bane)
+  editor.spawnProp(LEVEL_ID, 'wrath-jagged-arch', 20, 46, { roomId: arsenalId });
+  editor.spawnProp(LEVEL_ID, 'wrath-weapon-pedestal', 20, 50, { roomId: arsenalId });
+  // 4x wrath-shattered-weapon-rack (walls)
+  editor.spawnProp(LEVEL_ID, 'wrath-shattered-weapon-rack', 15, 48, { roomId: arsenalId });
+  editor.spawnProp(LEVEL_ID, 'wrath-shattered-weapon-rack', 25, 48, { roomId: arsenalId });
+  editor.spawnProp(LEVEL_ID, 'wrath-shattered-weapon-rack', 15, 50, { roomId: arsenalId });
+  editor.spawnProp(LEVEL_ID, 'wrath-shattered-weapon-rack', 25, 50, { roomId: arsenalId });
+  // 1x wrath-smashed-barrier (floor debris)
+  editor.spawnProp(LEVEL_ID, 'wrath-smashed-barrier', 16, 49, { roomId: arsenalId });
+  // 1x wrath-anger-graffiti-slab (west wall near entry)
+  editor.spawnProp(LEVEL_ID, 'wrath-anger-graffiti-slab', 15, 47, { roomId: arsenalId });
+  // 1x wrath-blood-spattered-slab (east wall near entry)
+  editor.spawnProp(LEVEL_ID, 'wrath-blood-spattered-slab', 25, 47, { roomId: arsenalId });
 
   // --- Berserker Arena (bounds: 15, 56, 14, 14) ---
-  // 8x Barrel (destructible, explosive, ring around center)
-  editor.spawnProp(LEVEL_ID, 'Barrel', 17, 58, { roomId: berserkerArenaId });
-  editor.spawnProp(LEVEL_ID, 'Barrel', 26, 58, { roomId: berserkerArenaId });
-  editor.spawnProp(LEVEL_ID, 'Barrel', 17, 62, { roomId: berserkerArenaId });
-  editor.spawnProp(LEVEL_ID, 'Barrel', 26, 62, { roomId: berserkerArenaId });
-  editor.spawnProp(LEVEL_ID, 'Barrel', 17, 66, { roomId: berserkerArenaId });
-  editor.spawnProp(LEVEL_ID, 'Barrel', 26, 66, { roomId: berserkerArenaId });
-  editor.spawnProp(LEVEL_ID, 'Barrel', 20, 58, { roomId: berserkerArenaId });
-  editor.spawnProp(LEVEL_ID, 'Barrel', 23, 66, { roomId: berserkerArenaId });
-  // 4x Torch_Metal (walls, N/S/E/W)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 22, 57, {
-    roomId: berserkerArenaId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 1.8,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 22, 68, {
-    roomId: berserkerArenaId,
-    surfaceAnchor: {
-      face: 'south',
-      offsetX: 0,
-      offsetY: 1.8,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 16, 62, {
-    roomId: berserkerArenaId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.8,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 27, 62, {
-    roomId: berserkerArenaId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.8,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  // 6x Chain_Coil (hanging from ceiling)
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 18, 59, { roomId: berserkerArenaId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 25, 59, { roomId: berserkerArenaId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 18, 64, { roomId: berserkerArenaId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 25, 64, { roomId: berserkerArenaId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 18, 67, { roomId: berserkerArenaId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 25, 67, { roomId: berserkerArenaId });
-  // 2x Lantern_Wall (overhead caged light, E/W walls)
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 16, 60, {
-    roomId: berserkerArenaId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 2.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Lantern_Wall', 27, 60, {
-    roomId: berserkerArenaId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 2.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
+  // Structural: 1x wrath-jagged-arch (entry), 1x wrath-dented-iron-door (exit)
+  editor.spawnProp(LEVEL_ID, 'wrath-jagged-arch', 22, 56, { roomId: berserkerArenaId });
+  editor.spawnProp(LEVEL_ID, 'wrath-dented-iron-door', 16, 69, { roomId: berserkerArenaId });
+  // 8x wrath-explosive-barrel (ring around center)
+  editor.spawnProp(LEVEL_ID, 'wrath-explosive-barrel', 17, 58, { roomId: berserkerArenaId });
+  editor.spawnProp(LEVEL_ID, 'wrath-explosive-barrel', 27, 58, { roomId: berserkerArenaId });
+  editor.spawnProp(LEVEL_ID, 'wrath-explosive-barrel', 17, 62, { roomId: berserkerArenaId });
+  editor.spawnProp(LEVEL_ID, 'wrath-explosive-barrel', 27, 62, { roomId: berserkerArenaId });
+  editor.spawnProp(LEVEL_ID, 'wrath-explosive-barrel', 17, 66, { roomId: berserkerArenaId });
+  editor.spawnProp(LEVEL_ID, 'wrath-explosive-barrel', 27, 66, { roomId: berserkerArenaId });
+  editor.spawnProp(LEVEL_ID, 'wrath-explosive-barrel', 20, 58, { roomId: berserkerArenaId });
+  editor.spawnProp(LEVEL_ID, 'wrath-explosive-barrel', 24, 66, { roomId: berserkerArenaId });
+  // 6x wrath-chain-curtain (hanging from ceiling)
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 19, 59, { roomId: berserkerArenaId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 25, 59, { roomId: berserkerArenaId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 19, 65, { roomId: berserkerArenaId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 25, 65, { roomId: berserkerArenaId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 22, 59, { roomId: berserkerArenaId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 22, 65, { roomId: berserkerArenaId });
+  // 2x wrath-caged-lantern (overhead, E/W walls)
+  editor.spawnProp(LEVEL_ID, 'wrath-caged-lantern', 15, 60, { roomId: berserkerArenaId });
+  editor.spawnProp(LEVEL_ID, 'wrath-caged-lantern', 29, 60, { roomId: berserkerArenaId });
 
   // --- Shrine of Fury (bounds: 2, 74, 6, 6) ---
-  // 2x Torch_Metal (walls, E/W)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 3, 76, {
-    roomId: shrineOfFuryId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 6, 76, {
-    roomId: shrineOfFuryId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  // 1x Scroll_2 (wall pedestal)
-  editor.spawnProp(LEVEL_ID, 'Scroll_2', 5, 75, { roomId: shrineOfFuryId });
-  // 1x Bench (center)
-  editor.spawnProp(LEVEL_ID, 'Bench', 4, 77, { roomId: shrineOfFuryId });
-  // 1x Bucket_Metal (floor corner)
-  editor.spawnProp(LEVEL_ID, 'Bucket_Metal', 3, 78, { roomId: shrineOfFuryId });
+  // 1x wrath-smashed-barrier (west corner, minimal)
+  editor.spawnProp(LEVEL_ID, 'wrath-smashed-barrier', 3, 75, { roomId: shrineOfFuryId });
+  // 1x wrath-iron-grate (floor center)
+  editor.spawnProp(LEVEL_ID, 'wrath-iron-grate', 5, 77, { roomId: shrineOfFuryId });
+  // 1x wrath-caged-lantern (ceiling center)
+  editor.spawnProp(LEVEL_ID, 'wrath-caged-lantern', 5, 76, { roomId: shrineOfFuryId });
 
   // --- Gauntlet (bounds: 21, 74, 6, 20) ---
-  // 4x Torch_Metal (walls at intervals, E/W alternating)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 22, 76, {
-    roomId: gauntletId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 25, 81, {
-    roomId: gauntletId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 22, 86, {
-    roomId: gauntletId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 25, 91, {
-    roomId: gauntletId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  // 3x Banner_1 (walls, tattered war banners)
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 22, 79, {
-    roomId: gauntletId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 2.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 25, 84, {
-    roomId: gauntletId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 2.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 22, 89, {
-    roomId: gauntletId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 2.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  // 4x Chain_Coil (hanging from ceiling at intervals)
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 23, 77, { roomId: gauntletId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 23, 82, { roomId: gauntletId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 23, 87, { roomId: gauntletId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 23, 92, { roomId: gauntletId });
+  // Structural: 2x wrath-jagged-arch (entry/exit)
+  editor.spawnProp(LEVEL_ID, 'wrath-jagged-arch', 23, 74, { roomId: gauntletId });
+  editor.spawnProp(LEVEL_ID, 'wrath-jagged-arch', 23, 93, { roomId: gauntletId });
+  // 6x wrath-chain-curtain (ceiling intervals)
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 22, 76, { roomId: gauntletId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 22, 82, { roomId: gauntletId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 22, 88, { roomId: gauntletId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 22, 92, { roomId: gauntletId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 24, 80, { roomId: gauntletId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 24, 86, { roomId: gauntletId });
+  // 3x wrath-war-banner (walls, tattered)
+  editor.spawnProp(LEVEL_ID, 'wrath-war-banner', 21, 78, { roomId: gauntletId });
+  editor.spawnProp(LEVEL_ID, 'wrath-war-banner', 25, 84, { roomId: gauntletId });
+  editor.spawnProp(LEVEL_ID, 'wrath-war-banner', 21, 90, { roomId: gauntletId });
+  // 2x wrath-smashed-barrier (ramp tops)
+  editor.spawnProp(LEVEL_ID, 'wrath-smashed-barrier', 23, 79, { roomId: gauntletId });
+  editor.spawnProp(LEVEL_ID, 'wrath-smashed-barrier', 23, 85, { roomId: gauntletId });
+  // 2x wrath-blood-spattered-slab (walls near ramps)
+  editor.spawnProp(LEVEL_ID, 'wrath-blood-spattered-slab', 22, 80, { roomId: gauntletId });
+  editor.spawnProp(LEVEL_ID, 'wrath-blood-spattered-slab', 24, 88, { roomId: gauntletId });
 
   // --- Boss colosseum (bounds: 16, 98, 16, 16) ---
-  // 8x Torch_Metal (perimeter ring, floor-standing on sand)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 17, 99, { roomId: colosseumId });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 30, 99, { roomId: colosseumId });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 17, 104, { roomId: colosseumId });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 30, 104, { roomId: colosseumId });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 17, 109, { roomId: colosseumId });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 30, 109, { roomId: colosseumId });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 17, 112, { roomId: colosseumId });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 30, 112, { roomId: colosseumId });
-  // 8x Chain_Coil (hanging from ceiling in ring)
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 19, 100, { roomId: colosseumId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 28, 100, { roomId: colosseumId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 19, 105, { roomId: colosseumId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 28, 105, { roomId: colosseumId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 19, 110, { roomId: colosseumId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 28, 110, { roomId: colosseumId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 24, 100, { roomId: colosseumId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 24, 110, { roomId: colosseumId });
-  // 2x Banner_1 (entrance flanking)
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 20, 99, {
-    roomId: colosseumId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 2.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 27, 99, {
-    roomId: colosseumId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 2.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  // 4x Anvil (perimeter at cardinal points)
-  editor.spawnProp(LEVEL_ID, 'Anvil', 24, 99, { roomId: colosseumId });
-  editor.spawnProp(LEVEL_ID, 'Anvil', 24, 112, { roomId: colosseumId });
-  editor.spawnProp(LEVEL_ID, 'Anvil', 17, 106, { roomId: colosseumId });
-  editor.spawnProp(LEVEL_ID, 'Anvil', 30, 106, { roomId: colosseumId });
+  // Structural: 1x wrath-jagged-arch (entrance)
+  editor.spawnProp(LEVEL_ID, 'wrath-jagged-arch', 24, 98, { roomId: colosseumId });
+  // 4x wrath-anvil (cardinal points)
+  editor.spawnProp(LEVEL_ID, 'wrath-anvil', 16, 106, { roomId: colosseumId });
+  editor.spawnProp(LEVEL_ID, 'wrath-anvil', 32, 106, { roomId: colosseumId });
+  editor.spawnProp(LEVEL_ID, 'wrath-anvil', 24, 98, { roomId: colosseumId });
+  editor.spawnProp(LEVEL_ID, 'wrath-anvil', 24, 113, { roomId: colosseumId });
+  // 8x wrath-chain-curtain (ceiling ring)
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 20, 101, { roomId: colosseumId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 28, 101, { roomId: colosseumId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 18, 106, { roomId: colosseumId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 30, 106, { roomId: colosseumId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 20, 111, { roomId: colosseumId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 28, 111, { roomId: colosseumId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 24, 101, { roomId: colosseumId });
+  editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 24, 111, { roomId: colosseumId });
+  // 2x wrath-war-banner (entrance flanking)
+  editor.spawnProp(LEVEL_ID, 'wrath-war-banner', 22, 98, { roomId: colosseumId });
+  editor.spawnProp(LEVEL_ID, 'wrath-war-banner', 26, 98, { roomId: colosseumId });
+  // 2x wrath-blood-spattered-slab (sand floor)
+  editor.spawnProp(LEVEL_ID, 'wrath-blood-spattered-slab', 20, 104, { roomId: colosseumId });
+  editor.spawnProp(LEVEL_ID, 'wrath-blood-spattered-slab', 28, 108, { roomId: colosseumId });
+  // 2x wrath-smashed-barrier (sand floor)
+  editor.spawnProp(LEVEL_ID, 'wrath-smashed-barrier', 19, 110, { roomId: colosseumId });
+  editor.spawnProp(LEVEL_ID, 'wrath-smashed-barrier', 29, 102, { roomId: colosseumId });
+  // 1x wrath-iron-grate (center floor)
+  editor.spawnProp(LEVEL_ID, 'wrath-iron-grate', 24, 106, { roomId: colosseumId });
+
+  // =========================================================================
+  // 5d. DECALS (from design doc Scratches007, Rust001, Leaking001 mappings)
+  // =========================================================================
+
+  // --- Gate of Dis: rage claw marks on walls ---
+  editor.placeDecals(LEVEL_ID, gateOfDisId, [
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 19, z: 4, surface: 'wall' },
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 29, z: 4, surface: 'wall' },
+  ]);
+
+  // --- Blood Marsh: blood stains + rust on corroded pipes ---
+  editor.placeDecals(LEVEL_ID, bloodMarshId, [
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 20, z: 18 },
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 28, z: 20 },
+    { type: DECAL_TYPES.RUST_PATCH, x: 20, z: 19 },
+    { type: DECAL_TYPES.RUST_PATCH, x: 17, z: 14 },
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 16, z: 18, surface: 'wall' },
+  ]);
+
+  // --- Rage Pit: claw marks everywhere + blood stains near combat ---
+  editor.placeDecals(LEVEL_ID, ragePitId, [
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 22, z: 34, surface: 'wall' },
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 34, z: 34, surface: 'wall' },
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 26, z: 35 },
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 30, z: 35 },
+  ]);
+
+  // --- Arsenal: rust on weapon racks + claw marks ---
+  editor.placeDecals(LEVEL_ID, arsenalId, [
+    { type: DECAL_TYPES.RUST_PATCH, x: 15, z: 48 },
+    { type: DECAL_TYPES.RUST_PATCH, x: 25, z: 48 },
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 14, z: 49, surface: 'wall' },
+  ]);
+
+  // --- Berserker Arena: heavy damage everywhere ---
+  editor.placeDecals(LEVEL_ID, berserkerArenaId, [
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 15, z: 60, surface: 'wall' },
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 29, z: 60, surface: 'wall' },
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 22, z: 62 },
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 19, z: 65 },
+    { type: DECAL_TYPES.RUST_PATCH, x: 17, z: 58 },
+  ]);
+
+  // --- Boss Colosseum: blood-soaked sand + claw marks ---
+  editor.placeDecals(LEVEL_ID, colosseumId, [
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 20, z: 104 },
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 28, z: 108 },
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 16, z: 106, surface: 'wall' },
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 32, z: 106, surface: 'wall' },
+    { type: DECAL_TYPES.RUST_PATCH, x: 24, z: 106 },
+  ]);
 
   // =========================================================================
   // 6. TRIGGERS (from "Triggers" table)

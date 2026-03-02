@@ -90,6 +90,49 @@ export function toEnvironmentZones(db: DrizzleDb, levelId: string): RuntimeEnvZo
 }
 
 // ---------------------------------------------------------------------------
+// RuntimeDecal — runtime representation of a surface decal
+// ---------------------------------------------------------------------------
+
+export interface RuntimeDecal {
+  id: string;
+  decalType: string;
+  /** World X coordinate (grid * CELL_SIZE). */
+  x: number;
+  /** World Z coordinate (grid * CELL_SIZE). */
+  z: number;
+  /** World width. */
+  w: number;
+  /** World height (depth). */
+  h: number;
+  /** Rotation in radians. */
+  rotation: number;
+  /** Opacity [0..1]. */
+  opacity: number;
+  /** Surface target: 'floor' | 'wall' | 'ceiling'. */
+  surface: string;
+}
+
+/**
+ * Load decals from the database for a given level and convert
+ * grid coordinates to world coordinates.
+ */
+export function toDecals(db: DrizzleDb, levelId: string): RuntimeDecal[] {
+  const rows = db.select().from(schema.decals).where(eq(schema.decals.levelId, levelId)).all();
+
+  return rows.map((row) => ({
+    id: row.id,
+    decalType: row.decalType,
+    x: row.x * CELL_SIZE,
+    z: row.z * CELL_SIZE,
+    w: row.w * CELL_SIZE,
+    h: row.h * CELL_SIZE,
+    rotation: row.rotation,
+    opacity: row.opacity,
+    surface: row.surface,
+  }));
+}
+
+// ---------------------------------------------------------------------------
 // Triggers + triggered entities
 // ---------------------------------------------------------------------------
 

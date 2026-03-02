@@ -2,6 +2,29 @@
   "id": "violence-industrial-cage",
   "name": "Industrial Cage Frame",
   "type": "prop",
+  "seed": 787893824,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac9c-4e12-7d7d-9584-abd3f42db279",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9c-4e12-7d7d-9584-abd3f42db279"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac9e-2e90-7db2-ac84-97196fb15bc3",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9e-2e90-7db2-ac84-97196fb15bc3"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A large industrial iron cage frame with thick bars and a hinged door, hanging from a chain mount at the top, butcher's holding pen, rust and blood stains on bars, dark fantasy game prop, isolated object, dark background, front orientation view",

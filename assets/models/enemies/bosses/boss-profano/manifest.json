@@ -2,6 +2,91 @@
   "id": "boss-profano",
   "name": "Profano — The Blasphemer",
   "type": "character",
+  "seed": 2473114411,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cad67-912b-797e-b9b2-1254138b2273",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad67-912b-797e-b9b2-1254138b2273"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cad68-6613-799f-bf6c-34d45a4fc472",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad68-6613-799f-bf6c-34d45a4fc472"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cad69-fbe8-7b47-930c-90bc6b078bf1",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad69-fbe8-7b47-930c-90bc6b078bf1"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cad7e-37e6-7e6c-9e76-fa10290905fb",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad7e-37e6-7e6c-9e76-fa10290905fb"
+      },
+      "artifacts": {}
+    },
+    "animations": {
+      "WalkAndRun.Walking.Zombie_Walk": {
+        "taskId": "019cad80-7b64-7ca8-b406-c39f8c4996ee",
+        "status": "SUCCEEDED",
+        "actionId": 112,
+        "artifact": "animations/Zombie_Walk.glb"
+      },
+      "DailyActions.Idle.Angry_Ground_Stomp_2": {
+        "taskId": "019cad81-309b-7ef0-be9d-6ad8e99f2055",
+        "status": "SUCCEEDED",
+        "actionId": 257,
+        "artifact": "animations/Angry_Ground_Stomp_2.glb"
+      },
+      "Fighting.CastingSpell.Charged_Spell_Cast": {
+        "taskId": "019cad81-e746-7c27-a197-08817ab26173",
+        "status": "SUCCEEDED",
+        "actionId": 125,
+        "artifact": "animations/Charged_Spell_Cast.glb"
+      },
+      "Fighting.CastingSpell.Charged_Spell_Cast_1": {
+        "taskId": "019cad82-2610-7c28-ab95-387bc603dada",
+        "status": "SUCCEEDED",
+        "actionId": 126,
+        "artifact": "animations/Charged_Spell_Cast_1.glb"
+      },
+      "Fighting.CastingSpell.Charged_Ground_Slam": {
+        "taskId": "019cad83-16ed-7a96-93d7-8e5d40cc2260",
+        "status": "SUCCEEDED",
+        "actionId": 127,
+        "artifact": "animations/Charged_Ground_Slam.glb"
+      },
+      "BodyMovements.Acting.Zombie_Scream": {
+        "taskId": "019cad83-cc6a-7c7c-9569-c1fc60340502",
+        "status": "SUCCEEDED",
+        "actionId": 386,
+        "artifact": "animations/Zombie_Scream.glb"
+      },
+      "Fighting.GettingHit.Face_Punch_Reaction": {
+        "taskId": "019cad84-463c-7ae4-b50b-2acab6c1d65c",
+        "status": "SUCCEEDED",
+        "actionId": 174,
+        "artifact": "animations/Face_Punch_Reaction.glb"
+      },
+      "Fighting.Dying.Dead": {
+        "taskId": "019cad84-fb3c-7b0e-af17-2cd681a85027",
+        "status": "SUCCEEDED",
+        "actionId": 8,
+        "artifact": "animations/Dead.glb"
+      }
+    }
+  },
   "pipeline": "enemy",
   "description": "Circle 6 Boss (Heresy). A fallen high priest goat, wielding forbidden divine power against its source.",
   "textToImageTask": {
@@ -21,7 +106,9 @@
     "texturePrompt": "Black-purple vestment fabric with defiled gold trim, cracked papal mitre, dark wood inverted crucifix staff, purple lightning effects, chained leather tome, gold ring details, burning purple eyes",
     "enablePbr": true
   },
-  "riggingTask": { "heightMeters": 3.0 },
+  "riggingTask": {
+    "heightMeters": 3
+  },
   "animationTask": {
     "animations": [
       "WalkAndRun.Walking.Zombie_Walk",

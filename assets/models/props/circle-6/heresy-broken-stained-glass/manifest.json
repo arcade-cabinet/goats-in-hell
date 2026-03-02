@@ -2,6 +2,29 @@
   "id": "heresy-broken-stained-glass",
   "name": "Broken Stained Glass Panel",
   "type": "prop",
+  "seed": 1734586924,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac77-5f66-7d69-a83e-be68b180569d",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac77-5f66-7d69-a83e-be68b180569d"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac79-2a6e-79f9-90ba-41c6691d1ca7",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac79-2a6e-79f9-90ba-41c6691d1ca7"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A large rigid solid panel of broken stained glass in a stone frame, the glass pieces are fused together showing a shattered religious scene in purple and black tones, some pieces missing leaving holes, the frame is cracked marble, solid rigid wall decoration, game prop, isolated object, dark background, front orientation view",

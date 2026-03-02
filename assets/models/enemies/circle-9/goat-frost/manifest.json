@@ -2,6 +2,7 @@
   "id": "goat-frost",
   "name": "Goat Frost",
   "type": "character",
+  "seed": 2648237889,
   "pipeline": "enemy",
   "description": "Circle 9 (Treachery) — ice-encrusted goat. Slow but devastating charge, freezes on contact.",
   "textToImageTask": {
@@ -21,7 +22,9 @@
     "texturePrompt": "Pale blue frozen fur, blue-white ice crystal growths, icicle-coated horns, jagged translucent ice spear, frost breath particles, dead white frozen eyes",
     "enablePbr": true
   },
-  "riggingTask": { "heightMeters": 2.0 },
+  "riggingTask": {
+    "heightMeters": 2
+  },
   "animationTask": {
     "animations": [
       "WalkAndRun.Walking.Stumble_Walk",
@@ -31,5 +34,77 @@
       "Fighting.GettingHit.BeHit_FlyUp",
       "Fighting.Dying.Knock_Down"
     ]
+  },
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cadc9-add7-781b-81ea-90fb6f579c2c",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadc9-add7-781b-81ea-90fb6f579c2c"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cadca-a4a8-71c2-847a-9d7607b4c60e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadca-a4a8-71c2-847a-9d7607b4c60e"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cadcc-5d8b-783d-9593-e98b06b371ff",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadcc-5d8b-783d-9593-e98b06b371ff"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cadcd-d1c9-777b-a4f8-2504133419a3",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadcd-d1c9-777b-a4f8-2504133419a3"
+      },
+      "artifacts": {}
+    },
+    "animations": {
+      "WalkAndRun.Walking.Stumble_Walk": {
+        "taskId": "019cadcf-8bc1-725f-940a-bf5c1478bcf8",
+        "status": "SUCCEEDED",
+        "actionId": 562,
+        "artifact": "animations/Stumble_Walk.glb"
+      },
+      "DailyActions.Idle.Angry_Ground_Stomp_1": {
+        "taskId": "019cadd0-0654-7894-a7e9-897766c18a27",
+        "status": "SUCCEEDED",
+        "actionId": 256,
+        "artifact": "animations/Angry_Ground_Stomp_1.glb"
+      },
+      "Fighting.AttackingwithWeapon.Charged_Slash": {
+        "taskId": "019cadd0-8072-7277-9c95-cd8f0e8591df",
+        "status": "SUCCEEDED",
+        "actionId": 242,
+        "artifact": "animations/Charged_Slash.glb"
+      },
+      "WalkAndRun.Running.Lean_Forward_Sprint": {
+        "taskId": "019cadd1-35d8-7808-8a74-b65e60ad4c9d",
+        "status": "SUCCEEDED",
+        "actionId": 509,
+        "artifact": "animations/Lean_Forward_Sprint.glb"
+      },
+      "Fighting.GettingHit.BeHit_FlyUp": {
+        "taskId": "019cadd1-747c-7808-a3eb-8c1120244fe3",
+        "status": "SUCCEEDED",
+        "actionId": 7,
+        "artifact": "animations/BeHit_FlyUp.glb"
+      },
+      "Fighting.Dying.Knock_Down": {
+        "taskId": "019cadd1-b4b5-7820-88f1-e07e6cfc932c",
+        "status": "SUCCEEDED",
+        "actionId": 187,
+        "artifact": "animations/Knock_Down.glb"
+      }
+    }
   }
 }

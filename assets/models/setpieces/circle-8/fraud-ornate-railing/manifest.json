@@ -1,0 +1,41 @@
+{
+  "id": "fraud-ornate-railing",
+  "name": "Ornate Marble Railing",
+  "type": "prop",
+  "seed": 3671919025,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac9d-acc5-7e89-8454-c61c33b59c01",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9d-acc5-7e89-8454-c61c33b59c01"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac9f-6d70-7ebf-9c6d-0fc60959425f",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9f-6d70-7ebf-9c6d-0fc60959425f"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A section of ornate marble balustrade railing with turned balusters, classical white marble staircase railing with carved handrail, palatial architecture element, dark fantasy game prop, isolated object, dark background, three-quarter orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Polished white veined marble, turned baluster profiles, smooth carved handrail, classical architectural elegance",
+    "enablePbr": true
+  }
+}

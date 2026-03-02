@@ -2,6 +2,29 @@
   "id": "floor-tile-cracked",
   "name": "Cracked Floor Tile",
   "type": "prop",
+  "seed": 424947098,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caca2-a0d4-7f5e-a730-112b9938a4a0",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca2-a0d4-7f5e-a730-112b9938a4a0"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019caca4-166a-7fca-80ce-153d2ade53fb",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca4-166a-7fca-80ce-153d2ade53fb"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A cracked stone floor tile piece with fracture lines radiating from an impact point, slightly raised broken edges, damaged dungeon floor segment, dark fantasy game prop, floor-placed flat, isolated object, dark background",

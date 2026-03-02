@@ -2,6 +2,29 @@
   "id": "rubble-pile-small",
   "name": "Small Rubble Pile",
   "type": "prop",
+  "seed": 2868793338,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacda-0911-7913-a000-27a51b2f89ad",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacda-0911-7913-a000-27a51b2f89ad"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacdd-2fb8-797a-82a6-14e4dea92182",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacdd-2fb8-797a-82a6-14e4dea92182"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A small pile of stone rubble and broken masonry debris on the floor, scattered chunks of dark stone and crumbled mortar, dungeon destruction debris, dark fantasy game prop, floor-placed, isolated object, dark background",

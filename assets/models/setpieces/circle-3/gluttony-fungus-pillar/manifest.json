@@ -1,0 +1,41 @@
+{
+  "id": "gluttony-fungus-pillar",
+  "name": "Fungus-Encrusted Pillar",
+  "type": "prop",
+  "seed": 1447559593,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac81-0871-7045-91a4-53aeba3350d4",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac81-0871-7045-91a4-53aeba3350d4"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac82-6424-7a19-a98d-a122472866ed",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac82-6424-7a19-a98d-a122472866ed"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A stone pillar heavily encrusted with shelf fungus growths and sickly yellow-green mold, large bracket fungi protruding like shelves, dripping moisture, dark organic mass consuming the stone, dark fantasy gluttony-themed game prop, isolated object, dark background, front-facing view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Gray stone beneath yellow-green fungal growths, bracket fungi shelves, dripping moisture, organic decay consuming structure",
+    "enablePbr": true
+  }
+}

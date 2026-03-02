@@ -2,6 +2,29 @@
   "id": "chain-hanging-single",
   "name": "Single Hanging Chain",
   "type": "prop",
+  "seed": 1478413006,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac7d-a6f1-7fd9-9979-63bf5e6bc617",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac7d-a6f1-7fd9-9979-63bf5e6bc617"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac7f-1b01-79c2-9fb6-45cb02ce613d",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac7f-1b01-79c2-9fb6-45cb02ce613d"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A single heavy iron chain hanging vertically from a ceiling anchor point, solid rigid chain links with a hook at the bottom end, dungeon ceiling decoration, dark fantasy game prop, ceiling-mounted hanging down, isolated object, dark background",

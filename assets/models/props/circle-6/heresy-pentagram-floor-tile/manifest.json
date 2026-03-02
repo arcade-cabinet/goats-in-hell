@@ -2,6 +2,29 @@
   "id": "heresy-pentagram-floor-tile",
   "name": "Pentagram Floor Tile Section",
   "type": "prop",
+  "seed": 1909594844,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac96-be8a-7148-9688-9a5d2385aa2b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac96-be8a-7148-9688-9a5d2385aa2b"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac9a-c176-7306-8d0c-eac174d3cc84",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9a-c176-7306-8d0c-eac174d3cc84"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A square floor tile section showing part of a pentagram pattern, black and white checkered marble with a deep groove forming the pentagram line inlaid with dark obsidian, faint purple glow in the groove, ritual floor inlay tile, game prop, isolated object, dark background, top-down angled view",

@@ -2,6 +2,29 @@
   "id": "silk-curtain",
   "name": "Silk Curtain",
   "type": "prop",
+  "seed": 2248053277,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacaf-4252-7410-b610-a219a347b43b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacaf-4252-7410-b610-a219a347b43b"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacb0-bb69-7039-bbd8-b67c2880cf37",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb0-bb69-7039-bbd8-b67c2880cf37"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A tattered crimson silk curtain hanging from a curved iron rod, partially sheer with gold thread embroidery, decadent and worn, lust-themed dungeon boudoir decoration, stylized low poly game prop, dark fantasy, isometric view",

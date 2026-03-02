@@ -2,6 +2,29 @@
   "id": "heresy-toppled-altar",
   "name": "Toppled Stone Altar",
   "type": "prop",
+  "seed": 1247969918,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacb0-f0d0-7441-920a-a4d2b167b25c",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb0-f0d0-7441-920a-a4d2b167b25c"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacb2-3031-757b-8cfb-5d500a199142",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb2-3031-757b-8cfb-5d500a199142"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A large stone altar table that has been knocked onto its side, the marble slab top is cracked, carved religious symbols on the sides are defaced with scratch marks, broken candle holders and scattered debris at the base, desecrated church altar, game prop, isolated object, dark background, three quarter view",

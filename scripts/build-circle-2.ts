@@ -9,6 +9,7 @@ import BetterSqlite3 from 'better-sqlite3';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import {
   CONNECTION_TYPES,
+  DECAL_TYPES,
   ENEMY_TYPES,
   ENV_TYPES,
   LevelEditor,
@@ -290,8 +291,31 @@ export async function buildCircle2(dbPath: string) {
 
   // --- Antechamber (bounds: 18, 2, 8, 6) ---
   //   Interior: x=[19..24], z=[3..6]
-  // 4x CandleStick_Triple (wall, corners)
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 19, 3, {
+  // Structural: 2x ornate arches (N entrance, S exit)
+  editor.spawnProp(LEVEL_ID, 'lust-ornate-arch', 22, 2, {
+    roomId: antechamberId,
+    surfaceAnchor: {
+      face: 'south',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'lust-ornate-arch', 22, 7, {
+    roomId: antechamberId,
+    surfaceAnchor: {
+      face: 'south',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  // 4x lust-candelabra (wall, corners)
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 18, 3, {
     roomId: antechamberId,
     surfaceAnchor: {
       face: 'north',
@@ -302,7 +326,7 @@ export async function buildCircle2(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 24, 3, {
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 25, 3, {
     roomId: antechamberId,
     surfaceAnchor: {
       face: 'north',
@@ -313,7 +337,7 @@ export async function buildCircle2(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 19, 6, {
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 18, 7, {
     roomId: antechamberId,
     surfaceAnchor: {
       face: 'south',
@@ -324,7 +348,7 @@ export async function buildCircle2(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 24, 6, {
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 25, 7, {
     roomId: antechamberId,
     surfaceAnchor: {
       face: 'south',
@@ -335,11 +359,11 @@ export async function buildCircle2(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 2x Vase_2
-  editor.spawnProp(LEVEL_ID, 'Vase_2', 20, 4, { roomId: antechamberId });
-  editor.spawnProp(LEVEL_ID, 'Vase_2', 23, 4, { roomId: antechamberId });
-  // 1x Banner_1 (N wall)
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 22, 3, {
+  // 2x lust-marble-vase floor pedestals
+  editor.spawnProp(LEVEL_ID, 'lust-marble-vase', 20, 4, { roomId: antechamberId });
+  editor.spawnProp(LEVEL_ID, 'lust-marble-vase', 23, 4, { roomId: antechamberId });
+  // 1x lust-velvet-drape above north entrance
+  editor.spawnProp(LEVEL_ID, 'lust-velvet-drape', 22, 2, {
     roomId: antechamberId,
     surfaceAnchor: {
       face: 'north',
@@ -350,11 +374,42 @@ export async function buildCircle2(dbPath: string) {
       scale: 1.0,
     },
   });
+  // 1x lust-coffered-ceiling-tile ceiling
+  editor.spawnProp(LEVEL_ID, 'lust-coffered-ceiling-tile', 22, 4, { roomId: antechamberId });
+  // 1x lust-rose-thorn-cluster near south exit
+  editor.spawnProp(LEVEL_ID, 'lust-rose-thorn-cluster', 18, 6, { roomId: antechamberId });
+  // 1x lust-perfume-censer near north wall
+  editor.spawnProp(LEVEL_ID, 'lust-perfume-censer', 21, 3, { roomId: antechamberId });
+  // 1x lust-floor-carpet center floor
+  editor.spawnProp(LEVEL_ID, 'lust-floor-carpet', 20, 4, { roomId: antechamberId });
 
   // --- Wind Corridor (bounds: 20, 12, 5, 16) ---
   //   Interior: x=[21..23], z=[13..26]
-  // 4x Banner_2 (W wall, show wind direction)
-  editor.spawnProp(LEVEL_ID, 'Banner_2', 21, 14, {
+  // Structural: 2x ornate arches (N entrance, S exit)
+  editor.spawnProp(LEVEL_ID, 'lust-ornate-arch', 22, 12, {
+    roomId: windCorridorId,
+    surfaceAnchor: {
+      face: 'south',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.9,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'lust-ornate-arch', 22, 27, {
+    roomId: windCorridorId,
+    surfaceAnchor: {
+      face: 'south',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.9,
+    },
+  });
+  // 4x lust-wind-banner (W wall, show wind direction)
+  editor.spawnProp(LEVEL_ID, 'lust-wind-banner', 20, 14, {
     roomId: windCorridorId,
     surfaceAnchor: {
       face: 'west',
@@ -362,10 +417,10 @@ export async function buildCircle2(dbPath: string) {
       offsetY: 2.0,
       offsetZ: 0,
       rotation: [0, 0, 0],
-      scale: 1.0,
+      scale: 0.8,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Banner_2', 21, 18, {
+  editor.spawnProp(LEVEL_ID, 'lust-wind-banner', 20, 18, {
     roomId: windCorridorId,
     surfaceAnchor: {
       face: 'west',
@@ -373,10 +428,10 @@ export async function buildCircle2(dbPath: string) {
       offsetY: 2.0,
       offsetZ: 0,
       rotation: [0, 0, 0],
-      scale: 1.0,
+      scale: 0.8,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Banner_2', 21, 22, {
+  editor.spawnProp(LEVEL_ID, 'lust-wind-banner', 20, 22, {
     roomId: windCorridorId,
     surfaceAnchor: {
       face: 'west',
@@ -384,10 +439,10 @@ export async function buildCircle2(dbPath: string) {
       offsetY: 2.0,
       offsetZ: 0,
       rotation: [0, 0, 0],
-      scale: 1.0,
+      scale: 0.8,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Banner_2', 21, 26, {
+  editor.spawnProp(LEVEL_ID, 'lust-wind-banner', 20, 26, {
     roomId: windCorridorId,
     surfaceAnchor: {
       face: 'west',
@@ -395,11 +450,11 @@ export async function buildCircle2(dbPath: string) {
       offsetY: 2.0,
       offsetZ: 0,
       rotation: [0, 0, 0],
-      scale: 1.0,
+      scale: 0.8,
     },
   });
-  // 2x CandleStick_Triple (E wall)
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 23, 16, {
+  // 2x lust-candelabra (E wall)
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 24, 16, {
     roomId: windCorridorId,
     surfaceAnchor: {
       face: 'east',
@@ -407,10 +462,10 @@ export async function buildCircle2(dbPath: string) {
       offsetY: 1.5,
       offsetZ: 0,
       rotation: [0, 0, 0],
-      scale: 1.0,
+      scale: 0.9,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 23, 24, {
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 24, 24, {
     roomId: windCorridorId,
     surfaceAnchor: {
       face: 'east',
@@ -418,23 +473,51 @@ export async function buildCircle2(dbPath: string) {
       offsetY: 1.5,
       offsetZ: 0,
       rotation: [0, 0, 0],
-      scale: 1.0,
+      scale: 0.9,
     },
   });
+  // lust-lava-rock-border channel edges
+  editor.spawnProp(LEVEL_ID, 'lust-lava-rock-border', 20, 16, { roomId: windCorridorId });
+  editor.spawnProp(LEVEL_ID, 'lust-lava-rock-border', 24, 16, { roomId: windCorridorId });
+  // 1x lust-ember-brazier walkway north end
+  editor.spawnProp(LEVEL_ID, 'lust-ember-brazier', 22, 12, { roomId: windCorridorId });
 
   // --- Lover's Gallery (bounds: 15, 32, 14, 10) ---
   //   Interior: x=[16..27], z=[33..40]
-  // 8x Onyx columns (structural, 2 rows of 4)
-  editor.spawnProp(LEVEL_ID, 'Column_Onyx', 18, 34, { roomId: galleryId });
-  editor.spawnProp(LEVEL_ID, 'Column_Onyx', 21, 34, { roomId: galleryId });
-  editor.spawnProp(LEVEL_ID, 'Column_Onyx', 24, 34, { roomId: galleryId });
-  editor.spawnProp(LEVEL_ID, 'Column_Onyx', 27, 34, { roomId: galleryId });
-  editor.spawnProp(LEVEL_ID, 'Column_Onyx', 18, 38, { roomId: galleryId });
-  editor.spawnProp(LEVEL_ID, 'Column_Onyx', 21, 38, { roomId: galleryId });
-  editor.spawnProp(LEVEL_ID, 'Column_Onyx', 24, 38, { roomId: galleryId });
-  editor.spawnProp(LEVEL_ID, 'Column_Onyx', 27, 38, { roomId: galleryId });
-  // 4x CandleStick_Triple (walls, corners)
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 16, 33, {
+  // Structural: 8x lust-onyx-column (2 rows of 4)
+  editor.spawnProp(LEVEL_ID, 'lust-onyx-column', 17, 33, { roomId: galleryId });
+  editor.spawnProp(LEVEL_ID, 'lust-onyx-column', 20, 33, { roomId: galleryId });
+  editor.spawnProp(LEVEL_ID, 'lust-onyx-column', 23, 33, { roomId: galleryId });
+  editor.spawnProp(LEVEL_ID, 'lust-onyx-column', 26, 33, { roomId: galleryId });
+  editor.spawnProp(LEVEL_ID, 'lust-onyx-column', 17, 38, { roomId: galleryId });
+  editor.spawnProp(LEVEL_ID, 'lust-onyx-column', 20, 38, { roomId: galleryId });
+  editor.spawnProp(LEVEL_ID, 'lust-onyx-column', 23, 38, { roomId: galleryId });
+  editor.spawnProp(LEVEL_ID, 'lust-onyx-column', 26, 38, { roomId: galleryId });
+  // Structural: 2x ornate arches (N entrance, S exit)
+  editor.spawnProp(LEVEL_ID, 'lust-ornate-arch', 22, 32, {
+    roomId: galleryId,
+    surfaceAnchor: {
+      face: 'south',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'lust-ornate-arch', 22, 41, {
+    roomId: galleryId,
+    surfaceAnchor: {
+      face: 'south',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  // 4x lust-candelabra (corners)
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 15, 32, {
     roomId: galleryId,
     surfaceAnchor: {
       face: 'west',
@@ -445,7 +528,7 @@ export async function buildCircle2(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 27, 33, {
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 28, 32, {
     roomId: galleryId,
     surfaceAnchor: {
       face: 'east',
@@ -456,7 +539,7 @@ export async function buildCircle2(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 16, 40, {
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 15, 41, {
     roomId: galleryId,
     surfaceAnchor: {
       face: 'west',
@@ -467,7 +550,7 @@ export async function buildCircle2(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 27, 40, {
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 28, 41, {
     roomId: galleryId,
     surfaceAnchor: {
       face: 'east',
@@ -478,65 +561,49 @@ export async function buildCircle2(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 4x Banner_1 (walls, N and S alternating)
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 19, 33, {
-    roomId: galleryId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 2.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 25, 33, {
-    roomId: galleryId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 2.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 19, 40, {
-    roomId: galleryId,
-    surfaceAnchor: {
-      face: 'south',
-      offsetX: 0,
-      offsetY: 2.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 25, 40, {
-    roomId: galleryId,
-    surfaceAnchor: {
-      face: 'south',
-      offsetX: 0,
-      offsetY: 2.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  // 2x Chair_1
-  editor.spawnProp(LEVEL_ID, 'Chair_1', 19, 36, { roomId: galleryId });
-  editor.spawnProp(LEVEL_ID, 'Chair_1', 25, 36, { roomId: galleryId });
-  // 2x Chalice
-  editor.spawnProp(LEVEL_ID, 'Chalice', 20, 36, { roomId: galleryId });
-  editor.spawnProp(LEVEL_ID, 'Chalice', 26, 36, { roomId: galleryId });
-  // 2x Vase_4
-  editor.spawnProp(LEVEL_ID, 'Vase_4', 17, 35, { roomId: galleryId });
-  editor.spawnProp(LEVEL_ID, 'Vase_4', 25, 39, { roomId: galleryId });
+  // 4x lust-velvet-drape (walls between columns)
+  editor.spawnProp(LEVEL_ID, 'lust-velvet-drape', 16, 34, { roomId: galleryId });
+  editor.spawnProp(LEVEL_ID, 'lust-velvet-drape', 27, 34, { roomId: galleryId });
+  editor.spawnProp(LEVEL_ID, 'lust-velvet-drape', 16, 39, { roomId: galleryId });
+  editor.spawnProp(LEVEL_ID, 'lust-velvet-drape', 27, 39, { roomId: galleryId });
+  // 2x lust-fallen-chair
+  editor.spawnProp(LEVEL_ID, 'lust-fallen-chair', 18, 36, { roomId: galleryId });
+  editor.spawnProp(LEVEL_ID, 'lust-fallen-chair', 25, 37, { roomId: galleryId });
+  // 2x lust-golden-chalice near chairs
+  editor.spawnProp(LEVEL_ID, 'lust-golden-chalice', 19, 36, { roomId: galleryId });
+  editor.spawnProp(LEVEL_ID, 'lust-golden-chalice', 24, 38, { roomId: galleryId });
+  // 2x lust-marble-vase floor pedestals
+  editor.spawnProp(LEVEL_ID, 'lust-marble-vase', 17, 35, { roomId: galleryId });
+  editor.spawnProp(LEVEL_ID, 'lust-marble-vase', 25, 39, { roomId: galleryId });
+  // 1x lust-cracked-statue west wall alcove
+  editor.spawnProp(LEVEL_ID, 'lust-cracked-statue', 15, 36, { roomId: galleryId });
+  // 1x lust-lava-rock-border east wall
+  editor.spawnProp(LEVEL_ID, 'lust-lava-rock-border', 28, 36, { roomId: galleryId });
+  // 1x lust-rose-thorn-cluster near secret wall
+  editor.spawnProp(LEVEL_ID, 'lust-rose-thorn-cluster', 16, 40, { roomId: galleryId });
+  // 2x lust-shattered-goblet near chairs
+  editor.spawnProp(LEVEL_ID, 'lust-shattered-goblet', 19, 37, { roomId: galleryId });
+  editor.spawnProp(LEVEL_ID, 'lust-shattered-goblet', 24, 36, { roomId: galleryId });
 
   // --- Siren Pit (bounds: 16, 46, 12, 12) ---
   //   Interior: x=[17..26], z=[47..56]
-  // 2x CandleStick_Triple (walls)
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 17, 49, {
+  // Structural: ornate arch at N entry
+  editor.spawnProp(LEVEL_ID, 'lust-ornate-arch', 22, 46, {
+    roomId: sirenPitId,
+    surfaceAnchor: {
+      face: 'south',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  // lust-bridge-railing on ramp outer edges
+  editor.spawnProp(LEVEL_ID, 'lust-bridge-railing', 24, 48, { roomId: sirenPitId });
+  editor.spawnProp(LEVEL_ID, 'lust-bridge-railing', 24, 50, { roomId: sirenPitId });
+  // 2x lust-candelabra high on walls
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 16, 47, {
     roomId: sirenPitId,
     surfaceAnchor: {
       face: 'west',
@@ -547,7 +614,7 @@ export async function buildCircle2(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 26, 53, {
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 27, 47, {
     roomId: sirenPitId,
     surfaceAnchor: {
       face: 'east',
@@ -558,17 +625,49 @@ export async function buildCircle2(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 3x Chain_Coil (ceiling, over lava pit)
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 21, 50, { roomId: sirenPitId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 22, 52, { roomId: sirenPitId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 23, 50, { roomId: sirenPitId });
-  // 1x Chandelier (ceiling center)
-  editor.spawnProp(LEVEL_ID, 'Chandelier', 22, 51, { roomId: sirenPitId });
+  // 1x lust-chandelier ceiling center over lava
+  editor.spawnProp(LEVEL_ID, 'lust-chandelier', 22, 52, { roomId: sirenPitId });
+  // lust-lava-rock-border around lava core
+  editor.spawnProp(LEVEL_ID, 'lust-lava-rock-border', 20, 50, { roomId: sirenPitId });
+  editor.spawnProp(LEVEL_ID, 'lust-lava-rock-border', 23, 53, { roomId: sirenPitId });
+  // 3x limbo-chain-cluster over lava (reused from C1)
+  editor.spawnProp(LEVEL_ID, 'limbo-chain-cluster', 21, 51, { roomId: sirenPitId });
+  editor.spawnProp(LEVEL_ID, 'limbo-chain-cluster', 23, 51, { roomId: sirenPitId });
+  editor.spawnProp(LEVEL_ID, 'limbo-chain-cluster', 22, 53, { roomId: sirenPitId });
+  // 3x lust-ember-brazier at ramp segments
+  editor.spawnProp(LEVEL_ID, 'lust-ember-brazier', 17, 48, { roomId: sirenPitId });
+  editor.spawnProp(LEVEL_ID, 'lust-ember-brazier', 22, 54, { roomId: sirenPitId });
+  editor.spawnProp(LEVEL_ID, 'lust-ember-brazier', 19, 56, { roomId: sirenPitId });
+  // 1x lust-cracked-statue east wall niche
+  editor.spawnProp(LEVEL_ID, 'lust-cracked-statue', 26, 50, { roomId: sirenPitId });
 
   // --- Tempest Hall (bounds: 15, 62, 14, 12) ---
   //   Interior: x=[16..27], z=[63..72]
-  // 4x CandleStick_Triple (walls, corners)
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 16, 63, {
+  // Structural: 2x ornate arches (N entrance, S grand doorway)
+  editor.spawnProp(LEVEL_ID, 'lust-ornate-arch', 22, 62, {
+    roomId: tempestHallId,
+    surfaceAnchor: {
+      face: 'south',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'lust-ornate-arch', 22, 73, {
+    roomId: tempestHallId,
+    surfaceAnchor: {
+      face: 'south',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.2,
+    },
+  });
+  // 4x lust-candelabra (corners)
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 15, 62, {
     roomId: tempestHallId,
     surfaceAnchor: {
       face: 'west',
@@ -579,7 +678,7 @@ export async function buildCircle2(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 27, 63, {
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 28, 62, {
     roomId: tempestHallId,
     surfaceAnchor: {
       face: 'east',
@@ -590,7 +689,7 @@ export async function buildCircle2(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 16, 72, {
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 15, 73, {
     roomId: tempestHallId,
     surfaceAnchor: {
       face: 'west',
@@ -601,7 +700,7 @@ export async function buildCircle2(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 27, 72, {
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 28, 73, {
     roomId: tempestHallId,
     surfaceAnchor: {
       face: 'east',
@@ -612,8 +711,8 @@ export async function buildCircle2(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 2x Banner_1 (N and S walls)
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 22, 63, {
+  // 2x lust-wind-banner (N/S walls)
+  editor.spawnProp(LEVEL_ID, 'lust-wind-banner', 16, 66, {
     roomId: tempestHallId,
     surfaceAnchor: {
       face: 'north',
@@ -624,7 +723,7 @@ export async function buildCircle2(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 22, 72, {
+  editor.spawnProp(LEVEL_ID, 'lust-wind-banner', 27, 66, {
     roomId: tempestHallId,
     surfaceAnchor: {
       face: 'south',
@@ -635,14 +734,43 @@ export async function buildCircle2(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 2x Barrel (on raised platforms, safe zone markers)
-  editor.spawnProp(LEVEL_ID, 'Barrel', 16, 67, { roomId: tempestHallId });
-  editor.spawnProp(LEVEL_ID, 'Barrel', 27, 67, { roomId: tempestHallId });
+  // lust-lava-rock-border channel edges
+  editor.spawnProp(LEVEL_ID, 'lust-lava-rock-border', 19, 66, { roomId: tempestHallId });
+  editor.spawnProp(LEVEL_ID, 'lust-lava-rock-border', 22, 66, { roomId: tempestHallId });
+  editor.spawnProp(LEVEL_ID, 'lust-lava-rock-border', 25, 66, { roomId: tempestHallId });
+  // lust-bridge-railing at bridge crossings
+  editor.spawnProp(LEVEL_ID, 'lust-bridge-railing', 20, 65, { roomId: tempestHallId });
+  editor.spawnProp(LEVEL_ID, 'lust-bridge-railing', 23, 70, { roomId: tempestHallId });
+  // 2x lust-ember-brazier on raised platforms
+  editor.spawnProp(LEVEL_ID, 'lust-ember-brazier', 15, 66, { roomId: tempestHallId });
+  editor.spawnProp(LEVEL_ID, 'lust-ember-brazier', 28, 66, { roomId: tempestHallId });
+  // 1x ornate-mirror west platform alcove
+  editor.spawnProp(LEVEL_ID, 'ornate-mirror', 16, 63, { roomId: tempestHallId });
+  // 4x lust-gilded-pillar at bridge entrances
+  editor.spawnProp(LEVEL_ID, 'lust-gilded-pillar', 19, 63, { roomId: tempestHallId });
+  editor.spawnProp(LEVEL_ID, 'lust-gilded-pillar', 22, 63, { roomId: tempestHallId });
+  editor.spawnProp(LEVEL_ID, 'lust-gilded-pillar', 19, 72, { roomId: tempestHallId });
+  editor.spawnProp(LEVEL_ID, 'lust-gilded-pillar', 22, 72, { roomId: tempestHallId });
+  // 2x lust-cracked-statue on raised platforms
+  editor.spawnProp(LEVEL_ID, 'lust-cracked-statue', 15, 67, { roomId: tempestHallId });
+  editor.spawnProp(LEVEL_ID, 'lust-cracked-statue', 28, 69, { roomId: tempestHallId });
 
   // --- Boudoir (bounds: 3, 34, 6, 6) ---
   //   Interior: x=[4..7], z=[35..38]
-  // 4x CandleStick_Triple (walls, corners)
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 4, 35, {
+  // Structural: ornate arch at east entry
+  editor.spawnProp(LEVEL_ID, 'lust-ornate-arch', 8, 36, {
+    roomId: boudoirId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.8,
+    },
+  });
+  // 4x lust-candelabra (corners)
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 3, 34, {
     roomId: boudoirId,
     surfaceAnchor: {
       face: 'west',
@@ -650,10 +778,10 @@ export async function buildCircle2(dbPath: string) {
       offsetY: 1.5,
       offsetZ: 0,
       rotation: [0, 0, 0],
-      scale: 1.0,
+      scale: 0.8,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 7, 35, {
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 8, 34, {
     roomId: boudoirId,
     surfaceAnchor: {
       face: 'east',
@@ -661,10 +789,10 @@ export async function buildCircle2(dbPath: string) {
       offsetY: 1.5,
       offsetZ: 0,
       rotation: [0, 0, 0],
-      scale: 1.0,
+      scale: 0.8,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 4, 38, {
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 3, 39, {
     roomId: boudoirId,
     surfaceAnchor: {
       face: 'west',
@@ -672,10 +800,10 @@ export async function buildCircle2(dbPath: string) {
       offsetY: 1.5,
       offsetZ: 0,
       rotation: [0, 0, 0],
-      scale: 1.0,
+      scale: 0.8,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 7, 38, {
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 8, 39, {
     roomId: boudoirId,
     surfaceAnchor: {
       face: 'east',
@@ -683,27 +811,48 @@ export async function buildCircle2(dbPath: string) {
       offsetY: 1.5,
       offsetZ: 0,
       rotation: [0, 0, 0],
-      scale: 1.0,
+      scale: 0.8,
     },
   });
-  // 1x Chandelier (ceiling center)
-  editor.spawnProp(LEVEL_ID, 'Chandelier', 5, 36, { roomId: boudoirId });
-  // 1x Bed_Twin1
-  editor.spawnProp(LEVEL_ID, 'Bed_Twin1', 4, 36, { roomId: boudoirId });
-  // 1x Table_Large (holds Scroll_1)
-  editor.spawnProp(LEVEL_ID, 'Table_Large', 6, 36, { roomId: boudoirId });
-  // 1x Scroll_1 (on table)
-  editor.spawnProp(LEVEL_ID, 'Scroll_1', 6, 36, { roomId: boudoirId });
-  // 1x Chalice (floor pedestal)
-  editor.spawnProp(LEVEL_ID, 'Chalice', 5, 38, { roomId: boudoirId });
-  // 2x Vase_2 (flanking bed)
-  editor.spawnProp(LEVEL_ID, 'Vase_2', 4, 35, { roomId: boudoirId });
-  editor.spawnProp(LEVEL_ID, 'Vase_2', 4, 37, { roomId: boudoirId });
+  // 1x lust-chandelier ceiling center
+  editor.spawnProp(LEVEL_ID, 'lust-chandelier', 5, 36, { roomId: boudoirId });
+  // 1x lust-ornate-bed-wrecked
+  editor.spawnProp(LEVEL_ID, 'lust-ornate-bed-wrecked', 4, 36, { roomId: boudoirId });
+  // 1x lust-golden-chalice pedestal
+  editor.spawnProp(LEVEL_ID, 'lust-golden-chalice', 5, 38, { roomId: boudoirId });
+  // 2x lust-marble-vase flanking bed
+  editor.spawnProp(LEVEL_ID, 'lust-marble-vase', 3, 36, { roomId: boudoirId });
+  editor.spawnProp(LEVEL_ID, 'lust-marble-vase', 7, 36, { roomId: boudoirId });
+  // 1x silk-curtain near north wall
+  editor.spawnProp(LEVEL_ID, 'silk-curtain', 4, 34, { roomId: boudoirId });
+  // 1x lust-velvet-drape framing entry inside
+  editor.spawnProp(LEVEL_ID, 'lust-velvet-drape', 8, 37, { roomId: boudoirId });
+  // 1x ornate-mirror north wall
+  editor.spawnProp(LEVEL_ID, 'ornate-mirror', 6, 34, { roomId: boudoirId });
 
   // --- Caprone's Sanctum (bounds: 15, 78, 14, 14) ---
   //   Interior: x=[16..27], z=[79..90]
-  // 4x CandleStick_Triple (corners)
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 16, 79, {
+  // Structural: ornate arch grand entrance
+  editor.spawnProp(LEVEL_ID, 'lust-ornate-arch', 22, 78, {
+    roomId: sanctumId,
+    surfaceAnchor: {
+      face: 'south',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.3,
+    },
+  });
+  // Structural: 4x lust-onyx-column dais corners
+  editor.spawnProp(LEVEL_ID, 'lust-onyx-column', 18, 82, { roomId: sanctumId });
+  editor.spawnProp(LEVEL_ID, 'lust-onyx-column', 26, 82, { roomId: sanctumId });
+  editor.spawnProp(LEVEL_ID, 'lust-onyx-column', 18, 86, { roomId: sanctumId });
+  editor.spawnProp(LEVEL_ID, 'lust-onyx-column', 26, 86, { roomId: sanctumId });
+  // 1x lust-marble-throne center of dais
+  editor.spawnProp(LEVEL_ID, 'lust-marble-throne', 22, 83, { roomId: sanctumId });
+  // 4x lust-candelabra (corners)
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 15, 78, {
     roomId: sanctumId,
     surfaceAnchor: {
       face: 'west',
@@ -714,7 +863,7 @@ export async function buildCircle2(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 27, 79, {
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 28, 78, {
     roomId: sanctumId,
     surfaceAnchor: {
       face: 'east',
@@ -725,7 +874,7 @@ export async function buildCircle2(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 16, 90, {
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 15, 91, {
     roomId: sanctumId,
     surfaceAnchor: {
       face: 'west',
@@ -736,7 +885,7 @@ export async function buildCircle2(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 27, 90, {
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 28, 91, {
     roomId: sanctumId,
     surfaceAnchor: {
       face: 'east',
@@ -747,39 +896,78 @@ export async function buildCircle2(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 2x Chandelier (ceiling, flanking throne dais)
-  editor.spawnProp(LEVEL_ID, 'Chandelier', 19, 83, { roomId: sanctumId });
-  editor.spawnProp(LEVEL_ID, 'Chandelier', 25, 83, { roomId: sanctumId });
-  // 2x Banner_1 (N wall, flanking entrance)
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 19, 79, {
-    roomId: sanctumId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 3.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 25, 79, {
-    roomId: sanctumId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 3.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  // 4x Onyx columns (corners of dais, structural)
-  editor.spawnProp(LEVEL_ID, 'Column_Onyx', 19, 82, { roomId: sanctumId });
-  editor.spawnProp(LEVEL_ID, 'Column_Onyx', 25, 82, { roomId: sanctumId });
-  editor.spawnProp(LEVEL_ID, 'Column_Onyx', 19, 86, { roomId: sanctumId });
-  editor.spawnProp(LEVEL_ID, 'Column_Onyx', 25, 86, { roomId: sanctumId });
-  // 1x Throne (Chest_Wood reskinned)
-  editor.spawnProp(LEVEL_ID, 'Chest_Wood', 22, 83, { roomId: sanctumId });
+  // 2x lust-chandelier ceiling flanking dais
+  editor.spawnProp(LEVEL_ID, 'lust-chandelier', 20, 82, { roomId: sanctumId });
+  editor.spawnProp(LEVEL_ID, 'lust-chandelier', 24, 82, { roomId: sanctumId });
+  // 2x lust-velvet-drape flanking entrance
+  editor.spawnProp(LEVEL_ID, 'lust-velvet-drape', 16, 78, { roomId: sanctumId });
+  editor.spawnProp(LEVEL_ID, 'lust-velvet-drape', 27, 78, { roomId: sanctumId });
+  // lust-lava-rock-border channel edges
+  editor.spawnProp(LEVEL_ID, 'lust-lava-rock-border', 17, 86, { roomId: sanctumId });
+  editor.spawnProp(LEVEL_ID, 'lust-lava-rock-border', 21, 86, { roomId: sanctumId });
+  editor.spawnProp(LEVEL_ID, 'lust-lava-rock-border', 25, 86, { roomId: sanctumId });
+  // 1x lust-bridge-railing center channel bridge
+  editor.spawnProp(LEVEL_ID, 'lust-bridge-railing', 22, 86, { roomId: sanctumId });
+  // 2x lust-cracked-statue entrance alcoves
+  editor.spawnProp(LEVEL_ID, 'lust-cracked-statue', 16, 80, { roomId: sanctumId });
+  editor.spawnProp(LEVEL_ID, 'lust-cracked-statue', 27, 80, { roomId: sanctumId });
+  // 2x lust-rose-thorn-cluster south corners
+  editor.spawnProp(LEVEL_ID, 'lust-rose-thorn-cluster', 17, 90, { roomId: sanctumId });
+  editor.spawnProp(LEVEL_ID, 'lust-rose-thorn-cluster', 26, 90, { roomId: sanctumId });
+  // 2x lust-perfume-censer near entrance
+  editor.spawnProp(LEVEL_ID, 'lust-perfume-censer', 19, 79, { roomId: sanctumId });
+  editor.spawnProp(LEVEL_ID, 'lust-perfume-censer', 25, 79, { roomId: sanctumId });
+  // 1x lust-floor-carpet dais surface
+  editor.spawnProp(LEVEL_ID, 'lust-floor-carpet', 19, 82, { roomId: sanctumId });
+  // 2x lust-ember-brazier flanking throne
+  editor.spawnProp(LEVEL_ID, 'lust-ember-brazier', 19, 83, { roomId: sanctumId });
+  editor.spawnProp(LEVEL_ID, 'lust-ember-brazier', 25, 83, { roomId: sanctumId });
+
+  // =========================================================================
+  // 5d. DECALS (heat damage stains near lava, wind erosion cracks)
+  // =========================================================================
+
+  // --- Antechamber (bounds: 18, 2, 8, 6) ---
+  // Minimal — entry room, just light cracks
+  editor.placeDecals(LEVEL_ID, antechamberId, [
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 20, z: 6, opacity: 0.4 },
+  ]);
+
+  // --- Wind Corridor (bounds: 20, 12, 5, 16) ---
+  // Water stains near lava channels, concrete cracks from wind erosion
+  editor.placeDecals(LEVEL_ID, windCorridorId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 20, z: 15, surface: 'wall', opacity: 0.5 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 24, z: 20, surface: 'wall', opacity: 0.4 },
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 22, z: 18, opacity: 0.5 },
+  ]);
+
+  // --- Lover's Gallery (bounds: 15, 32, 14, 10) ---
+  // Water stains near east lava channel
+  editor.placeDecals(LEVEL_ID, galleryId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 28, z: 35, surface: 'wall', opacity: 0.5 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 28, z: 39, surface: 'wall', opacity: 0.4 },
+  ]);
+
+  // --- Siren Pit (bounds: 16, 46, 12, 12) ---
+  // Concrete cracks from wind, water stains near lava core
+  editor.placeDecals(LEVEL_ID, sirenPitId, [
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 18, z: 48, opacity: 0.5 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 22, z: 54, opacity: 0.4 },
+  ]);
+
+  // --- Tempest Hall (bounds: 15, 62, 14, 12) ---
+  // Wind erosion cracks on walls and floor
+  editor.placeDecals(LEVEL_ID, tempestHallId, [
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 15, z: 65, surface: 'wall', opacity: 0.5 },
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 28, z: 70, surface: 'wall', opacity: 0.5 },
+  ]);
+
+  // --- Caprone's Sanctum (bounds: 15, 78, 14, 14) ---
+  // Water stains near lava channels, cracks near throne
+  editor.placeDecals(LEVEL_ID, sanctumId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 17, z: 86, opacity: 0.5 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 25, z: 86, opacity: 0.4 },
+  ]);
 
   // =========================================================================
   // 6. TRIGGERS (from "Triggers" table)

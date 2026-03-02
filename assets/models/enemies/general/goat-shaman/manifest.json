@@ -2,6 +2,7 @@
   "id": "goat-shaman",
   "name": "Goat Shaman",
   "type": "character",
+  "seed": 2383290267,
   "pipeline": "enemy",
   "description": "Ranged spellcaster. Fires projectiles from a distance, fragile up close.",
   "textToImageTask": {
@@ -33,5 +34,77 @@
       "Fighting.GettingHit.Face_Punch_Reaction_1",
       "Fighting.Dying.Shot_and_Blown_Back"
     ]
+  },
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cadc9-add7-71a5-8dfd-9c0006605098",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadc9-add7-71a5-8dfd-9c0006605098"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cadca-211b-781e-a3e5-66094d3d1254",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadca-211b-781e-a3e5-66094d3d1254"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cadcb-8be2-7d05-af46-965371a29b0e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadcb-8be2-7d05-af46-965371a29b0e"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cadcd-3df5-776f-9bb4-74037084d4f9",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadcd-3df5-776f-9bb4-74037084d4f9"
+      },
+      "artifacts": {}
+    },
+    "animations": {
+      "WalkAndRun.Walking.Stumble_Walk": {
+        "taskId": "019cadcf-8bb8-725f-a48c-586f025938c2",
+        "status": "SUCCEEDED",
+        "actionId": 562,
+        "artifact": "animations/Stumble_Walk.glb"
+      },
+      "DailyActions.Idle.Angry_Ground_Stomp_2": {
+        "taskId": "019cadcf-cace-77fb-b8c3-0229f42b447d",
+        "status": "SUCCEEDED",
+        "actionId": 257,
+        "artifact": "animations/Angry_Ground_Stomp_2.glb"
+      },
+      "Fighting.CastingSpell.Charged_Spell_Cast": {
+        "taskId": "019cadd0-3e40-7894-8ec9-a84ff3a1d64a",
+        "status": "SUCCEEDED",
+        "actionId": 125,
+        "artifact": "animations/Charged_Spell_Cast.glb"
+      },
+      "Fighting.CastingSpell.mage_soell_cast": {
+        "taskId": "019cadd0-7e17-7277-b86b-ddd2c3356d5b",
+        "status": "SUCCEEDED",
+        "actionId": 129,
+        "artifact": "animations/mage_soell_cast.glb"
+      },
+      "Fighting.GettingHit.Face_Punch_Reaction_1": {
+        "taskId": "019cadd1-a96b-781d-baf1-740e3d6d53d1",
+        "status": "SUCCEEDED",
+        "actionId": 175,
+        "artifact": "animations/Face_Punch_Reaction_1.glb"
+      },
+      "Fighting.Dying.Shot_and_Blown_Back": {
+        "taskId": "019cadd1-e871-7821-808c-cd44560fc502",
+        "status": "SUCCEEDED",
+        "actionId": 182,
+        "artifact": "animations/Shot_and_Blown_Back.glb"
+      }
+    }
   }
 }

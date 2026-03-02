@@ -2,6 +2,29 @@
   "id": "chain-wall-mounted",
   "name": "Wall-Mounted Chain",
   "type": "prop",
+  "seed": 250793396,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac80-2571-79e3-9682-2818b9f273e0",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac80-2571-79e3-9682-2818b9f273e0"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac81-c21d-7a0b-840a-dc54edfec0b6",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac81-c21d-7a0b-840a-dc54edfec0b6"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "An iron chain mounted to a wall with a heavy iron bracket and bolts, chain links hanging in a solid rigid drape from the wall mount point, dungeon wall restraint, dark fantasy game prop, wall-mounted, isolated object, dark background",

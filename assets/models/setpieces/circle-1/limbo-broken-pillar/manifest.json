@@ -1,0 +1,41 @@
+{
+  "id": "limbo-broken-pillar",
+  "name": "Broken Stone Pillar",
+  "type": "prop",
+  "seed": 2440575595,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac70-b173-7c68-ae36-f5c01f677df9",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac70-b173-7c68-ae36-f5c01f677df9"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac71-ef21-78f0-a842-9a0ddf8d0b48",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac71-ef21-78f0-a842-9a0ddf8d0b48"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A broken ancient stone pillar, shattered at two-thirds height with jagged fracture, rough hewn gray-blue limestone with centuries of erosion, rubble chunks scattered at the base, cracked and weathered surface with lichen patches, dark fantasy dungeon game prop, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Rough gray-blue limestone, jagged fracture surface, centuries of erosion, lichen and mineral staining, rubble debris at base",
+    "enablePbr": true
+  }
+}

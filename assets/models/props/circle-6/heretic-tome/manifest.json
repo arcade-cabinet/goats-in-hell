@@ -2,6 +2,29 @@
   "id": "heretic-tome",
   "name": "Heretic Tome",
   "type": "prop",
+  "seed": 2252357715,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacb7-045f-74e3-8138-95425c574a7a",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb7-045f-74e3-8138-95425c574a7a"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacb9-e720-751c-a80e-dddfaf766857",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb9-e720-751c-a80e-dddfaf766857"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A large open book on a lectern stand, pages covered in blasphemous demonic text and goat pentagram illustrations, dark leather binding with iron clasps, heresy forbidden knowledge, stylized low poly game prop, dark fantasy, isometric view",

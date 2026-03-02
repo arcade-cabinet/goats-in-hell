@@ -89,6 +89,25 @@ export const SPAWN_CATEGORIES = {
   BOSS: 'boss',
 } as const;
 
+/** Canonical decal surface targets — where the decal projects onto. */
+export const DECAL_SURFACES = {
+  FLOOR: 'floor',
+  WALL: 'wall',
+  CEILING: 'ceiling',
+} as const;
+
+/** Canonical decal type identifiers for use in build scripts. */
+export const DECAL_TYPES = {
+  ICE_FROST: 'ice-frost',
+  SNOW_DRIFT: 'snow-drift',
+  CONCRETE_CRACK: 'concrete-crack',
+  BLOOD_STAIN: 'blood-stain',
+  RUST_PATCH: 'rust-patch',
+  SCORCH_MARK: 'scorch-mark',
+  MOSS_PATCH: 'moss-patch',
+  WATER_STAIN: 'water-stain',
+} as const;
+
 /** Canonical enemy type identifiers for use in build scripts. */
 export const ENEMY_TYPES = {
   HELLGOAT: 'hellgoat',
@@ -258,12 +277,39 @@ export class LevelEditor {
       .all();
   }
 
+  /** Fetch all decals for a level. */
+  getDecals(levelId: string) {
+    return this.db.select().from(schema.decals).where(eq(schema.decals.levelId, levelId)).all();
+  }
+
+  // -------------------------------------------------------------------------
+  // Lifecycle methods
+  // -------------------------------------------------------------------------
+
+  /**
+   * Delete a level and ALL its child data (rooms, entities, triggers,
+   * connections, environment zones, decals). The theme is left intact
+   * since themes can be shared. Call before rebuilding a level.
+   */
+  deleteLevel(levelId: string): void {
+    // Child tables have ON DELETE CASCADE, but Drizzle doesn't enforce FK
+    // constraints by default in better-sqlite3, so delete explicitly.
+    this.db.delete(schema.decals).where(eq(schema.decals.levelId, levelId)).run();
+    this.db.delete(schema.environmentZones).where(eq(schema.environmentZones.levelId, levelId)).run();
+    this.db.delete(schema.entities).where(eq(schema.entities.levelId, levelId)).run();
+    this.db.delete(schema.triggers).where(eq(schema.triggers.levelId, levelId)).run();
+    this.db.delete(schema.connections).where(eq(schema.connections.levelId, levelId)).run();
+    this.db.delete(schema.rooms).where(eq(schema.rooms.levelId, levelId)).run();
+    this.db.delete(schema.levels).where(eq(schema.levels.id, levelId)).run();
+  }
+
   // -------------------------------------------------------------------------
   // Core methods
   // -------------------------------------------------------------------------
 
   /**
-   * Insert a new floor theme into the database.
+   * Upsert a floor theme into the database. Safe to call repeatedly — if the
+   * theme already exists it will be updated in place.
    * @param id - Unique theme identifier (e.g. 'circle-1-limbo').
    * @param opts - Theme configuration (walls, colors, fog, enemy roster).
    */
@@ -285,29 +331,35 @@ export class LevelEditor {
       pickupDensity?: number;
     },
   ): void {
+    const values = {
+      id,
+      name: opts.name,
+      displayName: opts.displayName,
+      primaryWall: opts.primaryWall,
+      accentWalls: opts.accentWalls,
+      fogDensity: opts.fogDensity ?? 0.03,
+      fogColor: opts.fogColor ?? '#000000',
+      ambientColor: opts.ambientColor,
+      ambientIntensity: opts.ambientIntensity ?? 0.3,
+      skyColor: opts.skyColor ?? '#000000',
+      particleEffect: opts.particleEffect ?? null,
+      enemyTypes: opts.enemyTypes ?? [],
+      enemyDensity: opts.enemyDensity ?? 1.0,
+      pickupDensity: opts.pickupDensity ?? 0.6,
+    };
     this.db
       .insert(schema.themes)
-      .values({
-        id,
-        name: opts.name,
-        displayName: opts.displayName,
-        primaryWall: opts.primaryWall,
-        accentWalls: opts.accentWalls,
-        fogDensity: opts.fogDensity ?? 0.03,
-        fogColor: opts.fogColor ?? '#000000',
-        ambientColor: opts.ambientColor,
-        ambientIntensity: opts.ambientIntensity ?? 0.3,
-        skyColor: opts.skyColor ?? '#000000',
-        particleEffect: opts.particleEffect ?? null,
-        enemyTypes: opts.enemyTypes ?? [],
-        enemyDensity: opts.enemyDensity ?? 1.0,
-        pickupDensity: opts.pickupDensity ?? 0.6,
+      .values(values)
+      .onConflictDoUpdate({
+        target: schema.themes.id,
+        set: values,
       })
       .run();
   }
 
   /**
-   * Insert a new level into the database.
+   * Create a level. If it already exists, deletes it first (cascade) and
+   * recreates from scratch to ensure a clean slate.
    * @param id - Unique level identifier (e.g. 'circle-1-limbo').
    * @param opts - Level metadata (dimensions, floor, theme, audio).
    */
@@ -330,6 +382,9 @@ export class LevelEditor {
       spawnFacing?: number;
     },
   ): void {
+    // Delete existing level + all child rows for a clean rebuild
+    this.deleteLevel(id);
+
     this.db
       .insert(schema.levels)
       .values({
@@ -1292,6 +1347,88 @@ export class LevelEditor {
         elevation: dec.elevation,
         facing: dec.facing,
         surfaceAnchor: dec.surfaceAnchor,
+      });
+      ids.push(id);
+    }
+    return ids;
+  }
+
+  // -------------------------------------------------------------------------
+  // Decals — surface texture decoration
+  // -------------------------------------------------------------------------
+
+  /**
+   * Place a decal (surface texture overlay) at grid coordinates.
+   * Decals project onto floor, wall, or ceiling geometry as translucent
+   * texture patches (frost, cracks, stains, etc.).
+   *
+   * @param levelId - Parent level ID.
+   * @param type - Decal type identifier (use DECAL_TYPES constants).
+   * @param x - Grid X coordinate (center of decal).
+   * @param z - Grid Z coordinate (center of decal).
+   * @param opts - Optional width, height, rotation, opacity, surface, roomId.
+   * @returns The generated decal ID (UUID).
+   */
+  placeDecal(
+    levelId: string,
+    type: string,
+    x: number,
+    z: number,
+    opts?: {
+      w?: number;
+      h?: number;
+      rotation?: number;
+      opacity?: number;
+      surface?: 'floor' | 'wall' | 'ceiling';
+      roomId?: string;
+    },
+  ): string {
+    const id = generateId();
+    this.db
+      .insert(schema.decals)
+      .values({
+        id,
+        levelId,
+        decalType: type,
+        x,
+        z,
+        w: opts?.w ?? 2,
+        h: opts?.h ?? 2,
+        rotation: opts?.rotation ?? 0,
+        opacity: opts?.opacity ?? 0.8,
+        surface: opts?.surface ?? 'floor',
+        roomId: opts?.roomId,
+      })
+      .run();
+    return id;
+  }
+
+  /**
+   * Batch-place multiple decals in a room.
+   * @param levelId - Parent level ID.
+   * @param roomId - Room to decorate.
+   * @param decals - Array of decal specifications.
+   * @returns Array of generated decal IDs.
+   */
+  placeDecals(
+    levelId: string,
+    roomId: string,
+    decals: Array<{
+      type: string;
+      x: number;
+      z: number;
+      w?: number;
+      h?: number;
+      rotation?: number;
+      opacity?: number;
+      surface?: 'floor' | 'wall' | 'ceiling';
+    }>,
+  ): string[] {
+    const ids: string[] = [];
+    for (const decal of decals) {
+      const id = this.placeDecal(levelId, decal.type, decal.x, decal.z, {
+        ...decal,
+        roomId,
       });
       ids.push(id);
     }

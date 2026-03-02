@@ -2,6 +2,29 @@
   "id": "heresy-bone-urn",
   "name": "Ossuary Bone Urn",
   "type": "prop",
+  "seed": 2591960333,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac75-05e6-7812-9ebc-a28a93ad33d4",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac75-05e6-7812-9ebc-a28a93ad33d4"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac76-2903-797d-8845-8f902a44901c",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac76-2903-797d-8845-8f902a44901c"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A tall ceramic funerary urn with a lid, the surface is decorated with carved bone motifs and skulls in relief, cracked glaze in dark purple and gray, sitting on a small stone base, catacomb bone storage vessel, game prop, isolated object, dark background, three quarter view",

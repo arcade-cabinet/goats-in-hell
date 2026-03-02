@@ -2,6 +2,29 @@
   "id": "coin-pile",
   "name": "Coin Pile",
   "type": "prop",
+  "seed": 3932604528,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac6d-7764-7bc0-85ad-cc94ca7bf045",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac6d-7764-7bc0-85ad-cc94ca7bf045"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac6f-4b9e-772a-9cd7-86311fcde215",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac6f-4b9e-772a-9cd7-86311fcde215"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A scattered pile of gold coins and jewels on a stone floor, some coins with demonic goat head stamps, ruby gems mixed in, greed treasure hoard, stylized low poly game prop, dark fantasy, isometric view",

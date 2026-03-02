@@ -1,0 +1,41 @@
+{
+  "id": "stairs-straight-long",
+  "name": "Long Straight Staircase",
+  "type": "prop",
+  "seed": 3912394255,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacf0-6db3-7826-84b3-e40bcc8d4c4e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacf0-6db3-7826-84b3-e40bcc8d4c4e"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacf3-8243-7980-b660-f40bfc65bfc2",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacf3-8243-7980-b660-f40bfc65bfc2"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A long straight stone staircase with 8-10 steps, dark stone construction with side walls, dungeon descent passage, dark fantasy game prop, floor-placed, front-facing, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark hewn stone steps with deep wear grooves, torch soot on side walls, crumbling edges",
+    "enablePbr": true
+  }
+}

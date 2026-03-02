@@ -2,6 +2,29 @@
   "id": "greed-golden-candelabra",
   "name": "Golden Candelabra",
   "type": "prop",
+  "seed": 3429222742,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac92-4b27-7bd2-b51f-0fde48e55c9f",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac92-4b27-7bd2-b51f-0fde48e55c9f"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac93-8417-70bc-b70c-bca00733d1ce",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac93-8417-70bc-b70c-bca00733d1ce"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A tall three-armed golden candelabra standing on a circular base, each arm holding a thick candle, ornate scroll-work on the arms and stem, solid gold ceremonial lighting, game prop, isolated object, dark background, front orientation view",

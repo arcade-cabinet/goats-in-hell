@@ -2,6 +2,29 @@
   "id": "wrath-smashed-barrier",
   "name": "Smashed Concrete Barrier",
   "type": "prop",
+  "seed": 2604749817,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caca9-8205-7f65-9888-570f1ff7efd5",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca9-8205-7f65-9888-570f1ff7efd5"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacab-8097-7fb8-ac07-8dc164407d63",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacab-8097-7fb8-ac07-8dc164407d63"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A large chunk of broken concrete barrier with exposed rusted rebar, crack patterns and impact damage on surface, blood-brown stains, debris rubble at the base, destroyed industrial wall segment, game prop, isolated object, dark background, three quarter view",

@@ -1,3 +1,13 @@
+---
+title: "Act 1 Paper Playtest — Circles 1-3"
+status: implemented
+created: "2026-03-01"
+updated: "2026-03-01"
+domain: circles
+playtest_type: paper
+circles_tested: [1, 2, 3]
+---
+
 # Act 1 Paper Playtest -- Circles 1-3
 
 **Date:** 2026-03-01

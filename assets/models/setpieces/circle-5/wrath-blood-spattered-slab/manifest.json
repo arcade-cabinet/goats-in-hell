@@ -1,0 +1,41 @@
+{
+  "id": "wrath-blood-spattered-slab",
+  "name": "Blood-Spattered Wall Slab",
+  "type": "prop",
+  "seed": 863293169,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac77-b12e-7f27-bae0-c27f82fba34a",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac77-b12e-7f27-bae0-c27f82fba34a"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac78-ed3b-7f67-bfb6-3125fee0fb52",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac78-ed3b-7f67-bfb6-3125fee0fb52"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large flat concrete wall panel with dark blood splatter patterns across the surface, dried drip marks running downward, cracks in the concrete radiating from an impact point center, solid rigid wall decoration, game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Gray concrete surface with dark red-brown dried blood splatter, drip marks, impact crack radiating pattern, rough texture",
+    "enablePbr": true
+  }
+}

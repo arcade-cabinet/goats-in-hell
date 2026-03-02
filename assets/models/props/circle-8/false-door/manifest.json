@@ -2,6 +2,29 @@
   "id": "false-door",
   "name": "False Door",
   "type": "prop",
+  "seed": 1056072676,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac6d-8ae5-7db4-948b-f3fb2546df4f",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac6d-8ae5-7db4-948b-f3fb2546df4f"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac6f-37df-7bf7-bde4-4ba767fe93e6",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac6f-37df-7bf7-bde4-4ba767fe93e6"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A stone archway door frame with a painted-on wooden door that is actually flat stone, trompe l'oeil illusion wall, cracks reveal the deception, fraud and deception theme, stylized low poly game prop, dark fantasy, isometric view",

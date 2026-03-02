@@ -1,0 +1,41 @@
+{
+  "id": "heresy-torn-scripture-slab",
+  "name": "Torn Scripture Stone Slab",
+  "type": "prop",
+  "seed": 3817893797,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacb3-61c8-7241-bfc0-9331906a213c",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb3-61c8-7241-bfc0-9331906a213c"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacb4-eac9-75bd-9fbc-42ddfee80a38",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb4-eac9-75bd-9fbc-42ddfee80a38"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A flat stone tablet with carved religious scripture text that has been partially chiseled away and defaced, deep gouge marks across the carved letters, the tablet is cracked in half with the pieces leaning against each other, heretical vandalism of sacred text, game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Gray-white stone with carved text partially chiseled away, deep gouge marks, crack running through center, cold purple ambient tone",
+    "enablePbr": true
+  }
+}

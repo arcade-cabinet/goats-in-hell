@@ -62,26 +62,10 @@ related:
 ### Lighting
 
 - Ambient: `#cc8844` at intensity 0.20 (warm amber, seductive)
-- Point lights from CandleStick_Triple and Chandelier props (warm gold `#ffaa55`, radius 5 cells)
+- Point lights from lust-candelabra and lust-chandelier props (warm gold `#ffaa55`, radius 5 cells)
 - Lava channels emit `#ff4400` at intensity 0.4, radius 3 cells (danger glow)
 - Wind Corridor: flickering light from lava — `#ff6622` point lights at intervals
-- Boss chamber: two Chandelier props overhead, dramatic throne backlighting `#ff8800`
-
-### Props (from Fantasy Props MegaKit)
-
-| Prop | Placement | Purpose |
-|------|-----------|---------|
-| CandleStick_Triple | Wall-mounted, 2-4 per room | Primary warm light source |
-| Chandelier | Ceiling-hung, large rooms only | Dramatic overhead lighting |
-| Banner_1 | Wall-mounted, Gallery + Sanctum | Fabric draping, luxury feel |
-| Banner_2 | Wall-mounted, Wind Corridor | Visually show wind direction (they flutter) |
-| Chalice | Floor/pedestal, Gallery + Boudoir | Decadent decoration |
-| Bed_Twin1 | Floor, Boudoir only | Secret room thematic prop |
-| Chair_1 | Floor, Gallery + Boudoir | Furnishing |
-| Vase_2 | Floor/pedestal, Antechamber + Gallery | Elegant decoration |
-| Vase_4 | Floor, scattered | Ornate vase, breakable feel |
-| Scroll_1 | Pedestal, Boudoir | Lore delivery |
-| Table_Large | Floor, Boudoir | Central furniture piece |
+- Boss chamber: two lust-chandelier props overhead, dramatic throne backlighting `#ff8800`
 
 ### Decals (from AmbientCG)
 
@@ -173,8 +157,8 @@ related:
     N
     ↓ (player enters from Circle 1 descent)
   ┌────────────────┐
-  │ ○           ○  │   ○ = CandleStick_Triple (wall, offsetY=1.5)
-  │    ◇     ◇     │   ◇ = Vase_2 (floor pedestal)
+  │ ○           ○  │   ○ = lust-candelabra (wall, offsetY=1.5)
+  │    ◇     ◇     │   ◇ = lust-marble-vase (floor pedestal)
   │                │
   │      ★         │   ★ = Player spawn
   │                │
@@ -188,9 +172,13 @@ related:
 **Purpose:** Safe introduction. The player sees warm marble for the first time. The FLOOR_RAISED step at the south hints at the elevation changes to come. A gentle breeze blows from the south exit — foreshadowing the wind mechanic.
 
 **Props:**
-- 4× CandleStick_Triple: `surfaceAnchor: 'wall'`, faces: N(×2), S(×2), `offsetY: 1.5`
-- 2× Vase_2: floor at (20, 4) and (23, 4), decorative
-- 1× Banner_1: `surfaceAnchor: 'wall'`, face: N, `offsetY: 2.0` — draped over entrance
+- 4× lust-candelabra: `surfaceAnchor: 'wall'`, (18,3), (25,3), (18,7), (25,7), `offsetY: 1.5` — warm amber lighting
+- 2× lust-marble-vase: floor at (20, 4) and (23, 4), decorative pedestals
+- 1× lust-velvet-drape: `surfaceAnchor: 'wall'`, face: N, `offsetY: 2.0` — fabric drape over entrance
+- 1× lust-coffered-ceiling-tile: ceiling grid pattern — ornate overhead
+- 1× lust-rose-thorn-cluster: floor at (18, 6), near south exit — subtle hint
+- 1× lust-perfume-censer: floor at (21, 3), near north wall — incense smoke
+- 1× lust-floor-carpet: floor at (20,4)-(23,6) center — luxury underfoot
 
 ---
 
@@ -225,8 +213,10 @@ related:
 **Elevation:** Walkway at 0. Lava channels at -0.5 (sunken into floor).
 
 **Props:**
-- 4× Banner_2: `surfaceAnchor: 'wall'`, face: W, `offsetY: 2.0` — flutter toward east, visually indicating wind direction
-- 2× CandleStick_Triple: `surfaceAnchor: 'wall'`, face: E, `offsetY: 1.5` — flames lean with wind
+- 4× lust-wind-banner: `surfaceAnchor: 'wall'`, face: W, (20,14), (20,18), (20,22), (20,26), `offsetY: 2.0` — flutter east, wind direction indicators
+- 2× lust-candelabra: `surfaceAnchor: 'wall'`, face: E, (24,16) and (24,24), `offsetY: 1.5` — flames lean with wind
+- 1× lust-lava-rock-border: channel edges on both sides — border the lava channels
+- 1× lust-ember-brazier: floor at (22, 12), walkway north end — warmth marker
 
 ---
 
@@ -235,7 +225,7 @@ related:
 ```
               ↓ N (from Wind Corridor)
   ┌──────────────────────────────┐
-  │ ○  ▌     ▌     ▌     ▌  ○  │   ○ = CandleStick_Triple (wall)
+  │ ○  ▌     ▌     ▌     ▌  ○  │   ○ = lust-candelabra (wall)
   │    ▌     ▌     ▌     ▌     │   ▌ = Onyx column (structural, LOS break)
   │                             │
   │  ☿   ▌      ◊      ▌   ☿  │   ☿ = fireGoat spawn
@@ -256,12 +246,16 @@ related:
 **Elevation:** Main floor at 0. East lava strip at -0.5. A FLOOR_RAISED viewing balcony (elevation +1) runs along the north wall (2 cells deep) — fireGoats start here with height advantage.
 
 **Props:**
-- 8× Onyx columns: structural, arranged in 2 rows of 4, spaced evenly
-- 4× CandleStick_Triple: `surfaceAnchor: 'wall'`, corners, `offsetY: 1.5`
-- 4× Banner_1: `surfaceAnchor: 'wall'`, face: N and S alternating, `offsetY: 2.5` — fabric drapes between columns
-- 2× Chair_1: floor, near columns, knocked over (aftermath feel)
-- 2× Chalice: floor, scattered near chairs
-- 2× Vase_4: floor, (17, 35) and (25, 39)
+- 8× lust-onyx-column: structural, 2 rows of 4 at (17,33), (20,33), (23,33), (26,33) and (17,38), (20,38), (23,38), (26,38) — LOS + wind blockers
+- 4× lust-candelabra: `surfaceAnchor: 'wall'`, corners (15,32), (28,32), (15,41), (28,41), `offsetY: 1.5`
+- 4× lust-velvet-drape: `surfaceAnchor: 'wall'`, (16,34), (27,34), (16,39), (27,39) — fabric between columns
+- 2× lust-fallen-chair: floor at (18, 36) and (25, 37) — knocked over, aftermath
+- 2× lust-golden-chalice: floor at (19, 36) and (24, 38), scattered near chairs
+- 2× lust-marble-vase: floor at (17, 35) and (25, 39), pedestals
+- 1× lust-cracked-statue: west wall alcove at (15, 36) — embracing goat-headed couple
+- 1× lust-lava-rock-border: east wall (28,32)-(28,41) — borders the east lava strip
+- 1× lust-rose-thorn-cluster: floor at (16, 40), near secret wall — visual tell
+- 2× lust-shattered-goblet: floor at (19, 37) and (24, 36) — scattered debauchery
 
 ---
 
@@ -298,9 +292,13 @@ related:
 - Bottom landing: -2.0, exit corridor south
 
 **Props:**
-- 2× CandleStick_Triple: `surfaceAnchor: 'wall'`, face: E and W, `offsetY: 2.0` — high on walls, light the descent
-- 3× Chain_Coil: hanging from ceiling over lava pit, `offsetY: 3.0` — vertical visual marking danger zone
-- 1× Chandelier: ceiling center, directly over lava — dramatic lighting of the pit
+- 2× lust-candelabra: `surfaceAnchor: 'wall'`, (16,47) and (27,47), `offsetY: 2.0` — high on walls, upper level lighting
+- 1× lust-chandelier: ceiling center at (22, 52), over lava — dramatic pit lighting from above
+- 3× limbo-chain-cluster: hanging from ceiling over lava at (21,51), (23,51), (22,53), `offsetY: 3.0` — vertical danger zone markers
+- 1× lust-lava-rock-border: (20,50)-(23,53) around lava core — borders the 4x4 lava pit
+- 1× lust-bridge-railing: ramp outer edge, spiral path — partial safety railings
+- 3× lust-ember-brazier: (17,48), (22,54), (19,56) — ramp segment markers, light the descent
+- 1× lust-cracked-statue: east wall niche at (26, 50) — decorative in enemy ledge niche
 
 ---
 
@@ -333,9 +331,14 @@ related:
 **Elevation:** Main lanes at -1. Lava channels at -1.5 (sunken). Bridges at -1 (flush with lanes). East/West raised platforms at -0.5. Third bridge (SW) at -1.5 — risky path, wind can push you off.
 
 **Props:**
-- 4× CandleStick_Triple: `surfaceAnchor: 'wall'`, corners, `offsetY: 1.5`
-- 2× Banner_1: `surfaceAnchor: 'wall'`, face: N and S, `offsetY: 2.5` — flutter with wind direction changes
-- 2× Barrel: floor, on raised platforms, visual marker for safe zones
+- 4× lust-candelabra: `surfaceAnchor: 'wall'`, corners (15,62), (28,62), (15,73), (28,73), `offsetY: 1.5`
+- 2× lust-wind-banner: `surfaceAnchor: 'wall'`, (16,66) and (27,66), `offsetY: 2.5` — flutter with wind direction changes
+- 2× lust-ember-brazier: floor at (15, 66) and (28, 66), on raised platforms — safe zone markers
+- 1× lust-lava-rock-border: channel edges (19,62-73), (22,62-73), (25,62-73) — borders lava channels
+- 1× lust-bridge-railing: bridge edges at crossings — low railings
+- 1× ornate-mirror: west platform alcove at (16, 63) — reflects lava light
+- 4× lust-gilded-pillar: (19,63), (22,63), (19,72), (22,72) — frame bridge crossing points
+- 2× lust-cracked-statue: (15,67) and (28,69) on raised platforms — hero pieces
 
 ---
 
@@ -345,13 +348,13 @@ related:
   WALL_SECRET entrance from Lover's Gallery (E wall)
          →
   ┌──────────────┐
-  │ ○    ☽    ○  │   ☽ = Chandelier (ceiling)
+  │ ○    ☽    ○  │   ☽ = lust-chandelier (ceiling)
   │              │
-  │  🛏   📜  ♥  │   🛏 = Bed_Twin1, 📜 = Scroll_1 on Table_Large
+  │  🛏   📜  ♥  │   🛏 = lust-ornate-bed-wrecked, 📜 = lore scroll
   │              │   ♥ = health pickup (guaranteed safe)
   │  ◊    ◊      │   ◊ = ammo pickups (×2)
   │              │
-  │ ○  ⌂     ○  │   ⌂ = Chalice on pedestal
+  │ ○  ⌂     ○  │   ⌂ = lust-golden-chalice on pedestal
   └──────────────┘
   No exit — return the way you came
 ```
@@ -360,13 +363,14 @@ related:
 **Purpose:** Secret reward room. Hidden behind WALL_SECRET on the west wall of Lover's Gallery. A luxurious chamber — the only room in Hell that feels comfortable. Contains guaranteed-safe health and ammo pickups, plus a lore scroll. No enemies. No wind. A breath of calm before the descent into the Siren Pit.
 
 **Props:**
-- 4× CandleStick_Triple: `surfaceAnchor: 'wall'`, corners, `offsetY: 1.5` — warm, intimate light
-- 1× Chandelier: ceiling center
-- 1× Bed_Twin1: floor, (4, 36)
-- 1× Table_Large: floor, (6, 36), holds Scroll_1
-- 1× Scroll_1: on table — lore delivery
-- 1× Chalice: floor pedestal, (5, 38)
-- 2× Vase_2: floor, flanking bed
+- 4× lust-candelabra: `surfaceAnchor: 'wall'`, corners (3,34), (8,34), (3,39), (8,39), `offsetY: 1.5` — warm intimate light
+- 1× lust-chandelier: ceiling center at (5, 36)
+- 1× lust-ornate-bed-wrecked: floor at (4, 36) — luxurious bed
+- 1× lust-golden-chalice: floor pedestal at (5, 38) — decadent decoration
+- 2× lust-marble-vase: floor at (3, 36) and (7, 36), flanking bed
+- 1× silk-curtain: near north wall at (4, 34) — intimate drapery
+- 1× lust-velvet-drape: framing entry inside at (8, 37)
+- 1× ornate-mirror: north wall at (6, 34) — vanity, self-reflection
 
 ---
 
@@ -416,11 +420,18 @@ Throne shatters (debris particles). Caprone becomes mobile. Dual-armed attacks: 
 Floor cracks. Lava channels widen by 1 cell on each side (total 3 cells wide each). Safe floor area reduced by ~40%. The bridge over the center channel collapses. Player must jump across or stay on one side. Wind rotation accelerates to every 6 seconds. Caprone's projectiles leave lingering fire patches (3-second duration, 1-cell radius). The room becomes a shrinking arena of safe ground.
 
 **Props:**
-- 4× CandleStick_Triple: `surfaceAnchor: 'wall'`, corners, `offsetY: 1.5`
-- 2× Chandelier: ceiling, flanking throne dais
-- 2× Banner_1: `surfaceAnchor: 'wall'`, face: N, flanking entrance, `offsetY: 3.0`
-- 4× Onyx columns: floor, marking corners of dais (structural, minor cover)
-- 1× Throne (Chest_Wood reskinned as throne): floor, center of dais — shatters in phase 2
+- 4× lust-candelabra: `surfaceAnchor: 'wall'`, corners (15,78), (28,78), (15,91), (28,91), `offsetY: 1.5`
+- 2× lust-chandelier: ceiling at (20, 82) and (24, 82), flanking throne dais
+- 2× lust-velvet-drape: `surfaceAnchor: 'wall'`, (16,78) and (27,78), flanking entrance, `offsetY: 3.0`
+- 4× lust-onyx-column: dais corners (18,82), (26,82), (18,86), (26,86) — structural, minor cover
+- 1× lust-marble-throne: floor at (22, 83), center of dais — shatters in phase 2
+- 1× lust-lava-rock-border: channel edges (17,86), (21,86), (25,86)
+- 1× lust-bridge-railing: center channel bridge at (22, 86) — collapses phase 3
+- 2× lust-cracked-statue: entrance alcoves (16, 80) and (27, 80) — embracing figures
+- 2× lust-rose-thorn-cluster: south corners (17, 90) and (26, 90) — thorns from lava cracks
+- 2× lust-perfume-censer: near entrance (19, 79) and (25, 79) — incense scent
+- 1× lust-floor-carpet: dais surface (19,82)-(25,86) — luxury floor dressing
+- 2× lust-ember-brazier: flanking throne (19, 83) and (25, 83) — backlight
 
 ---
 
@@ -455,18 +466,6 @@ Floor cracks. Lava channels widen by 1 cell on each side (total 3 cells wide eac
 | Tempest Hall (between waves) | health | (27, 67) | E platform, safe from wind |
 | Boss chamber | ammo × 2 | (17, 80), (27, 80) | NW and NE corners |
 | Boss chamber | health × 2 | (17, 88), (27, 88) | SW and SE corners — far from boss |
-
-### Props (non-interactive, summary per room)
-
-| Room | Props |
-|------|-------|
-| Antechamber | 4× CandleStick_Triple (walls), 2× Vase_2 (floor), 1× Banner_1 (N wall) |
-| Wind Corridor | 4× Banner_2 (W wall, show wind), 2× CandleStick_Triple (E wall) |
-| Lover's Gallery | 8× Onyx columns (structural), 4× CandleStick_Triple (walls), 4× Banner_1 (walls), 2× Chair_1, 2× Chalice, 2× Vase_4 |
-| Siren Pit | 2× CandleStick_Triple (walls), 3× Chain_Coil (ceiling), 1× Chandelier (ceiling) |
-| Tempest Hall | 4× CandleStick_Triple (walls), 2× Banner_1 (walls), 2× Barrel (platforms) |
-| Boudoir | 4× CandleStick_Triple (walls), 1× Chandelier, 1× Bed_Twin1, 1× Table_Large, 1× Scroll_1, 1× Chalice, 2× Vase_2 |
-| Caprone's Sanctum | 4× CandleStick_Triple (walls), 2× Chandelier (ceiling), 2× Banner_1 (walls), 4× Onyx columns, 1× throne |
 
 ---
 
@@ -566,7 +565,7 @@ editor.createTheme('circle-2-lust', {
 8. Boss fight wind rotation works across all 3 phases with correct period changes
 9. PlaytestRunner AI can navigate from spawn to boss and defeat Caprone
 10. PBR materials from AmbientCG (Marble006, Marble012, Tiles074, Onyx003) render on surfaces
-11. At least 5 Fantasy Props visible as GLB instances (CandleStick_Triple, Banner, Chandelier, etc.)
+11. All Meshy props from the Prop Manifest Inventory render as GLB instances in scene
 12. Each room feels distinct: tutorial (Corridor), cover combat (Gallery), vertical descent (Pit), arena (Hall), boss (Sanctum)
 
 ---
@@ -576,7 +575,7 @@ editor.createTheme('circle-2-lust', {
 - NOT a repeat of Circle 1's fog mechanic. Visibility is generally good here — the threat is physical (wind), not perceptual (fog).
 - NOT symmetrical wind. Each room uses wind differently: pulsing (Corridor), steady (Gallery), inward (Pit), shifting (Hall), rotating (Boss). The mechanic evolves.
 - NOT a simple flat layout. The Siren Pit descends 2 full elevation units. The Tempest Hall has raised platforms. The boss room has a dais. Verticality is a core part of this circle.
-- NOT using Kenney or KayKit assets. Fantasy Props MegaKit + AmbientCG PBR textures only.
+- NOT using generic CC0 asset packs. All props are bespoke Meshy AI-generated models with circle-specific manifests + AmbientCG PBR textures for surfaces.
 - NOT using the procedural generator's `explore → arena → boss` cycle. The pacing is authored: tutorial → combat introduction → vertical challenge → arena → boss.
 
 ---
@@ -601,9 +600,12 @@ editor.createTheme('circle-2-lust', {
 | lust-velvet-drape | (22,2) above north entrance | 1.0 | Fabric drape over entry — welcoming |
 | lust-coffered-ceiling-tile | ceiling grid pattern | 0.8 | Ornate overhead, cathedral feel |
 | lust-rose-thorn-cluster | (18,6) near floor by south exit | 0.5 | First subtle hint — beauty has thorns |
+| lust-perfume-censer | (21,3) near north wall | 0.6 | Incense smoke — the seductive scent |
+| lust-floor-carpet | (20,4)-(23,6) center floor | 0.9 | Luxury underfoot, crimson and gold weave |
 
 **Lighting:** 4x candelabra at corners, color `#ffaa55`, intensity 0.7, radius 5 cells. Warm amber ambient `#cc8844` at 0.20. Faint fog density 0.02, color `#2e1a1a`.
 **Platforming:** Flat at elevation 0. FLOOR_RAISED step (+0.5) at south edge hints at elevation changes to come.
+**Prop density:** 11 assets in 48 cells (0.23 props/cell). The Antechamber communicates luxury immediately -- incense, fabric, carpet, and candlelight.
 
 ---
 
@@ -653,9 +655,11 @@ editor.createTheme('circle-2-lust', {
 | lust-cracked-statue | (15,36) west wall alcove | 1.0 | Embracing goat-headed couple, cracked |
 | lust-lava-rock-border | (28,32)-(28,41) east wall | 0.6 | Border the east lava strip |
 | lust-rose-thorn-cluster | (16,40) near secret wall | 0.6 | Visual tell near Boudoir entrance |
+| lust-shattered-goblet | (19,37) and (24,36) near chairs | 0.5 | Scattered debauchery, aftermath of revelry |
 
 **Lighting:** 4x candelabra at corners, color `#ffaa55`, intensity 0.7, radius 5 cells. East lava strip emits `#ff4400`, intensity 0.4, radius 3 cells. Steady W-to-E wind at 0.35 intensity pushes toward lava.
 **Platforming:** Main floor at elevation 0. North wall has FLOOR_RAISED balcony (+1, 2 cells deep) where fireGoats start with height advantage. East lava strip at -0.5.
+**Prop density:** 20 assets in 140 cells (0.14 props/cell). Dense with purpose -- every prop tells the story of interrupted revelry and hidden danger.
 
 ---
 
@@ -678,9 +682,13 @@ editor.createTheme('circle-2-lust', {
 | limbo-chain-cluster | (21,51), (23,51), (22,53) over lava | 1.0 | Vertical danger zone markers |
 | lust-ember-brazier | (17,48) ramp segment 1 start | 0.7 | Warmth marker, ramp start |
 | lust-cracked-statue | (26,50) east wall niche | 0.8 | Decorative in enemy ledge niche |
+| lust-ember-brazier | (22,54) ramp segment 3 midpoint | 0.7 | Light marker for lower descent |
+| lust-ember-brazier | (19,56) ramp segment 4 | 0.6 | Warmth at the bottom approach |
+| lust-bridge-railing | (24,48)-(27,50) segments 1-2 outer | 0.7 | Partial railings -- some sections broken/missing |
 
-**Lighting:** 2x candelabra high on walls, color `#ffaa55`, intensity 0.6. 1x chandelier over center, color `#ffaa55`, intensity 0.8. Lava core emits `#ff4400`, intensity 0.6, radius 4 cells. Intensifies with descent.
+**Lighting:** 2x candelabra high on walls, color `#ffaa55`, intensity 0.6. 1x chandelier over center, color `#ffaa55`, intensity 0.8. Lava core emits `#ff4400`, intensity 0.6, radius 4 cells. 3x ember braziers at ramp segments mark elevation changes. Intensifies with descent.
 **Platforming:** Entry ledge at elevation 0 (N, 2 cells deep). Ramp spirals: segment 1 E wall (0 to -0.5), segment 2 S wall (-0.5 to -1.0), segment 3 W wall (-1.0 to -1.5), segment 4 N inner (-1.5 to -2.0). Bottom landing at -2.0. 4x4 lava core at center. Wind pulls inward + down constantly at intensity 0.6.
+**Prop density:** 12 assets in 144 cells (0.08 props/cell). The ramp geometry carries most visual weight, but braziers now mark each ramp segment and railings provide spatial reference.
 
 ---
 
@@ -703,9 +711,12 @@ editor.createTheme('circle-2-lust', {
 | lust-bridge-railing | Bridge edges at crossings | 0.7 | Low railings on bridge sides |
 | lust-ember-brazier | (15,66) and (28,66) on raised platforms | 0.8 | Safe zone markers, warmth |
 | ornate-mirror | (16,63) west platform alcove | 0.9 | Reflects lava light — disorienting |
+| lust-gilded-pillar | (19,63), (22,63), (19,72), (22,72) bridge entrances | 1.0 | Frame the bridge crossing points |
+| lust-cracked-statue | (15,67) and (28,69) on raised platforms | 1.0 | Hero pieces on platform refuges |
 
 **Lighting:** 4x candelabra at corners, color `#ffaa55`, intensity 0.7. 3x lava channels emit `#ff4400`, intensity 0.4, radius 3 cells each. Wind shifts W-to-E / E-to-W every 8 seconds.
 **Platforming:** Main lanes at elevation -1. Lava channels at -1.5 (sunken, 1 cell wide each). Bridges at -1 (flush with lanes, 3 cells wide). East/West raised platforms at -0.5 (refuge). Third bridge (SW) at -1.5 — risky, wind can push you off.
+**Prop density:** 16 assets in 168 cells (0.10 props/cell). Gilded pillars at bridge entrances and statues on platforms add grandeur to the pre-boss arena.
 
 ---
 
@@ -728,9 +739,11 @@ editor.createTheme('circle-2-lust', {
 | lust-marble-vase | (3,36) and (7,36) flanking bed | 0.7 | Elegant vases |
 | silk-curtain | (4,34) near north wall | 0.8 | Intimate drapery |
 | lust-velvet-drape | (8,37) framing entry inside | 0.9 | Welcoming fabric |
+| ornate-mirror | (6,34) north wall | 0.8 | Thematic mirror -- vanity, self-reflection, lust |
 
 **Lighting:** 4x candelabra at corners, color `#ffaa55`, intensity 0.8. 1x chandelier center, color `#ffaa55`, intensity 0.9. Warmest lighting in the entire circle. No fog. No wind.
 **Platforming:** Flat at elevation 0. No hazards. Pure reward room.
+**Prop density:** 11 assets in 36 cells (0.31 props/cell). The densest room in Act 1 -- intimate luxury as a gameplay reward.
 
 ---
 
@@ -756,6 +769,42 @@ editor.createTheme('circle-2-lust', {
 | lust-cracked-statue | (16,80) and (27,80) entrance alcoves | 1.0 | Flanking entrance, cracked embracing figures |
 | lust-rose-thorn-cluster | (17,90) and (26,90) south corners | 0.8 | Thorns growing from lava-heated cracks |
 | lust-perfume-censer | (19,79) and (25,79) near entrance | 0.7 | Incense — the scent of seduction |
+| lust-floor-carpet | (19,82)-(25,86) dais surface | 1.0 | Luxury floor dressing on the throne platform |
+| lust-ember-brazier | (19,83) and (25,83) flanking throne | 0.8 | Backlight enhancement, warmth near throne |
 
-**Lighting:** 4x candelabra at corners, color `#ffaa55`, intensity 0.7. 2x chandeliers over dais, color `#ffaa55`, intensity 0.9. Throne backlight `#ff8800`, intensity 0.5. Lava channels emit `#ff4400`, intensity 0.4 (increase in phase 3). Phase 2: wind rotates N-E-S-W every 10s. Phase 3: fog rises to 0.06, lava widens, wind period drops to 6s.
+**Lighting:** 4x candelabra at corners, color `#ffaa55`, intensity 0.7. 2x chandeliers over dais, color `#ffaa55`, intensity 0.9. Throne backlight `#ff8800`, intensity 0.5. 2x ember braziers flanking throne. Lava channels emit `#ff4400`, intensity 0.4 (increase in phase 3). Phase 2: wind rotates N-E-S-W every 10s. Phase 3: fog rises to 0.06, lava widens, wind period drops to 6s.
 **Platforming:** Main floor at elevation -1. Throne dais at -0.5 (8x4 cells, north-center). Lava channels at -1.5 (widen in phase 3 from 1 to 3 cells each). Bridge over center channel at -1 (collapses phase 3). Four corner pillars at floor level provide minimal cover.
+**Prop density:** 19 assets in 196 cells (0.10 props/cell). The boss room delivers ceremony: marble throne, perfume censers, cracked statues, and a carpet-clad dais.
+
+---
+
+### Prop Manifest Inventory
+
+| Prop ID | Name | Manifest | Notes |
+|---------|------|----------|-------|
+| lust-bridge-railing | Marble Bridge Railing | ✅ exists | Siren Pit ramp, Tempest Hall bridges, Sanctum |
+| lust-candelabra | Golden Candelabra | ✅ exists | All rooms -- primary light source |
+| lust-chandelier | Crystal Chandelier | ✅ exists | Siren Pit, Boudoir, Sanctum |
+| lust-coffered-ceiling-tile | Coffered Ceiling Tile | ✅ exists | Antechamber ceiling |
+| lust-cracked-statue | Cracked Embracing Statue | ✅ exists | Gallery, Siren Pit, Tempest Hall, Sanctum |
+| lust-ember-brazier | Ember Brazier | ✅ exists | Wind Corridor, Siren Pit, Tempest Hall, Sanctum |
+| lust-fallen-chair | Fallen Chair | ✅ exists | Gallery floor |
+| lust-floor-carpet | Crimson Floor Carpet | ❌ needs creation | Antechamber floor, Sanctum dais |
+| lust-gilded-pillar | Gilded Marble Pillar | ✅ exists | Tempest Hall bridge entrances |
+| lust-golden-chalice | Golden Chalice | ✅ exists | Boudoir pedestal, Gallery |
+| lust-lava-rock-border | Lava Rock Border | ✅ exists | Wind Corridor, Gallery, Siren Pit, Tempest Hall, Sanctum |
+| lust-marble-throne | Marble Throne | ✅ exists | Sanctum -- Caprone's seat, shatters phase 2 |
+| lust-marble-vase | Marble Vase | ✅ exists | Antechamber, Gallery, Boudoir |
+| lust-onyx-column | Onyx Column | ✅ exists | Gallery structural, Sanctum dais corners |
+| lust-ornate-arch | Ornate Marble Arch | ✅ exists | All room entrances/exits |
+| lust-ornate-bed-wrecked | Ornate Bed | ✅ exists | Boudoir |
+| lust-perfume-censer | Perfume Censer | ✅ exists | Antechamber, Sanctum |
+| lust-rose-thorn-cluster | Rose Thorn Cluster | ✅ exists | Antechamber, Gallery, Sanctum |
+| lust-shattered-goblet | Shattered Goblet | ✅ exists | Gallery near chairs |
+| lust-velvet-drape | Velvet Drape | ✅ exists | Antechamber, Gallery, Boudoir, Sanctum |
+| lust-wind-banner | Wind Banner | ✅ exists | Wind Corridor, Tempest Hall |
+| ornate-mirror | Ornate Mirror | ✅ exists | Tempest Hall, Boudoir |
+| silk-curtain | Silk Curtain | ✅ exists | Boudoir |
+| limbo-chain-cluster | Chain Cluster (from C1) | ✅ exists | Siren Pit over lava -- reused from Limbo |
+
+**Summary:** 24 unique props. 23 have manifests, 1 needs creation (lust-floor-carpet).

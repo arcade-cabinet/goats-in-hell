@@ -1,0 +1,41 @@
+{
+  "id": "violence-grating-panel",
+  "name": "Retractable Grating Panel",
+  "type": "prop",
+  "seed": 1517959539,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac90-0ed1-7048-a3a0-17918434ef1e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac90-0ed1-7048-a3a0-17918434ef1e"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac93-f8be-71ff-be6b-61d38312361a",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac93-f8be-71ff-be6b-61d38312361a"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A square metal floor grating panel with a hinge mechanism on one side, industrial walkway grid pattern, perforated steel plate that can retract to reveal void below, dark fantasy game prop, isolated object, dark background, top-down orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark steel grating with grid pattern, rusted hinge mechanism, oxidized iron frame, industrial floor panel",
+    "enablePbr": true
+  }
+}

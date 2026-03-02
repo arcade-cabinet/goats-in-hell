@@ -2,6 +2,7 @@
   "id": "goat-brute",
   "name": "Goat Brute",
   "type": "character",
+  "seed": 1334750788,
   "pipeline": "enemy",
   "description": "Heavy tank enemy. Slow, high HP, devastating melee. Appears from Circle 2 onward.",
   "textToImageTask": {
@@ -33,5 +34,77 @@
       "Fighting.GettingHit.BeHit_FlyUp",
       "Fighting.Dying.Knock_Down"
     ]
+  },
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cadc9-add6-7cdf-b87a-3b9de76798b6",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadc9-add6-7cdf-b87a-3b9de76798b6"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cadca-5520-7cf2-b3aa-99599a98251c",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadca-5520-7cf2-b3aa-99599a98251c"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cadcb-df55-7745-a26a-afd6d2d870c1",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadcb-df55-7745-a26a-afd6d2d870c1"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cadcd-bf30-7851-9c9d-78d288c92db4",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadcd-bf30-7851-9c9d-78d288c92db4"
+      },
+      "artifacts": {}
+    },
+    "animations": {
+      "WalkAndRun.Walking.Zombie_Walk": {
+        "taskId": "019cadd0-4f35-7275-8e44-84c0508eec91",
+        "status": "SUCCEEDED",
+        "actionId": 112,
+        "artifact": "animations/Zombie_Walk.glb"
+      },
+      "DailyActions.Idle.Angry_Ground_Stomp_1": {
+        "taskId": "019cadd0-8dff-7896-8a77-3eced88ee6c1",
+        "status": "SUCCEEDED",
+        "actionId": 256,
+        "artifact": "animations/Angry_Ground_Stomp_1.glb"
+      },
+      "Fighting.AttackingwithWeapon.Charged_Axe_Chop": {
+        "taskId": "019cadd0-cc7e-7de2-93dd-490c0aca0cef",
+        "status": "SUCCEEDED",
+        "actionId": 237,
+        "artifact": "animations/Charged_Axe_Chop.glb"
+      },
+      "Fighting.CastingSpell.Charged_Ground_Slam": {
+        "taskId": "019cadd1-bf47-78c8-bb99-182a44c6e004",
+        "status": "SUCCEEDED",
+        "actionId": 127,
+        "artifact": "animations/Charged_Ground_Slam.glb"
+      },
+      "Fighting.GettingHit.BeHit_FlyUp": {
+        "taskId": "019cadd2-3954-78cf-901b-22c59c3ebe5b",
+        "status": "SUCCEEDED",
+        "actionId": 7,
+        "artifact": "animations/BeHit_FlyUp.glb"
+      },
+      "Fighting.Dying.Knock_Down": {
+        "taskId": "019cadd2-78df-784a-954a-cbd41362479a",
+        "status": "SUCCEEDED",
+        "actionId": 187,
+        "artifact": "animations/Knock_Down.glb"
+      }
+    }
   }
 }

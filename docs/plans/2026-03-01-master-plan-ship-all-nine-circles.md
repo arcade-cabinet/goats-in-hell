@@ -1,3 +1,15 @@
+---
+title: "Ship All Nine Circles — Master Implementation Plan"
+status: in-progress
+created: "2026-03-01"
+updated: "2026-03-01"
+domain: plans
+plan_type: implementation
+related:
+  - docs/plans/2026-03-01-meshy-asset-explosion-implementation.md
+  - docs/plans/2026-03-01-yuka-brain-assembly-implementation.md
+---
+
 # Ship All Nine Circles — Master Implementation Plan
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.

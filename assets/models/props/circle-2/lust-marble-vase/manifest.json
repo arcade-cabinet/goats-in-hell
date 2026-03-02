@@ -2,6 +2,29 @@
   "id": "lust-marble-vase",
   "name": "Marble Floor Vase",
   "type": "prop",
+  "seed": 1328523260,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac8f-281f-717e-a0ba-6feb4662731f",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac8f-281f-717e-a0ba-6feb4662731f"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac90-b998-704d-938c-0b6b19105bc3",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac90-b998-704d-938c-0b6b19105bc3"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A tall elegant marble floor vase with wide mouth and narrow neck, warm cream marble with amber veins, carved acanthus leaf relief at the base, containing dried rigid rose stems, dark fantasy lust-themed game prop, isolated object, dark background, three-quarter view",

@@ -1,0 +1,41 @@
+{
+  "id": "arch-stone-medium",
+  "name": "Medium Stone Archway",
+  "type": "prop",
+  "seed": 2196345566,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cad99-fb4d-7deb-910a-96c4b71b96f7",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad99-fb4d-7deb-910a-96c4b71b96f7"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cadb0-ab26-7542-a15e-3a67ecb1fede",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadb0-ab26-7542-a15e-3a67ecb1fede"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A medium stone archway frame approximately 3 meters wide, carved dark stone blocks with keystone detail, dungeon corridor archway, dark fantasy game prop, front-facing, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 7000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark gray carved stone with chisel marks, ancient mortar, subtle demonic rune etchings",
+    "enablePbr": true
+  }
+}

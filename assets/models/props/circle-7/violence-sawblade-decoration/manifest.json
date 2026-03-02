@@ -2,6 +2,29 @@
   "id": "violence-sawblade-decoration",
   "name": "Sawblade Decoration",
   "type": "prop",
+  "seed": 810320743,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacb3-fec5-7253-8a96-160e553cecfe",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb3-fec5-7253-8a96-160e553cecfe"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacb5-4a17-74a7-99eb-fe87297f9444",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb5-4a17-74a7-99eb-fe87297f9444"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A large circular saw blade mounted on a wall bracket, rusted industrial cutting disc with jagged teeth, bloodstained slaughterhouse wall decoration, dark fantasy game prop, isolated object, dark background, front orientation view",

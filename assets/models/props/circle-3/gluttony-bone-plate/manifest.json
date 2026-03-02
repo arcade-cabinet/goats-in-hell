@@ -2,6 +2,29 @@
   "id": "gluttony-bone-plate",
   "name": "Bone Plate Setting",
   "type": "prop",
+  "seed": 37582609,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac7b-2d11-7a6a-a7d7-87a1dc82c627",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac7b-2d11-7a6a-a7d7-87a1dc82c627"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac7c-6ac2-7984-b016-79d90113cb9a",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac7c-6ac2-7984-b016-79d90113cb9a"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A plate setting made from a flattened goat skull cap used as a plate, with bone utensils beside it, scraps of rotting food sculpted as solid mass on the plate, grotesque dining set, dark fantasy gluttony-themed table decoration game prop, isolated object, dark background, top-down angled view",

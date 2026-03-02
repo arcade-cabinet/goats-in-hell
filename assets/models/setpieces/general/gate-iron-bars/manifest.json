@@ -1,0 +1,41 @@
+{
+  "id": "gate-iron-bars",
+  "name": "Iron Bar Gate",
+  "type": "prop",
+  "seed": 4218488464,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caca6-583e-7ffd-abc5-5ef8415cb5f7",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca6-583e-7ffd-abc5-5ef8415cb5f7"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019caca8-154f-7f36-9eeb-748eff2180c4",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca8-154f-7f36-9eeb-748eff2180c4"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "An iron bar gate or portcullis with vertical bars and horizontal crossbars, heavy riveted construction with pointed bar tips, dungeon prison gate, dark fantasy game prop, front-facing, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark wrought iron with heavy rust, riveted joints, pitted and corroded surface texture",
+    "enablePbr": true
+  }
+}

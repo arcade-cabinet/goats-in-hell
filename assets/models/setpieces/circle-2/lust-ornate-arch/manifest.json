@@ -1,0 +1,41 @@
+{
+  "id": "lust-ornate-arch",
+  "name": "Ornate Marble Arch",
+  "type": "prop",
+  "seed": 717020142,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cad71-32f0-77e6-b98e-a6767faabb5e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad71-32f0-77e6-b98e-a6767faabb5e"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cad72-cf43-7a4f-84fb-5a2ff8e0ff36",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad72-cf43-7a4f-84fb-5a2ff8e0ff36"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "An ornate polished marble archway with golden trim along the edges, warm cream-amber marble with elegant scrollwork carvings, intact and luxurious, seductive dark fantasy game prop, isolated object, dark background, front-facing view",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "on"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Warm cream-amber polished marble, gold leaf trim, elegant scrollwork carvings, smooth reflective surface",
+    "enablePbr": true
+  }
+}

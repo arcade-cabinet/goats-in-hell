@@ -1,0 +1,41 @@
+{
+  "id": "pillar-square-tall",
+  "name": "Tall Square Pillar",
+  "type": "prop",
+  "seed": 3704958972,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacc2-b954-75b7-8237-395f0f0a2012",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacc2-b954-75b7-8237-395f0f0a2012"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacc3-cc20-75ca-b193-0b7972e77f84",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacc3-cc20-75ca-b193-0b7972e77f84"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tall square stone pillar approximately 3 meters tall, dark stone construction with base plinth and simple capital, dungeon hall support column, dark fantasy game prop, floor-placed, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark hewn stone with vertical tool marks, lichen patches, iron bracket mounting holes",
+    "enablePbr": true
+  }
+}

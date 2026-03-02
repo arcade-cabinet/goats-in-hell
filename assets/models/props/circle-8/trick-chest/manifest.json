@@ -2,6 +2,29 @@
   "id": "trick-chest",
   "name": "Trick Chest",
   "type": "prop",
+  "seed": 1795240150,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacb4-e81a-74a0-8506-57fae64db28f",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb4-e81a-74a0-8506-57fae64db28f"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacb7-6071-7152-8189-aea9bf3d4a50",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb7-6071-7152-8189-aea9bf3d4a50"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A wooden treasure chest with hidden teeth inside the lid, the chest appears normal but the interior has rows of sharp fangs, mimic chest trap, deception and fraud theme, stylized low poly game prop, dark fantasy, isometric view",

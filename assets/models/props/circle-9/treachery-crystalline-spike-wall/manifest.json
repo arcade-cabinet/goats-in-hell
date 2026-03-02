@@ -2,6 +2,29 @@
   "id": "treachery-crystalline-spike-wall",
   "name": "Crystalline Spike Wall",
   "type": "prop",
+  "seed": 2905230795,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac78-d1cc-7f64-a2f2-73288d3d35cd",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac78-d1cc-7f64-a2f2-73288d3d35cd"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac7a-bf38-7a3a-9b3c-77ccabc3502a",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac7a-bf38-7a3a-9b3c-77ccabc3502a"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A wall section covered in protruding sharp ice crystal spikes, jagged frozen spear formations growing horizontally from a stone wall surface, crystalline hazard barrier, dark blue ice spikes on dark stone, dark fantasy game prop, isolated object, dark background, front orientation view",

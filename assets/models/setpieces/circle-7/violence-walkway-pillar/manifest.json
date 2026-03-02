@@ -1,0 +1,41 @@
+{
+  "id": "violence-walkway-pillar",
+  "name": "Walkway Support Pillar",
+  "type": "prop",
+  "seed": 2883598520,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacbd-d490-7577-824a-6e2294f7d454",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacbd-d490-7577-824a-6e2294f7d454"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacbf-232f-724b-86d8-1e155d0ab692",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacbf-232f-724b-86d8-1e155d0ab692"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A thick stone support pillar rising from blood river to support an overhead walkway, dark volcanic rock column with rusted iron torch bracket, blood-stained base submerged in crimson, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark volcanic stone column, bloodstain waterline at base, rusted iron torch bracket near top, wet stone texture",
+    "enablePbr": true
+  }
+}

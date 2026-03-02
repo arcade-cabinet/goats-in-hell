@@ -1,0 +1,41 @@
+{
+  "id": "ramp-stone-short",
+  "name": "Short Stone Ramp",
+  "type": "prop",
+  "seed": 3719701536,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacd0-4e94-74a8-bc7b-ce04abd58fbd",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacd0-4e94-74a8-bc7b-ce04abd58fbd"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacd2-2207-7575-a2c2-b04cbea2963f",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacd2-2207-7575-a2c2-b04cbea2963f"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A short stone ramp incline with rough textured surface for grip, low angle slope connecting two floor levels, dungeon accessibility ramp, dark fantasy game prop, floor-placed, front-facing, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark rough-hewn stone with scored grip lines, worn smooth center path, grime accumulation",
+    "enablePbr": true
+  }
+}

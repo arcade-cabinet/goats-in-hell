@@ -2,6 +2,29 @@
   "id": "lust-ornate-bed-wrecked",
   "name": "Wrecked Ornate Bed",
   "type": "prop",
+  "seed": 4218875431,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac95-bf1a-7225-a6ff-dd6f86cd07f2",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac95-bf1a-7225-a6ff-dd6f86cd07f2"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac98-8903-7d07-a210-9dae35842019",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac98-8903-7d07-a210-9dae35842019"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
   "pipeline": "prop-direct",
   "textTo3DPreviewTask": {
     "prompt": "A wrecked ornate four-poster bed frame with broken posts, gilded wood frame with one headboard side collapsed, torn rigid crimson fabric remnants draped over the frame, no mattress visible, dark fantasy lust-themed game prop, isolated object, dark background, three-quarter view",
