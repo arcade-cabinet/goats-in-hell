@@ -1,0 +1,69 @@
+{
+  "_comment": "Weapon balance tuning — all values are base stats before difficulty scaling.",
+  "hellPistol": {
+    "name": "Hell Pistol",
+    "damage": 4,
+    "pellets": 1,
+    "spread": 0,
+    "magSize": 12,
+    "fireRate": 300,
+    "reloadTime": 1200,
+    "range": 50,
+    "projectileSpeed": 80,
+    "startingAmmoReserve": 120
+  },
+  "brimShotgun": {
+    "name": "Brimstone Shotgun",
+    "damage": 4,
+    "pellets": 7,
+    "spread": 0.14,
+    "magSize": 6,
+    "fireRate": 700,
+    "reloadTime": 2200,
+    "range": 12,
+    "projectileSpeed": 60,
+    "startingAmmoReserve": 0
+  },
+  "hellfireCannon": {
+    "name": "Hellfire Cannon",
+    "damage": 3,
+    "pellets": 1,
+    "spread": 0.03,
+    "magSize": 30,
+    "fireRate": 150,
+    "reloadTime": 3000,
+    "range": 30,
+    "projectileSpeed": 40,
+    "startingAmmoReserve": 0
+  },
+  "goatsBane": {
+    "name": "Goat's Bane",
+    "damage": 60,
+    "pellets": 1,
+    "spread": 0,
+    "magSize": 3,
+    "fireRate": 1500,
+    "reloadTime": 3500,
+    "range": 100,
+    "projectileSpeed": 20,
+    "aoe": 5,
+    "startingAmmoReserve": 0
+  },
+  "brimstoneFlamethrower": {
+    "name": "Brimstone Flamethrower",
+    "damage": 2,
+    "pellets": 1,
+    "spread": 0.5,
+    "magSize": 0,
+    "fireRate": 50,
+    "reloadTime": 0,
+    "range": 5,
+    "projectileSpeed": 0,
+    "fuelBurnRate": 5,
+    "fuelRegenRate": 1,
+    "fuelMax": 100,
+    "dotDps": 2,
+    "dotDuration": 5,
+    "startingAmmoReserve": 0
+  }
+}

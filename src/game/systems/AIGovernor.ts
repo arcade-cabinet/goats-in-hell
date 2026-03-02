@@ -138,8 +138,6 @@ export class AIGovernor {
   private waypointIndex = 0;
   /** Threshold to consider a waypoint reached. */
   private readonly WAYPOINT_REACH = 1.5;
-  /** Minimum distance to target before pathfinding kicks in (otherwise steer direct). */
-  private readonly PATHFIND_MIN_DIST = 3;
 
   // --- Stuck detection ---
   /** Checkpoint position updated every STUCK_CHECK_INTERVAL ms. */
@@ -152,8 +150,6 @@ export class AIGovernor {
   private readonly STUCK_MIN_DIST_SQ = 4.0; // 2 units
   /** Consecutive failed movement checks before unsticking. */
   private stuckStrikes = 0;
-  /** Strikes needed before random movement burst. */
-  private readonly STUCK_STRIKES_BURST = 1;
   /** Strikes needed before forcing explore state. */
   private readonly STUCK_STRIKES_EXPLORE = 2;
   /** Cooldown (ms) after forced explore to prevent decide() from switching back. */

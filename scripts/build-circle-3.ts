@@ -386,19 +386,47 @@ export async function buildCircle3(dbPath: string) {
   // 4x gluttony-lantern-wall-green (walls)
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 17, 3, {
     roomId: gulletId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.9 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.9,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 22, 3, {
     roomId: gulletId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.9 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.9,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 17, 9, {
     roomId: gulletId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.9 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.9,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 22, 12, {
     roomId: gulletId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.9 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.9,
+    },
   });
   // 2x gluttony-slop-bucket (floor, wide sections)
   editor.spawnProp(LEVEL_ID, 'gluttony-slop-bucket', 18, 5, { roomId: gulletId });
@@ -408,11 +436,25 @@ export async function buildCircle3(dbPath: string) {
   // 2x gluttony-stomach-wall-growth (wall surfaces)
   editor.spawnProp(LEVEL_ID, 'gluttony-stomach-wall-growth', 17, 6, {
     roomId: gulletId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.7 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 0.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.7,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-stomach-wall-growth', 22, 10, {
     roomId: gulletId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.7 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 0.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.7,
+    },
   });
   // 2x gluttony-dripping-stalactite (ceiling)
   editor.spawnProp(LEVEL_ID, 'gluttony-dripping-stalactite', 19, 4, { roomId: gulletId });
@@ -432,19 +474,47 @@ export async function buildCircle3(dbPath: string) {
   // 4x gluttony-lantern-wall-green (corners)
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 13, 20, {
     roomId: feastHallId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 26, 20, {
     roomId: feastHallId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 13, 29, {
     roomId: feastHallId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 26, 29, {
     roomId: feastHallId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   // 1x feast-table (center, (17,24)-(25,26))
   editor.spawnProp(LEVEL_ID, 'feast-table', 20, 25, { roomId: feastHallId });
@@ -491,35 +561,91 @@ export async function buildCircle3(dbPath: string) {
   // 8x gluttony-shelf-arch (walls, 2 per platform level)
   editor.spawnProp(LEVEL_ID, 'gluttony-shelf-arch', 15, 35, {
     roomId: larderId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 0.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-shelf-arch', 24, 35, {
     roomId: larderId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 0.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-shelf-arch', 15, 38, {
     roomId: larderId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 0.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-shelf-arch', 24, 38, {
     roomId: larderId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 0.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-shelf-arch', 15, 41, {
     roomId: larderId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 0.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-shelf-arch', 24, 41, {
     roomId: larderId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 0.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-shelf-arch', 15, 44, {
     roomId: larderId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 0.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-shelf-arch', 24, 44, {
     roomId: larderId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 0.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   // 6x gluttony-rotting-barrel (on shelf surfaces, stacked)
   editor.spawnProp(LEVEL_ID, 'gluttony-rotting-barrel', 17, 36, { roomId: larderId });
@@ -545,19 +671,47 @@ export async function buildCircle3(dbPath: string) {
   // 4x gluttony-lantern-wall-green (one per platform level)
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 15, 36, {
     roomId: larderId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.0, offsetZ: 0, rotation: [0, 0, 0], scale: 0.9 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.9,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 24, 39, {
     roomId: larderId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.0, offsetZ: 0, rotation: [0, 0, 0], scale: 0.9 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.9,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 15, 42, {
     roomId: larderId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.0, offsetZ: 0, rotation: [0, 0, 0], scale: 0.9 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.9,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 24, 44, {
     roomId: larderId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.0, offsetZ: 0, rotation: [0, 0, 0], scale: 0.9 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.9,
+    },
   });
   // 2x gluttony-overflowing-goblet (on shelves)
   editor.spawnProp(LEVEL_ID, 'gluttony-overflowing-goblet', 16, 36, { roomId: larderId });
@@ -577,19 +731,47 @@ export async function buildCircle3(dbPath: string) {
   // 4x gluttony-lantern-wall-green (corners)
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 14, 50, {
     roomId: bileCisternId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 25, 50, {
     roomId: bileCisternId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 14, 59, {
     roomId: bileCisternId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 25, 59, {
     roomId: bileCisternId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   // 3x gluttony-slop-bucket (on walkways, tipped)
   editor.spawnProp(LEVEL_ID, 'gluttony-slop-bucket', 16, 52, { roomId: bileCisternId });
@@ -611,11 +793,25 @@ export async function buildCircle3(dbPath: string) {
   // 2x gluttony-stomach-wall-growth (wall surfaces)
   editor.spawnProp(LEVEL_ID, 'gluttony-stomach-wall-growth', 14, 54, {
     roomId: bileCisternId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.8 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 0.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.8,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-stomach-wall-growth', 25, 56, {
     roomId: bileCisternId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.8 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 0.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.8,
+    },
   });
 
   // --- Gut Arena (bounds: 14, 64, 12, 12) ---
@@ -631,19 +827,47 @@ export async function buildCircle3(dbPath: string) {
   // 4x gluttony-lantern-wall-green (N/S/E/W walls)
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 14, 65, {
     roomId: gutArenaId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 25, 65, {
     roomId: gutArenaId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 14, 75, {
     roomId: gutArenaId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 25, 75, {
     roomId: gutArenaId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   // 4x gluttony-slop-bucket (outer ring, one per quadrant)
   editor.spawnProp(LEVEL_ID, 'gluttony-slop-bucket', 16, 66, { roomId: gutArenaId });
@@ -670,11 +894,25 @@ export async function buildCircle3(dbPath: string) {
   // 2x gluttony-stomach-wall-growth (walls, foreshadow boss room)
   editor.spawnProp(LEVEL_ID, 'gluttony-stomach-wall-growth', 14, 68, {
     roomId: gutArenaId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.7 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 0.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.7,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-stomach-wall-growth', 25, 72, {
     roomId: gutArenaId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.7 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 0.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.7,
+    },
   });
 
   // --- Pantry (bounds: 3, 32, 6, 6) ---
@@ -685,19 +923,47 @@ export async function buildCircle3(dbPath: string) {
   // 4x gluttony-lantern-wall-green (corners, warmer light)
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 3, 32, {
     roomId: pantryId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.8 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.8,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 8, 32, {
     roomId: pantryId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.8 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.8,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 3, 37, {
     roomId: pantryId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.8 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.8,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 8, 37, {
     roomId: pantryId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 0.8 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.8,
+    },
   });
   // 3x gluttony-rotting-barrel (clean sealed barrels)
   editor.spawnProp(LEVEL_ID, 'gluttony-rotting-barrel', 4, 34, { roomId: pantryId });
@@ -706,7 +972,14 @@ export async function buildCircle3(dbPath: string) {
   // 1x gluttony-shelf-arch (north wall, holds lore scroll)
   editor.spawnProp(LEVEL_ID, 'gluttony-shelf-arch', 5, 32, {
     roomId: pantryId,
-    surfaceAnchor: { face: 'north', offsetX: 0, offsetY: 1.0, offsetZ: 0, rotation: [0, 0, 0], scale: 0.9 },
+    surfaceAnchor: {
+      face: 'north',
+      offsetX: 0,
+      offsetY: 1.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.9,
+    },
   });
   // 1x gluttony-rotten-crate (sealed supply crate, intact)
   editor.spawnProp(LEVEL_ID, 'gluttony-rotten-crate', 6, 34, { roomId: pantryId });
@@ -723,19 +996,47 @@ export async function buildCircle3(dbPath: string) {
   // 4x gluttony-lantern-wall-green (N/S/E/W high, pulsing pink-red recolor)
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 13, 81, {
     roomId: voragosMawId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 2.0, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 2.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 26, 81, {
     roomId: voragosMawId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 2.0, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 2.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 13, 93, {
     roomId: voragosMawId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 2.0, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 2.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-lantern-wall-green', 26, 93, {
     roomId: voragosMawId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 2.0, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 2.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   // 2x bile-cauldron (entry ledge, flanking entrance)
   editor.spawnProp(LEVEL_ID, 'bile-cauldron', 15, 81, { roomId: voragosMawId });
@@ -748,19 +1049,47 @@ export async function buildCircle3(dbPath: string) {
   // 4x gluttony-stomach-wall-growth (walls, pulsing)
   editor.spawnProp(LEVEL_ID, 'gluttony-stomach-wall-growth', 13, 85, {
     roomId: voragosMawId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 0.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-stomach-wall-growth', 26, 85, {
     roomId: voragosMawId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 0.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-stomach-wall-growth', 13, 89, {
     roomId: voragosMawId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 0.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-stomach-wall-growth', 26, 89, {
     roomId: voragosMawId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 0.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 0.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
   });
   // gluttony-acid-pool-edge (platform edges and entry ledge edges)
   editor.spawnProp(LEVEL_ID, 'gluttony-acid-pool-edge', 18, 83, { roomId: voragosMawId });
@@ -773,11 +1102,25 @@ export async function buildCircle3(dbPath: string) {
   // 2x gluttony-meat-carcass (wall-hung, partially digested)
   editor.spawnProp(LEVEL_ID, 'gluttony-meat-carcass', 14, 88, {
     roomId: voragosMawId,
-    surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.0, offsetZ: 0, rotation: [0, 0, 0], scale: 0.9 },
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.9,
+    },
   });
   editor.spawnProp(LEVEL_ID, 'gluttony-meat-carcass', 26, 88, {
     roomId: voragosMawId,
-    surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.0, offsetZ: 0, rotation: [0, 0, 0], scale: 0.9 },
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.9,
+    },
   });
   // 2x gluttony-maggot-mound (small platforms)
   editor.spawnProp(LEVEL_ID, 'gluttony-maggot-mound', 16, 84, { roomId: voragosMawId });

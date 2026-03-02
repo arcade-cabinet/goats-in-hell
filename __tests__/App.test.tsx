@@ -2,7 +2,6 @@
  * @format
  */
 
-import React from 'react';
 import 'react-native';
 
 // Note: import explicitly to use the types shipped with jest.

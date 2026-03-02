@@ -348,8 +348,8 @@ function generateTextures() {
 let textures;
 
 // --- FLOOR/CEILING COLORS ---
-const FLOOR_COLOR = [40, 8, 8];
-const CEILING_COLOR = [15, 5, 20];
+const _FLOOR_COLOR = [40, 8, 8];
+const _CEILING_COLOR = [15, 5, 20];
 
 // --- AUDIO (procedural) ---
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -729,18 +729,18 @@ function update() {
   mouseMovX = 0;
 
   // Keyboard look
-  if (keys['arrowleft']) player.angle -= ROT_SPEED;
-  if (keys['arrowright']) player.angle += ROT_SPEED;
+  if (keys.arrowleft) player.angle -= ROT_SPEED;
+  if (keys.arrowright) player.angle += ROT_SPEED;
 
   // Movement
   let speed = MOVE_SPEED;
-  if (keys['shift']) speed *= SPRINT_MULT;
+  if (keys.shift) speed *= SPRINT_MULT;
 
   let dx = 0, dy = 0;
-  if (keys['w'] || keys['arrowup']) { dx += Math.cos(player.angle) * speed; dy += Math.sin(player.angle) * speed; }
-  if (keys['s'] || keys['arrowdown']) { dx -= Math.cos(player.angle) * speed; dy -= Math.sin(player.angle) * speed; }
-  if (keys['a']) { dx += Math.cos(player.angle - Math.PI/2) * speed * 0.7; dy += Math.sin(player.angle - Math.PI/2) * speed * 0.7; }
-  if (keys['d']) { dx += Math.cos(player.angle + Math.PI/2) * speed * 0.7; dy += Math.sin(player.angle + Math.PI/2) * speed * 0.7; }
+  if (keys.w || keys.arrowup) { dx += Math.cos(player.angle) * speed; dy += Math.sin(player.angle) * speed; }
+  if (keys.s || keys.arrowdown) { dx -= Math.cos(player.angle) * speed; dy -= Math.sin(player.angle) * speed; }
+  if (keys.a) { dx += Math.cos(player.angle - Math.PI/2) * speed * 0.7; dy += Math.sin(player.angle - Math.PI/2) * speed * 0.7; }
+  if (keys.d) { dx += Math.cos(player.angle + Math.PI/2) * speed * 0.7; dy += Math.sin(player.angle + Math.PI/2) * speed * 0.7; }
 
   // Collision with walls (with margin)
   const margin = 0.2;
@@ -756,7 +756,7 @@ function update() {
 
   // Shooting (keyboard)
   if (keys[' ']) shoot();
-  if (keys['r']) reload();
+  if (keys.r) reload();
 
   // Reload
   if (isReloading && Date.now() - reloadStart > RELOAD_TIME) {
@@ -765,7 +765,7 @@ function update() {
   }
 
   // Open doors
-  if (keys['e']) {
+  if (keys.e) {
     for (const door of doors) {
       const dist = Math.hypot(door.x + 0.5 - player.x, door.y + 0.5 - player.y);
       if (dist < 2 && !door.open) {
@@ -775,7 +775,7 @@ function update() {
         playSound('door');
       }
     }
-    keys['e'] = false;
+    keys.e = false;
   }
 
   // Enemies
@@ -878,7 +878,7 @@ function canWalk(x, y, map) {
   // Open doors
   if (map[my][mx] === 5) {
     const door = doors.find(d => d.x === mx && d.y === my);
-    return door && door.open;
+    return door?.open;
   }
   return false;
 }
@@ -922,7 +922,7 @@ function render() {
     const cos = Math.cos(rayAngle);
 
     let dist = 0;
-    let hitX, hitY, wallType = 1;
+    let _hitX, _hitY, wallType = 1;
     let side = 0;
 
     // DDA raycasting
@@ -939,7 +939,7 @@ function render() {
     if (dirY < 0) { stepY = -1; sideDistY = (player.y - mapYi) * deltaDistY; }
     else { stepY = 1; sideDistY = (mapYi + 1 - player.y) * deltaDistY; }
 
-    let hit = false;
+    let _hit = false;
     for (let step = 0; step < 64; step++) {
       if (sideDistX < sideDistY) {
         sideDistX += deltaDistX;
@@ -954,10 +954,10 @@ function render() {
         // Check if door is open
         if (map[mapYi][mapXi] === 5) {
           const door = doors.find(d => d.x === mapXi && d.y === mapYi);
-          if (door && door.open) continue;
+          if (door?.open) continue;
         }
         wallType = map[mapYi][mapXi];
-        hit = true;
+        _hit = true;
         break;
       }
     }
@@ -984,7 +984,7 @@ function render() {
     if (texCol >= TEX_SIZE) texCol = TEX_SIZE - 1;
 
     // Get texture data
-    const texData = textures[wallType + 'data'];
+    const texData = textures[`${wallType}data`];
     if (texData) {
       const darkFactor = side === 1 ? 0.7 : 1.0;
       const fogFactor = Math.max(0, 1 - perpDist / MAX_DEPTH);
@@ -1272,7 +1272,7 @@ function getGoatPixel(tx, ty, type, time) {
   return null;
 }
 
-function drawDeadGoat(sx, sy, w, h, type, fog, dist, zBuffer, stripW) {
+function drawDeadGoat(sx, sy, w, h, _type, fog, dist, zBuffer, stripW) {
   // Flattened / collapsed version
   const left = Math.floor(sx - w*0.6);
   const right = Math.floor(sx + w*0.6);

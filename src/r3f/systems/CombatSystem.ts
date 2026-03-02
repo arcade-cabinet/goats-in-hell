@@ -322,7 +322,7 @@ function distanceBetween(
 }
 
 /** Check a player-owned projectile against all enemies. */
-function checkPlayerProjectileCollisions(projectile: Entity): boolean {
+function _checkPlayerProjectileCollisions(projectile: Entity): boolean {
   const projPos = projectile.position!;
   const projData = projectile.projectile!;
   let hitSomething = false;
@@ -406,7 +406,7 @@ function checkPlayerProjectileCollisions(projectile: Entity): boolean {
 }
 
 /** Check an enemy-owned projectile against the player. */
-function checkEnemyProjectileCollision(projectile: Entity, player: Entity): boolean {
+function _checkEnemyProjectileCollision(projectile: Entity, player: Entity): boolean {
   if (!player.position || !player.player) return false;
 
   const dist = distanceBetween(projectile.position!, player.position);
@@ -436,7 +436,7 @@ function checkEnemyProjectileCollision(projectile: Entity, player: Entity): bool
 export function combatSystemUpdate(deltaTime: number): void {
   // Frame-rate normalization factor: 1.0 at 60fps (16ms), proportionally
   // larger/smaller at other rates so movement and lifetimes stay consistent.
-  const dtFactor = deltaTime / 16;
+  const _dtFactor = deltaTime / 16;
 
   const player = world.entities.find((e: Entity) => e.type === 'player' && e.player);
 

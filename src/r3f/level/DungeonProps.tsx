@@ -17,8 +17,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three/webgpu';
 import {
   PROP_MODEL_ASSETS,
-  SETPIECE_MODEL_ASSETS,
   type PropModelKey,
+  SETPIECE_MODEL_ASSETS,
   type SetpieceModelKey,
 } from '../../game/systems/AssetRegistry';
 import { cloneModel, isModelLoaded, loadModels } from '../systems/ModelLoader';
@@ -187,7 +187,10 @@ function collectNeededAssets(spawns: PropSpawn[]): [string, number | string][] {
   for (const spawn of spawns) {
     const config = PROP_GLB_CONFIGS[spawn.type];
     const resolved = config
-      ? { key: config.assetKey as string, value: PROP_MODEL_ASSETS[config.assetKey] as number | string }
+      ? {
+          key: config.assetKey as string,
+          value: PROP_MODEL_ASSETS[config.assetKey] as number | string,
+        }
       : resolveAsset(spawn.type);
     if (!resolved || seen.has(resolved.key)) continue;
 
@@ -311,9 +314,7 @@ export function DungeonProps({ spawns }: DungeonPropsProps): null {
 
     for (const spawn of propSpawns) {
       const config = PROP_GLB_CONFIGS[spawn.type];
-      const resolved = config
-        ? { key: config.assetKey as string }
-        : resolveAsset(spawn.type);
+      const resolved = config ? { key: config.assetKey as string } : resolveAsset(spawn.type);
       const assetKey = resolved?.key ?? null;
       const scale = config?.scale ?? 0.7;
 

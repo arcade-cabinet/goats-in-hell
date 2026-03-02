@@ -114,21 +114,27 @@ async function initSqlJs(): Promise<DrizzleDb> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const initSqlJsLib = (await import('sql.js' as any)).default;
   const { drizzle: drizzleSqlJs } = await import('drizzle-orm/sql-js' as string);
-  const SQL = await initSqlJsLib();
 
-  // Try loading pre-built DB from assets, or create empty
-  let sqlJsDb: any;
-  try {
-    const response = await fetch('/assets/levels.db');
-    if (response.ok) {
-      const buffer = await response.arrayBuffer();
-      sqlJsDb = new SQL.Database(new Uint8Array(buffer));
-    } else {
-      sqlJsDb = new SQL.Database();
-    }
-  } catch {
-    sqlJsDb = new SQL.Database();
+  // locateFile tells sql.js where to find sql-wasm.wasm.
+  // In a Metro-bundled Expo web app the WASM isn't co-located with the JS
+  // bundle, so we serve it explicitly from the CDN matching the installed version.
+  const SQL = await initSqlJsLib({
+    locateFile: (file: string) => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.12.0/${file}`,
+  });
+
+  // Load the pre-built SQLite database from the asset server.
+  // Expo Metro dev server serves the project root, so /assets/levels.db
+  // resolves to the file at <project>/assets/levels.db.
+  const response = await fetch('/assets/levels.db');
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch /assets/levels.db — HTTP ${response.status} ${response.statusText}. ` +
+        'Ensure the Expo dev server is running and assets/levels.db exists.',
+    );
   }
+  const buffer = await response.arrayBuffer();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sqlJsDb: any = new SQL.Database(new Uint8Array(buffer));
 
   return drizzleSqlJs(sqlJsDb, { schema }) as DrizzleDb;
 }

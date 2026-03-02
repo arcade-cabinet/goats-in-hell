@@ -24,10 +24,8 @@ import { useGameStore } from '../../state/GameStore';
 import type { Entity, Vec3 } from '../entities/components';
 import {
   vec3,
-  vec3Clone,
   vec3Distance,
   vec3Length,
-  vec3Scale,
   vec3ScaleInPlace,
   vec3Subtract,
   vec3Zero,

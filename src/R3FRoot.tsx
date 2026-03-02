@@ -7,7 +7,16 @@
 
 import { useFrame, useThree } from '@react-three/fiber';
 import { and, eq } from 'drizzle-orm';
-import { useEffect, useMemo, useRef } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import { gameplayConfig } from './config';
 import { CELL_SIZE } from './constants';
 import type { DrizzleDb } from './db/connection';
 import {
@@ -94,16 +103,20 @@ import {
 } from './r3f/weapons/WeaponSystem';
 import { WeaponViewModel } from './r3f/weapons/WeaponViewModel';
 import { DIFFICULTY_PRESETS, savePlayerSnapshot, useGameStore } from './state/GameStore';
+import { FatalErrorModal } from './ui/FatalErrorModal';
 
 // ---------------------------------------------------------------------------
-// Arena constants
+// Fatal error context — propagates init failures from inside Canvas to R3FRoot
 // ---------------------------------------------------------------------------
 
-/** Arena grid size (must match the value used in generateLevelData). */
-const ARENA_SIZE = 24;
+const FatalErrorContext = createContext<(err: Error | string) => void>(() => {});
 
-/** Minimum number of waves the player must survive before an arena completes. */
-const ARENA_MIN_WAVES = 5;
+// ---------------------------------------------------------------------------
+// Arena constants — loaded from config/gameplay.json
+// ---------------------------------------------------------------------------
+
+const ARENA_SIZE = gameplayConfig.arena.size;
+const ARENA_MIN_WAVES = gameplayConfig.arena.minWavesToClear;
 
 // ---------------------------------------------------------------------------
 // Level database — lazy singleton
@@ -116,20 +129,15 @@ let _levelDb: DrizzleDb | null = null;
  * the GameStore.dbReady flag. Safe to call multiple times — only the
  * first call does work.
  */
-async function ensureLevelDb(): Promise<DrizzleDb | null> {
+async function ensureLevelDb(): Promise<DrizzleDb> {
   if (_levelDb) return _levelDb;
-  try {
-    const { getDb } = await import('./db/connection');
-    const { migrateAndSeed } = await import('./db/migrate');
-    const db = await getDb();
-    await migrateAndSeed(db);
-    _levelDb = db;
-    useGameStore.getState().setDbReady(true);
-    return _levelDb;
-  } catch (err) {
-    console.warn('[R3FRoot] DB init failed, using procedural levels:', err);
-    return null;
-  }
+  const { getDb } = await import('./db/connection');
+  const { migrateAndSeed } = await import('./db/migrate');
+  const db = await getDb();
+  await migrateAndSeed(db);
+  _levelDb = db;
+  useGameStore.getState().setDbReady(true);
+  return _levelDb;
 }
 
 /**
@@ -295,8 +303,9 @@ function generateLevelData(
 
 function GameScene() {
   const scene = useThree((s) => s.scene);
+  const reportFatalError = useContext(FatalErrorContext);
   const levelDataRef = useRef<LevelData | null>(null);
-  const envZonesRef = useRef<RuntimeEnvZone[]>([]);
+  const _envZonesRef = useRef<RuntimeEnvZone[]>([]);
   const graceTimerRef = useRef(2000); // Start active to prevent race with entity spawn useEffect
   const floorKeyRef = useRef(0);
   const snapshotTimerRef = useRef(0); // Throttle savePlayerSnapshot to once per second
@@ -312,22 +321,24 @@ function GameScene() {
   const diffMods = DIFFICULTY_PRESETS[difficulty];
   const nightmareDmgMult = nightmareFlags.nightmare || nightmareFlags.ultraNightmare ? 2 : 1;
 
-  // Kick off lazy DB initialization on mount
+  // Kick off lazy DB initialization on mount — errors surface as fatal modal
   useEffect(() => {
     let cancelled = false;
     async function initDb() {
       try {
-        const db = await ensureLevelDb();
-        if (!db || cancelled) return;
+        await ensureLevelDb();
       } catch (err) {
-        console.warn('[R3FRoot] DB init failed, using procedural levels:', err);
+        if (cancelled) return;
+        reportFatalError(
+          err instanceof Error ? err : new Error(`DB initialization failed: ${String(err)}`),
+        );
       }
     }
     initDb();
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [reportFatalError]);
 
   // Generate level when floor/encounterType/circleNumber changes, when DB
   // becomes ready, or when levelSource changes
@@ -336,6 +347,29 @@ function GameScene() {
     () => generateLevelData(stage.encounterType, stage.floor, stage.bossId),
     [stage.encounterType, stage.floor, stage.bossId, dbReady, levelSource, circleNumber],
   );
+
+  // After DB becomes ready, verify a level was actually loaded from it.
+  // If dbReady=true but levelData has no levelId the DB level is missing.
+  useEffect(() => {
+    if (!dbReady || levelSource !== 'database') return;
+    if (!levelData.levelId) {
+      reportFatalError(
+        new Error(
+          `No level found in database for circle ${circleNumber}, floor ${stage.floor}, ` +
+            `type "${stage.encounterType}". Run the build-circle script for this circle ` +
+            `or check that assets/levels.db is up to date.`,
+        ),
+      );
+    }
+  }, [
+    dbReady,
+    levelData.levelId,
+    circleNumber,
+    stage.floor,
+    stage.encounterType,
+    levelSource,
+    reportFatalError,
+  ]);
 
   // Load environment zones from DB (empty array for procedural levels)
   // biome-ignore lint/correctness/useExhaustiveDependencies: same deps as levelData memo
@@ -706,9 +740,19 @@ function GameScene() {
 // ---------------------------------------------------------------------------
 
 export default function R3FRoot() {
+  const [fatalError, setFatalError] = useState<Error | null>(null);
+  const reportFatalError = useCallback((err: Error | string) => {
+    const e = err instanceof Error ? err : new Error(String(err));
+    console.error('[R3FRoot] Fatal error:', e);
+    setFatalError(e);
+  }, []);
+
   return (
-    <R3FApp>
-      <GameScene />
-    </R3FApp>
+    <FatalErrorContext.Provider value={reportFatalError}>
+      <R3FApp>
+        <GameScene />
+      </R3FApp>
+      {fatalError && <FatalErrorModal error={fatalError} />}
+    </FatalErrorContext.Provider>
   );
 }

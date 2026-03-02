@@ -42,7 +42,7 @@ const MESHY_API_BASE = 'https://api.meshy.ai/openapi/v1';
 
 const ANIMATION_IDS = {
   // Walk/Run
-  'WalkAndRun.Walking.Zombie_Walk': 112,          // [CLOSEST MATCH] Monster_Walk
+  'WalkAndRun.Walking.Zombie_Walk': 112, // [CLOSEST MATCH] Monster_Walk
   'WalkAndRun.Walking.Stumble_Walk': 562,
   'WalkAndRun.Running.Lean_Forward_Sprint': 509,
 
@@ -82,8 +82,8 @@ const ANIMATION_IDS = {
   'Fighting.CastingSpell.mage_soell_cast_2': 131,
 
   // Punching
-  'Fighting.Punching.Fast_Punch_Combo': 198,      // [CLOSEST MATCH] Punch_Combo
-  'Fighting.Punching.Hook_Punch': 193,            // [CLOSEST MATCH] Left_Hook_from_Guard
+  'Fighting.Punching.Fast_Punch_Combo': 198, // [CLOSEST MATCH] Punch_Combo
+  'Fighting.Punching.Hook_Punch': 193, // [CLOSEST MATCH] Left_Hook_from_Guard
 
   // Body Movements
   'BodyMovements.Acting.Mummy_Stagger': 113,
@@ -144,7 +144,9 @@ function collectEnemyDirs() {
     ? [targetGroup]
     : readdirSync(ENEMIES_DIR).filter((g) => {
         try {
-          return readdirSync(join(ENEMIES_DIR, g), { withFileTypes: true }).some((e) => e.isDirectory());
+          return readdirSync(join(ENEMIES_DIR, g), { withFileTypes: true }).some((e) =>
+            e.isDirectory(),
+          );
         } catch {
           return false;
         }
@@ -236,7 +238,7 @@ function sleep(ms) {
 async function runAnimationsForEnemy(assetDir) {
   const manifestPath = join(assetDir, 'manifest.json');
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
-  const id = manifest.id ?? basename(assetDir);
+  const _id = manifest.id ?? basename(assetDir);
 
   const rigStatus = manifest.tasks?.rigging?.status;
   if (rigStatus !== 'SUCCEEDED') {
@@ -284,7 +286,8 @@ async function runAnimationsForEnemy(assetDir) {
 
     // Submit (or resume a pending/in-progress task)
     let taskId = existing?.taskId;
-    const resumable = taskId && (existing?.status === 'PENDING' || existing?.status === 'IN_PROGRESS');
+    const resumable =
+      taskId && (existing?.status === 'PENDING' || existing?.status === 'IN_PROGRESS');
 
     if (!taskId || existing?.status === 'FAILED' || existing?.status === 'EXPIRED') {
       console.log(`  ▶ Submitting ${animName} (action_id=${actionId})…`);

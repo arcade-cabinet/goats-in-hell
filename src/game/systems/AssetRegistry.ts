@@ -87,19 +87,36 @@ export const TEXTURE_ASSETS = {
 export type TextureAssetKey = keyof typeof TEXTURE_ASSETS;
 
 // ---------------------------------------------------------------------------
-// Models — Weapons (Kenney Blaster Kit)
+// Models — Weapons (Stylized Guns 3D Models PRO)
 // ---------------------------------------------------------------------------
 
 export const WEAPON_MODEL_ASSETS = {
-  'weapon-pistol': require('../../../assets/models/weapons/blaster-a.glb'),
-  'weapon-shotgun': require('../../../assets/models/weapons/blaster-c.glb'),
-  'weapon-cannon': require('../../../assets/models/weapons/blaster-g.glb'),
-  'weapon-launcher': require('../../../assets/models/weapons/blaster-n.glb'),
-  // Flamethrower — reuses blaster-g as placeholder until dedicated model is added
-  'weapon-flamethrower': require('../../../assets/models/weapons/blaster-g.glb'),
+  // MAC-10 → pistol sidearm
+  'weapon-pistol': require('../../../assets/models/weapons/weapon-pistol.glb'),
+  // Pump-Action Shotgun
+  'weapon-shotgun': require('../../../assets/models/weapons/weapon-shotgun.glb'),
+  // AK-47 → hellfire assault cannon
+  'weapon-cannon': require('../../../assets/models/weapons/weapon-cannon.glb'),
+  // Bazooka (RPG-7) → Goat's Bane rocket launcher
+  'weapon-launcher': require('../../../assets/models/weapons/weapon-launcher.glb'),
+  // Flamethrower — uses cannon as stand-in until dedicated model is exported
+  'weapon-flamethrower': require('../../../assets/models/weapons/weapon-cannon.glb'),
 } as const;
 
 export type WeaponModelKey = keyof typeof WEAPON_MODEL_ASSETS;
+
+// ---------------------------------------------------------------------------
+// Models — Projectiles
+// ---------------------------------------------------------------------------
+
+export const PROJECTILE_MODEL_ASSETS = {
+  'projectile-bullet-small': require('../../../assets/models/projectiles/projectile-bullet-small.glb'),
+  'projectile-bullet-large': require('../../../assets/models/projectiles/projectile-bullet-large.glb'),
+  'projectile-shell': require('../../../assets/models/projectiles/projectile-shell.glb'),
+  'projectile-rocket': require('../../../assets/models/projectiles/projectile-rocket.glb'),
+} as const;
+
+export type ProjectileModelKey = keyof typeof PROJECTILE_MODEL_ASSETS;
 
 // ---------------------------------------------------------------------------
 // Models — Enemies

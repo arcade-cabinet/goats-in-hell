@@ -112,7 +112,12 @@ function readExistingKeysWithPrefix(registrySource, prefix) {
     const closeQuote = trimmed.indexOf("'", searchPrefix.length);
     if (closeQuote === -1) continue;
     const key = trimmed.slice(1, closeQuote);
-    if (trimmed.slice(closeQuote + 1).trimStart().startsWith(': require(')) {
+    if (
+      trimmed
+        .slice(closeQuote + 1)
+        .trimStart()
+        .startsWith(': require(')
+    ) {
       keys.add(key);
     }
   }
@@ -161,11 +166,17 @@ const existingSetpieceKeys = readExistingKeysWithPrefix(registrySource, 'setpiec
 
 // Filter to only new entries
 const newProps = discoveredProps.filter((d) => !existingPropKeys.has(`prop-${d.id}`));
-const newSetpieces = discoveredSetpieces.filter((d) => !existingSetpieceKeys.has(`setpiece-${d.id}`));
+const newSetpieces = discoveredSetpieces.filter(
+  (d) => !existingSetpieceKeys.has(`setpiece-${d.id}`),
+);
 
 console.log();
-console.log(`Existing PROP_MODEL_ASSETS keys:     ${existingPropKeys.size}  (${newProps.length} new)`);
-console.log(`Existing SETPIECE_MODEL_ASSETS keys: ${existingSetpieceKeys.size}  (${newSetpieces.length} new)`);
+console.log(
+  `Existing PROP_MODEL_ASSETS keys:     ${existingPropKeys.size}  (${newProps.length} new)`,
+);
+console.log(
+  `Existing SETPIECE_MODEL_ASSETS keys: ${existingSetpieceKeys.size}  (${newSetpieces.length} new)`,
+);
 
 if (newProps.length === 0 && newSetpieces.length === 0) {
   console.log('\nRegistry is already up to date.');
@@ -178,7 +189,8 @@ if (newProps.length > 0) {
 }
 if (newSetpieces.length > 0) {
   console.log('\nSet pieces to add:');
-  for (const e of newSetpieces) console.log(`  + setpiece-${e.id} (${e.group}/${e.id}/refined.glb)`);
+  for (const e of newSetpieces)
+    console.log(`  + setpiece-${e.id} (${e.group}/${e.id}/refined.glb)`);
 }
 
 if (dryRun) {
@@ -212,4 +224,6 @@ if (newSetpieces.length > 0) {
 
 writeFileSync(REGISTRY_PATH, registrySource, 'utf-8');
 console.log();
-console.log(`Wrote ${newProps.length} prop + ${newSetpieces.length} set piece entries to AssetRegistry.ts`);
+console.log(
+  `Wrote ${newProps.length} prop + ${newSetpieces.length} set piece entries to AssetRegistry.ts`,
+);

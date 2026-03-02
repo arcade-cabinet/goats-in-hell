@@ -295,7 +295,10 @@ export class LevelEditor {
     // Child tables have ON DELETE CASCADE, but Drizzle doesn't enforce FK
     // constraints by default in better-sqlite3, so delete explicitly.
     this.db.delete(schema.decals).where(eq(schema.decals.levelId, levelId)).run();
-    this.db.delete(schema.environmentZones).where(eq(schema.environmentZones.levelId, levelId)).run();
+    this.db
+      .delete(schema.environmentZones)
+      .where(eq(schema.environmentZones.levelId, levelId))
+      .run();
     this.db.delete(schema.entities).where(eq(schema.entities.levelId, levelId)).run();
     this.db.delete(schema.triggers).where(eq(schema.triggers.levelId, levelId)).run();
     this.db.delete(schema.connections).where(eq(schema.connections.levelId, levelId)).run();

@@ -16,6 +16,7 @@
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three/webgpu';
+import { weaponVisualsConfig } from '../../config';
 import type { Entity, WeaponId } from '../../game/entities/components';
 import { world } from '../../game/entities/world';
 import { WEAPON_MODEL_ASSETS } from '../../game/systems/AssetRegistry';
@@ -44,8 +45,17 @@ interface WeaponVisualConfig {
   modelRotation: [number, number, number];
 }
 
-/** Map from WeaponId to asset key in WEAPON_MODEL_ASSETS */
-const WEAPON_MODEL_KEY: Record<WeaponId, string> = {
+/** Map from WeaponId to placeholder box size [w, h, d]. */
+const WEAPON_BOX_SIZE: Record<WeaponId, [number, number, number]> = {
+  hellPistol: [0.06, 0.08, 0.25],
+  brimShotgun: [0.06, 0.06, 0.45],
+  hellfireCannon: [0.08, 0.08, 0.35],
+  goatsBane: [0.1, 0.1, 0.5],
+  brimstoneFlamethrower: [0.1, 0.1, 0.45],
+};
+
+/** Map from WeaponId to GLB asset key. */
+const WEAPON_GLB_KEY: Record<WeaponId, string> = {
   hellPistol: 'weapon-pistol',
   brimShotgun: 'weapon-shotgun',
   hellfireCannon: 'weapon-cannon',
@@ -53,65 +63,59 @@ const WEAPON_MODEL_KEY: Record<WeaponId, string> = {
   brimstoneFlamethrower: 'weapon-flamethrower',
 };
 
+function buildWeaponVisualConfig(id: WeaponId): WeaponVisualConfig {
+  const vc = (
+    weaponVisualsConfig as Record<
+      string,
+      (typeof weaponVisualsConfig)[keyof typeof weaponVisualsConfig]
+    >
+  )[id];
+  const off = vc.offset as [number, number, number];
+  return {
+    size: WEAPON_BOX_SIZE[id],
+    offset: new THREE.Vector3(off[0], off[1], off[2]),
+    color: vc.color,
+    emissive: vc.emissive,
+    modelKey: WEAPON_GLB_KEY[id],
+    modelScale: vc.modelScale,
+    modelRotation: [0, Math.PI, 0],
+  };
+}
+
 const WEAPON_VISUALS: Record<WeaponId, WeaponVisualConfig> = {
-  hellPistol: {
-    size: [0.06, 0.08, 0.25],
-    offset: new THREE.Vector3(0.2, -0.15, -0.35),
-    color: '#555555',
-    emissive: '#331100',
-    modelKey: 'weapon-pistol',
-    modelScale: 0.15,
-    modelRotation: [0, Math.PI, 0],
-  },
-  brimShotgun: {
-    size: [0.06, 0.06, 0.45],
-    offset: new THREE.Vector3(0.22, -0.18, -0.4),
-    color: '#444444',
-    emissive: '#001133',
-    modelKey: 'weapon-shotgun',
-    modelScale: 0.15,
-    modelRotation: [0, Math.PI, 0],
-  },
-  hellfireCannon: {
-    size: [0.08, 0.08, 0.35],
-    offset: new THREE.Vector3(0.18, -0.16, -0.38),
-    color: '#553333',
-    emissive: '#440000',
-    modelKey: 'weapon-cannon',
-    modelScale: 0.15,
-    modelRotation: [0, Math.PI, 0],
-  },
-  goatsBane: {
-    size: [0.1, 0.1, 0.5],
-    offset: new THREE.Vector3(0.2, -0.2, -0.45),
-    color: '#444455',
-    emissive: '#220044',
-    modelKey: 'weapon-launcher',
-    modelScale: 0.18,
-    modelRotation: [0, Math.PI, 0],
-  },
-  brimstoneFlamethrower: {
-    size: [0.1, 0.1, 0.45],
-    offset: new THREE.Vector3(0.2, -0.18, -0.4),
-    color: '#554422',
-    emissive: '#441100',
-    modelKey: 'weapon-flamethrower',
-    modelScale: 0.16,
-    modelRotation: [0, Math.PI, 0],
-  },
+  hellPistol: buildWeaponVisualConfig('hellPistol'),
+  brimShotgun: buildWeaponVisualConfig('brimShotgun'),
+  hellfireCannon: buildWeaponVisualConfig('hellfireCannon'),
+  goatsBane: buildWeaponVisualConfig('goatsBane'),
+  brimstoneFlamethrower: buildWeaponVisualConfig('brimstoneFlamethrower'),
 };
 
 // ---------------------------------------------------------------------------
 // Animation constants
 // ---------------------------------------------------------------------------
 
-/** Per-weapon recoil config for satisfying feedback. */
+/** Per-weapon recoil config — sourced from config/weaponVisuals.json. */
 const WEAPON_RECOIL: Record<WeaponId, { kickBack: number; kickUp: number }> = {
-  hellPistol: { kickBack: 0.08, kickUp: 0.04 },
-  brimShotgun: { kickBack: 0.18, kickUp: 0.1 },
-  hellfireCannon: { kickBack: 0.05, kickUp: 0.02 },
-  goatsBane: { kickBack: 0.25, kickUp: 0.15 },
-  brimstoneFlamethrower: { kickBack: 0.02, kickUp: 0.01 },
+  hellPistol: {
+    kickBack: weaponVisualsConfig.hellPistol.recoilKickBack,
+    kickUp: weaponVisualsConfig.hellPistol.recoilKickUp,
+  },
+  brimShotgun: {
+    kickBack: weaponVisualsConfig.brimShotgun.recoilKickBack,
+    kickUp: weaponVisualsConfig.brimShotgun.recoilKickUp,
+  },
+  hellfireCannon: {
+    kickBack: weaponVisualsConfig.hellfireCannon.recoilKickBack,
+    kickUp: weaponVisualsConfig.hellfireCannon.recoilKickUp,
+  },
+  goatsBane: {
+    kickBack: weaponVisualsConfig.goatsBane.recoilKickBack,
+    kickUp: weaponVisualsConfig.goatsBane.recoilKickUp,
+  },
+  brimstoneFlamethrower: {
+    kickBack: weaponVisualsConfig.brimstoneFlamethrower.recoilKickBack,
+    kickUp: weaponVisualsConfig.brimstoneFlamethrower.recoilKickUp,
+  },
 };
 /** Recoil spring-back speed (units/sec). */
 const RECOIL_RECOVERY_SPEED = 6;
@@ -313,7 +317,7 @@ function buildWeaponObject(weaponId: WeaponId, useGlb: boolean): THREE.Object3D 
  * Build a GLB-based weapon model.
  */
 function buildGlbWeapon(weaponId: WeaponId, config: WeaponVisualConfig): THREE.Group | null {
-  const modelKey = WEAPON_MODEL_KEY[weaponId];
+  const modelKey = config.modelKey;
   if (!isModelLoaded(modelKey)) return null;
 
   const cloned = cloneModel(modelKey);
