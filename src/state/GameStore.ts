@@ -165,6 +165,10 @@ export interface GameStoreState {
   /** Whether haptic feedback is enabled. */
   hapticsEnabled: boolean;
 
+  // --- Exploration tracking ---
+  /** Rooms visited this run, keyed by circle number. Foundation for map fog-of-war. */
+  visitedRooms: Record<number, string[]>;
+
   // --- Autoplay (e2e testing) ---
   /** When true, Yuka AI governor controls the player. */
   autoplay: boolean;
@@ -192,6 +196,8 @@ export interface GameStoreState {
   addOptionalEnemies: (count: number) => void;
   /** Set partial state (for effects, kills, etc.). */
   patch: (partial: Partial<GameStoreState>) => void;
+  /** Record a room as visited this run. No-op if already recorded. */
+  addVisitedRoom: (circleNumber: number, roomId: string) => void;
   /** Full reset to main menu. */
   resetToMenu: () => void;
 
@@ -375,6 +381,11 @@ let cachedPlayerSnapshot: PlayerSnapshot = {};
 /** Called by the game engine to cache player ECS state for the next save. */
 export function savePlayerSnapshot(snapshot: PlayerSnapshot): void {
   cachedPlayerSnapshot = snapshot;
+}
+
+/** Get the cached player ECS snapshot (latest HP, weapon, ammo). */
+export function getPlayerSnapshot(): PlayerSnapshot {
+  return cachedPlayerSnapshot;
 }
 
 /** Callback invoked after a successful save. Set by BabylonHUD to show toast. */
@@ -612,6 +623,8 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
   gyroEnabled: savedSettings?.gyroEnabled ?? false,
   hapticsEnabled: savedSettings?.hapticsEnabled ?? true,
 
+  visitedRooms: {},
+
   autoplay:
     typeof window !== 'undefined' &&
     new URLSearchParams(window.location?.search ?? '').has('autoplay'),
@@ -647,6 +660,7 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
       gunFlash: 0,
       hitMarker: 0,
       restoredPlayerState: null,
+      visitedRooms: {},
     });
   },
 
@@ -732,6 +746,18 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
   addOptionalEnemies: (count) =>
     set((s) => ({ optionalEnemiesTotal: s.optionalEnemiesTotal + count })),
 
+  addVisitedRoom: (circleNumber, roomId) =>
+    set((s) => {
+      const existing = s.visitedRooms[circleNumber] ?? [];
+      if (existing.includes(roomId)) return s;
+      return {
+        visitedRooms: {
+          ...s.visitedRooms,
+          [circleNumber]: [...existing, roomId],
+        },
+      };
+    }),
+
   patch: (partial) => set(partial as any),
 
   continueGame: () => {
@@ -772,6 +798,7 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
       gunFlash: 0,
       hitMarker: 0,
       restoredPlayerState,
+      visitedRooms: {},
     });
   },
 

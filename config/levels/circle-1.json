@@ -1,0 +1,1303 @@
+{
+  "circleNumber": 1,
+  "id": "circle-1-limbo",
+  "name": "Circle 1: Limbo",
+  "width": 40,
+  "depth": 55,
+  "floor": 1,
+  "grid": [
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0,
+      0, 0, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0,
+      0, 0, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0,
+      0, 0, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 1, 1, 1, 0,
+      0, 0, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0,
+      0, 0, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0,
+      0, 0, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1
+    ]
+  ],
+  "playerSpawn": {
+    "x": 40,
+    "y": 1,
+    "z": 10
+  },
+  "spawns": [
+    {
+      "type": "il-vecchio",
+      "x": 40,
+      "z": 96
+    },
+    {
+      "type": "hellgoat",
+      "x": 34,
+      "z": 30
+    },
+    {
+      "type": "hellgoat",
+      "x": 46,
+      "z": 30
+    },
+    {
+      "type": "hellgoat",
+      "x": 40,
+      "z": 40
+    },
+    {
+      "type": "ammo",
+      "x": 40,
+      "z": 12
+    },
+    {
+      "type": "ammo",
+      "x": 40,
+      "z": 34
+    },
+    {
+      "type": "weapon_shotgun",
+      "x": 66,
+      "z": 34
+    },
+    {
+      "type": "ammo",
+      "x": 68,
+      "z": 32
+    },
+    {
+      "type": "ammo",
+      "x": 8,
+      "z": 36
+    },
+    {
+      "type": "ammo",
+      "x": 16,
+      "z": 36
+    },
+    {
+      "type": "health",
+      "x": 12,
+      "z": 36
+    },
+    {
+      "type": "ammo",
+      "x": 40,
+      "z": 54
+    },
+    {
+      "type": "health",
+      "x": 40,
+      "z": 72
+    },
+    {
+      "type": "ammo",
+      "x": 48,
+      "z": 86
+    },
+    {
+      "type": "ammo",
+      "x": 30,
+      "z": 104
+    },
+    {
+      "type": "health",
+      "x": 30,
+      "z": 86
+    },
+    {
+      "type": "health",
+      "x": 48,
+      "z": 104
+    },
+    {
+      "type": "limbo-crumbling-arch",
+      "x": 32,
+      "z": 4
+    },
+    {
+      "type": "limbo-inscription-tablet",
+      "x": 40,
+      "z": 4
+    },
+    {
+      "type": "limbo-torch-bracket",
+      "x": 32,
+      "z": 6
+    },
+    {
+      "type": "limbo-torch-bracket",
+      "x": 46,
+      "z": 6
+    },
+    {
+      "type": "limbo-vase-rubble",
+      "x": 36,
+      "z": 8
+    },
+    {
+      "type": "limbo-vase-rubble",
+      "x": 44,
+      "z": 8
+    },
+    {
+      "type": "limbo-stone-bench",
+      "x": 34,
+      "z": 12
+    },
+    {
+      "type": "limbo-cobweb-cluster",
+      "x": 32,
+      "z": 4
+    },
+    {
+      "type": "limbo-cobweb-cluster",
+      "x": 46,
+      "z": 4
+    },
+    {
+      "type": "limbo-cracked-floor-slab",
+      "x": 38,
+      "z": 10
+    },
+    {
+      "type": "limbo-rubble-scatter",
+      "x": 34,
+      "z": 6
+    },
+    {
+      "type": "limbo-rubble-scatter",
+      "x": 46,
+      "z": 10
+    },
+    {
+      "type": "limbo-ancient-pillar",
+      "x": 32,
+      "z": 28
+    },
+    {
+      "type": "limbo-ancient-pillar",
+      "x": 46,
+      "z": 28
+    },
+    {
+      "type": "limbo-iron-gate",
+      "x": 28,
+      "z": 42
+    },
+    {
+      "type": "limbo-crumbling-arch",
+      "x": 38,
+      "z": 42
+    },
+    {
+      "type": "limbo-torch-bracket",
+      "x": 28,
+      "z": 26
+    },
+    {
+      "type": "limbo-torch-bracket",
+      "x": 50,
+      "z": 26
+    },
+    {
+      "type": "limbo-cage",
+      "x": 34,
+      "z": 32
+    },
+    {
+      "type": "limbo-cage",
+      "x": 42,
+      "z": 36
+    },
+    {
+      "type": "limbo-vase-rubble",
+      "x": 30,
+      "z": 30
+    },
+    {
+      "type": "limbo-vase-rubble",
+      "x": 40,
+      "z": 34
+    },
+    {
+      "type": "limbo-vase-rubble",
+      "x": 48,
+      "z": 38
+    },
+    {
+      "type": "limbo-fallen-column",
+      "x": 44,
+      "z": 30
+    },
+    {
+      "type": "limbo-moss-growth",
+      "x": 28,
+      "z": 36
+    },
+    {
+      "type": "limbo-bone-pile",
+      "x": 36,
+      "z": 40
+    },
+    {
+      "type": "limbo-tombstone",
+      "x": 32,
+      "z": 38
+    },
+    {
+      "type": "limbo-tombstone",
+      "x": 48,
+      "z": 34
+    },
+    {
+      "type": "limbo-cobweb-cluster",
+      "x": 50,
+      "z": 36
+    },
+    {
+      "type": "limbo-crumbling-arch",
+      "x": 60,
+      "z": 28
+    },
+    {
+      "type": "limbo-torch-bracket",
+      "x": 62,
+      "z": 30
+    },
+    {
+      "type": "limbo-stone-lectern",
+      "x": 66,
+      "z": 32
+    },
+    {
+      "type": "limbo-moss-growth",
+      "x": 60,
+      "z": 32
+    },
+    {
+      "type": "limbo-moss-growth",
+      "x": 68,
+      "z": 36
+    },
+    {
+      "type": "limbo-sarcophagus",
+      "x": 64,
+      "z": 36
+    },
+    {
+      "type": "limbo-cobweb-cluster",
+      "x": 70,
+      "z": 28
+    },
+    {
+      "type": "limbo-skull-pile",
+      "x": 66,
+      "z": 36
+    },
+    {
+      "type": "limbo-cobweb-cluster",
+      "x": 60,
+      "z": 38
+    },
+    {
+      "type": "limbo-crumbling-arch",
+      "x": 4,
+      "z": 28
+    },
+    {
+      "type": "limbo-chain-cluster",
+      "x": 8,
+      "z": 30
+    },
+    {
+      "type": "limbo-chain-cluster",
+      "x": 14,
+      "z": 34
+    },
+    {
+      "type": "limbo-chain-cluster",
+      "x": 10,
+      "z": 38
+    },
+    {
+      "type": "limbo-bone-pile",
+      "x": 6,
+      "z": 32
+    },
+    {
+      "type": "limbo-bone-pile",
+      "x": 12,
+      "z": 36
+    },
+    {
+      "type": "limbo-bone-pile",
+      "x": 16,
+      "z": 40
+    },
+    {
+      "type": "limbo-bone-pile",
+      "x": 10,
+      "z": 34
+    },
+    {
+      "type": "limbo-torch-bracket",
+      "x": 4,
+      "z": 30
+    },
+    {
+      "type": "limbo-tombstone",
+      "x": 18,
+      "z": 30
+    },
+    {
+      "type": "limbo-tombstone",
+      "x": 18,
+      "z": 38
+    },
+    {
+      "type": "limbo-broken-altar",
+      "x": 10,
+      "z": 42
+    },
+    {
+      "type": "fog-lantern",
+      "x": 14,
+      "z": 28
+    },
+    {
+      "type": "limbo-spike-cluster",
+      "x": 6,
+      "z": 40
+    },
+    {
+      "type": "limbo-spike-cluster",
+      "x": 16,
+      "z": 32
+    },
+    {
+      "type": "limbo-skull-pile",
+      "x": 14,
+      "z": 38
+    },
+    {
+      "type": "limbo-ancient-pillar",
+      "x": 34,
+      "z": 56
+    },
+    {
+      "type": "limbo-ancient-pillar",
+      "x": 40,
+      "z": 56
+    },
+    {
+      "type": "limbo-ancient-pillar",
+      "x": 46,
+      "z": 56
+    },
+    {
+      "type": "limbo-ancient-pillar",
+      "x": 34,
+      "z": 66
+    },
+    {
+      "type": "limbo-ancient-pillar",
+      "x": 40,
+      "z": 66
+    },
+    {
+      "type": "limbo-ancient-pillar",
+      "x": 46,
+      "z": 66
+    },
+    {
+      "type": "limbo-crumbling-arch",
+      "x": 38,
+      "z": 74
+    },
+    {
+      "type": "limbo-torch-bracket",
+      "x": 30,
+      "z": 54
+    },
+    {
+      "type": "limbo-torch-bracket",
+      "x": 48,
+      "z": 54
+    },
+    {
+      "type": "limbo-torch-bracket",
+      "x": 30,
+      "z": 72
+    },
+    {
+      "type": "limbo-torch-bracket",
+      "x": 48,
+      "z": 72
+    },
+    {
+      "type": "limbo-banner-tattered",
+      "x": 30,
+      "z": 60
+    },
+    {
+      "type": "limbo-banner-tattered",
+      "x": 48,
+      "z": 60
+    },
+    {
+      "type": "limbo-cracked-floor-slab",
+      "x": 38,
+      "z": 62
+    },
+    {
+      "type": "limbo-vase-rubble",
+      "x": 32,
+      "z": 58
+    },
+    {
+      "type": "limbo-vase-rubble",
+      "x": 46,
+      "z": 70
+    },
+    {
+      "type": "limbo-stone-bench",
+      "x": 48,
+      "z": 56
+    },
+    {
+      "type": "limbo-broken-pillar",
+      "x": 36,
+      "z": 60
+    },
+    {
+      "type": "limbo-rubble-scatter",
+      "x": 40,
+      "z": 62
+    },
+    {
+      "type": "limbo-rubble-scatter",
+      "x": 44,
+      "z": 68
+    },
+    {
+      "type": "limbo-crumbling-arch",
+      "x": 38,
+      "z": 84
+    },
+    {
+      "type": "limbo-ancient-pillar",
+      "x": 30,
+      "z": 88
+    },
+    {
+      "type": "limbo-ancient-pillar",
+      "x": 48,
+      "z": 88
+    },
+    {
+      "type": "limbo-ancient-pillar",
+      "x": 30,
+      "z": 102
+    },
+    {
+      "type": "limbo-ancient-pillar",
+      "x": 48,
+      "z": 102
+    },
+    {
+      "type": "limbo-torch-bracket",
+      "x": 30,
+      "z": 86
+    },
+    {
+      "type": "limbo-torch-bracket",
+      "x": 48,
+      "z": 86
+    },
+    {
+      "type": "limbo-torch-bracket",
+      "x": 38,
+      "z": 104
+    },
+    {
+      "type": "limbo-banner-tattered",
+      "x": 32,
+      "z": 86
+    },
+    {
+      "type": "limbo-banner-tattered",
+      "x": 46,
+      "z": 86
+    },
+    {
+      "type": "limbo-sarcophagus",
+      "x": 32,
+      "z": 100
+    },
+    {
+      "type": "limbo-sarcophagus",
+      "x": 46,
+      "z": 100
+    },
+    {
+      "type": "limbo-broken-altar",
+      "x": 40,
+      "z": 96
+    },
+    {
+      "type": "limbo-tombstone",
+      "x": 34,
+      "z": 104
+    },
+    {
+      "type": "limbo-tombstone",
+      "x": 44,
+      "z": 104
+    },
+    {
+      "type": "limbo-dried-fountain",
+      "x": 40,
+      "z": 88
+    },
+    {
+      "type": "limbo-bone-pile",
+      "x": 50,
+      "z": 104
+    },
+    {
+      "type": "limbo-wall-sconce",
+      "x": 28,
+      "z": 94
+    },
+    {
+      "type": "limbo-wall-sconce",
+      "x": 50,
+      "z": 94
+    },
+    {
+      "type": "limbo-inscription-tablet",
+      "x": 32,
+      "z": 84
+    },
+    {
+      "type": "limbo-skull-pile",
+      "x": 28,
+      "z": 100
+    },
+    {
+      "type": "limbo-skull-pile",
+      "x": 50,
+      "z": 100
+    },
+    {
+      "type": "limbo-ritual-circle",
+      "x": 40,
+      "z": 94
+    },
+    {
+      "type": "limbo-rubble-scatter",
+      "x": 34,
+      "z": 90
+    },
+    {
+      "type": "limbo-rubble-scatter",
+      "x": 44,
+      "z": 90
+    }
+  ],
+  "theme": {
+    "name": "limbo",
+    "displayName": "LIMBO — The Circle of Ignorance",
+    "primaryWall": 1,
+    "accentWalls": [1],
+    "enemyTypes": ["hellgoat"],
+    "enemyDensity": 0.8,
+    "pickupDensity": 0.5,
+    "ambientColor": "#2233aa"
+  },
+  "envZones": [
+    {
+      "id": "7764d5c7-043f-4abf-94db-eb4894983025",
+      "envType": "fog",
+      "x": 0,
+      "z": 0,
+      "w": 80,
+      "h": 100,
+      "intensity": 0.8,
+      "dirX": 0,
+      "dirZ": 0,
+      "timerOn": 0,
+      "timerOff": 0
+    },
+    {
+      "id": "9a68add8-fde0-486c-8f48-d2388dd9477a",
+      "envType": "wind",
+      "x": 4,
+      "z": 28,
+      "w": 16,
+      "h": 16,
+      "intensity": 0.3,
+      "dirX": 0,
+      "dirZ": -1,
+      "timerOn": 0,
+      "timerOff": 0
+    }
+  ],
+  "decals": [
+    {
+      "id": "85c5de60-76f2-4203-b188-e6e4d7d3e11d",
+      "decalType": "water-stain",
+      "x": 32,
+      "z": 8,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.5,
+      "surface": "wall"
+    },
+    {
+      "id": "108488d7-8810-49b5-9569-ebcf7e94f9f1",
+      "decalType": "water-stain",
+      "x": 46,
+      "z": 10,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.4,
+      "surface": "wall"
+    },
+    {
+      "id": "51b37a80-551d-4ec8-bc53-c3b7e2a5ece2",
+      "decalType": "water-stain",
+      "x": 28,
+      "z": 30,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.5,
+      "surface": "wall"
+    },
+    {
+      "id": "ea71aa7b-ae32-41db-b460-1b713525ced0",
+      "decalType": "water-stain",
+      "x": 50,
+      "z": 34,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.6,
+      "surface": "wall"
+    },
+    {
+      "id": "2136f5da-4d6a-499c-abb6-e22720efcdbd",
+      "decalType": "water-stain",
+      "x": 36,
+      "z": 42,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.4,
+      "surface": "wall"
+    },
+    {
+      "id": "99211ff7-0651-40a3-90af-3aace0acacf0",
+      "decalType": "water-stain",
+      "x": 60,
+      "z": 34,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.5,
+      "surface": "wall"
+    },
+    {
+      "id": "ed3d2fd9-e3a1-4f0f-b635-7aa1ce2a9817",
+      "decalType": "water-stain",
+      "x": 70,
+      "z": 30,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.4,
+      "surface": "wall"
+    },
+    {
+      "id": "dfa422db-2739-4e0d-940b-53df9361296b",
+      "decalType": "water-stain",
+      "x": 4,
+      "z": 34,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.6,
+      "surface": "wall"
+    },
+    {
+      "id": "6fcc44df-8e1d-4d67-b07b-de65df3fccb1",
+      "decalType": "water-stain",
+      "x": 18,
+      "z": 32,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.5,
+      "surface": "wall"
+    },
+    {
+      "id": "406d1471-03fb-4b64-89e2-ce6dce7aff0f",
+      "decalType": "water-stain",
+      "x": 10,
+      "z": 42,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.4,
+      "surface": "floor"
+    },
+    {
+      "id": "899b4afb-37dc-4b3b-8837-02275dd8c711",
+      "decalType": "water-stain",
+      "x": 30,
+      "z": 58,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.5,
+      "surface": "wall"
+    },
+    {
+      "id": "7cb80039-4af1-4434-81e2-a386f8214f24",
+      "decalType": "water-stain",
+      "x": 48,
+      "z": 68,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.4,
+      "surface": "wall"
+    },
+    {
+      "id": "2fa974c9-b535-4175-a037-30711a39c65b",
+      "decalType": "water-stain",
+      "x": 28,
+      "z": 92,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.6,
+      "surface": "wall"
+    },
+    {
+      "id": "5fb1e65a-f907-4a25-84ae-78c5172fec53",
+      "decalType": "water-stain",
+      "x": 50,
+      "z": 98,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.5,
+      "surface": "wall"
+    },
+    {
+      "id": "67391b5d-6fc1-490a-8414-df9ddd91b1e1",
+      "decalType": "water-stain",
+      "x": 40,
+      "z": 106,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.4,
+      "surface": "floor"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "c5cd7d57-e1cb-459a-8b5f-7c61589f1893",
+      "action": "spawnWave",
+      "zoneX": 6,
+      "zoneZ": 32,
+      "zoneW": 12,
+      "zoneH": 8,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "enemies": [
+          {
+            "type": "hellgoat",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          }
+        ]
+      },
+      "linkedEntityIds": [
+        "0fc048e7-cbaa-4026-aac6-1fcb7b8b3f3d",
+        "ae3177c9-161a-4964-a460-22ed766db223",
+        "a1085c39-e316-416e-b0c7-85fe48b967e3"
+      ]
+    },
+    {
+      "id": "7b7c1a1a-98ca-46c8-ba06-2ccb197f3667",
+      "action": "lockDoors",
+      "zoneX": 34,
+      "zoneZ": 56,
+      "zoneW": 12,
+      "zoneH": 12,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": null,
+      "linkedEntityIds": []
+    },
+    {
+      "id": "bc9a2314-bda3-4974-b521-870e81038ff9",
+      "action": "unlockDoors",
+      "zoneX": 34,
+      "zoneZ": 56,
+      "zoneW": 12,
+      "zoneH": 12,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "condition": "allEnemiesKilled"
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "c4b3f614-6c9e-4e14-8ed6-ab4e0dbd1cb3",
+      "action": "spawnWave",
+      "zoneX": 34,
+      "zoneZ": 56,
+      "zoneW": 12,
+      "zoneH": 12,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "waveIndex": 0,
+        "enemies": [
+          {
+            "type": "hellgoat",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          }
+        ]
+      },
+      "linkedEntityIds": [
+        "80ccadd3-d632-464e-a1f2-1e44fe0f5900",
+        "7a9e2915-6ede-4dea-8292-6058ec0e3f17",
+        "0ac4400a-9866-4027-b6ed-ba8fc1a3cb39"
+      ]
+    },
+    {
+      "id": "a15fd92d-ff1f-4c86-accd-650878391210",
+      "action": "spawnWave",
+      "zoneX": 34,
+      "zoneZ": 56,
+      "zoneW": 12,
+      "zoneH": 12,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "waveIndex": 1,
+        "enemies": [
+          {
+            "type": "hellgoat",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          }
+        ]
+      },
+      "linkedEntityIds": [
+        "6345df5f-7352-4bac-9193-c6555af2e2ff",
+        "f97abaac-578d-48ca-be53-79fe9b4a47ab",
+        "7768f1fc-946a-4b69-b9de-82d2b6827bcb"
+      ]
+    },
+    {
+      "id": "c1c9df81-b14c-4afd-a89a-4a12e9141949",
+      "action": "ambientChange",
+      "zoneX": 30,
+      "zoneZ": 52,
+      "zoneW": 20,
+      "zoneH": 24,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "fogDensity": 0.04,
+        "condition": "allEnemiesKilled"
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "12c5d44c-82a5-42b7-9673-fff4afd418a1",
+      "action": "bossIntro",
+      "zoneX": 30,
+      "zoneZ": 86,
+      "zoneW": 20,
+      "zoneH": 4,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "text": "You carry what is not yours, little goat. I have watched the gate since before memory. All who pass carry sin. You carry more than most."
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "8d46c077-c022-4f4b-b803-5d5aaa290556",
+      "action": "lockDoors",
+      "zoneX": 30,
+      "zoneZ": 86,
+      "zoneW": 20,
+      "zoneH": 4,
+      "once": true,
+      "fired": false,
+      "delay": 3000,
+      "pendingFireTime": 0,
+      "actionData": null,
+      "linkedEntityIds": []
+    },
+    {
+      "id": "54abff77-b461-462e-aa06-cdf088854d7e",
+      "action": "ambientChange",
+      "zoneX": 28,
+      "zoneZ": 84,
+      "zoneW": 24,
+      "zoneH": 24,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "fogDensity": 0.12,
+        "fogColor": "#0a0a15",
+        "condition": "bossHpBelow50"
+      },
+      "linkedEntityIds": []
+    }
+  ],
+  "triggeredEntities": [
+    {
+      "entityType": "hellgoat",
+      "x": 8,
+      "z": 34,
+      "facing": 0,
+      "triggerId": "c5cd7d57-e1cb-459a-8b5f-7c61589f1893",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 12,
+      "z": 38,
+      "facing": 0,
+      "triggerId": "c5cd7d57-e1cb-459a-8b5f-7c61589f1893",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 16,
+      "z": 34,
+      "facing": 0,
+      "triggerId": "c5cd7d57-e1cb-459a-8b5f-7c61589f1893",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 32,
+      "z": 64,
+      "facing": 0,
+      "triggerId": "c4b3f614-6c9e-4e14-8ed6-ab4e0dbd1cb3",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 40,
+      "z": 54,
+      "facing": 0,
+      "triggerId": "c4b3f614-6c9e-4e14-8ed6-ab4e0dbd1cb3",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 46,
+      "z": 64,
+      "facing": 0,
+      "triggerId": "c4b3f614-6c9e-4e14-8ed6-ab4e0dbd1cb3",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 32,
+      "z": 54,
+      "facing": 0,
+      "triggerId": "a15fd92d-ff1f-4c86-accd-650878391210",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 46,
+      "z": 54,
+      "facing": 0,
+      "triggerId": "a15fd92d-ff1f-4c86-accd-650878391210",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 40,
+      "z": 72,
+      "facing": 0,
+      "triggerId": "a15fd92d-ff1f-4c86-accd-650878391210",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    }
+  ]
+}

@@ -388,6 +388,27 @@ const SettingToggle: React.FC<{
 const SettingsScreen: React.FC = () => {
   const patch = useGameStore((s) => s.patch);
   const masterVolume = useGameStore((s) => s.masterVolume);
+
+  // Export/import save (web only)
+  const handleExportSave = useCallback(async () => {
+    const { exportSave } = await import('../db/GameSaveManager');
+    exportSave();
+  }, []);
+
+  const handleImportSave = useCallback(() => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.db';
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+      const { importSave } = await import('../db/GameSaveManager');
+      await importSave(file);
+      // Reload to pick up the restored save
+      window.location.reload();
+    };
+    input.click();
+  }, []);
   const mouseSensitivity = useGameStore((s) => s.mouseSensitivity);
   const touchLookSensitivity = useGameStore((s) => s.touchLookSensitivity);
   const gamepadLookSensitivity = useGameStore((s) => s.gamepadLookSensitivity);
@@ -498,6 +519,25 @@ const SettingsScreen: React.FC = () => {
         value={hapticsEnabled}
         onChange={(v) => patchAndPersist({ hapticsEnabled: v })}
       />
+
+      {/* Save data management (web only — uses game.db export/import) */}
+      {typeof window !== 'undefined' && (
+        <>
+          <Text style={s.settingsSectionHeader}>SAVE DATA</Text>
+          <TouchableOpacity
+            style={[s.secondaryBtn, { marginBottom: 8 }]}
+            onPress={handleExportSave}
+            activeOpacity={0.7}
+          >
+            <Text style={s.secondaryBtnText}>EXPORT SAVE</Text>
+            <Text style={s.btnHint}>Download save as .db file</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={s.secondaryBtn} onPress={handleImportSave} activeOpacity={0.7}>
+            <Text style={s.secondaryBtnText}>IMPORT SAVE</Text>
+            <Text style={s.btnHint}>Restore from .db file (reloads)</Text>
+          </TouchableOpacity>
+        </>
+      )}
 
       {/* Controls reference */}
       <View style={s.settingsGroup}>

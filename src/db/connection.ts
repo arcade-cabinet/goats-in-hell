@@ -1,12 +1,12 @@
 /**
  * Platform-specific SQLite database initialization.
  *
- * - Web: sql.js (WASM, ~400KB, loaded lazily on first level request)
+ * - Web: sql.js (WASM, ~400KB, creates empty DB for game state)
  * - Native: expo-sqlite (synchronous native binding, zero JS bundle cost)
- * - Node.js (tooling/tests): better-sqlite3
+ * - Node.js (tooling/tests): better-sqlite3 (opens assets/levels.db for build scripts)
  *
- * All paths produce a Drizzle ORM database handle (`DrizzleDb`) that the
- * rest of the codebase consumes through LevelDbAdapter and LevelEditor.
+ * Level data is loaded from pre-compiled JSON files, not from this database.
+ * This database is used for game state persistence (save/load, settings).
  */
 import {
   type BetterSQLite3Database,
@@ -116,25 +116,18 @@ async function initSqlJs(): Promise<DrizzleDb> {
   const { drizzle: drizzleSqlJs } = await import('drizzle-orm/sql-js' as string);
 
   // locateFile tells sql.js where to find sql-wasm.wasm.
-  // In a Metro-bundled Expo web app the WASM isn't co-located with the JS
-  // bundle, so we serve it explicitly from the CDN matching the installed version.
+  // Metro's asset pipeline resolves `require('./file.wasm')` to a URI string
+  // that works in both dev (Metro dev server) and production (bundled asset).
+  // This eliminates the CDN dependency and works offline.
   const SQL = await initSqlJsLib({
-    locateFile: (file: string) => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.12.0/${file}`,
+    locateFile: () => require('../../assets/sql-wasm.wasm') as string,
   });
 
-  // Load the pre-built SQLite database from the asset server.
-  // Expo Metro dev server serves the project root, so /assets/levels.db
-  // resolves to the file at <project>/assets/levels.db.
-  const response = await fetch('/assets/levels.db');
-  if (!response.ok) {
-    throw new Error(
-      `Failed to fetch /assets/levels.db — HTTP ${response.status} ${response.statusText}. ` +
-        'Ensure the Expo dev server is running and assets/levels.db exists.',
-    );
-  }
-  const buffer = await response.arrayBuffer();
+  // Create a fresh empty database. Level data is now loaded from pre-compiled
+  // JSON files (config/levels/circle-*.json) instead of fetching levels.db.
+  // TODO(game-db agent): wire game.db schema and IndexedDB persistence
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const sqlJsDb: any = new SQL.Database(new Uint8Array(buffer));
+  const sqlJsDb: any = new SQL.Database();
 
   return drizzleSqlJs(sqlJsDb, { schema }) as DrizzleDb;
 }
