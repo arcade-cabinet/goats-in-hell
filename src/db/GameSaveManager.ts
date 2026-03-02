@@ -6,13 +6,7 @@
  */
 import { and, desc, eq } from 'drizzle-orm';
 import type { GameDrizzleDb } from './game-connection';
-import {
-  exportGameDbBlob,
-  importGameDbBlob,
-  initGameDb,
-  persistGameDb,
-  resetGameDb,
-} from './game-connection';
+import { exportGameDb, importGameDb, initGameDb, persistGameDb } from './game-connection';
 import * as gs from './game-schema';
 
 // ---------------------------------------------------------------------------
@@ -450,23 +444,28 @@ export async function recordBossDefeated(runId: string, bossId: string): Promise
 }
 
 /**
- * Download save file (web only).
+ * Download the current save as a binary .db file (web only).
  */
-export function exportSave(): void {
-  exportGameDbBlob();
+export async function exportSave(): Promise<void> {
+  const data = await exportGameDb();
+  if (!data) return;
+  const blob = new Blob([data.buffer as ArrayBuffer], { type: 'application/x-sqlite3' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'goats-in-hell-save.db';
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 /**
- * Upload save file (web only).
+ * Import a save file (web only).
  *
- * Saves the imported bytes to IndexedDB, then resets the in-memory DB
- * singleton so the next initGameDb() / initSaveSystem() call reloads from
- * the freshly written IndexedDB data. Callers should reload the page (or
- * call initSaveSystem() again) after this returns.
+ * Reads the file bytes and replaces the persistent game.db via expo-sqlite's
+ * backup API. The in-memory Drizzle handle is refreshed automatically — no
+ * page reload required.
  */
 export async function importSave(file: File): Promise<void> {
-  await importGameDbBlob(file);
-  // Clear the cached handles so the next initSaveSystem() re-reads from IDB.
-  resetGameDb();
-  _db = null;
+  const buffer = await file.arrayBuffer();
+  await importGameDb(new Uint8Array(buffer));
 }

@@ -11,6 +11,7 @@ import { CELL_SIZE } from './constants';
 import {
   createNewRun,
   initSaveSystem,
+  loadLatestRun,
   markRoomVisited,
   saveCurrentState,
 } from './db/GameSaveManager';
@@ -432,22 +433,37 @@ function GameScene() {
     updateAmbientSound();
   }, [screen]);
 
-  // Sync game.db with run lifecycle: create run on new game, persist on stage advance.
+  // Sync game.db with run lifecycle.
+  // DB init is deferred to the moment the player commits to New Game or Continue —
+  // not at app startup — so we know which DB state to open.
   // `screen` is the only dep — prevScreenRef mutation is intentional, not reactive state.
   useEffect(() => {
     const prevScreen = prevScreenRef.current;
     prevScreenRef.current = screen;
     const store = useGameStore.getState();
 
-    // New game (not continue): create a game.db run. continueGame goes mainMenu→playing.
+    // New game: init save DB fresh, then create a new run.
     if (screen === 'playing' && prevScreen === 'newGame') {
-      createNewRun({
-        seed: store.seed,
-        difficulty: store.difficulty,
-        nightmareFlags: store.nightmareFlags,
-      })
+      initSaveSystem()
+        .then(() =>
+          createNewRun({
+            seed: store.seed,
+            difficulty: store.difficulty,
+            nightmareFlags: store.nightmareFlags,
+          }),
+        )
         .then((id) => {
           runIdRef.current = id;
+        })
+        .catch(() => {});
+    }
+
+    // Continue (mainMenu → playing): init save DB and restore the active run.
+    if (screen === 'playing' && prevScreen === 'mainMenu') {
+      initSaveSystem()
+        .then(() => loadLatestRun())
+        .then((save) => {
+          if (save) runIdRef.current = save.runId;
         })
         .catch(() => {});
     }
@@ -609,13 +625,8 @@ export default function R3FRoot() {
     setFatalError(e);
   }, []);
 
-  // Initialize the game save DB once on app mount.
-  // Failures are non-fatal — gameplay works without it; only export/import affected.
-  useEffect(() => {
-    initSaveSystem().catch((err) => {
-      console.warn('[R3FRoot] Game save DB init failed:', err);
-    });
-  }, []);
+  // game.db is initialized lazily when the player starts or continues a game,
+  // not at app startup. See the screen-transition effect in GameScene.
 
   return (
     <FatalErrorContext.Provider value={reportFatalError}>

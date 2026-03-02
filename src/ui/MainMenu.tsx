@@ -392,7 +392,7 @@ const SettingsScreen: React.FC = () => {
   // Export/import save (web only)
   const handleExportSave = useCallback(async () => {
     const { exportSave } = await import('../db/GameSaveManager');
-    exportSave();
+    await exportSave();
   }, []);
 
   const handleImportSave = useCallback(() => {

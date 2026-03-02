@@ -15,6 +15,7 @@
     "platforms": ["web", "android"],
     "android": {
       "package": "com.arcadecabinet.goatsinhell"
-    }
+    },
+    "plugins": ["expo-sqlite"]
   }
 }

@@ -20,16 +20,14 @@ import * as gs from '../game-schema';
 // by mocking the game-connection module.
 // ---------------------------------------------------------------------------
 
-jest.mock('../game-connection', () => {
-  const actual = jest.requireActual('../game-connection');
-  return {
-    ...actual,
-    initGameDb: jest.fn(),
-    persistGameDb: jest.fn().mockResolvedValue(undefined),
-    exportGameDbBlob: jest.fn(),
-    importGameDbBlob: jest.fn().mockResolvedValue(undefined),
-  };
-});
+// Fully mock game-connection so expo-sqlite native module is never loaded in Jest.
+jest.mock('../game-connection', () => ({
+  initGameDb: jest.fn(),
+  persistGameDb: jest.fn().mockResolvedValue(undefined),
+  exportGameDb: jest.fn().mockResolvedValue(null),
+  importGameDb: jest.fn().mockResolvedValue(undefined),
+  resetGameDb: jest.fn(),
+}));
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { initGameDb, persistGameDb } = require('../game-connection');
