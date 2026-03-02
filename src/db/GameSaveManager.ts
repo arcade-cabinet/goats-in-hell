@@ -6,7 +6,13 @@
  */
 import { and, desc, eq } from 'drizzle-orm';
 import type { GameDrizzleDb } from './game-connection';
-import { exportGameDbBlob, importGameDbBlob, initGameDb, persistGameDb } from './game-connection';
+import {
+  exportGameDbBlob,
+  importGameDbBlob,
+  initGameDb,
+  persistGameDb,
+  resetGameDb,
+} from './game-connection';
 import * as gs from './game-schema';
 
 // ---------------------------------------------------------------------------
@@ -452,7 +458,15 @@ export function exportSave(): void {
 
 /**
  * Upload save file (web only).
+ *
+ * Saves the imported bytes to IndexedDB, then resets the in-memory DB
+ * singleton so the next initGameDb() / initSaveSystem() call reloads from
+ * the freshly written IndexedDB data. Callers should reload the page (or
+ * call initSaveSystem() again) after this returns.
  */
 export async function importSave(file: File): Promise<void> {
   await importGameDbBlob(file);
+  // Clear the cached handles so the next initSaveSystem() re-reads from IDB.
+  resetGameDb();
+  _db = null;
 }

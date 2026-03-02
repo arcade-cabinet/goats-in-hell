@@ -2,7 +2,7 @@
  * game-connection.ts -- Cross-platform runtime game.db connection.
  *
  * Web:    sql.js in-memory database, persisted to IndexedDB.
- *         The WASM is loaded from CDN (same as levels.db connection).
+ *         The WASM is bundled offline via Metro (assets/sql-wasm.wasm).
  * Native: expo-sqlite (not yet implemented -- placeholder).
  */
 import {
