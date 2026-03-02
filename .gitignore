@@ -112,3 +112,7 @@ assets/models/enemies/**/concept-*.png
 assets/models/enemies/**/preview.glb
 assets/models/enemies/**/refined.glb
 assets/models/enemies/**/rigged.glb
+
+# Playwright screenshot playtest outputs
+e2e/screenshots/
+playwright-report/

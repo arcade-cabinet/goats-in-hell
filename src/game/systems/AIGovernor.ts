@@ -440,7 +440,7 @@ export class AIGovernor {
     }
 
     // Aim and fire — only shoot if we have line of sight (no walls between us)
-    this.aimAt(target.position);
+    this.aimAtEntity(target.position);
     if (dist < engageRange && hasLOS) {
       this.tryFire();
     }
@@ -463,7 +463,7 @@ export class AIGovernor {
     // Pathfind to pickup
     this.navigateToEntity(target, SPRINT_SPEED, dt);
     this.sprintRequested = true;
-    this.aimAt(target.position);
+    this.aimAtEntity(target.position);
 
     // Still shoot at enemies while healing (only with line of sight)
     const enemies = this.getEnemies();
@@ -474,7 +474,7 @@ export class AIGovernor {
         d < weapons[this.player.player!.currentWeapon].range * 0.5 &&
         this.hasLineOfSight(this.camera.position, closest.position)
       ) {
-        this.aimAt(closest.position);
+        this.aimAtEntity(closest.position);
         this.tryFire();
       }
     }
@@ -494,7 +494,7 @@ export class AIGovernor {
     const enemies = this.getEnemies();
     const closest = this.nearest(enemies);
     if (closest?.position) {
-      this.aimAt(closest.position);
+      this.aimAtEntity(closest.position);
       const d = this.distToEntity(closest);
       if (
         d < weapons[this.player.player!.currentWeapon].range * 0.6 &&
@@ -521,7 +521,7 @@ export class AIGovernor {
       const vel = this.vehicle.velocity;
       if (vel.squaredLength() > 0.0001) {
         const p = this.camera.position;
-        this.aimAt(vec3(p.x + vel.x * 5, p.y, p.z + vel.z * 5));
+        this.aimAtPosition(vec3(p.x + vel.x * 5, p.y, p.z + vel.z * 5));
       }
       return;
     }
@@ -531,7 +531,7 @@ export class AIGovernor {
     const nearestEnemy = this.nearest(enemies);
     if (nearestEnemy?.position) {
       this.navigateToEntity(nearestEnemy, MOVE_SPEED, dt);
-      this.aimAt(nearestEnemy.position);
+      this.aimAtEntity(nearestEnemy.position);
       // If we have LOS and range, switch to hunt
       const dist = this.distToEntity(nearestEnemy);
       if (
@@ -552,7 +552,7 @@ export class AIGovernor {
         : ammoPickup;
     if (nearPickup?.position && this.distToEntity(nearPickup) < 20) {
       this.navigateToEntity(nearPickup, MOVE_SPEED, dt);
-      this.aimAt(nearPickup.position);
+      this.aimAtEntity(nearPickup.position);
       return;
     }
 
@@ -562,7 +562,7 @@ export class AIGovernor {
     if (vel.squaredLength() > 0.0001) {
       const p = this.camera.position;
       const lookTarget = vec3(p.x + vel.x * 5, p.y, p.z + vel.z * 5);
-      this.aimAt(lookTarget);
+      this.aimAtPosition(lookTarget);
     }
   }
 
@@ -657,19 +657,45 @@ export class AIGovernor {
   // Aiming
   // -----------------------------------------------------------------------
 
-  /** Set look target angles in the output frame. */
-  private aimAt(target: Vec3): void {
+  /**
+   * Aim at a world-space entity position (enemy, pickup).
+   * Adds a +1.0 chest-height offset so the AI doesn't pitch steeply downward
+   * when close to ground-level spawned entities (spawn Y ≈ 0.5–1.0, camera Y ≈ 2.0).
+   */
+  private aimAtEntity(target: Vec3): void {
     const pos = this.camera.position;
     const dx = target.x - pos.x;
     const dz = target.z - pos.z;
-    const dy = (target.y ?? 1) - pos.y;
+    // Target chest-height (+1.0) rather than feet; camera is ~1.5u above spawn Y
+    const dy = (target.y ?? 0) + 1.0 - pos.y;
 
     const yaw = Math.atan2(dx, dz);
     const horizDist = Math.sqrt(dx * dx + dz * dz);
-    const pitch = -Math.atan2(dy, horizDist);
+    const rawPitch = -Math.atan2(dy, horizDist);
 
+    // Clamp to ±35° — prevents camera pinning at LOOK_CLAMP during close combat
+    const MAX_AIM_PITCH = Math.PI / 5.14; // ≈ 35°
     this.outputFrame.lookYaw = yaw;
-    this.outputFrame.lookPitch = pitch;
+    this.outputFrame.lookPitch = Math.max(-MAX_AIM_PITCH, Math.min(MAX_AIM_PITCH, rawPitch));
+  }
+
+  /**
+   * Aim at a computed world-space position (wander target, flee waypoint).
+   * Uses the target Y directly since these positions are already at camera height.
+   */
+  private aimAtPosition(target: Vec3): void {
+    const pos = this.camera.position;
+    const dx = target.x - pos.x;
+    const dz = target.z - pos.z;
+    const dy = (target.y ?? pos.y) - pos.y;
+
+    const yaw = Math.atan2(dx, dz);
+    const horizDist = Math.sqrt(dx * dx + dz * dz);
+    const rawPitch = -Math.atan2(dy, horizDist);
+
+    const MAX_AIM_PITCH = Math.PI / 5.14;
+    this.outputFrame.lookYaw = yaw;
+    this.outputFrame.lookPitch = Math.max(-MAX_AIM_PITCH, Math.min(MAX_AIM_PITCH, rawPitch));
   }
 
   // -----------------------------------------------------------------------

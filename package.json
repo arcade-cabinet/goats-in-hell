@@ -27,7 +27,8 @@
     "generate:animations": "node scripts/run-enemy-animations.mjs",
     "generate:animations:bosses": "node scripts/run-enemy-animations.mjs --group bosses",
     "sync:registry": "node scripts/sync-asset-registry.mjs",
-    "sync:registry:dry": "node scripts/sync-asset-registry.mjs --dry-run"
+    "sync:registry:dry": "node scripts/sync-asset-registry.mjs --dry-run",
+    "playtest:screenshots": "playwright test e2e/playtest-screenshots.spec.ts --reporter=line"
   },
   "dependencies": {
     "@expo/metro-runtime": "^55.0.6",
@@ -58,6 +59,7 @@
     "@babel/preset-env": "^7.29.0",
     "@babel/runtime": "^7.28.6",
     "@biomejs/biome": "^2.4.4",
+    "@playwright/test": "^1.58.2",
     "@react-native/babel-preset": "0.84.1",
     "@react-native/metro-config": "0.84.1",
     "@react-native/typescript-config": "0.84.1",
