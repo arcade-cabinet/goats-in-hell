@@ -1,6 +1,6 @@
 ---
 title: "AI Governor Overhaul — Goal-Driven Agent Design"
-status: in-progress
+status: superseded
 created: "2026-03-01"
 updated: "2026-03-01"
 domain: plans
