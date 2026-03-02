@@ -7,8 +7,10 @@
  */
 import type { Entity, WeaponId } from '../../game/entities/components';
 import { world } from '../../game/entities/world';
+import { useGameStore } from '../../state/GameStore';
 import { playSound } from '../audio/AudioSystem';
 import { HapticEvent, haptics } from '../input/HapticsService';
+import { triggerDamageFlash } from '../rendering/PostProcessing';
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -27,6 +29,7 @@ const WEAPON_PICKUP_RESERVE: Record<WeaponId, number> = {
   brimShotgun: 16,
   hellfireCannon: 120,
   goatsBane: 12,
+  brimstoneFlamethrower: 0, // uses fuel, not ammo
 };
 
 // ---------------------------------------------------------------------------
@@ -98,8 +101,18 @@ export function pickupSystemUpdate(): void {
     // --------- Apply pickup effect ---------
 
     if (pickup.pickupType === 'health') {
-      // Health pickup — heal player, capped at maxHp
-      player.player.hp = Math.min(player.player.hp + pickup.value, player.player.maxHp);
+      // Circle 3 (Gluttony) — Poisoned Pickups: 50% chance health pickups deal damage
+      const circleNumber = useGameStore.getState().circleNumber;
+      if (circleNumber === 3 && Math.random() < 0.5) {
+        // Poisoned! Deal 10 damage instead of healing
+        player.player.hp = Math.max(0, player.player.hp - 10);
+        playSound('hurt');
+        triggerDamageFlash();
+        useGameStore.getState().patch({ damageFlash: 0.6 });
+      } else {
+        // Normal health pickup — heal player, capped at maxHp
+        player.player.hp = Math.min(player.player.hp + pickup.value, player.player.maxHp);
+      }
     } else if (pickup.pickupType === 'ammo') {
       // Ammo pickup — add reserve ammo for current weapon
       const weaponId = player.player.currentWeapon;

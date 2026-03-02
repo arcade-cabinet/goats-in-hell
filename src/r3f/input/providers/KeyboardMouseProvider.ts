@@ -88,6 +88,9 @@ export class KeyboardMouseProvider implements IInputProvider {
       case '4':
         this.weaponSlotFlag = 4;
         break;
+      case '5':
+        this.weaponSlotFlag = 5;
+        break;
     }
   }
 

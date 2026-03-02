@@ -1,0 +1,36 @@
+{
+  "id": "boss-inganno",
+  "name": "Inganno — The Deceiver",
+  "type": "character",
+  "pipeline": "enemy",
+  "description": "Circle 8 Boss (Fraud). Master illusionist goat, nothing about it is what it seems.",
+  "textToImageTask": {
+    "prompt": "A towering bipedal humanoid goat demon in A-pose, unsettling elegant build where the left half appears as a noble handsome goat gentleman in fine clothing and the right half reveals the true rotting demonic form with exposed muscle and bone, one horn polished and golden the other broken and blackened, the gentleman half holds an ornate cane and the demon half has elongated razor fingers, wearing half a tailored suit and half rags over decomposing flesh, a porcelain theater mask held at the waist, one eye charming blue the other hellfire red, digitigrade goat legs one in a polished boot one bare and clawed, 2.8 meters tall, stylized dark fantasy game boss character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Towering goat demon split half-gentleman half-demon, polished vs broken horn, cane vs razor claws, suit vs rags, theater mask, 2.8m, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 16000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Half fine dark wool suit fabric half rotting flesh and exposed muscle, polished gold horn vs blackened broken horn, ornate wooden cane, porcelain mask, charming blue eye vs hellfire red eye",
+    "enablePbr": true
+  },
+  "riggingTask": { "heightMeters": 2.8 },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Zombie_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp_1",
+      "Fighting.AttackingwithWeapon.Left_Slash",
+      "Fighting.CastingSpell.Charged_Spell_Cast_1",
+      "Fighting.Transitioning.Chest_Pound_Taunt",
+      "Fighting.GettingHit.Face_Punch_Reaction_1",
+      "Fighting.Dying.Electrocuted_Fall"
+    ]
+  }
+}

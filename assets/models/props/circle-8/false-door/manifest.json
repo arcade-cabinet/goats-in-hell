@@ -1,0 +1,18 @@
+{
+  "id": "false-door",
+  "name": "False Door",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A stone archway door frame with a painted-on wooden door that is actually flat stone, trompe l'oeil illusion wall, cracks reveal the deception, fraud and deception theme, stylized low poly game prop, dark fantasy, isometric view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Stone archway frame, painted wood grain on flat stone surface, visible cracks revealing the illusion",
+    "enablePbr": true
+  }
+}

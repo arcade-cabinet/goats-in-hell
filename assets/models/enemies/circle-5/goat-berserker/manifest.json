@@ -1,0 +1,36 @@
+{
+  "id": "goat-berserker",
+  "name": "Goat Berserker",
+  "type": "character",
+  "pipeline": "enemy",
+  "description": "Circle 5 (Wrath) — burning rage goat. Charges recklessly, ground slams, gets faster as damaged.",
+  "textToImageTask": {
+    "prompt": "A bipedal humanoid goat demon in A-pose, heavily muscular enraged build with veins bulging, charred black fur with cracks showing molten orange-red underneath like cooling lava, massive jagged horns with flames licking from the tips, wielding a huge flaming battle axe in both hands, no armor exposing the cracked burning hide, digitigrade goat legs with hooves leaving scorch marks, furious blazing red eyes, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Massive enraged bipedal goat demon, charred black fur with molten cracks, flaming horns, huge flaming battle axe, no armor, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 10000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Charred black fur with glowing orange-red lava cracks, flaming horn tips, massive iron axe head with fire, bulging veins, blazing red eyes",
+    "enablePbr": true
+  },
+  "riggingTask": { "heightMeters": 2.2 },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Running.Lean_Forward_Sprint",
+      "DailyActions.Idle.Angry_Ground_Stomp_1",
+      "Fighting.AttackingwithWeapon.Axe_Spin_Attack",
+      "Fighting.CastingSpell.Charged_Ground_Slam",
+      "Fighting.Transitioning.Chest_Pound_Taunt",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Knock_Down"
+    ]
+  }
+}

@@ -134,6 +134,8 @@ export interface GameStoreState {
   dbReady: boolean;
   /** Whether to load levels from the database or use procedural generation. */
   levelSource: 'procedural' | 'database';
+  /** Current circle of Hell (1-9). Each circle is a hand-crafted DB level. */
+  circleNumber: number;
 
   // --- Run configuration (set during New Game) ---
   difficulty: Difficulty;
@@ -154,6 +156,14 @@ export interface GameStoreState {
   kills: number;
   totalKills: number;
   startTime: number;
+
+  // --- Kill tracking (ending system) ---
+  /** Enemies killed in locked arenas and boss fights. */
+  mandatoryKills: number;
+  /** Enemies killed in exploration rooms (avoidable). */
+  optionalKills: number;
+  /** Total optional enemies spawned across all levels. */
+  optionalEnemiesTotal: number;
 
   // --- Screen effects (decay each frame) ---
   damageFlash: number;
@@ -196,6 +206,14 @@ export interface GameStoreState {
   setDbReady: (ready: boolean) => void;
   /** Switch between procedural and database level sources. */
   setLevelSource: (source: 'procedural' | 'database') => void;
+  /** Set the current circle number (1-9). */
+  setCircleNumber: (n: number) => void;
+  /** Record a mandatory kill (arena/boss). */
+  recordMandatoryKill: () => void;
+  /** Record an optional kill (explore). */
+  recordOptionalKill: () => void;
+  /** Add to the total optional enemies spawned count. */
+  addOptionalEnemies: (count: number) => void;
   /** Set partial state (for effects, kills, etc.). */
   patch: (partial: Partial<GameStoreState>) => void;
   /** Full reset to main menu. */
@@ -360,6 +378,10 @@ interface SaveData {
   score: number;
   totalKills: number;
   elapsedMs: number; // accumulated play time
+  circleNumber?: number;
+  mandatoryKills?: number;
+  optionalKills?: number;
+  optionalEnemiesTotal?: number;
   playerHp?: number;
   currentWeapon?: string;
   ammoReserves?: Record<string, number>;
@@ -400,6 +422,10 @@ function writeSave(state: GameStoreState): void {
     score: state.score,
     totalKills: state.totalKills,
     elapsedMs: Date.now() - state.startTime,
+    circleNumber: state.circleNumber,
+    mandatoryKills: state.mandatoryKills,
+    optionalKills: state.optionalKills,
+    optionalEnemiesTotal: state.optionalEnemiesTotal,
     playerHp: cachedPlayerSnapshot.playerHp,
     currentWeapon: cachedPlayerSnapshot.currentWeapon,
     ammoReserves: cachedPlayerSnapshot.ammoReserves,
@@ -573,7 +599,12 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
   screen: 'mainMenu',
 
   dbReady: false,
-  levelSource: 'procedural',
+  levelSource:
+    typeof window !== 'undefined' &&
+    new URLSearchParams(window.location?.search ?? '').get('levels') === 'procedural'
+      ? 'procedural'
+      : 'database',
+  circleNumber: 1,
 
   difficulty: 'normal',
   nightmareFlags: { nightmare: false, permadeath: false, ultraNightmare: false },
@@ -588,6 +619,10 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
   kills: 0,
   totalKills: 0,
   startTime: Date.now(),
+
+  mandatoryKills: 0,
+  optionalKills: 0,
+  optionalEnemiesTotal: 0,
 
   damageFlash: 0,
   screenShake: 0,
@@ -625,9 +660,13 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
       stage: createInitialStage(),
       leveling: createInitialLeveling(),
       bossesDefeated: [],
+      circleNumber: 1,
       score: 0,
       kills: 0,
       totalKills: 0,
+      mandatoryKills: 0,
+      optionalKills: 0,
+      optionalEnemiesTotal: 0,
       startTime: Date.now(),
       damageFlash: 0,
       screenShake: 0,
@@ -638,31 +677,53 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
   },
 
   advanceStage: () => {
-    const { stage } = get();
+    const { stage, circleNumber } = get();
 
-    // Game completion: after defeating the boss at stage 20 (4th boss cycle)
-    if (stage.stageNumber >= 20 && stage.encounterType === 'boss') {
-      clearSave();
-      set({ screen: 'gameComplete', hasSave: false });
-      return;
+    // Circle-based completion: after defeating a circle's boss, advance to
+    // the next circle. After Circle 9, the game is complete.
+    if (stage.encounterType === 'boss') {
+      if (circleNumber >= 9) {
+        clearSave();
+        set({ screen: 'gameComplete', hasSave: false });
+        return;
+      }
+      // Advance to next circle
+      const nextCircle = circleNumber + 1;
+      const next = stage.stageNumber + 1;
+      const encounterType = nextEncounterType(next);
+      const bossId = encounterType === 'boss' ? bossForStage(next) : null;
+
+      set({
+        circleNumber: nextCircle,
+        screen: encounterType === 'boss' ? 'bossIntro' : 'victory',
+        stage: {
+          stageNumber: next,
+          floor: encounterType === 'explore' ? stage.floor + 1 : stage.floor,
+          encounterType,
+          arenaWave: encounterType === 'arena' ? 1 : 0,
+          bossId,
+          enemiesRemaining: 0,
+        },
+        kills: 0,
+      });
+    } else {
+      const next = stage.stageNumber + 1;
+      const encounterType = nextEncounterType(next);
+      const bossId = encounterType === 'boss' ? bossForStage(next) : null;
+
+      set({
+        screen: encounterType === 'boss' ? 'bossIntro' : 'victory',
+        stage: {
+          stageNumber: next,
+          floor: encounterType === 'explore' ? stage.floor + 1 : stage.floor,
+          encounterType,
+          arenaWave: encounterType === 'arena' ? 1 : 0,
+          bossId,
+          enemiesRemaining: 0,
+        },
+        kills: 0,
+      });
     }
-
-    const next = stage.stageNumber + 1;
-    const encounterType = nextEncounterType(next);
-    const bossId = encounterType === 'boss' ? bossForStage(next) : null;
-
-    set({
-      screen: encounterType === 'boss' ? 'bossIntro' : 'victory',
-      stage: {
-        stageNumber: next,
-        floor: encounterType === 'explore' ? stage.floor + 1 : stage.floor,
-        encounterType,
-        arenaWave: encounterType === 'arena' ? 1 : 0,
-        bossId,
-        enemiesRemaining: 0,
-      },
-      kills: 0,
-    });
 
     // Persist save after advancing
     writeSave(get());
@@ -692,6 +753,12 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
 
   setDbReady: (ready) => set({ dbReady: ready }),
   setLevelSource: (source) => set({ levelSource: source }),
+  setCircleNumber: (n) => set({ circleNumber: n }),
+
+  recordMandatoryKill: () => set((s) => ({ mandatoryKills: s.mandatoryKills + 1 })),
+  recordOptionalKill: () => set((s) => ({ optionalKills: s.optionalKills + 1 })),
+  addOptionalEnemies: (count) =>
+    set((s) => ({ optionalEnemiesTotal: s.optionalEnemiesTotal + count })),
 
   patch: (partial) => set(partial as any),
 
@@ -720,9 +787,13 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
       stage: save.stage,
       leveling: save.leveling,
       bossesDefeated: save.bossesDefeated,
+      circleNumber: save.circleNumber ?? 1,
       score: save.score,
       kills: 0,
       totalKills: save.totalKills,
+      mandatoryKills: save.mandatoryKills ?? 0,
+      optionalKills: save.optionalKills ?? 0,
+      optionalEnemiesTotal: save.optionalEnemiesTotal ?? 0,
       startTime: Date.now() - save.elapsedMs,
       damageFlash: 0,
       screenShake: 0,

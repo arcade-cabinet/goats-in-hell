@@ -1,0 +1,36 @@
+{
+  "id": "boss-aureo",
+  "name": "Aureo — The Golden",
+  "type": "character",
+  "pipeline": "enemy",
+  "description": "Circle 4 Boss (Greed). Living golden goat idol, half-flesh half-molten gold.",
+  "textToImageTask": {
+    "prompt": "A towering bipedal humanoid goat demon in A-pose, a living golden idol where half the body is organic dark fur and muscle and the other half is molten gold fused to the flesh with the transition line running diagonally across the torso, one horn is natural bone and the other is solid gleaming gold, the golden arm wields a massive golden mace studded with gems and the organic arm has desperate grasping claws, wearing a king's crown melted and fused to the skull, gold coins growing from the skin like tumors, digitigrade legs one golden one furred, one eye burning gold the other desperate and alive, 2.8 meters tall, stylized dark fantasy game boss character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Towering bipedal goat demon half-flesh half-molten-gold, asymmetric horn gold/bone, golden mace, melted crown, coin tumors, 2.8m, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 16000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark organic fur and muscle transitioning to molten polished gold, gem-studded golden mace, melted crown fused to skull, coin-growth tumors on skin, asymmetric gold and brown eyes",
+    "enablePbr": true
+  },
+  "riggingTask": { "heightMeters": 2.8 },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Zombie_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp",
+      "Fighting.AttackingwithWeapon.Charged_Axe_Chop",
+      "Fighting.CastingSpell.Charged_Ground_Slam",
+      "Fighting.Transitioning.Chest_Pound_Taunt",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Knock_Down"
+    ]
+  }
+}

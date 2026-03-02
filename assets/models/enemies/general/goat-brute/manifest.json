@@ -1,0 +1,37 @@
+{
+  "id": "goat-brute",
+  "name": "Goat Brute",
+  "type": "character",
+  "pipeline": "enemy",
+  "description": "Heavy tank enemy. Slow, high HP, devastating melee. Appears from Circle 2 onward.",
+  "textToImageTask": {
+    "prompt": "A massive bipedal humanoid goat demon in A-pose, heavily muscular like a minotaur, thick black fur, enormous spiral horns, wielding a huge two-handed war hammer, heavy iron plate armor on shoulders and chest, thick digitigrade goat legs, towering intimidating presence, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Massive bipedal goat demon tank, minotaur build, black fur, spiral horns, two-handed war hammer, iron plate armor, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 10000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Thick black fur, battered dark iron plate armor, massive stone war hammer, deep red eyes, scarred hide",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 2.4
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Zombie_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp_1",
+      "Fighting.AttackingwithWeapon.Charged_Axe_Chop",
+      "Fighting.CastingSpell.Charged_Ground_Slam",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Knock_Down"
+    ]
+  }
+}

@@ -39,7 +39,12 @@ export type EntityType =
   | 'hazard_barrel';
 
 /** Identifier for each weapon type the player can equip. */
-export type WeaponId = 'hellPistol' | 'brimShotgun' | 'hellfireCannon' | 'goatsBane';
+export type WeaponId =
+  | 'hellPistol'
+  | 'brimShotgun'
+  | 'hellfireCannon'
+  | 'goatsBane'
+  | 'brimstoneFlamethrower';
 
 /**
  * Core ECS entity shape — every entity in the game is a sparse bag of these
@@ -72,6 +77,10 @@ export type Entity = {
     isReloading: boolean;
     /** Timestamp (ms) when the current reload began. */
     reloadStart: number;
+    /** Current fuel for flamethrower (0-100). */
+    fuel: number;
+    /** Max fuel capacity. */
+    fuelMax: number;
   };
 
   // --- Enemy ---

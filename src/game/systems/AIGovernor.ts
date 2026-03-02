@@ -71,6 +71,7 @@ const WEAPON_SLOT_MAP: Record<WeaponId, number> = {
   brimShotgun: 2,
   hellfireCannon: 3,
   goatsBane: 4,
+  brimstoneFlamethrower: 5,
 };
 
 /** Return a zeroed AIOutputFrame. */

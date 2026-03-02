@@ -16,7 +16,11 @@
     "typecheck": "tsc --noEmit",
     "docs": "typedoc",
     "docs:watch": "typedoc --watch",
-    "docs:json": "typedoc --json docs/api/api.json"
+    "docs:json": "typedoc --json docs/api/api.json",
+    "generate:props": "node scripts/generate-assets.mjs props",
+    "generate:props:preview": "node scripts/generate-assets.mjs props --step preview",
+    "generate:enemies": "node scripts/generate-assets.mjs enemies",
+    "generate:enemies:concept": "node scripts/generate-assets.mjs enemies --step concept"
   },
   "dependencies": {
     "@expo/metro-runtime": "^55.0.6",
@@ -41,6 +45,7 @@
     "zustand": "^5.0.11"
   },
   "devDependencies": {
+    "@agentic-dev-library/meshy-content-generator": "^0.1.2",
     "@babel/core": "^7.29.0",
     "@babel/preset-env": "^7.29.0",
     "@babel/runtime": "^7.28.6",

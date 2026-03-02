@@ -1,0 +1,34 @@
+{
+  "id": "goat-shade",
+  "name": "Goat Shade",
+  "type": "character",
+  "pipeline": "enemy",
+  "description": "Circle 1 (Limbo) — translucent spectral goat. Slow, eerie, fades in and out of fog.",
+  "textToImageTask": {
+    "prompt": "A bipedal humanoid goat demon ghost in A-pose, translucent ethereal body, pale gray-white fur that dissolves into mist at the extremities, hollow dark eye sockets with faint blue glow, thin curving horns that fade to transparency, no weapons, long tattered spectral robes trailing into fog, digitigrade goat legs, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Translucent spectral bipedal goat ghost, pale gray, dissolving into mist, hollow eyes with blue glow, tattered robes, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Pale translucent gray-white fur, ghostly blue glow in eye sockets, fading misty extremities, tattered ethereal fabric",
+    "enablePbr": true
+  },
+  "riggingTask": { "heightMeters": 1.8 },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Stumble_Walk",
+      "BodyMovements.Acting.Mummy_Stagger",
+      "DailyActions.Idle.Angry_Ground_Stomp",
+      "Fighting.GettingHit.Face_Punch_Reaction",
+      "Fighting.Dying.Dead"
+    ]
+  }
+}

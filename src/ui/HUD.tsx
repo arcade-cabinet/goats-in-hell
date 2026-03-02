@@ -16,8 +16,11 @@ import { getActiveLevel } from '../game/levels/activeLevelRef';
 import { getThemeForFloor } from '../game/levels/FloorThemes';
 import { CELL_SIZE, MapCell } from '../game/levels/LevelGenerator';
 import { consumeDamageEvents } from '../game/systems/damageEvents';
+import { getKillHint } from '../game/systems/KillHintSystem';
+import { getActiveDialogue } from '../game/systems/TriggerSystem';
 import { getWaveInfo } from '../game/systems/WaveSystem';
 import { weapons } from '../game/weapons/weapons';
+import { isHoardingPenaltyActive } from '../r3f/PlayerController';
 import { DIFFICULTY_PRESETS, useGameStore } from '../state/GameStore';
 
 function getPlayer(): Entity | undefined {
@@ -177,10 +180,23 @@ export const HUD: React.FC = () => {
         </View>
       </View>
 
+      {/* Circle 4 (Greed) — Overburdened indicator */}
+      {isHoardingPenaltyActive() && (
+        <View style={styles.overburdenedContainer}>
+          <Text style={styles.overburdenedText}>OVERBURDENED</Text>
+        </View>
+      )}
+
       {/* Ammo display - bottom right */}
       <View style={styles.ammoContainer}>
         <View style={styles.ammoPanel}>
-          {isReloading ? (
+          {currentWeapon === 'brimstoneFlamethrower' ? (
+            <View style={styles.ammoDisplay}>
+              <Text style={styles.ammoCurrent}>{Math.ceil(player?.player?.fuel ?? 0)}</Text>
+              <Text style={styles.ammoSep}>/</Text>
+              <Text style={styles.ammoMag}>{player?.player?.fuelMax ?? 100}</Text>
+            </View>
+          ) : isReloading ? (
             <View style={styles.reloadContainer}>
               <Text style={styles.reloadingText}>RELOADING</Text>
               <View style={styles.reloadBarOuter}>
@@ -202,6 +218,20 @@ export const HUD: React.FC = () => {
             </View>
           )}
           <Text style={styles.weaponName}>{weaponName}</Text>
+          {/* Fuel bar for flamethrower */}
+          {currentWeapon === 'brimstoneFlamethrower' && (
+            <View style={styles.fuelBarOuter}>
+              <View
+                style={[
+                  styles.fuelBarInner,
+                  {
+                    width:
+                      `${((player?.player?.fuel ?? 0) / (player?.player?.fuelMax ?? 100)) * 100}%` as DimensionValue,
+                  },
+                ]}
+              />
+            </View>
+          )}
         </View>
       </View>
 
@@ -268,32 +298,38 @@ export const HUD: React.FC = () => {
 
       {/* Weapon slots - top right */}
       <View style={styles.weaponSlotsContainer}>
-        {(['hellPistol', 'brimShotgun', 'hellfireCannon', 'goatsBane'] as WeaponId[]).map(
-          (wid, i) => {
-            const owned = player?.player?.weapons?.includes(wid);
-            const active = currentWeapon === wid;
-            return (
-              <View
-                key={wid}
+        {(
+          [
+            'hellPistol',
+            'brimShotgun',
+            'hellfireCannon',
+            'goatsBane',
+            'brimstoneFlamethrower',
+          ] as WeaponId[]
+        ).map((wid, i) => {
+          const owned = player?.player?.weapons?.includes(wid);
+          const active = currentWeapon === wid;
+          return (
+            <View
+              key={wid}
+              style={[
+                styles.weaponSlot,
+                active && styles.weaponSlotActive,
+                !owned && styles.weaponSlotLocked,
+              ]}
+            >
+              <Text
                 style={[
-                  styles.weaponSlot,
-                  active && styles.weaponSlotActive,
-                  !owned && styles.weaponSlotLocked,
+                  styles.weaponSlotText,
+                  active && styles.weaponSlotTextActive,
+                  !owned && styles.weaponSlotTextLocked,
                 ]}
               >
-                <Text
-                  style={[
-                    styles.weaponSlotText,
-                    active && styles.weaponSlotTextActive,
-                    !owned && styles.weaponSlotTextLocked,
-                  ]}
-                >
-                  {i + 1}
-                </Text>
-              </View>
-            );
-          },
-        )}
+                {i + 1}
+              </Text>
+            </View>
+          );
+        })}
       </View>
 
       {/* Boss HP bar - top center (boss encounters only) */}
@@ -304,6 +340,12 @@ export const HUD: React.FC = () => {
 
       {/* Damage numbers (center area) */}
       <DamageNumbers />
+
+      {/* Dialogue overlay - lower third (trigger system) */}
+      <DialogueOverlay />
+
+      {/* Kill hint - lower third */}
+      <KillHintOverlay />
 
       {/* Crosshair - center (flashes white on hit) */}
       <View style={styles.crosshairContainer}>
@@ -485,6 +527,38 @@ const DamageNumbers: React.FC = () => {
 };
 
 // ---------------------------------------------------------------------------
+// Dialogue Overlay (lower third — trigger system)
+// ---------------------------------------------------------------------------
+
+const DialogueOverlay: React.FC = () => {
+  const dialogue = getActiveDialogue();
+  if (!dialogue) return null;
+
+  return (
+    <View style={styles.dialogueContainer}>
+      <View style={styles.dialoguePanel}>
+        <Text style={[styles.dialogueText, { opacity: dialogue.opacity }]}>{dialogue.text}</Text>
+      </View>
+    </View>
+  );
+};
+
+// ---------------------------------------------------------------------------
+// Kill Hint Overlay (lower third)
+// ---------------------------------------------------------------------------
+
+const KillHintOverlay: React.FC = () => {
+  const hint = getKillHint();
+  if (!hint) return null;
+
+  return (
+    <View style={styles.killHintContainer}>
+      <Text style={[styles.killHintText, { opacity: hint.opacity }]}>{hint.text}</Text>
+    </View>
+  );
+};
+
+// ---------------------------------------------------------------------------
 // Boss Health Bar
 // ---------------------------------------------------------------------------
 
@@ -654,6 +728,21 @@ const styles = StyleSheet.create({
     color: '#cc0000',
     letterSpacing: 2,
     marginTop: 4,
+  },
+
+  // Fuel bar (flamethrower)
+  fuelBarOuter: {
+    width: 140,
+    height: 6,
+    backgroundColor: '#0a0520',
+    borderWidth: 1,
+    borderColor: 'rgba(0, 150, 255, 0.3)',
+    marginTop: 4,
+    overflow: 'hidden' as const,
+  },
+  fuelBarInner: {
+    height: '100%' as DimensionValue,
+    backgroundColor: '#0088ff',
   },
 
   // Reload indicator
@@ -1042,5 +1131,70 @@ const styles = StyleSheet.create({
     height: 4,
     left: -2,
     top: -2,
+  },
+
+  // -- Circle 4 Overburdened indicator --
+  overburdenedContainer: {
+    position: 'absolute',
+    bottom: 80,
+    left: 20,
+  },
+  overburdenedText: {
+    fontFamily: 'Courier',
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#ffaa00',
+    letterSpacing: 3,
+    backgroundColor: 'rgba(40, 20, 0, 0.7)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 170, 0, 0.4)',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+  },
+
+  // -- Dialogue overlay (trigger system, lower third) --
+  dialogueContainer: {
+    position: 'absolute',
+    bottom: '25%' as DimensionValue,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+  },
+  dialoguePanel: {
+    backgroundColor: 'rgba(10, 5, 5, 0.85)',
+    borderWidth: 1,
+    borderColor: 'rgba(204, 150, 100, 0.3)',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    maxWidth: '70%' as DimensionValue,
+  },
+  dialogueText: {
+    fontFamily: 'Courier',
+    fontSize: 16,
+    color: '#ccbbaa',
+    letterSpacing: 1,
+    textAlign: 'center',
+    lineHeight: 24,
+    textShadowColor: 'rgba(0, 0, 0, 0.8)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 4,
+  },
+
+  // -- Kill hint (lower third) --
+  killHintContainer: {
+    position: 'absolute',
+    bottom: '20%' as DimensionValue,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+  },
+  killHintText: {
+    fontFamily: 'Courier',
+    fontSize: 14,
+    color: '#ccbbaa',
+    letterSpacing: 3,
+    textShadowColor: 'rgba(0, 0, 0, 0.8)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 4,
   },
 });

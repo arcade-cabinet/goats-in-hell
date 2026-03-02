@@ -53,6 +53,20 @@ const ALERT_RADIUS = 15;
 const ATTACK_COOLDOWN_FRAMES = 60;
 
 // ---------------------------------------------------------------------------
+// Circle 5 (Wrath) — Escalation: enemies get faster during combat
+// ---------------------------------------------------------------------------
+
+/** Accumulated combat time in seconds (enemies alive and alert). */
+let escalationCombatTimer = 0;
+/** Current speed multiplier from escalation (1.0 = no buff, capped at 2.0). */
+let escalationSpeedMult = 1.0;
+
+/** Returns the current Circle 5 escalation speed multiplier (for enemy glow). */
+export function getEscalationMultiplier(): number {
+  return escalationSpeedMult;
+}
+
+// ---------------------------------------------------------------------------
 // Shared YUKA EntityManager (one for all enemies)
 // ---------------------------------------------------------------------------
 
@@ -442,6 +456,24 @@ export function aiSystemUpdate(deltaTime: number): void {
   const playerPos = player.position;
   const dtScale = deltaTime / 16;
 
+  // Circle 5 (Wrath) — Escalation: track combat time and ramp enemy speed
+  const circleNumber = useGameStore.getState().circleNumber;
+  if (circleNumber === 5) {
+    const hasAlertEnemies = world.entities.some((e) => e.enemy?.alert);
+    if (hasAlertEnemies) {
+      escalationCombatTimer += deltaTime / 1000; // convert ms to seconds
+      // +10% per 5 seconds, capped at +100% (2x)
+      escalationSpeedMult = Math.min(2.0, 1.0 + Math.floor(escalationCombatTimer / 5) * 0.1);
+    } else {
+      // No alert enemies — reset escalation
+      escalationCombatTimer = 0;
+      escalationSpeedMult = 1.0;
+    }
+  } else {
+    escalationCombatTimer = 0;
+    escalationSpeedMult = 1.0;
+  }
+
   // Update the shared target for all YUKA steering behaviors
   playerTarget.set(playerPos.x, 0, playerPos.z);
 
@@ -479,6 +511,12 @@ export function aiSystemUpdate(deltaTime: number): void {
 
     // Sync ECS position → YUKA vehicle (in case combat knocked them around)
     vehicle.position.set(entity.position.x, 0, entity.position.z);
+
+    // Circle 5 (Wrath) — apply escalation speed multiplier to vehicle
+    if (circleNumber === 5 && escalationSpeedMult > 1.0) {
+      vehicle.maxSpeed = entity.enemy.speed * escalationSpeedMult;
+      vehicle.maxForce = entity.enemy.speed * 2 * escalationSpeedMult;
+    }
   }
 
   // Tick YUKA steering (seconds)
@@ -556,4 +594,7 @@ export function aiSystemReset(): void {
     entityManager.remove(vehicle);
   }
   vehicleMap.clear();
+  // Reset Circle 5 escalation state
+  escalationCombatTimer = 0;
+  escalationSpeedMult = 1.0;
 }

@@ -47,6 +47,8 @@ describe('checkFloorComplete', () => {
         weapons: ['hellPistol'],
         isReloading: false,
         reloadStart: 0,
+        fuel: 100,
+        fuelMax: 100,
       },
     };
     world.add(player);
@@ -68,6 +70,8 @@ describe('checkFloorComplete', () => {
         weapons: ['hellPistol'],
         isReloading: false,
         reloadStart: 0,
+        fuel: 100,
+        fuelMax: 100,
       },
     };
     world.add(player);
@@ -90,6 +94,8 @@ describe('checkFloorComplete', () => {
         weapons: ['hellPistol'],
         isReloading: false,
         reloadStart: 0,
+        fuel: 100,
+        fuelMax: 100,
       },
     };
     const enemy: Entity = {
@@ -138,6 +144,8 @@ describe('checkPlayerDeath', () => {
         weapons: ['hellPistol'],
         isReloading: false,
         reloadStart: 0,
+        fuel: 100,
+        fuelMax: 100,
       },
     };
     world.add(player);
@@ -157,6 +165,8 @@ describe('checkPlayerDeath', () => {
         weapons: ['hellPistol'],
         isReloading: false,
         reloadStart: 0,
+        fuel: 100,
+        fuelMax: 100,
       },
     };
     world.add(player);
@@ -176,6 +186,8 @@ describe('checkPlayerDeath', () => {
         weapons: ['hellPistol'],
         isReloading: false,
         reloadStart: 0,
+        fuel: 100,
+        fuelMax: 100,
       },
     };
     world.add(player);

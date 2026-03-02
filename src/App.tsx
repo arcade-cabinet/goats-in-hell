@@ -15,6 +15,7 @@ import type { Difficulty } from './state/GameStore';
 import { generateSeedPhrase, useGameStore } from './state/GameStore';
 import { BossIntroScreen } from './ui/BossIntroScreen';
 import { DeathScreen } from './ui/DeathScreen';
+import { GameCompleteScreen } from './ui/GameCompleteScreen';
 import { HUD } from './ui/HUD';
 import { MainMenu } from './ui/MainMenu';
 import { PauseMenu } from './ui/PauseMenu';
@@ -127,6 +128,7 @@ const App = () => {
       {screen === 'dead' && <DeathScreen />}
       {screen === 'victory' && <VictoryScreen />}
       {screen === 'bossIntro' && <BossIntroScreen />}
+      {screen === 'gameComplete' && <GameCompleteScreen />}
       {(screen === 'mainMenu' || screen === 'newGame' || screen === 'settings') && <MainMenu />}
     </View>
   );

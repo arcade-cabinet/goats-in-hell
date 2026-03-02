@@ -18,6 +18,7 @@ import * as THREE from 'three/webgpu';
 import { COLORS } from '../../constants';
 import type { Entity } from '../../game/entities/components';
 import { world } from '../../game/entities/world';
+import { useGameStore } from '../../state/GameStore';
 
 // ---------------------------------------------------------------------------
 // Pickup type visual configuration
@@ -171,11 +172,14 @@ export function disposePickupResources(): void {
   }
 }
 
+/** Poisoned green color for Circle 3 health pickups. */
+const POISON_COLOR = '#44cc44';
+
 function createPickupMesh(entity: Entity, scene: THREE.Scene): TrackedPickup | null {
   if (!entity.pickup || !entity.position || !entity.id) return null;
 
   const pickupType = entity.pickup.pickupType;
-  const config = PICKUP_CONFIGS[pickupType];
+  let config = PICKUP_CONFIGS[pickupType];
 
   if (!config) {
     // Fallback for unknown pickup types (e.g. powerup)
@@ -185,6 +189,11 @@ function createPickupMesh(entity: Entity, scene: THREE.Scene): TrackedPickup | n
       scale: 1,
       glowScale: 2.0,
     });
+  }
+
+  // Circle 3 (Gluttony) — health pickups get a sickly green tint
+  if (pickupType === 'health' && useGameStore.getState().circleNumber === 3) {
+    config = { ...config, color: POISON_COLOR };
   }
 
   return createPickupMeshWithConfig(entity, scene, config);

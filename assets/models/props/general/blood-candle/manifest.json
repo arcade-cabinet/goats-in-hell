@@ -1,0 +1,18 @@
+{
+  "id": "blood-candle",
+  "name": "Blood Candle",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A single tall dripping blood-red candle on a blackened iron holder, dark wax pooling at the base, faint crimson flame, hellish dungeon prop, stylized low poly, dark fantasy, isometric view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Deep crimson wax with dark drips, blackened iron holder, faint emissive red glow on flame",
+    "enablePbr": true
+  }
+}

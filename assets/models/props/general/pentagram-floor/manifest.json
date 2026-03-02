@@ -1,0 +1,18 @@
+{
+  "id": "pentagram-floor",
+  "name": "Pentagram Floor Tile",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A circular stone floor tile with a glowing red pentagram carved into the surface, dark stone with emissive red runic lines, flat decorative ground prop, hellish ritual marker, stylized low poly game prop, dark fantasy, top-down view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark grey stone with emissive red glowing carved lines forming pentagram pattern",
+    "enablePbr": true
+  }
+}

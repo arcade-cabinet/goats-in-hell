@@ -24,4 +24,6 @@ export interface LevelData {
   spawns: Array<{ type: string; x: number; z: number; weaponId?: string; rotation?: number }>;
   /** Visual theme applied to this floor's materials and enemy roster. */
   theme: FloorTheme;
+  /** Database level ID (present when loaded from DB, undefined for procedural). */
+  levelId?: string;
 }

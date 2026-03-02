@@ -1,0 +1,18 @@
+{
+  "id": "frozen-goat",
+  "name": "Frozen Goat",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A demonic goat creature frozen solid in a block of translucent blue ice, arms outstretched in agony, horns visible through the ice, treachery punishment frozen in ice, stylized low poly game prop, dark fantasy, isometric view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Translucent blue-white ice block, dark goat silhouette frozen inside, frost crystal details on surface",
+    "enablePbr": true
+  }
+}

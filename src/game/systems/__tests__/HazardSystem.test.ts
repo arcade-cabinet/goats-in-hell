@@ -58,6 +58,8 @@ function makePlayer(x = 0, z = 0, hp = 100): Entity {
       weapons: ['hellPistol'],
       isReloading: false,
       reloadStart: 0,
+      fuel: 100,
+      fuelMax: 100,
     },
   };
   world.add(player);

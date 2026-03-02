@@ -18,9 +18,19 @@ import { playSound } from './audio/AudioSystem';
 import { inputManager } from './input/InputManager';
 import { GamepadProvider } from './input/providers/GamepadProvider';
 import { KeyboardMouseProvider } from './input/providers/KeyboardMouseProvider';
+import { getWindForce, getZoneSpeedMult, isOnIce } from './systems/EnvironmentZoneEffects';
 import { getScreenShakeOffset } from './systems/ScreenShake';
 import { getProjectilePool } from './weapons/Projectile';
-import { switchWeapon, tryReload, tryShoot, updateReload } from './weapons/WeaponSystem';
+import {
+  isStreamWeapon,
+  switchWeapon,
+  tryReload,
+  tryShoot,
+  tryStreamFire,
+  updateDots,
+  updateFuel,
+  updateReload,
+} from './weapons/WeaponSystem';
 
 // Movement constants (matching existing Babylon.js values)
 const WALK_SPEED = 6; // units/sec (Babylon 0.3 * 60fps ≈ 18, but Rapier uses real units)
@@ -31,12 +41,34 @@ const PLAYER_HEIGHT = 1.6; // eye height
 const PLAYER_RADIUS = 0.4;
 const LOOK_CLAMP = Math.PI / 2.5; // max vertical look angle
 
+// Circle 4 (Greed) — Hoarding Penalty constants
+/** Base ammo capacity threshold. When total ammo exceeds 150% of this, speed is halved. */
+const HOARD_BASE_CAPACITY = 200;
+const HOARD_THRESHOLD = HOARD_BASE_CAPACITY * 1.5; // 300
+const HOARD_SPEED_MULT = 0.5;
+
+/** Whether the hoarding penalty is active (read by HUD for indicator). */
+let _hoardingPenaltyActive = false;
+
+// Circle 9 (Treachery) — Ice Sliding: momentum-based movement on frozen floor
+/** How quickly the player's velocity lerps toward input direction on ice (0-1). */
+const ICE_FRICTION = 0.03;
+/** Stored sliding velocity for ice physics (world units/sec). */
+let _iceVelX = 0;
+let _iceVelZ = 0;
+
+/** Returns true if the Circle 4 hoarding penalty is currently active. */
+export function isHoardingPenaltyActive(): boolean {
+  return _hoardingPenaltyActive;
+}
+
 // Weapon slot mapping: number key 1-4 → WeaponId
 const WEAPON_SLOTS: Record<number, WeaponId> = {
   1: 'hellPistol',
   2: 'brimShotgun',
   3: 'hellfireCannon',
   4: 'goatsBane',
+  5: 'brimstoneFlamethrower',
 };
 
 // Euler for camera rotation (yaw = y, pitch = x)
@@ -172,13 +204,58 @@ export function PlayerController({ spawnPosition = [0, PLAYER_HEIGHT, 0] }: Play
 
     const bonuses = getLevelBonuses(useGameStore.getState().leveling.level);
     const speedMult = input.sprint ? SPRINT_MULT : 1;
-    const speed = WALK_SPEED * speedMult * bonuses.speedMult;
+
+    // Circle 4 (Greed) — Hoarding Penalty: slow player when carrying too much ammo
+    let hoardMult = 1;
+    const circleNumber = useGameStore.getState().circleNumber;
+    if (circleNumber === 4) {
+      const playerEntity = world.entities.find((e: Entity) => e.type === 'player');
+      if (playerEntity?.ammo) {
+        let totalAmmo = 0;
+        for (const wid of Object.keys(playerEntity.ammo) as Array<keyof typeof playerEntity.ammo>) {
+          const slot = playerEntity.ammo[wid];
+          totalAmmo += slot.current + slot.reserve;
+        }
+        _hoardingPenaltyActive = totalAmmo > HOARD_THRESHOLD;
+        if (_hoardingPenaltyActive) {
+          hoardMult = HOARD_SPEED_MULT;
+        }
+      }
+    } else {
+      _hoardingPenaltyActive = false;
+    }
+
+    const speed = WALK_SPEED * speedMult * bonuses.speedMult * hoardMult * getZoneSpeedMult();
 
     _moveDir.set(0, 0, 0);
     _moveDir.addScaledVector(_forward, input.moveZ);
     _moveDir.addScaledVector(_right, input.moveX);
     if (_moveDir.lengthSq() > 0) _moveDir.normalize();
     _moveDir.multiplyScalar(speed * dt);
+
+    // C9 Treachery — Ice Sliding: lerp toward desired velocity instead of
+    // setting it directly. Player slides on frozen floors with momentum.
+    if (isOnIce() && circleNumber === 9) {
+      const targetX = _moveDir.x;
+      const targetZ = _moveDir.z;
+      // Lerp stored velocity toward target (low friction = high slide)
+      const t = 1 - (1 - ICE_FRICTION) ** (dt * 60); // frame-rate independent
+      _iceVelX += (targetX - _iceVelX) * t;
+      _iceVelZ += (targetZ - _iceVelZ) * t;
+      _moveDir.x = _iceVelX;
+      _moveDir.z = _iceVelZ;
+    } else {
+      // Reset ice velocity when not sliding
+      _iceVelX = _moveDir.x;
+      _iceVelZ = _moveDir.z;
+    }
+
+    // Apply wind zone force (world-space push, Z negated for Three.js)
+    const wind = getWindForce();
+    if (wind.x !== 0 || wind.z !== 0) {
+      _moveDir.x += wind.x * dt;
+      _moveDir.z += -wind.z * dt; // negate Z for Three.js right-handed coords
+    }
 
     // --- Jump / Gravity ---
     if (input.jump && isGroundedRef.current) {
@@ -253,18 +330,34 @@ export function PlayerController({ spawnPosition = [0, PLAYER_HEIGHT, 0] }: Play
       const reloadSound = updateReload(playerEntity, dt);
       if (reloadSound) playSound(reloadSound);
 
-      // Fire
+      // Fuel regen + DOT ticking (always runs)
+      updateFuel(playerEntity, dt);
+      updateDots(dt);
+
+      // Fire — branch between stream (flamethrower) and projectile weapons
       if (input.fire) {
-        const pool = getProjectilePool();
-        if (pool) {
-          const shootSound = tryShoot(
+        const currentWep = playerEntity.player?.currentWeapon ?? 'hellPistol';
+        if (isStreamWeapon(currentWep)) {
+          const streamSound = tryStreamFire(
             playerEntity,
-            pool,
             input.aimOrigin,
             input.aimDirection,
             camera,
+            dt,
           );
-          if (shootSound) playSound(shootSound);
+          if (streamSound) playSound(streamSound);
+        } else {
+          const pool = getProjectilePool();
+          if (pool) {
+            const shootSound = tryShoot(
+              playerEntity,
+              pool,
+              input.aimOrigin,
+              input.aimDirection,
+              camera,
+            );
+            if (shootSound) playSound(shootSound);
+          }
         }
       }
 
@@ -274,7 +367,7 @@ export function PlayerController({ spawnPosition = [0, PLAYER_HEIGHT, 0] }: Play
         if (reloadStartSound) playSound(reloadStartSound);
       }
 
-      // Weapon slot selection (keys 1-4)
+      // Weapon slot selection (keys 1-5)
       if (input.weaponSlot > 0) {
         const slotWeapon = WEAPON_SLOTS[input.weaponSlot];
         if (slotWeapon) {

@@ -1,0 +1,35 @@
+{
+  "id": "goat-frost",
+  "name": "Goat Frost",
+  "type": "character",
+  "pipeline": "enemy",
+  "description": "Circle 9 (Treachery) — ice-encrusted goat. Slow but devastating charge, freezes on contact.",
+  "textToImageTask": {
+    "prompt": "A bipedal humanoid goat demon in A-pose, encrusted in thick blue-white ice crystals growing from the fur, pale blue frozen fur underneath, massive horns coated in icicles, wielding a jagged ice spear formed from frozen blood, thick ice armor plates fused to shoulders and chest, digitigrade goat legs encased in frozen boots of solid ice, dead frozen white eyes with frost breath, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Ice-encrusted bipedal goat demon, blue-white ice crystals on fur, icicle horns, jagged ice spear, frozen armor plates, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 9000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Pale blue frozen fur, blue-white ice crystal growths, icicle-coated horns, jagged translucent ice spear, frost breath particles, dead white frozen eyes",
+    "enablePbr": true
+  },
+  "riggingTask": { "heightMeters": 2.0 },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Stumble_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp_1",
+      "Fighting.AttackingwithWeapon.Charged_Slash",
+      "WalkAndRun.Running.Lean_Forward_Sprint",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Knock_Down"
+    ]
+  }
+}

@@ -37,12 +37,15 @@ function makePlayer(x = 0, z = 0, hp = 100): Entity {
       weapons: ['hellPistol'],
       isReloading: false,
       reloadStart: 0,
+      fuel: 100,
+      fuelMax: 100,
     },
     ammo: {
       hellPistol: { current: 12, reserve: 20, magSize: 12 },
       brimShotgun: { current: 0, reserve: 0, magSize: 6 },
       hellfireCannon: { current: 0, reserve: 0, magSize: 30 },
       goatsBane: { current: 0, reserve: 0, magSize: 3 },
+      brimstoneFlamethrower: { current: 0, reserve: 0, magSize: 0 },
     },
   };
   world.add(player);

@@ -1,6 +1,9 @@
 /** Weapons -- weapon definitions and the canonical weapon registry. */
 import type { WeaponId } from '../entities/components';
 
+/** Fire mode: 'projectile' fires discrete shots, 'stream' is a continuous beam/spray. */
+export type FireMode = 'projectile' | 'stream';
+
 /** Static definition of a weapon type — immutable stats looked up by WeaponSystem. */
 export interface WeaponDef {
   id: WeaponId;
@@ -25,6 +28,18 @@ export interface WeaponDef {
   projectileSpeed?: number;
   /** Area-of-effect blast radius in world units (e.g. rocket launcher). */
   aoe?: number;
+  /** Fire mode — 'stream' for continuous weapons like flamethrower. */
+  fireMode?: FireMode;
+  /** Fuel consumed per second while firing (stream weapons only). */
+  fuelBurnRate?: number;
+  /** Fuel passively regenerated per second (stream weapons only). */
+  fuelRegenRate?: number;
+  /** Max fuel capacity (stream weapons only). */
+  fuelMax?: number;
+  /** DOT damage per second applied on hit (stream weapons only). */
+  dotDps?: number;
+  /** DOT duration in seconds (stream weapons only). */
+  dotDuration?: number;
 }
 
 /** Complete weapon registry — keyed by WeaponId, used by WeaponSystem and HUD. */
@@ -81,5 +96,23 @@ export const weapons: Record<WeaponId, WeaponDef> = {
     isProjectile: true,
     projectileSpeed: 20,
     aoe: 5,
+  },
+  brimstoneFlamethrower: {
+    id: 'brimstoneFlamethrower',
+    name: 'Brimstone Flamethrower',
+    damage: 2, // per tick — continuous stream
+    pellets: 1,
+    spread: 0.5, // wide cone (30° half-angle)
+    magSize: 0, // uses fuel, not ammo
+    fireRate: 50, // ms between damage ticks
+    reloadTime: 0, // no reload
+    range: 5, // short range
+    isProjectile: false,
+    fireMode: 'stream',
+    fuelBurnRate: 5, // fuel/sec
+    fuelRegenRate: 1, // fuel/sec passive regen
+    fuelMax: 100,
+    dotDps: 2, // DOT: 2 damage/sec
+    dotDuration: 5, // DOT lasts 5 seconds
   },
 };

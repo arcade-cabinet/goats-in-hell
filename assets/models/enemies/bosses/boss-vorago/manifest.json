@@ -1,0 +1,36 @@
+{
+  "id": "boss-vorago",
+  "name": "Vorago — The Devourer",
+  "type": "character",
+  "pipeline": "enemy",
+  "description": "Circle 3 Boss (Gluttony). Monstrous obese goat demon with multiple mouths.",
+  "textToImageTask": {
+    "prompt": "A towering bipedal humanoid goat demon abomination in A-pose, monstrously obese with multiple mouths across the distended belly each with gnashing teeth, sickly green-brown fur matted with bile and food remnants, short thick horns like a boar, massive arms ending in claw-hands large enough to grab a person, wearing chains wrapped around the torso that dig into the flesh, additional smaller goat faces growing from the shoulders, thick stumpy digitigrade legs, dozens of small beady hungry red eyes, 3 meters tall, stylized dark fantasy game boss character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Monstrously obese bipedal goat demon, multiple mouths on belly, green-brown matted fur, boar horns, grabbing claws, chain-wrapped, 3m, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 18000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Sickly green-brown matted fur, multiple gnashing tooth-filled mouths, bile-stained flesh, rusted chains digging into fat, beady red eyes, parasitic shoulder faces",
+    "enablePbr": true
+  },
+  "riggingTask": { "heightMeters": 3.0 },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Stumble_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp_2",
+      "Fighting.CastingSpell.Charged_Ground_Slam",
+      "Fighting.CastingSpell.mage_soell_cast_2",
+      "BodyMovements.Acting.Zombie_Scream",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Knock_Down_1"
+    ]
+  }
+}

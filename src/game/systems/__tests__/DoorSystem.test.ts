@@ -48,6 +48,8 @@ function makePlayer(x: number, z: number) {
       weapons: ['hellPistol' as WeaponId],
       isReloading: false,
       reloadStart: 0,
+      fuel: 100,
+      fuelMax: 100,
     },
   };
   world.add(player);

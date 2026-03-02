@@ -1,0 +1,18 @@
+{
+  "id": "silk-curtain",
+  "name": "Silk Curtain",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tattered crimson silk curtain hanging from a curved iron rod, partially sheer with gold thread embroidery, decadent and worn, lust-themed dungeon boudoir decoration, stylized low poly game prop, dark fantasy, isometric view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Deep crimson silk, gold embroidery threads, tattered edges, sheer translucent sections",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "boss-il-macello",
+  "name": "Il Macello — The Slaughter",
+  "type": "character",
+  "pipeline": "enemy",
+  "description": "Circle 7 Boss (Violence). Industrial nightmare goat, a walking slaughterhouse.",
+  "textToImageTask": {
+    "prompt": "A towering bipedal humanoid goat demon in A-pose, grotesque industrial body where flesh and machinery merge, one arm is organic ending in a massive hoof-fist and the other arm is a mechanical piston-driven meat grinder appendage with spinning blades, iron plates bolted directly into the hide with visible rivets, a cage built into the ribcage containing screaming souls, heavy iron mask welded over the lower jaw like a muzzle with tubes feeding dark fluid, horns wrapped in barbed wire, digitigrade goat legs with one replaced by a mechanical prosthetic, single burning orange eye visible through a crack in the iron mask, 3.2 meters tall, stylized dark fantasy game boss character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Towering goat demon fused with industrial machinery, meat grinder arm, iron plates bolted into hide, ribcage soul cage, iron jaw muzzle, barbed wire horns, 3.2m, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 18000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Raw flesh and rusted industrial iron merged, visible rivets and bolts, spinning blade textures, barbed wire wraps, dark fluid tubes, single burning orange eye through iron mask crack",
+    "enablePbr": true
+  },
+  "riggingTask": { "heightMeters": 3.2 },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Zombie_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp",
+      "Fighting.AttackingwithWeapon.Axe_Spin_Attack",
+      "Fighting.AttackingwithWeapon.Charged_Axe_Chop",
+      "Fighting.CastingSpell.Charged_Ground_Slam",
+      "BodyMovements.Acting.Zombie_Scream",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Knock_Down"
+    ]
+  }
+}
