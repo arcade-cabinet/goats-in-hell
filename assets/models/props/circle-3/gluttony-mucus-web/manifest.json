@@ -1,0 +1,18 @@
+{
+  "id": "gluttony-mucus-web",
+  "name": "Mucus Web",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A thick web of translucent yellow-green mucus strands stretched between two anchor points, solid sculpted with drooping sag and thick nodes where strands intersect, glistening wet organic material, dark fantasy gluttony-themed corner decoration game prop, isolated object, dark background, corner view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Translucent yellow-green mucus, thick drooping strands, glistening wet nodes, organic biological webbing",
+    "enablePbr": true
+  }
+}

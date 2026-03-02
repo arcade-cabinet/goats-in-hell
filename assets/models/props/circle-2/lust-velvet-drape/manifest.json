@@ -1,0 +1,18 @@
+{
+  "id": "lust-velvet-drape",
+  "name": "Rigid Velvet Drape",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A wall-mounted rigid crimson velvet drape with gold tassels and braided cord tie-back, frozen in elegant folds as solid sculpted fabric, gold mounting rod, dark fantasy lust-themed decor game prop, isolated object, dark background, wall-mounted view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Deep crimson velvet with subtle sheen, gold braided tassels, sculpted rigid fold texture, warm fabric appearance",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "gluttony-overflowing-goblet",
+  "name": "Overflowing Goblet",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tarnished pewter goblet overflowing with solid sculpted green-brown sludge spilling over the rim and pooling at the base, the cup tilted slightly, dark corroded metal, dark fantasy gluttony-themed table decoration game prop, isolated object, dark background, three-quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Tarnished dark pewter, sculpted green-brown overflowing sludge, corroded cup surface, pooled base spillage",
+    "enablePbr": true
+  }
+}

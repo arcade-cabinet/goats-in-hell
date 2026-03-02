@@ -1,0 +1,18 @@
+{
+  "id": "limbo-crumbling-arch",
+  "name": "Crumbling Stone Arch",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A crumbling ancient stone archway with broken keystone, rough hewn gray-blue limestone blocks, cracks and missing chunks revealing dark interior, moss in crevices, dark fantasy dungeon game prop, isolated object, dark background, front-facing view",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "x"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Cold gray-blue rough limestone, deep cracks with dark interiors, green moss in joints, weathered ancient surface",
+    "enablePbr": true
+  }
+}

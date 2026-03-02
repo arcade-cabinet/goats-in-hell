@@ -1,0 +1,18 @@
+{
+  "id": "lust-fallen-chair",
+  "name": "Fallen Ornate Chair",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "An ornate wooden chair lying on its side, carved dark wood frame with gold paint flaking off, one leg broken, rigid crimson velvet seat cushion, knocked over as if abandoned in haste, dark fantasy lust-themed game prop, isolated object, dark background, side view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark carved wood, flaking gold paint, rigid crimson velvet cushion, broken leg splinter, toppled position",
+    "enablePbr": true
+  }
+}

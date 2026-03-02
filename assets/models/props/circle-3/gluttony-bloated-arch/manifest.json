@@ -1,0 +1,18 @@
+{
+  "id": "gluttony-bloated-arch",
+  "name": "Bloated Organic Arch",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A bloated organic archway made of stretched leather-like flesh over curved rib-like supports, glistening wet surface with sickly yellow-green tint, swollen and distended, dark fantasy gluttony-themed game prop, isolated object, dark background, front-facing view",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "x"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Stretched leather-flesh surface, sickly yellow-green tint, glistening wet sheen, curved rib supports visible beneath skin",
+    "enablePbr": true
+  }
+}

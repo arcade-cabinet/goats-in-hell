@@ -578,3 +578,184 @@ editor.createTheme('circle-2-lust', {
 - NOT a simple flat layout. The Siren Pit descends 2 full elevation units. The Tempest Hall has raised platforms. The boss room has a dais. Verticality is a core part of this circle.
 - NOT using Kenney or KayKit assets. Fantasy Props MegaKit + AmbientCG PBR textures only.
 - NOT using the procedural generator's `explore → arena → boss` cycle. The pacing is authored: tutorial → combat introduction → vertical challenge → arena → boss.
+
+---
+
+## 3D Spatial Design
+
+### Room: Antechamber (8x6, exploration)
+
+**Player Experience:** The cold gray of Limbo is gone. You step into warmth — polished marble catches amber candlelight and throws it back softened. The air smells faintly of incense and something burning underneath. Elegant vases flank the path. A banner drapes the entrance behind you. For the first time in Hell, you feel welcomed. A gentle breeze stirs from the south exit. You do not yet know that the breeze is the first warning.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| lust-ornate-arch | (22,2) north entrance | 1.0 | face-south | Grand marble entrance from Circle 1 descent |
+| lust-ornate-arch | (22,7) south exit | 1.0 | face-south | Frame transition to Wind Corridor |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| lust-candelabra | (18,3), (25,3), (18,7), (25,7) wall-mounted | 1.0 | Warm amber lighting, 4 sources |
+| lust-marble-vase | (20,4) and (23,4) floor pedestals | 0.9 | Elegant decoration, foreshadow luxury |
+| lust-velvet-drape | (22,2) above north entrance | 1.0 | Fabric drape over entry — welcoming |
+| lust-coffered-ceiling-tile | ceiling grid pattern | 0.8 | Ornate overhead, cathedral feel |
+| lust-rose-thorn-cluster | (18,6) near floor by south exit | 0.5 | First subtle hint — beauty has thorns |
+
+**Lighting:** 4x candelabra at corners, color `#ffaa55`, intensity 0.7, radius 5 cells. Warm amber ambient `#cc8844` at 0.20. Faint fog density 0.02, color `#2e1a1a`.
+**Platforming:** Flat at elevation 0. FLOOR_RAISED step (+0.5) at south edge hints at elevation changes to come.
+
+---
+
+### Room: Wind Corridor (5x16, gauntlet)
+
+**Player Experience:** The marble walkway stretches ahead, narrow — three cells wide. Lava glows on both sides, sunken channels of molten rock. Then the wind hits. It shoves you sideways, toward the east lava channel. Banners on the west wall snap taut, pointing where the wind wants to take you. You lean into it and push forward. The wind stops. You have two seconds before it starts again. Move now.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| lust-ornate-arch | (22,12) north entrance | 0.9 | face-south | Entry from Antechamber |
+| lust-ornate-arch | (22,27) south exit | 0.9 | face-south | Exit to Lover's Gallery |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| lust-wind-banner | (20,14), (20,18), (20,22), (20,26) west wall | 0.8 | Wind direction indicators, flutter east |
+| lust-candelabra | (24,16) and (24,24) east wall | 0.9 | Flames lean with wind |
+| lust-lava-rock-border | (20,12)-(20,27) and (24,12)-(24,27) channel edges | 0.6 | Border the lava channels |
+| lust-ember-brazier | (22,12) walkway north end | 0.8 | Warmth marker at safe zone |
+
+**Lighting:** 2x candelabra on east wall, color `#ffaa55`, intensity 0.5. Lava channels emit `#ff4400` at intensity 0.4, radius 3 cells per side. Flickering `#ff6622` point lights at (21,15), (21,19), (21,23) from lava.
+**Platforming:** Walkway at elevation 0 (3 cells wide center). Lava channels at -0.5 on both sides (1 cell wide each). Wind blows W-to-E in alternating segments: 3s on, 2s off.
+
+---
+
+### Room: Lover's Gallery (14x10, exploration+combat)
+
+**Player Experience:** The corridor opens and you breathe — briefly. Onyx columns stretch in two rows ahead, their polished black surfaces reflecting candlelight. Banners drape between them, crimson and gold. Then a streak of fire passes your face — a crimson projectile from behind the far columns. The first ranged enemy. You duck behind an onyx column and feel the wind pressing you east, toward the lava strip on the far wall. The columns block the wind as well as the projectiles. You fight from cover to cover, learning that geometry is your ally.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| lust-onyx-column | (17,33), (20,33), (23,33), (26,33) row 1 | 1.2 | — | Structural, LOS + wind blockers |
+| lust-onyx-column | (17,38), (20,38), (23,38), (26,38) row 2 | 1.2 | — | Structural, LOS + wind blockers |
+| lust-ornate-arch | (22,32) north entrance | 1.0 | face-south | Entry from Wind Corridor |
+| lust-ornate-arch | (22,41) south exit to Siren Pit | 1.0 | face-south | Main path continues |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| lust-candelabra | (15,32), (28,32), (15,41), (28,41) corners | 1.0 | Corner lighting |
+| lust-velvet-drape | (16,34), (27,34), (16,39), (27,39) walls | 1.0 | Fabric between columns, luxury |
+| lust-fallen-chair | (18,36) and (25,37) floor | 0.9 | Knocked over — something happened here |
+| lust-golden-chalice | (19,36) and (24,38) floor near chairs | 0.6 | Scattered, aftermath of violence |
+| lust-marble-vase | (17,35) and (25,39) floor pedestals | 0.8 | Elegant decoration |
+| lust-cracked-statue | (15,36) west wall alcove | 1.0 | Embracing goat-headed couple, cracked |
+| lust-lava-rock-border | (28,32)-(28,41) east wall | 0.6 | Border the east lava strip |
+| lust-rose-thorn-cluster | (16,40) near secret wall | 0.6 | Visual tell near Boudoir entrance |
+
+**Lighting:** 4x candelabra at corners, color `#ffaa55`, intensity 0.7, radius 5 cells. East lava strip emits `#ff4400`, intensity 0.4, radius 3 cells. Steady W-to-E wind at 0.35 intensity pushes toward lava.
+**Platforming:** Main floor at elevation 0. North wall has FLOOR_RAISED balcony (+1, 2 cells deep) where fireGoats start with height advantage. East lava strip at -0.5.
+
+---
+
+### Room: Siren Pit (12x12, platforming)
+
+**Player Experience:** You look down and your stomach drops. A spiral ramp descends clockwise around a glowing lava core. The heat rises. The wind pulls inward and down — toward the center, toward the fire. Enemies fire from ledges cut into the outer wall at different heights. You descend carefully, each step a negotiation between forward progress and the constant inward tug. The chains hanging over the lava pit mark the danger zone. The chandelier far above lights the descent with mocking beauty.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| lust-ornate-arch | (22,46) north entry ledge | 1.0 | face-south | Entry from Gallery |
+| lust-bridge-railing | Ramp outer edge, spiral path | 0.8 | follow-ramp | Safety railing, partial — some sections missing |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| lust-candelabra | (16,47) and (27,47) high on walls | 1.0 | Upper level lighting |
+| lust-chandelier | (22,52) ceiling center over lava | 1.2 | Dramatic pit lighting from above |
+| lust-lava-rock-border | (20,50)-(23,53) around lava core | 0.7 | Border the 4x4 lava pit |
+| limbo-chain-cluster | (21,51), (23,51), (22,53) over lava | 1.0 | Vertical danger zone markers |
+| lust-ember-brazier | (17,48) ramp segment 1 start | 0.7 | Warmth marker, ramp start |
+| lust-cracked-statue | (26,50) east wall niche | 0.8 | Decorative in enemy ledge niche |
+
+**Lighting:** 2x candelabra high on walls, color `#ffaa55`, intensity 0.6. 1x chandelier over center, color `#ffaa55`, intensity 0.8. Lava core emits `#ff4400`, intensity 0.6, radius 4 cells. Intensifies with descent.
+**Platforming:** Entry ledge at elevation 0 (N, 2 cells deep). Ramp spirals: segment 1 E wall (0 to -0.5), segment 2 S wall (-0.5 to -1.0), segment 3 W wall (-1.0 to -1.5), segment 4 N inner (-1.5 to -2.0). Bottom landing at -2.0. 4x4 lava core at center. Wind pulls inward + down constantly at intensity 0.6.
+
+---
+
+### Room: Tempest Hall (14x12, arena)
+
+**Player Experience:** Four lanes divided by three lava channels. Bridges cross the lava at different points. The wind blows west to east — then stops — then east to west. Every eight seconds it shifts. You are on a bridge when it changes and the sudden reversal nearly throws you into the lava. You learn to time your crossings. Enemies charge across bridges from both sides. The raised platforms at the east and west walls are refuge — the wind cannot push you off stone that high. You fight in the gaps between wind shifts.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| lust-ornate-arch | (22,62) north entrance from ramp | 1.0 | face-south | Entry from Siren Pit ascent |
+| lust-ornate-arch | (22,73) south grand doorway | 1.2 | face-south | Wide ceremonial exit to boss |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| lust-candelabra | (15,62), (28,62), (15,73), (28,73) corners | 1.0 | Corner lighting |
+| lust-wind-banner | (16,66) and (27,66) N/S walls | 1.0 | Flutter with wind direction changes |
+| lust-lava-rock-border | Channel edges (19,62-73), (22,62-73), (25,62-73) | 0.6 | Border the 3 lava channels |
+| lust-bridge-railing | Bridge edges at crossings | 0.7 | Low railings on bridge sides |
+| lust-ember-brazier | (15,66) and (28,66) on raised platforms | 0.8 | Safe zone markers, warmth |
+| ornate-mirror | (16,63) west platform alcove | 0.9 | Reflects lava light — disorienting |
+
+**Lighting:** 4x candelabra at corners, color `#ffaa55`, intensity 0.7. 3x lava channels emit `#ff4400`, intensity 0.4, radius 3 cells each. Wind shifts W-to-E / E-to-W every 8 seconds.
+**Platforming:** Main lanes at elevation -1. Lava channels at -1.5 (sunken, 1 cell wide each). Bridges at -1 (flush with lanes, 3 cells wide). East/West raised platforms at -0.5 (refuge). Third bridge (SW) at -1.5 — risky, wind can push you off.
+
+---
+
+### Room: Boudoir (6x6, secret)
+
+**Player Experience:** You push through the hidden wall and the wind stops. Silence. Warmth. Candlelight from four wall-mounted candelabra and a chandelier overhead bathes a small chamber in golden light. A bed with crimson sheets. A table with a scroll. A chalice on a pedestal. This is the only comfortable room in all of Hell. No enemies. No wind. Just supplies and a moment of peace. You read the scroll: "The wind carries desire. Desire carried me to the edge. I could not let go."
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| lust-ornate-arch | (8,36) east entry from Gallery | 0.8 | face-west | Frame the WALL_SECRET entry |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| lust-candelabra | (3,34), (8,34), (3,39), (8,39) corners | 0.8 | Warm intimate lighting |
+| lust-chandelier | (5,36) ceiling center | 0.9 | Overhead golden glow |
+| lust-ornate-bed-wrecked | (4,36) floor | 1.0 | Luxurious bed — intact unlike the wrecked variant |
+| lust-golden-chalice | (5,38) pedestal | 0.7 | Decadent decoration |
+| lust-marble-vase | (3,36) and (7,36) flanking bed | 0.7 | Elegant vases |
+| silk-curtain | (4,34) near north wall | 0.8 | Intimate drapery |
+| lust-velvet-drape | (8,37) framing entry inside | 0.9 | Welcoming fabric |
+
+**Lighting:** 4x candelabra at corners, color `#ffaa55`, intensity 0.8. 1x chandelier center, color `#ffaa55`, intensity 0.9. Warmest lighting in the entire circle. No fog. No wind.
+**Platforming:** Flat at elevation 0. No hazards. Pure reward room.
+
+---
+
+### Room: Caprone's Sanctum (14x14, boss)
+
+**Player Experience:** The grand doorway opens onto black marble veined with gold. Ahead, on a raised dais of polished stone, Caprone sits on a throne — immense, hermaphroditic, utterly still. Two chandeliers hang overhead. Four onyx columns mark the dais corners. Then Caprone speaks: "Come closer, little goat. Everyone comes closer eventually." The wind pulls you forward. You resist. The fight begins. When the throne shatters in phase 2, the debris scatters across black marble slick with heat. When the lava rises in phase 3, the safe ground shrinks and the wind spins faster. This is where desire devours itself.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| lust-ornate-arch | (22,78) north grand entrance | 1.3 | face-south | Ceremonial boss entry |
+| lust-onyx-column | (18,82), (26,82), (18,86), (26,86) dais corners | 1.3 | — | Dais corner markers, minor cover |
+| lust-marble-throne | (22,83) center of raised dais | 1.2 | face-south | Caprone's throne — shatters phase 2 |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| lust-candelabra | (15,78), (28,78), (15,91), (28,91) corners | 1.0 | Corner lighting |
+| lust-chandelier | (20,82) and (24,82) ceiling flanking dais | 1.2 | Dramatic overhead throne lighting |
+| lust-velvet-drape | (16,78) and (27,78) flanking entrance | 1.1 | Ceremonial entrance fabric |
+| lust-lava-rock-border | (17,86), (21,86), (25,86) channel edges | 0.7 | Border the 3 lava channels south |
+| lust-bridge-railing | (22,86) center channel bridge | 0.7 | Bridge railing — collapses phase 3 |
+| lust-cracked-statue | (16,80) and (27,80) entrance alcoves | 1.0 | Flanking entrance, cracked embracing figures |
+| lust-rose-thorn-cluster | (17,90) and (26,90) south corners | 0.8 | Thorns growing from lava-heated cracks |
+| lust-perfume-censer | (19,79) and (25,79) near entrance | 0.7 | Incense — the scent of seduction |
+
+**Lighting:** 4x candelabra at corners, color `#ffaa55`, intensity 0.7. 2x chandeliers over dais, color `#ffaa55`, intensity 0.9. Throne backlight `#ff8800`, intensity 0.5. Lava channels emit `#ff4400`, intensity 0.4 (increase in phase 3). Phase 2: wind rotates N-E-S-W every 10s. Phase 3: fog rises to 0.06, lava widens, wind period drops to 6s.
+**Platforming:** Main floor at elevation -1. Throne dais at -0.5 (8x4 cells, north-center). Lava channels at -1.5 (widen in phase 3 from 1 to 3 cells each). Bridge over center channel at -1 (collapses phase 3). Four corner pillars at floor level provide minimal cover.

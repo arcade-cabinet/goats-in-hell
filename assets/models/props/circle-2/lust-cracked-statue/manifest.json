@@ -1,0 +1,18 @@
+{
+  "id": "lust-cracked-statue",
+  "name": "Cracked Marble Statue",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A cracked marble statue of an embracing goat-headed couple, missing one arm, deep fissure through the torso, warm cream marble with pink veins, classical sculpture style on a square pedestal, dark fantasy lust-themed game prop, isolated object, dark background, three-quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Warm cream marble with pink veins, smooth polished surface, deep crack revealing darker stone inside, classical pedestal",
+    "enablePbr": true
+  }
+}

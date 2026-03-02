@@ -1,0 +1,18 @@
+{
+  "id": "lust-gilded-pillar",
+  "name": "Gilded Marble Pillar",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tall polished marble pillar with gilded Corinthian capital and gold leaf bands spiraling up the shaft, warm cream marble with amber veins, elegant and luxurious, dark fantasy lust-themed game prop, isolated object, dark background, front-facing view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Warm cream marble with amber veins, gilded gold Corinthian capital, gold spiral bands, polished reflective surface",
+    "enablePbr": true
+  }
+}

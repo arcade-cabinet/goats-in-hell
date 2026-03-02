@@ -1,0 +1,18 @@
+{
+  "id": "limbo-cobweb-cluster",
+  "name": "Cobweb Cluster",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A dense cluster of ancient cobwebs stretched between two stone corner surfaces, thick dust-laden strands with dried insect husks caught within, translucent gray-white webbing, dark fantasy dungeon corner decoration game prop, isolated object, dark background, corner view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Gray-white translucent webbing, thick dust accumulation, dried dark insect husks, ancient undisturbed cobwebs",
+    "enablePbr": true
+  }
+}

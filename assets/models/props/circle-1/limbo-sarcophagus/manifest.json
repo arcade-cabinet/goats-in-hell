@@ -1,0 +1,18 @@
+{
+  "id": "limbo-sarcophagus",
+  "name": "Stone Sarcophagus",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A stone sarcophagus with heavy lid slightly ajar, carved goat-headed figure on lid surface, gray-blue limestone with dark stains, ancient and imposing, dark fantasy dungeon game prop, isolated object, dark background, three-quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Cold gray-blue limestone, dark water stains, carved relief details, ancient weathered surface with moss in seams",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "limbo-banner-tattered",
+  "name": "Tattered Banner",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tattered wall-mounted banner on a rusted iron rod, faded dark blue-gray fabric with barely visible sigil, torn edges hanging in rigid strips, wall-mounted bracket, dark fantasy dungeon game prop, isolated object, dark background, wall-mounted view",
+    "artStyle": "realistic",
+    "targetPolycount": 3500,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Faded dark blue-gray fabric, torn rigid strips, barely visible heraldic sigil, rusted iron mounting rod",
+    "enablePbr": true
+  }
+}

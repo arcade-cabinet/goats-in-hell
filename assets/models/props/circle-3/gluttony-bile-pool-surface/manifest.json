@@ -1,0 +1,18 @@
+{
+  "id": "gluttony-bile-pool-surface",
+  "name": "Bile Pool Surface",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A flat circular sculpted bile pool surface with solid sculpted bubbles and ripples, sickly yellow-green coloring with darker brown streaks, solid raised bubble formations across the surface, floor-level toxic pool decoration, dark fantasy gluttony-themed game prop, isolated object, dark background, top-down view",
+    "artStyle": "realistic",
+    "targetPolycount": 3500,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Sickly yellow-green liquid surface, solid sculpted bubble formations, darker brown organic streaks, toxic pool appearance",
+    "enablePbr": true
+  }
+}

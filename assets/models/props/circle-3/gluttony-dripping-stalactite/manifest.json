@@ -1,0 +1,18 @@
+{
+  "id": "gluttony-dripping-stalactite",
+  "name": "Dripping Stalactite",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A thick organic stalactite hanging from the ceiling, glistening with sickly yellow-green moisture, bulbous tip with a solid sculpted drip forming at the end, surface covered in slime ridges, dark fantasy gluttony-themed ceiling game prop, isolated object, dark background, hanging view",
+    "artStyle": "realistic",
+    "targetPolycount": 3500,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Sickly yellow-green glistening surface, organic slime ridges, bulbous drip tip, wet organic stalactite texture",
+    "enablePbr": true
+  }
+}

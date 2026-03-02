@@ -1,0 +1,18 @@
+{
+  "id": "lust-candelabra",
+  "name": "Golden Candelabra",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A triple-branched golden candelabra with lit candles, ornate scrollwork arms, dripping wax, warm amber glow, polished gold metal with slight tarnish, dark fantasy lust-themed game prop, isolated object, dark background, three-quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Polished gold metal with slight tarnish, warm amber candle wax drips, ornate scrollwork arms, warm glow",
+    "enablePbr": true
+  }
+}

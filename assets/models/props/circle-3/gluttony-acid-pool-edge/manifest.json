@@ -1,0 +1,18 @@
+{
+  "id": "gluttony-acid-pool-edge",
+  "name": "Acid Pool Edge Stone",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A corroded stone edge piece bordering an acid pool, pitted and dissolved surface with green-yellow chemical staining, one side smooth floor and the other eroded down to the acid level, modular edge section, dark fantasy gluttony-themed game prop, isolated object, dark background, side view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Pitted corroded stone, green-yellow acid staining, dissolved eroded edge, chemical damage patterns",
+    "enablePbr": true
+  }
+}

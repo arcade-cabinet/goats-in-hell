@@ -1,0 +1,18 @@
+{
+  "id": "gluttony-rope-tendril",
+  "name": "Organic Rope Tendril",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A thick organic tendril hanging from the ceiling like a rope, sickly pale green-brown sinew with bulging knots along its length, rigid solid form twisted and dangling, dark fantasy gluttony-themed ceiling decoration game prop, isolated object, dark background, hanging vertical view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Pale green-brown sinew, bulging organic knots, glistening wet surface, twisted rigid tendril form",
+    "enablePbr": true
+  }
+}

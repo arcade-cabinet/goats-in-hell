@@ -1,0 +1,18 @@
+{
+  "id": "limbo-inscription-tablet",
+  "name": "Inscription Tablet",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A rectangular stone tablet mounted on a wall with deeply carved Latin text, gray-blue marble surface with ornate border frame, cracks running through the text, dark fantasy dungeon wall decoration game prop, isolated object, dark background, front-facing view",
+    "artStyle": "realistic",
+    "targetPolycount": 3500,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Gray-blue marble, deeply carved text with shadow, ornate stone border, cracks through surface, damp staining",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "lust-onyx-column",
+  "name": "Onyx Column",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tall dark veined onyx column with polished surface, deep black stone with gray-white vein patterns, square capital and base, structural pillar for line-of-sight blocking, dark fantasy lust-themed game prop, isolated object, dark background, front-facing view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Deep polished black onyx, gray-white vein patterns, reflective smooth surface, square capital and base details",
+    "enablePbr": true
+  }
+}

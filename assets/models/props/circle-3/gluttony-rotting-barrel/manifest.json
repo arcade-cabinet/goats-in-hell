@@ -1,0 +1,18 @@
+{
+  "id": "gluttony-rotting-barrel",
+  "name": "Rotting Storage Barrel",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A swollen rotting wooden barrel with rusted iron bands, one stave burst open revealing putrid green-brown sludge inside sculpted as solid surface, fungal growth on the exterior, dark fantasy gluttony-themed game prop, isolated object, dark background, three-quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Rotting dark wood staves, rusted iron bands, green-brown sludge solid surface, yellow-green fungal patches",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "lust-perfume-censer",
+  "name": "Perfume Censer",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A hanging bronze perfume censer with ornate filigree openings, chain suspension with three links, solid sculpted smoke wisps rising from the top, warm amber patina, dark fantasy lust-themed game prop, isolated object, dark background, hanging view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Warm amber bronze patina, intricate filigree cutouts, solid sculpted smoke wisps, chain suspension links",
+    "enablePbr": true
+  }
+}

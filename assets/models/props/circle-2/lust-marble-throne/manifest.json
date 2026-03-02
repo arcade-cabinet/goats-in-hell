@@ -1,0 +1,18 @@
+{
+  "id": "lust-marble-throne",
+  "name": "Marble Throne",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A grand marble throne with high back and wide armrests, black marble with gold vein patterns, cushionless seat, goat-head armrest carvings, imposing and regal, dark fantasy lust-themed boss room game prop, isolated object, dark background, three-quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 7000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "x"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Black polished marble with gold veins, carved goat-head armrests, regal imposing surface, gold inlay details",
+    "enablePbr": true
+  }
+}

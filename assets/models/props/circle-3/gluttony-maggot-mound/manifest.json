@@ -1,0 +1,18 @@
+{
+  "id": "gluttony-maggot-mound",
+  "name": "Maggot Mound",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A mound of writhing maggots sculpted as a solid bumpy organic mass on the floor, pale yellowish-white with green-brown organic matter mixed in, glistening wet surface, nauseating floor decoration, dark fantasy gluttony-themed game prop, isolated object, dark background, top-down angled view",
+    "artStyle": "realistic",
+    "targetPolycount": 3500,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Pale yellowish-white bumpy maggot texture, green-brown organic decay, glistening wet surface, nauseating organic mass",
+    "enablePbr": true
+  }
+}

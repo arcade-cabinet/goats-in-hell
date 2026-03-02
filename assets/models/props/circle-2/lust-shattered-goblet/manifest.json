@@ -1,0 +1,18 @@
+{
+  "id": "lust-shattered-goblet",
+  "name": "Shattered Golden Goblet",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A shattered golden goblet with the cup broken into three pieces, the stem still standing with jewel socket now empty, dark wine stain residue sculpted as solid surface around the base, dark fantasy lust-themed game prop, isolated object, dark background, three-quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Tarnished gold metal, broken sharp edges, empty jewel socket, dark reddish-purple stain residue",
+    "enablePbr": true
+  }
+}

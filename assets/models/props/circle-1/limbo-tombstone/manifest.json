@@ -1,0 +1,18 @@
+{
+  "id": "limbo-tombstone",
+  "name": "Weathered Tombstone",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A weathered stone tombstone with eroded Latin inscriptions, slightly tilted, gray-blue limestone with lichen patches, chipped edges, sunken into cracked ground, dark fantasy graveyard game prop, isolated object, dark background, front-facing view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Gray-blue weathered limestone, eroded carved text, yellow-green lichen patches, damp surface",
+    "enablePbr": true
+  }
+}

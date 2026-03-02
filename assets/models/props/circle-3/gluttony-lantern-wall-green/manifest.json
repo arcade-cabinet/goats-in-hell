@@ -1,0 +1,18 @@
+{
+  "id": "gluttony-lantern-wall-green",
+  "name": "Green-Tinted Wall Lantern",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A wall-mounted iron lantern with green-tinted glass panes emitting sickly bilious light, corroded iron frame with organic grime buildup, wall bracket partially fused with flesh-like wall growth, dark fantasy gluttony-themed game prop, isolated object, dark background, wall-mounted view",
+    "artStyle": "realistic",
+    "targetPolycount": 3500,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Corroded iron frame, green-tinted glass panes, bilious green glow, organic grime buildup, flesh-fused wall bracket",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "lust-ember-brazier",
+  "name": "Ember Brazier",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A standing bronze brazier on a tripod base filled with glowing embers and solid sculpted flames, ornate gilded rim with scroll pattern, warm orange-red glow, dark fantasy lust-themed game prop, isolated object, dark background, three-quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 4500,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Gilded bronze rim, glowing orange-red embers, solid sculpted flame shapes, warm patina on tripod legs",
+    "enablePbr": true
+  }
+}

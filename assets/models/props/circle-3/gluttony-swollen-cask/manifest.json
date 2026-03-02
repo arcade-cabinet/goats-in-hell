@@ -1,0 +1,18 @@
+{
+  "id": "gluttony-swollen-cask",
+  "name": "Swollen Wine Cask",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large swollen wine cask on its side with the tap dripping solid sculpted green-brown liquid into a puddle beneath, bloated wood with split seams, fermentation gone horribly wrong, dark fantasy gluttony-themed game prop, isolated object, dark background, side view",
+    "artStyle": "realistic",
+    "targetPolycount": 4500,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Bloated dark wood with split seams, rusted tap hardware, sculpted green-brown liquid drip, fermented decay",
+    "enablePbr": true
+  }
+}

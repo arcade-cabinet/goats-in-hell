@@ -1,0 +1,18 @@
+{
+  "id": "limbo-dried-fountain",
+  "name": "Dried Stone Fountain",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A dry ancient stone fountain basin on a crumbling pedestal, mineral deposits and dark stains inside the empty basin, cracked rim, gray-blue weathered stone, no water, dark fantasy dungeon game prop, isolated object, dark background, three-quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Gray-blue weathered stone, white mineral deposits, dark staining inside basin, cracked edges, ancient surface",
+    "enablePbr": true
+  }
+}

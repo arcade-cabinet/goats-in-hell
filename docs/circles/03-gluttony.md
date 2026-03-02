@@ -655,3 +655,199 @@ editor.createTheme('circle-3-gluttony', {
 - NOT a flat layout. The Gullet undulates vertically. The Larder descends 2 full elevations. The Bile Cistern has walkways over a sunken acid floor. The boss room has a raised platform over acid that fragments into floating chunks.
 - NOT using Kenney or KayKit assets. Fantasy Props MegaKit + AmbientCG PBR textures only.
 - NOT using the procedural generator's `explore → arena → boss` cycle. The pacing is authored: atmosphere → trap introduction → vertical challenge → navigation puzzle → arena → boss.
+
+---
+
+## 3D Spatial Design
+
+### Room: Gullet (6x14, gauntlet)
+
+**Player Experience:** The marble of Lust is gone. The walls are wet, stretched like leather over something alive. The corridor narrows and you feel swallowed — the throat of something enormous closing around you. The floor is uneven, rising and falling beneath your feet. Green lanterns cast a sickly light that makes everything glisten. A health pickup gleams ahead. You take it. Your HP drops. The screen flashes green. Not everything that heals you is good for you. Welcome to Gluttony.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| gluttony-bloated-arch | (20,2) north entrance | 0.9 | face-south | Organic entry from Circle 2 descent |
+| gluttony-flesh-door-frame | (19,8) first narrow-to-wide | 0.8 | face-south | Throat constriction point |
+| gluttony-flesh-door-frame | (19,11) second narrow-to-wide | 0.8 | face-south | Second constriction |
+| gluttony-bloated-arch | (20,15) south exit widens | 1.0 | face-south | Opens to Feast Hall |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| gluttony-lantern-wall-green | (17,3), (22,3), (17,9), (22,12) walls | 0.9 | Sickly green lighting |
+| gluttony-slop-bucket | (18,5) and (21,10) wide sections | 0.8 | Bile/slop atmosphere |
+| gluttony-rope-tendril | (19,7) ceiling in narrow section | 1.0 | Organic tendril, landmark |
+| gluttony-stomach-wall-growth | (17,6) and (22,10) wall surfaces | 0.7 | Organic wall bulges |
+| gluttony-dripping-stalactite | (19,4) and (20,11) ceiling | 0.8 | Dripping from above |
+| gluttony-mucus-web | (22,7) narrow section corner | 0.5 | Biological webbing |
+| gluttony-maggot-mound | (18,13) exit wide section floor | 0.6 | Floor decoration, nauseating |
+
+**Lighting:** 4x green lanterns, color `#aacc44`, intensity 0.5, radius 4 cells. Fog density 0.04, color `#1a2211`. Sickly ambiance throughout.
+**Platforming:** Entry wide section at elevation 0. First narrow at 0 (ceiling lower visually). Second wide at 0 with center dip to -0.5. Second narrow has FLOOR_RAISED step (+0.5). Exit wide returns to 0.
+
+---
+
+### Room: Feast Hall (14x10, exploration+trap)
+
+**Player Experience:** The throat opens into a grand hall. A massive table runs through the center, loaded with food — or what was once food. Barrels of rotting apples. Cauldrons of bubbling something. Goblets overflowing with sludge. And health pickups. So many health pickups, scattered on and around the table. After the scarcity of Limbo and the danger of Lust, the abundance is overwhelming. You grab one. It heals. You grab another. It poisons. The screen flashes green. Three of the six health pickups on this table will hurt you. The lesson: abundance is a trap.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| gluttony-bloated-arch | (20,20) north entrance | 1.0 | face-south | Entry from Gullet |
+| gluttony-bloated-arch | (20,29) south exit to Larder | 1.0 | face-south | Main path continues |
+| gluttony-flesh-door-frame | (13,27) west wall secret | 0.9 | face-east | Near WALL_SECRET to Pantry |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| feast-table | (17,24)-(25,26) center | 1.2 | Massive feast table, loaded with rot |
+| bile-cauldron | (16,25) and (26,25) flanking table | 1.0 | Bubbling cauldrons at table ends |
+| gluttony-lantern-wall-green | (13,20), (26,20), (13,29), (26,29) corners | 1.0 | Green-tinted room lighting |
+| lust-chandelier | (20,24) ceiling center | 1.0 | Warm overhead — food looks appetizing |
+| gluttony-rotting-barrel | (14,21), (17,21), (25,21) north wall | 0.9 | Barrel_Apples, overflowing |
+| gluttony-rotten-crate | (14,22) and (25,22) near table ends | 0.8 | FarmCrate_Apple, spoiling |
+| gluttony-overflowing-goblet | (18,25), (20,25), (22,25), (24,25) on table | 0.5 | Scattered pewter goblets, sludge |
+| gluttony-bone-plate | (19,24), (21,24), (23,24), (19,26) on table | 0.4 | Grotesque place settings |
+| gluttony-swollen-cask | (14,28) SW corner | 0.9 | Wine cask gone wrong |
+| gluttony-slop-bucket | (26,28) SE corner | 0.7 | Aftermath of excess |
+| gluttony-fungus-pillar | (14,24) and (26,24) flanking table center | 1.0 | Structural, decay consuming stone |
+
+**Lighting:** 4x green lanterns at corners, color `#aacc44`, intensity 0.6. 1x chandelier center, color `#ccaa66`, intensity 0.7 (warmer — makes food look appetizing). Fog density 0.03. The clearest room — you need to see the food to be tempted.
+**Platforming:** Flat at elevation 0. Table is a non-walkable obstacle (2 cells deep, 10 cells long). Aisles on both sides.
+
+---
+
+### Room: Larder (10x12, platforming)
+
+**Player Experience:** You look down through shelves carved into organic walls, stacked with rotting barrels and crates, descending into darkness. Ropes hang between levels — they mark safe landing zones but you cannot climb them. Enemies fire across the vertical gap from different shelf levels. You drop to the first platform. Then the next. Each drop is commitment — there is no going back up. The shelves narrow as you descend. At the bottom, supplies and an exit south.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| gluttony-bloated-arch | (20,34) north entrance | 0.9 | face-south | Entry from Feast Hall |
+| gluttony-bloated-arch | (20,45) south exit | 0.9 | face-south | Exit to Bile Cistern ramp |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| gluttony-shelf-arch | (15,35), (24,35) level 1 walls | 1.0 | Wall-mounted shelving, stacked goods |
+| gluttony-shelf-arch | (15,38), (24,38) level 2 walls | 1.0 | Shelving with barrels |
+| gluttony-shelf-arch | (15,41), (24,41) level 3 walls | 1.0 | Shelving with crates |
+| gluttony-shelf-arch | (15,44), (24,44) level 4 walls | 1.0 | Bottom level shelving |
+| gluttony-rotting-barrel | shelf surfaces, 6 total stacked | 0.7 | Stored provisions, rotting |
+| gluttony-rotten-crate | shelf surfaces, 6 total stacked | 0.7 | Supply crates, spoiled |
+| gluttony-rope-tendril | (17,37), (20,40), (19,43) hanging | 1.2 | Safe landing zone markers |
+| gluttony-rope-tendril | (22,38) and (21,42) hanging | 1.0 | Alternate path markers |
+| gluttony-lantern-wall-green | (15,36), (24,39), (15,42), (24,44) | 0.9 | One per platform level, green glow |
+| gluttony-overflowing-goblet | (16,36) and (23,40) on shelves | 0.5 | Bottles rolling off edges |
+| gluttony-dripping-stalactite | (19,35) and (21,41) ceiling at upper levels | 0.7 | Organic stalactites between levels |
+| gluttony-meat-carcass | (23,36) hanging from ceiling | 0.8 | Larder contents — hanging meat |
+
+**Lighting:** 4x green lanterns, one per platform level, color `#aacc44`, intensity 0.5. Light decreases with depth. Fog density 0.05. The bottom is the darkest.
+**Platforming:** Platform 1 (entry): elevation 0, full width. Platform 2: elevation -0.5, 8 cells (1-cell gap each side). Platform 3: elevation -1.0, 8 cells (offset). Platform 4: elevation -1.5, 6 cells (narrowing). Platform 5 (bottom): elevation -2.0, full width. One-way drops between all platforms.
+
+---
+
+### Room: Bile Cistern (12x10, flooded)
+
+**Player Experience:** The entire floor is acid — sickly green, bubbling, emitting a toxic glow. Raised stone walkways form a crisscross grid above the pool. You are safe on the walkways but one misstep means acid. Enemies fire from distant walkway segments. And there — at the end of a dead-end walkway — a health pickup. It gleams. You walk out to get it. It poisons you. You are on a narrow walkway surrounded by acid, now hurt instead of healed. Gluttony punishes the greedy.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| gluttony-bloated-arch | (20,50) north entrance | 1.0 | face-south | Entry from Larder ascent |
+| gluttony-bloated-arch | (20,59) south exit | 1.0 | face-south | Exit to Gut Arena |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| gluttony-lantern-wall-green | (14,50), (25,50), (14,59), (25,59) corners | 1.0 | Reflected green in acid surface |
+| gluttony-acid-pool-edge | Walkway edges throughout | 0.5 | Corroded stone edges, acid erosion |
+| gluttony-slop-bucket | (16,52), (22,55), (24,57) on walkways | 0.7 | Tipped buckets, bile dripping into acid |
+| gluttony-rotting-barrel | (18,53) and (23,56) walkway intersections | 0.8 | Navigation markers |
+| bile-cauldron | (16,52) and (22,56) on walkways | 0.9 | Bubbling acid-adjacent cauldrons |
+| gluttony-bile-pool-surface | Acid floor areas between walkways | 1.0 | Toxic pool surface detail |
+| gluttony-mucus-web | (15,54) and (24,53) walkway corners | 0.5 | Organic webbing on supports |
+| gluttony-stomach-wall-growth | (14,54) and (25,56) wall surfaces | 0.8 | Organic wall bulges |
+
+**Lighting:** 4x green lanterns at corners, color `#aacc44`, intensity 0.6. Acid floor emits `#44ff22` at intensity 0.3, radius 3 cells. The green underlight reflects off everything. Fog density 0.05 — moisture in the air.
+**Platforming:** Walkways at elevation 0 (2 cells wide, crisscross grid). Acid pool at -0.5. Sharp walkway edges — one misstep into acid (3 DPS). Dead-end walkways hold guaranteed-poisoned health pickups as lures.
+
+---
+
+### Room: Gut Arena (12x12, arena)
+
+**Player Experience:** Three concentric rings separated by acid channels. Four bridges connect them at the cardinal points. The doors slam shut. Enemies charge across bridges from the outer ring. You fight ring to ring, bridge to bridge. Then between waves, the acid rises. The inner ring submerges. Players standing on it scramble outward as green acid bubbles up through the stone. Less space. More enemies. The arena shrinks around you like a digestive tract.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| gluttony-bloated-arch | (20,64) north entrance | 1.0 | face-south | Entry from Bile Cistern |
+| gluttony-bloated-arch | (20,75) south exit | 1.0 | face-south | Exit to Vorago's Maw |
+| gluttony-organic-column | (15,65), (25,65), (15,75), (25,75) outer corners | 1.0 | Arena corner markers |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| gluttony-lantern-wall-green | (14,65), (25,65), (14,75), (25,75) N/S/E/W | 1.0 | Arena lighting per quadrant |
+| gluttony-slop-bucket | Outer ring, one per quadrant (4 total) | 0.7 | Acid spilling onto ring |
+| bile-cauldron | (20,67) and (20,73) middle ring bridges | 0.8 | Hazard markers on N/S bridges |
+| gluttony-acid-pool-edge | Ring channel edges | 0.5 | Corroded channel borders |
+| gluttony-bile-pool-surface | Acid channels between rings | 0.8 | Channel surface detail |
+| gluttony-maggot-mound | (18,69) and (22,69) inner ring | 0.5 | Inner ring decoration — submerges wave 2 |
+
+**Lighting:** 4x green lanterns at walls, color `#aacc44`, intensity 0.7. Acid channels emit `#44ff22`, intensity 0.3 (intensifies after wave 1 acid rise). Fog density 0.04.
+**Platforming:** All rings at elevation 0. Acid channels at -0.5 (1 cell wide). Bridges at 0 (flush with rings, 2 cells wide, N/S/E/W). After wave 1 clear: inner acid channels widen by 1 cell each side, inner ring (2x2 center) submerges to -0.5. Arena shrinks.
+
+---
+
+### Room: Pantry (6x6, secret)
+
+**Player Experience:** You push through the hidden wall and the organic horror stops. Clean dry stone. No moisture. No meat-walls. The relief is physical — you exhale. Lanterns give warm light. Sealed barrels hold real supplies. A shelf holds a scroll: "The glutton reaches for everything and chokes on nothing. The wise eat little and live long." The health pickups here glow warm red — guaranteed safe. The only trustworthy healing in all of Gluttony.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| gluttony-bloated-arch | (8,35) east entry from Feast Hall | 0.8 | face-west | Frame the WALL_SECRET entry |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| gluttony-lantern-wall-green | (3,32), (8,32), (3,37), (8,37) corners | 0.8 | Warmer light here — less sickly |
+| gluttony-rotting-barrel | (4,34), (4,36), (7,36) floor — actually clean barrels | 0.8 | Sealed, untainted supplies |
+| gluttony-shelf-arch | (5,32) north wall | 0.9 | Holds the lore scroll |
+| gluttony-rotten-crate | (6,34) — actually a sealed clean crate | 0.8 | Supply crate, intact |
+
+**Lighting:** 4x lanterns at corners, color `#aacc44` but intensity 0.7 (brighter, warmer). Clean stone walls reflect light cleanly. No fog. Relief from the organic darkness.
+**Platforming:** Flat at elevation 0. No hazards. No enemies. Pure reward room. Guaranteed non-poisoned health pickups.
+
+---
+
+### Room: Vorago's Maw (14x14, boss)
+
+**Player Experience:** You descend into a stomach. The walls are pink-red flesh, pulsing faintly. The floor is entirely acid — sickly green, bubbling. A central platform of stone rises above the acid, and crouching on it: Vorago. Immense. Grotesque. Bloated beyond reason. She speaks in a gurgling voice: "Hungry, little goat? Mother will feed you..." In phase 1, she vomits acid that pools on your platform. In phase 2, she shatters the platform into floating chunks that bob on the acid. In phase 3, she inhales — a massive wind pulling everything toward her open mouth. You shoot into the maw that would consume you.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| gluttony-flesh-door-frame | (20,80) north entrance | 1.2 | face-south | Mouth-shaped entry to the stomach |
+| gluttony-organic-column | (14,82) and (26,82) flanking entry ledge | 1.0 | Flesh columns framing descent |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| gluttony-lantern-wall-green | (13,81), (26,81), (13,93), (26,93) N/S/E/W high | 1.0 | High-mounted, pulsing pink-red recolor |
+| bile-cauldron | (15,81) and (25,81) entry ledge | 1.0 | Bubbling acid at entrance |
+| gluttony-rope-tendril | (17,84) and (23,84) ceiling-hung | 1.2 | Organic tendons — Chain_Coil equivalent |
+| gluttony-slop-bucket | (19,84) central platform | 0.7 | Tipped bile bucket on platform |
+| gluttony-stomach-wall-growth | (13,85), (26,85), (13,89), (26,89) walls | 1.0 | Stomach lining growths, pulsing |
+| gluttony-acid-pool-edge | Platform edges and entry ledge edges | 0.6 | Corroded stone where acid meets platform |
+| gluttony-bile-pool-surface | Full acid floor between structures | 1.2 | Toxic surface detail |
+| gluttony-dripping-stalactite | (18,82), (22,82), (20,92) ceiling | 1.0 | Organic stalactites dripping into acid |
+| gluttony-meat-carcass | (14,88) and (26,88) wall-hung | 0.9 | Partially digested remains on walls |
+| gluttony-maggot-mound | (16,84) and (24,90) small platforms | 0.6 | Organic matter on debris platforms |
+
+**Lighting:** 4x lanterns high on walls, color `#cc4466` (pink-red, pulsing), intensity 0.6. Acid floor emits `#44ff22`, intensity 0.4, radius covers entire room. Entry ledge lit from above. Central platform catches both acid green underlight and pink-red wall light. Phase 2 (HP<50%): fog 0.06, acid vapor. Phase 3 (HP<25%): fog 0.08, wind pull intensity 0.8 toward boss center, Vorago's breath fogs the room.
+**Platforming:** Entry ledge at elevation -1 (N wall, 2 cells deep, wraps wall). Acid floor at -2 (3 DPS). Central platform at -1 (8x6 cells, stable phase 1). Small debris platforms at -1 (2x2 each, at edges with pickups). Phase 2: central platform fragments into 6 chunks (3x3 minimum), bob on staggered timers. Phase 3: wind pull toward boss center (intensity 0.8). Chunks drift and sink/resurface on 3s/5s cycles.

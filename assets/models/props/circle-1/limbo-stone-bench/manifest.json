@@ -1,0 +1,18 @@
+{
+  "id": "limbo-stone-bench",
+  "name": "Stone Bench",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A simple ancient stone bench with thick slab seat on two block supports, gray-blue limestone, worn smooth on the sitting surface, cracks along the base, dark fantasy dungeon game prop, isolated object, dark background, three-quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Cold gray-blue limestone, smooth worn seating surface, rougher base blocks, ancient weathering",
+    "enablePbr": true
+  }
+}

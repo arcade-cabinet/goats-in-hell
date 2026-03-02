@@ -1,0 +1,18 @@
+{
+  "id": "lust-bridge-railing",
+  "name": "Bridge Railing Section",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A section of ornate marble bridge railing with balustrade posts and top rail, warm cream marble, one post cracked and leaning, modular section for tiling along bridge edges, dark fantasy lust-themed game prop, isolated object, dark background, three-quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Warm cream marble balustrade, cracked leaning post, polished top rail, classical bridge railing detail",
+    "enablePbr": true
+  }
+}

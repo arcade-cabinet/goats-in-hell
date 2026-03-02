@@ -1,0 +1,18 @@
+{
+  "id": "lust-chandelier",
+  "name": "Ornate Chandelier",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large ornate chandelier with eight candle arms, gilded iron frame with crystal-like prism decorations, warm golden candles burning, hanging from a decorative ceiling mount chain, dark fantasy lust-themed game prop, isolated object, dark background, bottom-up view",
+    "artStyle": "realistic",
+    "targetPolycount": 7000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Gilded iron frame, crystal prisms catching light, warm golden candle wax, decorative chain links, amber glow",
+    "enablePbr": true
+  }
+}

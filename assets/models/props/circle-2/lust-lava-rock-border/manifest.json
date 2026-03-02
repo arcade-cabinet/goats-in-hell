@@ -1,0 +1,18 @@
+{
+  "id": "lust-lava-rock-border",
+  "name": "Lava Channel Border Stone",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A curved border stone piece for a lava channel edge, cracked ember-dark stone with glowing orange seams between fractures, heat-warped surface, modular section for tiling, dark fantasy game prop, isolated object, dark background, top-down angled view",
+    "artStyle": "realistic",
+    "targetPolycount": 3500,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark ember stone, glowing orange-red fracture seams, heat-warped surface, cracked volcanic rock",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "limbo-vase-rubble",
+  "name": "Shattered Vase Rubble",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "Fragments of a shattered ancient stone vase scattered on the ground, large curved shards and small debris, gray-blue stone with faded geometric carvings on the larger pieces, dark fantasy dungeon floor decoration game prop, isolated object, dark background, top-down angled view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Gray-blue stone fragments, faded carved geometric patterns, dusty broken edges, ancient pottery",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "limbo-cracked-floor-slab",
+  "name": "Cracked Floor Slab",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large cracked stone floor slab with several fracture lines radiating from center, one corner tilted upward, gray-blue paving stone with worn smooth surface, dark fantasy dungeon floor game prop, isolated object, dark background, top-down angled view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Gray-blue paving stone, radiating crack lines with dark gaps, worn smooth surface, centuries of foot traffic",
+    "enablePbr": true
+  }
+}

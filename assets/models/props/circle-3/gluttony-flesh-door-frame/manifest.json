@@ -1,0 +1,18 @@
+{
+  "id": "gluttony-flesh-door-frame",
+  "name": "Flesh Door Frame",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A doorway frame made of stretched organic flesh and sinew over a bone structure, the opening shaped like a gaping mouth with tooth-like protrusions along the top, pink-red fleshy surface with sickly yellow-green edges, dark fantasy gluttony-themed structural game prop, isolated object, dark background, front-facing view",
+    "artStyle": "realistic",
+    "targetPolycount": 7000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "x"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Pink-red stretched flesh, visible sinew strands, bone tooth protrusions, sickly yellow-green edges, gaping mouth form",
+    "enablePbr": true
+  }
+}
