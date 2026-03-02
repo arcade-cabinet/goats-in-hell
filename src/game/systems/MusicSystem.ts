@@ -161,10 +161,6 @@ export function updateMusic(): void {
       // Boss fights: heavy tracks that escalate the tension
       const bossFloor = state.stage.floor;
       desired = bossFloor >= 15 ? 'revenge' : 'boss';
-    } else if (encounter === 'arena') {
-      // Arena survival: aggressive combat music
-      const arenaFloor = state.stage.floor;
-      desired = arenaFloor >= 10 ? 'violence' : 'death-metal';
     } else {
       // Exploration: vary by floor theme, intensify with progression
       const themes = ['firePits', 'fleshCaverns', 'obsidianFortress', 'theVoid'];

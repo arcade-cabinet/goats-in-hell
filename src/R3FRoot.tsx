@@ -16,7 +16,6 @@ import {
   useRef,
   useState,
 } from 'react';
-import { gameplayConfig } from './config';
 import { CELL_SIZE } from './constants';
 import type { DrizzleDb } from './db/connection';
 import {
@@ -31,7 +30,6 @@ import * as schema from './db/schema';
 import type { WeaponId } from './game/entities/components';
 import { vec3 } from './game/entities/vec3';
 import { world } from './game/entities/world';
-import { generateArena, getArenaPlayerSpawn } from './game/levels/ArenaGenerator';
 import { BOSS_ARENA_SIZE, generateBossArena } from './game/levels/BossArenas';
 import { getThemeForFloor } from './game/levels/FloorThemes';
 import type { LevelData } from './game/levels/LevelData';
@@ -55,7 +53,6 @@ import {
   resetTriggerSystem,
   triggerSystemUpdate,
 } from './game/systems/TriggerSystem';
-import { getWaveInfo, resetWaveSystem, waveSystemUpdate } from './game/systems/WaveSystem';
 import { initAmbientSound, updateAmbientSound } from './r3f/audio/AmbientSoundSystem';
 import { getAudioContext, initAudio, loadAllSfx, setSfxBuffers } from './r3f/audio/AudioSystem';
 import { initMusic, loadAllMusic, setMusicBuffers, updateMusic } from './r3f/audio/MusicSystem';
@@ -112,13 +109,6 @@ import { FatalErrorModal } from './ui/FatalErrorModal';
 const FatalErrorContext = createContext<(err: Error | string) => void>(() => {});
 
 // ---------------------------------------------------------------------------
-// Arena constants — loaded from config/gameplay.json
-// ---------------------------------------------------------------------------
-
-const ARENA_SIZE = gameplayConfig.arena.size;
-const ARENA_MIN_WAVES = gameplayConfig.arena.minWavesToClear;
-
-// ---------------------------------------------------------------------------
 // Level database — lazy singleton
 // ---------------------------------------------------------------------------
 
@@ -148,7 +138,7 @@ async function ensureLevelDb(): Promise<DrizzleDb> {
  */
 function tryLoadFromDb(
   db: DrizzleDb,
-  encounterType: 'explore' | 'arena' | 'boss',
+  encounterType: 'explore' | 'boss',
   floor: number,
   bossId: string | null,
   circleNumber: number,
@@ -180,7 +170,7 @@ function tryLoadFromDb(
         );
     }
   } else {
-    // For arena/boss, try circleNumber first, then fall back to floor
+    // For boss encounters, try circleNumber first, then fall back to floor
     rows = db
       .select()
       .from(schema.levels)
@@ -240,7 +230,7 @@ function _generateLevelDataFromDb(db: DrizzleDb, levelId: string): LevelData | n
 }
 
 function generateLevelData(
-  encounterType: 'explore' | 'arena' | 'boss',
+  encounterType: 'explore' | 'boss',
   floor: number,
   bossId: string | null,
 ): LevelData {
@@ -264,21 +254,6 @@ function generateLevelData(
       grid: gen.grid,
       playerSpawn: gen.playerSpawn,
       spawns: gen.spawns,
-      theme,
-    };
-  }
-
-  if (encounterType === 'arena') {
-    const size = ARENA_SIZE;
-    const grid = generateArena(size, floor) as MapCell[][];
-    const spawn = getArenaPlayerSpawn(size);
-    return {
-      width: size,
-      depth: size,
-      floor,
-      grid,
-      playerSpawn: vec3(spawn.x * CELL_SIZE, 1, spawn.z * CELL_SIZE),
-      spawns: [], // arena mode uses WaveSystem for dynamic spawning
       theme,
     };
   }
@@ -499,11 +474,6 @@ function GameScene() {
     } else if (stage.encounterType === 'boss' && stage.bossId) {
       spawnBoss(stage.bossId, levelData, diffMods, nightmareDmgMult, nightmareFlags.nightmare);
     }
-    // Arena mode: reset and prepare the WaveSystem for dynamic spawning
-    if (stage.encounterType === 'arena') {
-      resetWaveSystem();
-    }
-
     // Initialize trigger system from DB if this level has a DB levelId
     if (levelData.levelId && _levelDb) {
       try {
@@ -656,12 +626,6 @@ function GameScene() {
       updateZoneEffects(playerEntity.position.x, playerEntity.position.z, envZones, deltaMs);
     }
 
-    // Arena wave spawning — only runs during arena encounters
-    const currentEncounter = useGameStore.getState().stage.encounterType;
-    if (currentEncounter === 'arena') {
-      waveSystemUpdate(deltaMs, ARENA_SIZE);
-    }
-
     // Snapshot player state for save system — throttled to once per second
     // to avoid per-frame Object.fromEntries/Object.entries allocation overhead
     snapshotTimerRef.current += deltaMs;
@@ -679,15 +643,8 @@ function GameScene() {
       }
     }
 
-    // Progression check — floor cleared?
-    // For arena mode, require minimum waves completed AND no enemies remaining.
-    // For explore/boss, the existing checkFloorComplete() (no enemies) is sufficient.
-    if (currentEncounter === 'arena') {
-      const waveInfo = getWaveInfo();
-      if (waveInfo.wave >= ARENA_MIN_WAVES && !waveInfo.waveActive && checkFloorComplete()) {
-        advanceFloor();
-      }
-    } else if (checkFloorComplete()) {
+    // Progression check — floor cleared when all enemies are defeated
+    if (checkFloorComplete()) {
       advanceFloor();
     }
   });

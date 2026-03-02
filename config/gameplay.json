@@ -1,11 +1,6 @@
 {
   "_comment": "Core game loop constants. All values are documented with units.",
 
-  "arena": {
-    "size": 24,
-    "minWavesToClear": 5
-  },
-
   "player": {
     "gracePeriodMs": 2000,
     "snapshotIntervalMs": 1000,
@@ -16,8 +11,7 @@
   },
 
   "progression": {
-    "_note": "encounterType 'arena' is a legacy concept from procedural gen. The 9 scripted circles each contain their own gauntlet/arena and boss sections; there is no standalone arena encounter in the DB-backed circle system. This enum may be removed in a future refactor.",
-    "encounterSequence": ["explore", "explore", "explore", "arena", "boss"],
+    "encounterSequence": ["explore", "explore", "explore", "explore", "boss"],
     "xpLevelingBase": 100,
     "xpLevelingExponent": 1.5,
     "killStreakBonusMultiplier": 0.1,

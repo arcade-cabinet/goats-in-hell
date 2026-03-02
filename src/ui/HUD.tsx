@@ -18,7 +18,6 @@ import { CELL_SIZE, MapCell } from '../game/levels/LevelGenerator';
 import { consumeDamageEvents } from '../game/systems/damageEvents';
 import { getKillHint } from '../game/systems/KillHintSystem';
 import { getActiveDialogue } from '../game/systems/TriggerSystem';
-import { getWaveInfo } from '../game/systems/WaveSystem';
 import { weapons } from '../game/weapons/weapons';
 import { isHoardingPenaltyActive } from '../r3f/PlayerController';
 import { DIFFICULTY_PRESETS, useGameStore } from '../state/GameStore';
@@ -240,21 +239,7 @@ export const HUD: React.FC = () => {
         <View style={styles.floorPanel}>
           <Text style={styles.floorNumber}>FL {floor}</Text>
           <Text style={styles.floorTheme}>{theme.displayName}</Text>
-          {encounterType !== 'explore' && (
-            <Text style={styles.encounterTag}>{encounterType === 'arena' ? 'ARENA' : 'BOSS'}</Text>
-          )}
-          {encounterType === 'arena' &&
-            (() => {
-              const waveInfo = getWaveInfo();
-              return (
-                <View style={styles.waveRow}>
-                  <Text style={styles.waveText}>WAVE {waveInfo.wave}</Text>
-                  {waveInfo.multiplier > 1 && (
-                    <Text style={styles.streakText}>x{waveInfo.multiplier.toFixed(1)}</Text>
-                  )}
-                </View>
-              );
-            })()}
+          {encounterType === 'boss' && <Text style={styles.encounterTag}>BOSS</Text>}
         </View>
         {/* Level / XP bar */}
         <View style={styles.levelPanel}>

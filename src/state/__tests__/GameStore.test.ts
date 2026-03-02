@@ -253,9 +253,8 @@ describe('advanceStage', () => {
     useGameStore.setState({
       stage: {
         stageNumber: 4,
-        floor: 3,
-        encounterType: 'arena',
-        arenaWave: 0,
+        floor: 4,
+        encounterType: 'explore',
         bossId: null,
         enemiesRemaining: 0,
       },
@@ -270,20 +269,19 @@ describe('advanceStage', () => {
     expect(stage.bossId).toBe('voidGoat');
   });
 
-  it('sets arena encounter on stage 4', () => {
+  it('stays in explore on stage 4 (no arena mode)', () => {
     useGameStore
       .getState()
       .startNewGame(
         'normal',
         { nightmare: false, permadeath: false, ultraNightmare: false },
-        'arena-test',
+        'explore-test',
       );
     useGameStore.setState({
       stage: {
         stageNumber: 3,
         floor: 3,
         encounterType: 'explore',
-        arenaWave: 0,
         bossId: null,
         enemiesRemaining: 0,
       },
@@ -291,7 +289,7 @@ describe('advanceStage', () => {
 
     useGameStore.getState().advanceStage();
 
-    expect(useGameStore.getState().stage.encounterType).toBe('arena');
+    expect(useGameStore.getState().stage.encounterType).toBe('explore');
   });
 });
 

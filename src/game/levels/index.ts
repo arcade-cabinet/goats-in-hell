@@ -1,12 +1,10 @@
 /**
  * Game levels barrel export.
  *
- * Re-exports level generation, arena generation, boss arenas,
- * floor themes, level data types, and the active level reference.
+ * Re-exports level generation, boss arenas, floor themes,
+ * level data types, and the active level reference.
  */
 
-// Arena generation
-export { generateArena, getArenaPlayerSpawn } from './ArenaGenerator';
 // Active level reference
 export {
   clearActiveLevel,

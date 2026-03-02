@@ -93,10 +93,8 @@ export interface StageState {
   stageNumber: number;
   /** Current floor within this stage. */
   floor: number;
-  /** 'explore' = roguelike floor, 'arena' = survival wave, 'boss' = boss encounter. */
-  encounterType: 'explore' | 'arena' | 'boss';
-  /** For arena: which wave we're on. */
-  arenaWave: number;
+  /** 'explore' = dungeon circle, 'boss' = boss encounter. */
+  encounterType: 'explore' | 'boss';
   /** Boss archetype ID if encounter is 'boss'. */
   bossId: string | null;
   /** Enemies remaining on this stage. */
@@ -249,11 +247,10 @@ export function getLevelBonuses(level: number): LevelBonuses {
 
 /**
  * Decides the next encounter type based on stage number.
- * Pattern: 3 explore floors → 1 arena wave → boss every 5 stages.
+ * Pattern: 4 explore circles → boss every 5 stages.
  */
-function nextEncounterType(stageNumber: number): 'explore' | 'arena' | 'boss' {
+function nextEncounterType(stageNumber: number): 'explore' | 'boss' {
   if (stageNumber > 0 && stageNumber % 5 === 0) return 'boss';
-  if (stageNumber % 5 === 4) return 'arena';
   return 'explore';
 }
 
@@ -558,7 +555,6 @@ function createInitialStage(): StageState {
     stageNumber: 1,
     floor: 1,
     encounterType: 'explore',
-    arenaWave: 0,
     bossId: null,
     enemiesRemaining: 0,
   };
@@ -678,7 +674,6 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
           stageNumber: next,
           floor: encounterType === 'explore' ? stage.floor + 1 : stage.floor,
           encounterType,
-          arenaWave: encounterType === 'arena' ? 1 : 0,
           bossId,
           enemiesRemaining: 0,
         },
@@ -695,7 +690,6 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
           stageNumber: next,
           floor: encounterType === 'explore' ? stage.floor + 1 : stage.floor,
           encounterType,
-          arenaWave: encounterType === 'arena' ? 1 : 0,
           bossId,
           enemiesRemaining: 0,
         },

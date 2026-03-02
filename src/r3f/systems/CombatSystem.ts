@@ -223,7 +223,7 @@ export function handleEnemyKill(entity: Entity): void {
 
   // Track mandatory vs optional kills for ending system
   const encounterType = store.stage.encounterType;
-  if (encounterType === 'arena' || encounterType === 'boss') {
+  if (encounterType === 'boss') {
     store.recordMandatoryKill();
   } else {
     store.recordOptionalKill();
