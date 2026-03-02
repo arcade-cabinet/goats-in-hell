@@ -1,0 +1,18 @@
+{
+  "id": "treachery-betrayer-cage",
+  "name": "Betrayer Ice Cage",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A small iron cage embedded in frozen ice with a hunched figure visible inside, cage bars encrusted with frost and ice, trapped betrayer punishment, half-submerged in frozen lake floor, dark fantasy game prop, isolated object, dark background, three-quarter orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Frost-encrusted dark iron cage bars, translucent ice surrounding lower half, dark frozen figure huddled inside, frozen punishment",
+    "enablePbr": true
+  }
+}

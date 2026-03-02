@@ -1,0 +1,18 @@
+{
+  "id": "fraud-mirror-shard",
+  "name": "Mirror Shard Cluster",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A cluster of broken mirror shards embedded in a wall fragment, jagged reflective glass pieces in a crumbling marble wall section, shattered vanity mirror remains, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Highly reflective jagged mirror glass, crumbling white marble wall fragment, dark backing visible on broken edges, sharp angular shards",
+    "enablePbr": true
+  }
+}

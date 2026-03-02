@@ -688,3 +688,218 @@ editor.createTheme('circle-7-violence', {
 - NOT the same difficulty as previous circles. This is Circle 7 of 9. The enemy density (1.4), the environmental hazards (blood, thorns, fire, hooks), and the constant drain create the hardest challenge yet. The Flamethrower is the player's reward for surviving.
 - NOT using Kenney or KayKit assets. Fantasy Props MegaKit + AmbientCG PBR textures only.
 - NOT a small circle. With 10 rooms and a 60x90 grid, this is the LARGEST circle in the game --- reflecting Dante's three sub-rings of violence and the weight of this sin.
+
+---
+
+## 3D Spatial Design
+
+### Room: Pier (8x6, exploration, sortOrder=0)
+
+**Player Experience:** You stand on a rust-stained stone platform jutting over a crimson abyss. The air is thick and hot, carrying the iron tang of blood. Below you, a vast chamber of deep red liquid stretches to the limits of visibility --- crossed by narrow walkways that look impossibly fragile. Your health is already ticking down. Every second you spend looking is a second you spend dying.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| violence-industrial-arch | south door cells | 1.0 | face-south | Frame the descent stairway entrance |
+| violence-pier-overlook | east/west edges | 1.0 | face-outward | Stone ledge railing at overlook edge |
+| violence-walkway-pillar | south stair flanks | 0.8 | face-center | Pillar supports flanking the stair descent |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| violence-blood-cauldron | (31, 4) floor | 1.0 | Overflowing blood vessel at pier edge |
+| violence-iron-railing | (26, 5) west edge | 1.0 | Rope railing along west pier edge |
+| blood-trough | (28, 6) near stairs | 0.8 | Blood drainage at stair top |
+
+**Lighting:** 2x Torch_Metal on east/west walls, hot orange `#ff5500`, radius 5 cells, offsetY=2.0. Warm directional light from south (illuminating Blood River below).
+**Platforming:** Elevation +2. 3-wide RAMP staircase descends south face from +2 to 0 over 4 cells. No railing on east side --- fall risk.
+
+---
+
+### Room: Blood River (20x14, exploration, sortOrder=1)
+
+**Player Experience:** You descend into a cathedral of blood. The crimson floor undulates below raised stone walkways that branch and fork like veins. Torches on thick pillars cast orange pools across the red surface. Dark armored shapes wade through the liquid between walkways --- goatKnights who belong here. You do not. Every dead-end walkway costs precious bleeding time.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| violence-walkway-pillar | 6 locations along walkways | 1.0 | face-walkway | Support pillars rising from blood to walkway height |
+| violence-blood-river-arch | (30, 14) walkway junction | 1.2 | face-south | Archway over main walkway intersection |
+| violence-rusted-walkway-platform | 3 dead-end platforms | 1.0 | varies | Elevated loot platforms at walkway termini |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| violence-blood-pool | floor between walkways | 2.0 | Crimson blood surface (FLOOR_LAVA visual) |
+| violence-iron-railing | walkway edges (select) | 0.8 | Partial railings on some walkway sections |
+| blood-trough | (24, 18) walkway edge | 0.8 | Blood drainage from walkway to river |
+
+**Lighting:** 6x Torch_Metal on walkway pillars, hot orange `#ff5500`, radius 5 cells, offsetY=1.5. Red ambient fog `#2a0808` density 0.05.
+**Platforming:** Blood floor at elevation 0 (FLOOR_LAVA, 2 DPS). Walkways at +0.5 (FLOOR_RAISED). Three branching paths with dead-end loot platforms.
+
+---
+
+### Room: River Banks (8x6, exploration, sortOrder=2)
+
+**Player Experience:** Muddy shoreline. You climb out of the blood onto wet earth and breathe --- but the bleeding does not stop. The room is small, transitional, a brief gasp between horrors. A fireGoat patrols here, punishing hesitation. Two barrels mark supplies.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| violence-industrial-arch | north door | 0.8 | face-north | Arch framing blood river entrance |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| violence-blood-cauldron | (10, 21) near north entrance | 0.8 | Blood-filled cauldron overflowing from river |
+
+**Lighting:** 1x Torch_Metal on north wall, orange `#ff5500`, radius 5 cells, offsetY=2.0. Higher ceiling (4 units) after claustrophobic river.
+**Platforming:** Floor slopes upward north-to-south via RAMP cells, 0 to +0.25. Gentle rise from blood shore.
+
+---
+
+### Room: Thorny Passage (6x16, platforming, sortOrder=3)
+
+**Player Experience:** A narrow gauntlet of pain. Rust-red thorn walls press in from both sides, leaving a 3-cell-wide corridor. Every wall is a hazard --- 5 damage on contact. The passage weaves upward and then back down through four elevation changes. Missing a dodge means skidding into thorns. Two fireGoats hold the high ground, firing downhill.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| violence-thorn-column | along both walls, 8 positions | 1.0 | face-inward | Thorn-covered wall protrusions, Rust003/007 texture |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| violence-blood-pool | (46, 22) base of first ramp | 0.6 | Small blood puddle at thorn base |
+
+**Lighting:** Sparse --- 2x Torch_Metal at passage entry and exit only, dim red `#cc3300`, radius 3 cells. Thorns obscure light.
+**Platforming:** Four RAMP elevation changes: 0->+1, +1->+2 (peak), +2->+1, +1->0. Hill-shaped profile. fireGoat at peak (+2) has commanding sightline. 3-cell-wide safe corridor throughout.
+
+---
+
+### Room: Thornwood (14x12, exploration, sortOrder=4)
+
+**Player Experience:** A dense forest of thorny columns. You cannot see more than 6 cells in any direction. The columns are everywhere --- irregular, 1-2 cell clusters, all thorned, all lethal on contact. You cannot hug cover because cover hurts. Combat happens in the narrow lanes between columns. The bleeding clock never stops.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| violence-thorn-column | 18 positions (irregular grid) | 1.0 | varies | Thorny structural columns creating lane network |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| violence-blood-pool | (40, 42) center lane intersection | 0.5 | Small blood puddle at lane crossroads |
+| violence-sawblade-decoration | (37, 39) north wall | 0.8 | Wall-mounted sawblade near entrance |
+
+**Lighting:** 1x Torch_Metal at south exit only, dim red `#cc3300`, radius 3 cells, offsetY=2.0. Columns create deep shadows. Low ceiling (3.5 units).
+**Platforming:** Flat (elevation 0). No elevation changes. The spatial challenge is navigating the column maze, not vertical platforming.
+
+---
+
+### Room: Burning Shore (18x10, exploration, sortOrder=5)
+
+**Player Experience:** After the claustrophobic thorns, the expanse is physical relief --- for one second. Then a fire geyser erupts 3 cells away. Then four fireGoats start shooting across 18 cells of open ground. There is no cover. No walls to hide behind. No columns to duck around. Just you, open cracked sandstone, and fire from every direction.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| (none) | --- | --- | --- | Deliberate emptiness --- no structural cover |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| violence-fire-geyser-vent | 6 positions (2x2 zones) | 1.0 | Scorched floor vents marking geyser eruption points |
+
+**Lighting:** No fixed lights. Fire geyser eruptions provide periodic flashes (`#ffaa00`, radius 8 cells, 2s duration). Open cavern void above.
+**Platforming:** Flat (elevation 0). No elevation changes. The openness IS the spatial element after cramped corridors.
+
+---
+
+### Room: Flamethrower Shrine (6x6, exploration, sortOrder=6)
+
+**Player Experience:** A small sacred space. Almost a tomb. The architecture shifts from rusted industrial to reverent stone. A single warm gold light burns behind a stone altar holding the Brimstone Flamethrower. This is the only warm light in the entire circle. The Cauldron beside the altar is cold and empty --- a first. You pick up the weapon and read: "The wilderness gave you fire. Use it."
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| violence-stone-altar | (24, 71) center | 1.0 | face-north | 2x2 FLOOR_RAISED altar slab for weapon display |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| violence-blood-cauldron | (23, 72) beside altar | 0.7 | Cold, empty cauldron --- contrast to blood-filled ones |
+
+**Lighting:** 1x CandleStick_Triple behind altar, warm gold `#ffcc44`, radius 4 cells. 2x Torch_Metal flanking entrance, warm gold. Stark contrast to red-orange palette elsewhere.
+**Platforming:** Altar is 2x2 FLOOR_RAISED (+0.5 elevation). Vaulted ceiling (3.5 units) with slight dome shape.
+
+---
+
+### Room: Slaughterhouse (14x12, arena, sortOrder=7)
+
+**Player Experience:** Industrial abattoir. Metal grating floor. Meat hooks swaying from the ceiling in a 3x3 grid. Harsh yellow industrial light. Crates for partial cover. The door locks behind you. Three waves of enemies. The Flamethrower proves its worth here --- close quarters, armored enemies, tight corridors. Between waves, hooks DROP from the ceiling, becoming floor obstacles. The room reshapes itself.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| violence-industrial-arch | north entrance | 1.0 | face-south | Industrial archway framing arena entry |
+| violence-chain-conveyor | ceiling, 3 rows N-S | 1.2 | face-east | Overhead conveyor rails for hanging hooks |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| meat-hook | 9 ceiling positions (3x3 grid) | 1.0 | Hanging meat hooks (drop as hazards waves 2-3) |
+| violence-metal-crate-stack | 4 positions, walls | 1.0 | Waist-high partial cover (breakable) |
+| violence-butcher-block | (25, 83) center | 1.0 | Butchery work surface, atmosphere |
+| violence-rusted-anvil | (19, 79) NW corner | 1.0 | Industrial butchery tool |
+| violence-bone-grinder | (30, 85) SE area | 1.0 | Bone processing machine, atmosphere |
+| violence-blood-gutter | (22, 86) center south | 1.0 | Floor drainage channel |
+| violence-hook-rack | (25, 80) north center | 1.0 | Secondary hook display rack |
+| violence-sawblade-decoration | (18, 82) west wall | 0.8 | Wall-mounted sawblade |
+
+**Lighting:** 4x Lantern_Wall on walls, industrial yellow `#ccaa33`, radius 4 cells, offsetY=2.5. Ceiling at 4 units.
+**Platforming:** Flat (elevation 0). Hooks drop from ceiling (offsetY=-0.5 to 0) between waves, creating 1x1 ground obstacles (3 damage contact).
+
+---
+
+### Room: Butcher's Hook (6x6, secret, sortOrder=8)
+
+**Player Experience:** Hidden supply cache. A cramped storage room packed with metal crates and barrels. Two ammo pickups, two health pickups --- critical supplies given the constant bleeding. A dim lantern provides the only light. The reward for exploring behind the Slaughterhouse wall.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| (none) | --- | --- | --- | Small room, no structural props needed |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| violence-metal-crate-stack | (37, 83), (40, 83) corners | 1.0 | Storage crates at varying heights |
+
+**Lighting:** 1x Lantern_Wall on north wall, dim yellow `#ccaa33`, radius 3 cells, offsetY=2.5.
+**Platforming:** Flat (elevation 0). Crate stacks at varying heights (1-3 cells) create cramped storage feel.
+
+---
+
+### Room: Il Macello's Abattoir (16x16, boss, sortOrder=9)
+
+**Player Experience:** The final room. Massive. The floor is a metal grating suspended over absolute void --- you can see the blackness below through the grate. The grating is divided into a 4x4 grid of retractable panels. Eight meat hooks hang from the ceiling. Four deep orange torches mark the corners. A massive chandelier hangs from the center of a vaulted 5-unit ceiling. Wall-mounted swords and shields --- trophies of defeated warriors. And in the center, Il Macello. The Butcher. The largest enemy you have ever seen. He speaks: "Meat. That is all you are. Meat on hooks."
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| violence-industrial-arch | north entrance | 1.2 | face-south | Massive archway framing boss arena entry |
+| violence-grating-panel | 16 positions (4x4 grid, 3x3 each) | 1.0 | flat | Retractable floor panels over void |
+| violence-chain-conveyor | ceiling, spanning N-S | 1.5 | face-east | Overhead conveyor rail (boss rips chain from this) |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| meat-hook | 8 ceiling positions | 1.2 | Hanging meat hooks, vertical obstacles |
+| violence-industrial-cage | (19, 96), (31, 96) north corners | 1.0 | Industrial cages flanking entrance |
+| violence-sawblade-decoration | south wall, 2 positions | 1.0 | Wall-mounted sawblades as trophies |
+| violence-blood-pool | center floor (cosmetic) | 1.5 | Blood stain on grating surface |
+| violence-bone-grinder | (19, 108) SW corner | 0.8 | Processing equipment, atmosphere |
+
+**Lighting:** 4x Torch_Metal at corners, deep orange `#dd4400`, radius 6 cells, offsetY=2.5. 1x Chandelier center ceiling, dim, flickers during phase transitions, offsetY=-1.0. Ceiling at 5 units (grand height).
+**Platforming:** Floor at elevation -1 (below main level). 4x4 grid of 3x3 retractable panels. Phase 3: panels retract edges-inward every 4 seconds, revealing FLOOR_VOID. After 40 seconds, only 6x6 center remains. Falling through = 15 damage + teleport to random remaining panel.

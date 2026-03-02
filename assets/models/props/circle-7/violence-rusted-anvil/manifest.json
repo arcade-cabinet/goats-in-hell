@@ -1,0 +1,18 @@
+{
+  "id": "violence-rusted-anvil",
+  "name": "Rusted Anvil",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A heavy rusted blacksmith anvil with deep gouges and bloodstains, traditional horn-and-heel shape on a metal stump base, slaughterhouse butchery tool, dark fantasy game prop, isolated object, dark background, three-quarter orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Heavy oxidized iron with deep rust, gouged work surface, dark bloodstains in grooves, metal stump base",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "violence-fire-geyser-vent",
+  "name": "Fire Geyser Vent",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A cracked stone floor vent with scorched edges and heat-warped rock around a central opening, fire geyser eruption point on burned sandstone ground, charred and blackened perimeter, dark fantasy game prop, isolated object, dark background, top-down orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Scorched cracked sandstone, blackened charred edges around vent opening, heat-warped rock, orange glow residue",
+    "enablePbr": true
+  }
+}

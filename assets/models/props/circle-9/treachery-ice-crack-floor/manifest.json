@@ -1,0 +1,18 @@
+{
+  "id": "treachery-ice-crack-floor",
+  "name": "Ice Crack Floor Piece",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A flat section of frozen floor with deep radiating crack patterns, dark blue-black ice surface with white fracture lines spreading outward from a central impact point, frozen lake floor warning indicator, dark fantasy game prop, isolated object, dark background, top-down orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark blue-black ice surface, white radiating fracture lines, central stress point, slight surface displacement along cracks, frozen lake floor",
+    "enablePbr": true
+  }
+}

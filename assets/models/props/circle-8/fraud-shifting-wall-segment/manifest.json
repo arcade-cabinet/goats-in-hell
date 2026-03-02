@@ -1,0 +1,18 @@
+{
+  "id": "fraud-shifting-wall-segment",
+  "name": "Shifting Maze Wall Segment",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tall stone wall segment on a hidden sliding track base, maze wall that appears solid but has roller mechanisms underneath, marble-faced wall section with concealed iron rails at base, dark fantasy game prop, isolated object, dark background, three-quarter orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Marble-faced stone wall front, visible iron rail track at base, concealed roller mechanisms, deceptively moveable construction",
+    "enablePbr": true
+  }
+}

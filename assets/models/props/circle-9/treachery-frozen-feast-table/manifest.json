@@ -1,0 +1,18 @@
+{
+  "id": "treachery-frozen-feast-table",
+  "name": "Frozen Feast Table",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large wooden banquet table completely covered in frost and ice with frozen food and plates on the surface, betrayers feast frozen in time, ice crystals growing from frozen goblets and platters, solid sculpted frozen dinner scene, dark fantasy game prop, isolated object, dark background, three-quarter orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Frost-covered dark wood table, frozen food and plates encrusted with ice, frozen goblets with ice crystals growing upward, cold blue-white palette",
+    "enablePbr": true
+  }
+}

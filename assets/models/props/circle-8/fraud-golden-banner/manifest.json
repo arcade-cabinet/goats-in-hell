@@ -1,0 +1,18 @@
+{
+  "id": "fraud-golden-banner",
+  "name": "Golden Silk Banner",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A wall-hung rigid silk banner in deep red and gold with ornate patterns, solid sculpted fabric panel hanging from a decorative iron bracket, not flowing cloth but rigid sculpted drape, palatial wall decoration, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Deep crimson silk with gold embroidered geometric patterns, rigid sculpted drape folds, decorative iron wall bracket, palatial luxury",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "treachery-frozen-banner",
+  "name": "Frozen Stiff Banner",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A wall-mounted fabric banner frozen completely stiff with ice crystals covering the surface, rigid frost-covered national flag frozen mid-flutter on an iron bracket, betrayers of country symbol, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Frost-covered fabric frozen stiff, faded heraldic pattern beneath ice layer, iron wall bracket, rigid frozen mid-flutter pose, ice crystals on surface",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "fraud-marble-pedestal",
+  "name": "Marble Display Pedestal",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A classical marble display pedestal with Corinthian carved detailing, white marble column pedestal for displaying treasures and busts, ornate base and flat top, palatial furniture, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Polished white veined marble, Corinthian leaf carvings at base and top, flat display surface, classical elegance",
+    "enablePbr": true
+  }
+}

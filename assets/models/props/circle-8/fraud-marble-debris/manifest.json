@@ -1,0 +1,18 @@
+{
+  "id": "fraud-marble-debris",
+  "name": "Marble Debris Pile",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A pile of broken marble fragments and rubble from a crumbled facade, white marble chunks of various sizes mixed with plaster dust, boss room phase 3 floor obstacle debris, dark fantasy game prop, isolated object, dark background, three-quarter orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Broken white marble chunks, gray plaster dust, exposed rough stone interior, fallen facade rubble pile",
+    "enablePbr": true
+  }
+}

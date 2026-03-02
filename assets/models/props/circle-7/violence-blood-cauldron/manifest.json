@@ -1,0 +1,18 @@
+{
+  "id": "violence-blood-cauldron",
+  "name": "Blood-Filled Cauldron",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large iron cauldron overflowing with dark congealed blood, heavy riveted black iron pot on a tripod stand, blood dripping down the sides, industrial ritual vessel, dark fantasy game prop, isolated object, dark background, three-quarter orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Black iron cauldron with rivets, dark crimson blood overflowing and dripping, iron tripod stand, industrial patina",
+    "enablePbr": true
+  }
+}

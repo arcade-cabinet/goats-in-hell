@@ -1,0 +1,18 @@
+{
+  "id": "violence-bone-grinder",
+  "name": "Bone Grinder",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large solid iron bone grinding machine with heavy gears and a hopper funnel, industrial meat processing equipment, rusted crank handle and grinding wheels, bloodstained, dark fantasy game prop, isolated object, dark background, three-quarter orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Heavy rusted iron construction, grinding gear teeth, dark bloodstains in hopper, industrial metal patina",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "fraud-cracked-mosaic-floor",
+  "name": "Cracked Mosaic Floor Tile",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A section of ornate mosaic floor tile with geometric patterns that is cracked and crumbling, elegant cream and gold tile design with fracture lines and missing pieces revealing rough concrete beneath, dark fantasy game prop, isolated object, dark background, top-down orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Cream and gold geometric mosaic pattern, fracture lines through tiles, missing pieces exposing gray concrete, elegant decay",
+    "enablePbr": true
+  }
+}

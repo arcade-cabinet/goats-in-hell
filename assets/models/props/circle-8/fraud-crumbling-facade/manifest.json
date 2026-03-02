@@ -1,0 +1,18 @@
+{
+  "id": "fraud-crumbling-facade",
+  "name": "Crumbling Marble Facade",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A section of crumbling marble wall facade revealing rusted corroded metal structure behind, beautiful white marble surface breaking away to expose ugly truth underneath, peeling beauty over decay, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Polished white marble crumbling away, exposed rusted iron and corroded concrete underneath, fragments falling, beauty-over-rot reveal",
+    "enablePbr": true
+  }
+}

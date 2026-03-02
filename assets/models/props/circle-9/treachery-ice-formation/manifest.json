@@ -1,0 +1,18 @@
+{
+  "id": "treachery-ice-formation",
+  "name": "Central Ice Formation",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A massive jagged formation of dark ice rising from the ground with warm orange crack lines running through it, destructible ice prison with glowing weak points, central boss arena ice encasement with eight distinct fracture sections, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 10000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark blue-black ice mass, warm orange glowing crack veins, eight visible fracture sections, imposing frozen prison structure, ice crystal edges",
+    "enablePbr": true
+  }
+}

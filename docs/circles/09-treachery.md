@@ -725,3 +725,181 @@ editor.createTheme('circle-9-treachery', {
 - NOT a hopeless ending. Both endings are valid. The Ascent ending rewards restraint — the player who found ways around violence. The Remain ending acknowledges the player who embraced it. Neither is "wrong." The game does not judge. It observes.
 - NOT using the procedural generator's `explore → arena → boss` cycle. The pacing is authored: descent (Stairs) → exploration (Caina, Antenora, Ptolomea) → arena (Giudecca) → contemplation (Bridge) → boss (Azazel). The Bridge is the key structural innovation — the deliberate absence of gameplay before the climax.
 - NOT using Kenney or KayKit assets. Fantasy Props MegaKit + AmbientCG PBR textures only.
+
+---
+
+## 3D Spatial Design
+
+### Room: Glacial Stairs (8x16, platforming, sortOrder=0)
+
+**Player Experience:** The temperature drops. Your breath is visible. Unlit lanterns line the walls --- nothing burns this deep. The descent is steep and slippery. Five landings connected by icy ramps. You slide downward, missing a landing means fall damage. Enemies ambush from side alcoves. A fireGoat below fires upward with blue-white flames. Your reflected shots bounce off the landing floor and come back up. You are going where no warmth survives.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| treachery-ice-arch | top entrance (spawn) | 1.0 | face-south | Frozen archway at stair entrance |
+| treachery-frozen-stalactite | ceiling, landings 1/3/5 | 1.0 | hanging | Ice stalactite clusters (1.5-2 cell height) |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| treachery-unlit-lantern | 4 positions, E/W alternating walls | 0.8 | Frost-covered dead lanterns marking each landing |
+| treachery-frozen-chain-cluster | ceiling, landings 2/4 | 0.8 | Frozen chains hanging from ceiling |
+| treachery-snow-drift-mound | landing alcove corners | 0.6 | Snow accumulation in still air recesses |
+| treachery-ice-crack-floor | ramp surfaces | 0.8 | Ice crack patterns on slippery ramp sections |
+
+**Lighting:** No warm light. Faint blue bioluminescence from ice (`#3366cc`, radius 6 cells, intensity 0.12). Faint overhead `#aabbdd` at intensity 0.05. Unlit lanterns provide NO light.
+**Platforming:** Descends from elevation 0 to -3 across 5 landings. Icy ramps (4 cells long, 0.6x friction). Ramps are 4 cells wide (narrower than 8-cell room) --- edges drop to 2x2 side alcoves where enemies hide.
+
+---
+
+### Room: Caina --- Betrayers of Family (16x14, exploration, sortOrder=1)
+
+**Player Experience:** A vast frozen lake stretches before you. Six ice pillars rise from the floor to the ceiling. Blue goatKnights stand motionless in the ice, frozen mid-stride. You approach and the ice cracks --- they break free, devastating and relentless. Cage props embedded in the floor hold smaller frozen figures. Swords frozen into pillar surfaces are inaccessible weapons of betrayal. The reflected shots mechanic is in full effect: shots that hit pillars bounce, and you can angle them to pre-damage still-frozen goatKnights.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| ice-pillar | 6 positions (2 rows of 3, staggered) | 1.2 | varies | Full-height ice pillars, reflective surfaces |
+| treachery-ice-arch | south corridor exit | 1.0 | face-south | Frozen archway to Antenora |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| treachery-betrayer-cage | 3 positions (embedded in floor ice) | 0.8 | Cage_Small with frozen betrayers below ice surface |
+| treachery-frozen-sword | 2 positions (pillar surfaces) | 0.7 | Bronze swords frozen into pillar --- inaccessible, narrative |
+| treachery-ice-crack-floor | center lake area | 1.5 | Cracked ice floor texture across frozen lake |
+| treachery-snow-drift-mound | NW/SE corners | 0.7 | Snow drift accumulation against walls |
+
+**Lighting:** Faint blue bioluminescence from ice itself (`#3366cc`, radius 6 cells, intensity 0.12). Faint overhead `#aabbdd` at 0.05. Cold blue ambient `#2244aa` at 0.10. No warm light sources.
+**Platforming:** Flat at elevation -3. Ice001 floor (0.8x friction, slippery). Ice pillars (1x1 cell, full height) serve as cover AND reflective surfaces.
+
+---
+
+### Room: Antenora --- Betrayers of Country (12x16, exploration, sortOrder=2)
+
+**Player Experience:** Narrow fortress corridors. Ice-encased military architecture. Frozen banners hang stiff from walls. Shields sit useless and frost-covered. The corridors are 3 cells wide and 2.5 cells tall --- claustrophobic. A missed shot travels the corridor length, hits the far wall, and bounces straight back at you. The flamethrower is essential --- its 3-cell range fills the corridor without reaching the walls. ShadowGoats emerge from frozen alcoves behind you. A fireGoat holds the intersection ahead.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| treachery-ice-arch | north entrance, south exit | 0.9 | face-transit | Frozen archways at corridor termini |
+| treachery-crystalline-spike-wall | corridor dead-end walls | 0.8 | face-corridor | Ice spike hazard walls at corridor ends |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| treachery-frozen-banner | 4 positions, N/S alternating walls | 0.8 | Frozen-stiff national banners (betrayers of country) |
+| treachery-frozen-chain-cluster | 2 corridor intersections (ceiling) | 0.7 | Frozen chains at corridor crossings |
+| treachery-snow-drift-mound | alcove recesses (3 positions) | 0.5 | Snow drift in ambush recesses |
+
+**Lighting:** No torch light. Faint blue bioluminescence from ice walls (`#3366cc`, radius 6 cells, intensity 0.12). Denser fog `#080c16` at 0.05. Corridor reflection env zone intensity 1.0.
+**Platforming:** Flat at elevation -3. Corridors are 3 wide x 2.5 tall. 2x2 cell alcove recesses in corridor walls (3 total, ambush points). Step-down stairs at south exit (-3 to -4).
+
+---
+
+### Room: Ptolomea --- Betrayers of Guests (14x10, exploration, sortOrder=3)
+
+**Player Experience:** A frozen feast. A large banquet table set for guests who will never eat. Chalices raised in toasts that will never be drunk. Chairs are knocked over, some upright, all frost-covered. Two Blue goatKnights sit at the table, frozen. They thaw when you enter --- ice cracking, standing, table pushed aside. The low ceiling (1.5 cells) means no arcing shots. Everything is flat trajectory. Every wall is close. Every miss comes back fast. Close quarters with low ceiling: flamethrower dominance.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| treachery-ice-arch | north entrance | 0.8 | face-north | Low-clearance frozen archway |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| treachery-frozen-feast-table | center (4x2 cells, 0.5 cell height) | 1.0 | Frost-covered banquet table with frozen feast |
+| treachery-frost-chalice | 2 positions on table | 0.5 | Frozen chalices --- poisoned cups of betrayal |
+| treachery-snow-drift-mound | SE corner | 0.5 | Snow drift around frozen barrel |
+
+**Lighting:** No torch light. Ice bioluminescence only (`#3366cc`, intensity 0.12). Low ceiling traps cold air --- fog density 0.04. Ceiling at 1.5 cells --- player cannot jump.
+**Platforming:** Flat at elevation -4 (step down from Antenora). Table center (4x2 cells, 0.5 cell height). 6x Chair_1 around table. Barrel in SE corner. Low ceiling (1.5 cells).
+
+---
+
+### Room: Giudecca --- Betrayers of Lords (18x16, arena, sortOrder=4)
+
+**Player Experience:** THE arena of Circle 9. You enter and the doors lock. Two Blue goatKnights march from a massive frozen waterfall on the back wall. The waterfall begins cracking --- ice chunks crash down. Between waves, the floor itself begins to crack and fall into the void below. By wave 3, you fight on fragmented ice platforms over nothingness. Three waves of everything the game has thrown at you. The culmination of combat.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| treachery-frozen-waterfall | south/back wall (8 cells wide) | 2.0 | face-north | Massive frozen waterfall backdrop --- cracks during arena |
+| ice-pillar | 6 positions (2 rows of 3) | 1.0 | varies | Ice pillars for cover and reflection |
+| treachery-frozen-stalactite | ceiling, 4 positions | 1.2 | hanging | Stalactites that fall as hazards during waves |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| treachery-glacial-platform | 4+ positions (form as floor collapses) | 1.0 | Fragmenting floor sections over void |
+| treachery-ice-crack-floor | floor center area | 2.0 | Visible crack patterns warning of collapse |
+| treachery-frozen-chain-cluster | ceiling, 4 positions | 1.0 | Massive chains hanging over void sections |
+
+**Lighting:** Faint overhead `#aabbdd` at 0.05. Crystal clear fog density 0.02. Ice bioluminescence `#3366cc`. Void below at -6 glows deep indigo `#110022`.
+**Platforming:** Floor at elevation -4. Void at -6 (2 cells below). Floor sections (3x3 cells each) crack and fall during waves --- 4 sections in wave 2 (over 20 seconds), 2 more in wave 3. WALL_SECRET on west wall to Judas Trap. Frozen waterfall is 8 cells wide, full height, animated cracking.
+
+---
+
+### Room: Judas Trap --- Secret Room (6x6, secret, sortOrder=5)
+
+**Player Experience:** Ironic betrayal theme. A frozen codex on the floor lists names --- "The traitors who built this place, and the traitor who reads this." A cage contains a frozen goat --- a previous scapegoat. The generous pickups are genuine. Frost-covered coins are worthless. The room does not betray you. But the knowledge does: you are not the first.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| (none) | --- | --- | --- | Small secret room, minimal structure |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| treachery-betrayer-cage | (14, 81) floor | 0.7 | Cage containing frozen goat figure |
+| frozen-goat | inside cage | 0.6 | Previous scapegoat frozen in ice |
+| treachery-snow-drift-mound | corners | 0.4 | Thin snow covering |
+
+**Lighting:** Faint ice glow only. Low-ceilinged (1.5 cells). Snow001 floor over Rock022 walls --- thin frost, warmth still beneath.
+**Platforming:** Flat at elevation -4. Dead end --- return through WALL_SECRET.
+
+---
+
+### Room: Cocytus Bridge (4x36, bridge, sortOrder=6)
+
+**Player Experience:** No enemies. No pickups. No props. Just ice, void, and wind. The bridge is 4 cells wide and 36 cells long --- 72 world units, 18-20 seconds of walking in total silence except wind. The longest non-combat sequence in the game. Faint inscriptions in the ice: "The first goat fell here 3,000 years ago." Frozen silhouettes of previous scapegoats are visible deep below. The far end of the bridge materializes from darkness as you approach. You walk and think about everything.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| treachery-ice-bridge-segment | bridge surface (repeating) | 1.0 | face-south | Narrow ice walkway sections over void |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| (none) | --- | --- | NOTHING. Empty ice. Void below. Wind only. |
+
+**Lighting:** No light sources. Only void glow from below (deep indigo `#110022`, intensity 0.03). No ceiling --- open to darkness above. Almost no fog (0.01). Wind particles (snow drift) blow horizontally.
+**Platforming:** Flat at elevation -5. 4 cells wide, 36 cells long. FLOOR_VOID on both sides. No railings. Slightly slippery (0.85x friction). Not a platforming challenge --- just precarious.
+
+---
+
+### Room: Azazel's Frozen Throne (20x20, boss, sortOrder=7)
+
+**Player Experience:** The largest boss room in the game. The absolute bottom of Hell. Mirror-smooth black ice floor. No walls in the traditional sense --- the room's perimeter is a ring of ice fading into darkness. Four massive frozen chains hang from above, marking arena quadrants. A single shaft of pale light illuminates the center, where Azazel stands frozen from the waist down in a massive ice formation. He is tall, antlered, calm. Not a monster. A king. He speaks: "You came. I have been waiting since the first goat was cast out." Phase 1: you cannot hurt him directly --- shoot the ice around him. Phase 2: the ice shatters, the floor fragments into platforms over the abyss. Phase 3: he tells you what you are. The fight ends. Not because he died.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| treachery-ice-formation | center (4x4 cells, 3 cells tall) | 2.0 | centered | Central ice prison with 8 destructible sections, orange crack weak points |
+| treachery-dark-ice-monolith | 4 arena quadrant markers | 1.5 | face-center | Tall black ice markers at quadrant boundaries |
+| treachery-frozen-throne | within ice formation (revealed phase 2) | 1.2 | face-north | Azazel's seat, revealed when ice shatters |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| treachery-frozen-chain-cluster | 4 ceiling positions (quadrant boundaries) | 1.5 | Massive frozen chains marking arena quadrants |
+| treachery-glacial-platform | 12-15 positions (phase 2 fragments) | 1.0 | Floor fragment platforms (3x3 to 4x4 cells) over void |
+| treachery-ice-crack-floor | around central formation | 2.0 | Fracture lines that appear 4 seconds before collapse |
+| treachery-crystalline-spike-wall | perimeter ring (fading into darkness) | 1.0 | Room edge ice formations, no traditional walls |
+
+**Lighting:** Single overhead shaft of pale light `#ccddff` at intensity 0.15, narrow cone on Azazel (spotlight). Ice bioluminescence `#3366cc` at 0.12. Void below with deep indigo glow `#110022`. Phase 3: fog clears to 0.00. Total clarity. No warm light anywhere.
+**Platforming:** Floor at elevation -6 (deepest point in all 9 circles). Central ice formation 4x4 cells, 3 cells tall. Phase 1: floor beyond formation fragments --- fracture lines appear 4s before collapse. Phase 2: floor shatters into 12-15 floating platforms (3x3 to 4x4 cells, 1-cell max gaps, walkable without jumping, 0.5 elevation variation). Void below at -8.

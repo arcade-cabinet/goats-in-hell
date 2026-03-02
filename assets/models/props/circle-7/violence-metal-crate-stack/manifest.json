@@ -1,0 +1,18 @@
+{
+  "id": "violence-metal-crate-stack",
+  "name": "Metal Crate Stack",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "Two stacked rusted metal shipping crates with riveted edges, industrial storage containers with dented surfaces, waist-high partial cover, slaughterhouse supply stack, dark fantasy game prop, isolated object, dark background, three-quarter orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Rusted dark metal crate surfaces, riveted edge seams, dented and scratched panels, industrial stacking hardware",
+    "enablePbr": true
+  }
+}

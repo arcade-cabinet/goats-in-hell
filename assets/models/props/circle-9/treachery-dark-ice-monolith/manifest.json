@@ -1,0 +1,18 @@
+{
+  "id": "treachery-dark-ice-monolith",
+  "name": "Dark Ice Monolith",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tall rectangular monolith of pure black ice standing upright, obsidian-dark frozen obelisk with smooth polished surfaces, faint indigo glow from within, ancient frozen marker stone at the bottom of Hell, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Mirror-smooth black ice surface, deep indigo internal glow, sharp geometric edges, obsidian darkness with frost highlights at edges",
+    "enablePbr": true
+  }
+}

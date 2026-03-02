@@ -1,0 +1,18 @@
+{
+  "id": "fraud-forked-tongue-relief",
+  "name": "Forked Tongue Wall Relief",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A wall-mounted stone relief carving of a serpentine forked tongue emerging from an open mouth, classical marble bas-relief with gold accent paint on the tongue, deception and fraud symbol, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "White marble bas-relief carving, gold painted forked tongue, classical sculpted mouth and serpent form, wall-mount flat back",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "fraud-two-faced-bust",
+  "name": "Two-Faced Bust",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A marble bust sculpture with two faces pointing in opposite directions, one face beautiful and serene and the other face twisted and demonic, Janus-style dual portrait on a pedestal, deception theme, dark fantasy game prop, isolated object, dark background, three-quarter orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Polished white marble beautiful face on one side, cracked dark stone demonic face on the other, ornate marble pedestal base",
+    "enablePbr": true
+  }
+}

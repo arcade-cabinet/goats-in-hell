@@ -1,0 +1,18 @@
+{
+  "id": "fraud-broken-chandelier",
+  "name": "Broken Chandelier",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A grand golden chandelier with several arms broken and crystal pieces missing, damaged palatial ceiling light fixture hanging at a tilt, bent gold arms and shattered crystal drops, dark fantasy game prop, isolated object, dark background, bottom-up orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Tarnished gold metal arms, remaining crystal drops, broken stubs where arms snapped, dust and corrosion on gold surface",
+    "enablePbr": true
+  }
+}

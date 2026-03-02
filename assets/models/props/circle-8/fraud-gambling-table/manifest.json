@@ -1,0 +1,18 @@
+{
+  "id": "fraud-gambling-table",
+  "name": "Wrecked Gambling Table",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A smashed ornate gambling table with one broken leg and scattered solid carved dice and coins on the surface, richly upholstered green felt top torn and stained, gold leaf trim on dark wood, dark fantasy game prop, isolated object, dark background, three-quarter orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark lacquered wood with gold leaf trim, torn green felt surface, sculpted dice and coins, one broken leg, gambling den ruin",
+    "enablePbr": true
+  }
+}

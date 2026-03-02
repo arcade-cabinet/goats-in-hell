@@ -1,0 +1,18 @@
+{
+  "id": "violence-blood-pool",
+  "name": "Blood Pool",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A shallow sculpted pool of congealed dark blood on a stone basin, thick crimson liquid surface with a glossy sheen, solid sculpted blood puddle on stone floor, dark fantasy game prop, isolated object, dark background, top-down orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Deep crimson glossy blood surface, dark congealed edges, gray stone basin rim, wet reflective finish",
+    "enablePbr": true
+  }
+}

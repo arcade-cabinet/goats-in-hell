@@ -1,0 +1,18 @@
+{
+  "id": "treachery-frozen-sword",
+  "name": "Frozen Sword in Ice",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A bronze sword frozen into a block of translucent ice attached to a stone pillar surface, weapon of betrayal permanently encased and inaccessible, blade partially visible through ice with frost on the hilt, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Bronze sword blade visible through translucent blue ice, frost-covered hilt, dark stone pillar mount, frozen permanently inaccessible",
+    "enablePbr": true
+  }
+}

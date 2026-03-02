@@ -1,0 +1,18 @@
+{
+  "id": "violence-blood-gutter",
+  "name": "Blood Gutter Channel",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A long narrow iron drainage channel for collecting blood, V-shaped metal gutter with riveted supports, industrial slaughterhouse floor drain, dark congealed blood inside, dark fantasy game prop, isolated object, dark background, three-quarter orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Rusted iron channel, dark red congealed blood residue, riveted metal support brackets, industrial patina",
+    "enablePbr": true
+  }
+}

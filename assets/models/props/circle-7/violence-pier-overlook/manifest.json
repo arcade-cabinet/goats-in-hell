@@ -1,0 +1,18 @@
+{
+  "id": "violence-pier-overlook",
+  "name": "Pier Overlook Railing",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A stone pier edge with rope railing and iron post mounts, elevated overlook balustrade above a blood river, dark volcanic stone ledge with worn rope barrier, dark fantasy game prop, isolated object, dark background, three-quarter orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark volcanic stone ledge, frayed rope barrier, rusted iron post mounts, weathered and blood-spattered",
+    "enablePbr": true
+  }
+}

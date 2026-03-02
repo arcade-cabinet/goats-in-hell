@@ -594,3 +594,195 @@ editor.createTheme('circle-8-fraud', {
 - NOT using the procedural generator's `explore → arena → boss` cycle. The pacing is authored with two converging paths (west through Flatterers, east through Thieves/Maze) that merge at the Counterfeit Arena.
 - NOT using Kenney or KayKit assets. Fantasy Props MegaKit + AmbientCG PBR textures only.
 - NOT a reuse of the reflection mechanic from Circle 9. The Hall of Mirrors uses visual reflections for enemy deception. Circle 9 uses projectile reflection as a combat hazard. Different mechanics, thematic continuity.
+
+---
+
+## 3D Spatial Design
+
+### Room: Portico (10x6, exploration, sortOrder=0)
+
+**Player Experience:** You step into warmth for the first time in seven circles. The marble floor gleams. Two chandeliers overhead cast golden pools of light. Silk banners drape from the walls. Vases flank the entrance on low pedestals. After so much horror, this feels like relief. You trust it. That is the mistake.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| fraud-ornate-arch | south corridor entrance | 1.0 | face-south | Grand marble archway to Hall of Mirrors |
+| fraud-ornate-railing | flanking entrance N wall | 0.8 | face-south | Decorative marble balustrade near spawn |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| fraud-two-faced-bust | (27, 3) pedestal, NW | 0.7 | Janus bust on marble pedestal --- the first hint |
+| fraud-golden-banner | east/west walls, 2 positions | 1.0 | Rich silk banners, palatial atmosphere |
+| fraud-marble-pedestal | (26, 3), (34, 3) flanking entrance | 0.8 | Low pedestals for vase display |
+
+**Lighting:** 2x Chandelier (ceiling, 2.5 cell height), warm gold `#ffaa44`, radius 6 cells. 4x CandleStick_Triple (walls, N/S, offsetY=1.5), warm gold, radius 3 cells. Tall ceiling (3 cells high).
+**Platforming:** Flat (elevation 0). Polished Tiles074 floor. No elevation changes.
+
+---
+
+### Room: Hall of Mirrors (14x10, exploration, sortOrder=1)
+
+**Player Experience:** The walls are black glass. Polished onyx panels protrude from every surface, creating shallow alcoves between them. You see movement in the reflections --- shapes that look like enemies but are not where they appear. The real shadowGoats are on the opposite side of the room from their reflections. You shoot at a reflection and the bullet bounces back at you. These walls turn your weapons against you.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| fraud-onyx-wall-panel | 6 positions along N/S walls | 1.0 | face-inward | Polished onyx reflective panels, protrude 0.5 cells from walls |
+| fraud-ornate-arch | west/east exit corridors | 0.9 | face-exit | Archways framing twin exits |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| fraud-mirror-shard | 2 positions, between onyx panels | 0.6 | Smaller reflective shard clusters for specular highlights |
+| fraud-marble-pedestal | (25, 14), (35, 14) near columns | 0.7 | Pedestals for vase display |
+
+**Lighting:** 4x CandleStick_Triple (walls, all faces, offsetY=1.5), warm gold `#ffaa44`, radius 3 cells. Specular highlights reflect off onyx creating shimmer effect. Enhanced reflections intensity 0.6 in env zone.
+**Platforming:** Flat (elevation 0). Marble006 floor. Onyx panels protrude 0.5 cells creating shallow alcoves. Ceiling at 2.5 cells.
+
+---
+
+### Room: Bolgia of Flatterers (12x8, exploration, sortOrder=2)
+
+**Player Experience:** Four friendly silhouettes at the far end wave and beckon. The room is warm, inviting. A large table in the center holds chalices and a scroll. You walk toward the welcoming figures. The pickups at your feet suddenly bite --- mimics. The silhouettes charge, revealing themselves as hellgoats. The real exit is behind you, a secret wall you walked past on entry. Everything that invited you in wants to kill you.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| fraud-ornate-arch | north entrance | 0.9 | face-north | Archway from Hall of Mirrors |
+| fraud-ramp-platform | (10, 26) north end | 0.6 | flat | +0.5 elevation platform where silhouettes stand |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| fraud-silhouette-prop | 4 positions at north platform | 1.0 | Deceptive "friendly NPC" cutouts |
+| fraud-golden-banner | N wall, 2 positions | 1.0 | Wall banners, one conceals real ammo pickup |
+| fraud-forked-tongue-relief | (10, 30) south wall | 0.8 | Forked tongue relief --- deception symbol |
+| fraud-coin-pile | (14, 29) near table | 0.6 | Scattered coins, false wealth |
+
+**Lighting:** 2x CandleStick_Triple (E/W walls, offsetY=1.5), warm gold, radius 3 cells. North platform slightly dimmer to obscure silhouette details.
+**Platforming:** Slight step-up (+0.5) at north end where silhouettes stand. WALL_SECRET on south wall --- real exit behind the player.
+
+---
+
+### Room: Bolgia of Thieves (10x8, exploration, sortOrder=3)
+
+**Player Experience:** Items vanish when you approach. Coin piles sit on raised platforms, but the moment you step close, the pickups despawn and enemies appear in their place. You turn around and the remaining pickups have shuffled positions. Chests open to reveal nothing --- or a shadowGoat. The lesson: desire for loot is itself a trap.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| fraud-ornate-arch | north entrance | 0.9 | face-north | Archway from Hall of Mirrors |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| fraud-coin-pile | 3 positions (floor, varying heights) | 0.7 | Decoy coin piles on small raised platforms |
+| fraud-marble-pedestal | (38, 30) center | 0.8 | Pedestal for chalice display |
+
+**Lighting:** 2x CandleStick_Triple (N/S walls, offsetY=1.5), warm gold, radius 3 cells. Chest_Wood props on low pedestals (0.3 cells).
+**Platforming:** Flat (elevation 0). Three small raised platforms (0, 0.3, 0.5 cells) for coin pile display. Ceiling higher (4 units) than bolgia rooms.
+
+---
+
+### Room: Shifting Maze (14x14, exploration, sortOrder=4)
+
+**Player Experience:** The walls move when you are not looking. You turn a corner and the path behind you is gone. The corridor you came from has closed. A new passage has opened to the left. Rubble props on the floor serve as unreliable breadcrumbs --- they shift too. Only the fixed torches on the outer walls are reliable landmarks. Seven enemies patrol the maze, exploiting the shifts to ambush. The bleeding clock from Circle 7 is gone, but the disorientation is its own form of torture.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| fraud-shifting-wall-segment | 6 moveable wall sections | 1.0 | varies | Maze walls on hidden sliding tracks, 1 cell thick, 2 cells high |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| fraud-cracked-mosaic-floor | 4 positions (scattered) | 0.8 | Breadcrumb floor tiles that shift with walls |
+
+**Lighting:** 2x Torch_Metal (fixed outer walls, offsetY=1.8), warm orange, radius 4 cells --- the ONLY reliable landmarks. Thick fog `#1a1208` density 0.06.
+**Platforming:** Flat (elevation 0). Maze walls are WALL_STONE, 1 cell thick, 2 cells high. Some walls have gaps at 1.5 cells high (tease --- no raised floors to exploit them). Maximum 3 walls shift per observation break.
+
+---
+
+### Room: Counterfeit Arena (12x12, arena, sortOrder=5)
+
+**Player Experience:** "Wait --- this looks like Circle 1." Six elegant columns arranged in a familiar pattern. But when you approach one for cover, it splits open and a mimic unfolds. Four of the six columns are traps. The only real cover is two ugly, utilitarian ramp platforms in the center. The beautiful columns betray you. The ugly ramps save your life. The lesson of Fraud.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| fraud-fake-column | 6 positions (2 rows of 3) | 1.0 | varies | Elegant columns --- 4 are mimic hosts, 2 are real |
+| fraud-ramp-platform | 2 center positions | 1.0 | flat | Raised platforms (+1 cell) --- real cover |
+| fraud-ornate-arch | north entrances (2, converging paths) | 0.9 | face-north | Twin archways where west/east paths merge |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| fraud-cracked-mosaic-floor | center floor | 1.2 | Ornate floor pattern (callback to Circle 1) |
+
+**Lighting:** 2x Torch_Metal (N/S walls, offsetY=1.8), warm orange, radius 4 cells. Arena lighting brighter than maze.
+**Platforming:** Floor at 0. Two RAMP segments create raised platforms at +1 cell elevation (3x2 cells each). Columns are 0.5x0.5 cells, full height (2 cells). Player can stand on ramps to shoot over enemies.
+
+---
+
+### Room: Mimic's Den (8x8, exploration, sortOrder=6)
+
+**Player Experience:** Eight pickups scattered across a dim room. Half are real. Half are mimics. You do not know which. The Cauldron in the center is the only honest object. You sweep with the flamethrower before touching anything. The flames reveal the truth --- mimics flinch and unfold before you are in their attack range. Trust nothing. Burn everything.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| (none) | --- | --- | --- | Sparse room --- pickups ARE the architecture |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| fraud-coin-pile | 2 positions (floor, mixed with pickups) | 0.5 | Coin scatter, atmosphere |
+
+**Lighting:** 2x Torch_Metal (E/W walls, offsetY=1.8), warm orange, radius 4 cells. Subtle audio tension cue, heartbeat SFX (danger env zone 0.8).
+**Platforming:** Flat (elevation 0). Cauldron on slightly raised stone base (0.2 cells). WALL_SECRET on east wall leads to Serenissima.
+
+---
+
+### Room: Serenissima (6x6, secret, sortOrder=7)
+
+**Player Experience:** The irony of Circle 8. This is the only room where nothing is a lie. The walls are raw, unfinished marble --- the only honest surface in the entire circle. All pickups are genuine. The chest contains real loot. The scroll reads: "Truth hides where no one looks." The low ceiling (1.5 cells) creates an intimate, cave-like refuge. After rooms of deception, this unadorned honesty is the most surprising thing in the circle.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| (none) | --- | --- | --- | Deliberately unadorned --- raw Marble001 walls |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| (none beyond Fantasy Props) | --- | --- | Chest_Wood, BookStand, Candle_1 per design doc |
+
+**Lighting:** 2x Candle_1 (floor, flanking chest), very warm `#ffcc88`, radius 2 cells. Low ceiling (1.5 cells). Intimate and dim.
+**Platforming:** Flat (elevation 0). Dead end --- return through WALL_SECRET.
+
+---
+
+### Room: Inganno's Parlor (14x14, boss, sortOrder=8)
+
+**Player Experience:** You descend stairs into elegance. A grand sitting room: chandeliers, bookcases, silk banners, candlelight. Inganno sits in a chair at center-north, beautiful and still. She speaks pleasantly. She does not attack. Then you step too close. Phase 1: mimics unfold across the room. Phase 2: a mirror clone of yourself attacks with your own weapon. Phase 3: the beautiful room crumbles --- marble becomes rust, silk becomes concrete, the chandelier shifts from warm gold to cold blue. The Geryon serpent uncoils beneath the smile. "All beauty is a mask."
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| fraud-ornate-arch | north entrance (stairs) | 1.2 | face-south | Grand archway framing boss chamber descent |
+| fraud-ornate-railing | north stair descent | 1.0 | face-south | Ornate marble balustrade along stairway |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| fraud-broken-chandelier | center ceiling | 1.5 | Grand chandelier (intact initially, damaged phase 3) |
+| fraud-golden-banner | N wall, 2 positions | 1.2 | Rich silk banners flanking Inganno's seat |
+| fraud-two-faced-bust | (22, 85) near entrance | 0.8 | Two-faced bust --- thematic foreshadowing |
+| fraud-crumbling-facade | walls (phase 3 reveal) | 1.0 | Marble crumbling away to reveal rust beneath |
+| fraud-marble-debris | floor scatter (phase 3) | 0.6 | Fallen marble chunks creating floor obstacles (0.3 cell height) |
+| fraud-stage-curtain | E/W walls behind bookcases | 1.0 | Rigid silk curtain panels, theatrical backing |
+| fraud-forked-tongue-relief | (28, 85) near chair | 0.6 | Forked tongue relief behind Inganno's seat |
+
+**Lighting:** 1x Chandelier overhead, warm `#ffaa44`, radius 8 cells --- shifts to cold blue `#4466cc` in phase 3. 4x CandleStick_Triple (walls, all faces, offsetY=1.5). Phase 3: fog clears to 0.01, light color shifts.
+**Platforming:** Elevation -1 (descended via stairs). Chair_1 on raised platform (+0.5 cells) center-north. Ceiling at 3 cells (grand height). Phase 3: debris creates 0.3-cell-height floor obstacles.

@@ -1,0 +1,18 @@
+{
+  "id": "violence-stone-altar",
+  "name": "Stone Altar Slab",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A polished dark stone altar slab on a raised pedestal, smooth flat top surface for weapon display, carved stone base with metal plate accents, sacred shrine furniture, dark fantasy game prop, isolated object, dark background, three-quarter orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Polished dark stone top surface, carved stone pedestal base, dark metal plate accent bands, reverent sacred feel",
+    "enablePbr": true
+  }
+}

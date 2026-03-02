@@ -1,0 +1,18 @@
+{
+  "id": "violence-blood-river-arch",
+  "name": "Blood River Stone Arch",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A crumbling stone archway partially submerged in blood, dark volcanic rock arch over a crimson river crossing, blood-stained waterline on the lower stones, ancient and eroded, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark volcanic stone arch, crimson blood waterline stain, eroded and crumbling edges, ancient carved masonry",
+    "enablePbr": true
+  }
+}
