@@ -101,3 +101,14 @@ vm-debug.log
 *.bak
 *.moved-aside
 *.png
+
+# Meshy pipeline artifacts (intermediate outputs — only final GLBs are committed)
+# Props: preview.glb is intermediate, refined.glb is the final output
+assets/models/props/**/preview.glb
+assets/models/props/**/model.glb
+assets/models/props/**/concept-*.png
+# Enemies: all intermediates skipped, only animation GLBs are final output
+assets/models/enemies/**/concept-*.png
+assets/models/enemies/**/preview.glb
+assets/models/enemies/**/refined.glb
+assets/models/enemies/**/rigged.glb

@@ -1,0 +1,34 @@
+{
+  "id": "goat-glutton",
+  "name": "Goat Glutton",
+  "type": "character",
+  "pipeline": "enemy",
+  "description": "Circle 3 (Gluttony) — bloated vomit-spewing goat. Slow waddle, poison ranged attack.",
+  "textToImageTask": {
+    "prompt": "A bipedal humanoid goat demon in A-pose, grotesquely bloated and obese, sickly green-brown mottled fur, short stubby horns, distended belly with visible veins, mouth permanently agape showing rotten teeth with green bile dripping, holding a massive leg of meat in one hand, tattered apron stained with filth, thick stubby digitigrade goat legs barely supporting the weight, jaundiced yellow eyes, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Grotesquely bloated bipedal goat demon, green-brown fur, distended belly, bile-dripping mouth, holding meat leg, stained apron, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 10000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Sickly green-brown mottled fur, distended veiny belly, filth-stained apron, rotten yellow teeth, green bile drips, raw meat prop",
+    "enablePbr": true
+  },
+  "riggingTask": { "heightMeters": 1.6 },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Stumble_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp_2",
+      "Fighting.CastingSpell.mage_soell_cast",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Knock_Down_1"
+    ]
+  }
+}

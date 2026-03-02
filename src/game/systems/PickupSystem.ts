@@ -27,6 +27,7 @@ const WEAPON_PICKUP_RESERVE: Record<WeaponId, number> = {
   brimShotgun: 16,
   hellfireCannon: 120,
   goatsBane: 12,
+  brimstoneFlamethrower: 0, // uses fuel, not ammo
 };
 
 // ---------------------------------------------------------------------------

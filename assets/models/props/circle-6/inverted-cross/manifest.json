@@ -1,0 +1,18 @@
+{
+  "id": "inverted-cross",
+  "name": "Inverted Cross",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tall inverted stone cross standing on a cracked base, dark veins running through pale marble, chains wrapped around the crossbar, heretical blasphemous monument, stylized low poly game prop, dark fantasy, isometric view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Pale marble with dark purple veins, cracked stone base, rusted iron chain wraps",
+    "enablePbr": true
+  }
+}

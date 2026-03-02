@@ -1,0 +1,37 @@
+{
+  "id": "goat-scout",
+  "name": "Goat Scout",
+  "type": "character",
+  "pipeline": "enemy",
+  "description": "Fast flanking enemy. Low HP but high speed, darts in for quick attacks.",
+  "textToImageTask": {
+    "prompt": "A bipedal humanoid goat demon in A-pose, lean and wiry athletic build, reddish-brown fur, sharp forward-curving horns, dual wielding jagged bone daggers, minimal leather strap armor showing scarred fur, long digitigrade goat legs built for speed, alert predatory yellow eyes, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Lean wiry bipedal goat demon assassin, reddish-brown fur, forward-curving horns, dual bone daggers, minimal armor, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 7000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Reddish-brown short fur, scarred exposed skin, bone-white dagger blades, leather strap wraps, bright yellow predatory eyes",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 1.6
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Running.Lean_Forward_Sprint",
+      "DailyActions.Idle.Angry_Ground_Stomp",
+      "Fighting.AttackingwithWeapon.Thrust_Slash",
+      "Fighting.Punching.Fast_Punch_Combo",
+      "Fighting.GettingHit.Face_Punch_Reaction_2",
+      "Fighting.Dying.Electrocuted_Fall"
+    ]
+  }
+}

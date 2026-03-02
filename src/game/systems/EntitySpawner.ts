@@ -49,6 +49,10 @@ export function spawnLevelEntities(
   nightmareDmgMult: number,
   isNightmare: boolean,
 ): void {
+  let optionalEnemyCount = 0;
+  const store = useGameStore.getState();
+  const isExplore = store.stage.encounterType === 'explore';
+
   levelData.spawns.forEach((spawn, idx) => {
     if (isNightmare && spawn.type === 'health') return;
 
@@ -74,6 +78,7 @@ export function spawnLevelEntities(
         },
       });
       trackEnemySpawn();
+      if (isExplore) optionalEnemyCount++;
     } else if (spawn.type === 'health' || spawn.type === 'ammo') {
       if (
         diffMods.pickupDensityMult < 1 &&
@@ -139,6 +144,11 @@ export function spawnLevelEntities(
     }
     // Props and lore messages are handled by R3F rendering components
   });
+
+  // Track total optional enemies for ending calculation
+  if (optionalEnemyCount > 0) {
+    useGameStore.getState().addOptionalEnemies(optionalEnemyCount);
+  }
 }
 
 /**

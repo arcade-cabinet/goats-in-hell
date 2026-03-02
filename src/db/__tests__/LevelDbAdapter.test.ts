@@ -3,7 +3,7 @@ import { drizzle } from 'drizzle-orm/better-sqlite3';
 import { CELL_SIZE } from '../../constants';
 import { MapCell } from '../../game/levels/LevelGenerator';
 import { packGrid } from '../GridCompiler';
-import { toFloorTheme, toLevelData } from '../LevelDbAdapter';
+import { toEnvironmentZones, toFloorTheme, toLevelData } from '../LevelDbAdapter';
 import { LevelEditor } from '../LevelEditor';
 import { migrateAndSeed } from '../migrate';
 import * as schema from '../schema';
@@ -282,6 +282,184 @@ describe('LevelDbAdapter', () => {
         .run();
 
       expect(() => toLevelData(db, 'no-grid')).toThrow('has no compiled grid');
+    });
+  });
+
+  describe('toEnvironmentZones', () => {
+    const LEVEL_ID = 'env-zone-level';
+    const THEME_ID = 'fire-pits';
+
+    beforeEach(() => {
+      const grid = makeTestGrid(10, 10);
+      const compiledGrid = Buffer.from(packGrid(grid));
+
+      db.insert(schema.levels)
+        .values({
+          id: LEVEL_ID,
+          name: 'Env Zone Level',
+          levelType: 'circle',
+          width: 10,
+          depth: 10,
+          floor: 1,
+          spawnX: 5,
+          spawnZ: 5,
+          themeId: THEME_ID,
+          compiledGrid,
+        })
+        .run();
+    });
+
+    it('returns empty array when no zones exist', () => {
+      const zones = toEnvironmentZones(db, LEVEL_ID);
+      expect(zones).toEqual([]);
+    });
+
+    it('converts grid coordinates to world coordinates', () => {
+      db.insert(schema.environmentZones)
+        .values({
+          id: 'zone-fire-1',
+          levelId: LEVEL_ID,
+          envType: 'fire',
+          boundsX: 2,
+          boundsZ: 3,
+          boundsW: 4,
+          boundsH: 5,
+          intensity: 0.8,
+        })
+        .run();
+
+      const zones = toEnvironmentZones(db, LEVEL_ID);
+      expect(zones).toHaveLength(1);
+
+      const zone = zones[0];
+      expect(zone.id).toBe('zone-fire-1');
+      expect(zone.envType).toBe('fire');
+      expect(zone.x).toBe(2 * CELL_SIZE);
+      expect(zone.z).toBe(3 * CELL_SIZE);
+      expect(zone.w).toBe(4 * CELL_SIZE);
+      expect(zone.h).toBe(5 * CELL_SIZE);
+      expect(zone.intensity).toBe(0.8);
+    });
+
+    it('loads direction and timer fields', () => {
+      db.insert(schema.environmentZones)
+        .values({
+          id: 'zone-wind-1',
+          levelId: LEVEL_ID,
+          envType: 'wind',
+          boundsX: 1,
+          boundsZ: 1,
+          boundsW: 3,
+          boundsH: 3,
+          intensity: 1.0,
+          directionX: 0.5,
+          directionZ: -0.5,
+          timerOn: 3000,
+          timerOff: 2000,
+        })
+        .run();
+
+      const zones = toEnvironmentZones(db, LEVEL_ID);
+      expect(zones).toHaveLength(1);
+
+      const zone = zones[0];
+      expect(zone.dirX).toBe(0.5);
+      expect(zone.dirZ).toBe(-0.5);
+      expect(zone.timerOn).toBe(3000);
+      expect(zone.timerOff).toBe(2000);
+    });
+
+    it('defaults direction and timer to 0 when null', () => {
+      db.insert(schema.environmentZones)
+        .values({
+          id: 'zone-ice-1',
+          levelId: LEVEL_ID,
+          envType: 'ice',
+          boundsX: 0,
+          boundsZ: 0,
+          boundsW: 2,
+          boundsH: 2,
+          intensity: 0.5,
+        })
+        .run();
+
+      const zones = toEnvironmentZones(db, LEVEL_ID);
+      const zone = zones[0];
+      expect(zone.dirX).toBe(0);
+      expect(zone.dirZ).toBe(0);
+      expect(zone.timerOn).toBe(0);
+      expect(zone.timerOff).toBe(0);
+    });
+
+    it('loads multiple zones for the same level', () => {
+      db.insert(schema.environmentZones)
+        .values([
+          {
+            id: 'zone-a',
+            levelId: LEVEL_ID,
+            envType: 'fire',
+            boundsX: 1,
+            boundsZ: 1,
+            boundsW: 2,
+            boundsH: 2,
+            intensity: 1.0,
+          },
+          {
+            id: 'zone-b',
+            levelId: LEVEL_ID,
+            envType: 'ice',
+            boundsX: 5,
+            boundsZ: 5,
+            boundsW: 3,
+            boundsH: 3,
+            intensity: 0.6,
+          },
+        ])
+        .run();
+
+      const zones = toEnvironmentZones(db, LEVEL_ID);
+      expect(zones).toHaveLength(2);
+
+      const types = zones.map((z) => z.envType).sort();
+      expect(types).toEqual(['fire', 'ice']);
+    });
+
+    it('does not load zones from other levels', () => {
+      // Create another level
+      const grid = makeTestGrid(6, 6);
+      const compiledGrid = Buffer.from(packGrid(grid));
+      db.insert(schema.levels)
+        .values({
+          id: 'other-level',
+          name: 'Other Level',
+          levelType: 'circle',
+          width: 6,
+          depth: 6,
+          floor: 2,
+          spawnX: 3,
+          spawnZ: 3,
+          themeId: THEME_ID,
+          compiledGrid,
+        })
+        .run();
+
+      // Add zone to other level
+      db.insert(schema.environmentZones)
+        .values({
+          id: 'zone-other',
+          levelId: 'other-level',
+          envType: 'fog',
+          boundsX: 0,
+          boundsZ: 0,
+          boundsW: 6,
+          boundsH: 6,
+          intensity: 1.0,
+        })
+        .run();
+
+      // Should return empty for env-zone-level
+      const zones = toEnvironmentZones(db, LEVEL_ID);
+      expect(zones).toHaveLength(0);
     });
   });
 });

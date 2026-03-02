@@ -9,6 +9,7 @@
 import type React from 'react';
 import { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { showCircleHint } from '../game/systems/KillHintSystem';
 import { useGameStore } from '../state/GameStore';
 
 const FAST_CLEAR_THRESHOLD_SEC = 60;
@@ -107,7 +108,13 @@ export const VictoryScreen: React.FC = () => {
     if (bonus > 0) {
       patch({ score: score + bonus });
     }
+    const prevCircle = useGameStore.getState().circleNumber;
     advanceStage();
+    // Show circle-transition hint if the circle changed
+    const nextCircle = useGameStore.getState().circleNumber;
+    if (nextCircle !== prevCircle) {
+      showCircleHint(nextCircle);
+    }
     // advanceStage may set screen to 'bossIntro' or 'gameComplete' —
     // only transition to 'playing' if neither of those was set
     const nextScreen = useGameStore.getState().screen;

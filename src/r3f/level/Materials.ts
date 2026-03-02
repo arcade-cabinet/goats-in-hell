@@ -140,6 +140,54 @@ const WALL_TEXTURE_SETS: Record<string, TextureSetDef> = {
     normal: 'obsidian-normal',
     roughness: 'obsidian-roughness',
   },
+  // Circle-specific wall themes
+  limbo: {
+    color: 'limbo-color',
+    normal: 'limbo-normal',
+    roughness: 'limbo-roughness',
+  },
+  lust: {
+    color: 'lust-color',
+    normal: 'lust-normal',
+    roughness: 'lust-roughness',
+  },
+  gluttony: {
+    color: 'gluttony-color',
+    normal: 'gluttony-normal',
+    roughness: 'gluttony-roughness',
+  },
+  greed: {
+    color: 'greed-color',
+    normal: 'greed-normal',
+    roughness: 'greed-roughness',
+    metalness: 'greed-metalness',
+  },
+  wrath: {
+    color: 'lava-color',
+    normal: 'lava-normal',
+    roughness: 'lava-roughness',
+    emission: 'lava-emission',
+  },
+  heresy: {
+    color: 'heresy-color',
+    normal: 'heresy-normal',
+    roughness: 'heresy-roughness',
+  },
+  violence: {
+    color: 'flesh-color',
+    normal: 'flesh-normal',
+    roughness: 'flesh-roughness',
+  },
+  fraud: {
+    color: 'fraud-color',
+    normal: 'fraud-normal',
+    roughness: 'fraud-roughness',
+  },
+  treachery: {
+    color: 'treachery-color',
+    normal: 'treachery-normal',
+    roughness: 'treachery-roughness',
+  },
 };
 
 /** Wall texture sets keyed by wall-type cell value. */
@@ -453,6 +501,214 @@ const THEME_PRESETS: Record<string, ThemeMatProps> = {
       metalness: 0.3,
     },
   },
+  // Circle-specific theme presets
+  limbo: {
+    wall: {
+      color: '#808080',
+      emissive: '#222222',
+      emissiveIntensity: 0.1,
+      roughness: 0.9,
+      metalness: 0.05,
+    },
+    floor: {
+      color: '#555555',
+      emissive: '#111111',
+      emissiveIntensity: 0.05,
+      roughness: 0.9,
+      metalness: 0.0,
+    },
+    ceiling: {
+      color: '#444444',
+      emissive: '#0a0a0a',
+      emissiveIntensity: 0.03,
+      roughness: 0.95,
+      metalness: 0.0,
+    },
+  },
+  lust: {
+    wall: {
+      color: '#1a0a10',
+      emissive: '#cc2255',
+      emissiveIntensity: 0.2,
+      roughness: 0.25,
+      metalness: 0.6,
+    },
+    floor: {
+      color: '#1a0808',
+      emissive: '#881133',
+      emissiveIntensity: 0.1,
+      roughness: 0.35,
+      metalness: 0.4,
+    },
+    ceiling: {
+      color: '#120610',
+      emissive: '#660022',
+      emissiveIntensity: 0.08,
+      roughness: 0.3,
+      metalness: 0.5,
+    },
+  },
+  gluttony: {
+    wall: {
+      color: '#1a2a10',
+      emissive: '#224400',
+      emissiveIntensity: 0.15,
+      roughness: 0.7,
+      metalness: 0.0,
+    },
+    floor: {
+      color: '#1a1a08',
+      emissive: '#334400',
+      emissiveIntensity: 0.08,
+      roughness: 0.75,
+      metalness: 0.0,
+    },
+    ceiling: {
+      color: '#101a08',
+      emissive: '#112200',
+      emissiveIntensity: 0.05,
+      roughness: 0.8,
+      metalness: 0.0,
+    },
+  },
+  greed: {
+    wall: {
+      color: '#806020',
+      emissive: '#aa8800',
+      emissiveIntensity: 0.3,
+      roughness: 0.2,
+      metalness: 0.9,
+    },
+    floor: {
+      color: '#302010',
+      emissive: '#664400',
+      emissiveIntensity: 0.15,
+      roughness: 0.3,
+      metalness: 0.7,
+    },
+    ceiling: {
+      color: '#201008',
+      emissive: '#553300',
+      emissiveIntensity: 0.1,
+      roughness: 0.25,
+      metalness: 0.8,
+    },
+  },
+  wrath: {
+    wall: {
+      color: '#3a1008',
+      emissive: '#ff2200',
+      emissiveIntensity: 0.4,
+      roughness: 0.8,
+      metalness: 0.1,
+    },
+    floor: {
+      color: '#331008',
+      emissive: '#ff4400',
+      emissiveIntensity: 0.15,
+      roughness: 0.85,
+      metalness: 0.05,
+    },
+    ceiling: {
+      color: '#1a0808',
+      emissive: '#ff2200',
+      emissiveIntensity: 0.1,
+      roughness: 0.9,
+      metalness: 0.0,
+    },
+  },
+  heresy: {
+    wall: {
+      color: '#1a1a20',
+      emissive: '#110a15',
+      emissiveIntensity: 0.1,
+      roughness: 0.7,
+      metalness: 0.2,
+    },
+    floor: {
+      color: '#0a0a10',
+      emissive: '#080510',
+      emissiveIntensity: 0.05,
+      roughness: 0.75,
+      metalness: 0.15,
+    },
+    ceiling: {
+      color: '#080810',
+      emissive: '#050308',
+      emissiveIntensity: 0.03,
+      roughness: 0.8,
+      metalness: 0.1,
+    },
+  },
+  violence: {
+    wall: {
+      color: '#3a1010',
+      emissive: '#660a0a',
+      emissiveIntensity: 0.3,
+      roughness: 0.55,
+      metalness: 0.05,
+    },
+    floor: {
+      color: '#2a0808',
+      emissive: '#440505',
+      emissiveIntensity: 0.12,
+      roughness: 0.5,
+      metalness: 0.0,
+    },
+    ceiling: {
+      color: '#200606',
+      emissive: '#330404',
+      emissiveIntensity: 0.08,
+      roughness: 0.55,
+      metalness: 0.0,
+    },
+  },
+  fraud: {
+    wall: {
+      color: '#151520',
+      emissive: '#220044',
+      emissiveIntensity: 0.15,
+      roughness: 0.3,
+      metalness: 0.4,
+    },
+    floor: {
+      color: '#0a0a15',
+      emissive: '#110022',
+      emissiveIntensity: 0.08,
+      roughness: 0.35,
+      metalness: 0.3,
+    },
+    ceiling: {
+      color: '#080810',
+      emissive: '#0a0018',
+      emissiveIntensity: 0.05,
+      roughness: 0.4,
+      metalness: 0.25,
+    },
+  },
+  treachery: {
+    wall: {
+      color: '#80a0c0',
+      emissive: '#2244aa',
+      emissiveIntensity: 0.15,
+      roughness: 0.2,
+      metalness: 0.3,
+    },
+    floor: {
+      color: '#607090',
+      emissive: '#1133aa',
+      emissiveIntensity: 0.1,
+      roughness: 0.15,
+      metalness: 0.2,
+    },
+    ceiling: {
+      color: '#506080',
+      emissive: '#0a2288',
+      emissiveIntensity: 0.08,
+      roughness: 0.2,
+      metalness: 0.25,
+    },
+  },
 };
 
 /** Fallback preset for unknown themes. */
@@ -752,3 +1008,23 @@ export async function preloadAllTextures(): Promise<void> {
   const allKeys = Object.keys(TEXTURE_ASSETS) as TextureAssetKey[];
   await Promise.all(allKeys.map((key) => loadTexture(key)));
 }
+
+// ---------------------------------------------------------------------------
+// Circle → Wall Theme mapping
+// ---------------------------------------------------------------------------
+
+/**
+ * Map circle number (1-9) to the wall theme name used for texture/material
+ * lookups in WALL_TEXTURE_SETS and THEME_PRESETS.
+ */
+export const CIRCLE_WALL_THEMES: Record<number, string> = {
+  1: 'limbo',
+  2: 'lust',
+  3: 'gluttony',
+  4: 'greed',
+  5: 'wrath',
+  6: 'heresy',
+  7: 'violence',
+  8: 'fraud',
+  9: 'treachery',
+};

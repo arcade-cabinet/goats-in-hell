@@ -50,6 +50,7 @@ const WEAPON_MODEL_KEY: Record<WeaponId, string> = {
   brimShotgun: 'weapon-shotgun',
   hellfireCannon: 'weapon-cannon',
   goatsBane: 'weapon-launcher',
+  brimstoneFlamethrower: 'weapon-flamethrower',
 };
 
 const WEAPON_VISUALS: Record<WeaponId, WeaponVisualConfig> = {
@@ -89,6 +90,15 @@ const WEAPON_VISUALS: Record<WeaponId, WeaponVisualConfig> = {
     modelScale: 0.18,
     modelRotation: [0, Math.PI, 0],
   },
+  brimstoneFlamethrower: {
+    size: [0.1, 0.1, 0.45],
+    offset: new THREE.Vector3(0.2, -0.18, -0.4),
+    color: '#554422',
+    emissive: '#441100',
+    modelKey: 'weapon-flamethrower',
+    modelScale: 0.16,
+    modelRotation: [0, Math.PI, 0],
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -101,6 +111,7 @@ const WEAPON_RECOIL: Record<WeaponId, { kickBack: number; kickUp: number }> = {
   brimShotgun: { kickBack: 0.18, kickUp: 0.1 },
   hellfireCannon: { kickBack: 0.05, kickUp: 0.02 },
   goatsBane: { kickBack: 0.25, kickUp: 0.15 },
+  brimstoneFlamethrower: { kickBack: 0.02, kickUp: 0.01 },
 };
 /** Recoil spring-back speed (units/sec). */
 const RECOIL_RECOVERY_SPEED = 6;

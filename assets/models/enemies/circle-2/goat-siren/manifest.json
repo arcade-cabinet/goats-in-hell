@@ -1,0 +1,35 @@
+{
+  "id": "goat-siren",
+  "name": "Goat Siren",
+  "type": "character",
+  "pipeline": "enemy",
+  "description": "Circle 2 (Lust) — seductive goat demon. Fast, deceptively graceful, raking claw attacks.",
+  "textToImageTask": {
+    "prompt": "A bipedal humanoid female goat demon in A-pose, lithe athletic build, sleek dark crimson fur, elegant curved horns adorned with gold rings, long razor-sharp claws on both hands, wearing a flowing torn silk dress that reveals scarred skin underneath, digitigrade goat legs with polished black hooves, hypnotic violet glowing eyes, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Lithe bipedal female goat demon, crimson fur, gold-ringed horns, razor claws, torn silk dress, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Sleek dark crimson fur, gold horn rings, razor sharp dark claws, torn crimson silk, violet glowing eyes, polished black hooves",
+    "enablePbr": true
+  },
+  "riggingTask": { "heightMeters": 1.7 },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Zombie_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp_1",
+      "Fighting.AttackingwithWeapon.Left_Slash",
+      "Fighting.Punching.Fast_Punch_Combo",
+      "Fighting.GettingHit.Face_Punch_Reaction_1",
+      "Fighting.Dying.Shot_and_Blown_Back"
+    ]
+  }
+}

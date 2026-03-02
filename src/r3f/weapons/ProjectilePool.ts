@@ -89,6 +89,7 @@ export const PROJECTILE_COLORS = {
   brimShotgun: '#4488ff', // blue
   hellfireCannon: '#ff2200', // red
   goatsBane: '#aa44ff', // purple
+  brimstoneFlamethrower: '#ff4400', // orange-red (stream, not projectile)
   enemy: '#ff4444', // red-ish for enemy projectiles
 } as const;
 

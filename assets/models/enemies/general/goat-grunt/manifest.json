@@ -1,0 +1,36 @@
+{
+  "id": "goat-grunt",
+  "name": "Goat Grunt",
+  "type": "character",
+  "pipeline": "enemy",
+  "description": "Basic melee foot soldier. The most common enemy across all circles.",
+  "textToImageTask": {
+    "prompt": "A bipedal humanoid goat demon standing in A-pose, muscular hunched posture, dark brown fur, curved ram horns, clawed hands gripping a rusty short sword, tattered leather loincloth, glowing amber eyes, digitigrade goat legs with cloven hooves, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Bipedal humanoid goat demon warrior, muscular, dark brown fur, ram horns, rusty short sword, tattered leather, cloven hooves, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark brown coarse fur, scarred leather armor, rusty iron blade, amber glowing eyes, pale horn keratin",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 1.8
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Zombie_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp",
+      "Fighting.AttackingwithWeapon.Left_Slash",
+      "Fighting.GettingHit.Face_Punch_Reaction",
+      "Fighting.Dying.Fall_Dead_from_Abdominal_Injury"
+    ]
+  }
+}

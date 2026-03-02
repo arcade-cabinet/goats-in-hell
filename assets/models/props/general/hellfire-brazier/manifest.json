@@ -1,0 +1,18 @@
+{
+  "id": "hellfire-brazier",
+  "name": "Hellfire Brazier",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A demonic iron brazier overflowing with hellfire, twisted metal frame with goat horn motifs, glowing embers dripping down the sides, dark fantasy game prop, low poly stylized, isometric view, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark oxidized iron with glowing orange-red hellfire, emissive molten cracks",
+    "enablePbr": true
+  }
+}

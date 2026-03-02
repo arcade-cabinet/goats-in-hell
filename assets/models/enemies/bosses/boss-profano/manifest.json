@@ -1,0 +1,37 @@
+{
+  "id": "boss-profano",
+  "name": "Profano — The Blasphemer",
+  "type": "character",
+  "pipeline": "enemy",
+  "description": "Circle 6 Boss (Heresy). A fallen high priest goat, wielding forbidden divine power against its source.",
+  "textToImageTask": {
+    "prompt": "A towering bipedal humanoid goat demon high priest in A-pose, regal imposing frame wearing a massive desecrated papal mitre fused to the horns, horns grow through and crack the mitre, holding a towering corrupted crucifix staff inverted as a weapon crackling with dark purple lightning, wearing full length black and purple vestments with gold trim all inverted and defiled, a massive tome chained to the waist with living pages that flutter, heavy gold rings on every finger, digitigrade goat legs in ceremonial iron greaves, imperious contemptuous purple eyes burning with stolen divine light, 3 meters tall, stylized dark fantasy game boss character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Towering goat demon high priest, papal mitre fused to horns, inverted crucifix staff with purple lightning, defiled vestments, chained tome, 3m, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 16000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Black-purple vestment fabric with defiled gold trim, cracked papal mitre, dark wood inverted crucifix staff, purple lightning effects, chained leather tome, gold ring details, burning purple eyes",
+    "enablePbr": true
+  },
+  "riggingTask": { "heightMeters": 3.0 },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Zombie_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp_2",
+      "Fighting.CastingSpell.Charged_Spell_Cast",
+      "Fighting.CastingSpell.Charged_Spell_Cast_1",
+      "Fighting.CastingSpell.Charged_Ground_Slam",
+      "BodyMovements.Acting.Zombie_Scream",
+      "Fighting.GettingHit.Face_Punch_Reaction",
+      "Fighting.Dying.Dead"
+    ]
+  }
+}

@@ -1,20 +1,22 @@
 /**
- * DungeonProps — R3F component that renders decorative dungeon props.
+ * DungeonProps -- R3F component that renders decorative dungeon props as GLB models.
  *
  * Props are placed by LevelGenerator.placeProps() as SpawnData entries with
  * types like prop_firebasket, prop_candle, prop_coffin, prop_column, etc.
  *
- * Each prop type is rendered as an InstancedMesh with simple geometric
- * approximations (cylinders, boxes) and theme-appropriate materials.
- * Fire baskets and candles include faint PointLights for atmosphere.
+ * Each prop loads a Quaternius GLB model via ModelLoader, with a colored-box
+ * fallback while the model loads or if the model key is unrecognized.
+ * Fire-type props include flickering PointLights for atmosphere.
  *
  * Uses imperative Three.js API to match the project pattern and avoid
  * JSX type conflicts with Reactylon.
  */
 
 import { useFrame, useThree } from '@react-three/fiber';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three/webgpu';
+import { PROP_MODEL_ASSETS, type PropModelKey } from '../../game/systems/AssetRegistry';
+import { cloneModel, isModelLoaded, loadModels } from '../systems/ModelLoader';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -32,172 +34,189 @@ export interface DungeonPropsProps {
 }
 
 // ---------------------------------------------------------------------------
-// Prop type visual configs
+// Per-prop-type configuration
 // ---------------------------------------------------------------------------
 
-interface PropConfig {
-  /** Factory for the geometry (one instance shared across all of this type). */
-  geometry: () => THREE.BufferGeometry;
-  /** Material properties. */
-  color: string;
-  emissive?: string;
-  emissiveIntensity?: number;
-  roughness: number;
-  metalness: number;
-  /** Y offset from ground level. */
-  yOffset: number;
-  /** Uniform scale applied to the instance. */
+interface PropGlbConfig {
+  /** Key into PROP_MODEL_ASSETS for the GLB model. */
+  assetKey: PropModelKey;
+  /** Uniform scale applied to the cloned model. */
   scale: number;
-  /** Whether this prop type emits light (creates a PointLight per instance). */
+  /** Whether this prop emits atmospheric light. */
   emitsLight?: boolean;
-  /** Light color (defaults to emissive or color). */
   lightColor?: string;
-  /** Light intensity. */
   lightIntensity?: number;
-  /** Light range. */
   lightDistance?: number;
-  /** Whether the light should flicker. */
   lightFlicker?: boolean;
+  /** Fallback box color for use before GLB loads. */
+  fallbackColor: string;
 }
 
-const PROP_CONFIGS: Record<string, PropConfig> = {
-  // Fire basket: small box frame with emissive orange glow + point light
+/**
+ * Maps LevelGenerator spawn types (underscore-separated) to GLB config.
+ * Spawn type `prop_firebasket` → asset key `prop-firebasket`.
+ */
+const PROP_GLB_CONFIGS: Record<string, PropGlbConfig> = {
   prop_firebasket: {
-    geometry: () => new THREE.BoxGeometry(0.5, 0.6, 0.5),
-    color: '#331100',
-    emissive: '#ff6600',
-    emissiveIntensity: 1.5,
-    roughness: 0.8,
-    metalness: 0.6,
-    yOffset: 0.3,
-    scale: 1,
+    assetKey: 'prop-firebasket',
+    scale: 0.6,
     emitsLight: true,
     lightColor: '#ff6600',
     lightIntensity: 1.2,
     lightDistance: 5,
     lightFlicker: true,
+    fallbackColor: '#331100',
   },
-
-  // Single candle: thin cylinder + small emissive flame
   prop_candle: {
-    geometry: () => new THREE.CylinderGeometry(0.06, 0.08, 0.3, 6),
-    color: '#eeddcc',
-    emissive: '#ffcc44',
-    emissiveIntensity: 0.8,
-    roughness: 0.9,
-    metalness: 0.0,
-    yOffset: 0.15,
-    scale: 1,
+    assetKey: 'prop-candle',
+    scale: 0.5,
     emitsLight: true,
     lightColor: '#ffcc44',
     lightIntensity: 0.5,
     lightDistance: 3,
     lightFlicker: true,
+    fallbackColor: '#eeddcc',
   },
-
-  // Multiple candles: slightly larger cluster
   prop_candle_multi: {
-    geometry: () => new THREE.CylinderGeometry(0.15, 0.18, 0.25, 8),
-    color: '#eeddcc',
-    emissive: '#ffcc44',
-    emissiveIntensity: 1.0,
-    roughness: 0.9,
-    metalness: 0.0,
-    yOffset: 0.125,
-    scale: 1,
+    assetKey: 'prop-candle-multi',
+    scale: 0.5,
     emitsLight: true,
     lightColor: '#ffcc44',
     lightIntensity: 0.7,
     lightDistance: 3.5,
     lightFlicker: true,
+    fallbackColor: '#eeddcc',
   },
-
-  // Coffin: dark wooden box, elongated
   prop_coffin: {
-    geometry: () => new THREE.BoxGeometry(0.5, 0.35, 1.2),
-    color: '#2a1a0a',
-    emissive: '#110800',
-    emissiveIntensity: 0.15,
-    roughness: 0.85,
-    metalness: 0.1,
-    yOffset: 0.175,
-    scale: 1,
+    assetKey: 'prop-chest',
+    scale: 0.7,
+    fallbackColor: '#2a1a0a',
   },
-
-  // Column: stone cylinder, tall
   prop_column: {
-    geometry: () => new THREE.CylinderGeometry(0.25, 0.3, 2.5, 8),
-    color: '#554444',
-    emissive: '#110808',
-    emissiveIntensity: 0.1,
-    roughness: 0.9,
-    metalness: 0.1,
-    yOffset: 1.25,
-    scale: 1,
+    assetKey: 'prop-column',
+    scale: 1.0,
+    fallbackColor: '#554444',
   },
-
-  // Chalice: small metallic cone-ish shape (approximated with cylinder)
   prop_chalice: {
-    geometry: () => new THREE.CylinderGeometry(0.08, 0.04, 0.2, 8),
-    color: '#aa8833',
-    emissive: '#332200',
-    emissiveIntensity: 0.3,
-    roughness: 0.3,
-    metalness: 0.8,
-    yOffset: 0.1,
-    scale: 1,
+    assetKey: 'prop-chalice',
+    scale: 0.5,
+    fallbackColor: '#aa8833',
   },
-
-  // Bowl: low cylinder (flattened)
   prop_bowl: {
-    geometry: () => new THREE.CylinderGeometry(0.15, 0.12, 0.08, 8),
-    color: '#443322',
-    emissive: '#110800',
-    emissiveIntensity: 0.1,
-    roughness: 0.85,
-    metalness: 0.2,
-    yOffset: 0.04,
-    scale: 1,
+    assetKey: 'prop-bowl',
+    scale: 0.5,
+    fallbackColor: '#443322',
   },
 };
 
-// Maximum number of point lights for props (avoid GPU overload)
+/** Maximum point lights placed for props (GPU budget). */
 const MAX_PROP_LIGHTS = 16;
 
+// Module-scope temp objects — reused each frame, never allocated in useFrame.
+const _yAxis = new THREE.Vector3(0, 1, 0);
+
 // ---------------------------------------------------------------------------
-// Helper: group spawns by prop type
+// Fallback geometry (shared, never disposed per-instance)
 // ---------------------------------------------------------------------------
 
-interface GroupedProps {
-  type: string;
-  config: PropConfig;
-  positions: { x: number; z: number; rotation: number }[];
+let sharedFallbackGeo: THREE.BoxGeometry | null = null;
+
+function getSharedFallbackGeo(): THREE.BoxGeometry {
+  if (!sharedFallbackGeo) {
+    sharedFallbackGeo = new THREE.BoxGeometry(0.4, 0.4, 0.4);
+  }
+  return sharedFallbackGeo;
 }
 
-function groupSpawnsByType(spawns: PropSpawn[]): GroupedProps[] {
-  const groups = new Map<string, { x: number; z: number; rotation: number }[]>();
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+/**
+ * Convert a spawn type like `prop_firebasket` to asset key `prop-firebasket`.
+ * Returns null if the key doesn't exist in PROP_MODEL_ASSETS.
+ */
+function spawnTypeToAssetKey(type: string): PropModelKey | null {
+  const key = type.replace(/_/g, '-') as PropModelKey;
+  if (key in PROP_MODEL_ASSETS) return key;
+  return null;
+}
+
+/**
+ * Collect unique asset keys needed for the current spawn list.
+ */
+function collectNeededAssets(spawns: PropSpawn[]): [string, number | string][] {
+  const seen = new Set<string>();
+  const entries: [string, number | string][] = [];
 
   for (const spawn of spawns) {
     if (!spawn.type.startsWith('prop_')) continue;
-    if (!PROP_CONFIGS[spawn.type]) continue;
 
-    let arr = groups.get(spawn.type);
-    if (!arr) {
-      arr = [];
-      groups.set(spawn.type, arr);
+    const config = PROP_GLB_CONFIGS[spawn.type];
+    const assetKey = config?.assetKey ?? spawnTypeToAssetKey(spawn.type);
+    if (!assetKey || seen.has(assetKey)) continue;
+
+    seen.add(assetKey);
+    entries.push([assetKey, PROP_MODEL_ASSETS[assetKey]]);
+  }
+
+  return entries;
+}
+
+/**
+ * Build a fallback colored box for a prop that hasn't loaded yet.
+ */
+function buildFallbackMesh(color: string): THREE.Mesh {
+  const mat = new THREE.MeshStandardMaterial({
+    color,
+    roughness: 0.8,
+    metalness: 0.1,
+  });
+  const mesh = new THREE.Mesh(getSharedFallbackGeo(), mat);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  mesh.position.y = 0.2;
+  return mesh;
+}
+
+/**
+ * Clone a GLB model, normalize its scale to fit the prop scale, and
+ * position it so the bottom sits at y=0.
+ */
+function buildGlbPropMesh(assetKey: string, scale: number): THREE.Group | null {
+  const cloned = cloneModel(assetKey);
+  if (!cloned) return null;
+
+  // Compute bounding box to normalize model size
+  const box = new THREE.Box3().setFromObject(cloned);
+  const size = new THREE.Vector3();
+  box.getSize(size);
+  const center = new THREE.Vector3();
+  box.getCenter(center);
+
+  // Target: ~1 unit tall at scale 1.0
+  const maxDim = Math.max(size.x, size.y, size.z);
+  const normalizeScale = maxDim > 0 ? (1.0 / maxDim) * scale : scale;
+
+  cloned.scale.setScalar(normalizeScale);
+
+  // Shift so bottom touches y=0
+  const scaledBottom = center.y * normalizeScale - (size.y * normalizeScale) / 2;
+  cloned.position.y = -scaledBottom;
+
+  // Center horizontally
+  cloned.position.x = -center.x * normalizeScale;
+  cloned.position.z = -center.z * normalizeScale;
+
+  // Ensure shadows on all child meshes
+  cloned.traverse((child) => {
+    if (child instanceof THREE.Mesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
     }
-    arr.push({
-      x: spawn.x,
-      z: spawn.z,
-      rotation: spawn.rotation ?? 0,
-    });
-  }
+  });
 
-  const result: GroupedProps[] = [];
-  for (const [type, positions] of groups) {
-    result.push({ type, config: PROP_CONFIGS[type], positions });
-  }
-  return result;
+  return cloned;
 }
 
 // ---------------------------------------------------------------------------
@@ -205,177 +224,131 @@ function groupSpawnsByType(spawns: PropSpawn[]): GroupedProps[] {
 // ---------------------------------------------------------------------------
 
 /**
- * Renders decorative dungeon props using InstancedMesh for each prop type.
- * Fire baskets and candles also get atmospheric PointLights that flicker.
+ * Renders decorative dungeon props as Quaternius GLB models with
+ * colored-box fallbacks. Fire/candle props get flickering PointLights.
  *
  * Returns null — all rendering is side-effectful via scene.add().
  */
 export function DungeonProps({ spawns }: DungeonPropsProps): null {
   const scene = useThree((state) => state.scene);
 
-  // Memoize grouped spawns
-  const grouped = useMemo(() => groupSpawnsByType(spawns), [spawns]);
+  // Filter to prop_ spawns once
+  const propSpawns = useMemo(() => spawns.filter((s) => s.type.startsWith('prop_')), [spawns]);
 
-  // Track flickering lights for per-frame updates
+  // Track all scene objects for cleanup
+  const sceneObjectsRef = useRef<THREE.Object3D[]>([]);
   const flickerLightsRef = useRef<
     { light: THREE.PointLight; baseIntensity: number; phase: number; speed: number }[]
   >([]);
+  // State (not ref) so setting it triggers re-render → placement effect re-runs
+  const [modelsLoaded, setModelsLoaded] = useState(false);
 
+  // Phase 1: Load all needed GLB models
   useEffect(() => {
-    const createdObjects: THREE.Object3D[] = [];
-    const createdGeometries: THREE.BufferGeometry[] = [];
-    const createdMaterials: THREE.Material[] = [];
-    const flickerLights: {
-      light: THREE.PointLight;
-      baseIntensity: number;
-      phase: number;
-      speed: number;
-    }[] = [];
+    let cancelled = false;
+    setModelsLoaded(false);
 
+    const entries = collectNeededAssets(propSpawns);
+    if (entries.length > 0) {
+      loadModels(entries).then(() => {
+        if (!cancelled) setModelsLoaded(true);
+      });
+    } else {
+      setModelsLoaded(true);
+    }
+
+    return () => {
+      cancelled = true;
+    };
+  }, [propSpawns]);
+
+  // Phase 2: Place prop meshes and lights once models are available
+  // biome-ignore lint/correctness/useExhaustiveDependencies: modelsLoaded signals async load completion
+  useEffect(() => {
+    // Cleanup previous run
+    cleanupSceneObjects(scene, sceneObjectsRef.current);
+    sceneObjectsRef.current = [];
+    flickerLightsRef.current = [];
+
+    const objects: THREE.Object3D[] = [];
+    const flickerLights: typeof flickerLightsRef.current = [];
     let totalLightsPlaced = 0;
 
-    const tempMatrix = new THREE.Matrix4();
-    const tempQuat = new THREE.Quaternion();
-    const tempScale = new THREE.Vector3();
+    for (const spawn of propSpawns) {
+      const config = PROP_GLB_CONFIGS[spawn.type];
+      const assetKey = config?.assetKey ?? spawnTypeToAssetKey(spawn.type);
+      const scale = config?.scale ?? 0.7;
 
-    for (const group of grouped) {
-      const { type, config, positions } = group;
-      if (positions.length === 0) continue;
+      // Build the prop mesh: GLB if loaded, fallback box otherwise
+      let propGroup: THREE.Group;
 
-      // Create shared geometry and material for this prop type
-      const geometry = config.geometry();
-      createdGeometries.push(geometry);
-
-      const material = new THREE.MeshStandardMaterial({
-        color: config.color,
-        emissive: config.emissive ?? '#000000',
-        emissiveIntensity: config.emissiveIntensity ?? 0,
-        roughness: config.roughness,
-        metalness: config.metalness,
-      });
-      createdMaterials.push(material);
-
-      // Create InstancedMesh
-      const instanced = new THREE.InstancedMesh(geometry, material, positions.length);
-      instanced.name = `dungeon-props-${type}`;
-      instanced.castShadow = true;
-      instanced.receiveShadow = true;
-
-      for (let i = 0; i < positions.length; i++) {
-        const pos = positions[i];
-        // Convert game coords to Three.js: x stays, z is negated
-        const worldX = pos.x;
-        const worldZ = -pos.z;
-        const worldY = config.yOffset;
-
-        tempQuat.setFromAxisAngle(new THREE.Vector3(0, 1, 0), pos.rotation);
-        tempScale.setScalar(config.scale);
-        tempMatrix.compose(new THREE.Vector3(worldX, worldY, worldZ), tempQuat, tempScale);
-        instanced.setMatrixAt(i, tempMatrix);
+      if (assetKey && isModelLoaded(assetKey)) {
+        const glb = buildGlbPropMesh(assetKey, scale);
+        if (glb) {
+          propGroup = new THREE.Group();
+          propGroup.add(glb);
+        } else {
+          propGroup = new THREE.Group();
+          propGroup.add(buildFallbackMesh(config?.fallbackColor ?? '#555555'));
+        }
+      } else {
+        propGroup = new THREE.Group();
+        propGroup.add(buildFallbackMesh(config?.fallbackColor ?? '#555555'));
       }
 
-      instanced.instanceMatrix.needsUpdate = true;
-      scene.add(instanced);
-      createdObjects.push(instanced);
+      propGroup.name = `dungeon-prop-${spawn.type}-${objects.length}`;
 
-      // Add flame meshes on top of fire baskets and candles for visual flair
-      if (
-        config.emitsLight &&
-        (type === 'prop_firebasket' || type === 'prop_candle' || type === 'prop_candle_multi')
-      ) {
-        const flameGeo = new THREE.SphereGeometry(type === 'prop_firebasket' ? 0.18 : 0.05, 6, 6);
-        createdGeometries.push(flameGeo);
+      // Position: x stays, z is negated for Three.js coordinate system
+      propGroup.position.set(spawn.x, 0, -spawn.z);
 
-        const flameMat = new THREE.MeshBasicMaterial({
-          color: config.lightColor ?? config.emissive ?? '#ff6600',
-          transparent: true,
-          opacity: 0.85,
-        });
-        createdMaterials.push(flameMat);
-
-        const flameInstanced = new THREE.InstancedMesh(flameGeo, flameMat, positions.length);
-        flameInstanced.name = `dungeon-props-${type}-flame`;
-
-        for (let i = 0; i < positions.length; i++) {
-          const pos = positions[i];
-          const worldX = pos.x;
-          const worldZ = -pos.z;
-          // Flame sits on top of the prop
-          const flameY = config.yOffset * 2 + (type === 'prop_firebasket' ? 0.15 : 0.12);
-
-          tempMatrix.makeTranslation(worldX, flameY, worldZ);
-          flameInstanced.setMatrixAt(i, tempMatrix);
-        }
-
-        flameInstanced.instanceMatrix.needsUpdate = true;
-        scene.add(flameInstanced);
-        createdObjects.push(flameInstanced);
+      // Apply rotation around Y axis
+      if (spawn.rotation) {
+        propGroup.quaternion.setFromAxisAngle(_yAxis, spawn.rotation);
       }
 
-      // Create point lights for light-emitting props (limited count)
-      if (config.emitsLight && totalLightsPlaced < MAX_PROP_LIGHTS) {
-        // Spread lights evenly across instances if there are many
-        const lightCount = Math.min(positions.length, MAX_PROP_LIGHTS - totalLightsPlaced);
+      scene.add(propGroup);
+      objects.push(propGroup);
 
-        for (let n = 0; n < lightCount && totalLightsPlaced < MAX_PROP_LIGHTS; n++) {
-          const i = Math.floor((n * positions.length) / lightCount);
-          const pos = positions[i];
-          const worldX = pos.x;
-          const worldZ = -pos.z;
-          const lightY = config.yOffset * 2 + 0.3;
+      // Point lights for fire-emitting props
+      if (config?.emitsLight && totalLightsPlaced < MAX_PROP_LIGHTS) {
+        const light = new THREE.PointLight(
+          config.lightColor ?? '#ff6600',
+          config.lightIntensity ?? 1,
+          config.lightDistance ?? 4,
+        );
+        light.name = `prop-light-${spawn.type}-${objects.length}`;
+        // Light above the prop
+        light.position.set(spawn.x, scale + 0.3, -spawn.z);
+        scene.add(light);
+        objects.push(light);
 
-          const light = new THREE.PointLight(
-            config.lightColor ?? config.color,
-            config.lightIntensity ?? 1,
-            config.lightDistance ?? 4,
-          );
-          light.name = `prop-light-${type}-${i}`;
-          light.position.set(worldX, lightY, worldZ);
-          scene.add(light);
-          createdObjects.push(light);
-
-          if (config.lightFlicker) {
-            flickerLights.push({
-              light,
-              baseIntensity: config.lightIntensity ?? 1,
-              phase: Math.random() * Math.PI * 2,
-              speed: 3 + Math.random() * 4,
-            });
-          }
-
-          totalLightsPlaced++;
+        if (config.lightFlicker) {
+          flickerLights.push({
+            light,
+            baseIntensity: config.lightIntensity ?? 1,
+            phase: Math.random() * Math.PI * 2,
+            speed: 3 + Math.random() * 4,
+          });
         }
+
+        totalLightsPlaced++;
       }
     }
 
+    sceneObjectsRef.current = objects;
     flickerLightsRef.current = flickerLights;
 
-    // Cleanup
     return () => {
-      for (const obj of createdObjects) {
-        scene.remove(obj);
-        if (obj instanceof THREE.PointLight) {
-          obj.dispose();
-        }
-      }
-
-      for (const geo of createdGeometries) {
-        geo.dispose();
-      }
-
-      for (const mat of createdMaterials) {
-        mat.dispose();
-      }
-
+      cleanupSceneObjects(scene, sceneObjectsRef.current);
+      sceneObjectsRef.current = [];
       flickerLightsRef.current = [];
     };
-  }, [scene, grouped]);
+  }, [scene, propSpawns, modelsLoaded]);
 
-  // Per-frame flicker update for prop lights
+  // Per-frame flicker for atmospheric prop lights
   useFrame(({ clock }) => {
     const time = clock.getElapsedTime();
     for (const entry of flickerLightsRef.current) {
-      // Sinusoidal flicker with slight randomness
       const flicker = Math.sin(time * entry.speed + entry.phase) * 0.3;
       const noise = Math.sin(time * entry.speed * 2.7 + entry.phase * 1.3) * 0.1;
       entry.light.intensity = Math.max(0.1, entry.baseIntensity + flicker + noise);
@@ -383,4 +356,40 @@ export function DungeonProps({ spawns }: DungeonPropsProps): null {
   });
 
   return null;
+}
+
+// ---------------------------------------------------------------------------
+// Cleanup
+// ---------------------------------------------------------------------------
+
+/**
+ * Remove all tracked objects from the scene and dispose their resources.
+ * Shared fallback geometry is NOT disposed — it's reused across levels.
+ */
+function cleanupSceneObjects(scene: THREE.Scene, objects: THREE.Object3D[]): void {
+  for (const obj of objects) {
+    scene.remove(obj);
+
+    if (obj instanceof THREE.PointLight) {
+      obj.dispose();
+      continue;
+    }
+
+    // Dispose geometries and materials in groups/meshes
+    obj.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        // Don't dispose the shared fallback geometry
+        if (child.geometry && child.geometry !== sharedFallbackGeo) {
+          child.geometry.dispose();
+        }
+        if (child.material) {
+          if (Array.isArray(child.material)) {
+            for (const m of child.material) m.dispose();
+          } else {
+            child.material.dispose();
+          }
+        }
+      }
+    });
+  }
 }

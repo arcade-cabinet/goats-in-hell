@@ -60,6 +60,9 @@ const SPRINT_LERP_DOWN = 0.04;
 let floorFadeIntensity = 0;
 const FLOOR_FADE_DECAY = 0.002; // per ms, ~500ms full fade
 
+/** Circle 7 (Violence) — Bleeding: subtle pulsing red vignette */
+let bleedingActive = false;
+
 // ---------------------------------------------------------------------------
 // Public trigger API
 // ---------------------------------------------------------------------------
@@ -77,6 +80,11 @@ export function setSprinting(active: boolean): void {
 /** Trigger a fade-from-black when entering a new floor. */
 export function triggerFloorFadeIn(): void {
   floorFadeIntensity = 1;
+}
+
+/** Enable/disable Circle 7 bleeding vignette. */
+export function setBleedingVignette(active: boolean): void {
+  bleedingActive = active;
 }
 
 // ---------------------------------------------------------------------------
@@ -118,9 +126,12 @@ function computeEffectState(deltaMs: number): EffectState {
   // Bloom: base 0.8, boost during sprint (+0.4) or damage (+0.3)
   const bloomIntensity = 0.8 + s * 0.4 + d * 0.3;
 
+  // Circle 7 (Violence) — Bleeding: subtle pulsing red vignette
+  const bleedPulse = bleedingActive ? 0.1 + Math.sin(Date.now() * 0.003) * 0.05 : 0;
+
   // Vignette: base offset 0.3, darkness 0.7; damage pushes darkness hard
-  const vignetteOffset = 0.3 - d * 0.15; // tighter vignette on damage
-  const vignetteDarkness = 0.7 + d * 0.8 + floorFadeIntensity * 0.9;
+  const vignetteOffset = 0.3 - d * 0.15 - bleedPulse * 0.1; // tighter vignette on damage + bleed
+  const vignetteDarkness = 0.7 + d * 0.8 + floorFadeIntensity * 0.9 + bleedPulse;
 
   // Chromatic aberration: [0,0] normally, [0.003, 0.003] on damage,
   // slight during sprint [0.001, 0.001]

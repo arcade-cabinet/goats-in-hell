@@ -1,0 +1,35 @@
+{
+  "id": "goat-hoarder",
+  "name": "Goat Hoarder",
+  "type": "character",
+  "pipeline": "enemy",
+  "description": "Circle 4 (Greed) — gold-encrusted goat obsessed with treasure. Fights to protect its hoard.",
+  "textToImageTask": {
+    "prompt": "A bipedal humanoid goat demon in A-pose, hunched greedy posture clutching a sack of gold coins overflowing in one arm, the other arm has fingers fused into a golden claw from touching too much cursed gold, gold-plated horns, patchy brown fur with gold flecks embedded in the skin, wearing mismatched stolen armor pieces of different metals, digitigrade goat legs with gold-tipped hooves, greedy gleaming gold eyes, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Hunched bipedal goat demon clutching gold sack, golden claw hand, gold-plated horns, mismatched armor, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Patchy brown fur with gold fleck growths, gold-plated horn surface, mismatched copper-iron-brass armor pieces, overflowing gold coin sack, cursed golden claw",
+    "enablePbr": true
+  },
+  "riggingTask": { "heightMeters": 1.7 },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Zombie_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp",
+      "Fighting.AttackingwithWeapon.Charged_Slash",
+      "Fighting.Punching.Hook_Punch",
+      "Fighting.GettingHit.Face_Punch_Reaction_2",
+      "Fighting.Dying.Fall_Dead_from_Abdominal_Injury"
+    ]
+  }
+}

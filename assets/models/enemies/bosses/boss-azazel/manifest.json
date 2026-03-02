@@ -1,0 +1,40 @@
+{
+  "id": "boss-azazel",
+  "name": "Azazel — The Scapegoat",
+  "type": "character",
+  "pipeline": "enemy",
+  "description": "Circle 9 Final Boss (Treachery). The original scapegoat, frozen at the center of Hell, betrayer of all.",
+  "textToImageTask": {
+    "prompt": "A colossal bipedal humanoid goat demon god in A-pose, the ultimate final boss, impossibly massive frame half-encased in ancient cracking blue ice that it is breaking free from, the exposed half reveals midnight black fur over god-like musculature, a crown of twelve enormous horns arranged like a dark halo each tipped with a frozen blue flame, wielding a colossal two-handed sword of black ice with a blade that shifts between solid and crystalline, chains of frozen souls wrapped around the torso as trophies, three pairs of tattered frozen wings emerging from the back like a fallen angel, digitigrade goat legs encased in ancient ice armor cracking with every movement, three eyes in a triangular pattern on the forehead all burning cold blue above the two normal ice-white eyes, 4 meters tall, stylized dark fantasy game final boss character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Colossal goat demon god breaking from ice, twelve horns in dark halo with frozen flames, black ice greatsword, frozen soul chains, six tattered ice wings, three forehead eyes, 4m, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 22000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Midnight black divine fur, cracking ancient blue ice encasement, frozen blue flame horn tips, crystalline shifting black ice sword blade, frozen soul chain trophies, tattered ice-crystal wings, cold burning blue triangular forehead eyes",
+    "enablePbr": true
+  },
+  "riggingTask": { "heightMeters": 4.0 },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Zombie_Walk",
+      "WalkAndRun.Running.Lean_Forward_Sprint",
+      "DailyActions.Idle.Angry_Ground_Stomp",
+      "Fighting.AttackingwithWeapon.Axe_Spin_Attack",
+      "Fighting.AttackingwithWeapon.Charged_Axe_Chop",
+      "Fighting.CastingSpell.Charged_Ground_Slam",
+      "Fighting.CastingSpell.Charged_Spell_Cast",
+      "Fighting.Transitioning.Chest_Pound_Taunt",
+      "BodyMovements.Acting.Zombie_Scream",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Knock_Down"
+    ]
+  }
+}

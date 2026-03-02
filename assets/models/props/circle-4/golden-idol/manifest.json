@@ -1,0 +1,18 @@
+{
+  "id": "golden-idol",
+  "name": "Golden Idol",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A golden goat idol statue on a stone pedestal, demonic horned goat with ruby eyes, holding a golden orb, idolatrous greed worship object, stylized low poly game prop, dark fantasy, isometric view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Polished gold statue surface, ruby red gemstone eyes, dark stone pedestal base",
+    "enablePbr": true
+  }
+}

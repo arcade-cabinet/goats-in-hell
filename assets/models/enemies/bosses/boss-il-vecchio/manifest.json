@@ -1,0 +1,37 @@
+{
+  "id": "boss-il-vecchio",
+  "name": "Il Vecchio — The Ancient",
+  "type": "character",
+  "pipeline": "enemy",
+  "description": "Circle 1 Boss (Limbo). Ancient goat elder shrouded in mist, weary but impossibly powerful.",
+  "textToImageTask": {
+    "prompt": "A towering bipedal ancient goat demon lord in A-pose, extremely tall gaunt elderly frame draped in rotting burial shrouds, enormously long white beard braided with bones, massively long spiral ram horns weathered with age and covered in lichen, carrying a colossal shepherd's crook made of petrified wood and iron, pale dead skin visible through patchy white fur, digitigrade goat legs wrapped in funeral bandages, clouded blind milky white eyes that still see everything, 3 meters tall, stylized dark fantasy game boss character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Towering ancient goat demon elder, burial shrouds, bone-braided beard, lichen-covered spiral horns, petrified shepherd's crook, 3m tall, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 15000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Patchy white elderly fur, rotting gray burial shroud fabric, lichen-green horn patina, petrified dark wood crook with iron bands, bone braid details, milky white blind eyes",
+    "enablePbr": true
+  },
+  "riggingTask": { "heightMeters": 3.0 },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Zombie_Walk",
+      "BodyMovements.Acting.Mummy_Stagger",
+      "DailyActions.Idle.Angry_Ground_Stomp",
+      "Fighting.CastingSpell.Charged_Spell_Cast",
+      "Fighting.CastingSpell.Charged_Ground_Slam",
+      "BodyMovements.Acting.Zombie_Scream",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Dead"
+    ]
+  }
+}

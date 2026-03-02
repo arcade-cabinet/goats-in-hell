@@ -1,0 +1,18 @@
+{
+  "id": "blood-trough",
+  "name": "Blood Trough",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A long stone trough filled with dark congealed blood, drainage channels carved into the sides, industrial slaughterhouse floor fixture, violence butchery theme, stylized low poly game prop, dark fantasy, isometric view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Gray stone basin, dark red congealed blood, drainage groove details, stained edges",
+    "enablePbr": true
+  }
+}

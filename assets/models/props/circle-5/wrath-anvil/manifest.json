@@ -1,0 +1,18 @@
+{
+  "id": "wrath-anvil",
+  "name": "Wrath Anvil",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A massive blacksmith anvil on a volcanic rock base, glowing red-hot cracks along its surface, embedded broken sword blade, wrath forge of hell, stylized low poly game prop, dark fantasy, isometric view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark iron anvil, glowing orange-red cracks, broken steel blade embedded in top, volcanic rock base",
+    "enablePbr": true
+  }
+}

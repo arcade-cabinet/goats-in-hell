@@ -8,6 +8,7 @@ import type { Entity } from '../entities/components';
 import { world } from '../entities/world';
 import { CELL_SIZE, MapCell } from '../levels/LevelGenerator';
 import { playSound } from './AudioSystem';
+import { areDoorsLocked } from './TriggerSystem';
 
 /** Tracks the opening/closing state of door meshes by name. */
 export interface DoorState {
@@ -71,7 +72,25 @@ export function doorSystemUpdate(grid: MapCell[][], deltaTime: number): void {
       const dz = pz - doorWorldZ;
       const dist = Math.sqrt(dx * dx + dz * dz);
 
+      const locked = areDoorsLocked();
       const playerNear = dist < TRIGGER_DISTANCE;
+
+      // When doors are trigger-locked, force them closed and skip opening logic
+      if (locked) {
+        if (state.openProgress > 0) {
+          state.opening = false;
+          state.closing = true;
+        }
+        // Animate closing only
+        if (state.closing && state.openProgress > 0) {
+          state.openProgress = Math.max(0, state.openProgress - CLOSE_SPEED * deltaTime * 2);
+          if (state.openProgress <= 0) {
+            state.openProgress = 0;
+            state.closing = false;
+          }
+        }
+        continue;
+      }
 
       // Trigger open when player approaches a closed door
       if (playerNear && !state.opening && !state.closing && state.openProgress === 0) {

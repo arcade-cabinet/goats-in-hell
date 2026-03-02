@@ -1,0 +1,72 @@
+{
+  "name": "prop-direct",
+  "description": "Direct text-to-3D prop pipeline: preview → refine with PBR textures (no image step)",
+  "version": "1.0.0",
+  "steps": [
+    {
+      "id": "preview",
+      "task": "text-to-3d-preview",
+      "inputs": [
+        {
+          "name": "prompt",
+          "source": "manifest",
+          "path": "textTo3DPreviewTask.prompt"
+        },
+        {
+          "name": "art_style",
+          "source": "manifest",
+          "path": "textTo3DPreviewTask.artStyle",
+          "default": "realistic"
+        },
+        {
+          "name": "target_polycount",
+          "source": "manifest",
+          "path": "textTo3DPreviewTask.targetPolycount",
+          "default": 10000
+        },
+        {
+          "name": "topology",
+          "source": "manifest",
+          "path": "textTo3DPreviewTask.topology",
+          "default": "quad"
+        },
+        {
+          "name": "should_remesh",
+          "source": "manifest",
+          "path": "textTo3DPreviewTask.shouldRemesh",
+          "default": true
+        },
+        {
+          "name": "symmetry_mode",
+          "source": "manifest",
+          "path": "textTo3DPreviewTask.symmetryMode",
+          "default": "off"
+        }
+      ]
+    },
+    {
+      "id": "refine",
+      "task": "text-to-3d-refine",
+      "dependsOn": ["preview"],
+      "inputs": [
+        {
+          "name": "preview_task_id",
+          "source": "step",
+          "step": "preview",
+          "path": "taskId"
+        },
+        {
+          "name": "texture_prompt",
+          "source": "manifest",
+          "path": "textTo3DRefineTask.texturePrompt"
+        },
+        {
+          "name": "enable_pbr",
+          "source": "manifest",
+          "path": "textTo3DRefineTask.enablePbr",
+          "default": true
+        }
+      ]
+    }
+  ]
+}

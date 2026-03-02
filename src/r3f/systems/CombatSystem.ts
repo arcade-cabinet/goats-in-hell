@@ -8,13 +8,14 @@
 import * as THREE from 'three/webgpu';
 import type { Entity } from '../../game/entities/components';
 import { world } from '../../game/entities/world';
+import { checkKillHint } from '../../game/systems/KillHintSystem';
 import { registerKill } from '../../game/systems/KillStreakSystem';
 import { triggerDeath } from '../../game/systems/ProgressionSystem';
 import { useGameStore } from '../../state/GameStore';
 import { playSound } from '../audio/AudioSystem';
 import { spawnDamageNumber } from '../entities/DamageNumbers';
 import { HapticEvent, haptics } from '../input/HapticsService';
-import { triggerDamageFlash } from '../rendering/PostProcessing';
+import { setBleedingVignette, triggerDamageFlash } from '../rendering/PostProcessing';
 import { createBloodSplash, createDeathBurst } from './ParticleEffects';
 import { triggerScreenShake } from './ScreenShake';
 
@@ -26,6 +27,12 @@ let combatScene: THREE.Scene | null = null;
 
 // Reusable temp vector for particle spawn positions (avoids per-hit allocation)
 const _particlePos = new THREE.Vector3();
+
+// Circle 7 (Violence) — Bleeding constants
+/** Passive HP drain per second in Circle 7. */
+const BLEED_DPS = 1;
+/** HP restored per enemy kill in Circle 7. */
+const BLEED_KILL_HEAL = 10;
 
 /** Provide the Three.js scene for particle effects. Call once on mount. */
 export function setCombatScene(scene: THREE.Scene): void {
@@ -202,6 +209,26 @@ export function handleEnemyKill(entity: Entity): void {
 
   // Award XP via logarithmic leveling system
   store.awardXp(scoreValue);
+
+  // Circle 7 (Violence) — Bleeding: each kill restores HP
+  if (store.circleNumber === 7) {
+    const playerEntity = world.entities.find((e: Entity) => e.type === 'player' && e.player);
+    if (playerEntity?.player) {
+      playerEntity.player.hp = Math.min(
+        playerEntity.player.hp + BLEED_KILL_HEAL,
+        playerEntity.player.maxHp,
+      );
+    }
+  }
+
+  // Track mandatory vs optional kills for ending system
+  const encounterType = store.stage.encounterType;
+  if (encounterType === 'arena' || encounterType === 'boss') {
+    store.recordMandatoryKill();
+  } else {
+    store.recordOptionalKill();
+    checkKillHint();
+  }
 
   // Track kill streak
   registerKill();
@@ -412,6 +439,16 @@ export function combatSystemUpdate(deltaTime: number): void {
   const dtFactor = deltaTime / 16;
 
   const player = world.entities.find((e: Entity) => e.type === 'player' && e.player);
+
+  // --- Circle 7 (Violence) — Bleeding: passive HP drain ---
+  const circleNumber = useGameStore.getState().circleNumber;
+  if (player?.player && player.player.hp > 0 && circleNumber === 7) {
+    const drainAmount = BLEED_DPS * (deltaTime / 1000); // Convert ms delta to seconds
+    player.player.hp = Math.max(1, player.player.hp - drainAmount); // Don't kill via bleed (min 1 HP)
+    setBleedingVignette(true);
+  } else {
+    setBleedingVignette(circleNumber === 7);
+  }
 
   // --- Enemy melee attacks ---
   if (player?.position && player.player) {

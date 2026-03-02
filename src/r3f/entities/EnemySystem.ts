@@ -8,6 +8,11 @@
  */
 import * as THREE from 'three/webgpu';
 import { world } from '../../game/entities/world';
+import { getEscalationMultiplier } from '../../game/systems/AISystem';
+import { useGameStore } from '../../state/GameStore';
+
+/** Reusable color for escalation glow to avoid per-frame allocation. */
+const _escalationColor = new THREE.Color();
 
 /**
  * Sync ECS enemy entity positions/rotations to their Three.js meshes.
@@ -50,6 +55,41 @@ export function updateEnemyMeshes(meshMap: Map<string, THREE.Group>): void {
       const alpha = entity.enemy.visibilityAlpha ?? 0.15;
       applyMeshOpacity(mesh, alpha);
     }
+
+    // --- Circle 5 (Wrath) — Escalation red glow ---
+    if (useGameStore.getState().circleNumber === 5) {
+      const esc = getEscalationMultiplier();
+      if (esc > 1.0) {
+        // Intensity scales from 0 at 1x to 1.0 at 2x
+        const glowIntensity = esc - 1.0;
+        _escalationColor.setRGB(glowIntensity, 0, 0);
+        applyMeshEmissive(mesh, _escalationColor, glowIntensity * 0.5);
+      }
+    }
+  }
+}
+
+/**
+ * Recursively set emissive color + intensity on a mesh and all its children.
+ * Used for Circle 5 (Wrath) escalation red glow.
+ */
+function applyMeshEmissive(object: THREE.Object3D, color: THREE.Color, intensity: number): void {
+  if (object instanceof THREE.Mesh) {
+    const mat = object.material;
+    if (mat instanceof THREE.MeshStandardMaterial) {
+      mat.emissive.copy(color);
+      mat.emissiveIntensity = intensity;
+    } else if (Array.isArray(mat)) {
+      for (const m of mat) {
+        if (m instanceof THREE.MeshStandardMaterial) {
+          m.emissive.copy(color);
+          m.emissiveIntensity = intensity;
+        }
+      }
+    }
+  }
+  for (const child of object.children) {
+    applyMeshEmissive(child, color, intensity);
   }
 }
 

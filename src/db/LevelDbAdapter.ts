@@ -8,6 +8,7 @@ import { CELL_SIZE } from '../constants';
 import type { EntityType } from '../game/entities/components';
 import type { FloorTheme } from '../game/levels/FloorThemes';
 import type { LevelData } from '../game/levels/LevelData';
+import type { RuntimeTrigger, RuntimeTriggeredEntity } from '../game/systems/TriggerSystem';
 import type { DrizzleDb } from './connection';
 import { unpackGrid } from './GridCompiler';
 import type { Theme } from './schema';
@@ -38,6 +39,125 @@ export function toFloorTheme(dbTheme: Theme): FloorTheme {
  * - Converts the theme row to a FloorTheme.
  * - Scales playerSpawn from grid coordinates to world coordinates.
  */
+// ---------------------------------------------------------------------------
+// RuntimeEnvZone — runtime representation of an environment zone
+// ---------------------------------------------------------------------------
+
+export interface RuntimeEnvZone {
+  id: string;
+  envType: string;
+  /** World X coordinate (grid * CELL_SIZE). */
+  x: number;
+  /** World Z coordinate (grid * CELL_SIZE). */
+  z: number;
+  /** World width. */
+  w: number;
+  /** World height (depth). */
+  h: number;
+  intensity: number;
+  dirX: number;
+  dirZ: number;
+  /** Milliseconds active (0 = always on). */
+  timerOn: number;
+  /** Milliseconds inactive. */
+  timerOff: number;
+}
+
+/**
+ * Load environment zones from the database for a given level and convert
+ * grid coordinates to world coordinates.
+ */
+export function toEnvironmentZones(db: DrizzleDb, levelId: string): RuntimeEnvZone[] {
+  const rows = db
+    .select()
+    .from(schema.environmentZones)
+    .where(eq(schema.environmentZones.levelId, levelId))
+    .all();
+
+  return rows.map((row) => ({
+    id: row.id,
+    envType: row.envType,
+    x: row.boundsX * CELL_SIZE,
+    z: row.boundsZ * CELL_SIZE,
+    w: row.boundsW * CELL_SIZE,
+    h: row.boundsH * CELL_SIZE,
+    intensity: row.intensity,
+    dirX: row.directionX ?? 0,
+    dirZ: row.directionZ ?? 0,
+    timerOn: row.timerOn ?? 0,
+    timerOff: row.timerOff ?? 0,
+  }));
+}
+
+// ---------------------------------------------------------------------------
+// Triggers + triggered entities
+// ---------------------------------------------------------------------------
+
+/**
+ * Load all triggers and trigger-gated entities for a level from the database.
+ * Converts grid coordinates to world coordinates.
+ */
+export function toTriggersAndEntities(
+  db: DrizzleDb,
+  levelId: string,
+): { triggers: RuntimeTrigger[]; triggeredEntities: RuntimeTriggeredEntity[] } {
+  // Fetch all triggers for this level
+  const triggerRows = db
+    .select()
+    .from(schema.triggers)
+    .where(eq(schema.triggers.levelId, levelId))
+    .all();
+
+  // Fetch all entities with a triggerId for this level
+  const entityRows = db
+    .select()
+    .from(schema.entities)
+    .where(eq(schema.entities.levelId, levelId))
+    .all()
+    .filter((e) => e.triggerId !== null);
+
+  // Build trigger ID to linked entity IDs map
+  const triggerEntityMap = new Map<string, string[]>();
+  for (const e of entityRows) {
+    const tid = e.triggerId!;
+    if (!triggerEntityMap.has(tid)) {
+      triggerEntityMap.set(tid, []);
+    }
+    triggerEntityMap.get(tid)!.push(e.id);
+  }
+
+  const triggers: RuntimeTrigger[] = triggerRows.map((row) => ({
+    id: row.id,
+    action: row.action,
+    zoneX: row.zoneX * CELL_SIZE,
+    zoneZ: row.zoneZ * CELL_SIZE,
+    zoneW: row.zoneW * CELL_SIZE,
+    zoneH: row.zoneH * CELL_SIZE,
+    once: row.once,
+    fired: false,
+    delay: row.delay * 1000, // DB stores seconds, runtime uses ms
+    pendingFireTime: 0,
+    actionData: row.actionData ?? null,
+    linkedEntityIds: triggerEntityMap.get(row.id) ?? [],
+  }));
+
+  const triggeredEntities: RuntimeTriggeredEntity[] = entityRows.map((e) => ({
+    entityType: e.entityType,
+    x: e.x * CELL_SIZE,
+    z: e.z * CELL_SIZE,
+    facing: e.facing,
+    triggerId: e.triggerId!,
+    overrides: (e.overrides as Record<string, unknown>) ?? null,
+    spawnCategory: e.spawnCategory,
+  }));
+
+  return { triggers, triggeredEntities };
+}
+
+// ---------------------------------------------------------------------------
+// toLevelData
+// ---------------------------------------------------------------------------
+
 export function toLevelData(db: DrizzleDb, levelId: string): LevelData {
   // Fetch the level row
   const levelRows = db.select().from(schema.levels).where(eq(schema.levels.id, levelId)).all();
@@ -121,5 +241,6 @@ export function toLevelData(db: DrizzleDb, levelId: string): LevelData {
     },
     spawns,
     theme,
+    levelId,
   };
 }

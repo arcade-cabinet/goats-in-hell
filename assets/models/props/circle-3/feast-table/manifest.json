@@ -1,0 +1,18 @@
+{
+  "id": "feast-table",
+  "name": "Feast Table",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A long medieval banquet table covered in rotting food, overturned goblets, moldy bread loaves, spilled wine, gluttony feast gone wrong, green decay and maggots, stylized low poly game prop, dark fantasy, isometric view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark stained wood table, rotting greenish food, tarnished pewter goblets, moldy bread, spilled dark wine",
+    "enablePbr": true
+  }
+}

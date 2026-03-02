@@ -1,10 +1,12 @@
 /**
- * GameCompleteScreen -- victory overlay shown after defeating the final boss.
+ * GameCompleteScreen -- ending overlay shown after defeating the Circle 9 boss.
  *
- * Displays "YOU ESCAPED" with a gold-themed glow, a comprehensive stats panel
- * (final score, total kills, floors cleared, playtime, difficulty, bosses
- * slain, nightmare mode), and a "RETURN TO THE SURFACE" button that navigates
- * back to the main menu.
+ * Determines the ending based on the player's kill ratio:
+ * - >30% optional enemies SKIPPED -> Ascent ending (escape Hell)
+ * - <=30% optional enemies SKIPPED -> Remain ending (become Hell's guardian)
+ *
+ * Displays ending-specific title, narrative text, themed visuals, a
+ * comprehensive stats panel, and a return-to-menu button.
  */
 import type React from 'react';
 import { useEffect, useRef } from 'react';
@@ -19,9 +21,49 @@ function formatPlaytime(startTime: number): string {
   return `${min}m ${sec}s`;
 }
 
+type Ending = 'ascent' | 'remain';
+
+function determineEnding(optionalKills: number, optionalEnemiesTotal: number): Ending {
+  const optionalSkipped = optionalEnemiesTotal - optionalKills;
+  const skipRatio = optionalEnemiesTotal > 0 ? optionalSkipped / optionalEnemiesTotal : 0;
+  return skipRatio > 0.3 ? 'ascent' : 'remain';
+}
+
+const ENDING_CONFIG = {
+  ascent: {
+    title: 'THE SCAPEGOAT RISES',
+    subtitle:
+      'Through nine circles of torment, you carried the sins upward\u2014and found a way out. The goat ascends.',
+    buttonText: 'RETURN TO THE SURFACE',
+    titleColor: '#ffcc33',
+    glowColor: 'rgba(255, 200, 50, 0.6)',
+    glowColorFar: 'rgba(255, 200, 50, 0.25)',
+    borderColor: 'rgba(255, 200, 50, 0.3)',
+    overlayColor: 'rgba(0, 8, 20, 0.95)',
+    starColor: '#ffcc33',
+    subtitleColor: '#887744',
+  },
+  remain: {
+    title: "HELL'S GUARDIAN",
+    subtitle:
+      'The Scapegoat descends no further. The violence became you. Hell has a new guardian.',
+    buttonText: 'EMBRACE THE DARK',
+    titleColor: '#cc2200',
+    glowColor: 'rgba(200, 30, 0, 0.6)',
+    glowColorFar: 'rgba(200, 30, 0, 0.25)',
+    borderColor: 'rgba(200, 30, 0, 0.3)',
+    overlayColor: 'rgba(20, 0, 0, 0.95)',
+    starColor: '#cc2200',
+    subtitleColor: '#774433',
+  },
+} as const;
+
 export const GameCompleteScreen: React.FC = () => {
   const score = useGameStore((s) => s.score);
   const totalKills = useGameStore((s) => s.totalKills);
+  const mandatoryKills = useGameStore((s) => s.mandatoryKills);
+  const optionalKills = useGameStore((s) => s.optionalKills);
+  const optionalEnemiesTotal = useGameStore((s) => s.optionalEnemiesTotal);
   const floor = useGameStore((s) => s.stage.floor);
   const level = useGameStore((s) => s.leveling.level);
   const startTime = useGameStore((s) => s.startTime);
@@ -30,6 +72,9 @@ export const GameCompleteScreen: React.FC = () => {
   const bossesDefeated = useGameStore((s) => s.bossesDefeated);
   const resetToMenu = useGameStore((s) => s.resetToMenu);
 
+  const ending = determineEnding(optionalKills, optionalEnemiesTotal);
+  const config = ENDING_CONFIG[ending];
+
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const titleSlide = useRef(new Animated.Value(-40)).current;
   const pulseAnim = useRef(new Animated.Value(0.5)).current;
@@ -37,6 +82,10 @@ export const GameCompleteScreen: React.FC = () => {
   const diffLabel = DIFFICULTY_PRESETS[difficulty].label;
   const isNightmare = nightmareFlags.nightmare || nightmareFlags.ultraNightmare;
   const playtime = formatPlaytime(startTime);
+
+  const optionalSkipped = optionalEnemiesTotal - optionalKills;
+  const skipPercent =
+    optionalEnemiesTotal > 0 ? Math.round((optionalSkipped / optionalEnemiesTotal) * 100) : 0;
 
   useEffect(() => {
     Animated.parallel([
@@ -75,30 +124,36 @@ export const GameCompleteScreen: React.FC = () => {
 
   return (
     <Animated.View style={[styles.container, { opacity: fadeAnim }]} pointerEvents="box-none">
-      <View style={styles.overlay} />
+      <View style={[styles.overlay, { backgroundColor: config.overlayColor }]} />
 
       {/* Decorative top */}
       <View style={styles.border}>
-        <View style={styles.borderLine} />
-        <Text style={styles.borderStar}>{'\u2726'}</Text>
-        <View style={styles.borderLine} />
-        <Text style={styles.borderStar}>{'\u2726'}</Text>
-        <View style={styles.borderLine} />
+        <View style={[styles.borderLine, { backgroundColor: config.borderColor }]} />
+        <Text style={[styles.borderStar, { color: config.starColor }]}>{'\u2726'}</Text>
+        <View style={[styles.borderLine, { backgroundColor: config.borderColor }]} />
+        <Text style={[styles.borderStar, { color: config.starColor }]}>{'\u2726'}</Text>
+        <View style={[styles.borderLine, { backgroundColor: config.borderColor }]} />
       </View>
 
       {/* Title */}
       <Animated.View style={[styles.titleWrap, { transform: [{ translateY: titleSlide }] }]}>
-        <Text style={styles.titleGlow2}>YOU ESCAPED</Text>
-        <Text style={styles.titleGlow1}>YOU ESCAPED</Text>
-        <Text style={styles.title}>YOU ESCAPED</Text>
+        <Text style={[styles.titleGlow2, { textShadowColor: config.glowColorFar }]}>
+          {config.title}
+        </Text>
+        <Text style={[styles.titleGlow1, { textShadowColor: config.glowColor }]}>
+          {config.title}
+        </Text>
+        <Text style={[styles.title, { color: config.titleColor }]}>{config.title}</Text>
       </Animated.View>
 
-      <Animated.Text style={[styles.subtitle, { opacity: fadeAnim }]}>
-        The gates of Hell close behind you...
+      <Animated.Text style={[styles.subtitle, { opacity: fadeAnim, color: config.subtitleColor }]}>
+        {config.subtitle}
       </Animated.Text>
 
       {/* Final stats */}
-      <Animated.View style={[styles.statsPanel, { opacity: fadeAnim }]}>
+      <Animated.View
+        style={[styles.statsPanel, { opacity: fadeAnim, borderColor: `${config.borderColor}` }]}
+      >
         <View style={styles.divider} />
 
         <View style={styles.statRow}>
@@ -110,6 +165,28 @@ export const GameCompleteScreen: React.FC = () => {
         <View style={styles.statRow}>
           <Text style={styles.statLabel}>TOTAL KILLS</Text>
           <Text style={styles.statValue}>{totalKills}</Text>
+        </View>
+        <View style={styles.statSep} />
+
+        <View style={styles.statRow}>
+          <Text style={styles.statLabel}>MANDATORY KILLS</Text>
+          <Text style={styles.statValue}>{mandatoryKills}</Text>
+        </View>
+        <View style={styles.statSep} />
+
+        <View style={styles.statRow}>
+          <Text style={styles.statLabel}>OPTIONAL KILLS</Text>
+          <Text style={[styles.statValue, ending === 'remain' && styles.statValueRed]}>
+            {optionalKills} / {optionalEnemiesTotal}
+          </Text>
+        </View>
+        <View style={styles.statSep} />
+
+        <View style={styles.statRow}>
+          <Text style={styles.statLabel}>ENEMIES SPARED</Text>
+          <Text style={[styles.statValue, ending === 'ascent' && styles.statValueGold]}>
+            {skipPercent}%
+          </Text>
         </View>
         <View style={styles.statSep} />
 
@@ -158,18 +235,27 @@ export const GameCompleteScreen: React.FC = () => {
       </Animated.View>
 
       {/* Return button */}
-      <TouchableOpacity style={styles.returnBtn} onPress={resetToMenu} activeOpacity={0.7}>
-        <Animated.View style={[styles.returnGlow, { opacity: pulseAnim }]} />
-        <Text style={styles.returnText}>RETURN TO THE SURFACE</Text>
+      <TouchableOpacity
+        style={[styles.returnBtn, { borderColor: config.titleColor }]}
+        onPress={resetToMenu}
+        activeOpacity={0.7}
+      >
+        <Animated.View
+          style={[
+            styles.returnGlow,
+            { opacity: pulseAnim, backgroundColor: `${config.borderColor}` },
+          ]}
+        />
+        <Text style={[styles.returnText, { color: config.titleColor }]}>{config.buttonText}</Text>
       </TouchableOpacity>
 
       {/* Decorative bottom */}
       <View style={styles.border}>
-        <View style={styles.borderLine} />
-        <Text style={styles.borderStar}>{'\u2726'}</Text>
-        <View style={styles.borderLine} />
-        <Text style={styles.borderStar}>{'\u2726'}</Text>
-        <View style={styles.borderLine} />
+        <View style={[styles.borderLine, { backgroundColor: config.borderColor }]} />
+        <Text style={[styles.borderStar, { color: config.starColor }]}>{'\u2726'}</Text>
+        <View style={[styles.borderLine, { backgroundColor: config.borderColor }]} />
+        <Text style={[styles.borderStar, { color: config.starColor }]}>{'\u2726'}</Text>
+        <View style={[styles.borderLine, { backgroundColor: config.borderColor }]} />
       </View>
     </Animated.View>
   );
@@ -183,7 +269,6 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 8, 20, 0.95)',
   },
 
   border: {
@@ -195,11 +280,9 @@ const styles = StyleSheet.create({
   borderLine: {
     width: 60,
     height: 1,
-    backgroundColor: 'rgba(255, 200, 50, 0.3)',
   },
   borderStar: {
     fontSize: 14,
-    color: '#ffcc33',
   },
 
   titleWrap: {
@@ -213,7 +296,6 @@ const styles = StyleSheet.create({
     fontSize: 44,
     fontWeight: 'bold',
     fontFamily: 'Courier',
-    color: '#ffcc33',
     letterSpacing: 6,
   },
   titleGlow1: {
@@ -223,7 +305,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Courier',
     color: 'transparent',
     letterSpacing: 6,
-    textShadowColor: 'rgba(255, 200, 50, 0.6)',
     textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 15,
   },
@@ -234,7 +315,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Courier',
     color: 'transparent',
     letterSpacing: 6,
-    textShadowColor: 'rgba(255, 200, 50, 0.25)',
     textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 40,
   },
@@ -242,15 +322,15 @@ const styles = StyleSheet.create({
   subtitle: {
     fontFamily: 'Courier',
     fontSize: 13,
-    color: '#887744',
     letterSpacing: 3,
     marginBottom: 20,
+    textAlign: 'center',
+    paddingHorizontal: 40,
   },
 
   statsPanel: {
     backgroundColor: 'rgba(10, 15, 25, 0.5)',
     borderWidth: 1,
-    borderColor: 'rgba(255, 200, 50, 0.2)',
     paddingHorizontal: 30,
     paddingVertical: 14,
     marginBottom: 24,
@@ -309,7 +389,6 @@ const styles = StyleSheet.create({
 
   returnBtn: {
     borderWidth: 2,
-    borderColor: '#ffcc33',
     backgroundColor: 'rgba(255, 200, 50, 0.06)',
     paddingVertical: 14,
     paddingHorizontal: 40,
@@ -318,13 +397,11 @@ const styles = StyleSheet.create({
   },
   returnGlow: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(255, 200, 50, 0.06)',
   },
   returnText: {
     fontFamily: 'Courier',
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#ffcc33',
     letterSpacing: 4,
   },
 });
