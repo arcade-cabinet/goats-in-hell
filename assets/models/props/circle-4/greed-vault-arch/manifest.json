@@ -1,0 +1,18 @@
+{
+  "id": "greed-vault-arch",
+  "name": "Greed Vault Arch",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large ornate vault archway made of dark steel with gold inlay filigree patterns, heavy industrial bank vault aesthetic, two flanking columns with gold leaf capitals, dark fantasy dungeon doorframe, game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 10000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "on"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark brushed steel with gold inlay filigree, warm amber highlights, polished metal reflections, brass accents on capitals",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "greed-chest-pedestal",
+  "name": "Treasure Chest Pedestal",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A short wide stone pedestal column designed to display a treasure chest, square top with gold trim edge, fluted column shaft with gold leaf accents, heavy square stone base, museum display stand for treasure, game prop, isolated object, dark background, three quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "on"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark polished stone with gold leaf trim on edges, fluted column detail, warm golden accent highlights",
+    "enablePbr": true
+  }
+}

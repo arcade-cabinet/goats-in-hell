@@ -1,0 +1,18 @@
+{
+  "id": "heresy-bone-urn",
+  "name": "Ossuary Bone Urn",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tall ceramic funerary urn with a lid, the surface is decorated with carved bone motifs and skulls in relief, cracked glaze in dark purple and gray, sitting on a small stone base, catacomb bone storage vessel, game prop, isolated object, dark background, three quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "on"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark purple-gray cracked ceramic glaze, carved bone and skull relief motifs, stone base, cold muted tones",
+    "enablePbr": true
+  }
+}

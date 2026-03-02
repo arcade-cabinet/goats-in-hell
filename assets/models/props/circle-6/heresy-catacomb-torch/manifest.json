@@ -1,0 +1,18 @@
+{
+  "id": "heresy-catacomb-torch",
+  "name": "Catacomb Wall Torch",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A wall-mounted iron torch sconce with a sickly yellow-green flame holder, twisted iron bracket mounting to wall, the metal is blackened and corroded, cobwebs between bracket and wall, underground catacomb light source, game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Blackened corroded iron bracket, sickly yellow-green flame tint, cobweb details, dark wall mount plate, cold stone texture",
+    "enablePbr": true
+  }
+}

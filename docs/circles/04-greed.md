@@ -528,3 +528,192 @@ editor.createTheme('circle-4-greed', {
 - NOT using the procedural generator's `explore -> arena -> boss` cycle. The Weight Room puzzle breaks combat pacing deliberately.
 - NOT using Kenney or KayKit assets. Fantasy Props MegaKit + AmbientCG PBR textures only.
 - NOT a repeat of earlier circles' color palette. Gold/amber/bronze replaces the blue-gray of Limbo, the warm marble of Lust, and the sickly green of Gluttony.
+
+---
+
+## 3D Spatial Design
+
+### Room: Vault Entrance (8x6, exploration)
+
+**Player Experience:** You step into an airlock of wealth. Gold gleams from every surface -- warm, inviting, suffocating. The room is small enough to feel intimate but tall enough that torch-light fades into darkness above. Two vases frame the entrance like sentinels of excess. You can already see ammo glinting on the floor and the chest on its pedestal. The temptation starts before you take a single step.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| greed-vault-arch | (22, 2) north wall, door cells | 1.0 | face-south | Frame the vault entrance |
+| greed-vault-arch | (22, 7) south door | 1.0 | face-south | Frame exit to Treasury corridor |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| greed-golden-vase | (19, 4) west of entrance | 0.8 | Flanking entrance, opulence motif |
+| greed-golden-vase | (25, 4) east of entrance | 0.8 | Flanking entrance, opulence motif |
+| coin-pile | (20, 3) NW floor | 0.7 | Scattered wealth, atmosphere |
+| coin-pile | (21, 6) center-south floor | 0.7 | Abundance motif near ammo |
+| coin-pile | (24, 5) east floor | 0.6 | Third pile, reinforcing excess |
+| greed-chest-pedestal | (23, 4) center pedestal | 1.0 | Display stand for treasure chest |
+| greed-treasure-chest | (23, 4) on pedestal | 0.9 | Central wealth centerpiece |
+
+**Lighting:**
+- 2x Torch_Metal: (19, 3) north wall face-E, (25, 3) north wall face-W -- warm amber `#ffaa33`, radius 5 cells, intensity 0.7
+- Spot light on chest pedestal: `#ffe066`, radius 2 cells, intensity 0.8
+
+**Platforming:** Flat. Two shallow steps (RAMP cells) descend at the south exit toward the Treasury corridor. Elevation drop of 0.25 units across 2 cells.
+
+---
+
+### Room: Treasury (14x12, exploration)
+
+**Player Experience:** The room opens up dramatically. Below you, rows of treasure chests sit on illuminated pedestals -- a museum of greed. Above, a mezzanine balcony rings the room, its rails lined with ammo pickups that glow like a promise. Ramps at all four corners lead up. You hear the heavy footfalls of armored goatKnights patrolling the chest lanes below. The choice crystallizes: grab what you can see, or stay lean and survive.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| greed-gold-pillar | (16, 13) NW column | 1.0 | none | Structural support, balcony anchor |
+| greed-gold-pillar | (28, 13) NE column | 1.0 | none | Structural support, balcony anchor |
+| greed-gold-pillar | (16, 22) SW column | 1.0 | none | Structural support, balcony anchor |
+| greed-gold-pillar | (28, 22) SE column | 1.0 | none | Structural support, balcony anchor |
+| greed-diamond-plate-platform | (16, 13) - (17, 22) west balcony | 1.0 | none | Mezzanine balcony, elevation 1 |
+| greed-diamond-plate-platform | (27, 13) - (28, 22) east balcony | 1.0 | none | Mezzanine balcony, elevation 1 |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| greed-chest-pedestal | 8 positions, 2 rows of 4 in center | 0.8 | Display stands for treasure chests |
+| greed-treasure-chest | 8 positions on pedestals | 0.8 | Overwhelming abundance of treasure |
+| coin-pile | 6 positions between chests | 0.6 | Fill gaps with scattered coins |
+| greed-golden-chalice | (20, 16) table surface | 0.6 | Liturgical wealth detail |
+| greed-golden-chalice | (24, 19) table surface | 0.6 | Liturgical wealth detail |
+| greed-golden-candelabra | (16, 13) balcony NW corner | 1.0 | Balcony corner lighting |
+| greed-golden-candelabra | (28, 13) balcony NE corner | 1.0 | Balcony corner lighting |
+| greed-golden-candelabra | (16, 22) balcony SW corner | 1.0 | Balcony corner lighting |
+| greed-golden-candelabra | (28, 22) balcony SE corner | 1.0 | Balcony corner lighting |
+
+**Lighting:**
+- 4x Torch_Metal: east and west walls at (15, 15), (29, 15), (15, 20), (29, 20) -- amber `#ffaa33`, radius 5 cells
+- Spot lights on each chest pedestal: `#ffe066`, radius 2 cells, intensity 0.8
+- 4x CandleStick_Triple on balcony corners: `#ffcc44`, radius 3 cells
+
+**Platforming:** Ground floor at elevation 0. Mezzanine balcony at elevation 1, 2 cells wide along east and west walls. Ramps at NE, NW, SE, SW corners: 2 cells wide, 3 cells long, slope from 0 to 1.
+
+---
+
+### Room: Weight Room (10x10, puzzle)
+
+**Player Experience:** The warmth drains. The air feels heavier here. Cabinets line the walls like a hoarder's den. The floor ahead is a grid of steel plates, each stamped with a weight symbol. A skeletal goat lies on a sunken plate near the entrance, surrounded by ammo it refused to release. The inscription on the wall reads: "Only the unburdened may pass." You look at your ammo count and feel a knot in your stomach.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| greed-safe-door | (22, 28) north entry | 0.9 | face-south | Heavy vault door at entry |
+| greed-safe-door | (22, 37) south exit | 0.9 | face-south | Heavy vault door at exit |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| greed-pressure-plate | 16 positions in 4x4 grid, (18-25, 29-36) | 1.0 | Pressure-sensitive floor sections |
+| greed-gear-mechanism | (17, 30) west wall | 1.2 | Vault mechanism, visual weight motif |
+| greed-gear-mechanism | (27, 30) east wall | 1.2 | Vault mechanism, visual weight motif |
+| greed-gold-bar-stack | (19, 30) far side bait | 0.7 | Visual ammo marker -- bait |
+| greed-gold-bar-stack | (25, 30) far side bait | 0.7 | Visual ammo marker -- bait |
+
+**Lighting:**
+- 2x Torch_Metal: (17, 31) east wall, (27, 31) west wall -- dimmer amber `#ffaa33`, radius 4 cells, intensity 0.5
+- Floor plates have subtle warm glow when active: `#ffcc00`, radius 1 cell
+
+**Platforming:** Entry platform at elevation 0. Pressure plate grid at elevation 0 (sinks to -1 when player is burdened >150% ammo). Far platform at elevation 0. When plates sink, adjacent plates remain, creating a checkerboard of pits and platforms.
+
+---
+
+### Room: Reliquary (6x6, secret)
+
+**Player Experience:** You push through the false wall and the air changes -- cooler, quieter, tinged with the smell of old marble. Golden keys hang on the north wall in recessed display alcoves, glinting in candlelight. Keys to nothing. A chest sits in the center beside a scroll. Health and ammo sit generously on shelves. This room rewards the curious, not the greedy.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| greed-vault-arch | (2, 35) east entry (WALL_SECRET) | 0.7 | face-west | Hidden entrance frame |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| greed-golden-key-display | (4, 33) north wall | 0.8 | Three golden keys in display |
+| greed-jeweled-pedestal | (4, 35) center | 0.8 | Display pedestal for chest |
+| greed-treasure-chest | (4, 35) on pedestal | 0.7 | Central treasure piece |
+| greed-golden-chalice | (3, 36) south shelf | 0.5 | Liturgical wealth detail |
+| greed-golden-chalice | (6, 36) south shelf | 0.5 | Liturgical wealth detail |
+
+**Lighting:**
+- 1x CandleStick_Triple: (5, 34) center floor -- pale gold `#ffdd66`, radius 3 cells
+- Spot lights on Key_Gold displays: `#ffe066`, radius 1 cell, intensity 0.6
+
+**Platforming:** Flat, elevation 0. Recessed display alcoves in north wall at elevation 1.2 (Key_Gold mounted). No jumps required.
+
+---
+
+### Room: Auction Hall (12x12, arena)
+
+**Player Experience:** A grand hall with four structural pillars rising to the ceiling, each with a pile of coins at its base. The pillars create lanes and cover -- you instinctively plan your orbit paths. Then the doors slam shut and enemies pour in from every direction. The first rocket you fire clips a coin pile and the entire pillar collapses in a cascade of stone and gold dust. Cover gone. Sightline opened. The room reshapes around your violence.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| greed-gold-pillar | (19, 45) P1 NW | 1.2 | none | Destructible structural pillar |
+| greed-gold-pillar | (25, 45) P2 NE | 1.2 | none | Destructible structural pillar |
+| greed-gold-pillar | (19, 51) P3 SW | 1.2 | none | Destructible structural pillar |
+| greed-gold-pillar | (25, 51) P4 SE | 1.2 | none | Destructible structural pillar |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| coin-pile | (19, 45) at P1 base | 0.8 | Destructible trigger for pillar collapse |
+| coin-pile | (25, 45) at P2 base | 0.8 | Destructible trigger for pillar collapse |
+| coin-pile | (19, 51) at P3 base | 0.8 | Destructible trigger for pillar collapse |
+| coin-pile | (25, 51) at P4 base | 0.8 | Destructible trigger for pillar collapse |
+| greed-golden-banner | (17, 43) north wall | 0.9 | War banner, atmosphere |
+| greed-golden-banner | (17, 53) south wall | 0.9 | War banner, atmosphere |
+
+**Lighting:**
+- 2x Torch_Metal: (16, 46) west wall, (28, 46) east wall -- amber `#ffaa33`, radius 5 cells
+- After pillar collapse: rubble mounds cast scattered shadow, sightlines open
+
+**Platforming:** Flat arena at elevation 0. Four 1x1 pillars rise to full ceiling height. When destroyed, they leave rubble mounds at elevation 0.5 (partial cover, climbable).
+
+---
+
+### Room: Aureo's Court (14x14, boss)
+
+**Player Experience:** You descend stairs into a sunken chamber of gold marble. The walls gleam. Six candelabras ring the perimeter in a ceremonial circle. Golden chains hang from the ceiling like curtains of wealth. At the far end, on a raised dais, sits a golden throne -- and Aureo upon it, draped in chains and crowns. She speaks: "Everything you carry was taken from another. I will take it from you." The first volley of golden coins arcs through the air like a storm of tiny suns.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| greed-golden-throne | (22, 59) north-center dais | 1.5 | face-south | Boss throne, Aureo's seat |
+| greed-vault-arch | (22, 58) entrance from stairs | 1.0 | face-south | Grand entrance frame |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| greed-golden-candelabra | (17, 60) perimeter NW | 1.2 | Ceremonial ring lighting |
+| greed-golden-candelabra | (27, 60) perimeter NE | 1.2 | Ceremonial ring lighting |
+| greed-golden-candelabra | (17, 65) perimeter W | 1.2 | Ceremonial ring lighting |
+| greed-golden-candelabra | (27, 65) perimeter E | 1.2 | Ceremonial ring lighting |
+| greed-golden-candelabra | (17, 70) perimeter SW | 1.2 | Ceremonial ring lighting |
+| greed-golden-candelabra | (27, 70) perimeter SE | 1.2 | Ceremonial ring lighting |
+| greed-gold-chain | (19, 61) ceiling hang NW | 1.0 | Golden chains, Aureo's motif |
+| greed-gold-chain | (25, 61) ceiling hang NE | 1.0 | Golden chains, Aureo's motif |
+| greed-gold-chain | (19, 69) ceiling hang SW | 1.0 | Golden chains, Aureo's motif |
+| greed-gold-chain | (25, 69) ceiling hang SE | 1.0 | Golden chains, Aureo's motif |
+| greed-golden-banner | (20, 59) flanking throne N | 1.0 | Wealth banner, throne decoration |
+| greed-golden-banner | (24, 59) flanking throne N | 1.0 | Wealth banner, throne decoration |
+| coin-pile | (18, 63) floor scatter | 0.5 | Floor decoration |
+| coin-pile | (26, 63) floor scatter | 0.5 | Floor decoration |
+| coin-pile | (18, 68) floor scatter | 0.5 | Floor decoration |
+| coin-pile | (26, 68) floor scatter | 0.5 | Floor decoration |
+
+**Lighting:**
+- 6x CandleStick_Triple perimeter ring: warm gold `#ffcc44`, radius 4 cells, intensity 0.7
+- Throne spot light: `#ffe066`, radius 3 cells, intensity 1.0, aimed at throne
+- Floor golden wash: ambient `#ffcc44` at intensity 0.3 from reflective gold marble
+
+**Platforming:** Sunken at elevation -1 (descend stairs from Auction Hall). Throne platform at north-center: 3x3, elevation 0 (raised dais). Rest of floor at -1 (gold marble, reflective). Six CandleStick_Triple at floor level (-1).

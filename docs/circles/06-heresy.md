@@ -550,3 +550,236 @@ editor.createTheme('circle-6-heresy', {
 - NOT a puzzle game. The illusions create tension and surprise, not logic puzzles. The player never needs to "solve" anything --- they need to test everything.
 - NOT using Kenney or KayKit assets. Fantasy Props MegaKit + AmbientCG PBR textures only.
 - NOT the same layout philosophy as Limbo. Limbo had 6 rooms in a mostly linear chain. Heresy has 8 rooms with branching paths, a maze, and a secret room --- reflecting the theme of deception and hidden truth.
+
+---
+
+## 3D Spatial Design
+
+### Room: Narthex (8x6, exploration)
+
+**Player Experience:** You enter a temple vestibule. The ceiling vaults upward, marble walls close around you in quiet reverence. Two funerary urns flank the entrance like guardians of the dead. A scroll rests on a pedestal near the north wall, its text unsettling. A single candelabra provides pale violet light. The door ahead is locked. The east wall shimmers faintly when you approach it -- a torch on that wall flickers differently, its flame bending toward the stone as if drawn through it. You walk into the wall and pass through. The circle has taught you its first lesson.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| heresy-desecrated-arch | (25, 2) north entrance | 0.9 | face-south | Temple entrance frame |
+| heresy-desecrated-arch | (25, 7) south door (locked) | 0.9 | face-south | Visible but locked exit |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| heresy-bone-urn | (22, 3) flanking entrance west | 0.8 | Funerary urn, atmosphere |
+| heresy-bone-urn | (28, 3) flanking entrance east | 0.8 | Funerary urn, atmosphere |
+| heresy-torn-scripture-slab | (24, 3) pedestal near north wall | 0.7 | Heretical inscription text |
+| inverted-cross | (26, 4) near east WALL_SECRET | 0.6 | Marks the heretical zone |
+
+**Lighting:**
+- 1x CandleStick_Triple: (26, 5) floor-standing -- pale violet `#aa88ff`, radius 3 cells
+- 1x Torch_Metal: (28, 5) east wall near WALL_SECRET -- sickly yellow-green `#aacc44`, radius 3 cells (flame bends toward wall, teach cue)
+
+**Platforming:** Flat, elevation 0. Vaulted ceiling at height 4 units. Two shallow steps (RAMP cells) descend toward the south exit. WALL_SECRET at east wall (28, 5): 2-cell walkable section.
+
+---
+
+### Room: Nave of Lies (14x10, exploration)
+
+**Player Experience:** A long church nave stretches before you. Stone pews line the central aisle in neat rows. Candelabras burn violet at the four corners. Inverted banners hang from the walls. The center aisle is the obvious path forward -- it is also a lie. Three cells wide, four cells deep, the floor is FLOOR_VOID: same texture as real stone, but nothing beneath. Walk the obvious path and you fall, taking 25 damage before teleporting back to safety. The real exit is a WALL_SECRET on the west wall. The lesson deepens: in this circle, the direct path is the trap.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| heresy-cracked-marble-pillar | (20, 13) NW column | 1.0 | none | Nave structural column |
+| heresy-cracked-marble-pillar | (30, 13) NE column | 1.0 | none | Nave structural column |
+| heresy-cracked-marble-pillar | (20, 19) SW column | 1.0 | none | Nave structural column |
+| heresy-cracked-marble-pillar | (30, 19) SE column | 1.0 | none | Nave structural column |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| heresy-church-pew | 16 positions, 4 rows of 4 | 0.8 | Church pew seating rows |
+| inverted-cross | (18, 14) west wall | 0.7 | Inverted banner, heretical decor |
+| inverted-cross | (32, 14) east wall | 0.7 | Inverted banner, heretical decor |
+| inverted-cross | (18, 19) west wall | 0.7 | Inverted banner, heretical decor |
+| inverted-cross | (32, 19) east wall | 0.7 | Inverted banner, heretical decor |
+| heresy-profane-symbol | (25, 12) north wall center | 0.8 | Profane medallion above entry |
+| heresy-shattered-icon | (22, 21) near south wall | 0.5 | Broken statue debris, lore |
+
+**Lighting:**
+- 4x CandleStick_Triple: (19, 13) NW, (31, 13) NE, (19, 21) SW, (31, 21) SE -- pale violet `#aa88ff`, radius 3 cells
+- FLOOR_VOID zone (24-26, 17-20): no light from below, darkness beneath the illusion
+
+**Platforming:** Flat, elevation 0. FLOOR_VOID trap: 3 cells wide x 4 cells deep in center aisle (24-26, 17-20). Covered with PavingStones058 texture. Falls deal 25 damage + teleport to last safe position. WALL_SECRET at west wall (18, 20): 2-cell walkable section, real exit.
+
+---
+
+### Room: Confessional (6x6, exploration)
+
+**Player Experience:** A small dim chamber with three confessional booths along the west wall, each a wooden enclosure with an opening. The room is lit by a single candle on the east wall. You must enter each booth to discover what it holds. Booth A: a health pickup on a shelf. Booth B: a shadowGoat lunges from the darkness, point-blank. Booth C: the back wall yields when you press against it -- another WALL_SECRET, the real exit southward. Three booths, three outcomes. Investigation, not aggression.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| heresy-confessional-booth | (9, 17) booth A, north | 0.9 | Confessional with health inside |
+| heresy-confessional-booth | (9, 18) booth B, center | 0.9 | Confessional with shadowGoat ambush |
+| heresy-confessional-booth | (9, 19) booth C, south | 0.9 | Confessional with WALL_SECRET exit |
+| heresy-catacomb-torch | (13, 18) east wall candle | 0.6 | Single dim light source |
+
+**Lighting:**
+- 1x Candle_2: (13, 18) east wall -- sickly yellow-green `#aacc44`, radius 2 cells, intensity 0.4 (deliberately dim)
+
+**Platforming:** Flat, elevation 0. Booths are on raised stone platforms (FLOOR_RAISED, +0.5). Stepping up into booths. WALL_SECRET at booth C back wall.
+
+---
+
+### Room: Catacombs (10x10, maze)
+
+**Player Experience:** The stairs descend into darkness. The ceiling drops to claustrophobic height. The air is damp, cold, tinged with decay. Maze corridors branch in every direction. Torches mark safe intersections -- the lit paths. But one torch marks a FLOOR_VOID trap. Even guidance cannot be trusted. ShadowGoats roam the corridors, semi-invisible until four cells away. Funerary urns line dead ends. Two WALL_SECRET shortcuts exist for players who test walls. The maximum navigation time is 45 seconds.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| heresy-bone-urn | (37, 18) dead end NW | 0.6 | Funerary urn, dead end marker |
+| heresy-bone-urn | (45, 17) dead end NE | 0.6 | Funerary urn, dead end marker |
+| heresy-bone-urn | (38, 22) dead end center | 0.6 | Funerary urn, intersection |
+| heresy-bone-urn | (43, 23) dead end SE | 0.6 | Funerary urn, dead end marker |
+| heresy-catacomb-torch | (37, 16) safe intersection 1 | 0.7 | Safe path marker (lit) |
+| heresy-catacomb-torch | (42, 18) safe intersection 2 | 0.7 | Safe path marker (lit) |
+| heresy-catacomb-torch | (45, 23) safe intersection 3 | 0.7 | Safe path marker (lit) |
+| heresy-catacomb-torch | (38, 20) TRAP path torch | 0.7 | Extinguished (dark = danger) |
+| heresy-catacomb-torch | (43, 21) TRAP path torch | 0.7 | Extinguished (dark = danger) |
+| heresy-corrupted-reliquary | (40, 20) maze niche | 0.5 | Atmosphere, lore object |
+
+**Lighting:**
+- 3x Torch_Metal (lit): safe intersections -- sickly yellow-green `#aacc44`, radius 3 cells
+- 2x Torch_Metal (extinguished): trap path intersections -- no light (dark = danger)
+- Fog density 0.06, color `#120e18` -- thicker underground claustrophobia
+
+**Platforming:** Elevation -1 (below main floor). Ceiling drops to 2.5 units. Maze paths are 3 cells wide. WALL_SECRET shortcuts at (39, 17) and (44, 22). FLOOR_VOID traps at (44, 20) and (40, 23), 2x1 cells each. Some corridors step down another 0.5 via RAMP cells.
+
+---
+
+### Room: Trial Chamber (12x12, arena)
+
+**Player Experience:** A church courtroom. The north half holds an elevated stone platform -- the judge's bench, rising a full level above the floor. Benches and a bookstand form the judicial furniture up there. FireGoats spawn on the bench and fire downward at you. The doors lock. You need to get up there, but there is no visible ramp. The back of the bench platform shimmers when you approach -- a WALL_SECRET hides the ramp. The illusion mechanic becomes your tool, not just your enemy. Wave 2 adds shadowGoats who walk through the illusory walls to flank you from impossible angles.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| heresy-cracked-marble-pillar | (20, 33) NW | 0.9 | none | Arena column |
+| heresy-cracked-marble-pillar | (30, 33) NE | 0.9 | none | Arena column |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| heresy-church-pew | (23, 35) bench seating left | 0.7 | Judge's bench furniture |
+| heresy-church-pew | (27, 35) bench seating right | 0.7 | Judge's bench furniture |
+| heretic-tome | (25, 35) judge's podium | 0.8 | BookStand at judge's position |
+| heresy-broken-stained-glass | (20, 38) west wall | 0.8 | Atmosphere, broken sacred art |
+| heresy-broken-stained-glass | (30, 38) east wall | 0.8 | Atmosphere, broken sacred art |
+| heresy-toppled-altar | (23, 42) south floor | 0.6 | Toppled stone, cover |
+
+**Lighting:**
+- 4x CandleStick_Triple: (20, 33) NW, (30, 33) NE, (20, 43) SW, (30, 43) SE -- pale violet `#aa88ff`, radius 3 cells
+- Bench platform elevated light: slightly brighter at elevation +1
+
+**Platforming:** Ground floor at elevation 0. Judge's bench is a 6x3 platform at elevation +1 (2 world units above floor). WALL_SECRET at (25, 37) -- back of bench, reveals RAMP connecting floor to bench level. Stone railings (half-height WALL_STONE) border platform edges. WALL_SECRET at east wall (30, 43) leads to Heretic's Library.
+
+---
+
+### Room: Ossuary (8x8, exploration)
+
+**Player Experience:** You descend into a bone storage chamber. The walls suggest embedded skeletal remains beneath crumbling plaster. Chains hang from the ceiling at five points, creating a curtain that obscures your sight lines. Funerary urns scatter the floor. Two shadowGoats lurk among the hanging chains, using the visual clutter to conceal themselves until they are almost on top of you. This room is a breath of dread before the boss -- transitional, atmospheric, a reminder that what was once sacred has been thoroughly defiled.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| heresy-bone-urn | (12, 42) NW | 0.7 | Funerary urn, atmosphere |
+| heresy-bone-urn | (16, 42) NE | 0.7 | Funerary urn, atmosphere |
+| heresy-bone-urn | (11, 45) west | 0.6 | Smaller urn, variety |
+| heresy-bone-urn | (17, 45) east | 0.6 | Smaller urn, variety |
+| wrath-chain-curtain | (12, 41) ceiling hang 1 | 0.8 | Chain curtain, visual clutter |
+| wrath-chain-curtain | (16, 41) ceiling hang 2 | 0.8 | Chain curtain, concealment |
+| wrath-chain-curtain | (14, 43) ceiling hang 3 center | 0.9 | Chain curtain, central |
+| wrath-chain-curtain | (12, 46) ceiling hang 4 | 0.8 | Chain curtain, concealment |
+| wrath-chain-curtain | (16, 46) ceiling hang 5 | 0.8 | Chain curtain, concealment |
+| heresy-corrupted-reliquary | (14, 44) center floor | 0.6 | Corrupted container, lore |
+
+**Lighting:**
+- 2x Torch_Metal: (11, 41) west wall, (17, 41) east wall -- sickly yellow-green `#aacc44`, radius 3 cells
+- Dim ambient: `#6633aa` at 0.08 -- very low, chains cast deep shadows
+
+**Platforming:** Elevation -1 (below main floor). Floor is uneven -- sections at -1 and -0.5 with RAMP transitions. Shallow pit in center (2x2, -1.5 elevation) with bone clusters. Exposed ceiling beams at height 3 units.
+
+---
+
+### Room: Heretic's Library (6x8, secret)
+
+**Player Experience:** You step through the illusory wall into a hidden library of forbidden knowledge. Bookcases line every wall, stuffed with ancient leather-bound volumes. Some books are chained to their shelves. A central reading podium holds a glowing scroll. Books and scrolls litter the floor as if someone searched frantically through every text. One candelabra provides dim violet light. The scroll on the podium tells you about Profano -- who she was, what she saw through, why her domain is illusion. Ammo and health sit on shelves. This room rewards mastery of the mechanic that brought you here.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| heresy-forbidden-bookcase | (37, 37) north wall | 1.0 | Tall bookcase, forbidden texts |
+| heresy-forbidden-bookcase | (41, 37) north wall | 1.0 | Tall bookcase, forbidden texts |
+| heresy-forbidden-bookcase | (36, 40) west wall | 1.0 | Tall bookcase, wall-lining |
+| heresy-forbidden-bookcase | (42, 40) east wall | 1.0 | Tall bookcase, wall-lining |
+| heretic-tome | (39, 40) center reading podium | 0.9 | Central BookStand, lore delivery |
+| heresy-torn-scripture-slab | (38, 42) floor, scattered | 0.4 | Scattered scripture fragment |
+| heresy-torn-scripture-slab | (40, 43) floor, scattered | 0.4 | Scattered scripture fragment |
+
+**Lighting:**
+- 1x CandleStick_Triple: (39, 39) floor center -- pale violet `#aa88ff`, radius 3 cells, intensity 0.5
+
+**Platforming:** Flat, elevation 0. Bookcase props rise to 3.5 units. Small raised reading platform (FLOOR_RAISED, +0.5) holds the BookStand at center. WALL_SECRET entrance from Trial Chamber east wall.
+
+---
+
+### Room: Profano's Chapel (14x14, boss)
+
+**Player Experience:** You ascend into a ritual space that remembers holiness but has been utterly inverted. The floor is inlaid with a pentagram pattern in black and white tile. Five candelabras burn violet at each point of the star. A chandelier hangs from the vaulted ceiling, flickering. At the center altar, Profano stands -- witch, priestess, heretic. She speaks: "Truth is the first heresy. I am its priestess. Look upon me -- which of me is real?" Three copies of herself shimmer into existence. Phase 1: find the real one. Phase 2: your world turns upside down, literally. Phase 3: the floor begins to vanish beneath your feet.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| heresy-desecrated-arch | (25, 54) north entrance | 1.0 | face-south | Chapel entrance |
+| heresy-cracked-marble-pillar | (19, 56) NW column | 0.9 | none | Chapel column |
+| heresy-cracked-marble-pillar | (31, 56) NE column | 0.9 | none | Chapel column |
+| heresy-cracked-marble-pillar | (19, 66) SW column | 0.9 | none | Chapel column |
+| heresy-cracked-marble-pillar | (31, 66) SE column | 0.9 | none | Chapel column |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| heresy-pentagram-floor-tile | (22, 58) - (28, 64) center floor | 1.5 | Pentagram floor inlay pattern |
+| heresy-ritual-chandelier | (25, 61) ceiling center | 1.2 | Central overhead ritual light |
+| heretic-tome | (25, 61) center altar | 1.0 | Central altar BookStand |
+| inverted-cross | (20, 55) north wall left | 0.8 | Inverted banner, heretical |
+| inverted-cross | (30, 67) south wall right | 0.8 | Inverted banner, heretical |
+| heresy-cracked-baptismal-font | (20, 66) SW corner | 0.7 | Cracked font, desecrated |
+| heresy-cracked-baptismal-font | (30, 56) NE corner | 0.7 | Cracked font, desecrated |
+| heresy-profane-symbol | (25, 55) north wall center | 1.0 | Large profane medallion |
+| heresy-burning-pyre | (19, 61) west edge | 0.6 | Heretic burning pyre, atmosphere |
+
+**Lighting:**
+- 5x CandleStick_Triple at pentagram points: (22, 57), (28, 57), (20, 62), (30, 62), (25, 66) -- pale violet `#aa88ff`, radius 3 cells
+- 1x Chandelier overhead: flickering violet-white, radius 6 cells, dims during phase transitions
+- Pentagram groove emissive: faint purple `#6633aa` glow from floor inlay lines
+- Phase 2 fog: density surges to 0.10, color `#201020` (deep magenta, disorienting)
+
+**Platforming:** Flat at elevation 0 throughout. Pentagram is a floor-level inlay (no elevation change). Altar (BookStand) sits on a 2x2 FLOOR_RAISED platform (+0.5 elevation) at center. Five CandleStick_Triple on small circular stone pedestals (+0.25 elevation). Vaulted ceiling at 5 units. Phase 3: random 2x2 floor sections become FLOOR_VOID for 3 seconds then reform, up to 4 simultaneously. Pentagram center remains stable.

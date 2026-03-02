@@ -1,0 +1,18 @@
+{
+  "id": "wrath-punching-bag-chain",
+  "name": "Hanging Punching Bag Chain",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A heavy leather punching bag hanging from a thick iron chain, the bag is torn and patched with blood stains, chain links are corroded with rust, ceiling mount bracket visible, wrath training equipment, game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark brown leather punching bag with blood red stains and patched tears, rusted iron chain, corroded ceiling mount",
+    "enablePbr": true
+  }
+}

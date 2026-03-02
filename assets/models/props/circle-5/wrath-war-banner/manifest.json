@@ -1,0 +1,18 @@
+{
+  "id": "wrath-war-banner",
+  "name": "Tattered War Banner",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A wall-mounted rigid solid metal banner plate shaped like a war standard, dark red with a black goat skull emblem, the edges are torn and jagged like battle damage, mounted on a thick iron pole bracket, solid rigid wall decoration, game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark blood red metal surface with black goat skull emblem, jagged torn edges, dark iron pole bracket, battle-worn patina",
+    "enablePbr": true
+  }
+}

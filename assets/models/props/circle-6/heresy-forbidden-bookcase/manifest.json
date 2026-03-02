@@ -1,0 +1,18 @@
+{
+  "id": "heresy-forbidden-bookcase",
+  "name": "Forbidden Knowledge Bookcase",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tall dark wooden bookcase stuffed with ancient leather-bound books and scrolls, some books are chained to the shelves, one shelf has a faint purple glowing tome, the wood is carved with heretical rune borders, forbidden library bookshelf, game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark aged wood with heretical rune carvings, leather-bound books in deep red and brown, iron chains on some books, faint purple glow from one tome, cold ambient lighting",
+    "enablePbr": true
+  }
+}

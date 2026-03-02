@@ -1,0 +1,18 @@
+{
+  "id": "greed-gear-mechanism",
+  "name": "Vault Gear Mechanism",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large industrial gear mechanism mounted on a dark stone wall, two interlocking brass gears with visible teeth, connecting rod and axle, steampunk vault locking mechanism, game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Polished brass gears with dark patina in tooth grooves, dark steel connecting rod, warm amber metallic finish",
+    "enablePbr": true
+  }
+}

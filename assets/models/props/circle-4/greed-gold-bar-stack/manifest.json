@@ -1,0 +1,18 @@
+{
+  "id": "greed-gold-bar-stack",
+  "name": "Gold Bar Stack",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A pyramid stack of gold ingot bars on a dark stone slab, five bars on bottom row tapering to one on top, each bar stamped with demonic goat insignia, solid heavy gold bullion pile, game prop, isolated object, dark background, three quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Bright polished gold bars with sharp edges, demonic goat stamp on each, dark stone slab base, warm reflections",
+    "enablePbr": true
+  }
+}

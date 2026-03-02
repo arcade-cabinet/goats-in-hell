@@ -1,0 +1,18 @@
+{
+  "id": "wrath-jagged-arch",
+  "name": "Jagged Iron Archway",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large archway made of jagged corroded iron plates welded together at harsh angles, rust streaks running down, sharp protruding bolt heads and torn metal edges, industrial rage architecture doorframe, game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 10000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark corroded iron with heavy rust red streaks, rough welded seams, oxidized metal surface with dark red-brown patina",
+    "enablePbr": true
+  }
+}

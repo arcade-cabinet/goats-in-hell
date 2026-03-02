@@ -1,0 +1,18 @@
+{
+  "id": "wrath-rusted-cage",
+  "name": "Rusted Iron Cage",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A small cubic iron cage with thick rusted bars, the door hanging open on broken hinges, a heavy padlock dangling from a chain, dark corroded metal with rust flakes, wrath prison cage, game prop, isolated object, dark background, three quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Heavily rusted iron bars with orange-red corrosion, dark corroded metal, broken hinge detail, rusted padlock and chain",
+    "enablePbr": true
+  }
+}

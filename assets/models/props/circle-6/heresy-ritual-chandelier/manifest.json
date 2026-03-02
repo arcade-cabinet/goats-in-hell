@@ -1,0 +1,18 @@
+{
+  "id": "heresy-ritual-chandelier",
+  "name": "Ritual Chandelier",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large ornate iron chandelier with five arms arranged in a pentagram pattern, each arm holds a black candle, the central hub has an inverted cross design, hanging chains from a ceiling mount point, dark ritual lighting fixture, game prop, isolated object, dark background, three quarter view from below",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark iron arms with pentagram arrangement, black candles, inverted cross hub detail, hanging chains, faint purple ambient reflections",
+    "enablePbr": true
+  }
+}

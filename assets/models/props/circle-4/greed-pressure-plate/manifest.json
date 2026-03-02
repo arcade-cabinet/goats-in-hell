@@ -1,0 +1,18 @@
+{
+  "id": "greed-pressure-plate",
+  "name": "Weight-Sensitive Pressure Plate",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A square floor-mounted pressure plate made of worn steel with a gold-stamped weight symbol in center, slightly raised edges showing mechanical springs underneath, industrial vault floor trap mechanism, game prop, isolated object, dark background, top-down angled view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "on"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Worn brushed steel surface with gold stamped weight icon, visible spring mechanisms at edges, dark steel mechanical components underneath",
+    "enablePbr": true
+  }
+}

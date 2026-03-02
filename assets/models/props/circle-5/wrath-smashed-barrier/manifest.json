@@ -1,0 +1,18 @@
+{
+  "id": "wrath-smashed-barrier",
+  "name": "Smashed Concrete Barrier",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large chunk of broken concrete barrier with exposed rusted rebar, crack patterns and impact damage on surface, blood-brown stains, debris rubble at the base, destroyed industrial wall segment, game prop, isolated object, dark background, three quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Cracked gray concrete with exposed rusted rebar, dark red-brown blood stains, rubble debris, rough damaged texture",
+    "enablePbr": true
+  }
+}

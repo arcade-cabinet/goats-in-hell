@@ -1,0 +1,18 @@
+{
+  "id": "greed-gold-chain",
+  "name": "Hanging Gold Chain",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A thick gold chain hanging vertically from a ceiling mount, heavy ornate links with each link stamped with demonic symbols, chain coils at the bottom on the floor, dark fantasy treasure chain, game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Polished gold chain links with demonic stamp engravings, warm amber reflections, slight tarnish in crevices",
+    "enablePbr": true
+  }
+}

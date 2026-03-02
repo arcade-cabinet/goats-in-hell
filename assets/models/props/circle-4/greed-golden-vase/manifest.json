@@ -1,0 +1,18 @@
+{
+  "id": "greed-golden-vase",
+  "name": "Golden Ornate Vase",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tall ornamental golden vase with handles shaped like goat horns, decorative band of jewels around the neck, standing on a small stone base, opulent treasure room decoration, game prop, isolated object, dark background, three quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "on"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Polished gold surface, goat horn shaped handles, embedded jewel band, warm amber reflections on dark stone base",
+    "enablePbr": true
+  }
+}

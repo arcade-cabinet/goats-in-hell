@@ -1,0 +1,18 @@
+{
+  "id": "heresy-burning-pyre",
+  "name": "Heretic Burning Pyre",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tall wooden stake rising from a pile of solid rigid logs and kindling, iron chains wrapped around the stake, the logs at the base are charred black with ember glow, a heretic execution pyre, game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Charred black wood with orange-red ember glow, iron chains, dark stake post, ash gray kindling base, faint purple ambient light",
+    "enablePbr": true
+  }
+}

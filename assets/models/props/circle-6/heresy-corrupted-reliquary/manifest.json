@@ -1,0 +1,18 @@
+{
+  "id": "heresy-corrupted-reliquary",
+  "name": "Corrupted Reliquary Box",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "An ornate stone and iron reliquary box with a glass viewing panel, the glass is cracked, inside is a dark void with faint purple glow, the box has inverted religious symbols carved on all sides, iron clasp and lock mechanism, corrupted sacred container, game prop, isolated object, dark background, three quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark stone with iron fittings, cracked glass panel, faint purple emissive glow from inside, inverted symbol carvings, cold metal clasps",
+    "enablePbr": true
+  }
+}

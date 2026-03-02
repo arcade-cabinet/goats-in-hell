@@ -1,0 +1,18 @@
+{
+  "id": "wrath-weapon-pedestal",
+  "name": "Weapon Display Pedestal",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A short sturdy iron pedestal with a flat top designed to display a weapon, angular industrial design with riveted construction, a faint red glow emanating from the top surface, dark iron with rust accents, weapon pickup stand, game prop, isolated object, dark background, three quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "on"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark iron with riveted panel construction, rust accents at joints, faint red-orange emissive glow on top surface",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "greed-gold-pillar",
+  "name": "Gold-Veined Pillar",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tall square structural pillar of dark polished metal with gold veins running through it like ore deposits, gold leaf capitals at top and base, opulent vault column, game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "on"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark brushed steel base with bright gold vein streaks running vertically, polished gold leaf capitals, warm metallic reflections",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "wrath-shattered-weapon-rack",
+  "name": "Shattered Weapons Rack",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A destroyed wall-mounted wooden weapon rack with broken sword blades and a bent mace still hanging from damaged hooks, the rack frame is cracked and splintered, broken weapons scattered at the base, rage-destroyed armory display, game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Splintered dark wood rack, broken steel blades with rust, bent iron mace, dark metal hooks, scattered weapon debris",
+    "enablePbr": true
+  }
+}

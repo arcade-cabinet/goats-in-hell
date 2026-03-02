@@ -660,3 +660,256 @@ editor.createTheme('circle-5-wrath', {
 - NOT using the procedural generator's `explore -> arena -> boss` cycle. The room sequence is authored for escalating intensity.
 - NOT using Kenney or KayKit assets. Fantasy Props MegaKit + AmbientCG PBR textures only.
 - NOT a rehash of earlier circles' red palettes. While Lust had warm marble and Gluttony had sickly green-over-flesh, Wrath is industrial -- cracked concrete, fired brick, rusted metal. The red here is anger, not warmth.
+
+---
+
+## 3D Spatial Design
+
+### Room: Gate of Dis (10x6, exploration)
+
+**Player Experience:** You pass through a towering archway of jagged iron into the entry chamber. Two massive anvils flank the gate like sentinels of brute force. Chains hang from the ceiling in every direction, swaying in some unfelt wind. The light is deep red, angry. Everything metal, everything corroded. A single ammo pickup and health kit sit on the floor -- supplies before the storm. The gate behind you grinds shut. Forward is the only option.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| wrath-jagged-arch | (24, 2) north wall gate | 1.2 | face-south | Massive Gate of Dis entrance |
+| wrath-dented-iron-door | (24, 7) south door | 1.0 | face-south | Exit to Blood Marsh |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| wrath-anvil | (20, 3) flanking gate west | 1.0 | Forge sentinel, brute force motif |
+| wrath-anvil | (28, 3) flanking gate east | 1.0 | Forge sentinel, brute force motif |
+| wrath-chain-curtain | (22, 3) ceiling hang NW | 0.8 | Hanging chains, atmosphere |
+| wrath-chain-curtain | (26, 3) ceiling hang NE | 0.8 | Hanging chains, atmosphere |
+| wrath-chain-curtain | (22, 6) ceiling hang SW | 0.8 | Hanging chains, atmosphere |
+| wrath-chain-curtain | (26, 6) ceiling hang SE | 0.8 | Hanging chains, atmosphere |
+| wrath-war-banner | (24, 2) above gate | 1.0 | War banner, tattered |
+| wrath-anger-graffiti-slab | (20, 6) west wall | 0.7 | Rage-scratched concrete |
+
+**Lighting:**
+- 3x Torch_Metal: (20, 4) north wall, (19, 6) west wall, (29, 6) east wall -- deep red `#ff3300`, radius 4 cells, intensity 0.9
+
+**Platforming:** Flat, elevation 0. The gate arch at the north wall rises to full ceiling height. Decorative only.
+
+---
+
+### Room: Blood Marsh (16x14, exploration)
+
+**Player Experience:** The floor drops out from under you into thick, dark red liquid. Waist-deep, viscous, slow. Every step is a struggle. Five stone islands rise above the blood like teeth in a jaw. FireGoats stand on them, firing from safety while you wade helplessly. The escalation timer is already ticking -- the longer you linger, the faster the hellgoats behind you become. Island-hop. Clear and move. Do not stop.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| wrath-stone-island | (18, 14) ISL1 NW, 3x3 | 1.0 | none | Raised safe platform |
+| wrath-stone-island | (24, 14) ISL2 NE, 3x3 | 1.0 | none | Raised safe platform |
+| wrath-stone-island | (22, 19) ISL3 center, 4x3 | 1.2 | none | Raised safe platform, largest |
+| wrath-stone-island | (18, 23) ISL4 SW, 3x3 | 1.0 | none | Raised safe platform |
+| wrath-stone-island | (26, 23) ISL5 SE, 3x3 | 1.0 | none | Raised safe platform |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| wrath-rusted-cage | (19, 15) on ISL1 | 0.7 | Caged prisoner atmosphere |
+| wrath-rusted-cage | (24, 20) on ISL3 | 0.7 | Caged prisoner atmosphere |
+| wrath-rusted-cage | (27, 24) on ISL5 | 0.7 | Caged prisoner atmosphere |
+| wrath-rage-furnace | (23, 19) on ISL3 center | 0.8 | Bubbling cauldron replacement |
+| wrath-rage-furnace | (19, 15) on ISL1 edge | 0.6 | Bubbling heat source |
+| wrath-chain-curtain | (20, 15) ceiling above ISL1 | 1.0 | Hanging chain atmosphere |
+| wrath-chain-curtain | (25, 15) ceiling above ISL2 | 1.0 | Hanging chain atmosphere |
+| wrath-chain-curtain | (22, 18) ceiling center | 1.0 | Hanging chain atmosphere |
+| wrath-chain-curtain | (20, 22) ceiling above ISL4 | 1.0 | Hanging chain atmosphere |
+| wrath-chain-curtain | (26, 22) ceiling above ISL5 | 1.0 | Hanging chain atmosphere |
+| wrath-chain-curtain | (23, 21) ceiling south-center | 1.0 | Hanging chain atmosphere |
+| wrath-blood-spattered-slab | (17, 18) west wall | 0.6 | Blood-stained wall panel |
+
+**Lighting:**
+- 3x Torch_Metal: on ISL1 (19, 16), ISL3 (23, 20), ISL5 (27, 24) -- deep red `#ff3300`, radius 4 cells, floor-standing
+- Lava glow from marsh floor: crimson `#cc0000`, radius 3 cells, subtle pulse at 0.5Hz
+
+**Platforming:** Marsh floor at elevation -0.5 (movement speed 60%). Five stone islands at elevation 0 (normal movement). Islands are 3x3 to 4x3 cells. Player must island-hop across the room.
+
+---
+
+### Room: Rage Pit (12x12, platforming)
+
+**Player Experience:** You stand at the rim of a descending amphitheater. Four concentric tiers drop into darkness -- the pit center is deep below you. HellGoats lurk at the bottom, their eyes glinting red. FireGoats hold the middle tier, firing upward. You must descend tier by tier, fighting your way down while the escalation timer turns every hesitation into a death sentence. The pit swallows you.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| wrath-pit-tier-ring | (23, 31) rim tier, elev 0 | 1.0 | none | Top tier, 1-cell wide |
+| wrath-pit-tier-ring | (24, 32) tier 1, elev -0.5 | 0.9 | none | Second tier |
+| wrath-pit-tier-ring | (25, 33) tier 2, elev -1 | 0.8 | none | Third tier, 2-cell wide |
+| wrath-pit-tier-ring | (26, 34) tier 3, elev -1.5 | 0.7 | none | Fourth tier, 2-cell wide |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| wrath-rusted-cage | (23, 31) rim NW edge | 0.6 | Caged prisoner, tier edge |
+| wrath-rusted-cage | (33, 31) rim NE edge | 0.6 | Caged prisoner, tier edge |
+| wrath-rusted-cage | (28, 38) tier 2 edge | 0.6 | Caged prisoner, mid-tier |
+| wrath-chain-curtain | (27, 35) ceiling center | 1.2 | Hanging chains, visual clutter |
+| wrath-chain-curtain | (29, 35) ceiling center | 1.2 | Hanging chains, visual clutter |
+| wrath-chain-curtain | (27, 37) ceiling center | 1.2 | Hanging chains, visual clutter |
+| wrath-chain-curtain | (29, 37) ceiling center | 1.2 | Hanging chains, visual clutter |
+| wrath-smashed-barrier | (24, 36) tier 2 debris | 0.5 | Broken concrete, cover |
+
+**Lighting:**
+- 2x Torch_Metal: (22, 32) west wall, (34, 32) east wall -- deep red `#ff3300`, radius 4 cells
+- Dim ambient glow from pit floor: `#cc0000`, radius 2 cells, intensity 0.3
+
+**Platforming:** Concentric descending tiers. Rim at elevation 0, tier 1 at -0.5, tier 2 at -1, tier 3 at -1.5, pit center (4x4) at -2. Each tier is a step-down -- no ramps, just drop down. Climbing back up requires jumping.
+
+---
+
+### Room: Arsenal (12x6, exploration)
+
+**Player Experience:** A long narrow armory. Weapon displays line both walls -- racks of swords, shields, bronze blades arranged in ceremonial crossed pairs. At the far end, a raised stone pedestal glows with pickup light. The Goat's Bane -- the Bazooka. A goatKnight stands guard before it. The escalation timer is your enemy: fight your way there slowly and the enemies accelerate to lethal speed. Sprint. Dodge. Grab. Then turn the weapon on everything behind you.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| wrath-jagged-arch | (20, 46) north entry | 0.8 | face-south | Arsenal entrance frame |
+| wrath-weapon-pedestal | (20, 51) far south end | 1.0 | none | Goat's Bane display pedestal |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| wrath-shattered-weapon-rack | (15, 48) west wall | 0.8 | Weapon display, armory feel |
+| wrath-shattered-weapon-rack | (25, 48) east wall | 0.8 | Weapon display, armory feel |
+| wrath-shattered-weapon-rack | (15, 50) west wall | 0.8 | Weapon display, armory feel |
+| wrath-shattered-weapon-rack | (25, 50) east wall | 0.8 | Weapon display, armory feel |
+| wrath-smashed-barrier | (16, 49) floor debris | 0.4 | Partial cover, atmosphere |
+| wrath-anger-graffiti-slab | (15, 47) west wall near entry | 0.6 | Rage-scratched concrete |
+| wrath-blood-spattered-slab | (25, 47) east wall near entry | 0.6 | Blood-stained wall panel |
+
+**Lighting:**
+- 2x Torch_Metal: (15, 47) north entry west, (25, 47) north entry east -- deep red `#ff3300`, radius 4 cells
+- Pedestal glow: warm white `#ff8866`, radius 2 cells, intensity 1.0 on Goat's Bane
+
+**Platforming:** Flat, elevation 0. Goat's Bane pedestal raised 0.5 (2x2 stone slab at south end).
+
+---
+
+### Room: Berserker Arena (14x14, arena)
+
+**Player Experience:** The doors slam shut. Eight barrels ring the center of a vast industrial arena, each one a promise of explosive destruction. Caged lanterns blaze overhead, chains hang from the ceiling like a factory of pain. Round 1: fireGoats pour in from the edges. You reach for the Bazooka. Round 2: goatKnights in armor advance from north and south. Round 3: a massive hellgoat spawns in the center -- twice normal size, ground-pound attack shaking the floor. The barrels are your nuclear option. Use them wisely.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| wrath-jagged-arch | (22, 56) north entry | 1.0 | face-south | Arena entrance |
+| wrath-dented-iron-door | (16, 69) south exit east | 0.9 | face-south | Exit to Gauntlet |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| wrath-explosive-barrel | (17, 58) ring position 1 | 1.0 | Destructible, explosive, 15 damage |
+| wrath-explosive-barrel | (27, 58) ring position 2 | 1.0 | Destructible, explosive |
+| wrath-explosive-barrel | (17, 62) ring position 3 | 1.0 | Destructible, explosive |
+| wrath-explosive-barrel | (27, 62) ring position 4 | 1.0 | Destructible, explosive |
+| wrath-explosive-barrel | (17, 66) ring position 5 | 1.0 | Destructible, explosive |
+| wrath-explosive-barrel | (27, 66) ring position 6 | 1.0 | Destructible, explosive |
+| wrath-explosive-barrel | (20, 58) ring position 7 | 1.0 | Destructible, explosive |
+| wrath-explosive-barrel | (24, 66) ring position 8 | 1.0 | Destructible, explosive |
+| wrath-chain-curtain | (19, 59) ceiling hang | 1.0 | Industrial chains, atmosphere |
+| wrath-chain-curtain | (25, 59) ceiling hang | 1.0 | Industrial chains, atmosphere |
+| wrath-chain-curtain | (19, 65) ceiling hang | 1.0 | Industrial chains, atmosphere |
+| wrath-chain-curtain | (25, 65) ceiling hang | 1.0 | Industrial chains, atmosphere |
+| wrath-chain-curtain | (22, 59) ceiling center N | 1.0 | Industrial chains |
+| wrath-chain-curtain | (22, 65) ceiling center S | 1.0 | Industrial chains |
+| wrath-caged-lantern | (15, 60) east wall overhead | 0.8 | Industrial overhead light |
+| wrath-caged-lantern | (29, 60) west wall overhead | 0.8 | Industrial overhead light |
+
+**Lighting:**
+- 4x Torch_Metal: (15, 57) N wall, (29, 57) N wall, (15, 69) S wall, (29, 69) S wall -- deep red `#ff3300`, radius 4 cells
+- 2x Lantern_Wall overhead: white-hot `#ff8866`, radius 6 cells, intensity 0.9
+- Barrel glow: faint red-orange `#ff4400` from cracks, radius 1 cell
+
+**Platforming:** Flat arena at elevation 0. Barrels at floor level. Lanterns at elevation 2.0. Chains hang from ceiling elevation 3+.
+
+---
+
+### Room: Shrine of Fury (6x6, secret)
+
+**Player Experience:** You push through the false wall and the red drains away. Cooler concrete. Muted light. A bench sits in the center -- a deliberate absurdity in a circle of rage. A scroll rests on the wall. Two torches burn at barely half the intensity of every other room. Health and ammo pickups sit generously on the floor. The escalation timer does not run here. In the circle of Wrath, the secret room is peace.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| wrath-smashed-barrier | (3, 75) west corner, small | 0.3 | Minimal debris, contrast to rage |
+| wrath-iron-grate | (5, 77) floor center | 0.6 | Drain grate, industrial detail |
+
+**Lighting:**
+- 2x Torch_Metal: (3, 75) west wall, (7, 75) east wall -- muted amber `#aa7733`, radius 3 cells, intensity 0.4 (deliberately dim)
+
+**Platforming:** Flat, elevation 0. Deliberately plain -- cooler concrete, muted lighting. No elevation changes.
+
+---
+
+### Room: Gauntlet (6x20, corridor)
+
+**Player Experience:** A long, narrow tunnel of pure forward momentum. The moment you step in, hellgoats spawn behind you. Their footsteps grow louder, faster -- the escalation timer is running. Ahead, the corridor descends via ramps, then rises again. FireGoats wait on the lower sections, blocking your path downhill. You fire downhill at them while sprinting. Behind you, the horde accelerates. Health pickups appear at the one-third and two-third marks like lifelines. You cannot stop. Forward, always forward.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| wrath-jagged-arch | (23, 74) north entry | 0.7 | face-south | Gauntlet entrance |
+| wrath-jagged-arch | (23, 93) south exit | 0.7 | face-south | Exit to Colosseum |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| wrath-chain-curtain | (22, 76) ceiling interval 1 | 0.7 | Hanging chains, pacing marker |
+| wrath-chain-curtain | (22, 82) ceiling interval 2 | 0.7 | Hanging chains, pacing marker |
+| wrath-chain-curtain | (22, 88) ceiling interval 3 | 0.7 | Hanging chains, pacing marker |
+| wrath-chain-curtain | (22, 92) ceiling interval 4 | 0.7 | Hanging chains, pacing marker |
+| wrath-war-banner | (21, 78) east wall | 0.7 | Tattered war banner |
+| wrath-war-banner | (25, 84) west wall | 0.7 | Tattered war banner |
+| wrath-war-banner | (21, 90) east wall | 0.7 | Tattered war banner |
+
+**Lighting:**
+- 4x Torch_Metal: (21, 77) east wall, (25, 81) west wall, (21, 85) east wall, (25, 89) west wall -- deep red `#ff3300`, radius 4 cells, alternating sides
+
+**Platforming:** Starts at elevation 0, ramp down to -0.5 (2-cell ramp), level at -0.5, ramp down to -1.0 (2-cell ramp), level at -1.0 (midpoint), ramp up to -0.5 (2-cell ramp), ramp up to 0 (2-cell ramp). Three ramp sections create shooting angles for downhill advantage.
+
+---
+
+### Room: Furia's Colosseum (16x16, boss)
+
+**Player Experience:** You descend into a vast circular arena of packed sand. Torches ring the perimeter. Chains hang from the ceiling in a ring. Four anvils mark the cardinal points like compass needles. And there, in the center -- Furia. Massive. The largest enemy you have faced. He lowers his horns and charges. The sand explodes where he impacts the wall. You dodge sideways. In phase 2, he rips a chain from the ceiling and swings it as a whip. In phase 3, the walls begin to close. Concrete slabs slide inward. The arena shrinks. Kill or be crushed.
+
+**Structural Assets:**
+| Asset | Position | Scale | Rotation | Purpose |
+|-------|----------|-------|----------|---------|
+| wrath-jagged-arch | (24, 98) north entrance | 1.2 | face-south | Colosseum entrance arch |
+
+**Environmental Assets:**
+| Asset | Position | Scale | Purpose |
+|-------|----------|-------|---------|
+| wrath-anvil | (16, 106) west cardinal point | 1.2 | Wall landmark, positioning aid |
+| wrath-anvil | (32, 106) east cardinal point | 1.2 | Wall landmark, positioning aid |
+| wrath-anvil | (24, 98) north cardinal point | 1.0 | Wall landmark, positioning aid |
+| wrath-anvil | (24, 114) south cardinal point | 1.0 | Wall landmark, positioning aid |
+| wrath-chain-curtain | (20, 101) ceiling ring NW | 1.2 | Chains -- Furia rips in phase 2 |
+| wrath-chain-curtain | (28, 101) ceiling ring NE | 1.2 | Chains -- Furia rips in phase 2 |
+| wrath-chain-curtain | (18, 106) ceiling ring W | 1.2 | Chains, phase 2 weapons |
+| wrath-chain-curtain | (30, 106) ceiling ring E | 1.2 | Chains, phase 2 weapons |
+| wrath-chain-curtain | (20, 111) ceiling ring SW | 1.2 | Chains, phase 2 weapons |
+| wrath-chain-curtain | (28, 111) ceiling ring SE | 1.2 | Chains, phase 2 weapons |
+| wrath-chain-curtain | (24, 101) ceiling ring N | 1.2 | Chains, visual |
+| wrath-chain-curtain | (24, 111) ceiling ring S | 1.2 | Chains, visual |
+| wrath-war-banner | (22, 98) entrance flank left | 1.0 | War banner |
+| wrath-war-banner | (26, 98) entrance flank right | 1.0 | War banner |
+
+**Lighting:**
+- 8x Torch_Metal perimeter ring: (18, 100), (24, 99), (30, 100), (32, 104), (32, 108), (30, 112), (24, 113), (18, 112) -- deep red `#ff3300`, radius 4 cells, floor-standing on sand
+- Sand-reflected warm bounce light: ambient `#ff4411`, intensity 0.22
+- Phase 3: fog density surges to 0.06, color shifts to `#2a0000`
+
+**Platforming:** Flat sand floor at elevation 0 throughout. Anvils at floor level. Chains hang from ceiling at elevation 3 (Furia rips them down in phase 2). Phase 3: WALL_STONE cells slide inward from all four edges, 1 cell every 5 seconds, 16x16 to lethal 4x4 in 30 seconds.

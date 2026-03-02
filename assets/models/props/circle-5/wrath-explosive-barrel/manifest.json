@@ -1,0 +1,18 @@
+{
+  "id": "wrath-explosive-barrel",
+  "name": "Explosive Barrel",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A metal barrel with hazard warning stripes painted on the side, dented and corroded with rust, a glowing red crack along one side suggesting volatile contents, heavy iron bands and a sealed lid, destructible explosive container, game prop, isolated object, dark background, three quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark metal with yellow-black hazard stripes, heavy rust corrosion, faint red-orange glow in crack, iron band reinforcements",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "heresy-cracked-marble-pillar",
+  "name": "Cracked Marble Pillar",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tall classical fluted marble column with deep cracks running down its length, the capital at top is partially broken off, dark purple-gray veins running through white marble, once-grand temple pillar now damaged, game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Cracked white marble with dark purple-gray veins, broken Corinthian capital, aged yellowing stains, cold stone finish",
+    "enablePbr": true
+  }
+}

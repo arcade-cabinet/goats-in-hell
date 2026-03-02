@@ -1,0 +1,18 @@
+{
+  "id": "wrath-anger-graffiti-slab",
+  "name": "Rage Graffiti Concrete Slab",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A flat standing concrete slab wall section covered with scratched and gouged angry graffiti marks, claw marks deeply carved into surface, dark red paint splashes, leaning slightly like a tombstone, wrath vandalism wall piece, game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Gray concrete with deep claw scratch marks, dark red paint splashes, rough gouged surface texture, slight lean",
+    "enablePbr": true
+  }
+}

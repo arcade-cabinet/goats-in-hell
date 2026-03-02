@@ -1,0 +1,18 @@
+{
+  "id": "wrath-corroded-pipe-pillar",
+  "name": "Corroded Pipe Pillar",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tall vertical structural pillar made of bundled corroded industrial pipes of different diameters lashed together with rusted iron bands, leaking rust-colored stains, dark concrete base, industrial wrath column, game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Heavily corroded iron pipes with rust red and dark brown patina, rusted iron bands, dripping rust stains, dark concrete base",
+    "enablePbr": true
+  }
+}
