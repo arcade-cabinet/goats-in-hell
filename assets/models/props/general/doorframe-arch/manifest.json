@@ -1,0 +1,18 @@
+{
+  "id": "doorframe-arch",
+  "name": "Arched Stone Doorframe",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "An arched stone doorframe with semicircular top and carved keystone, decorative molding along the arch, elegant dungeon doorway frame, dark fantasy game prop, front-facing, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "bilateral"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark carved stone with ornamental molding, worn gilded keystone detail, aged patina",
+    "enablePbr": true
+  }
+}

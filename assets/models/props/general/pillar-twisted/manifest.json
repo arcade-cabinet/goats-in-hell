@@ -1,0 +1,18 @@
+{
+  "id": "pillar-twisted",
+  "name": "Twisted Spiral Pillar",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A twisted spiral stone pillar with helical grooves winding up the shaft, demonic baroque style with goat skull capital decoration, hellish architectural column, dark fantasy game prop, floor-placed, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 7000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark obsidian-like stone with faint red veining in the spiral grooves, polished and sinister",
+    "enablePbr": true
+  }
+}

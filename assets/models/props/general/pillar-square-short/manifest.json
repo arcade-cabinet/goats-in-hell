@@ -1,0 +1,18 @@
+{
+  "id": "pillar-square-short",
+  "name": "Short Square Pillar",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A short square stone pillar approximately 1.5 meters tall, simple dark stone construction with beveled edges and a flat capital, dungeon support column, dark fantasy game prop, floor-placed, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "bilateral"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark gray cut stone with chisel marks, worn corners, subtle iron oxide staining",
+    "enablePbr": true
+  }
+}

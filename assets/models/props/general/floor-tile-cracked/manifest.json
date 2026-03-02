@@ -1,0 +1,18 @@
+{
+  "id": "floor-tile-cracked",
+  "name": "Cracked Floor Tile",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A cracked stone floor tile piece with fracture lines radiating from an impact point, slightly raised broken edges, damaged dungeon floor segment, dark fantasy game prop, floor-placed flat, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark stone tile with sharp crack lines, slightly displaced fragments, dust in fracture gaps",
+    "enablePbr": true
+  }
+}

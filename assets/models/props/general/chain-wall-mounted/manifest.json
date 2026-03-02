@@ -1,0 +1,18 @@
+{
+  "id": "chain-wall-mounted",
+  "name": "Wall-Mounted Chain",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "An iron chain mounted to a wall with a heavy iron bracket and bolts, chain links hanging in a solid rigid drape from the wall mount point, dungeon wall restraint, dark fantasy game prop, wall-mounted, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Rusted iron bracket bolted to stone, corroded chain links, dark oxidized metal",
+    "enablePbr": true
+  }
+}

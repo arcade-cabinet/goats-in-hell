@@ -1,0 +1,18 @@
+{
+  "id": "floor-drain",
+  "name": "Stone Floor Drain",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A circular stone floor drain with concentric ring pattern sloping to center hole, carved stone drainage disc set flush with dungeon floor, dark fantasy game prop, floor-placed flat, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark stone with concentric drainage grooves, water staining, dark residue around central hole",
+    "enablePbr": true
+  }
+}

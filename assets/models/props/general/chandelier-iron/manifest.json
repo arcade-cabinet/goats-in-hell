@@ -1,0 +1,18 @@
+{
+  "id": "chandelier-iron",
+  "name": "Iron Chandelier",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A wrought iron chandelier with circular frame and 6-8 candle holder arms, hanging from a central chain, medieval dungeon ceiling light fixture with dripping wax candle stubs, dark fantasy game prop, ceiling-mounted hanging down, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark wrought iron with forged texture, melted wax drips on candle cups, soot-blackened arms",
+    "enablePbr": true
+  }
+}

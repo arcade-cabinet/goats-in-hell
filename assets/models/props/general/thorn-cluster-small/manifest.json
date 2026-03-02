@@ -1,0 +1,18 @@
+{
+  "id": "thorn-cluster-small",
+  "name": "Small Thorn Cluster",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A small cluster of rigid thorny demonic growths sprouting from the ground, twisted dark barbed tendrils with sharp spines, hellish organic floor hazard, dark fantasy game prop, floor-placed, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark bark-like thorny surface with reddish thorn tips, dried sap veins, organic hellish texture",
+    "enablePbr": true
+  }
+}

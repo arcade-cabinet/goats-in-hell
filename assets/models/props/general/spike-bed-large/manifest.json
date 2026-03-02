@@ -1,0 +1,18 @@
+{
+  "id": "spike-bed-large",
+  "name": "Large Spike Trap",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large floor spike trap with many sharp iron spikes covering a wide recessed stone floor area, approximately 2 meters square, dangerous dungeon floor hazard, dark fantasy game prop, floor-placed, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dense rusted iron spike field on worn stone base, dark stains between spikes, corroded metal",
+    "enablePbr": true
+  }
+}

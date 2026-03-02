@@ -1,0 +1,18 @@
+{
+  "id": "chain-hanging-single",
+  "name": "Single Hanging Chain",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A single heavy iron chain hanging vertically from a ceiling anchor point, solid rigid chain links with a hook at the bottom end, dungeon ceiling decoration, dark fantasy game prop, ceiling-mounted hanging down, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark forged iron chain links with heavy rust, pitted metal surface, blood-dark patina",
+    "enablePbr": true
+  }
+}

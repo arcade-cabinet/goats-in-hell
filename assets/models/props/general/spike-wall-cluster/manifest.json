@@ -1,0 +1,18 @@
+{
+  "id": "spike-wall-cluster",
+  "name": "Wall Spike Cluster",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A cluster of sharp iron spikes mounted horizontally on a stone wall plate, protruding outward as a wall hazard, dungeon wall trap, dark fantasy game prop, wall-mounted, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Rusted iron spikes on dark stone mounting plate, corroded tips, dark dried stains",
+    "enablePbr": true
+  }
+}

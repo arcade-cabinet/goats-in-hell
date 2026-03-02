@@ -1,0 +1,18 @@
+{
+  "id": "ceiling-beam",
+  "name": "Ceiling Beam",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "An exposed ceiling beam made of dark aged wood with stone bracket mounts at each end, heavy structural timber spanning across a dungeon ceiling, dark fantasy game prop, ceiling-mounted horizontal, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "bilateral"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark aged hardwood with deep grain, adze marks, iron bracket mounts, cobweb traces",
+    "enablePbr": true
+  }
+}

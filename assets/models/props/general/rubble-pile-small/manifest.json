@@ -1,0 +1,18 @@
+{
+  "id": "rubble-pile-small",
+  "name": "Small Rubble Pile",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A small pile of stone rubble and broken masonry debris on the floor, scattered chunks of dark stone and crumbled mortar, dungeon destruction debris, dark fantasy game prop, floor-placed, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Broken dark stone chunks with dust coating, exposed fresh stone faces, crumbled mortar bits",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "debris-scatter",
+  "name": "Scattered Stone Debris",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "Scattered stone debris and broken floor tiles spread across a flat area, low-profile dungeon floor clutter with cracked stone pieces and gravel, dark fantasy game prop, floor-placed, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Scattered dark stone fragments with cracked tile edges, dust and grit, varied stone colors",
+    "enablePbr": true
+  }
+}

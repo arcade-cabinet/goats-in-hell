@@ -1,0 +1,18 @@
+{
+  "id": "demon-relief",
+  "name": "Demonic Wall Relief",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A stone wall relief carving of a demonic face with horns and fanged mouth, rectangular stone panel with deeply carved grotesque hellish visage, dungeon wall decoration, dark fantasy game prop, wall-mounted flat-backed, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "bilateral"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark carved stone with deep shadow in eye sockets, worn nose and horn tips, faint red glow in eyes",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "poison-pool",
+  "name": "Toxic Floor Pool",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A small floor-level pool with sculpted solid toxic liquid surface, irregular stone rim with corroded edges, the liquid surface is a solid sculpted bumpy plane with no actual fluid, dungeon floor hazard, dark fantasy game prop, floor-placed, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Sickly green emissive sculpted liquid surface, corroded stone rim with acid damage, bubbling texture",
+    "enablePbr": true
+  }
+}

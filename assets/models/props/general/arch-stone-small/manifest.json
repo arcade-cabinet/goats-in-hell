@@ -1,0 +1,18 @@
+{
+  "id": "arch-stone-small",
+  "name": "Small Stone Archway",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A small stone archway frame approximately 2 meters wide, rough-hewn dark stone blocks with mortar joints, suitable for narrow dungeon doorways, dark fantasy game prop, front-facing, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "bilateral"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark gray weathered stone blocks with crumbling mortar, soot stains, moss in crevices",
+    "enablePbr": true
+  }
+}

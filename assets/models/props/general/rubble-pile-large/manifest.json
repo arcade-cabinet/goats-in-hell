@@ -1,0 +1,18 @@
+{
+  "id": "rubble-pile-large",
+  "name": "Large Rubble Pile",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large pile of stone rubble and heavy masonry debris blocking a dungeon passage, collapsed wall remnants with large stone blocks and dust, dark fantasy game prop, floor-placed, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Large broken stone blocks with smaller rubble fill, thick dust layer, exposed iron rebar",
+    "enablePbr": true
+  }
+}

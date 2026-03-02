@@ -1,0 +1,18 @@
+{
+  "id": "torch-sconce-ornate",
+  "name": "Ornate Torch Sconce",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "An ornate wall-mounted torch sconce with decorative wrought iron scrollwork, demonic face motif on the backplate, iron torch holder cup with drip tray, dark fantasy game prop, wall-mounted, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark wrought iron with decorative scrollwork, soot-blackened torch cup, faint ember glow residue",
+    "enablePbr": true
+  }
+}

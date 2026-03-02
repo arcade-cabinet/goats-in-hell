@@ -1,0 +1,18 @@
+{
+  "id": "pillar-broken",
+  "name": "Broken Pillar Stump",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A broken stone pillar stump with jagged top where it snapped off, rubble chunks scattered around the base, destroyed dungeon column remnant, dark fantasy game prop, floor-placed, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Fractured dark stone with exposed rough interior, dust coating, scattered stone fragments",
+    "enablePbr": true
+  }
+}

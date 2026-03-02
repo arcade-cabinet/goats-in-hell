@@ -1,0 +1,18 @@
+{
+  "id": "floor-grating",
+  "name": "Iron Floor Grating",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "An iron floor grating or drain cover with crossed bar pattern, heavy rectangular iron grid set into a stone frame, dungeon floor drainage cover, dark fantasy game prop, floor-placed flat, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "bilateral"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark cast iron grating with corrosion, stone frame surround, dark stains and grime buildup",
+    "enablePbr": true
+  }
+}

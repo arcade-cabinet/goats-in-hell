@@ -1,0 +1,18 @@
+{
+  "id": "chain-hanging-cluster",
+  "name": "Hanging Chain Cluster",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A cluster of 3-4 heavy iron chains hanging from ceiling anchor points at different lengths, solid rigid chain links with hooks and shackles, dungeon torture chamber decoration, dark fantasy game prop, ceiling-mounted hanging down, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Rusted iron chains of varying thickness, corroded shackles, dark dried stains on metal",
+    "enablePbr": true
+  }
+}

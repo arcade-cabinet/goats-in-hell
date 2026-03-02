@@ -1,0 +1,18 @@
+{
+  "id": "cobweb-large",
+  "name": "Large Corner Cobweb",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large rigid cobweb stretched across a corner piece, solid sculpted spider web with radial and spiral threads forming a triangular shape, dungeon corner decoration, dark fantasy game prop, corner-mounted, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dusty gray-white web strands with collected dust and debris, aged and thick silk threads",
+    "enablePbr": true
+  }
+}

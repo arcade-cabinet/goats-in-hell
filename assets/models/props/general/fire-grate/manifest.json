@@ -1,0 +1,18 @@
+{
+  "id": "fire-grate",
+  "name": "Floor Fire Grate",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A floor-level iron grate with fire visible underneath as solid sculpted flame shapes below the bars, rectangular dungeon floor hazard with glowing underside, dark fantasy game prop, floor-placed, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "bilateral"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Heat-warped iron grate bars with orange-red emissive glow from below, soot-blackened metal",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "fire-pit-large",
+  "name": "Large Fire Pit",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large stone-rimmed fire pit at floor level with heavy stone block border, charred remains and ember bed inside, grand dungeon hall central fire feature, dark fantasy game prop, floor-placed, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Heavy dark stone blocks with deep heat discoloration, thick ash and charcoal bed, soot-stained rim",
+    "enablePbr": true
+  }
+}

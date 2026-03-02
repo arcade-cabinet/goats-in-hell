@@ -1,0 +1,18 @@
+{
+  "id": "spike-bed-small",
+  "name": "Small Spike Trap",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A small floor spike trap with sharp iron spikes protruding from a recessed stone floor plate, approximately 1 meter square, dungeon floor hazard, dark fantasy game prop, floor-placed, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Sharp rusted iron spikes on dark stone base plate, dried blood stains, corroded metal tips",
+    "enablePbr": true
+  }
+}

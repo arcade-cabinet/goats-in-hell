@@ -1,0 +1,18 @@
+{
+  "id": "arch-gothic",
+  "name": "Gothic Stone Archway",
+  "type": "prop",
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A pointed gothic stone archway with ribbed vault details, sharp ogive profile with trefoil decorations, dark cathedral dungeon architecture, dark fantasy game prop, front-facing, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "bilateral"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark limestone with carved gothic tracery, worn edges, faint emissive red rune inlays",
+    "enablePbr": true
+  }
+}
