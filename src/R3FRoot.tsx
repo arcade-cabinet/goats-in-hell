@@ -465,7 +465,9 @@ function GameScene() {
     const store = useGameStore.getState();
 
     // New game: init save DB fresh, then create a new run.
-    if (screen === 'playing' && prevScreen === 'newGame') {
+    // Triggered on 'loading' (which is now the transition from 'newGame')
+    // so the DB is ready before gameplay begins.
+    if (screen === 'loading' && prevScreen === 'newGame') {
       initSaveSystem()
         .then(() =>
           createNewRun({
@@ -480,8 +482,8 @@ function GameScene() {
         .catch(() => {});
     }
 
-    // Continue (mainMenu → playing): init save DB and restore the active run.
-    if (screen === 'playing' && prevScreen === 'mainMenu') {
+    // Continue (mainMenu → loading → playing): init save DB and restore the active run.
+    if (screen === 'loading' && prevScreen === 'mainMenu') {
       initSaveSystem()
         .then(() => loadLatestRun())
         .then((save) => {

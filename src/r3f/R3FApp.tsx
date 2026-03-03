@@ -14,6 +14,7 @@ import type React from 'react';
 import { Suspense, useCallback, useEffect, useState } from 'react';
 import { Platform, View } from 'react-native';
 import * as THREE from 'three/webgpu';
+import { renderingConfig } from '../config';
 import { R3FScene } from './R3FScene';
 
 /**
@@ -161,7 +162,7 @@ export function R3FApp({ children }: { children?: React.ReactNode }) {
       <Canvas
         shadows
         frameloop="always"
-        dpr={[1, 2]}
+        dpr={[renderingConfig.canvas.dprMin, renderingConfig.canvas.dprMax]}
         gl={async (props) => {
           // react-native-wgpu provides a W3C WebGPU surface on native.
           // On web, Three.js WebGPURenderer uses the browser WebGPU API.

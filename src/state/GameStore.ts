@@ -642,7 +642,7 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
   startNewGame: (difficulty, nightmareFlags, seed) => {
     cachedPlayerSnapshot = {};
     set({
-      screen: 'playing',
+      screen: 'loading',
       difficulty,
       nightmareFlags: nightmareFlags.ultraNightmare
         ? { ...nightmareFlags, permadeath: true }

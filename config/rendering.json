@@ -19,10 +19,10 @@
     "comment": "Player-attached spotlight, follows camera forward direction."
   },
   "roomLights": {
-    "spacing": 3,
-    "maxLights": 32,
+    "spacing": 4,
+    "maxLights": 12,
     "flickerAmplitude": 0.15,
-    "comment": "Theme-based point lights placed at open floor cells."
+    "comment": "Theme-based point lights placed at open floor cells. Capped at 12 to keep draw-call budget sane on mobile."
   },
   "muzzleFlash": {
     "color": "#ffffcc",
@@ -51,7 +51,7 @@
   },
   "canvas": {
     "dprMin": 1,
-    "dprMax": 2,
+    "dprMax": 1.5,
     "cameraFov": 75,
     "cameraNear": 0.3,
     "cameraFar": 100,

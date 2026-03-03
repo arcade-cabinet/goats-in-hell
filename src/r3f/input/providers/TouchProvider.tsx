@@ -14,6 +14,7 @@
 
 import type React from 'react';
 import { useCallback, useEffect, useRef } from 'react';
+import { useGameStore } from '../../../state/GameStore';
 import type { InputFrame } from '../InputActions';
 import type { IInputProvider } from '../InputManager';
 
@@ -23,7 +24,8 @@ import type { IInputProvider } from '../InputManager';
 
 const JOYSTICK_SIZE = 120;
 const JOYSTICK_DEADZONE = 10; // px
-const LOOK_SENSITIVITY = 0.004; // rad per pixel
+/** Base sensitivity in radians per pixel. Multiplied by the user's touchLookSensitivity setting (0.1–2.0). */
+const LOOK_SENSITIVITY_BASE = 0.004;
 
 const BUTTON_STYLES: React.CSSProperties = {
   position: 'absolute',
@@ -240,8 +242,9 @@ export const TouchOverlay: React.FC = () => {
 
       const dx = touch.clientX - lookLastPos.current.x;
       const dy = touch.clientY - lookLastPos.current.y;
-      touchState.lookDeltaX += dx * LOOK_SENSITIVITY;
-      touchState.lookDeltaY += dy * LOOK_SENSITIVITY;
+      const sensitivity = LOOK_SENSITIVITY_BASE * useGameStore.getState().touchLookSensitivity;
+      touchState.lookDeltaX += dx * sensitivity;
+      touchState.lookDeltaY += dy * sensitivity;
       lookLastPos.current = { x: touch.clientX, y: touch.clientY };
     }
   }, []);

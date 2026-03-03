@@ -192,7 +192,8 @@ describe('startNewGame', () => {
       );
 
     const state = useGameStore.getState();
-    expect(state.screen).toBe('playing');
+    // startNewGame transitions to 'loading' (asset preload gate) before 'playing'
+    expect(state.screen).toBe('loading');
     expect(state.score).toBe(0);
     expect(state.kills).toBe(0);
     expect(state.difficulty).toBe('easy');

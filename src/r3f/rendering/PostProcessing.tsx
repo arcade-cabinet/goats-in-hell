@@ -164,6 +164,19 @@ function computeEffectState(deltaMs: number): EffectState {
 // React component
 // ---------------------------------------------------------------------------
 
+/**
+ * Returns true when running on a mobile browser (small screen + touch).
+ * On these devices we skip the EffectComposer entirely — bloom's HDR
+ * resolve pass is the single biggest GPU cost and mobile GPUs can't
+ * sustain it at 60 fps. Vignette and noise are still applied via CSS/shader
+ * if needed in future; for now null is fine (gameplay is unaffected).
+ */
+function isMobileWebBrowser(): boolean {
+  if (Platform.OS !== 'web') return false;
+  if (typeof window === 'undefined') return false;
+  return window.innerWidth < 768 && navigator.maxTouchPoints > 0;
+}
+
 export function PostProcessingEffects(): React.JSX.Element | null {
   const gl = useThree((s) => s.gl);
   const bloomRef = useRef<any>(null);
@@ -182,8 +195,12 @@ export function PostProcessingEffects(): React.JSX.Element | null {
     return backendName === 'WebGPUBackend';
   }, [gl]);
 
+  // Skip effects on mobile browsers — bloom is the main GPU bottleneck.
+  // Evaluated once at mount (screen size is stable for the canvas lifetime).
+  const isMobile = useMemo(() => isMobileWebBrowser(), []);
+
   useFrame((_state, delta) => {
-    if (isWebGPUBackend) return;
+    if (isWebGPUBackend || isMobile) return;
 
     const deltaMs = delta * 1000;
     const fx = computeEffectState(deltaMs);
@@ -219,9 +236,10 @@ export function PostProcessingEffects(): React.JSX.Element | null {
   if (Platform.OS !== 'web') return null;
 
   // Skip EffectComposer entirely on true WebGPU backend — it's WebGL-only
-  if (isWebGPUBackend) {
-    return null;
-  }
+  if (isWebGPUBackend) return null;
+
+  // Skip EffectComposer on mobile browsers — bloom is the main GPU bottleneck
+  if (isMobile) return null;
 
   return (
     <EffectErrorBoundary>
