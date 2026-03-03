@@ -40,6 +40,7 @@
     "@react-three/xr": "^6.6.29",
     "drizzle-orm": "^0.45.1",
     "expo": "~55.0.4",
+    "expo-asset": "^55.0.8",
     "expo-sqlite": "~55.0.10",
     "miniplex": "^2.0.0",
     "postprocessing": "^6.38.3",
@@ -52,6 +53,7 @@
     "sql.js": "^1.14.0",
     "three": "^0.183.2",
     "yuka": "^0.7.8",
+    "zod": "^4.3.6",
     "zustand": "^5.0.11"
   },
   "devDependencies": {
