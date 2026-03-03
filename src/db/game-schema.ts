@@ -4,7 +4,7 @@
  * This database stores player save state and is separate from levels.db.
  * Initialized fresh on "New Game", persisted across sessions.
  */
-import { integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { integer, primaryKey, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 // ---------------------------------------------------------------------------
 // Runs -- one row per game run
@@ -64,51 +64,67 @@ export const playerState = sqliteTable('player_state', {
 // Player ammo -- ammo reserves per weapon
 // ---------------------------------------------------------------------------
 
-export const playerAmmo = sqliteTable('player_ammo', {
-  runId: text('run_id')
-    .notNull()
-    .references(() => runs.id),
-  weaponId: text('weapon_id').notNull(),
-  reserve: integer('reserve').notNull(),
-});
+export const playerAmmo = sqliteTable(
+  'player_ammo',
+  {
+    runId: text('run_id')
+      .notNull()
+      .references(() => runs.id),
+    weaponId: text('weapon_id').notNull(),
+    reserve: integer('reserve').notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.runId, t.weaponId] })],
+);
 
 // ---------------------------------------------------------------------------
 // Circle progress -- which circles have been completed
 // ---------------------------------------------------------------------------
 
-export const circleProgress = sqliteTable('circle_progress', {
-  runId: text('run_id')
-    .notNull()
-    .references(() => runs.id),
-  circleNumber: integer('circle_number').notNull(), // 1-9
-  status: text('status').notNull(), // 'locked' | 'active' | 'completed'
-  completedAt: integer('completed_at'), // unix ms, null if not completed
-});
+export const circleProgress = sqliteTable(
+  'circle_progress',
+  {
+    runId: text('run_id')
+      .notNull()
+      .references(() => runs.id),
+    circleNumber: integer('circle_number').notNull(), // 1-9
+    status: text('status').notNull(), // 'locked' | 'active' | 'completed'
+    completedAt: integer('completed_at'), // unix ms, null if not completed
+  },
+  (t) => [primaryKey({ columns: [t.runId, t.circleNumber] })],
+);
 
 // ---------------------------------------------------------------------------
 // Visited rooms -- rooms the player has entered (for map fog of war)
 // ---------------------------------------------------------------------------
 
-export const visitedRooms = sqliteTable('visited_rooms', {
-  runId: text('run_id')
-    .notNull()
-    .references(() => runs.id),
-  circleNumber: integer('circle_number').notNull(),
-  roomId: text('room_id').notNull(),
-  visitedAt: integer('visited_at').notNull(), // unix ms
-});
+export const visitedRooms = sqliteTable(
+  'visited_rooms',
+  {
+    runId: text('run_id')
+      .notNull()
+      .references(() => runs.id),
+    circleNumber: integer('circle_number').notNull(),
+    roomId: text('room_id').notNull(),
+    visitedAt: integer('visited_at').notNull(), // unix ms
+  },
+  (t) => [primaryKey({ columns: [t.runId, t.circleNumber, t.roomId] })],
+);
 
 // ---------------------------------------------------------------------------
 // Bosses defeated -- which bosses have been killed
 // ---------------------------------------------------------------------------
 
-export const bossesDefeated = sqliteTable('bosses_defeated', {
-  runId: text('run_id')
-    .notNull()
-    .references(() => runs.id),
-  bossId: text('boss_id').notNull(),
-  defeatedAt: integer('defeated_at').notNull(), // unix ms
-});
+export const bossesDefeated = sqliteTable(
+  'bosses_defeated',
+  {
+    runId: text('run_id')
+      .notNull()
+      .references(() => runs.id),
+    bossId: text('boss_id').notNull(),
+    defeatedAt: integer('defeated_at').notNull(), // unix ms
+  },
+  (t) => [primaryKey({ columns: [t.runId, t.bossId] })],
+);
 
 // ---------------------------------------------------------------------------
 // Settings -- user preferences (single row, id = 'default')
