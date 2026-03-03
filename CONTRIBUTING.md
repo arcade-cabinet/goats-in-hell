@@ -2,7 +2,10 @@
 
 ## Getting Started
 
+**Install Git LFS before cloning** — all binary assets (`.glb`, `.ogg`, `.wasm`) are tracked via LFS:
+
 ```bash
+git lfs install
 git clone git@github.com:arcade-cabinet/goats-in-hell.git
 cd goats-in-hell
 pnpm install
@@ -11,14 +14,7 @@ npx expo start --web --port 8085
 
 ## Git LFS
 
-This repo uses [Git Large File Storage](https://git-lfs.com/) for binary assets (`.glb`, `.ogg`, `.wasm`).
-
-**Setup LFS before cloning or checking out branches with binary files:**
-
-```bash
-git lfs install
-git clone git@github.com:arcade-cabinet/goats-in-hell.git
-```
+This repo uses [Git Large File Storage](https://git-lfs.com/) for binary assets.
 
 **If you already cloned without LFS:**
 
@@ -53,7 +49,7 @@ If you're adding new animation files, check the size and prefer Meshy's built-in
 ## Development Commands
 
 ```bash
-pnpm test          # 314 Jest tests
+pnpm test          # Jest unit tests (run pnpm test -- --verbose to see count)
 pnpm lint          # Biome 2.4 check
 pnpm lint:fix      # Biome auto-fix
 pnpm format        # Biome format
@@ -88,6 +84,7 @@ node scripts/validate-manifests.mjs
 ## CI
 
 Pull requests run:
+
 - Unit tests (Jest)
 - TypeScript type check
 - Biome lint

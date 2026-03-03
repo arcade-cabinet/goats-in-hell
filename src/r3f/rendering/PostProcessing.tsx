@@ -230,7 +230,7 @@ export function PostProcessingEffects(): React.JSX.Element | null {
           ref={bloomRef}
           intensity={renderingConfig.postProcessing.bloomIntensity}
           luminanceThreshold={renderingConfig.postProcessing.bloomLuminanceThreshold}
-          luminanceSmoothing={renderingConfig.postProcessing.bloomLuminanceSmoothingSmoothing}
+          luminanceSmoothing={renderingConfig.postProcessing.bloomLuminanceSmoothing}
           mipmapBlur
         />
         <Vignette

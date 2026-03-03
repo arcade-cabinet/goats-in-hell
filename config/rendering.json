@@ -33,7 +33,7 @@
   "postProcessing": {
     "bloomIntensity": 0.8,
     "bloomLuminanceThreshold": 0.6,
-    "bloomLuminanceSmoothingSmoothing": 0.3,
+    "bloomLuminanceSmoothing": 0.3,
     "vignetteOffset": 0.5,
     "vignetteDarkness": 0.45,
     "noiseOpacity": 0.04,
