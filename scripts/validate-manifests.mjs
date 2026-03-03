@@ -15,7 +15,7 @@
  *   node scripts/validate-manifests.mjs --warn-only   # exit 0 even on issues (for debugging)
  */
 
-import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 

@@ -439,7 +439,6 @@ export function LevelRenderer({
       sceneLightsRef.current = [];
       flickerLightsRef.current = [];
     };
-    // biome-ignore lint/correctness/useExhaustiveDependencies: onPropErrors is a stable callback ref
   }, [scene, renderableSpawns, compiledVisual, modelsLoaded, onPropErrors]);
 
   // Per-frame: flicker atmospheric lights (same as DungeonProps.tsx)

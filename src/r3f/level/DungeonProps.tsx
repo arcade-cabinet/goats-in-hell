@@ -375,7 +375,6 @@ export function DungeonProps({ spawns, onPropErrors }: DungeonPropsProps): null 
       sceneLightsRef.current = [];
       flickerLightsRef.current = [];
     };
-    // biome-ignore lint/correctness/useExhaustiveDependencies: onPropErrors is a stable callback ref
   }, [scene, propSpawns, modelsLoaded, onPropErrors]);
 
   // Per-frame flicker for atmospheric prop lights
