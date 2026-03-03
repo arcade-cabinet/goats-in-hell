@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.2.0](https://github.com/arcade-cabinet/goats-in-hell/compare/v1.1.1...v1.2.0) (2026-03-03)
+
+
+### Features
+
+* blocking loading screen, foldable touch controls, mobile perf ([#25](https://github.com/arcade-cabinet/goats-in-hell/issues/25)) ([05a9f27](https://github.com/arcade-cabinet/goats-in-hell/commit/05a9f2741180354f415a2037ca5c3369af0dc0cc))
+* Meshy asset explosion + cross-platform Phase 1 + game.db save system ([378993d](https://github.com/arcade-cabinet/goats-in-hell/commit/378993d018d2c4ee20118dce98bb57278e5fbbfc))
+* Meshy prop pipeline, asset reorganization, and game system improvements ([#22](https://github.com/arcade-cabinet/goats-in-hell/issues/22)) ([257c8f5](https://github.com/arcade-cabinet/goats-in-hell/commit/257c8f588dc570b8dbc80e65a98fdee5766aa407))
+* SQLite/Drizzle level database, 9 circles, .claude infrastructure, and game assets ([#20](https://github.com/arcade-cabinet/goats-in-hell/issues/20)) ([93ba7f4](https://github.com/arcade-cabinet/goats-in-hell/commit/93ba7f4f2c54e7447042051f622ca5c6dad7952b))
+
+
+### Bug Fixes
+
+* add loading screen, fix AI stuck detection order-of-operations ([#18](https://github.com/arcade-cabinet/goats-in-hell/issues/18)) ([5afefca](https://github.com/arcade-cabinet/goats-in-hell/commit/5afefcae7f4e399f0cfc6c97b9fd889787ab223c))
+* correct .claude/hooks schema to match Claude Code hook system ([#21](https://github.com/arcade-cabinet/goats-in-hell/issues/21)) ([7ccb8ac](https://github.com/arcade-cabinet/goats-in-hell/commit/7ccb8ac910c54f36aaeb05e08b9c958b56238b64))
+* dead player HP carried over to new game ([#19](https://github.com/arcade-cabinet/goats-in-hell/issues/19)) ([2e6b5f9](https://github.com/arcade-cabinet/goats-in-hell/commit/2e6b5f9a2689a5b47e66ffa36accc8e31d192430))
+* lighting overhaul, AI navigation, and combat QoL ([#15](https://github.com/arcade-cabinet/goats-in-hell/issues/15)) ([bd50706](https://github.com/arcade-cabinet/goats-in-hell/commit/bd5070611bd13e54336b560c8a53daf85494628b))
+* **renderer:** WebGL2 probe + error screen, Pages smoke/visual e2e tests ([#24](https://github.com/arcade-cabinet/goats-in-hell/issues/24)) ([41cfc5a](https://github.com/arcade-cabinet/goats-in-hell/commit/41cfc5a98598b3d3e8712f293dd08f6b6b1881a1))
+
 ## [1.1.1](https://github.com/arcade-cabinet/goats-in-hell/compare/v1.1.0...v1.1.1) (2026-02-28)
 
 
