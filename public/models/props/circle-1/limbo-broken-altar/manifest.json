@@ -1,0 +1,41 @@
+{
+  "id": "limbo-broken-altar",
+  "name": "Broken Stone Altar",
+  "type": "prop",
+  "seed": 2330249481,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac6d-36b1-7840-81e8-f3aca0aed2fd",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac6d-36b1-7840-81e8-f3aca0aed2fd"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac6e-a700-7dc9-b8cd-6a9c739e1f23",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac6e-a700-7dc9-b8cd-6a9c739e1f23"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A broken stone altar split diagonally, one half collapsed, carved pentagram on the intact surface, gray-blue granite with dark stains, rubble fragments scattered at base, dark fantasy dungeon game prop, isolated object, dark background, three-quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark gray-blue granite, carved pentagram detail, dark brownish stains, broken edges with exposed lighter stone",
+    "enablePbr": true
+  }
+}

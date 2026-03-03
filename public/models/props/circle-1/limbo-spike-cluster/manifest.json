@@ -1,0 +1,41 @@
+{
+  "id": "limbo-spike-cluster",
+  "name": "Iron Spike Cluster",
+  "type": "prop",
+  "seed": 3494650462,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caca0-2c82-7df7-bd88-84e7590142f1",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca0-2c82-7df7-bd88-84e7590142f1"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019caca2-f072-7ea3-bcf9-be25e00de8b9",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca2-f072-7ea3-bcf9-be25e00de8b9"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A cluster of jagged iron spikes protruding from a stone base at various angles, five to seven corroded dark iron spikes of different heights, rust and dark patina on the metal, embedded in cracked stone, used as a pit hazard or barrier in a dungeon, dark fantasy dungeon game prop, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 3500,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark corroded iron with rust streaks, sharp pointed tips, cracked stone base with mortar, dark patina and oxidation",
+    "enablePbr": true
+  }
+}

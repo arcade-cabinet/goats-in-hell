@@ -1,0 +1,41 @@
+{
+  "id": "violence-chain-conveyor",
+  "name": "Chain Conveyor",
+  "type": "prop",
+  "seed": 2267725768,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac8a-18e6-7c09-88ec-977620ca15e8",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac8a-18e6-7c09-88ec-977620ca15e8"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac8b-bc2c-7c30-82ac-846db11416b1",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac8b-bc2c-7c30-82ac-846db11416b1"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "An overhead chain conveyor rail with hanging hooks and rollers, industrial meat processing ceiling track, heavy rusted iron chain links on a metal I-beam rail, dark fantasy game prop, isolated object, dark background, side orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Rusted iron chain links, dark metal I-beam rail, blood-stained hook attachment points, industrial hardware",
+    "enablePbr": true
+  }
+}

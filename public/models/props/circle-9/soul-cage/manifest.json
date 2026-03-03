@@ -1,0 +1,41 @@
+{
+  "id": "soul-cage",
+  "name": "Soul Cage",
+  "type": "prop",
+  "seed": 2645652677,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac72-c12e-7ca9-8b4a-d20ea020253f",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac72-c12e-7ca9-8b4a-d20ea020253f"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac74-167c-7ea3-9685-eb4fd6408333",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac74-167c-7ea3-9685-eb4fd6408333"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A hanging iron cage with glowing spectral energy trapped inside, chains suspending it from above, twisted dark metal bars, faint green-blue soul glow, hell dungeon decoration, stylized low poly game prop, dark fantasy, isometric view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark rusted iron bars, emissive blue-green spectral glow inside, hanging chains",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "id": "limbo-inscription-tablet",
+  "name": "Inscription Tablet",
+  "type": "prop",
+  "seed": 2160228888,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac87-3bf3-7bc9-984e-b0d202a5a6cd",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac87-3bf3-7bc9-984e-b0d202a5a6cd"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac88-e849-70ee-b9a5-c7200f399cf7",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac88-e849-70ee-b9a5-c7200f399cf7"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A rectangular stone tablet mounted on a wall with deeply carved Latin text, gray-blue marble surface with ornate border frame, cracks running through the text, dark fantasy dungeon wall decoration game prop, isolated object, dark background, front-facing view",
+    "artStyle": "realistic",
+    "targetPolycount": 3500,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Gray-blue marble, deeply carved text with shadow, ornate stone border, cracks through surface, damp staining",
+    "enablePbr": true
+  }
+}

@@ -3,17 +3,24 @@
  * generate-assets.mjs -- Batch generate game assets via Meshy AI.
  *
  * Manifests live alongside their output GLBs in assets/models/:
- *   assets/models/props/{general,circle-N}/<id>/manifest.json   → refined.glb (prop-direct pipeline)
+ *   assets/models/props/{general,circle-N}/<id>/manifest.json     → refined.glb (prop-direct pipeline)
+ *   assets/models/setpieces/{general,circle-N}/<id>/manifest.json → refined.glb (prop-direct pipeline)
  *   assets/models/enemies/{general,circle-N,bosses}/<id>/manifest.json → animations/*.glb (enemy pipeline)
+ *
+ * TAXONOMY:
+ *   props/     = purely decorative objects (bone piles, candles, vases, crates)
+ *   setpieces/ = structural level elements (arches, columns, door frames, railings, stairs, ramps)
+ *   enemies/   = character models with rigging + animations
  *
  * The content generator reads the manifest, runs the pipeline, and writes
  * artifacts directly into the manifest's directory — no copy step needed.
  *
  * Usage:
- *   node scripts/generate-assets.mjs [props|enemies] [--step <id>] [--group <name>] [<asset-id>]
- *   pnpm generate:props                          # all props
- *   pnpm generate:enemies                        # all enemies
- *   pnpm generate:enemies -- --group bosses       # all bosses
+ *   node scripts/generate-assets.mjs [props|setpieces|enemies] [--step <id>] [--group <name>] [<asset-id>]
+ *   pnpm generate:props                             # all decorative props
+ *   pnpm generate:setpieces                         # all structural set pieces
+ *   pnpm generate:enemies                           # all enemies
+ *   pnpm generate:enemies -- --group bosses          # all bosses
  *   pnpm generate:props -- --step preview bone-pile  # preview step only for one prop
  */
 
@@ -26,14 +33,20 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROJECT_DIR = resolve(__dirname, '..');
 const ASSETS_DIR = join(PROJECT_DIR, 'assets', 'models');
 const PIPELINE_DEFS = join(PROJECT_DIR, 'pipelines', 'definitions');
-const TASK_DEFS = join(
-  PROJECT_DIR,
-  'node_modules',
-  '@agentic-dev-library',
-  'meshy-content-generator',
-  'tasks',
-  'definitions',
-);
+// Local task overrides take precedence over the library defaults.
+// tasks/definitions/ contains patched versions (e.g. text-to-image without
+// aspect_ratio — which conflicts with generate_multi_view=true on Meshy API).
+const LOCAL_TASK_DEFS = join(PROJECT_DIR, 'tasks', 'definitions');
+const TASK_DEFS = existsSync(LOCAL_TASK_DEFS)
+  ? LOCAL_TASK_DEFS
+  : join(
+      PROJECT_DIR,
+      'node_modules',
+      '@agentic-dev-library',
+      'meshy-content-generator',
+      'tasks',
+      'definitions',
+    );
 
 // ── Parse args ──────────────────────────────────────────────────────────────
 
@@ -52,7 +65,7 @@ for (let i = 0; i < args.length; i++) {
     targetGroup = args[++i];
     continue;
   }
-  if (args[i] === 'props' || args[i] === 'enemies') {
+  if (args[i] === 'props' || args[i] === 'setpieces' || args[i] === 'enemies') {
     assetType = args[i];
     continue;
   }
@@ -61,7 +74,7 @@ for (let i = 0; i < args.length; i++) {
 
 if (!assetType) {
   console.error(
-    'Usage: node scripts/generate-assets.mjs <props|enemies> [--step <id>] [--group <name>] [<asset-id>]',
+    'Usage: node scripts/generate-assets.mjs <props|setpieces|enemies> [--step <id>] [--group <name>] [<asset-id>]',
   );
   process.exit(1);
 }
@@ -175,7 +188,7 @@ for (const assetDir of assetDirs) {
     execFileSync('pnpm', ['exec', ...cmdArgs], {
       stdio: 'inherit',
       cwd: PROJECT_DIR,
-      timeout: 600_000, // 10 min per asset (enemies have more steps)
+      timeout: assetType === 'enemies' ? 1_800_000 : 1_200_000, // enemies: 30 min (concept+preview+refine+rigging); props/setpieces: 20 min
     });
     console.log(`  OK: ${assetId}`);
     success++;
@@ -192,8 +205,8 @@ console.log(`Failed: ${failed}`);
 
 if (success > 0) {
   console.log('\nArtifacts written directly to asset directories.');
-  if (assetType === 'props') {
-    console.log('  Props: <asset-dir>/refined.glb');
+  if (assetType === 'props' || assetType === 'setpieces') {
+    console.log(`  ${assetType === 'props' ? 'Props' : 'Set pieces'}: <asset-dir>/refined.glb`);
   } else {
     console.log('  Enemies: <asset-dir>/animations/<name>.glb');
   }

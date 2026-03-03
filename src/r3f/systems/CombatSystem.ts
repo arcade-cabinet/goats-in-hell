@@ -7,6 +7,7 @@
  */
 import * as THREE from 'three/webgpu';
 import type { Entity } from '../../game/entities/components';
+import { isEnemyEntity, isPlayerEntity } from '../../game/entities/TypedEntityGuards';
 import { world } from '../../game/entities/world';
 import { checkKillHint } from '../../game/systems/KillHintSystem';
 import { registerKill } from '../../game/systems/KillStreakSystem';
@@ -71,9 +72,10 @@ export interface DamageResult {
  * @returns  Result with actual damage dealt and kill status.
  */
 export function damageEnemy(entityId: string, damage: number, isHeadshot?: boolean): DamageResult {
-  const entity = world.entities.find((e: Entity) => e.id === entityId && e.enemy);
+  const _raw = world.entities.find((e: Entity) => e.id === entityId);
+  const entity = _raw && isEnemyEntity(_raw) ? _raw : null;
 
-  if (!entity || !entity.enemy) {
+  if (!entity) {
     return { killed: false, damage: 0 };
   }
 
@@ -93,8 +95,9 @@ export function damageEnemy(entityId: string, damage: number, isHeadshot?: boole
     enemy.staggerTimer = 300; // 300ms stagger
 
     // Knockback direction: away from player
-    const player = world.entities.find((e: Entity) => e.type === 'player');
-    if (player?.position && entity.position) {
+    const _rawPlayer = world.entities.find((e: Entity) => e.type === 'player');
+    const player = _rawPlayer && isPlayerEntity(_rawPlayer) ? _rawPlayer : null;
+    if (player && entity.position) {
       const dx = entity.position.x - player.position.x;
       const dz = entity.position.z - player.position.z;
       const len = Math.sqrt(dx * dx + dz * dz) || 1;
@@ -104,17 +107,15 @@ export function damageEnemy(entityId: string, damage: number, isHeadshot?: boole
   }
 
   // Damage number at enemy position (negate Z for Three.js coords)
-  if (entity.position) {
-    spawnDamageNumber(
-      damage,
-      {
-        x: entity.position.x,
-        y: entity.position.y + 1,
-        z: -entity.position.z,
-      },
-      isHeadshot,
-    );
-  }
+  spawnDamageNumber(
+    damage,
+    {
+      x: entity.position.x,
+      y: entity.position.y + 1,
+      z: -entity.position.z,
+    },
+    isHeadshot,
+  );
 
   if (enemy.hp <= 0) {
     handleEnemyKill(entity);
@@ -175,8 +176,9 @@ export function damageEnemyEntity(entity: Entity, damage: number, _isCrit?: bool
   if (damage > enemy.maxHp * 0.25 && enemy.hp > 0) {
     enemy.staggerTimer = 300;
 
-    const player = world.entities.find((e: Entity) => e.type === 'player');
-    if (player?.position && entity.position) {
+    const _rawPlayer = world.entities.find((e: Entity) => e.type === 'player');
+    const player = _rawPlayer && isPlayerEntity(_rawPlayer) ? _rawPlayer : null;
+    if (player && entity.position) {
       const dx = entity.position.x - player.position.x;
       const dz = entity.position.z - player.position.z;
       const len = Math.sqrt(dx * dx + dz * dz) || 1;
@@ -212,8 +214,9 @@ export function handleEnemyKill(entity: Entity): void {
 
   // Circle 7 (Violence) — Bleeding: each kill restores HP
   if (store.circleNumber === 7) {
-    const playerEntity = world.entities.find((e: Entity) => e.type === 'player' && e.player);
-    if (playerEntity?.player) {
+    const _rawPlayer = world.entities.find((e: Entity) => e.type === 'player');
+    const playerEntity = _rawPlayer && isPlayerEntity(_rawPlayer) ? _rawPlayer : null;
+    if (playerEntity) {
       playerEntity.player.hp = Math.min(
         playerEntity.player.hp + BLEED_KILL_HEAL,
         playerEntity.player.maxHp,
@@ -223,7 +226,7 @@ export function handleEnemyKill(entity: Entity): void {
 
   // Track mandatory vs optional kills for ending system
   const encounterType = store.stage.encounterType;
-  if (encounterType === 'arena' || encounterType === 'boss') {
+  if (encounterType === 'boss') {
     store.recordMandatoryKill();
   } else {
     store.recordOptionalKill();
@@ -260,9 +263,10 @@ export function handleEnemyKill(entity: Entity): void {
  * @returns  Whether the player died.
  */
 export function damagePlayer(damage: number): boolean {
-  const player = world.entities.find((e: Entity) => e.type === 'player' && e.player);
+  const _rawPlayer = world.entities.find((e: Entity) => e.type === 'player');
+  const player = _rawPlayer && isPlayerEntity(_rawPlayer) ? _rawPlayer : null;
 
-  if (!player || !player.player) return false;
+  if (!player) return false;
 
   // Death guard — prevent ghost damage after player is already dead
   if (player.player.hp <= 0) return true;
@@ -322,7 +326,7 @@ function distanceBetween(
 }
 
 /** Check a player-owned projectile against all enemies. */
-function checkPlayerProjectileCollisions(projectile: Entity): boolean {
+function _checkPlayerProjectileCollisions(projectile: Entity): boolean {
   const projPos = projectile.position!;
   const projData = projectile.projectile!;
   let hitSomething = false;
@@ -378,8 +382,9 @@ function checkPlayerProjectileCollisions(projectile: Entity): boolean {
         }
 
         // Screen shake proportional to explosion proximity + kill count
-        const playerEntity = world.entities.find((e: Entity) => e.type === 'player');
-        if (playerEntity?.position) {
+        const _rawAoePlayer = world.entities.find((e: Entity) => e.type === 'player');
+        const playerEntity = _rawAoePlayer && isPlayerEntity(_rawAoePlayer) ? _rawAoePlayer : null;
+        if (playerEntity) {
           const playerDist = distanceBetween(projPos, playerEntity.position);
           if (playerDist < projData.aoe * 2) {
             const proximity = 1 - playerDist / (projData.aoe * 2);
@@ -406,7 +411,7 @@ function checkPlayerProjectileCollisions(projectile: Entity): boolean {
 }
 
 /** Check an enemy-owned projectile against the player. */
-function checkEnemyProjectileCollision(projectile: Entity, player: Entity): boolean {
+function _checkEnemyProjectileCollision(projectile: Entity, player: Entity): boolean {
   if (!player.position || !player.player) return false;
 
   const dist = distanceBetween(projectile.position!, player.position);
@@ -436,13 +441,14 @@ function checkEnemyProjectileCollision(projectile: Entity, player: Entity): bool
 export function combatSystemUpdate(deltaTime: number): void {
   // Frame-rate normalization factor: 1.0 at 60fps (16ms), proportionally
   // larger/smaller at other rates so movement and lifetimes stay consistent.
-  const dtFactor = deltaTime / 16;
+  const _dtFactor = deltaTime / 16;
 
-  const player = world.entities.find((e: Entity) => e.type === 'player' && e.player);
+  const _rawPlayer = world.entities.find((e: Entity) => e.type === 'player');
+  const player = _rawPlayer && isPlayerEntity(_rawPlayer) ? _rawPlayer : null;
 
   // --- Circle 7 (Violence) — Bleeding: passive HP drain ---
   const circleNumber = useGameStore.getState().circleNumber;
-  if (player?.player && player.player.hp > 0 && circleNumber === 7) {
+  if (player && player.player.hp > 0 && circleNumber === 7) {
     const drainAmount = BLEED_DPS * (deltaTime / 1000); // Convert ms delta to seconds
     player.player.hp = Math.max(1, player.player.hp - drainAmount); // Don't kill via bleed (min 1 HP)
     setBleedingVignette(true);
@@ -451,9 +457,9 @@ export function combatSystemUpdate(deltaTime: number): void {
   }
 
   // --- Enemy melee attacks ---
-  if (player?.position && player.player) {
+  if (player) {
     for (const entity of world.entities) {
-      if (!entity.enemy || !entity.position) continue;
+      if (!isEnemyEntity(entity)) continue;
 
       // Skip staggered enemies
       if (entity.enemy.staggerTimer && entity.enemy.staggerTimer > 0) {

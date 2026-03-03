@@ -1,0 +1,41 @@
+{
+  "id": "gluttony-bile-pool-surface",
+  "name": "Bile Pool Surface",
+  "type": "prop",
+  "seed": 612538992,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac78-3c06-7d9a-b328-05777841c932",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac78-3c06-7d9a-b328-05777841c932"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac79-60ca-7938-9d15-4359a0754ecb",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac79-60ca-7938-9d15-4359a0754ecb"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A flat circular sculpted bile pool surface with solid sculpted bubbles and ripples, sickly yellow-green coloring with darker brown streaks, solid raised bubble formations across the surface, floor-level toxic pool decoration, dark fantasy gluttony-themed game prop, isolated object, dark background, top-down view",
+    "artStyle": "realistic",
+    "targetPolycount": 3500,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Sickly yellow-green liquid surface, solid sculpted bubble formations, darker brown organic streaks, toxic pool appearance",
+    "enablePbr": true
+  }
+}

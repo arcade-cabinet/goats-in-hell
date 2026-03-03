@@ -1,0 +1,41 @@
+{
+  "id": "meat-hook",
+  "name": "Meat Hook",
+  "type": "prop",
+  "seed": 1489368385,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac70-40d0-7753-8b10-c3551627ff32",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac70-40d0-7753-8b10-c3551627ff32"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac71-367f-7c86-a8a4-b5e44515da78",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac71-367f-7c86-a8a4-b5e44515da78"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large rusty meat hook hanging from a chain, bloodstained curved iron hook, industrial slaughterhouse ceiling fixture, violence butchery theme, stylized low poly game prop, dark fantasy, isometric view",
+    "artStyle": "realistic",
+    "targetPolycount": 2000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Rusty iron hook, dark bloodstain patina, heavy chain links, industrial metal",
+    "enablePbr": true
+  }
+}

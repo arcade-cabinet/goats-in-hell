@@ -11,6 +11,7 @@ module.exports = {
     '/node_modules/',
     '<rootDir>/__tests__/App.test.tsx',
     '<rootDir>/.claude/',
+    '<rootDir>/e2e/',
   ],
   modulePathIgnorePatterns: ['<rootDir>/.claude/'],
   setupFiles: ['<rootDir>/jest.setup.js'],

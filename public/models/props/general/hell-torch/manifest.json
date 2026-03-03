@@ -1,0 +1,41 @@
+{
+  "id": "hell-torch",
+  "name": "Hell Torch",
+  "type": "prop",
+  "seed": 2252211432,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caca9-40b5-704a-8529-e2343d0f66b5",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca9-40b5-704a-8529-e2343d0f66b5"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacaa-565f-7381-9de6-585afce358a0",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacaa-565f-7381-9de6-585afce358a0"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A wall-mounted iron torch with a demonic goat horn bracket, burning with unnatural green hellfire, dark iron with infernal runes etched into the metal, wall dungeon lighting prop, stylized low poly game prop, dark fantasy, isometric view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark iron with carved runes, emissive green flame, goat horn bracket detail",
+    "enablePbr": true
+  }
+}

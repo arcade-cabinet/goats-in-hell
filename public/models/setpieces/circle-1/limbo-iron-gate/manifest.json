@@ -1,0 +1,41 @@
+{
+  "id": "limbo-iron-gate",
+  "name": "Rusted Iron Gate",
+  "type": "prop",
+  "seed": 945496037,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac8a-7be3-7b08-944b-927895dc58bd",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac8a-7be3-7b08-944b-927895dc58bd"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac8c-4fc5-7fe9-beea-d7d656296d4b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac8c-4fc5-7fe9-beea-d7d656296d4b"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tall rusted iron gate with vertical bars and ornate goat-skull finials at the top, one hinge broken so the gate hangs askew, dark corroded iron with orange rust, set in a stone frame, dark fantasy dungeon game prop, isolated object, dark background, front-facing view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark corroded iron, heavy orange-brown rust, goat skull finial detail, broken hinge, stone frame border",
+    "enablePbr": true
+  }
+}

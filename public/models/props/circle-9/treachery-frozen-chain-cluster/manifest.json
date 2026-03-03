@@ -1,0 +1,41 @@
+{
+  "id": "treachery-frozen-chain-cluster",
+  "name": "Frozen Chain Cluster",
+  "type": "prop",
+  "seed": 1540170769,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac87-76c5-70d4-b27d-405e48c35fec",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac87-76c5-70d4-b27d-405e48c35fec"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac8b-4c2d-7fda-89d4-9ee4da81edb7",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac8b-4c2d-7fda-89d4-9ee4da81edb7"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A cluster of heavy iron chains frozen solid in ice, thick chain links encased in translucent blue ice hanging from a ceiling mount, frost crystals growing on the chain surface, chains of betrayal frozen in time, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark iron chain links encased in translucent blue ice, frost crystal growth on metal surfaces, frozen solid cluster, ice blue highlights",
+    "enablePbr": true
+  }
+}

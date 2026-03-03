@@ -1,0 +1,126 @@
+{
+  "id": "boss-furia",
+  "name": "Furia — The Inferno",
+  "type": "character",
+  "seed": 2030856000,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cad51-cde6-766c-9a20-fc21a47aa71b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad51-cde6-766c-9a20-fc21a47aa71b"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cad52-8c5c-74b9-ba3b-1e91c130bbb8",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad52-8c5c-74b9-ba3b-1e91c130bbb8"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cad55-9775-76c2-8e85-8229c46f8b58",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad55-9775-76c2-8e85-8229c46f8b58"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cad57-1a9d-7701-9136-6806613322b4",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad57-1a9d-7701-9136-6806613322b4"
+      },
+      "artifacts": {
+        "model": "model.glb"
+      }
+    },
+    "animations": {
+      "WalkAndRun.Running.Lean_Forward_Sprint": {
+        "taskId": "019cad6f-0b2e-7a9e-94f9-c823ba4c8476",
+        "status": "SUCCEEDED",
+        "actionId": 509,
+        "artifact": "animations/Lean_Forward_Sprint.glb"
+      },
+      "DailyActions.Idle.Angry_Ground_Stomp_1": {
+        "taskId": "019cad6f-49d1-799c-853b-4846946fb4d0",
+        "status": "SUCCEEDED",
+        "actionId": 256,
+        "artifact": "animations/Angry_Ground_Stomp_1.glb"
+      },
+      "Fighting.AttackingwithWeapon.Axe_Spin_Attack": {
+        "taskId": "019cad6f-c38b-7ab6-ad98-b53a75be8f8b",
+        "status": "SUCCEEDED",
+        "actionId": 238,
+        "artifact": "animations/Axe_Spin_Attack.glb"
+      },
+      "Fighting.CastingSpell.Charged_Ground_Slam": {
+        "taskId": "019cad70-0266-79dc-ba2d-6c0964541c4d",
+        "status": "SUCCEEDED",
+        "actionId": 127,
+        "artifact": "animations/Charged_Ground_Slam.glb"
+      },
+      "Fighting.Transitioning.Chest_Pound_Taunt": {
+        "taskId": "019cad70-4171-77c8-a6db-7cc7cf353462",
+        "status": "SUCCEEDED",
+        "actionId": 88,
+        "artifact": "animations/Chest_Pound_Taunt.glb"
+      },
+      "BodyMovements.Acting.Zombie_Scream": {
+        "taskId": "019cad70-bc39-77e3-ac84-47d534c57ec6",
+        "status": "SUCCEEDED",
+        "actionId": 386,
+        "artifact": "animations/Zombie_Scream.glb"
+      },
+      "Fighting.GettingHit.BeHit_FlyUp": {
+        "taskId": "019cad71-3673-7c7a-9cef-6a43b13c78b4",
+        "status": "SUCCEEDED",
+        "actionId": 7,
+        "artifact": "animations/BeHit_FlyUp.glb"
+      },
+      "Fighting.Dying.Knock_Down": {
+        "taskId": "019cad71-7525-77e8-b5be-c018bebf4f5c",
+        "status": "SUCCEEDED",
+        "actionId": 187,
+        "artifact": "animations/Knock_Down.glb"
+      }
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 5 Boss (Wrath). Pure rage incarnate, a goat demon made of living fire and molten iron.",
+  "textToImageTask": {
+    "prompt": "A towering bipedal humanoid goat demon in A-pose, body made of cracked volcanic rock and molten iron with magma visible through the fissures, no fur just burning stone flesh, enormous horns made of solidified lava glowing orange at the core, wielding two massive flaming fists like wrecking balls with chains of molten iron wrapped around the forearms, a furnace glow emanating from the open chest cavity, digitigrade legs of cracked obsidian with each step leaving lava footprints, eyes are two points of white-hot fury, 3.2 meters tall, stylized dark fantasy game boss character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Towering goat demon of volcanic rock and molten iron, lava-core horns, flaming fists with molten chains, furnace chest cavity, obsidian legs, 3.2m, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 16000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Cracked dark volcanic rock with glowing orange magma fissures, solidified lava horns with orange core, molten iron chains, white-hot eyes, obsidian leg surface",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 3.2
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Running.Lean_Forward_Sprint",
+      "DailyActions.Idle.Angry_Ground_Stomp_1",
+      "Fighting.AttackingwithWeapon.Axe_Spin_Attack",
+      "Fighting.CastingSpell.Charged_Ground_Slam",
+      "Fighting.Transitioning.Chest_Pound_Taunt",
+      "BodyMovements.Acting.Zombie_Scream",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Knock_Down"
+    ]
+  }
+}

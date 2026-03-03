@@ -1,0 +1,41 @@
+{
+  "id": "chandelier-iron",
+  "name": "Iron Chandelier",
+  "type": "prop",
+  "seed": 2087764435,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac83-24c3-7edc-a0a8-2c36840a5d1e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac83-24c3-7edc-a0a8-2c36840a5d1e"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac85-69c8-7091-970b-9b8943b88be2",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac85-69c8-7091-970b-9b8943b88be2"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A wrought iron chandelier with circular frame and 6-8 candle holder arms, hanging from a central chain, medieval dungeon ceiling light fixture with dripping wax candle stubs, dark fantasy game prop, ceiling-mounted hanging down, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark wrought iron with forged texture, melted wax drips on candle cups, soot-blackened arms",
+    "enablePbr": true
+  }
+}

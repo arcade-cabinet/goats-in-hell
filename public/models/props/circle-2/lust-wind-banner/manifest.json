@@ -1,0 +1,41 @@
+{
+  "id": "lust-wind-banner",
+  "name": "Wind-Swept Banner",
+  "type": "prop",
+  "seed": 3621460764,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacaa-0299-7353-a280-795d282bae7a",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacaa-0299-7353-a280-795d282bae7a"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacab-2d4a-70df-8b9d-6dbf2db8a9ae",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacab-2d4a-70df-8b9d-6dbf2db8a9ae"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A wall-mounted banner frozen mid-flutter in strong wind, rigid crimson fabric with gold border stretched taut to one side, iron mounting bracket, wind direction indicator, dark fantasy lust-themed game prop, isolated object, dark background, wall-mounted side view",
+    "artStyle": "realistic",
+    "targetPolycount": 3500,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Crimson rigid fabric stretched by wind, gold woven border, iron wall bracket, taut wind-shaped form",
+    "enablePbr": true
+  }
+}

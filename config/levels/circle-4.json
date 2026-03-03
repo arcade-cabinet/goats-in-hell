@@ -1,0 +1,1691 @@
+{
+  "circleNumber": 4,
+  "id": "circle-4-greed",
+  "name": "Circle 4: Greed",
+  "width": 44,
+  "depth": 73,
+  "floor": 4,
+  "grid": [
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 4, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 4, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 4, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 4, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 9, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 0, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 0, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 0, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ],
+    [
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    ]
+  ],
+  "playerSpawn": {
+    "x": 44,
+    "y": 1,
+    "z": 10
+  },
+  "spawns": [
+    {
+      "type": "boss-aureo",
+      "x": 44,
+      "z": 126,
+      "rotation": 3.141592653589793
+    },
+    {
+      "type": "goatKnight",
+      "x": 38,
+      "z": 32
+    },
+    {
+      "type": "goatKnight",
+      "x": 50,
+      "z": 40
+    },
+    {
+      "type": "hellgoat",
+      "x": 32,
+      "z": 28
+    },
+    {
+      "type": "hellgoat",
+      "x": 54,
+      "z": 28
+    },
+    {
+      "type": "goatKnight",
+      "x": 44,
+      "z": 70
+    },
+    {
+      "type": "hellgoat",
+      "x": 40,
+      "z": 64
+    },
+    {
+      "type": "ammo",
+      "x": 42,
+      "z": 10
+    },
+    {
+      "type": "ammo",
+      "x": 48,
+      "z": 8
+    },
+    {
+      "type": "ammo",
+      "x": 34,
+      "z": 30
+    },
+    {
+      "type": "ammo",
+      "x": 44,
+      "z": 30
+    },
+    {
+      "type": "ammo",
+      "x": 54,
+      "z": 36
+    },
+    {
+      "type": "ammo",
+      "x": 32,
+      "z": 26
+    },
+    {
+      "type": "ammo",
+      "x": 32,
+      "z": 44
+    },
+    {
+      "type": "ammo",
+      "x": 56,
+      "z": 26
+    },
+    {
+      "type": "ammo",
+      "x": 56,
+      "z": 44
+    },
+    {
+      "type": "health",
+      "x": 44,
+      "z": 40
+    },
+    {
+      "type": "ammo",
+      "x": 38,
+      "z": 60
+    },
+    {
+      "type": "ammo",
+      "x": 50,
+      "z": 60
+    },
+    {
+      "type": "health",
+      "x": 44,
+      "z": 72
+    },
+    {
+      "type": "ammo",
+      "x": 8,
+      "z": 68
+    },
+    {
+      "type": "ammo",
+      "x": 12,
+      "z": 72
+    },
+    {
+      "type": "health",
+      "x": 6,
+      "z": 72
+    },
+    {
+      "type": "health",
+      "x": 12,
+      "z": 68
+    },
+    {
+      "type": "ammo",
+      "x": 44,
+      "z": 92
+    },
+    {
+      "type": "ammo",
+      "x": 40,
+      "z": 100
+    },
+    {
+      "type": "ammo",
+      "x": 32,
+      "z": 118
+    },
+    {
+      "type": "ammo",
+      "x": 54,
+      "z": 118
+    },
+    {
+      "type": "ammo",
+      "x": 32,
+      "z": 140
+    },
+    {
+      "type": "ammo",
+      "x": 54,
+      "z": 140
+    },
+    {
+      "type": "health",
+      "x": 44,
+      "z": 118
+    },
+    {
+      "type": "health",
+      "x": 44,
+      "z": 140
+    },
+    {
+      "type": "greed-vault-arch",
+      "x": 44,
+      "z": 4
+    },
+    {
+      "type": "greed-vault-arch",
+      "x": 44,
+      "z": 14
+    },
+    {
+      "type": "greed-golden-vase",
+      "x": 38,
+      "z": 8
+    },
+    {
+      "type": "greed-golden-vase",
+      "x": 50,
+      "z": 8
+    },
+    {
+      "type": "coin-pile",
+      "x": 40,
+      "z": 6
+    },
+    {
+      "type": "coin-pile",
+      "x": 42,
+      "z": 12
+    },
+    {
+      "type": "coin-pile",
+      "x": 48,
+      "z": 10
+    },
+    {
+      "type": "coin-pile",
+      "x": 38,
+      "z": 12
+    },
+    {
+      "type": "coin-pile",
+      "x": 50,
+      "z": 6
+    },
+    {
+      "type": "greed-gold-bar-stack",
+      "x": 40,
+      "z": 8
+    },
+    {
+      "type": "greed-gold-bar-stack",
+      "x": 48,
+      "z": 6
+    },
+    {
+      "type": "greed-chest-pedestal",
+      "x": 46,
+      "z": 8
+    },
+    {
+      "type": "greed-treasure-chest",
+      "x": 46,
+      "z": 8
+    },
+    {
+      "type": "greed-gold-pillar",
+      "x": 32,
+      "z": 26
+    },
+    {
+      "type": "greed-gold-pillar",
+      "x": 56,
+      "z": 26
+    },
+    {
+      "type": "greed-gold-pillar",
+      "x": 32,
+      "z": 44
+    },
+    {
+      "type": "greed-gold-pillar",
+      "x": 56,
+      "z": 44
+    },
+    {
+      "type": "greed-diamond-plate-platform",
+      "x": 32,
+      "z": 26
+    },
+    {
+      "type": "greed-diamond-plate-platform",
+      "x": 54,
+      "z": 26
+    },
+    {
+      "type": "greed-chest-pedestal",
+      "x": 36,
+      "z": 30
+    },
+    {
+      "type": "greed-chest-pedestal",
+      "x": 42,
+      "z": 30
+    },
+    {
+      "type": "greed-chest-pedestal",
+      "x": 48,
+      "z": 30
+    },
+    {
+      "type": "greed-chest-pedestal",
+      "x": 54,
+      "z": 30
+    },
+    {
+      "type": "greed-chest-pedestal",
+      "x": 36,
+      "z": 38
+    },
+    {
+      "type": "greed-chest-pedestal",
+      "x": 42,
+      "z": 38
+    },
+    {
+      "type": "greed-chest-pedestal",
+      "x": 48,
+      "z": 38
+    },
+    {
+      "type": "greed-chest-pedestal",
+      "x": 54,
+      "z": 38
+    },
+    {
+      "type": "greed-treasure-chest",
+      "x": 36,
+      "z": 30
+    },
+    {
+      "type": "greed-treasure-chest",
+      "x": 42,
+      "z": 30
+    },
+    {
+      "type": "greed-treasure-chest",
+      "x": 48,
+      "z": 30
+    },
+    {
+      "type": "greed-treasure-chest",
+      "x": 54,
+      "z": 30
+    },
+    {
+      "type": "greed-treasure-chest",
+      "x": 36,
+      "z": 38
+    },
+    {
+      "type": "greed-treasure-chest",
+      "x": 42,
+      "z": 38
+    },
+    {
+      "type": "greed-treasure-chest",
+      "x": 48,
+      "z": 38
+    },
+    {
+      "type": "greed-treasure-chest",
+      "x": 54,
+      "z": 38
+    },
+    {
+      "type": "coin-pile",
+      "x": 38,
+      "z": 32
+    },
+    {
+      "type": "coin-pile",
+      "x": 44,
+      "z": 32
+    },
+    {
+      "type": "coin-pile",
+      "x": 50,
+      "z": 32
+    },
+    {
+      "type": "coin-pile",
+      "x": 38,
+      "z": 40
+    },
+    {
+      "type": "coin-pile",
+      "x": 44,
+      "z": 40
+    },
+    {
+      "type": "coin-pile",
+      "x": 50,
+      "z": 40
+    },
+    {
+      "type": "greed-golden-chalice",
+      "x": 40,
+      "z": 32
+    },
+    {
+      "type": "greed-golden-chalice",
+      "x": 48,
+      "z": 38
+    },
+    {
+      "type": "greed-golden-candelabra",
+      "x": 32,
+      "z": 26
+    },
+    {
+      "type": "greed-golden-candelabra",
+      "x": 56,
+      "z": 26
+    },
+    {
+      "type": "greed-golden-candelabra",
+      "x": 32,
+      "z": 44
+    },
+    {
+      "type": "greed-golden-candelabra",
+      "x": 56,
+      "z": 44
+    },
+    {
+      "type": "greed-safe-door",
+      "x": 44,
+      "z": 56
+    },
+    {
+      "type": "greed-safe-door",
+      "x": 44,
+      "z": 74
+    },
+    {
+      "type": "greed-pressure-plate",
+      "x": 36,
+      "z": 58
+    },
+    {
+      "type": "greed-pressure-plate",
+      "x": 40,
+      "z": 58
+    },
+    {
+      "type": "greed-pressure-plate",
+      "x": 44,
+      "z": 58
+    },
+    {
+      "type": "greed-pressure-plate",
+      "x": 48,
+      "z": 58
+    },
+    {
+      "type": "greed-pressure-plate",
+      "x": 36,
+      "z": 62
+    },
+    {
+      "type": "greed-pressure-plate",
+      "x": 40,
+      "z": 62
+    },
+    {
+      "type": "greed-pressure-plate",
+      "x": 44,
+      "z": 62
+    },
+    {
+      "type": "greed-pressure-plate",
+      "x": 48,
+      "z": 62
+    },
+    {
+      "type": "greed-pressure-plate",
+      "x": 36,
+      "z": 66
+    },
+    {
+      "type": "greed-pressure-plate",
+      "x": 40,
+      "z": 66
+    },
+    {
+      "type": "greed-pressure-plate",
+      "x": 44,
+      "z": 66
+    },
+    {
+      "type": "greed-pressure-plate",
+      "x": 48,
+      "z": 66
+    },
+    {
+      "type": "greed-pressure-plate",
+      "x": 36,
+      "z": 70
+    },
+    {
+      "type": "greed-pressure-plate",
+      "x": 40,
+      "z": 70
+    },
+    {
+      "type": "greed-pressure-plate",
+      "x": 44,
+      "z": 70
+    },
+    {
+      "type": "greed-pressure-plate",
+      "x": 48,
+      "z": 70
+    },
+    {
+      "type": "greed-gear-mechanism",
+      "x": 34,
+      "z": 60
+    },
+    {
+      "type": "greed-gear-mechanism",
+      "x": 54,
+      "z": 60
+    },
+    {
+      "type": "greed-gear-mechanism",
+      "x": 34,
+      "z": 68
+    },
+    {
+      "type": "greed-gear-mechanism",
+      "x": 54,
+      "z": 68
+    },
+    {
+      "type": "greed-gold-bar-stack",
+      "x": 38,
+      "z": 60
+    },
+    {
+      "type": "greed-gold-bar-stack",
+      "x": 50,
+      "z": 60
+    },
+    {
+      "type": "greed-skeletal-goat",
+      "x": 40,
+      "z": 58
+    },
+    {
+      "type": "greed-ammo-scatter",
+      "x": 40,
+      "z": 58
+    },
+    {
+      "type": "greed-ammo-scatter",
+      "x": 42,
+      "z": 60
+    },
+    {
+      "type": "coin-pile",
+      "x": 36,
+      "z": 66
+    },
+    {
+      "type": "coin-pile",
+      "x": 50,
+      "z": 72
+    },
+    {
+      "type": "greed-vault-arch",
+      "x": 4,
+      "z": 70
+    },
+    {
+      "type": "greed-golden-key-display",
+      "x": 8,
+      "z": 66
+    },
+    {
+      "type": "greed-jeweled-pedestal",
+      "x": 8,
+      "z": 70
+    },
+    {
+      "type": "greed-treasure-chest",
+      "x": 8,
+      "z": 70
+    },
+    {
+      "type": "greed-golden-chalice",
+      "x": 6,
+      "z": 72
+    },
+    {
+      "type": "greed-golden-chalice",
+      "x": 12,
+      "z": 72
+    },
+    {
+      "type": "greed-gold-pillar",
+      "x": 38,
+      "z": 90
+    },
+    {
+      "type": "greed-gold-pillar",
+      "x": 50,
+      "z": 90
+    },
+    {
+      "type": "greed-gold-pillar",
+      "x": 38,
+      "z": 102
+    },
+    {
+      "type": "greed-gold-pillar",
+      "x": 50,
+      "z": 102
+    },
+    {
+      "type": "coin-pile",
+      "x": 38,
+      "z": 90
+    },
+    {
+      "type": "coin-pile",
+      "x": 50,
+      "z": 90
+    },
+    {
+      "type": "coin-pile",
+      "x": 38,
+      "z": 102
+    },
+    {
+      "type": "coin-pile",
+      "x": 50,
+      "z": 102
+    },
+    {
+      "type": "greed-golden-banner",
+      "x": 34,
+      "z": 86
+    },
+    {
+      "type": "greed-golden-banner",
+      "x": 54,
+      "z": 106
+    },
+    {
+      "type": "greed-treasure-chest",
+      "x": 34,
+      "z": 102
+    },
+    {
+      "type": "greed-treasure-chest",
+      "x": 54,
+      "z": 90
+    },
+    {
+      "type": "coin-pile",
+      "x": 34,
+      "z": 96
+    },
+    {
+      "type": "coin-pile",
+      "x": 54,
+      "z": 96
+    },
+    {
+      "type": "greed-golden-vase",
+      "x": 32,
+      "z": 86
+    },
+    {
+      "type": "greed-golden-vase",
+      "x": 56,
+      "z": 106
+    },
+    {
+      "type": "greed-golden-throne",
+      "x": 44,
+      "z": 118
+    },
+    {
+      "type": "greed-vault-arch",
+      "x": 44,
+      "z": 116
+    },
+    {
+      "type": "greed-golden-candelabra",
+      "x": 34,
+      "z": 120
+    },
+    {
+      "type": "greed-golden-candelabra",
+      "x": 54,
+      "z": 120
+    },
+    {
+      "type": "greed-golden-candelabra",
+      "x": 34,
+      "z": 130
+    },
+    {
+      "type": "greed-golden-candelabra",
+      "x": 54,
+      "z": 130
+    },
+    {
+      "type": "greed-golden-candelabra",
+      "x": 34,
+      "z": 140
+    },
+    {
+      "type": "greed-golden-candelabra",
+      "x": 54,
+      "z": 140
+    },
+    {
+      "type": "greed-gold-chain",
+      "x": 38,
+      "z": 122
+    },
+    {
+      "type": "greed-gold-chain",
+      "x": 50,
+      "z": 122
+    },
+    {
+      "type": "greed-gold-chain",
+      "x": 38,
+      "z": 138
+    },
+    {
+      "type": "greed-gold-chain",
+      "x": 50,
+      "z": 138
+    },
+    {
+      "type": "greed-golden-banner",
+      "x": 40,
+      "z": 118
+    },
+    {
+      "type": "greed-golden-banner",
+      "x": 48,
+      "z": 118
+    },
+    {
+      "type": "coin-pile",
+      "x": 36,
+      "z": 126
+    },
+    {
+      "type": "coin-pile",
+      "x": 52,
+      "z": 126
+    },
+    {
+      "type": "coin-pile",
+      "x": 36,
+      "z": 136
+    },
+    {
+      "type": "coin-pile",
+      "x": 52,
+      "z": 136
+    },
+    {
+      "type": "coin-pile",
+      "x": 44,
+      "z": 124
+    },
+    {
+      "type": "coin-pile",
+      "x": 44,
+      "z": 134
+    },
+    {
+      "type": "coin-pile",
+      "x": 38,
+      "z": 130
+    },
+    {
+      "type": "coin-pile",
+      "x": 50,
+      "z": 130
+    },
+    {
+      "type": "greed-coin-cascade",
+      "x": 42,
+      "z": 118
+    },
+    {
+      "type": "greed-coin-cascade",
+      "x": 46,
+      "z": 118
+    },
+    {
+      "type": "greed-golden-vase",
+      "x": 34,
+      "z": 120
+    },
+    {
+      "type": "greed-golden-vase",
+      "x": 54,
+      "z": 120
+    }
+  ],
+  "theme": {
+    "name": "greed",
+    "displayName": "GREED -- The Circle of Avarice",
+    "primaryWall": 4,
+    "accentWalls": [1],
+    "enemyTypes": ["goatKnight", "hellgoat"],
+    "enemyDensity": 1,
+    "pickupDensity": 2.5,
+    "ambientColor": "#ffcc44"
+  },
+  "envZones": [
+    {
+      "id": "7c52904e-076a-4d61-9dce-febb3247b620",
+      "envType": "fire",
+      "x": 0,
+      "z": 0,
+      "w": 88,
+      "h": 132,
+      "intensity": 0.6,
+      "dirX": 0,
+      "dirZ": 0,
+      "timerOn": 0,
+      "timerOff": 0
+    },
+    {
+      "id": "c8cc3017-2e89-42be-9a74-bdf78412ca66",
+      "envType": "wind",
+      "x": 36,
+      "z": 58,
+      "w": 16,
+      "h": 16,
+      "intensity": 0.5,
+      "dirX": 0,
+      "dirZ": 0,
+      "timerOn": 0,
+      "timerOff": 0
+    },
+    {
+      "id": "9b1f0f32-f8c9-4afa-bd4c-fc496cd95420",
+      "envType": "fire",
+      "x": 30,
+      "z": 116,
+      "w": 28,
+      "h": 28,
+      "intensity": 0.4,
+      "dirX": 0,
+      "dirZ": 0,
+      "timerOn": 0,
+      "timerOff": 0
+    }
+  ],
+  "decals": [
+    {
+      "id": "d45b44e3-e632-48a7-a7fe-9cc4caa4b45e",
+      "decalType": "water-stain",
+      "x": 40,
+      "z": 6,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.3,
+      "surface": "floor"
+    },
+    {
+      "id": "23c6c405-f4ec-4c38-b36a-576f093fb37a",
+      "decalType": "water-stain",
+      "x": 46,
+      "z": 8,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.3,
+      "surface": "floor"
+    },
+    {
+      "id": "dbf6eda7-2b67-462e-b10e-5375030e08ee",
+      "decalType": "concrete-crack",
+      "x": 30,
+      "z": 32,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "wall"
+    },
+    {
+      "id": "6323f781-c901-44dc-be26-78d1173b7f25",
+      "decalType": "concrete-crack",
+      "x": 58,
+      "z": 32,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "wall"
+    },
+    {
+      "id": "c0d482c6-4380-41a1-88d0-aa40e5d927cd",
+      "decalType": "water-stain",
+      "x": 36,
+      "z": 30,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.3,
+      "surface": "floor"
+    },
+    {
+      "id": "b4b2acad-c064-4869-8cc4-f64f68a35a53",
+      "decalType": "water-stain",
+      "x": 54,
+      "z": 38,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.3,
+      "surface": "floor"
+    },
+    {
+      "id": "fdfc83f8-feed-4204-9395-e0640bd9e86d",
+      "decalType": "concrete-crack",
+      "x": 34,
+      "z": 64,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "wall"
+    },
+    {
+      "id": "901e369d-ceb5-4df9-9350-405e9158d83d",
+      "decalType": "concrete-crack",
+      "x": 54,
+      "z": 64,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "wall"
+    },
+    {
+      "id": "a5a02e79-6e73-4b42-981c-80b07bfb80ec",
+      "decalType": "concrete-crack",
+      "x": 32,
+      "z": 96,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "wall"
+    },
+    {
+      "id": "f7920ead-1737-40e1-b308-baad15481b56",
+      "decalType": "concrete-crack",
+      "x": 56,
+      "z": 96,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "wall"
+    },
+    {
+      "id": "6e62d4b8-999a-4fc4-b348-90ed3bd61fb3",
+      "decalType": "water-stain",
+      "x": 34,
+      "z": 102,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.3,
+      "surface": "floor"
+    },
+    {
+      "id": "5fb878c5-42cf-4272-a24a-ba4474db6008",
+      "decalType": "water-stain",
+      "x": 54,
+      "z": 90,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.3,
+      "surface": "floor"
+    },
+    {
+      "id": "b7218448-693d-40e1-ba89-1dc82b8cc677",
+      "decalType": "concrete-crack",
+      "x": 30,
+      "z": 126,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "wall"
+    },
+    {
+      "id": "170ffef6-a885-4544-b324-c0def541c989",
+      "decalType": "concrete-crack",
+      "x": 58,
+      "z": 126,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "wall"
+    },
+    {
+      "id": "1c08fd70-714e-40f6-ae5c-b963b5ea95d6",
+      "decalType": "water-stain",
+      "x": 42,
+      "z": 118,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.3,
+      "surface": "floor"
+    },
+    {
+      "id": "98fc7032-fe5f-496f-9db3-7afd0883cee4",
+      "decalType": "water-stain",
+      "x": 46,
+      "z": 118,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.3,
+      "surface": "floor"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "ae088aad-1206-497b-8c2a-ebfdb8cd0326",
+      "action": "lockDoors",
+      "zoneX": 34,
+      "zoneZ": 86,
+      "zoneW": 20,
+      "zoneH": 4,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": null,
+      "linkedEntityIds": []
+    },
+    {
+      "id": "5be6d0a0-20ff-463c-9d0a-65b78a07fa68",
+      "action": "unlockDoors",
+      "zoneX": 34,
+      "zoneZ": 86,
+      "zoneW": 20,
+      "zoneH": 4,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "condition": "allEnemiesKilled"
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "9fa60620-1314-40fa-87d5-46e3c6516f59",
+      "action": "spawnWave",
+      "zoneX": 34,
+      "zoneZ": 86,
+      "zoneW": 20,
+      "zoneH": 4,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "waveIndex": 0,
+        "enemies": [
+          {
+            "type": "goatKnight",
+            "count": 1
+          },
+          {
+            "type": "goatKnight",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          }
+        ]
+      },
+      "linkedEntityIds": [
+        "0cc131c5-d30e-46ea-8109-f8efb7d19620",
+        "fe9d4aa3-35d0-4890-89c0-2f99c293d897",
+        "68174071-eecc-49af-8ee5-df960c4891e3",
+        "0b8f7252-129e-47c8-9972-1b76dea1a17d"
+      ]
+    },
+    {
+      "id": "618bb3cc-9f14-4fda-b982-2e1c9fc47095",
+      "action": "spawnWave",
+      "zoneX": 34,
+      "zoneZ": 86,
+      "zoneW": 20,
+      "zoneH": 4,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "waveIndex": 1,
+        "enemies": [
+          {
+            "type": "goatKnight",
+            "count": 1
+          },
+          {
+            "type": "goatKnight",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          }
+        ]
+      },
+      "linkedEntityIds": [
+        "3024f866-2118-439d-91c7-5199df897190",
+        "31c636f2-52ca-45bd-98c9-0f8382f816b1",
+        "fb1782dc-da05-4d58-a98a-7be510be03ee",
+        "fed4ac00-03c8-480a-8542-402db7ce60b8"
+      ]
+    },
+    {
+      "id": "3626c5ac-1ca0-44d1-b35c-97380250ed2f",
+      "action": "dialogue",
+      "zoneX": 32,
+      "zoneZ": 26,
+      "zoneW": 24,
+      "zoneH": 4,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "text": "The balcony gleams with ammunition. But weight has consequence here."
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "f44b16e4-6e72-438a-853b-e7f646ef4d54",
+      "action": "platformMove",
+      "zoneX": 36,
+      "zoneZ": 58,
+      "zoneW": 16,
+      "zoneH": 16,
+      "once": false,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "sinkRate": 0.5,
+        "sinkDepth": -1,
+        "condition": "ammoAbove150"
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "04ec90a8-4de5-4d78-8884-887335c72317",
+      "action": "dialogue",
+      "zoneX": 36,
+      "zoneZ": 58,
+      "zoneW": 16,
+      "zoneH": 16,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "text": "The floor groans beneath your burden. Let go."
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "ac32bfa0-a806-4e8b-8f32-d17c54671244",
+      "action": "platformMove",
+      "zoneX": 38,
+      "zoneZ": 90,
+      "zoneW": 2,
+      "zoneH": 2,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "pillarId": 1,
+        "rubbleElevation": 0.5,
+        "condition": "coinPileDestroyed"
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "90c06275-fa02-4786-ac58-0d4274260b85",
+      "action": "platformMove",
+      "zoneX": 48,
+      "zoneZ": 90,
+      "zoneW": 2,
+      "zoneH": 2,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "pillarId": 2,
+        "rubbleElevation": 0.5,
+        "condition": "coinPileDestroyed"
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "0e827524-370f-4960-876e-ebecf3f9bdf0",
+      "action": "platformMove",
+      "zoneX": 38,
+      "zoneZ": 100,
+      "zoneW": 2,
+      "zoneH": 2,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "pillarId": 3,
+        "rubbleElevation": 0.5,
+        "condition": "coinPileDestroyed"
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "2f3babbb-83d9-4ece-8f03-e582a9ba3590",
+      "action": "platformMove",
+      "zoneX": 48,
+      "zoneZ": 100,
+      "zoneW": 2,
+      "zoneH": 2,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "pillarId": 4,
+        "rubbleElevation": 0.5,
+        "condition": "coinPileDestroyed"
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "b8de7255-85c5-4689-b62b-fe0c683c521b",
+      "action": "bossIntro",
+      "zoneX": 32,
+      "zoneZ": 118,
+      "zoneW": 24,
+      "zoneH": 4,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "text": "Everything you carry was taken from another. I will take it from you."
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "79b08d35-0f1d-4aaa-9d04-f6b294983388",
+      "action": "lockDoors",
+      "zoneX": 32,
+      "zoneZ": 118,
+      "zoneW": 24,
+      "zoneH": 4,
+      "once": true,
+      "fired": false,
+      "delay": 3000,
+      "pendingFireTime": 0,
+      "actionData": null,
+      "linkedEntityIds": []
+    },
+    {
+      "id": "f5d631d7-0f21-4234-b807-122dcebebe90",
+      "action": "ambientChange",
+      "zoneX": 30,
+      "zoneZ": 116,
+      "zoneW": 28,
+      "zoneH": 28,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "condition": "bossHpBelow66",
+        "action": "stealWeapon",
+        "interval": 20
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "3da876c1-ce1a-477e-8831-9077c278b134",
+      "action": "ambientChange",
+      "zoneX": 30,
+      "zoneZ": 116,
+      "zoneW": 28,
+      "zoneH": 28,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "condition": "bossHpBelow33",
+        "action": "stealAllWeapons",
+        "scatterPositions": [[16, 59], [27, 59], [16, 70], [27, 70]]
+      },
+      "linkedEntityIds": []
+    }
+  ],
+  "triggeredEntities": [
+    {
+      "entityType": "goatKnight",
+      "x": 44,
+      "z": 86,
+      "facing": 0,
+      "triggerId": "9fa60620-1314-40fa-87d5-46e3c6516f59",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "goatKnight",
+      "x": 44,
+      "z": 104,
+      "facing": 0,
+      "triggerId": "9fa60620-1314-40fa-87d5-46e3c6516f59",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 34,
+      "z": 96,
+      "facing": 0,
+      "triggerId": "9fa60620-1314-40fa-87d5-46e3c6516f59",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 52,
+      "z": 96,
+      "facing": 0,
+      "triggerId": "9fa60620-1314-40fa-87d5-46e3c6516f59",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "goatKnight",
+      "x": 34,
+      "z": 86,
+      "facing": 0,
+      "triggerId": "618bb3cc-9f14-4fda-b982-2e1c9fc47095",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "goatKnight",
+      "x": 52,
+      "z": 104,
+      "facing": 0,
+      "triggerId": "618bb3cc-9f14-4fda-b982-2e1c9fc47095",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 40,
+      "z": 86,
+      "facing": 0,
+      "triggerId": "618bb3cc-9f14-4fda-b982-2e1c9fc47095",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 48,
+      "z": 86,
+      "facing": 0,
+      "triggerId": "618bb3cc-9f14-4fda-b982-2e1c9fc47095",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    }
+  ]
+}

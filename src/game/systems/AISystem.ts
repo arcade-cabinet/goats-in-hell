@@ -22,12 +22,11 @@ import {
 import { GameState } from '../../state/GameState';
 import { useGameStore } from '../../state/GameStore';
 import type { Entity, Vec3 } from '../entities/components';
+import { isPlayerEntity } from '../entities/TypedEntityGuards';
 import {
   vec3,
-  vec3Clone,
   vec3Distance,
   vec3Length,
-  vec3Scale,
   vec3ScaleInPlace,
   vec3Subtract,
   vec3Zero,
@@ -450,8 +449,9 @@ function postSteeringArchGoat(
 // ---------------------------------------------------------------------------
 
 export function aiSystemUpdate(deltaTime: number): void {
-  const player = world.entities.find((e) => e.type === 'player');
-  if (!player || !player.position || !player.player) return;
+  const _rawPlayer = world.entities.find((e) => e.type === 'player');
+  const player = _rawPlayer && isPlayerEntity(_rawPlayer) ? _rawPlayer : null;
+  if (!player) return;
 
   const playerPos = player.position;
   const dtScale = deltaTime / 16;

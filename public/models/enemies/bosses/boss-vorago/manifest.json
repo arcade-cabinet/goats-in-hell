@@ -1,0 +1,119 @@
+{
+  "id": "boss-vorago",
+  "name": "Vorago — The Devourer",
+  "type": "character",
+  "seed": 1156040612,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cad6b-e98f-7921-b9bd-3a92799b14fc",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad6b-e98f-7921-b9bd-3a92799b14fc"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cad6c-b63c-7bc1-a4d0-54a38a5806fb",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad6c-b63c-7bc1-a4d0-54a38a5806fb"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cad6f-01e1-7997-a72e-971b676444c9",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad6f-01e1-7997-a72e-971b676444c9"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cad70-98f2-79fe-8883-16f91abf91e8",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad70-98f2-79fe-8883-16f91abf91e8"
+      },
+      "artifacts": {
+        "model": "model.glb"
+      }
+    },
+    "animations": {
+      "WalkAndRun.Walking.Stumble_Walk": {
+        "taskId": "019cad7c-57ed-79a6-8959-e36d7fe4125c",
+        "status": "SUCCEEDED",
+        "actionId": 562,
+        "artifact": "animations/Stumble_Walk.glb"
+      },
+      "DailyActions.Idle.Angry_Ground_Stomp_2": {
+        "taskId": "019cad7d-0df6-7c26-9acc-e7894d09dded",
+        "status": "SUCCEEDED",
+        "actionId": 257,
+        "artifact": "animations/Angry_Ground_Stomp_2.glb"
+      },
+      "Fighting.CastingSpell.Charged_Ground_Slam": {
+        "taskId": "019cad7d-4c6a-7ba1-80bf-4771e8676d4a",
+        "status": "SUCCEEDED",
+        "actionId": 127,
+        "artifact": "animations/Charged_Ground_Slam.glb"
+      },
+      "Fighting.CastingSpell.mage_soell_cast_2": {
+        "taskId": "019cad7d-8b29-79ef-88f1-48b8bb471b8e",
+        "status": "SUCCEEDED",
+        "actionId": 131,
+        "artifact": "animations/mage_soell_cast_2.glb"
+      },
+      "BodyMovements.Acting.Zombie_Scream": {
+        "taskId": "019cad81-ba3f-7c22-806c-a197520051f2",
+        "status": "SUCCEEDED",
+        "actionId": 386,
+        "artifact": "animations/Zombie_Scream.glb"
+      },
+      "Fighting.GettingHit.BeHit_FlyUp": {
+        "taskId": "019cad82-3524-7f3b-9bbe-21dca511bc25",
+        "status": "SUCCEEDED",
+        "actionId": 7,
+        "artifact": "animations/BeHit_FlyUp.glb"
+      },
+      "Fighting.Dying.Knock_Down_1": {
+        "taskId": "019cad82-7516-7c41-868e-6c69ef801e33",
+        "status": "SUCCEEDED",
+        "actionId": 190,
+        "artifact": "animations/Knock_Down_1.glb"
+      }
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 3 Boss (Gluttony). Monstrous obese goat demon with multiple mouths.",
+  "textToImageTask": {
+    "prompt": "A towering bipedal humanoid goat demon abomination in A-pose, monstrously obese with multiple mouths across the distended belly each with gnashing teeth, sickly green-brown fur matted with bile and food remnants, short thick horns like a boar, massive arms ending in claw-hands large enough to grab a person, wearing chains wrapped around the torso that dig into the flesh, additional smaller goat faces growing from the shoulders, thick stumpy digitigrade legs, dozens of small beady hungry red eyes, 3 meters tall, stylized dark fantasy game boss character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Monstrously obese bipedal goat demon, multiple mouths on belly, green-brown matted fur, boar horns, grabbing claws, chain-wrapped, 3m, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 18000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Sickly green-brown matted fur, multiple gnashing tooth-filled mouths, bile-stained flesh, rusted chains digging into fat, beady red eyes, parasitic shoulder faces",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 3
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Stumble_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp_2",
+      "Fighting.CastingSpell.Charged_Ground_Slam",
+      "Fighting.CastingSpell.mage_soell_cast_2",
+      "BodyMovements.Acting.Zombie_Scream",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Knock_Down_1"
+    ]
+  }
+}

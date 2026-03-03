@@ -1,0 +1,41 @@
+{
+  "id": "gluttony-rotten-crate",
+  "name": "Rotten Supply Crate",
+  "type": "prop",
+  "seed": 3818999317,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caca1-2fec-726f-8ea8-4554ad1a8875",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca1-2fec-726f-8ea8-4554ad1a8875"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019caca4-c124-7efa-a661-3c12468b7aa8",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca4-c124-7efa-a661-3c12468b7aa8"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A wooden supply crate with rotting boards and rusted nails, lid partially open revealing spoiled green-brown contents sculpted as solid mass inside, fungal growth on exterior, dark fantasy gluttony-themed game prop, isolated object, dark background, three-quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 3500,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Rotting dark wood boards, rusted iron nails, green-brown spoiled contents, yellow fungal patches on exterior",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "id": "fraud-onyx-wall-panel",
+  "name": "Onyx Wall Panel",
+  "type": "prop",
+  "seed": 3125155285,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac97-9c52-7ce7-b1db-d1fe93e7bfc7",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac97-9c52-7ce7-b1db-d1fe93e7bfc7"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac98-ab38-7d0a-80a3-2b10d2a6c824",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac98-ab38-7d0a-80a3-2b10d2a6c824"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large rectangular polished black onyx wall panel with mirror-like reflective surface, dark stone wall-mounted decorative slab with beveled edges, hall of mirrors reflective surface, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Mirror-polished black onyx surface, subtle veining, beveled edges, highly reflective dark stone, wall-mount backing",
+    "enablePbr": true
+  }
+}

@@ -19,6 +19,7 @@
 import { eq } from 'drizzle-orm';
 
 import { MapCell } from '../game/levels/LevelGenerator';
+import { getAvailableEnemiesForCircle, getAvailablePropsForCircle } from './AssetDiscovery';
 import type { DrizzleDb } from './connection';
 import { compileGrid, packGrid } from './GridCompiler';
 import * as schema from './schema';
@@ -86,6 +87,25 @@ export const SPAWN_CATEGORIES = {
   PROP: 'prop',
   HAZARD: 'hazard',
   BOSS: 'boss',
+} as const;
+
+/** Canonical decal surface targets — where the decal projects onto. */
+export const DECAL_SURFACES = {
+  FLOOR: 'floor',
+  WALL: 'wall',
+  CEILING: 'ceiling',
+} as const;
+
+/** Canonical decal type identifiers for use in build scripts. */
+export const DECAL_TYPES = {
+  ICE_FROST: 'ice-frost',
+  SNOW_DRIFT: 'snow-drift',
+  CONCRETE_CRACK: 'concrete-crack',
+  BLOOD_STAIN: 'blood-stain',
+  RUST_PATCH: 'rust-patch',
+  SCORCH_MARK: 'scorch-mark',
+  MOSS_PATCH: 'moss-patch',
+  WATER_STAIN: 'water-stain',
 } as const;
 
 /** Canonical enemy type identifiers for use in build scripts. */
@@ -169,6 +189,64 @@ export interface ValidationResult {
   errors: string[];
   /** Non-blocking observations (e.g. empty rooms, overlapping bounds). */
   warnings: string[];
+}
+
+// ---------------------------------------------------------------------------
+// Texture + fill-rule types for procedural rendering
+// ---------------------------------------------------------------------------
+
+/** Identifier for a PBR texture set from the AmbientCG library. */
+export type TextureId =
+  | 'stone'
+  | 'stone-dark'
+  | 'brick'
+  | 'concrete'
+  | 'ground'
+  | 'ice'
+  | 'ice-deep'
+  | 'lava'
+  | 'lava-dark'
+  | 'lava-cold'
+  | 'leather'
+  | 'marble'
+  | 'metal'
+  | 'metal-dark'
+  | 'moss'
+  | 'tiles';
+
+/** Procedural prop-scatter rule attached to a room. */
+export interface FillRule {
+  type: 'scatter' | 'edge' | 'none';
+  /** AssetRegistry prop keys WITHOUT the 'prop-' prefix */
+  props: string[];
+  /** 0.0–1.0: fraction of eligible floor cells that receive a prop */
+  density: number;
+  avoidSpawns?: boolean;
+  randomRotation?: boolean;
+}
+
+/** Per-room visual descriptor included in CompiledVisual. */
+export interface CompiledRoomVisual {
+  id: string;
+  name: string;
+  bounds: { x: number; z: number; w: number; h: number };
+  elevation: number;
+  roomType: string;
+  floorTexture: TextureId | null;
+  wallTexture: TextureId | null;
+  ceilingTexture: TextureId | null;
+  fillRule: FillRule | null;
+}
+
+/** Complete visual description of a compiled level, stored as JSON on the levels table. */
+export interface CompiledVisual {
+  version: 1;
+  rooms: CompiledRoomVisual[];
+  theme: {
+    primaryWall: number;
+    texturePalette: Partial<Record<string, TextureId>>;
+    roomFillRules: Partial<Record<string, FillRule>>;
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -257,12 +335,42 @@ export class LevelEditor {
       .all();
   }
 
+  /** Fetch all decals for a level. */
+  getDecals(levelId: string) {
+    return this.db.select().from(schema.decals).where(eq(schema.decals.levelId, levelId)).all();
+  }
+
+  // -------------------------------------------------------------------------
+  // Lifecycle methods
+  // -------------------------------------------------------------------------
+
+  /**
+   * Delete a level and ALL its child data (rooms, entities, triggers,
+   * connections, environment zones, decals). The theme is left intact
+   * since themes can be shared. Call before rebuilding a level.
+   */
+  deleteLevel(levelId: string): void {
+    // Child tables have ON DELETE CASCADE, but Drizzle doesn't enforce FK
+    // constraints by default in better-sqlite3, so delete explicitly.
+    this.db.delete(schema.decals).where(eq(schema.decals.levelId, levelId)).run();
+    this.db
+      .delete(schema.environmentZones)
+      .where(eq(schema.environmentZones.levelId, levelId))
+      .run();
+    this.db.delete(schema.entities).where(eq(schema.entities.levelId, levelId)).run();
+    this.db.delete(schema.triggers).where(eq(schema.triggers.levelId, levelId)).run();
+    this.db.delete(schema.connections).where(eq(schema.connections.levelId, levelId)).run();
+    this.db.delete(schema.rooms).where(eq(schema.rooms.levelId, levelId)).run();
+    this.db.delete(schema.levels).where(eq(schema.levels.id, levelId)).run();
+  }
+
   // -------------------------------------------------------------------------
   // Core methods
   // -------------------------------------------------------------------------
 
   /**
-   * Insert a new floor theme into the database.
+   * Upsert a floor theme into the database. Safe to call repeatedly — if the
+   * theme already exists it will be updated in place.
    * @param id - Unique theme identifier (e.g. 'circle-1-limbo').
    * @param opts - Theme configuration (walls, colors, fog, enemy roster).
    */
@@ -282,31 +390,41 @@ export class LevelEditor {
       enemyTypes?: string[];
       enemyDensity?: number;
       pickupDensity?: number;
+      texturePalette?: Partial<Record<string, TextureId>>;
+      roomFillRules?: Partial<Record<string, FillRule>>;
     },
   ): void {
+    const values = {
+      id,
+      name: opts.name,
+      displayName: opts.displayName,
+      primaryWall: opts.primaryWall,
+      accentWalls: opts.accentWalls,
+      fogDensity: opts.fogDensity ?? 0.03,
+      fogColor: opts.fogColor ?? '#000000',
+      ambientColor: opts.ambientColor,
+      ambientIntensity: opts.ambientIntensity ?? 0.3,
+      skyColor: opts.skyColor ?? '#000000',
+      particleEffect: opts.particleEffect ?? null,
+      enemyTypes: opts.enemyTypes ?? [],
+      enemyDensity: opts.enemyDensity ?? 1.0,
+      pickupDensity: opts.pickupDensity ?? 0.6,
+      texturePalette: opts.texturePalette ? JSON.stringify(opts.texturePalette) : null,
+      roomFillRules: opts.roomFillRules ? JSON.stringify(opts.roomFillRules) : null,
+    };
     this.db
       .insert(schema.themes)
-      .values({
-        id,
-        name: opts.name,
-        displayName: opts.displayName,
-        primaryWall: opts.primaryWall,
-        accentWalls: opts.accentWalls,
-        fogDensity: opts.fogDensity ?? 0.03,
-        fogColor: opts.fogColor ?? '#000000',
-        ambientColor: opts.ambientColor,
-        ambientIntensity: opts.ambientIntensity ?? 0.3,
-        skyColor: opts.skyColor ?? '#000000',
-        particleEffect: opts.particleEffect ?? null,
-        enemyTypes: opts.enemyTypes ?? [],
-        enemyDensity: opts.enemyDensity ?? 1.0,
-        pickupDensity: opts.pickupDensity ?? 0.6,
+      .values(values)
+      .onConflictDoUpdate({
+        target: schema.themes.id,
+        set: values,
       })
       .run();
   }
 
   /**
-   * Insert a new level into the database.
+   * Create a level. If it already exists, deletes it first (cascade) and
+   * recreates from scratch to ensure a clean slate.
    * @param id - Unique level identifier (e.g. 'circle-1-limbo').
    * @param opts - Level metadata (dimensions, floor, theme, audio).
    */
@@ -329,6 +447,9 @@ export class LevelEditor {
       spawnFacing?: number;
     },
   ): void {
+    // Delete existing level + all child rows for a clean rebuild
+    this.deleteLevel(id);
+
     this.db
       .insert(schema.levels)
       .values({
@@ -372,6 +493,10 @@ export class LevelEditor {
       floorCell?: number;
       wallCell?: number;
       sortOrder?: number;
+      floorTexture?: TextureId;
+      wallTexture?: TextureId;
+      ceilingTexture?: TextureId;
+      fillRule?: FillRule;
     },
   ): string {
     const id = generateId();
@@ -390,6 +515,10 @@ export class LevelEditor {
         floorCell: opts.floorCell,
         wallCell: opts.wallCell,
         sortOrder: opts.sortOrder,
+        floorTexture: opts.floorTexture ?? null,
+        wallTexture: opts.wallTexture ?? null,
+        ceilingTexture: opts.ceilingTexture ?? null,
+        fillRule: opts.fillRule ? JSON.stringify(opts.fillRule) : null,
       })
       .run();
     return id;
@@ -611,9 +740,34 @@ export class LevelEditor {
 
     const packed = packGrid(grid);
 
+    // Build CompiledVisual from rooms + theme
+    const compiledVisual: CompiledVisual = {
+      version: 1,
+      rooms: levelRooms.map((r) => ({
+        id: r.id,
+        name: r.name,
+        bounds: { x: r.boundsX, z: r.boundsZ, w: r.boundsW, h: r.boundsH },
+        elevation: r.elevation,
+        roomType: r.roomType,
+        floorTexture: (r.floorTexture as TextureId | null) ?? null,
+        wallTexture: (r.wallTexture as TextureId | null) ?? null,
+        ceilingTexture: (r.ceilingTexture as TextureId | null) ?? null,
+        fillRule: r.fillRule ? (JSON.parse(r.fillRule) as FillRule) : null,
+      })),
+      theme: {
+        primaryWall: theme.primaryWall,
+        texturePalette: theme.texturePalette
+          ? (JSON.parse(theme.texturePalette) as Partial<Record<string, TextureId>>)
+          : {},
+        roomFillRules: theme.roomFillRules
+          ? (JSON.parse(theme.roomFillRules) as Partial<Record<string, FillRule>>)
+          : {},
+      },
+    };
+
     this.db
       .update(schema.levels)
-      .set({ compiledGrid: Buffer.from(packed) })
+      .set({ compiledGrid: Buffer.from(packed), compiledVisual: JSON.stringify(compiledVisual) })
       .where(eq(schema.levels.id, levelId))
       .run();
   }
@@ -909,6 +1063,10 @@ export class LevelEditor {
       floorCell: number;
       wallCell: number;
       sortOrder: number;
+      floorTexture: TextureId;
+      wallTexture: TextureId;
+      ceilingTexture: TextureId;
+      fillRule: FillRule;
     }>,
   ): string {
     return this.addRoom(levelId, name, {
@@ -921,6 +1079,10 @@ export class LevelEditor {
       floorCell: opts?.floorCell,
       wallCell: opts?.wallCell,
       sortOrder: opts?.sortOrder,
+      floorTexture: opts?.floorTexture,
+      wallTexture: opts?.wallTexture,
+      ceilingTexture: opts?.ceilingTexture,
+      fillRule: opts?.fillRule,
     });
   }
 
@@ -1228,5 +1390,154 @@ export class LevelEditor {
       })
       .where(eq(schema.levels.id, levelId))
       .run();
+  }
+
+  // -------------------------------------------------------------------------
+  // Asset discovery — delegate to AssetDiscovery module
+  // -------------------------------------------------------------------------
+
+  /**
+   * Get Meshy AI prop asset IDs available for a given circle.
+   * Merges general props with circle-specific props.
+   * @param circle - Circle number (1-9).
+   * @returns Sorted array of asset ID strings (e.g. 'hellfire-brazier', 'fog-lantern').
+   */
+  getAvailableProps(circle: number): string[] {
+    return getAvailablePropsForCircle(circle);
+  }
+
+  /**
+   * Get Meshy AI enemy asset IDs available for a given circle.
+   * Merges general enemies with circle-specific enemies and bosses.
+   * @param circle - Circle number (1-9).
+   * @returns Sorted array of asset ID strings (e.g. 'goat-brute', 'boss-azazel').
+   */
+  getAvailableEnemies(circle: number): string[] {
+    return getAvailableEnemiesForCircle(circle);
+  }
+
+  // -------------------------------------------------------------------------
+  // decorateRoom — batch prop placement
+  // -------------------------------------------------------------------------
+
+  /**
+   * Batch-place multiple decorative props in a room via `spawnProp()`.
+   * @param levelId - Parent level ID.
+   * @param roomId - Room to decorate.
+   * @param decorations - Array of prop specifications with type, position, and optional surface anchor.
+   * @returns Array of generated entity IDs (one per decoration).
+   */
+  decorateRoom(
+    levelId: string,
+    roomId: string,
+    decorations: Array<{
+      type: string;
+      x: number;
+      z: number;
+      elevation?: number;
+      facing?: number;
+      surfaceAnchor?: {
+        face: string;
+        offsetX: number;
+        offsetY: number;
+        offsetZ: number;
+        rotation: number[];
+        scale: number;
+      };
+    }>,
+  ): string[] {
+    const ids: string[] = [];
+    for (const dec of decorations) {
+      const id = this.spawnProp(levelId, dec.type, dec.x, dec.z, {
+        roomId,
+        elevation: dec.elevation,
+        facing: dec.facing,
+        surfaceAnchor: dec.surfaceAnchor,
+      });
+      ids.push(id);
+    }
+    return ids;
+  }
+
+  // -------------------------------------------------------------------------
+  // Decals — surface texture decoration
+  // -------------------------------------------------------------------------
+
+  /**
+   * Place a decal (surface texture overlay) at grid coordinates.
+   * Decals project onto floor, wall, or ceiling geometry as translucent
+   * texture patches (frost, cracks, stains, etc.).
+   *
+   * @param levelId - Parent level ID.
+   * @param type - Decal type identifier (use DECAL_TYPES constants).
+   * @param x - Grid X coordinate (center of decal).
+   * @param z - Grid Z coordinate (center of decal).
+   * @param opts - Optional width, height, rotation, opacity, surface, roomId.
+   * @returns The generated decal ID (UUID).
+   */
+  placeDecal(
+    levelId: string,
+    type: string,
+    x: number,
+    z: number,
+    opts?: {
+      w?: number;
+      h?: number;
+      rotation?: number;
+      opacity?: number;
+      surface?: 'floor' | 'wall' | 'ceiling';
+      roomId?: string;
+    },
+  ): string {
+    const id = generateId();
+    this.db
+      .insert(schema.decals)
+      .values({
+        id,
+        levelId,
+        decalType: type,
+        x,
+        z,
+        w: opts?.w ?? 2,
+        h: opts?.h ?? 2,
+        rotation: opts?.rotation ?? 0,
+        opacity: opts?.opacity ?? 0.8,
+        surface: opts?.surface ?? 'floor',
+        roomId: opts?.roomId,
+      })
+      .run();
+    return id;
+  }
+
+  /**
+   * Batch-place multiple decals in a room.
+   * @param levelId - Parent level ID.
+   * @param roomId - Room to decorate.
+   * @param decals - Array of decal specifications.
+   * @returns Array of generated decal IDs.
+   */
+  placeDecals(
+    levelId: string,
+    roomId: string,
+    decals: Array<{
+      type: string;
+      x: number;
+      z: number;
+      w?: number;
+      h?: number;
+      rotation?: number;
+      opacity?: number;
+      surface?: 'floor' | 'wall' | 'ceiling';
+    }>,
+  ): string[] {
+    const ids: string[] = [];
+    for (const decal of decals) {
+      const id = this.placeDecal(levelId, decal.type, decal.x, decal.z, {
+        ...decal,
+        roomId,
+      });
+      ids.push(id);
+    }
+    return ids;
   }
 }

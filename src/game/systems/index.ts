@@ -154,12 +154,3 @@ export {
   resetSecrets,
   tickSecretTimer,
 } from './SecretRoomSystem';
-
-// Waves
-export {
-  getEnemyTypeForWave,
-  getWaveInfo,
-  resetWaveSystem,
-  startNextWave,
-  waveSystemUpdate,
-} from './WaveSystem';

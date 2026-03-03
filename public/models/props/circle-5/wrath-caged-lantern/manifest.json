@@ -1,0 +1,41 @@
+{
+  "id": "wrath-caged-lantern",
+  "name": "Caged Industrial Lantern",
+  "type": "prop",
+  "seed": 812249037,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac7a-5dd3-7f9a-af2f-d475ad53c32c",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac7a-5dd3-7f9a-af2f-d475ad53c32c"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac7b-c0ea-7a81-81c2-e14a12bcea85",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac7b-c0ea-7a81-81c2-e14a12bcea85"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A wall-mounted industrial caged lantern light, a bare bulb inside a protective iron wire cage, rusted mounting bracket, the bulb emits a harsh white-hot glow, industrial prison lighting fixture, game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Rusted iron wire cage, white-hot glowing bulb inside, corroded mounting bracket, industrial dark metal finish",
+    "enablePbr": true
+  }
+}

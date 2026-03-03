@@ -1,0 +1,30 @@
+{
+  "_comment": "Core game loop constants. All values are documented with units.",
+
+  "player": {
+    "gracePeriodMs": 2000,
+    "snapshotIntervalMs": 1000,
+    "defaultSpeed": 5,
+    "defaultSprintMult": 1.5,
+    "defaultFuel": 100,
+    "defaultFuelMax": 100
+  },
+
+  "progression": {
+    "encounterSequence": ["explore", "explore", "explore", "explore", "boss"],
+    "xpLevelingBase": 100,
+    "xpLevelingExponent": 1.5,
+    "killStreakBonusMultiplier": 0.1,
+    "maxKillStreak": 20
+  },
+
+  "combat": {
+    "nightmareDamageMultiplier": 2,
+    "enemyMeleeRangeMultiplier": 1.0
+  },
+
+  "rendering": {
+    "projectilePoolSize": 100,
+    "maxActiveParticles": 300
+  }
+}

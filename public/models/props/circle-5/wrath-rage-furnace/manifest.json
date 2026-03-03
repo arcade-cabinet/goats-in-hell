@@ -1,0 +1,41 @@
+{
+  "id": "wrath-rage-furnace",
+  "name": "Rage Furnace",
+  "type": "prop",
+  "seed": 2349372260,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac9d-ffc0-7e89-904c-c0188519df11",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9d-ffc0-7e89-904c-c0188519df11"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019caca0-e589-7265-bb2b-c32f196c9712",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca0-e589-7265-bb2b-c32f196c9712"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A squat industrial furnace made of dark cast iron with a grated front opening showing glowing embers inside, a chimney pipe rising from the top, heavy riveted construction, soot-blackened surface, wrath forge furnace, game prop, isolated object, dark background, three quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark cast iron with soot blackening, glowing orange-red embers visible through front grate, heavy rivet details, rust at joints",
+    "enablePbr": true
+  }
+}

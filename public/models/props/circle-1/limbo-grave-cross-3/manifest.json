@@ -1,0 +1,7 @@
+{
+  "id": "limbo-grave-cross-3",
+  "name": "Grave Cross (Variant 3)",
+  "type": "prop",
+  "pipeline": "graveyard-pack",
+  "source": "Graveyard Pack / PBR FBX → GLB"
+}

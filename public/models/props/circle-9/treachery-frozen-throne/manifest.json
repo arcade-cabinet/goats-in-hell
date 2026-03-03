@@ -1,0 +1,41 @@
+{
+  "id": "treachery-frozen-throne",
+  "name": "Frozen Throne",
+  "type": "prop",
+  "seed": 1756154861,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac9a-2f9c-7d4b-aa77-39327c396bb8",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9a-2f9c-7d4b-aa77-39327c396bb8"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac9b-eb04-7d7a-83d7-a2aa1f72d00b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9b-eb04-7d7a-83d7-a2aa1f72d00b"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A massive throne carved from dark blue ice with crystalline spire backrest, imposing seat of power formed from the frozen lake itself, sharp angular ice crystals forming armrests and tall pointed back, the seat of Azazel, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark blue-black translucent ice, crystalline spire backrest, sharp angular armrests, frost white highlights on edges, imposing frozen seat of power",
+    "enablePbr": true
+  }
+}

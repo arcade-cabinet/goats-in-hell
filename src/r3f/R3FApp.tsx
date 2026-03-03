@@ -1,14 +1,18 @@
 /**
  * R3FApp -- top-level React Three Fiber canvas wrapper.
  *
- * Sets up the WebGPU renderer (with WebGL2 fallback), shadow maps, Rapier
- * physics, and Suspense-based asset loading. Shows an HTML overlay while
+ * Sets up the WebGPU renderer, shadow maps, Rapier physics (web only),
+ * and Suspense-based asset loading. Shows an HTML overlay while
  * models and textures are downloading.
+ *
+ * On native (iOS/Android), Rapier is disabled via PhysicsWrapper.
+ * Player movement falls back to non-physical kinematic control (Phase 2).
  */
 import { Canvas, extend, type ThreeToJSXElements } from '@react-three/fiber';
 import { Physics } from '@react-three/rapier';
 import type React from 'react';
 import { Suspense, useCallback, useEffect, useState } from 'react';
+import { Platform, View } from 'react-native';
 import * as THREE from 'three/webgpu';
 import { R3FScene } from './R3FScene';
 
@@ -38,21 +42,38 @@ function LoadingFallback() {
 }
 
 /**
+ * Wraps children in Rapier Physics context on web.
+ * On native, Rapier WASM is not yet available — children render without physics.
+ * Phase 2 will add a kinematic movement fallback for native.
+ */
+function PhysicsWrapper({ children }: { children: React.ReactNode }) {
+  if (Platform.OS !== 'web') return <>{children}</>;
+  return (
+    <Suspense fallback={null}>
+      <Physics gravity={[0, -9.81, 0]} timeStep="vary">
+        {children}
+      </Physics>
+    </Suspense>
+  );
+}
+
+/**
  * Top-level R3F canvas wrapper.
  *
- * - Uses WebGPURenderer with automatic WebGL2 fallback
+ * - Uses WebGPURenderer (react-native-wgpu provides WebGPU on native)
  * - `shadows` enables Three.js shadow maps globally
  * - `frameloop="always"` keeps the game loop running every frame
  * - sRGB color management is the R3F v9 default
- * - Rapier Physics context wraps the entire scene for collision/raycasting
+ * - PhysicsWrapper enables Rapier on web; native boots without physics (Phase 2)
  * - Shows an HTML loading overlay + 3D fallback scene until assets resolve
+ * - Canvas wrapped in View for correct native layout
  */
 export function R3FApp({ children }: { children?: React.ReactNode }) {
   const [rendererReady, setRendererReady] = useState(false);
   const onReady = useCallback(() => setRendererReady(true), []);
 
   return (
-    <>
+    <View style={{ flex: 1 }}>
       {/* HTML loading overlay — visible until renderer + Suspense resolve */}
       {!rendererReady && (
         <div
@@ -77,34 +98,16 @@ export function R3FApp({ children }: { children?: React.ReactNode }) {
       <Canvas
         shadows
         frameloop="always"
+        dpr={[1, 2]}
         gl={async (props) => {
-          // Extract only WebGPU-compatible properties from R3F's canvas props.
-          // R3F passes WebGL-typed props (powerPreference: WebGLPowerPreference)
-          // that are incompatible with WebGPURendererParameters.
+          // react-native-wgpu provides a W3C WebGPU surface on native.
+          // On web, Three.js WebGPURenderer uses the browser WebGPU API.
           const { canvas } = props;
           const renderer = new THREE.WebGPURenderer({
             canvas: canvas as HTMLCanvasElement,
-            antialias: false, // postprocessing handles AA via FXAA
+            antialias: true,
           });
-          try {
-            await renderer.init();
-          } catch (err) {
-            console.warn('[R3FApp] WebGPURenderer.init() failed, falling back to WebGL2:', err);
-            // Dispose the failed renderer and create a WebGL2 fallback
-            renderer.dispose();
-            try {
-              const fallback = new THREE.WebGPURenderer({
-                canvas: canvas as HTMLCanvasElement,
-                antialias: false,
-                forceWebGL: true,
-              });
-              await fallback.init();
-              return fallback;
-            } catch (fallbackErr) {
-              console.error('[R3FApp] WebGL2 fallback also failed:', fallbackErr);
-              throw fallbackErr;
-            }
-          }
+          await renderer.init();
           return renderer;
         }}
         onCreated={({ gl, scene, camera }) => {
@@ -128,12 +131,12 @@ export function R3FApp({ children }: { children?: React.ReactNode }) {
       >
         <Suspense fallback={<LoadingFallback />}>
           <ReadySignal onReady={onReady} />
-          <Physics gravity={[0, -9.81, 0]} timeStep="vary">
+          <PhysicsWrapper>
             <R3FScene>{children}</R3FScene>
-          </Physics>
+          </PhysicsWrapper>
         </Suspense>
       </Canvas>
-    </>
+    </View>
   );
 }
 

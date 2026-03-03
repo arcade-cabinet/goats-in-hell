@@ -1,0 +1,41 @@
+{
+  "id": "wrath-iron-grate",
+  "name": "Floor Iron Grate",
+  "type": "prop",
+  "seed": 3068432000,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac8c-455d-7b2b-8752-565faf49c38d",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac8c-455d-7b2b-8752-565faf49c38d"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac90-bb6c-7bb0-a966-445785baa8e3",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac90-bb6c-7bb0-a966-445785baa8e3"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A square floor-level iron grate with thick crossed bars forming a grid pattern, rusted and corroded with dark stains, set into a concrete frame, industrial drain cover or floor vent, game prop, isolated object, dark background, top-down angled view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "on"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Heavily rusted iron grid bars, dark red-brown corrosion, concrete frame edges, dark stains from dripping liquids",
+    "enablePbr": true
+  }
+}

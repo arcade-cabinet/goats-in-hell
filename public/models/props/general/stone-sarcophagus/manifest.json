@@ -1,0 +1,41 @@
+{
+  "id": "stone-sarcophagus",
+  "name": "Stone Sarcophagus",
+  "type": "prop",
+  "seed": 2121461038,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacff-2098-7cc5-a8ee-1c3e40d6fc2a",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacff-2098-7cc5-a8ee-1c3e40d6fc2a"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cad00-a83d-7b07-bc32-8b210c494ebe",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad00-a83d-7b07-bc32-8b210c494ebe"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A dark stone sarcophagus with demonic goat head carved on the lid, cracked obsidian surface with faint red glow seeping through cracks, hell dungeon prop, stylized low poly, dark fantasy, isometric view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark obsidian stone with carved demonic runes, faint red emissive glow in cracks",
+    "enablePbr": true
+  }
+}

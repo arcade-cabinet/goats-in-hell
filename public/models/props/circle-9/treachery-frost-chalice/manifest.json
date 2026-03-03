@@ -1,0 +1,41 @@
+{
+  "id": "treachery-frost-chalice",
+  "name": "Frost Chalice",
+  "type": "prop",
+  "seed": 300011903,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac7e-fbe4-7b15-b2b4-1bfe717b4bd5",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac7e-fbe4-7b15-b2b4-1bfe717b4bd5"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac80-cffc-7e67-a989-473dc2f2e06d",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac80-cffc-7e67-a989-473dc2f2e06d"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A golden chalice with frozen contents and frost crystals growing from the rim, poisoned cup of betrayal with ice filling the bowl and icicles forming on the stem, frozen mid-toast on a small pedestal, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Tarnished gold chalice, frozen dark liquid inside, frost crystals growing from rim, icicles on stem, cold blue-white frost highlights",
+    "enablePbr": true
+  }
+}

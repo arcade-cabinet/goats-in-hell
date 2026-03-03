@@ -1,0 +1,41 @@
+{
+  "id": "violence-pier-overlook",
+  "name": "Pier Overlook Railing",
+  "type": "prop",
+  "seed": 2893098837,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caca6-e332-700b-a293-0ae6019f656d",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca6-e332-700b-a293-0ae6019f656d"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019caca8-3c31-7f37-9d63-9377ac987b61",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca8-3c31-7f37-9d63-9377ac987b61"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A stone pier edge with rope railing and iron post mounts, elevated overlook balustrade above a blood river, dark volcanic stone ledge with worn rope barrier, dark fantasy game prop, isolated object, dark background, three-quarter orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark volcanic stone ledge, frayed rope barrier, rusted iron post mounts, weathered and blood-spattered",
+    "enablePbr": true
+  }
+}

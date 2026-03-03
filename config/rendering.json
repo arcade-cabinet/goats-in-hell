@@ -1,0 +1,67 @@
+{
+  "_comment": "Rendering pipeline tunables. All intensity values are Three.js light intensity units.",
+
+  "ambient": {
+    "intensity": 2.5,
+    "comment": "AmbientLight base intensity. Higher = brighter base before point lights."
+  },
+  "hemisphere": {
+    "skyIntensity": 1.0,
+    "groundColor": "#443333",
+    "comment": "HemisphereLight for soft fill so no surface is pure black."
+  },
+  "spotlight": {
+    "color": "#fff5e0",
+    "intensity": 3.0,
+    "distance": 40,
+    "angle": 0.9,
+    "penumbra": 0.5,
+    "comment": "Player-attached spotlight, follows camera forward direction."
+  },
+  "roomLights": {
+    "spacing": 3,
+    "maxLights": 32,
+    "flickerAmplitude": 0.15,
+    "comment": "Theme-based point lights placed at open floor cells."
+  },
+  "muzzleFlash": {
+    "color": "#ffffcc",
+    "intensity": 5,
+    "distance": 4,
+    "durationMs": 100
+  },
+  "postProcessing": {
+    "bloomIntensity": 0.8,
+    "bloomLuminanceThreshold": 0.6,
+    "bloomLuminanceSmoothing": 0.3,
+    "vignetteOffset": 0.5,
+    "vignetteDarkness": 0.45,
+    "noiseOpacity": 0.04,
+    "damageFlashDecayPerMs": 0.005,
+    "floorFadeDecayPerMs": 0.002,
+    "sprintBloomBoost": 0.4,
+    "sprintLerpUp": 0.06,
+    "sprintLerpDown": 0.04,
+    "damageBloomBoost": 0.3,
+    "damageChromaMax": 0.003,
+    "damageVignetteDarknessBoost": 0.8,
+    "bleedingPulseBase": 0.1,
+    "bleedingPulseAmplitude": 0.05,
+    "bleedingPulseSpeed": 0.003
+  },
+  "canvas": {
+    "dprMin": 1,
+    "dprMax": 2,
+    "cameraFov": 75,
+    "cameraNear": 0.3,
+    "cameraFar": 100,
+    "cameraStartY": 1.6
+  },
+  "themeLights": {
+    "firePits": { "color": "#ff4400", "intensity": 4.0, "distance": 20 },
+    "fleshCaverns": { "color": "#cc3333", "intensity": 4.0, "distance": 20 },
+    "obsidianFortress": { "color": "#4466aa", "intensity": 4.0, "distance": 20 },
+    "theVoid": { "color": "#6600cc", "intensity": 4.5, "distance": 22 },
+    "default": { "color": "#ff4400", "intensity": 3.5, "distance": 18 }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "id": "greed-golden-key-display",
+  "name": "Golden Key Wall Display",
+  "type": "prop",
+  "seed": 3600160851,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac98-5ef9-7d06-96dd-b8fd01703efd",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac98-5ef9-7d06-96dd-b8fd01703efd"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac99-a750-72d2-a82e-6d9105e4358f",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac99-a750-72d2-a82e-6d9105e4358f"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A wall-mounted display rack holding three ornate golden keys of different sizes, each key with a goat head bow design, mounted on a dark velvet-backed wooden frame, treasure room key collection display, game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Bright polished gold keys with goat head bows, dark red velvet backing, dark wood frame with gold trim",
+    "enablePbr": true
+  }
+}

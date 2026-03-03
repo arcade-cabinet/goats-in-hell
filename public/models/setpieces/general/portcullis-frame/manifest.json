@@ -1,0 +1,41 @@
+{
+  "id": "portcullis-frame",
+  "name": "Portcullis Stone Frame",
+  "type": "prop",
+  "seed": 3773984248,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacca-1445-7488-8509-b44d6ac55fb8",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacca-1445-7488-8509-b44d6ac55fb8"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019caccb-f787-74b9-89ba-39c45388b353",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caccb-f787-74b9-89ba-39c45388b353"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A stone frame housing for a portcullis mechanism with vertical grooves for gate travel, winch mounting bracket at top, heavy dungeon entrance fortification, dark fantasy game prop, front-facing, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 7000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark stone with deep vertical grooves worn smooth by gate, iron mounting hardware, grease stains",
+    "enablePbr": true
+  }
+}

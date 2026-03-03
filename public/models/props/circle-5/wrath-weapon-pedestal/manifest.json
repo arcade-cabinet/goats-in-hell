@@ -1,0 +1,41 @@
+{
+  "id": "wrath-weapon-pedestal",
+  "name": "Weapon Display Pedestal",
+  "type": "prop",
+  "seed": 776916532,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacb2-2032-71ea-ac93-87311818a89f",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb2-2032-71ea-ac93-87311818a89f"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacb4-4482-7494-8999-566c6072f08b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb4-4482-7494-8999-566c6072f08b"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A short sturdy iron pedestal with a flat top designed to display a weapon, angular industrial design with riveted construction, a faint red glow emanating from the top surface, dark iron with rust accents, weapon pickup stand, game prop, isolated object, dark background, three quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "on"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark iron with riveted panel construction, rust accents at joints, faint red-orange emissive glow on top surface",
+    "enablePbr": true
+  }
+}

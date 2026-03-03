@@ -11,8 +11,13 @@ import type { LevelData } from '../game/levels/LevelData';
 import type { RuntimeTrigger, RuntimeTriggeredEntity } from '../game/systems/TriggerSystem';
 import type { DrizzleDb } from './connection';
 import { unpackGrid } from './GridCompiler';
+import type { CompiledVisual } from './LevelEditor';
 import type { Theme } from './schema';
 import * as schema from './schema';
+
+// Re-export CompiledVisual so consumers can import from LevelDbAdapter
+export type { CompiledVisual };
+export type RuntimeCompiledVisual = CompiledVisual;
 
 /**
  * Convert a DB theme row into the FloorTheme interface used by the game.
@@ -86,6 +91,49 @@ export function toEnvironmentZones(db: DrizzleDb, levelId: string): RuntimeEnvZo
     dirZ: row.directionZ ?? 0,
     timerOn: row.timerOn ?? 0,
     timerOff: row.timerOff ?? 0,
+  }));
+}
+
+// ---------------------------------------------------------------------------
+// RuntimeDecal — runtime representation of a surface decal
+// ---------------------------------------------------------------------------
+
+export interface RuntimeDecal {
+  id: string;
+  decalType: string;
+  /** World X coordinate (grid * CELL_SIZE). */
+  x: number;
+  /** World Z coordinate (grid * CELL_SIZE). */
+  z: number;
+  /** World width. */
+  w: number;
+  /** World height (depth). */
+  h: number;
+  /** Rotation in radians. */
+  rotation: number;
+  /** Opacity [0..1]. */
+  opacity: number;
+  /** Surface target: 'floor' | 'wall' | 'ceiling'. */
+  surface: string;
+}
+
+/**
+ * Load decals from the database for a given level and convert
+ * grid coordinates to world coordinates.
+ */
+export function toDecals(db: DrizzleDb, levelId: string): RuntimeDecal[] {
+  const rows = db.select().from(schema.decals).where(eq(schema.decals.levelId, levelId)).all();
+
+  return rows.map((row) => ({
+    id: row.id,
+    decalType: row.decalType,
+    x: row.x * CELL_SIZE,
+    z: row.z * CELL_SIZE,
+    w: row.w * CELL_SIZE,
+    h: row.h * CELL_SIZE,
+    rotation: row.rotation,
+    opacity: row.opacity,
+    surface: row.surface,
   }));
 }
 
@@ -229,6 +277,11 @@ export function toLevelData(db: DrizzleDb, levelId: string): LevelData {
 
   const theme = toFloorTheme(themeRows[0]);
 
+  // Parse compiled visual JSON if present
+  const compiledVisual: CompiledVisual | null = level.compiledVisual
+    ? (JSON.parse(level.compiledVisual) as CompiledVisual)
+    : null;
+
   return {
     width: level.width,
     depth: level.depth,
@@ -242,5 +295,6 @@ export function toLevelData(db: DrizzleDb, levelId: string): LevelData {
     spawns,
     theme,
     levelId,
+    compiledVisual,
   };
 }

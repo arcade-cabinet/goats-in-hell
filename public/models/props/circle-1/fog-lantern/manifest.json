@@ -1,0 +1,41 @@
+{
+  "id": "fog-lantern",
+  "name": "Fog Lantern",
+  "type": "prop",
+  "seed": 546878409,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac5e-0ad2-75b2-803d-9725071c9a0f",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac5e-0ad2-75b2-803d-9725071c9a0f"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac5f-6fe6-76fb-8287-fc653640e381",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac5f-6fe6-76fb-8287-fc653640e381"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A hanging iron lantern with a cracked glass dome, emitting a faint sickly yellow glow through thick fog, cobwebs on the chain, oxidized and ancient, stylized low poly game prop, dark fantasy limbo theme, isometric view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Oxidized dark iron, cracked yellowed glass, cobweb details, ancient corroded metal",
+    "enablePbr": true
+  }
+}

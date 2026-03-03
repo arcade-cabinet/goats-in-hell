@@ -8,6 +8,8 @@ export type {
   WallPosition,
 } from './LevelMeshes';
 export { extractColliderData, LevelColliders, LevelMeshes } from './LevelMeshes';
+export type { LevelRendererProps } from './LevelRenderer';
+export { LevelRenderer } from './LevelRenderer';
 export {
   createCeilingMaterial,
   createDoorMaterial,

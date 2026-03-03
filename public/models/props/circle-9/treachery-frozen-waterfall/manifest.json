@@ -1,0 +1,41 @@
+{
+  "id": "treachery-frozen-waterfall",
+  "name": "Frozen Waterfall Wall",
+  "type": "prop",
+  "seed": 2144395710,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac9d-6425-731b-b717-943e9c4c95ba",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9d-6425-731b-b717-943e9c4c95ba"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac9f-19a2-7dc4-8c00-6d50af2d434e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9f-19a2-7dc4-8c00-6d50af2d434e"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A wide frozen waterfall formation against a wall, cascading ice frozen mid-flow forming rippled curtains of dark blue ice, thick ice curtain with icicle drips at the bottom edge, arena backdrop wall, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 10000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Translucent dark blue ice cascading in frozen ripples, icicle drips at bottom, smooth flowing frozen surface, glacial blue highlights",
+    "enablePbr": true
+  }
+}

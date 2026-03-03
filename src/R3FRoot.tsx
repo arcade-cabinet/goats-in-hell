@@ -6,21 +6,27 @@
  */
 
 import { useFrame, useThree } from '@react-three/fiber';
-import { and, eq } from 'drizzle-orm';
-import { useEffect, useMemo, useRef } from 'react';
-import { CELL_SIZE } from './constants';
-import type { DrizzleDb } from './db/connection';
 import {
-  type RuntimeEnvZone,
-  toEnvironmentZones,
-  toLevelData,
-  toTriggersAndEntities,
-} from './db/LevelDbAdapter';
-import * as schema from './db/schema';
-import type { WeaponId } from './game/entities/components';
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import { CELL_SIZE } from './constants';
+import {
+  createNewRun,
+  initSaveSystem,
+  loadLatestRun,
+  markRoomVisited,
+  saveCurrentState,
+} from './db/GameSaveManager';
+import type { RuntimeDecal, RuntimeEnvZone } from './db/LevelDbAdapter';
+import type { EntityType, WeaponId } from './game/entities/components';
 import { vec3 } from './game/entities/vec3';
 import { world } from './game/entities/world';
-import { generateArena, getArenaPlayerSpawn } from './game/levels/ArenaGenerator';
 import { BOSS_ARENA_SIZE, generateBossArena } from './game/levels/BossArenas';
 import { getThemeForFloor } from './game/levels/FloorThemes';
 import type { LevelData } from './game/levels/LevelData';
@@ -44,10 +50,11 @@ import {
   resetTriggerSystem,
   triggerSystemUpdate,
 } from './game/systems/TriggerSystem';
-import { getWaveInfo, resetWaveSystem, waveSystemUpdate } from './game/systems/WaveSystem';
+import { getCircleLevel } from './levels';
 import { initAmbientSound, updateAmbientSound } from './r3f/audio/AmbientSoundSystem';
 import { getAudioContext, initAudio, loadAllSfx, setSfxBuffers } from './r3f/audio/AudioSystem';
 import { initMusic, loadAllMusic, setMusicBuffers, updateMusic } from './r3f/audio/MusicSystem';
+import { setSceneForDevBridge } from './r3f/debug/GameDevBridge';
 import {
   clearDamageNumbers,
   clearDamageNumbersSceneRef,
@@ -58,9 +65,9 @@ import { EnemyRenderer } from './r3f/entities/EnemyMesh';
 import { PickupRenderer } from './r3f/entities/PickupMesh';
 import { inputManager } from './r3f/input/InputManager';
 import { AIProvider } from './r3f/input/providers/AIProvider';
-import { DungeonProps } from './r3f/level/DungeonProps';
-import { EnvironmentZones } from './r3f/level/EnvironmentZones';
+import { DecalSystem } from './r3f/level/DecalSystem';
 import { extractColliderData, LevelColliders, LevelMeshes } from './r3f/level/LevelMeshes';
+import { LevelRenderer } from './r3f/level/LevelRenderer';
 import { PlayerController } from './r3f/PlayerController';
 import { R3FApp } from './r3f/R3FApp';
 import { DynamicLighting } from './r3f/rendering/Lighting';
@@ -90,189 +97,75 @@ import {
   setDotDamageCallback,
 } from './r3f/weapons/WeaponSystem';
 import { WeaponViewModel } from './r3f/weapons/WeaponViewModel';
-import { DIFFICULTY_PRESETS, savePlayerSnapshot, useGameStore } from './state/GameStore';
+import {
+  DIFFICULTY_PRESETS,
+  type GameScreen,
+  getPlayerSnapshot,
+  savePlayerSnapshot,
+  useGameStore,
+} from './state/GameStore';
+import { FatalErrorModal } from './ui/FatalErrorModal';
+import { PropErrorModal } from './ui/PropErrorModal';
 
 // ---------------------------------------------------------------------------
-// Arena constants
+// Fatal error context — propagates init failures from inside Canvas to R3FRoot
 // ---------------------------------------------------------------------------
 
-/** Arena grid size (must match the value used in generateLevelData). */
-const ARENA_SIZE = 24;
-
-/** Minimum number of waves the player must survive before an arena completes. */
-const ARENA_MIN_WAVES = 5;
+const FatalErrorContext = createContext<(err: Error | string) => void>(() => {});
 
 // ---------------------------------------------------------------------------
-// Level database — lazy singleton
+// Prop errors context — propagates missing-asset errors from DungeonProps to R3FRoot
 // ---------------------------------------------------------------------------
 
-let _levelDb: DrizzleDb | null = null;
-
-/**
- * Initialize the level database lazily, run migrations/seeds, and set
- * the GameStore.dbReady flag. Safe to call multiple times — only the
- * first call does work.
- */
-async function ensureLevelDb(): Promise<DrizzleDb | null> {
-  if (_levelDb) return _levelDb;
-  try {
-    const { getDb } = await import('./db/connection');
-    const { migrateAndSeed } = await import('./db/migrate');
-    const db = await getDb();
-    await migrateAndSeed(db);
-    _levelDb = db;
-    useGameStore.getState().setDbReady(true);
-    return _levelDb;
-  } catch (err) {
-    console.warn('[R3FRoot] DB init failed, using procedural levels:', err);
-    return null;
-  }
-}
-
-/**
- * Try to load a level from the database matching the given encounter/circle.
- * For circle levels: matches by circleNumber (1-9) with a compiled grid.
- * For other encounter types: falls back to floor-based matching.
- * Returns null if no matching level is found or the DB is unavailable.
- */
-function tryLoadFromDb(
-  db: DrizzleDb,
-  encounterType: 'explore' | 'arena' | 'boss',
-  floor: number,
-  bossId: string | null,
-  circleNumber: number,
-): LevelData | null {
-  let rows: (typeof schema.levels.$inferSelect)[];
-
-  if (encounterType === 'explore') {
-    // First try to find a circle level matching the current circleNumber
-    rows = db
-      .select()
-      .from(schema.levels)
-      .where(eq(schema.levels.circleNumber, circleNumber))
-      .all()
-      .filter(
-        (l) =>
-          (l.levelType === 'procedural' || l.levelType === 'circle') && l.compiledGrid !== null,
-      );
-
-    // Fall back to floor-based matching if no circle match
-    if (rows.length === 0) {
-      rows = db
-        .select()
-        .from(schema.levels)
-        .where(eq(schema.levels.floor, floor))
-        .all()
-        .filter(
-          (l) =>
-            (l.levelType === 'procedural' || l.levelType === 'circle') && l.compiledGrid !== null,
-        );
-    }
-  } else {
-    // For arena/boss, try circleNumber first, then fall back to floor
-    rows = db
-      .select()
-      .from(schema.levels)
-      .where(
-        and(
-          eq(schema.levels.levelType, encounterType),
-          eq(schema.levels.circleNumber, circleNumber),
-        ),
-      )
-      .all()
-      .filter((l) => l.compiledGrid !== null);
-
-    if (rows.length === 0) {
-      rows = db
-        .select()
-        .from(schema.levels)
-        .where(and(eq(schema.levels.levelType, encounterType), eq(schema.levels.floor, floor)))
-        .all()
-        .filter((l) => l.compiledGrid !== null);
-    }
-  }
-
-  if (rows.length === 0) return null;
-
-  // For boss encounters, prefer a level matching the specific bossId via guardian field
-  let levelId: string;
-  if (encounterType === 'boss' && bossId) {
-    const bossMatch = rows.find((l) => l.guardian === bossId);
-    levelId = bossMatch ? bossMatch.id : rows[0].id;
-  } else {
-    // Pick a random matching level (supports multiple hand-crafted variants)
-    levelId = rows[Math.floor(Math.random() * rows.length)].id;
-  }
-
-  try {
-    return toLevelData(db, levelId);
-  } catch (err) {
-    console.warn(`[R3FRoot] Failed to load level ${levelId} from DB:`, err);
-    return null;
-  }
-}
+const PropErrorsContext = createContext<(errors: string[]) => void>(() => {});
 
 // ---------------------------------------------------------------------------
-// Level generation (DB-backed with in-memory fallback)
+// Level generation (JSON-backed with procedural fallback)
 // ---------------------------------------------------------------------------
-
-/**
- * Load a single level from the database by ID.
- * Returns null if the level is missing or the query fails.
- */
-function _generateLevelDataFromDb(db: DrizzleDb, levelId: string): LevelData | null {
-  try {
-    return toLevelData(db, levelId);
-  } catch {
-    return null;
-  }
-}
 
 function generateLevelData(
-  encounterType: 'explore' | 'arena' | 'boss',
+  encounterType: 'explore' | 'boss',
   floor: number,
   bossId: string | null,
 ): LevelData {
-  // Try DB first if levelSource is 'database' and DB is ready
-  const { levelSource, dbReady, circleNumber } = useGameStore.getState();
-  if (levelSource === 'database' && dbReady && _levelDb) {
-    const dbLevel = tryLoadFromDb(_levelDb, encounterType, floor, bossId, circleNumber);
-    if (dbLevel) return dbLevel;
-  }
-
-  // Fallback: in-memory procedural generation
-  const theme = getThemeForFloor(floor);
+  const { circleNumber } = useGameStore.getState();
 
   if (encounterType === 'explore') {
-    const gen = new LevelGenerator(24, 24, floor);
-    gen.generate();
-    return {
-      width: gen.width,
-      depth: gen.depth,
-      floor,
-      grid: gen.grid,
-      playerSpawn: gen.playerSpawn,
-      spawns: gen.spawns,
-      theme,
-    };
+    // Load from pre-compiled JSON (circles 1-9)
+    try {
+      const compiled = getCircleLevel(circleNumber);
+      return {
+        width: compiled.width,
+        depth: compiled.depth,
+        floor: compiled.floor,
+        grid: compiled.grid as MapCell[][],
+        playerSpawn: compiled.playerSpawn,
+        spawns: compiled.spawns,
+        theme: {
+          ...compiled.theme,
+          enemyTypes: compiled.theme.enemyTypes as EntityType[],
+        },
+        levelId: compiled.id,
+      };
+    } catch {
+      // Fallback: procedural generation if JSON is missing
+      const theme = getThemeForFloor(floor);
+      const gen = new LevelGenerator(24, 24, floor);
+      gen.generate();
+      return {
+        width: gen.width,
+        depth: gen.depth,
+        floor,
+        grid: gen.grid,
+        playerSpawn: gen.playerSpawn,
+        spawns: gen.spawns,
+        theme,
+      };
+    }
   }
 
-  if (encounterType === 'arena') {
-    const size = ARENA_SIZE;
-    const grid = generateArena(size, floor) as MapCell[][];
-    const spawn = getArenaPlayerSpawn(size);
-    return {
-      width: size,
-      depth: size,
-      floor,
-      grid,
-      playerSpawn: vec3(spawn.x * CELL_SIZE, 1, spawn.z * CELL_SIZE),
-      spawns: [], // arena mode uses WaveSystem for dynamic spawning
-      theme,
-    };
-  }
-
-  // Boss
+  // Boss — continue using in-memory arena generator
+  const theme = getThemeForFloor(floor);
   const grid = generateBossArena(bossId as any) as MapCell[][];
   const size = BOSS_ARENA_SIZE;
   return {
@@ -293,65 +186,57 @@ function generateLevelData(
 function GameScene() {
   const scene = useThree((s) => s.scene);
   const levelDataRef = useRef<LevelData | null>(null);
-  const envZonesRef = useRef<RuntimeEnvZone[]>([]);
   const graceTimerRef = useRef(2000); // Start active to prevent race with entity spawn useEffect
   const floorKeyRef = useRef(0);
   const snapshotTimerRef = useRef(0); // Throttle savePlayerSnapshot to once per second
+  const runIdRef = useRef<string | null>(null); // Current game.db run ID
+  const prevScreenRef = useRef<GameScreen>('mainMenu'); // Track screen transitions for run lifecycle
 
   // Subscribe to store
   const stage = useGameStore((s) => s.stage);
   const difficulty = useGameStore((s) => s.difficulty);
   const nightmareFlags = useGameStore((s) => s.nightmareFlags);
-  const dbReady = useGameStore((s) => s.dbReady);
-  const levelSource = useGameStore((s) => s.levelSource);
   const circleNumber = useGameStore((s) => s.circleNumber);
 
   const diffMods = DIFFICULTY_PRESETS[difficulty];
   const nightmareDmgMult = nightmareFlags.nightmare || nightmareFlags.ultraNightmare ? 2 : 1;
 
-  // Kick off lazy DB initialization on mount
-  useEffect(() => {
-    let cancelled = false;
-    async function initDb() {
-      try {
-        const db = await ensureLevelDb();
-        if (!db || cancelled) return;
-      } catch (err) {
-        console.warn('[R3FRoot] DB init failed, using procedural levels:', err);
-      }
-    }
-    initDb();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const setLevelDisplayName = useGameStore((s) => s.setLevelDisplayName);
+  const reportPropErrors = useContext(PropErrorsContext);
 
-  // Generate level when floor/encounterType/circleNumber changes, when DB
-  // becomes ready, or when levelSource changes
-  // biome-ignore lint/correctness/useExhaustiveDependencies: dbReady, levelSource, circleNumber trigger re-gen from DB
+  // Generate level from pre-compiled JSON (circles 1-9)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: circleNumber triggers re-gen
   const levelData = useMemo(
     () => generateLevelData(stage.encounterType, stage.floor, stage.bossId),
-    [stage.encounterType, stage.floor, stage.bossId, dbReady, levelSource, circleNumber],
+    [stage.encounterType, stage.floor, stage.bossId, circleNumber],
   );
 
-  // Load environment zones from DB (empty array for procedural levels)
-  // biome-ignore lint/correctness/useExhaustiveDependencies: same deps as levelData memo
+  // Sync the level theme display name to the store so HUD can show it
+  useEffect(() => {
+    setLevelDisplayName(levelData.theme.displayName);
+  }, [levelData.theme.displayName, setLevelDisplayName]);
+
+  // Load environment zones from compiled JSON (empty for procedural/boss levels)
   const envZones = useMemo<RuntimeEnvZone[]>(() => {
-    if (!_levelDb || !levelData.levelId) return [];
+    if (!levelData.levelId) return [];
     try {
-      return toEnvironmentZones(_levelDb, levelData.levelId);
+      const compiled = getCircleLevel(circleNumber);
+      return compiled.envZones ?? [];
     } catch {
       return [];
     }
-  }, [
-    stage.encounterType,
-    stage.floor,
-    stage.bossId,
-    dbReady,
-    levelSource,
-    circleNumber,
-    levelData.levelId,
-  ]);
+  }, [levelData.levelId, circleNumber]);
+
+  // Load decals from compiled JSON (empty for procedural/boss levels)
+  const levelDecals = useMemo<RuntimeDecal[]>(() => {
+    if (!levelData.levelId) return [];
+    try {
+      const compiled = getCircleLevel(circleNumber);
+      return compiled.decals ?? [];
+    } catch {
+      return [];
+    }
+  }, [levelData.levelId, circleNumber]);
 
   // Extract collider data
   const colliderData = useMemo(
@@ -359,11 +244,9 @@ function GameScene() {
     [levelData],
   );
 
-  // Extract prop spawns for dungeon decoration rendering
-  const propSpawns = useMemo(
-    () => levelData.spawns.filter((s) => s.type.startsWith('prop_')),
-    [levelData.spawns],
-  );
+  // Pass all spawns to DungeonProps — it filters internally via isSupportedPropType
+  // (handles both old `prop_*` and Meshy `circle-N-propname` spawn types)
+  const propSpawns = levelData.spawns;
 
   // Convert player spawn to Three.js coordinates (negate Z)
   const spawnPosition = useMemo<[number, number, number]>(
@@ -443,19 +326,23 @@ function GameScene() {
     } else if (stage.encounterType === 'boss' && stage.bossId) {
       spawnBoss(stage.bossId, levelData, diffMods, nightmareDmgMult, nightmareFlags.nightmare);
     }
-    // Arena mode: reset and prepare the WaveSystem for dynamic spawning
-    if (stage.encounterType === 'arena') {
-      resetWaveSystem();
-    }
-
-    // Initialize trigger system from DB if this level has a DB levelId
-    if (levelData.levelId && _levelDb) {
+    // Initialize trigger system from compiled JSON
+    if (levelData.levelId) {
       try {
-        const { triggers, triggeredEntities } = toTriggersAndEntities(_levelDb, levelData.levelId);
+        const compiled = getCircleLevel(circleNumber);
+        const triggers = compiled.triggers ?? [];
+        const triggeredEntities = compiled.triggeredEntities ?? [];
         initTriggerSystem(triggers, triggeredEntities, levelData.grid);
       } catch (err) {
         console.warn('[R3FRoot] Failed to load triggers:', err);
       }
+    }
+
+    // Mark explore level as visited in game.db + in-memory store
+    if (runIdRef.current && stage.encounterType === 'explore') {
+      const roomId = levelData.levelId ?? `stage-${stage.stageNumber}`;
+      markRoomVisited(runIdRef.current, circleNumber, roomId);
+      useGameStore.getState().addVisitedRoom(circleNumber, roomId);
     }
 
     // Set grace period and trigger floor fade-in
@@ -474,7 +361,7 @@ function GameScene() {
     // Trigger music/ambient update for the new level
     updateMusic();
     updateAmbientSound();
-  }, [levelData, stage, diffMods, nightmareDmgMult, nightmareFlags]);
+  }, [levelData, stage, diffMods, nightmareDmgMult, nightmareFlags, circleNumber]);
 
   // Autoplay: register AI provider with AIGovernor for each level
   const autoplay = useGameStore((s) => s.autoplay);
@@ -501,9 +388,10 @@ function GameScene() {
     };
   }, [autoplay, levelData]);
 
-  // Wire combat scene ref + damage callbacks
+  // Wire combat scene ref + damage callbacks + dev bridge
   useEffect(() => {
     setCombatScene(scene);
+    setSceneForDevBridge(scene);
     setDamageEnemyCallback((entityId, damage, _isAoe) => {
       damageEnemy(entityId, damage);
     });
@@ -567,6 +455,87 @@ function GameScene() {
     updateAmbientSound();
   }, [screen]);
 
+  // Sync game.db with run lifecycle.
+  // DB init is deferred to the moment the player commits to New Game or Continue —
+  // not at app startup — so we know which DB state to open.
+  // `screen` is the only dep — prevScreenRef mutation is intentional, not reactive state.
+  useEffect(() => {
+    const prevScreen = prevScreenRef.current;
+    prevScreenRef.current = screen;
+    const store = useGameStore.getState();
+
+    // New game: init save DB fresh, then create a new run.
+    if (screen === 'playing' && prevScreen === 'newGame') {
+      initSaveSystem()
+        .then(() =>
+          createNewRun({
+            seed: store.seed,
+            difficulty: store.difficulty,
+            nightmareFlags: store.nightmareFlags,
+          }),
+        )
+        .then((id) => {
+          runIdRef.current = id;
+        })
+        .catch(() => {});
+    }
+
+    // Continue (mainMenu → playing): init save DB and restore the active run.
+    if (screen === 'playing' && prevScreen === 'mainMenu') {
+      initSaveSystem()
+        .then(() => loadLatestRun())
+        .then((save) => {
+          if (save) runIdRef.current = save.runId;
+        })
+        .catch(() => {});
+    }
+
+    // Stage complete: save progress to game.db (fire-and-forget).
+    if ((screen === 'victory' || screen === 'bossIntro') && runIdRef.current) {
+      const snapshot = getPlayerSnapshot();
+      const diffMods = DIFFICULTY_PRESETS[store.difficulty];
+      saveCurrentState({
+        runId: runIdRef.current,
+        seed: store.seed,
+        difficulty: store.difficulty,
+        nightmareFlags: store.nightmareFlags,
+        stage: {
+          circleNumber: store.circleNumber,
+          stageNumber: store.stage.stageNumber,
+          floor: store.stage.floor,
+          encounterType: store.stage.encounterType,
+          bossId: store.stage.bossId,
+        },
+        player: {
+          hp: snapshot.playerHp ?? diffMods.playerStartHp,
+          maxHp: diffMods.playerStartHp,
+          currentWeapon: snapshot.currentWeapon ?? 'hellPistol',
+          level: store.leveling.level,
+          xp: store.leveling.xp,
+          xpToNext: store.leveling.xpToNext,
+          score: store.score,
+          kills: store.kills,
+          totalKills: store.totalKills,
+          mandatoryKills: store.mandatoryKills,
+          optionalKills: store.optionalKills,
+        },
+        ammo: snapshot.ammoReserves ?? {},
+        bossesDefeated: store.bossesDefeated,
+        visitedRooms: store.visitedRooms,
+        settings: {
+          masterVolume: store.masterVolume,
+          mouseSensitivity: store.mouseSensitivity,
+          touchLookSensitivity: store.touchLookSensitivity,
+          gamepadLookSensitivity: store.gamepadLookSensitivity,
+          gamepadDeadzone: store.gamepadDeadzone,
+          gyroSensitivity: store.gyroSensitivity,
+          gyroEnabled: store.gyroEnabled,
+          hapticsEnabled: store.hapticsEnabled,
+        },
+      }).catch(() => {});
+    }
+  }, [screen]);
+
   // Per-frame game loop
   useFrame((_state, delta) => {
     const deltaMs = delta * 1000;
@@ -600,12 +569,6 @@ function GameScene() {
       updateZoneEffects(playerEntity.position.x, playerEntity.position.z, envZones, deltaMs);
     }
 
-    // Arena wave spawning — only runs during arena encounters
-    const currentEncounter = useGameStore.getState().stage.encounterType;
-    if (currentEncounter === 'arena') {
-      waveSystemUpdate(deltaMs, ARENA_SIZE);
-    }
-
     // Snapshot player state for save system — throttled to once per second
     // to avoid per-frame Object.fromEntries/Object.entries allocation overhead
     snapshotTimerRef.current += deltaMs;
@@ -623,15 +586,8 @@ function GameScene() {
       }
     }
 
-    // Progression check — floor cleared?
-    // For arena mode, require minimum waves completed AND no enemies remaining.
-    // For explore/boss, the existing checkFloorComplete() (no enemies) is sufficient.
-    if (currentEncounter === 'arena') {
-      const waveInfo = getWaveInfo();
-      if (waveInfo.wave >= ARENA_MIN_WAVES && !waveInfo.waveActive && checkFloorComplete()) {
-        advanceFloor();
-      }
-    } else if (checkFloorComplete()) {
+    // Progression check — floor cleared when all enemies are defeated
+    if (checkFloorComplete()) {
       advanceFloor();
     }
   });
@@ -645,8 +601,13 @@ function GameScene() {
         width={levelData.width}
         depth={levelData.depth}
       />
-      <DungeonProps key={`props-${floorKeyRef.current}`} spawns={propSpawns} />
-      <EnvironmentZones key={`envzones-${floorKeyRef.current}`} zones={envZones} />
+      <LevelRenderer
+        key={`renderer-${floorKeyRef.current}`}
+        compiledVisual={levelData.compiledVisual ?? null}
+        propSpawns={propSpawns}
+        onPropErrors={reportPropErrors}
+      />
+      <DecalSystem key={`decals-${floorKeyRef.current}`} decals={levelDecals} />
       <LevelColliders
         key={`col-${floorKeyRef.current}`}
         wallPositions={colliderData.wallPositions}
@@ -683,9 +644,33 @@ function GameScene() {
 // ---------------------------------------------------------------------------
 
 export default function R3FRoot() {
+  const [fatalError, setFatalError] = useState<Error | null>(null);
+  const reportFatalError = useCallback((err: Error | string) => {
+    const e = err instanceof Error ? err : new Error(String(err));
+    console.error('[R3FRoot] Fatal error:', e);
+    setFatalError(e);
+  }, []);
+
+  const [propErrors, setPropErrors] = useState<string[]>([]);
+  const reportPropErrors = useCallback((errors: string[]) => {
+    for (const e of errors) console.error('[DungeonProps] Asset not registered:', e);
+    setPropErrors(errors);
+  }, []);
+
+  // game.db is initialized lazily when the player starts or continues a game,
+  // not at app startup. See the screen-transition effect in GameScene.
+
   return (
-    <R3FApp>
-      <GameScene />
-    </R3FApp>
+    <FatalErrorContext.Provider value={reportFatalError}>
+      <PropErrorsContext.Provider value={reportPropErrors}>
+        <R3FApp>
+          <GameScene />
+        </R3FApp>
+        {fatalError && <FatalErrorModal error={fatalError} />}
+        {propErrors.length > 0 && (
+          <PropErrorModal errors={propErrors} onDismiss={() => setPropErrors([])} />
+        )}
+      </PropErrorsContext.Provider>
+    </FatalErrorContext.Provider>
   );
 }

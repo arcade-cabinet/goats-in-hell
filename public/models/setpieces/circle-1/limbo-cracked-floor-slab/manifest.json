@@ -1,0 +1,41 @@
+{
+  "id": "limbo-cracked-floor-slab",
+  "name": "Cracked Floor Slab",
+  "type": "prop",
+  "seed": 1404876130,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac7c-8988-798e-a854-ea0e0ecc93d1",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac7c-8988-798e-a854-ea0e0ecc93d1"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac7f-3883-7e3b-bc06-fc8c6e875c1d",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac7f-3883-7e3b-bc06-fc8c6e875c1d"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large cracked stone floor slab with several fracture lines radiating from center, one corner tilted upward, gray-blue paving stone with worn smooth surface, dark fantasy dungeon floor game prop, isolated object, dark background, top-down angled view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Gray-blue paving stone, radiating crack lines with dark gaps, worn smooth surface, centuries of foot traffic",
+    "enablePbr": true
+  }
+}

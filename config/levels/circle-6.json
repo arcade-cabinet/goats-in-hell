@@ -1,0 +1,1573 @@
+{
+  "circleNumber": 6,
+  "id": "circle-6-heresy",
+  "name": "Circle 6: Heresy",
+  "width": 50,
+  "depth": 70,
+  "floor": 6,
+  "grid": [
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 8, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 8, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 9, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ]
+  ],
+  "playerSpawn": {
+    "x": 50,
+    "y": 1,
+    "z": 10
+  },
+  "spawns": [
+    {
+      "type": "boss-profano",
+      "x": 50,
+      "z": 122
+    },
+    {
+      "type": "fireGoat",
+      "x": 40,
+      "z": 32
+    },
+    {
+      "type": "fireGoat",
+      "x": 58,
+      "z": 32
+    },
+    {
+      "type": "shadowGoat",
+      "x": 76,
+      "z": 32
+    },
+    {
+      "type": "shadowGoat",
+      "x": 84,
+      "z": 36
+    },
+    {
+      "type": "shadowGoat",
+      "x": 80,
+      "z": 44
+    },
+    {
+      "type": "shadowGoat",
+      "x": 24,
+      "z": 86
+    },
+    {
+      "type": "shadowGoat",
+      "x": 32,
+      "z": 90
+    },
+    {
+      "type": "shadowGoat",
+      "x": 50,
+      "z": 112
+    },
+    {
+      "type": "ammo",
+      "x": 54,
+      "z": 10
+    },
+    {
+      "type": "health",
+      "x": 44,
+      "z": 28
+    },
+    {
+      "type": "health",
+      "x": 20,
+      "z": 34
+    },
+    {
+      "type": "ammo",
+      "x": 80,
+      "z": 32
+    },
+    {
+      "type": "health",
+      "x": 88,
+      "z": 44
+    },
+    {
+      "type": "ammo",
+      "x": 46,
+      "z": 72
+    },
+    {
+      "type": "health",
+      "x": 54,
+      "z": 80
+    },
+    {
+      "type": "ammo",
+      "x": 76,
+      "z": 78
+    },
+    {
+      "type": "ammo",
+      "x": 80,
+      "z": 82
+    },
+    {
+      "type": "health",
+      "x": 76,
+      "z": 82
+    },
+    {
+      "type": "ammo",
+      "x": 40,
+      "z": 128
+    },
+    {
+      "type": "ammo",
+      "x": 50,
+      "z": 128
+    },
+    {
+      "type": "ammo",
+      "x": 60,
+      "z": 128
+    },
+    {
+      "type": "health",
+      "x": 38,
+      "z": 110
+    },
+    {
+      "type": "health",
+      "x": 60,
+      "z": 110
+    },
+    {
+      "type": "heresy-desecrated-arch",
+      "x": 50,
+      "z": 4
+    },
+    {
+      "type": "heresy-desecrated-arch",
+      "x": 50,
+      "z": 14
+    },
+    {
+      "type": "heresy-bone-urn",
+      "x": 44,
+      "z": 6
+    },
+    {
+      "type": "heresy-bone-urn",
+      "x": 56,
+      "z": 6
+    },
+    {
+      "type": "heresy-torn-scripture-slab",
+      "x": 48,
+      "z": 6
+    },
+    {
+      "type": "inverted-cross",
+      "x": 52,
+      "z": 8
+    },
+    {
+      "type": "heresy-cracked-marble-pillar",
+      "x": 40,
+      "z": 26
+    },
+    {
+      "type": "heresy-cracked-marble-pillar",
+      "x": 60,
+      "z": 26
+    },
+    {
+      "type": "heresy-cracked-marble-pillar",
+      "x": 40,
+      "z": 38
+    },
+    {
+      "type": "heresy-cracked-marble-pillar",
+      "x": 60,
+      "z": 38
+    },
+    {
+      "type": "heresy-church-pew",
+      "x": 40,
+      "z": 28
+    },
+    {
+      "type": "heresy-church-pew",
+      "x": 46,
+      "z": 28
+    },
+    {
+      "type": "heresy-church-pew",
+      "x": 52,
+      "z": 28
+    },
+    {
+      "type": "heresy-church-pew",
+      "x": 58,
+      "z": 28
+    },
+    {
+      "type": "heresy-church-pew",
+      "x": 40,
+      "z": 32
+    },
+    {
+      "type": "heresy-church-pew",
+      "x": 46,
+      "z": 32
+    },
+    {
+      "type": "heresy-church-pew",
+      "x": 52,
+      "z": 32
+    },
+    {
+      "type": "heresy-church-pew",
+      "x": 58,
+      "z": 32
+    },
+    {
+      "type": "heresy-church-pew",
+      "x": 40,
+      "z": 36
+    },
+    {
+      "type": "heresy-church-pew",
+      "x": 46,
+      "z": 36
+    },
+    {
+      "type": "heresy-church-pew",
+      "x": 52,
+      "z": 36
+    },
+    {
+      "type": "heresy-church-pew",
+      "x": 58,
+      "z": 36
+    },
+    {
+      "type": "heresy-church-pew",
+      "x": 40,
+      "z": 40
+    },
+    {
+      "type": "heresy-church-pew",
+      "x": 46,
+      "z": 40
+    },
+    {
+      "type": "heresy-church-pew",
+      "x": 52,
+      "z": 40
+    },
+    {
+      "type": "heresy-church-pew",
+      "x": 58,
+      "z": 40
+    },
+    {
+      "type": "inverted-cross",
+      "x": 36,
+      "z": 28
+    },
+    {
+      "type": "inverted-cross",
+      "x": 64,
+      "z": 28
+    },
+    {
+      "type": "inverted-cross",
+      "x": 36,
+      "z": 38
+    },
+    {
+      "type": "inverted-cross",
+      "x": 64,
+      "z": 38
+    },
+    {
+      "type": "heresy-profane-symbol",
+      "x": 50,
+      "z": 24
+    },
+    {
+      "type": "heresy-shattered-icon",
+      "x": 44,
+      "z": 42
+    },
+    {
+      "type": "heresy-confessional-booth",
+      "x": 18,
+      "z": 34
+    },
+    {
+      "type": "heresy-confessional-booth",
+      "x": 18,
+      "z": 36
+    },
+    {
+      "type": "heresy-confessional-booth",
+      "x": 18,
+      "z": 38
+    },
+    {
+      "type": "heresy-catacomb-torch",
+      "x": 26,
+      "z": 36
+    },
+    {
+      "type": "heresy-bone-urn",
+      "x": 74,
+      "z": 36
+    },
+    {
+      "type": "heresy-bone-urn",
+      "x": 90,
+      "z": 34
+    },
+    {
+      "type": "heresy-bone-urn",
+      "x": 76,
+      "z": 44
+    },
+    {
+      "type": "heresy-bone-urn",
+      "x": 86,
+      "z": 46
+    },
+    {
+      "type": "heresy-catacomb-torch",
+      "x": 74,
+      "z": 32
+    },
+    {
+      "type": "heresy-catacomb-torch",
+      "x": 84,
+      "z": 36
+    },
+    {
+      "type": "heresy-catacomb-torch",
+      "x": 90,
+      "z": 46
+    },
+    {
+      "type": "heresy-catacomb-torch",
+      "x": 76,
+      "z": 40
+    },
+    {
+      "type": "heresy-catacomb-torch",
+      "x": 86,
+      "z": 42
+    },
+    {
+      "type": "heresy-corrupted-reliquary",
+      "x": 80,
+      "z": 40
+    },
+    {
+      "type": "heresy-bone-shelf",
+      "x": 76,
+      "z": 32
+    },
+    {
+      "type": "heresy-bone-shelf",
+      "x": 88,
+      "z": 38
+    },
+    {
+      "type": "heresy-bone-shelf",
+      "x": 82,
+      "z": 46
+    },
+    {
+      "type": "heresy-skull-pile",
+      "x": 74,
+      "z": 38
+    },
+    {
+      "type": "heresy-skull-pile",
+      "x": 88,
+      "z": 44
+    },
+    {
+      "type": "heresy-scattered-bones",
+      "x": 78,
+      "z": 36
+    },
+    {
+      "type": "heresy-scattered-bones",
+      "x": 84,
+      "z": 42
+    },
+    {
+      "type": "heresy-scattered-bones",
+      "x": 76,
+      "z": 46
+    },
+    {
+      "type": "heresy-cracked-marble-pillar",
+      "x": 40,
+      "z": 66
+    },
+    {
+      "type": "heresy-cracked-marble-pillar",
+      "x": 60,
+      "z": 66
+    },
+    {
+      "type": "heresy-church-pew",
+      "x": 46,
+      "z": 70
+    },
+    {
+      "type": "heresy-church-pew",
+      "x": 54,
+      "z": 70
+    },
+    {
+      "type": "heretic-tome",
+      "x": 50,
+      "z": 70
+    },
+    {
+      "type": "heresy-broken-stained-glass",
+      "x": 40,
+      "z": 76
+    },
+    {
+      "type": "heresy-broken-stained-glass",
+      "x": 60,
+      "z": 76
+    },
+    {
+      "type": "heresy-toppled-altar",
+      "x": 46,
+      "z": 84
+    },
+    {
+      "type": "heresy-profane-symbol",
+      "x": 50,
+      "z": 86
+    },
+    {
+      "type": "heresy-torn-scripture-slab",
+      "x": 44,
+      "z": 72
+    },
+    {
+      "type": "heresy-shattered-icon",
+      "x": 54,
+      "z": 84
+    },
+    {
+      "type": "inverted-cross",
+      "x": 40,
+      "z": 76
+    },
+    {
+      "type": "inverted-cross",
+      "x": 60,
+      "z": 76
+    },
+    {
+      "type": "heresy-bone-urn",
+      "x": 24,
+      "z": 84
+    },
+    {
+      "type": "heresy-bone-urn",
+      "x": 32,
+      "z": 84
+    },
+    {
+      "type": "heresy-bone-urn",
+      "x": 22,
+      "z": 90
+    },
+    {
+      "type": "heresy-bone-urn",
+      "x": 34,
+      "z": 90
+    },
+    {
+      "type": "heresy-bone-shelf",
+      "x": 22,
+      "z": 82
+    },
+    {
+      "type": "heresy-bone-shelf",
+      "x": 34,
+      "z": 82
+    },
+    {
+      "type": "heresy-bone-shelf",
+      "x": 20,
+      "z": 88
+    },
+    {
+      "type": "heresy-bone-shelf",
+      "x": 36,
+      "z": 88
+    },
+    {
+      "type": "heresy-bone-shelf",
+      "x": 22,
+      "z": 94
+    },
+    {
+      "type": "heresy-bone-shelf",
+      "x": 34,
+      "z": 94
+    },
+    {
+      "type": "heresy-skull-pile",
+      "x": 28,
+      "z": 84
+    },
+    {
+      "type": "heresy-skull-pile",
+      "x": 26,
+      "z": 92
+    },
+    {
+      "type": "heresy-scattered-bones",
+      "x": 24,
+      "z": 88
+    },
+    {
+      "type": "heresy-scattered-bones",
+      "x": 32,
+      "z": 88
+    },
+    {
+      "type": "heresy-scattered-bones",
+      "x": 28,
+      "z": 90
+    },
+    {
+      "type": "wrath-chain-curtain",
+      "x": 24,
+      "z": 82
+    },
+    {
+      "type": "wrath-chain-curtain",
+      "x": 28,
+      "z": 86
+    },
+    {
+      "type": "wrath-chain-curtain",
+      "x": 32,
+      "z": 92
+    },
+    {
+      "type": "heresy-corrupted-reliquary",
+      "x": 28,
+      "z": 88
+    },
+    {
+      "type": "heresy-forbidden-bookcase",
+      "x": 74,
+      "z": 74
+    },
+    {
+      "type": "heresy-forbidden-bookcase",
+      "x": 82,
+      "z": 74
+    },
+    {
+      "type": "heresy-forbidden-bookcase",
+      "x": 72,
+      "z": 80
+    },
+    {
+      "type": "heresy-forbidden-bookcase",
+      "x": 84,
+      "z": 80
+    },
+    {
+      "type": "heretic-tome",
+      "x": 78,
+      "z": 80
+    },
+    {
+      "type": "heresy-torn-scripture-slab",
+      "x": 76,
+      "z": 84
+    },
+    {
+      "type": "heresy-torn-scripture-slab",
+      "x": 80,
+      "z": 86
+    },
+    {
+      "type": "heresy-desecrated-arch",
+      "x": 50,
+      "z": 108
+    },
+    {
+      "type": "heresy-cracked-marble-pillar",
+      "x": 38,
+      "z": 112
+    },
+    {
+      "type": "heresy-cracked-marble-pillar",
+      "x": 62,
+      "z": 112
+    },
+    {
+      "type": "heresy-cracked-marble-pillar",
+      "x": 38,
+      "z": 132
+    },
+    {
+      "type": "heresy-cracked-marble-pillar",
+      "x": 62,
+      "z": 132
+    },
+    {
+      "type": "heresy-pentagram-floor-tile",
+      "x": 50,
+      "z": 122
+    },
+    {
+      "type": "heresy-ritual-chandelier",
+      "x": 50,
+      "z": 122
+    },
+    {
+      "type": "heretic-tome",
+      "x": 50,
+      "z": 122
+    },
+    {
+      "type": "inverted-cross",
+      "x": 40,
+      "z": 110
+    },
+    {
+      "type": "inverted-cross",
+      "x": 60,
+      "z": 134
+    },
+    {
+      "type": "heresy-cracked-baptismal-font",
+      "x": 40,
+      "z": 132
+    },
+    {
+      "type": "heresy-cracked-baptismal-font",
+      "x": 60,
+      "z": 112
+    },
+    {
+      "type": "heresy-profane-symbol",
+      "x": 50,
+      "z": 110
+    },
+    {
+      "type": "heresy-burning-pyre",
+      "x": 38,
+      "z": 122
+    }
+  ],
+  "theme": {
+    "name": "heresy",
+    "displayName": "HERESY --- The Circle of Defiance",
+    "primaryWall": 1,
+    "accentWalls": [9, 4],
+    "enemyTypes": ["shadowGoat", "fireGoat"],
+    "enemyDensity": 1,
+    "pickupDensity": 0.7,
+    "ambientColor": "#6633aa"
+  },
+  "envZones": [
+    {
+      "id": "52dd9225-141d-4233-b292-162d497e308f",
+      "envType": "fog",
+      "x": 0,
+      "z": 0,
+      "w": 100,
+      "h": 140,
+      "intensity": 0.3,
+      "dirX": 0,
+      "dirZ": 0,
+      "timerOn": 0,
+      "timerOff": 0
+    },
+    {
+      "id": "bf23627a-4feb-4f2a-9c8f-040890b20e3c",
+      "envType": "fog",
+      "x": 72,
+      "z": 28,
+      "w": 20,
+      "h": 20,
+      "intensity": 0.6,
+      "dirX": 0,
+      "dirZ": 0,
+      "timerOn": 0,
+      "timerOff": 0
+    },
+    {
+      "id": "26270fab-b321-4cb2-afb7-125f595f779f",
+      "envType": "void",
+      "x": 46,
+      "z": 34,
+      "w": 6,
+      "h": 8,
+      "intensity": 25,
+      "dirX": 0,
+      "dirZ": 0,
+      "timerOn": 0,
+      "timerOff": 0
+    },
+    {
+      "id": "993e5fe5-fbd7-4b62-8063-79d133db1399",
+      "envType": "void",
+      "x": 88,
+      "z": 40,
+      "w": 4,
+      "h": 2,
+      "intensity": 25,
+      "dirX": 0,
+      "dirZ": 0,
+      "timerOn": 0,
+      "timerOff": 0
+    },
+    {
+      "id": "73420c9f-3fb3-4336-aba8-08e96caecfdb",
+      "envType": "void",
+      "x": 80,
+      "z": 46,
+      "w": 4,
+      "h": 2,
+      "intensity": 25,
+      "dirX": 0,
+      "dirZ": 0,
+      "timerOn": 0,
+      "timerOff": 0
+    },
+    {
+      "id": "eb4fffb7-a2e0-46e6-924f-4dc0500d740c",
+      "envType": "illusion",
+      "x": 44,
+      "z": 116,
+      "w": 12,
+      "h": 12,
+      "intensity": 1,
+      "dirX": 0,
+      "dirZ": 0,
+      "timerOn": 0,
+      "timerOff": 0
+    }
+  ],
+  "decals": [
+    {
+      "id": "eec86ace-6f68-4d3c-9c0a-09578189cf87",
+      "decalType": "water-stain",
+      "x": 42,
+      "z": 8,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "wall"
+    },
+    {
+      "id": "486fd363-fa27-49e3-aba1-ffa63a2a2c1c",
+      "decalType": "water-stain",
+      "x": 58,
+      "z": 8,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "wall"
+    },
+    {
+      "id": "48044419-e7da-40a1-a5fa-6fc499dce477",
+      "decalType": "water-stain",
+      "x": 36,
+      "z": 30,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "wall"
+    },
+    {
+      "id": "c4972e0e-64b8-492e-8404-fa5b136ecf19",
+      "decalType": "water-stain",
+      "x": 64,
+      "z": 30,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "wall"
+    },
+    {
+      "id": "2f831ae2-ab8f-4d1d-8bc5-fca91398926b",
+      "decalType": "scorch-mark",
+      "x": 46,
+      "z": 34,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "floor"
+    },
+    {
+      "id": "2df7d74b-ca68-4810-9585-4e5010071e2b",
+      "decalType": "scorch-mark",
+      "x": 52,
+      "z": 36,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "floor"
+    },
+    {
+      "id": "bab724a8-4570-4ada-98c5-9593c858c869",
+      "decalType": "scorch-mark",
+      "x": 46,
+      "z": 40,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "floor"
+    },
+    {
+      "id": "1196716b-871c-46cb-8fa2-0d3973d51780",
+      "decalType": "water-stain",
+      "x": 16,
+      "z": 36,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "wall"
+    },
+    {
+      "id": "9921ab10-49a8-4ec0-b88a-263e848cae90",
+      "decalType": "water-stain",
+      "x": 72,
+      "z": 32,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "wall"
+    },
+    {
+      "id": "6a0529cc-167e-4592-bd7c-ec1e0064e96e",
+      "decalType": "water-stain",
+      "x": 92,
+      "z": 32,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "wall"
+    },
+    {
+      "id": "126473b8-94a9-4d3d-9a2a-662be8bdabb6",
+      "decalType": "scorch-mark",
+      "x": 86,
+      "z": 40,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "floor"
+    },
+    {
+      "id": "ecc59a68-fa1a-4faa-a693-6f0428eb7a66",
+      "decalType": "scorch-mark",
+      "x": 78,
+      "z": 46,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "floor"
+    },
+    {
+      "id": "79c4c18c-20cc-4cc4-9d6d-0073833cbd25",
+      "decalType": "water-stain",
+      "x": 38,
+      "z": 72,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "wall"
+    },
+    {
+      "id": "18977c18-338f-4030-8684-6517c4eae5b1",
+      "decalType": "water-stain",
+      "x": 62,
+      "z": 72,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "wall"
+    },
+    {
+      "id": "929c852a-5241-4382-adb1-114dddcaf2ab",
+      "decalType": "water-stain",
+      "x": 36,
+      "z": 116,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "wall"
+    },
+    {
+      "id": "e7b9f266-4491-4caa-b1c7-6b9a87d647ef",
+      "decalType": "water-stain",
+      "x": 64,
+      "z": 116,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "wall"
+    },
+    {
+      "id": "1c7dd048-cc37-4cc3-a5c4-e4ffd5901165",
+      "decalType": "water-stain",
+      "x": 36,
+      "z": 128,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "wall"
+    },
+    {
+      "id": "7f65b46e-6014-4e42-b586-2155fb87cf92",
+      "decalType": "water-stain",
+      "x": 64,
+      "z": 128,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.8,
+      "surface": "wall"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "3864444a-5148-483a-9304-3e7563191e81",
+      "action": "lockDoors",
+      "zoneX": 42,
+      "zoneZ": 68,
+      "zoneW": 16,
+      "zoneH": 8,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": null,
+      "linkedEntityIds": []
+    },
+    {
+      "id": "1cc1a95a-288a-49ac-9295-d317fd424b73",
+      "action": "unlockDoors",
+      "zoneX": 42,
+      "zoneZ": 68,
+      "zoneW": 16,
+      "zoneH": 8,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "condition": "allEnemiesKilled"
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "c96c3971-92c8-42c6-9790-994e2bca3494",
+      "action": "spawnWave",
+      "zoneX": 42,
+      "zoneZ": 68,
+      "zoneW": 16,
+      "zoneH": 8,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "waveIndex": 0,
+        "enemies": [
+          {
+            "type": "fireGoat",
+            "count": 1
+          },
+          {
+            "type": "fireGoat",
+            "count": 1
+          },
+          {
+            "type": "fireGoat",
+            "count": 1
+          }
+        ]
+      },
+      "linkedEntityIds": [
+        "593465fc-6287-4e97-b8cc-bb875e3e8f2b",
+        "7370a454-599f-48c4-aba4-48474f05720b",
+        "4f52a07b-8437-4638-a383-a9affd495f85"
+      ]
+    },
+    {
+      "id": "14f4eb48-ef65-4c19-b2a5-602428ad45c9",
+      "action": "spawnWave",
+      "zoneX": 42,
+      "zoneZ": 68,
+      "zoneW": 16,
+      "zoneH": 8,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "waveIndex": 1,
+        "enemies": [
+          {
+            "type": "shadowGoat",
+            "count": 1
+          },
+          {
+            "type": "shadowGoat",
+            "count": 1
+          },
+          {
+            "type": "fireGoat",
+            "count": 1
+          },
+          {
+            "type": "fireGoat",
+            "count": 1
+          }
+        ]
+      },
+      "linkedEntityIds": [
+        "d92a65c3-dae4-4230-b458-2636f397026b",
+        "4dd4f716-6737-477a-bec8-ed541328af64",
+        "dc57bbdd-1d00-4898-9d9a-1c06cc92f185",
+        "cab2d913-a92f-4173-9909-ac314ab7e50e"
+      ]
+    },
+    {
+      "id": "0a28ceb1-f0b4-47b5-bbb6-f1472c553d01",
+      "action": "ambientChange",
+      "zoneX": 46,
+      "zoneZ": 34,
+      "zoneW": 6,
+      "zoneH": 8,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "type": "floorCollapse",
+        "cells": [
+          {
+            "x": 24,
+            "z": 17
+          },
+          {
+            "x": 24,
+            "z": 18
+          },
+          {
+            "x": 25,
+            "z": 18
+          },
+          {
+            "x": 25,
+            "z": 19
+          },
+          {
+            "x": 24,
+            "z": 19
+          },
+          {
+            "x": 24,
+            "z": 20
+          }
+        ],
+        "damage": 25
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "5c37a811-5552-4c72-a9c7-b4df93ab3f40",
+      "action": "spawnWave",
+      "zoneX": 18,
+      "zoneZ": 36,
+      "zoneW": 4,
+      "zoneH": 4,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "enemies": [
+          {
+            "type": "shadowGoat",
+            "count": 1
+          }
+        ]
+      },
+      "linkedEntityIds": ["377b0474-fd57-42ab-a0de-6a4729ee93a1"]
+    },
+    {
+      "id": "c5a02fd8-8145-4c73-9a69-6e8ac5856e12",
+      "action": "ambientChange",
+      "zoneX": 74,
+      "zoneZ": 28,
+      "zoneW": 20,
+      "zoneH": 4,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "fogDensity": 0.06,
+        "fogColor": "#120e18"
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "b248a81e-6237-4dce-b921-0d378aed7a6c",
+      "action": "bossIntro",
+      "zoneX": 40,
+      "zoneZ": 110,
+      "zoneW": 20,
+      "zoneH": 6,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "text": "Truth is the first heresy. I am its priestess."
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "9ef3efe4-7aba-49ae-9a3d-d32f0724852a",
+      "action": "lockDoors",
+      "zoneX": 40,
+      "zoneZ": 110,
+      "zoneW": 20,
+      "zoneH": 6,
+      "once": true,
+      "fired": false,
+      "delay": 3000,
+      "pendingFireTime": 0,
+      "actionData": null,
+      "linkedEntityIds": []
+    },
+    {
+      "id": "19bd9dd3-1031-4469-891f-461e4f4ebdb0",
+      "action": "ambientChange",
+      "zoneX": 36,
+      "zoneZ": 108,
+      "zoneW": 28,
+      "zoneH": 28,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "condition": "bossHpBelow60",
+        "phase": 2,
+        "effect": "cameraInvert",
+        "fogDensity": 0.1,
+        "fogColor": "#201020"
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "552c55a9-f011-4585-bc65-57399940c286",
+      "action": "ambientChange",
+      "zoneX": 36,
+      "zoneZ": 108,
+      "zoneW": 28,
+      "zoneH": 28,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "condition": "bossHpBelow30",
+        "phase": 3,
+        "effect": "floorCollapse",
+        "collapseInterval": 4000,
+        "collapseCount": 4,
+        "collapseDuration": 3000
+      },
+      "linkedEntityIds": []
+    }
+  ],
+  "triggeredEntities": [
+    {
+      "entityType": "fireGoat",
+      "x": 46,
+      "z": 70,
+      "facing": 0,
+      "triggerId": "c96c3971-92c8-42c6-9790-994e2bca3494",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "fireGoat",
+      "x": 50,
+      "z": 68,
+      "facing": 0,
+      "triggerId": "c96c3971-92c8-42c6-9790-994e2bca3494",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "fireGoat",
+      "x": 54,
+      "z": 70,
+      "facing": 0,
+      "triggerId": "c96c3971-92c8-42c6-9790-994e2bca3494",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "shadowGoat",
+      "x": 40,
+      "z": 80,
+      "facing": 0,
+      "triggerId": "14f4eb48-ef65-4c19-b2a5-602428ad45c9",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "shadowGoat",
+      "x": 58,
+      "z": 80,
+      "facing": 0,
+      "triggerId": "14f4eb48-ef65-4c19-b2a5-602428ad45c9",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "fireGoat",
+      "x": 48,
+      "z": 68,
+      "facing": 0,
+      "triggerId": "14f4eb48-ef65-4c19-b2a5-602428ad45c9",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "fireGoat",
+      "x": 52,
+      "z": 68,
+      "facing": 0,
+      "triggerId": "14f4eb48-ef65-4c19-b2a5-602428ad45c9",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "shadowGoat",
+      "x": 20,
+      "z": 36,
+      "facing": 0,
+      "triggerId": "5c37a811-5552-4c72-a9c7-b4df93ab3f40",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    }
+  ]
+}

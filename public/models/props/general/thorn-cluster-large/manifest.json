@@ -1,0 +1,41 @@
+{
+  "id": "thorn-cluster-large",
+  "name": "Large Thorn Cluster",
+  "type": "prop",
+  "seed": 465785350,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cad01-f196-7985-8f09-273e0efb8b7a",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad01-f196-7985-8f09-273e0efb8b7a"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cad04-5943-7d37-b3f0-8f132df9f881",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad04-5943-7d37-b3f0-8f132df9f881"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large cluster of rigid thorny demonic growths forming a barrier, thick twisted dark barbed stalks with vicious spines, impassable hellish organic hazard, dark fantasy game prop, floor-placed, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Thick dark thorny bark with glowing red veins, sharp spine clusters, dried blood on barbs",
+    "enablePbr": true
+  }
+}

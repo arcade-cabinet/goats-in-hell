@@ -1,0 +1,7 @@
+{
+  "id": "limbo-grave-incense-holder",
+  "name": "Incense Holder",
+  "type": "prop",
+  "pipeline": "graveyard-pack",
+  "source": "Graveyard Pack / PBR FBX → GLB"
+}

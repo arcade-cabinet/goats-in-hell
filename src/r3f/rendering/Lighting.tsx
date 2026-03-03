@@ -12,9 +12,11 @@
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three/webgpu';
+import { renderingConfig } from '../../config';
 import { CELL_SIZE } from '../../constants';
 import type { FloorTheme } from '../../game/levels/FloorThemes';
 import { MapCell } from '../../game/levels/LevelGenerator';
+import { setAmbientLightForDevBridge } from '../debug/GameDevBridge';
 
 // ---------------------------------------------------------------------------
 // Theme-based light configurations
@@ -27,18 +29,14 @@ interface ThemeLightConfig {
 }
 
 const THEME_LIGHTS: Record<string, ThemeLightConfig> = {
-  firePits: { color: '#ff4400', intensity: 2.0, distance: 16 },
-  fleshCaverns: { color: '#cc3333', intensity: 2.0, distance: 16 },
-  obsidianFortress: { color: '#4466aa', intensity: 2.0, distance: 16 },
-  theVoid: { color: '#6600cc', intensity: 2.2, distance: 18 },
+  firePits: renderingConfig.themeLights.firePits,
+  fleshCaverns: renderingConfig.themeLights.fleshCaverns,
+  obsidianFortress: renderingConfig.themeLights.obsidianFortress,
+  theVoid: renderingConfig.themeLights.theVoid,
 };
 
 // Default fallback for unknown themes
-const DEFAULT_THEME_LIGHT: ThemeLightConfig = {
-  color: '#ff4400',
-  intensity: 1.8,
-  distance: 14,
-};
+const DEFAULT_THEME_LIGHT: ThemeLightConfig = renderingConfig.themeLights.default;
 
 // ---------------------------------------------------------------------------
 // Muzzle flash module-level state
@@ -58,10 +56,10 @@ const muzzleFlash: MuzzleFlashState = {
   scene: null,
 };
 
-const MUZZLE_FLASH_DURATION = 100; // ms
-const MUZZLE_FLASH_INTENSITY = 5;
-const MUZZLE_FLASH_DISTANCE = 4;
-const MUZZLE_FLASH_COLOR = '#ffffcc'; // yellow-white
+const MUZZLE_FLASH_DURATION = renderingConfig.muzzleFlash.durationMs;
+const MUZZLE_FLASH_INTENSITY = renderingConfig.muzzleFlash.intensity;
+const MUZZLE_FLASH_DISTANCE = renderingConfig.muzzleFlash.distance;
+const MUZZLE_FLASH_COLOR = renderingConfig.muzzleFlash.color;
 
 // Reusable temp vector for spotlight forward direction (avoids per-frame allocation)
 const _spotForward = new THREE.Vector3();
@@ -168,17 +166,18 @@ export function DynamicLighting({ theme, grid, width, depth }: DynamicLightingPr
   // Create ambient light — very dim, warm reddish for hell atmosphere
   // -------------------------------------------------------------------------
   useEffect(() => {
-    const ambient = new THREE.AmbientLight(theme.ambientColor, 0.5);
+    const ambient = new THREE.AmbientLight(theme.ambientColor, renderingConfig.ambient.intensity);
     ambient.name = 'ambientLight';
     scene.add(ambient);
     ambientRef.current = ambient;
+    setAmbientLightForDevBridge(ambient);
 
     // Hemisphere light — sky color from theme, ground color warm (lava glow)
     // Provides soft fill so no surface is ever pure black
     const hemi = new THREE.HemisphereLight(
-      '#443333', // sky — dim warm grey (cavern ceiling bounce)
+      renderingConfig.hemisphere.groundColor, // sky — dim warm grey (cavern ceiling bounce)
       theme.ambientColor, // ground — theme color (lava/flesh/void glow from below)
-      0.4,
+      renderingConfig.hemisphere.skyIntensity,
     );
     hemi.name = 'hemisphereLight';
     scene.add(hemi);
@@ -201,8 +200,8 @@ export function DynamicLighting({ theme, grid, width, depth }: DynamicLightingPr
     const config = THEME_LIGHTS[theme.name] ?? DEFAULT_THEME_LIGHT;
     const lights: TrackedPointLight[] = [];
 
-    const LIGHT_SPACING = 3; // grid-cell stride between candidate positions
-    const MAX_ROOM_LIGHTS = 32;
+    const LIGHT_SPACING = renderingConfig.roomLights.spacing; // grid-cell stride between candidate positions
+    const MAX_ROOM_LIGHTS = renderingConfig.roomLights.maxLights;
 
     const positions = pickFloorLightPositions(grid, width, depth, LIGHT_SPACING, MAX_ROOM_LIGHTS);
 
@@ -246,11 +245,11 @@ export function DynamicLighting({ theme, grid, width, depth }: DynamicLightingPr
   // -------------------------------------------------------------------------
   useEffect(() => {
     const spotlight = new THREE.SpotLight(
-      '#fff5e0', // warm white
-      1.2, // bright enough to see surroundings
-      30, // distance — lights up more of the dungeon ahead
-      0.9, // angle (radians) — wide cone for peripheral visibility
-      0.5, // penumbra — soft edge
+      renderingConfig.spotlight.color, // warm white
+      renderingConfig.spotlight.intensity, // bright enough to see surroundings
+      renderingConfig.spotlight.distance, // distance — lights up more of the dungeon ahead
+      renderingConfig.spotlight.angle, // angle (radians) — wide cone for peripheral visibility
+      renderingConfig.spotlight.penumbra, // penumbra — soft edge
     );
     spotlight.name = 'playerSpotlight';
     spotlight.position.copy(camera.position);
@@ -297,7 +296,9 @@ export function DynamicLighting({ theme, grid, width, depth }: DynamicLightingPr
     // Flicker room point lights with sinusoidal variation
     for (const tracked of roomLightsRef.current) {
       tracked.light.intensity =
-        tracked.baseIntensity + Math.sin(time * tracked.flickerSpeed + tracked.flickerPhase) * 0.15;
+        tracked.baseIntensity +
+        Math.sin(time * tracked.flickerSpeed + tracked.flickerPhase) *
+          renderingConfig.roomLights.flickerAmplitude;
     }
 
     // Update player spotlight to follow camera

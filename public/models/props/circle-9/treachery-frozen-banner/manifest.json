@@ -1,0 +1,41 @@
+{
+  "id": "treachery-frozen-banner",
+  "name": "Frozen Stiff Banner",
+  "type": "prop",
+  "seed": 2167474342,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac85-2437-708e-9dd2-84987d772379",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac85-2437-708e-9dd2-84987d772379"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac86-51df-7bc3-b576-9ec9542bfd60",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac86-51df-7bc3-b576-9ec9542bfd60"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A wall-mounted fabric banner frozen completely stiff with ice crystals covering the surface, rigid frost-covered national flag frozen mid-flutter on an iron bracket, betrayers of country symbol, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Frost-covered fabric frozen stiff, faded heraldic pattern beneath ice layer, iron wall bracket, rigid frozen mid-flutter pose, ice crystals on surface",
+    "enablePbr": true
+  }
+}

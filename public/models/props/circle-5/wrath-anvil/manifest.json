@@ -1,0 +1,41 @@
+{
+  "id": "wrath-anvil",
+  "name": "Wrath Anvil",
+  "type": "prop",
+  "seed": 8636694,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac74-0915-7cd8-aac9-be679401ede9",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac74-0915-7cd8-aac9-be679401ede9"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac75-d0f1-7ef8-a8c2-ad9cc5dd3046",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac75-d0f1-7ef8-a8c2-ad9cc5dd3046"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A massive blacksmith anvil on a volcanic rock base, glowing red-hot cracks along its surface, embedded broken sword blade, wrath forge of hell, stylized low poly game prop, dark fantasy, isometric view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark iron anvil, glowing orange-red cracks, broken steel blade embedded in top, volcanic rock base",
+    "enablePbr": true
+  }
+}

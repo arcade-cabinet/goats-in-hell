@@ -15,6 +15,7 @@ import type { Entity, WeaponId } from '../game/entities/components';
 import { world } from '../game/entities/world';
 import { getLevelBonuses, useGameStore } from '../state/GameStore';
 import { playSound } from './audio/AudioSystem';
+import { setCameraForDevBridge } from './debug/GameDevBridge';
 import { inputManager } from './input/InputManager';
 import { GamepadProvider } from './input/providers/GamepadProvider';
 import { KeyboardMouseProvider } from './input/providers/KeyboardMouseProvider';
@@ -85,6 +86,8 @@ interface PlayerControllerProps {
 
 export function PlayerController({ spawnPosition = [0, PLAYER_HEIGHT, 0] }: PlayerControllerProps) {
   const { camera, gl } = useThree();
+  // Register camera with DevBridge so inspect/lookAt work
+  setCameraForDevBridge(camera);
   const { world: rapierWorld } = useRapier();
   const rigidBodyRef = useRef<RapierRigidBody>(null);
   const yawRef = useRef(0);

@@ -11,6 +11,8 @@
 import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import R3FRoot from './R3FRoot';
+import { DevOverlay } from './r3f/debug/DevOverlay';
+import { installGameDevBridge } from './r3f/debug/GameDevBridge';
 import type { Difficulty } from './state/GameStore';
 import { generateSeedPhrase, useGameStore } from './state/GameStore';
 import { BossIntroScreen } from './ui/BossIntroScreen';
@@ -21,11 +23,20 @@ import { MainMenu } from './ui/MainMenu';
 import { PauseMenu } from './ui/PauseMenu';
 import { VictoryScreen } from './ui/VictoryScreen';
 
+// Detect ?devmode URL param once at module init (stable for lifetime of the page)
+const isDevMode =
+  typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('devmode');
+
 const App = () => {
   const screen = useGameStore((s) => s.screen);
   const patch = useGameStore((s) => s.patch);
   const autoplay = useGameStore((s) => s.autoplay);
   const startNewGame = useGameStore((s) => s.startNewGame);
+
+  // Install window.__game dev bridge once on mount (only when ?devmode is active)
+  useEffect(() => {
+    if (isDevMode) installGameDevBridge();
+  }, []);
 
   // Autoplay: auto-start a game on mount, optionally at a specific difficulty
   // URL: ?autoplay or ?autoplay=easy or ?autoplay=hard
@@ -130,6 +141,7 @@ const App = () => {
       {screen === 'bossIntro' && <BossIntroScreen />}
       {screen === 'gameComplete' && <GameCompleteScreen />}
       {(screen === 'mainMenu' || screen === 'newGame' || screen === 'settings') && <MainMenu />}
+      {isDevMode && <DevOverlay />}
     </View>
   );
 };

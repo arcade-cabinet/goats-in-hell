@@ -1,0 +1,41 @@
+{
+  "id": "pressure-plate-stone",
+  "name": "Stone Pressure Plate",
+  "type": "prop",
+  "seed": 148652956,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caccd-5307-74ed-b2c1-de387884da6d",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caccd-5307-74ed-b2c1-de387884da6d"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacce-cddb-76cd-9b8e-a588b1583c8a",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacce-cddb-76cd-9b8e-a588b1583c8a"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A depressed stone pressure plate recessed slightly into the dungeon floor, square stone tile with visible seam lines around edges and slightly lower than surrounding floor level, dungeon trap trigger mechanism, dark fantasy game prop, floor-placed, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark stone plate with subtle depression, worn smooth center from footsteps, visible crack seams",
+    "enablePbr": true
+  }
+}

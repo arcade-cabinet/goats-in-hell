@@ -1,0 +1,41 @@
+{
+  "id": "fraud-theatrical-column",
+  "name": "Theatrical Facade Column",
+  "type": "prop",
+  "seed": 4205335886,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacae-0cf5-7409-8ff6-91ec6fe173e2",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacae-0cf5-7409-8ff6-91ec6fe173e2"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacaf-9c77-7415-8049-8bb8533e9ec8",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacaf-9c77-7415-8049-8bb8533e9ec8"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A classical marble column that is actually a painted wooden facade, front face is polished white marble but side reveals thin plywood construction and paint drips, theatrical stage set piece, dark fantasy game prop, isolated object, dark background, three-quarter orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Front face polished white marble with fluting, side reveals thin wooden construction, paint drips and rough edges, theatrical deception",
+    "enablePbr": true
+  }
+}

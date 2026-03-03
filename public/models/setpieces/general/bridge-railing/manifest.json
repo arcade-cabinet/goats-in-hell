@@ -1,0 +1,41 @@
+{
+  "id": "bridge-railing",
+  "name": "Stone Bridge Railing",
+  "type": "prop",
+  "seed": 2018665842,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cad83-6e4f-7d2b-af4d-c338f397ff93",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad83-6e4f-7d2b-af4d-c338f397ff93"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cad84-ba04-7c96-8c49-1e18a4dceaf5",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad84-ba04-7c96-8c49-1e18a4dceaf5"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A stone bridge railing balustrade segment with thick stone balusters and flat top rail, dungeon bridge safety barrier section, dark fantasy game prop, front-facing, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark carved stone balusters with smooth worn handrail, chipped edges, dark patina",
+    "enablePbr": true
+  }
+}

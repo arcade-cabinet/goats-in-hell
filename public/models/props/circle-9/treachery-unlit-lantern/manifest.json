@@ -1,0 +1,41 @@
+{
+  "id": "treachery-unlit-lantern",
+  "name": "Frost-Covered Unlit Lantern",
+  "type": "prop",
+  "seed": 2872875415,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacb3-6208-707a-9f4b-e72299683003",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb3-6208-707a-9f4b-e72299683003"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacb4-c795-7280-aefe-99d510ec4f3e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb4-c795-7280-aefe-99d510ec4f3e"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A wall-mounted iron lantern completely covered in frost with no flame inside, dead frozen light fixture with ice crystals growing on the glass panes, extinguished by the absolute cold, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark iron frame with frost coating, frosted glass panes, ice crystals growing on metal, no flame, dead and frozen, wall mount bracket",
+    "enablePbr": true
+  }
+}

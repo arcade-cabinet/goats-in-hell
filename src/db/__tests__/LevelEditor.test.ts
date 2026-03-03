@@ -810,4 +810,113 @@ describe('LevelEditor', () => {
       expect(grid[17][17]).toBe(MapCell.EMPTY);
     });
   });
+
+  // -------------------------------------------------------------------------
+  // Asset discovery methods
+  // -------------------------------------------------------------------------
+
+  describe('getAvailableProps', () => {
+    it('returns general + circle-specific props for a given circle', () => {
+      const props = editor.getAvailableProps(1);
+      expect(Array.isArray(props)).toBe(true);
+      // Should include general meshy props
+      expect(props).toContain('hellfire-brazier');
+      expect(props).toContain('bone-pile');
+      // Should include circle-1 specific props
+      expect(props).toContain('fog-lantern');
+      expect(props).toContain('limbo-cage');
+    });
+
+    it('returns at least general props for any circle', () => {
+      const props = editor.getAvailableProps(5);
+      expect(props.length).toBeGreaterThan(0);
+      expect(props).toContain('hellfire-brazier');
+    });
+  });
+
+  describe('getAvailableEnemies', () => {
+    it('returns general + circle-specific + boss enemies', () => {
+      const enemies = editor.getAvailableEnemies(1);
+      expect(Array.isArray(enemies)).toBe(true);
+      expect(enemies).toContain('goat-brute');
+      expect(enemies).toContain('goat-shade');
+      expect(enemies).toContain('boss-azazel');
+    });
+  });
+
+  // -------------------------------------------------------------------------
+  // decorateRoom
+  // -------------------------------------------------------------------------
+
+  describe('decorateRoom', () => {
+    let roomId: string;
+
+    beforeEach(() => {
+      editor.createLevel(LEVEL_ID, {
+        name: 'Decorate Test',
+        levelType: 'procedural',
+        width: 20,
+        depth: 20,
+        floor: 1,
+        themeId: THEME_ID,
+      });
+      roomId = editor.room(LEVEL_ID, 'hall', 2, 2, 10, 10);
+    });
+
+    it('batch places multiple props and returns entity IDs', () => {
+      const ids = editor.decorateRoom(LEVEL_ID, roomId, [
+        { type: 'hellfire-brazier', x: 3, z: 3 },
+        { type: 'bone-pile', x: 5, z: 5 },
+        { type: 'skull-candelabra', x: 7, z: 7, elevation: 1, facing: 1.57 },
+      ]);
+
+      expect(ids).toHaveLength(3);
+      for (const id of ids) {
+        expect(typeof id).toBe('string');
+        expect(id.length).toBeGreaterThan(0);
+      }
+
+      // Verify entities were created in the database
+      const entities = editor.getEntities(LEVEL_ID, 'prop');
+      expect(entities.length).toBe(3);
+    });
+
+    it('assigns roomId to each spawned prop', () => {
+      editor.decorateRoom(LEVEL_ID, roomId, [{ type: 'hellfire-brazier', x: 4, z: 4 }]);
+
+      const entities = editor.getEntities(LEVEL_ID, 'prop');
+      expect(entities[0].roomId).toBe(roomId);
+    });
+
+    it('passes elevation and facing through', () => {
+      editor.decorateRoom(LEVEL_ID, roomId, [
+        { type: 'bone-pile', x: 6, z: 6, elevation: 2, facing: 3.14 },
+      ]);
+
+      const entities = editor.getEntities(LEVEL_ID, 'prop');
+      expect(entities[0].elevation).toBe(2);
+      expect(entities[0].facing).toBeCloseTo(3.14);
+    });
+
+    it('passes surfaceAnchor through', () => {
+      const anchor = {
+        face: 'north',
+        offsetX: 0,
+        offsetY: 1.5,
+        offsetZ: 0,
+        rotation: [0, 0, 0, 1],
+        scale: 1,
+      };
+
+      editor.decorateRoom(LEVEL_ID, roomId, [{ type: 'torch', x: 3, z: 3, surfaceAnchor: anchor }]);
+
+      const entities = editor.getEntities(LEVEL_ID, 'prop');
+      expect(entities[0].surfaceAnchor).toEqual(anchor);
+    });
+
+    it('returns empty array for empty decorations list', () => {
+      const ids = editor.decorateRoom(LEVEL_ID, roomId, []);
+      expect(ids).toEqual([]);
+    });
+  });
 });

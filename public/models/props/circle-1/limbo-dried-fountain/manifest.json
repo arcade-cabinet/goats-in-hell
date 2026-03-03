@@ -1,0 +1,41 @@
+{
+  "id": "limbo-dried-fountain",
+  "name": "Dried Stone Fountain",
+  "type": "prop",
+  "seed": 1331682069,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac81-2b04-7b48-92e8-36d4ae78f440",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac81-2b04-7b48-92e8-36d4ae78f440"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac82-c38d-7a1a-b91d-6a2e69d36c80",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac82-c38d-7a1a-b91d-6a2e69d36c80"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A dry ancient stone fountain basin on a crumbling pedestal, mineral deposits and dark stains inside the empty basin, cracked rim, gray-blue weathered stone, no water, dark fantasy dungeon game prop, isolated object, dark background, three-quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Gray-blue weathered stone, white mineral deposits, dark staining inside basin, cracked edges, ancient surface",
+    "enablePbr": true
+  }
+}

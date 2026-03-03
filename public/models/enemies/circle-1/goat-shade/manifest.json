@@ -1,0 +1,105 @@
+{
+  "id": "goat-shade",
+  "name": "Goat Shade",
+  "type": "character",
+  "seed": 3693558822,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cad72-d869-7b1b-bc7a-8e49f321b83b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad72-d869-7b1b-bc7a-8e49f321b83b"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cad9e-7730-70ea-92c8-520a0334147b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad9e-7730-70ea-92c8-520a0334147b"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cada4-f917-71b3-aa51-9724b000180d",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cada4-f917-71b3-aa51-9724b000180d"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cadad-f6c2-70c9-b9bf-bcf404f00fed",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadad-f6c2-70c9-b9bf-bcf404f00fed"
+      },
+      "artifacts": {
+        "model": "model.glb"
+      }
+    },
+    "animations": {
+      "WalkAndRun.Walking.Stumble_Walk": {
+        "taskId": "019cadae-c67d-70d6-85f7-48aa66ecb378",
+        "status": "SUCCEEDED",
+        "actionId": 562,
+        "artifact": "animations/Stumble_Walk.glb"
+      },
+      "BodyMovements.Acting.Mummy_Stagger": {
+        "taskId": "019cadaf-04ef-7322-92eb-d9d549ca8620",
+        "status": "SUCCEEDED",
+        "actionId": 113,
+        "artifact": "animations/Mummy_Stagger.glb"
+      },
+      "DailyActions.Idle.Angry_Ground_Stomp": {
+        "taskId": "019cadaf-4379-7341-84ec-5de8affa9107",
+        "status": "SUCCEEDED",
+        "actionId": 255,
+        "artifact": "animations/Angry_Ground_Stomp.glb"
+      },
+      "Fighting.GettingHit.Face_Punch_Reaction": {
+        "taskId": "019cadaf-814c-7343-b660-2c9c75bfef7e",
+        "status": "SUCCEEDED",
+        "actionId": 174,
+        "artifact": "animations/Face_Punch_Reaction.glb"
+      },
+      "Fighting.Dying.Dead": {
+        "taskId": "019cadaf-fad5-70e9-8621-366bbabffc85",
+        "status": "SUCCEEDED",
+        "actionId": 8,
+        "artifact": "animations/Dead.glb"
+      }
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 1 (Limbo) — translucent spectral goat. Slow, eerie, fades in and out of fog.",
+  "textToImageTask": {
+    "prompt": "A bipedal humanoid goat demon ghost in A-pose, translucent ethereal body, pale gray-white fur that dissolves into mist at the extremities, hollow dark eye sockets with faint blue glow, thin curving horns that fade to transparency, no weapons, long tattered spectral robes trailing into fog, digitigrade goat legs, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Translucent spectral bipedal goat ghost, pale gray, dissolving into mist, hollow eyes with blue glow, tattered robes, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Pale translucent gray-white fur, ghostly blue glow in eye sockets, fading misty extremities, tattered ethereal fabric",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 1.8
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Stumble_Walk",
+      "BodyMovements.Acting.Mummy_Stagger",
+      "DailyActions.Idle.Angry_Ground_Stomp",
+      "Fighting.GettingHit.Face_Punch_Reaction",
+      "Fighting.Dying.Dead"
+    ]
+  }
+}

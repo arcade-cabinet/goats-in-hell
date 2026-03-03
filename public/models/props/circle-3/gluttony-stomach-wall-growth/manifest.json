@@ -1,0 +1,41 @@
+{
+  "id": "gluttony-stomach-wall-growth",
+  "name": "Stomach Wall Growth",
+  "type": "prop",
+  "seed": 2865279083,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacb1-790d-71df-af57-7bad577beb29",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb1-790d-71df-af57-7bad577beb29"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacb3-2bd6-7212-9dd0-e79b39be2b9a",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb3-2bd6-7212-9dd0-e79b39be2b9a"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A bulging organic wall growth resembling stomach lining, pink-red fleshy surface with folded ridges and visible veins, protruding from flat wall surface like a tumor, glistening wet, dark fantasy gluttony-themed wall decoration game prop, isolated object, dark background, wall-mounted view",
+    "artStyle": "realistic",
+    "targetPolycount": 4500,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Pink-red fleshy surface, folded stomach lining ridges, visible vein network, glistening wet sheen, organic tumor form",
+    "enablePbr": true
+  }
+}

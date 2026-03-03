@@ -173,12 +173,47 @@ export async function migrateAndSeed(db: DrizzleDb): Promise<void> {
     )
   `);
 
+  db.run(sql`
+    CREATE TABLE IF NOT EXISTS decals (
+      id TEXT PRIMARY KEY,
+      level_id TEXT NOT NULL REFERENCES levels(id) ON DELETE CASCADE,
+      room_id TEXT REFERENCES rooms(id),
+      decal_type TEXT NOT NULL,
+      x REAL NOT NULL,
+      z REAL NOT NULL,
+      w REAL NOT NULL DEFAULT 2,
+      h REAL NOT NULL DEFAULT 2,
+      rotation REAL NOT NULL DEFAULT 0,
+      opacity REAL NOT NULL DEFAULT 0.8,
+      surface TEXT NOT NULL DEFAULT 'floor'
+    )
+  `);
+
+  // Add new columns — idempotent via try/catch (SQLite lacks IF NOT EXISTS on ADD COLUMN)
+  const newColumns = [
+    `ALTER TABLE rooms ADD COLUMN floor_texture TEXT`,
+    `ALTER TABLE rooms ADD COLUMN wall_texture TEXT`,
+    `ALTER TABLE rooms ADD COLUMN ceiling_texture TEXT`,
+    `ALTER TABLE rooms ADD COLUMN fill_rule TEXT`,
+    `ALTER TABLE themes ADD COLUMN texture_palette TEXT`,
+    `ALTER TABLE themes ADD COLUMN room_fill_rules TEXT`,
+    `ALTER TABLE levels ADD COLUMN compiled_visual TEXT`,
+  ];
+  for (const stmt of newColumns) {
+    try {
+      db.run(sql.raw(stmt));
+    } catch {
+      /* column already exists — safe to ignore */
+    }
+  }
+
   // Create indices
   db.run(sql`CREATE INDEX IF NOT EXISTS rooms_level_idx ON rooms(level_id)`);
   db.run(
     sql`CREATE INDEX IF NOT EXISTS entities_level_category_idx ON entities(level_id, spawn_category)`,
   );
   db.run(sql`CREATE INDEX IF NOT EXISTS connections_level_idx ON connections(level_id)`);
+  db.run(sql`CREATE INDEX IF NOT EXISTS decals_level_idx ON decals(level_id)`);
 
   // Seed data — use INSERT OR IGNORE for idempotency
   for (const cell of CELL_METADATA_SEED) {

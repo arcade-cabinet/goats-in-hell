@@ -1,0 +1,41 @@
+{
+  "id": "greed-golden-vase",
+  "name": "Golden Ornate Vase",
+  "type": "prop",
+  "seed": 1668779798,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac9e-9d3d-7335-b59c-ffc1d729b3a4",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9e-9d3d-7335-b59c-ffc1d729b3a4"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac9f-c72d-7341-9199-3d7e185457aa",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9f-c72d-7341-9199-3d7e185457aa"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tall ornamental golden vase with handles shaped like goat horns, decorative band of jewels around the neck, standing on a small stone base, opulent treasure room decoration, game prop, isolated object, dark background, three quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "on"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Polished gold surface, goat horn shaped handles, embedded jewel band, warm amber reflections on dark stone base",
+    "enablePbr": true
+  }
+}

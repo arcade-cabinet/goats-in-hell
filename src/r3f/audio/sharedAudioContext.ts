@@ -1,19 +1,13 @@
 /**
- * Shared AudioContext singleton for all audio subsystems.
- *
- * Browsers limit the number of AudioContext instances (typically 6),
- * so sharing a single context across AudioSystem, MusicSystem, and
- * AmbientSoundSystem prevents hitting that cap and avoids unnecessary
- * resource duplication.
+ * Native stub for sharedAudioContext.
+ * Web Audio API is unavailable on native iOS/Android.
+ * Phase 2: replace with expo-audio implementation.
  */
 
-let sharedCtx: AudioContext | null = null;
-
 export function getSharedAudioContext(): AudioContext {
-  if (!sharedCtx) sharedCtx = new AudioContext();
-  return sharedCtx;
+  throw new Error('[sharedAudioContext] Web Audio API is not available on native');
 }
 
 export function resumeSharedAudioContext(): void {
-  if (sharedCtx?.state === 'suspended') sharedCtx.resume();
+  // no-op on native
 }

@@ -1,0 +1,41 @@
+{
+  "id": "bone-pile",
+  "name": "Bone Pile",
+  "type": "prop",
+  "seed": 925354630,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac75-ea5c-783e-9321-1c52434ae96e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac75-ea5c-783e-9321-1c52434ae96e"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac77-c57d-7d7b-86ad-0f1f88b1701e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac77-c57d-7d7b-86ad-0f1f88b1701e"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A scattered pile of bones and goat skulls on the dungeon floor, some cracked and broken, dark stained ancient remains, hell dungeon floor debris, stylized low poly game prop, dark fantasy, isometric view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Yellowed and charred bone, cracked goat skulls with dark horn stubs",
+    "enablePbr": true
+  }
+}

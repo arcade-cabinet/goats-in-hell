@@ -1,0 +1,41 @@
+{
+  "id": "treachery-ice-crack-floor",
+  "name": "Ice Crack Floor Piece",
+  "type": "prop",
+  "seed": 3676900106,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacab-48fe-70e4-b468-61e3790525c2",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacab-48fe-70e4-b468-61e3790525c2"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacac-8f24-73c0-8ea1-7b050538e9a9",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacac-8f24-73c0-8ea1-7b050538e9a9"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A flat section of frozen floor with deep radiating crack patterns, dark blue-black ice surface with white fracture lines spreading outward from a central impact point, frozen lake floor warning indicator, dark fantasy game prop, isolated object, dark background, top-down orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark blue-black ice surface, white radiating fracture lines, central stress point, slight surface displacement along cracks, frozen lake floor",
+    "enablePbr": true
+  }
+}

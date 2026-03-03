@@ -1,0 +1,41 @@
+{
+  "id": "arch-rounded",
+  "name": "Romanesque Rounded Archway",
+  "type": "prop",
+  "seed": 3590728205,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cad72-025b-7813-9b04-c4d421af6a98",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad72-025b-7813-9b04-c4d421af6a98"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cadae-822d-70d1-a3cf-aa5a63d5968b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadae-822d-70d1-a3cf-aa5a63d5968b"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A Romanesque rounded stone archway with semicircular profile, thick stone voussoirs with decorative banding, ancient dungeon architecture, dark fantasy game prop, front-facing, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 7000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Warm dark sandstone with carved zigzag patterns, aged patina, torch soot staining",
+    "enablePbr": true
+  }
+}

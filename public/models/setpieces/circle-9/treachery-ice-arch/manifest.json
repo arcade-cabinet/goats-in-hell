@@ -1,0 +1,41 @@
+{
+  "id": "treachery-ice-arch",
+  "name": "Ice Crystal Arch",
+  "type": "prop",
+  "seed": 1865399696,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caca3-d66d-7ee1-8efb-c7d9b84459d2",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca3-d66d-7ee1-8efb-c7d9b84459d2"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019caca5-85ea-7f03-9c74-370a19434665",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca5-85ea-7f03-9c74-370a19434665"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A grand archway formed from interlocking dark blue ice crystals, frozen crystalline arch entrance with sharp angular ice formations, glacial passage frame with frost particles at base, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark blue translucent ice crystals, sharp angular facets, frost white edges, glacial blue glow, frozen crystalline structure",
+    "enablePbr": true
+  }
+}

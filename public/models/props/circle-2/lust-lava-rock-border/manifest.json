@@ -1,0 +1,41 @@
+{
+  "id": "lust-lava-rock-border",
+  "name": "Lava Channel Border Stone",
+  "type": "prop",
+  "seed": 3633993004,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac8b-6795-7b17-924d-f5d8c34ea5d5",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac8b-6795-7b17-924d-f5d8c34ea5d5"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac8d-09b6-7ff2-baf1-3a4a5665543d",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac8d-09b6-7ff2-baf1-3a4a5665543d"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A curved border stone piece for a lava channel edge, cracked ember-dark stone with glowing orange seams between fractures, heat-warped surface, modular section for tiling, dark fantasy game prop, isolated object, dark background, top-down angled view",
+    "artStyle": "realistic",
+    "targetPolycount": 3500,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark ember stone, glowing orange-red fracture seams, heat-warped surface, cracked volcanic rock",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "id": "fraud-marble-pedestal",
+  "name": "Marble Display Pedestal",
+  "type": "prop",
+  "seed": 3037912371,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac8e-ded1-7cb8-8be9-9aeab6425047",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac8e-ded1-7cb8-8be9-9aeab6425047"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac90-c013-704e-8285-48a74a6051a2",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac90-c013-704e-8285-48a74a6051a2"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A classical marble display pedestal with Corinthian carved detailing, white marble column pedestal for displaying treasures and busts, ornate base and flat top, palatial furniture, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Polished white veined marble, Corinthian leaf carvings at base and top, flat display surface, classical elegance",
+    "enablePbr": true
+  }
+}

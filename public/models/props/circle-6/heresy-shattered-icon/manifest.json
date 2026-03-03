@@ -1,0 +1,41 @@
+{
+  "id": "heresy-shattered-icon",
+  "name": "Shattered Religious Icon",
+  "type": "prop",
+  "seed": 1202494767,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caca8-6471-7025-a33a-4a3ecd43db34",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca8-6471-7025-a33a-4a3ecd43db34"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacaa-1de0-7376-a36a-272e1c581fcc",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacaa-1de0-7376-a36a-272e1c581fcc"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A broken stone religious statue reduced to fragments, the head and torso of a robed figure shattered into three large pieces lying on the ground, cracks and chisel marks on the surfaces, debris scattered around, destroyed sacred icon, game prop, isolated object, dark background, three quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "White marble fragments with gray veining, fresh break surfaces contrasting aged outer surfaces, stone debris, cold purple ambient tone",
+    "enablePbr": true
+  }
+}

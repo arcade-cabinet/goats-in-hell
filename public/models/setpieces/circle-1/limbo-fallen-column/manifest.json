@@ -1,0 +1,41 @@
+{
+  "id": "limbo-fallen-column",
+  "name": "Fallen Column Section",
+  "type": "prop",
+  "seed": 3626222878,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac84-2de9-7080-b388-0eb5a027ad7c",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac84-2de9-7080-b388-0eb5a027ad7c"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac85-c412-7a5a-b7e6-d89fd9014775",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac85-c412-7a5a-b7e6-d89fd9014775"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A section of a fallen ancient stone column lying on its side, broken at both ends revealing inner stone grain, gray-blue limestone with deep fluting, moss growing on the underside, dark fantasy dungeon game prop, isolated object, dark background, side view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Gray-blue limestone with fluted surface, broken cross-section showing grain, moss on lower side, ancient weathering",
+    "enablePbr": true
+  }
+}

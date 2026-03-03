@@ -1,0 +1,41 @@
+{
+  "id": "violence-industrial-arch",
+  "name": "Industrial Iron Arch",
+  "type": "prop",
+  "seed": 2072020563,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac98-9ff6-7d08-939d-8c0bf1ec011b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac98-9ff6-7d08-939d-8c0bf1ec011b"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac9a-29ec-7d4b-a5b4-31851c6fb2ed",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9a-29ec-7d4b-a5b4-31851c6fb2ed"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A massive rusted iron archway with riveted steel plates, industrial slaughterhouse entrance frame, heavy bolts and blood-stained edges, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Rust red oxidized iron, dark riveted steel plates, blood-stain patina on edges, industrial metal PBR",
+    "enablePbr": true
+  }
+}

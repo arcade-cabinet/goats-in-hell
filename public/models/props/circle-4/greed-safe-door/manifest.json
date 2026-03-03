@@ -1,0 +1,41 @@
+{
+  "id": "greed-safe-door",
+  "name": "Vault Safe Door",
+  "type": "prop",
+  "seed": 1462924530,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caca8-2ab9-7468-85fe-34a5bf756433",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca8-2ab9-7468-85fe-34a5bf756433"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacaa-691d-70b7-81a3-14a4a32dd303",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacaa-691d-70b7-81a3-14a4a32dd303"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A massive circular bank vault safe door made of dark steel with a large combination dial in center, gold accent rivets around the edge, heavy locking bolts visible, partially ajar revealing darkness within, game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark heavy steel with brushed finish, gold accent rivets, brass combination dial, polished locking bolt mechanisms",
+    "enablePbr": true
+  }
+}

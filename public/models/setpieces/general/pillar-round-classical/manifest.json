@@ -1,0 +1,41 @@
+{
+  "id": "pillar-round-classical",
+  "name": "Classical Fluted Pillar",
+  "type": "prop",
+  "seed": 4067112408,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacba-eb13-7664-b658-6c7794c0679d",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacba-eb13-7664-b658-6c7794c0679d"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacbc-41a5-7224-a205-1183dd68061b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacbc-41a5-7224-a205-1183dd68061b"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A classical round stone pillar with vertical fluted channels, ornate Corinthian-style capital with carved leaf motifs, circular base plinth, grand dungeon hall column, dark fantasy game prop, floor-placed, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 7000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Polished dark marble with subtle veining, worn gilding on capital details, age-darkened stone",
+    "enablePbr": true
+  }
+}

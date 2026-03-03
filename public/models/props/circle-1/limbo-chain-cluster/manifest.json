@@ -1,0 +1,41 @@
+{
+  "id": "limbo-chain-cluster",
+  "name": "Hanging Chain Cluster",
+  "type": "prop",
+  "seed": 4179800407,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac76-2571-797d-948f-41ac7a8fc49c",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac76-2571-797d-948f-41ac7a8fc49c"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac77-57c4-79b1-a8a6-73066d140bbe",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac77-57c4-79b1-a8a6-73066d140bbe"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A cluster of heavy rusted iron chains hanging from a ceiling mount point, three chains of different lengths with hooks at the ends, corroded dark metal, dark fantasy dungeon ceiling decoration game prop, isolated object, dark background, hanging vertical view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Rusted dark iron chain links, corroded hooks, orange-brown rust patina, heavy industrial metal",
+    "enablePbr": true
+  }
+}

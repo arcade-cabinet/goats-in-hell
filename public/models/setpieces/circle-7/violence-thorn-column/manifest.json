@@ -1,0 +1,41 @@
+{
+  "id": "violence-thorn-column",
+  "name": "Thorn Column",
+  "type": "prop",
+  "seed": 1346985093,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacba-8511-71ba-80ec-ef37a19d1fdc",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacba-8511-71ba-80ec-ef37a19d1fdc"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacbb-89bf-753d-9274-b1ee9b374500",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacbb-89bf-753d-9274-b1ee9b374500"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tall stone column covered in sharp rusted iron thorns and barbs, corroded metal spikes protruding from dark stone pillar, thorny passage hazard column, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark volcanic stone base, rusted iron thorns and barbs protruding outward, blood-stain rust patina, corroded metal spikes",
+    "enablePbr": true
+  }
+}

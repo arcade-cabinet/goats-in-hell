@@ -1,0 +1,41 @@
+{
+  "id": "lust-rose-thorn-cluster",
+  "name": "Rose Thorn Cluster",
+  "type": "prop",
+  "seed": 1843061086,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac9e-3628-7e90-bf65-c4942831c5c2",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9e-3628-7e90-bf65-c4942831c5c2"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019caca2-da92-72a2-a0c4-7a3a74e7c411",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca2-da92-72a2-a0c4-7a3a74e7c411"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tangled cluster of thorny rose vines with wilted dark red blooms and sharp barbed thorns, rigid solid plant growth crawling over stone, dried and blackened leaves, dark fantasy lust-themed floor decoration game prop, isolated object, dark background, top-down angled view",
+    "artStyle": "realistic",
+    "targetPolycount": 4500,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark woody vines, sharp pointed thorns, wilted dark red rose petals, blackened dried leaves, organic growth",
+    "enablePbr": true
+  }
+}

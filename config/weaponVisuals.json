@@ -1,0 +1,43 @@
+{
+  "_comment": "First-person weapon viewmodel visual tuning. offset = [x, y, z] in camera space. x=0 is centered.",
+  "hellPistol": {
+    "modelScale": 0.16,
+    "offset": [0, -0.22, -0.38],
+    "recoilKickBack": 0.08,
+    "recoilKickUp": 0.04,
+    "color": "#555555",
+    "emissive": "#331100"
+  },
+  "brimShotgun": {
+    "modelScale": 0.16,
+    "offset": [0, -0.22, -0.42],
+    "recoilKickBack": 0.18,
+    "recoilKickUp": 0.1,
+    "color": "#444444",
+    "emissive": "#001133"
+  },
+  "hellfireCannon": {
+    "modelScale": 0.16,
+    "offset": [0, -0.22, -0.4],
+    "recoilKickBack": 0.05,
+    "recoilKickUp": 0.02,
+    "color": "#553333",
+    "emissive": "#440000"
+  },
+  "goatsBane": {
+    "modelScale": 0.19,
+    "offset": [0, -0.25, -0.45],
+    "recoilKickBack": 0.25,
+    "recoilKickUp": 0.15,
+    "color": "#444455",
+    "emissive": "#220044"
+  },
+  "brimstoneFlamethrower": {
+    "modelScale": 0.17,
+    "offset": [0, -0.22, -0.42],
+    "recoilKickBack": 0.02,
+    "recoilKickUp": 0.01,
+    "color": "#554422",
+    "emissive": "#441100"
+  }
+}

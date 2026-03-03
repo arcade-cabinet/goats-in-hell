@@ -1,0 +1,41 @@
+{
+  "id": "wrath-shattered-weapon-rack",
+  "name": "Shattered Weapons Rack",
+  "type": "prop",
+  "seed": 3363804451,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caca6-4c6e-7f0d-a446-89b6e15d0519",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca6-4c6e-7f0d-a446-89b6e15d0519"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019caca7-ee82-7316-87db-d0d77ccab6bb",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca7-ee82-7316-87db-d0d77ccab6bb"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A destroyed wall-mounted wooden weapon rack with broken sword blades and a bent mace still hanging from damaged hooks, the rack frame is cracked and splintered, broken weapons scattered at the base, rage-destroyed armory display, game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Splintered dark wood rack, broken steel blades with rust, bent iron mace, dark metal hooks, scattered weapon debris",
+    "enablePbr": true
+  }
+}

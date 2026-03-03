@@ -1,0 +1,41 @@
+{
+  "id": "limbo-cage",
+  "name": "Limbo Cage",
+  "type": "prop",
+  "seed": 2630871286,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac73-6887-77da-8800-a81b818ba1fb",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac73-6887-77da-8800-a81b818ba1fb"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac74-f855-7cef-ae01-1065cc1d1496",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac74-f855-7cef-ae01-1065cc1d1496"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A small rusted iron hanging cage with a skeletal goat figure slumped inside, chains dangling, corroded metal bars, dark dungeon limbo decoration, stylized low poly game prop, dark fantasy, isometric view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Rusted iron bars, corroded chain links, bone-colored skeletal remains inside",
+    "enablePbr": true
+  }
+}

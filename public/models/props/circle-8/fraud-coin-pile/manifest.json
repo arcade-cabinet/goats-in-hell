@@ -1,0 +1,41 @@
+{
+  "id": "fraud-coin-pile",
+  "name": "Gilded Coin Pile",
+  "type": "prop",
+  "seed": 1814454637,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac74-9a5e-7949-8ed4-6b5a0fb20975",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac74-9a5e-7949-8ed4-6b5a0fb20975"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac76-8047-7857-83a6-51a7f5591d2e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac76-8047-7857-83a6-51a7f5591d2e"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A small pile of gold coins on a marble floor, scattered golden currency with some coins standing on edge, false wealth display, solid sculpted coin heap, dark fantasy game prop, isolated object, dark background, top-down orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Shiny gold coins with embossed faces, scattered pile arrangement, marble floor base, opulent false wealth",
+    "enablePbr": true
+  }
+}

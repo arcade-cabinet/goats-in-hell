@@ -1,0 +1,30 @@
+{
+  "_comment": "Difficulty preset multipliers. All mults are relative to 'normal' (1.0).",
+  "easy": {
+    "label": "Fledgling",
+    "enemyHpMult": 0.7,
+    "enemyDmgMult": 0.6,
+    "enemySpeedMult": 0.85,
+    "playerStartHp": 150,
+    "xpMult": 1.3,
+    "pickupDensityMult": 1.5
+  },
+  "normal": {
+    "label": "Condemned",
+    "enemyHpMult": 1.0,
+    "enemyDmgMult": 1.0,
+    "enemySpeedMult": 1.0,
+    "playerStartHp": 100,
+    "xpMult": 1.0,
+    "pickupDensityMult": 1.0
+  },
+  "hard": {
+    "label": "Forsaken",
+    "enemyHpMult": 1.4,
+    "enemyDmgMult": 1.5,
+    "enemySpeedMult": 1.2,
+    "playerStartHp": 75,
+    "xpMult": 0.8,
+    "pickupDensityMult": 0.85
+  }
+}

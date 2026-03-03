@@ -1,0 +1,41 @@
+{
+  "id": "rope-hanging",
+  "name": "Hanging Rope",
+  "type": "prop",
+  "seed": 661596582,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacd3-7809-74fa-904e-9d3d41d36c77",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacd3-7809-74fa-904e-9d3d41d36c77"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacd4-8213-7509-bb6b-5dc8adf5affc",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacd4-8213-7509-bb6b-5dc8adf5affc"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A thick solid rope hanging vertically from a ceiling anchor point, rigid sculpted rope with twisted fiber texture and frayed end, dungeon ceiling prop, dark fantasy game prop, ceiling-mounted hanging down, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark hemp rope with twisted fiber strands, frayed and aged, soot-darkened surface",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "id": "greed-diamond-plate-platform",
+  "name": "Diamond Plate Platform",
+  "type": "prop",
+  "seed": 2646873103,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac7d-f5ac-7ae7-a03a-92f55d25ae92",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac7d-f5ac-7ae7-a03a-92f55d25ae92"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac80-4363-7020-b11b-516803a0b1c1",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac80-4363-7020-b11b-516803a0b1c1"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A raised square industrial platform made of diamond plate metal with gold-tinted finish, four short support legs, industrial steel grating railing on edges, vault floor platform, game prop, isolated object, dark background, three quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "on"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Gold-tinted diamond plate steel surface with raised diamond pattern, dark steel support legs, industrial finish with warm golden reflections",
+    "enablePbr": true
+  }
+}

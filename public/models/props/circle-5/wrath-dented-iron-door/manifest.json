@@ -1,0 +1,41 @@
+{
+  "id": "wrath-dented-iron-door",
+  "name": "Dented Iron Door",
+  "type": "prop",
+  "seed": 1715911006,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac85-8837-7a57-aaca-3d94c96e2b87",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac85-8837-7a57-aaca-3d94c96e2b87"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac87-b092-7a7a-a045-719b92d8e3a0",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac87-b092-7a7a-a045-719b92d8e3a0"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A heavy industrial iron door with multiple large dents and impact marks from the inside, rusted hinges and a broken lock mechanism, dark corroded surface with scratch marks around the handle, wrath prison door, game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark corroded iron with heavy dent deformations, rust streaks around hinges, scratched handle area, broken lock mechanism",
+    "enablePbr": true
+  }
+}

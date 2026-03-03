@@ -1,0 +1,41 @@
+{
+  "id": "cobweb-large",
+  "name": "Large Corner Cobweb",
+  "type": "prop",
+  "seed": 208615745,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac87-467f-7bc9-9718-431bb023f690",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac87-467f-7bc9-9718-431bb023f690"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac88-c45e-7f96-b063-fcc61a230110",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac88-c45e-7f96-b063-fcc61a230110"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large rigid cobweb stretched across a corner piece, solid sculpted spider web with radial and spiral threads forming a triangular shape, dungeon corner decoration, dark fantasy game prop, corner-mounted, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dusty gray-white web strands with collected dust and debris, aged and thick silk threads",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "id": "heresy-church-pew",
+  "name": "Defiled Church Pew",
+  "type": "prop",
+  "seed": 2031076157,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac80-8af2-79fe-be1a-20ac84454ee2",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac80-8af2-79fe-be1a-20ac84454ee2"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac81-b86b-7e8a-ad55-30af3d6685bf",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac81-b86b-7e8a-ad55-30af3d6685bf"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A long wooden church pew bench with a straight back, the wood is dark and aged with carved profane symbols scratched into the surface, one armrest is broken off, old dark stains on the seat, desecrated church seating, game prop, isolated object, dark background, three quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark aged wood with scratched profane symbols, broken armrest, dark stains on seat, old varnish patina, cold purple ambient tone",
+    "enablePbr": true
+  }
+}

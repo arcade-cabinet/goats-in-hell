@@ -1,0 +1,41 @@
+{
+  "id": "treachery-snow-drift-mound",
+  "name": "Snow Drift Mound",
+  "type": "prop",
+  "seed": 3976460448,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacb0-9bad-7039-897a-e9e6e0e48f44",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb0-9bad-7039-897a-e9e6e0e48f44"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacb1-f315-71e9-ba58-659c9da2ba0c",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb1-f315-71e9-ba58-659c9da2ba0c"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A solid sculpted mound of deep snow drifted against a wall, wind-sculpted snow bank with smooth curved surface and hard frozen crust, ice particles on top layer, solid sculpted not particle effect, dark fantasy game prop, isolated object, dark background, three-quarter orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Smooth white snow surface with frozen crust, wind-sculpted curves, blue-white shadow tones, ice crystal sparkle on top layer",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "id": "bridge-segment-stone",
+  "name": "Stone Bridge Segment",
+  "type": "prop",
+  "seed": 3730002906,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cad87-4a71-7da4-aa26-451674aa5899",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad87-4a71-7da4-aa26-451674aa5899"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cad89-e94b-7d2b-a059-216337e21910",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad89-e94b-7d2b-a059-216337e21910"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A stone bridge segment with flat walkway top and arched underside, modular dungeon bridge section that can be repeated, dark fantasy game prop, front-facing, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark stone blocks with tight joints, worn walking surface, water staining on underside arch",
+    "enablePbr": true
+  }
+}

@@ -4,8 +4,10 @@
  * Props are placed by LevelGenerator.placeProps() as SpawnData entries with
  * types like prop_firebasket, prop_candle, prop_coffin, prop_column, etc.
  *
- * Each prop loads a Quaternius GLB model via ModelLoader, with a colored-box
- * fallback while the model loads or if the model key is unrecognized.
+ * Each prop loads a GLB model via ModelLoader. If a prop type has no registered
+ * GLB in AssetRegistry, or if cloning fails, onPropErrors is called with the
+ * failing prop types — no silent fallback boxes are rendered.
+ *
  * Fire-type props include flickering PointLights for atmosphere.
  *
  * Uses imperative Three.js API to match the project pattern and avoid
@@ -15,7 +17,12 @@
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three/webgpu';
-import { PROP_MODEL_ASSETS, type PropModelKey } from '../../game/systems/AssetRegistry';
+import {
+  PROP_MODEL_ASSETS,
+  type PropModelKey,
+  SETPIECE_MODEL_ASSETS,
+  type SetpieceModelKey,
+} from '../../game/systems/AssetRegistry';
 import { cloneModel, isModelLoaded, loadModels } from '../systems/ModelLoader';
 
 // ---------------------------------------------------------------------------
@@ -31,6 +38,8 @@ export interface PropSpawn {
 
 export interface DungeonPropsProps {
   spawns: PropSpawn[];
+  /** Called once after model loading if any prop types have no registered GLB or fail to clone. */
+  onPropErrors?: (errors: string[]) => void;
 }
 
 // ---------------------------------------------------------------------------
@@ -48,8 +57,6 @@ interface PropGlbConfig {
   lightIntensity?: number;
   lightDistance?: number;
   lightFlicker?: boolean;
-  /** Fallback box color for use before GLB loads. */
-  fallbackColor: string;
 }
 
 /**
@@ -65,7 +72,6 @@ const PROP_GLB_CONFIGS: Record<string, PropGlbConfig> = {
     lightIntensity: 1.2,
     lightDistance: 5,
     lightFlicker: true,
-    fallbackColor: '#331100',
   },
   prop_candle: {
     assetKey: 'prop-candle',
@@ -75,7 +81,6 @@ const PROP_GLB_CONFIGS: Record<string, PropGlbConfig> = {
     lightIntensity: 0.5,
     lightDistance: 3,
     lightFlicker: true,
-    fallbackColor: '#eeddcc',
   },
   prop_candle_multi: {
     assetKey: 'prop-candle-multi',
@@ -85,27 +90,22 @@ const PROP_GLB_CONFIGS: Record<string, PropGlbConfig> = {
     lightIntensity: 0.7,
     lightDistance: 3.5,
     lightFlicker: true,
-    fallbackColor: '#eeddcc',
   },
   prop_coffin: {
     assetKey: 'prop-chest',
     scale: 0.7,
-    fallbackColor: '#2a1a0a',
   },
   prop_column: {
     assetKey: 'prop-column',
     scale: 1.0,
-    fallbackColor: '#554444',
   },
   prop_chalice: {
     assetKey: 'prop-chalice',
     scale: 0.5,
-    fallbackColor: '#aa8833',
   },
   prop_bowl: {
     assetKey: 'prop-bowl',
     scale: 0.5,
-    fallbackColor: '#443322',
   },
 };
 
@@ -116,67 +116,71 @@ const MAX_PROP_LIGHTS = 16;
 const _yAxis = new THREE.Vector3(0, 1, 0);
 
 // ---------------------------------------------------------------------------
-// Fallback geometry (shared, never disposed per-instance)
-// ---------------------------------------------------------------------------
-
-let sharedFallbackGeo: THREE.BoxGeometry | null = null;
-
-function getSharedFallbackGeo(): THREE.BoxGeometry {
-  if (!sharedFallbackGeo) {
-    sharedFallbackGeo = new THREE.BoxGeometry(0.4, 0.4, 0.4);
-  }
-  return sharedFallbackGeo;
-}
-
-// ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
 /**
- * Convert a spawn type like `prop_firebasket` to asset key `prop-firebasket`.
- * Returns null if the key doesn't exist in PROP_MODEL_ASSETS.
+ * Resolve a spawn entity type to an asset key and require() value.
+ *
+ * Handles three formats:
+ *   - Procedural (LevelGenerator): `prop_firebasket` → `prop-firebasket` in PROP_MODEL_ASSETS
+ *   - Meshy prop (build scripts):   `limbo-stone-bench` → `prop-limbo-stone-bench` in PROP_MODEL_ASSETS
+ *   - Meshy setpiece (build scripts): `limbo-crumbling-arch` → `setpiece-limbo-crumbling-arch` in SETPIECE_MODEL_ASSETS
+ *
+ * Returns null if the type resolves to no known asset.
  */
-function spawnTypeToAssetKey(type: string): PropModelKey | null {
-  const key = type.replace(/_/g, '-') as PropModelKey;
-  if (key in PROP_MODEL_ASSETS) return key;
+function resolveAsset(type: string): { key: string; value: number | string } | null {
+  // Procedural: prop_firebasket → prop-firebasket
+  const dashKey = type.replace(/_/g, '-');
+  if (dashKey in PROP_MODEL_ASSETS) {
+    return { key: dashKey, value: PROP_MODEL_ASSETS[dashKey as PropModelKey] };
+  }
+  // Meshy prop: limbo-stone-bench → prop-limbo-stone-bench
+  const meshyPropKey = `prop-${dashKey}`;
+  if (meshyPropKey in PROP_MODEL_ASSETS) {
+    return { key: meshyPropKey, value: PROP_MODEL_ASSETS[meshyPropKey as PropModelKey] };
+  }
+  // Meshy setpiece: limbo-crumbling-arch → setpiece-limbo-crumbling-arch
+  const meshySpKey = `setpiece-${dashKey}`;
+  if (meshySpKey in SETPIECE_MODEL_ASSETS) {
+    return { key: meshySpKey, value: SETPIECE_MODEL_ASSETS[meshySpKey as SetpieceModelKey] };
+  }
   return null;
 }
 
 /**
- * Collect unique asset keys needed for the current spawn list.
+ * Returns true for spawn types this component can render:
+ * - Procedural `prop_*` types
+ * - DB-authored Meshy prop or setpiece IDs
  */
-function collectNeededAssets(spawns: PropSpawn[]): [string, number | string][] {
-  const seen = new Set<string>();
-  const entries: [string, number | string][] = [];
-
-  for (const spawn of spawns) {
-    if (!spawn.type.startsWith('prop_')) continue;
-
-    const config = PROP_GLB_CONFIGS[spawn.type];
-    const assetKey = config?.assetKey ?? spawnTypeToAssetKey(spawn.type);
-    if (!assetKey || seen.has(assetKey)) continue;
-
-    seen.add(assetKey);
-    entries.push([assetKey, PROP_MODEL_ASSETS[assetKey]]);
-  }
-
-  return entries;
+function isSupportedPropType(type: string): boolean {
+  if (type.startsWith('prop_')) return true;
+  return resolveAsset(type) !== null;
 }
 
 /**
- * Build a fallback colored box for a prop that hasn't loaded yet.
+ * Collect unique (key, subpath) pairs for the current spawn list.
+ * Asset values are URL subpaths served from public/.
  */
-function buildFallbackMesh(color: string): THREE.Mesh {
-  const mat = new THREE.MeshStandardMaterial({
-    color,
-    roughness: 0.8,
-    metalness: 0.1,
-  });
-  const mesh = new THREE.Mesh(getSharedFallbackGeo(), mat);
-  mesh.castShadow = true;
-  mesh.receiveShadow = true;
-  mesh.position.y = 0.2;
-  return mesh;
+function collectNeededAssets(spawns: PropSpawn[]): [string, string][] {
+  const seen = new Set<string>();
+  const entries: [string, string][] = [];
+
+  for (const spawn of spawns) {
+    const config = PROP_GLB_CONFIGS[spawn.type];
+    const resolved = config
+      ? {
+          key: config.assetKey as string,
+          value: PROP_MODEL_ASSETS[config.assetKey] as string,
+        }
+      : resolveAsset(spawn.type);
+    if (!resolved || seen.has(resolved.key)) continue;
+
+    seen.add(resolved.key);
+    entries.push([resolved.key, resolved.value as string]);
+  }
+
+  return entries;
 }
 
 /**
@@ -228,15 +232,28 @@ function buildGlbPropMesh(assetKey: string, scale: number): THREE.Group | null {
  * colored-box fallbacks. Fire/candle props get flickering PointLights.
  *
  * Returns null — all rendering is side-effectful via scene.add().
+ *
+ * All prop groups are placed under a single root Group so that the scene
+ * graph root has one node instead of N nodes (one per prop). This does not
+ * reduce draw calls — each unique GLB sub-mesh is still a separate draw —
+ * but it reduces scene traversal and cleanup cost significantly.
+ *
+ * Geometry sharing: cloneModel() shares BufferGeometry across all clones of
+ * the same template. Only materials are cloned per-instance. This avoids
+ * duplicating vertex buffer data for repeated prop types (e.g. 10x pillars
+ * share one BufferGeometry instead of ten copies).
  */
-export function DungeonProps({ spawns }: DungeonPropsProps): null {
+export function DungeonProps({ spawns, onPropErrors }: DungeonPropsProps): null {
   const scene = useThree((state) => state.scene);
 
-  // Filter to prop_ spawns once
-  const propSpawns = useMemo(() => spawns.filter((s) => s.type.startsWith('prop_')), [spawns]);
+  // Filter to renderable prop/setpiece spawns (procedural prop_* + Meshy authored IDs)
+  const propSpawns = useMemo(() => spawns.filter((s) => isSupportedPropType(s.type)), [spawns]);
 
-  // Track all scene objects for cleanup
-  const sceneObjectsRef = useRef<THREE.Object3D[]>([]);
+  // Single root Group for all prop instances — one scene node instead of N.
+  const propsRootRef = useRef<THREE.Group | null>(null);
+  // Separate list for lights (added directly to scene — can't be children of
+  // the root group because PointLight positions are in world space).
+  const sceneLightsRef = useRef<THREE.PointLight[]>([]);
   const flickerLightsRef = useRef<
     { light: THREE.PointLight; baseIntensity: number; phase: number; speed: number }[]
   >([]);
@@ -266,37 +283,44 @@ export function DungeonProps({ spawns }: DungeonPropsProps): null {
   // biome-ignore lint/correctness/useExhaustiveDependencies: modelsLoaded signals async load completion
   useEffect(() => {
     // Cleanup previous run
-    cleanupSceneObjects(scene, sceneObjectsRef.current);
-    sceneObjectsRef.current = [];
+    cleanupPropsRoot(scene, propsRootRef.current);
+    propsRootRef.current = null;
+    cleanupLights(sceneLightsRef.current);
+    sceneLightsRef.current = [];
     flickerLightsRef.current = [];
 
-    const objects: THREE.Object3D[] = [];
+    // Single root group — one scene.add() instead of N
+    const propsRoot = new THREE.Group();
+    propsRoot.name = 'dungeon-props-root';
+    const sceneLights: THREE.PointLight[] = [];
     const flickerLights: typeof flickerLightsRef.current = [];
     let totalLightsPlaced = 0;
+    let propIndex = 0;
+
+    const propErrors: string[] = [];
 
     for (const spawn of propSpawns) {
       const config = PROP_GLB_CONFIGS[spawn.type];
-      const assetKey = config?.assetKey ?? spawnTypeToAssetKey(spawn.type);
+      const resolved = config ? { key: config.assetKey as string } : resolveAsset(spawn.type);
+      const assetKey = resolved?.key ?? null;
       const scale = config?.scale ?? 0.7;
 
-      // Build the prop mesh: GLB if loaded, fallback box otherwise
-      let propGroup: THREE.Group;
+      const propGroup = new THREE.Group();
+      propGroup.name = `dungeon-prop-${spawn.type}-${propIndex++}`;
 
-      if (assetKey && isModelLoaded(assetKey)) {
+      if (!assetKey) {
+        propErrors.push(
+          `No GLB registered for prop type "${spawn.type}" — add to AssetRegistry PROP_MODEL_ASSETS`,
+        );
+      } else if (isModelLoaded(assetKey)) {
         const glb = buildGlbPropMesh(assetKey, scale);
         if (glb) {
-          propGroup = new THREE.Group();
           propGroup.add(glb);
         } else {
-          propGroup = new THREE.Group();
-          propGroup.add(buildFallbackMesh(config?.fallbackColor ?? '#555555'));
+          propErrors.push(`GLB clone failed for asset "${assetKey}" (prop type: "${spawn.type}")`);
         }
-      } else {
-        propGroup = new THREE.Group();
-        propGroup.add(buildFallbackMesh(config?.fallbackColor ?? '#555555'));
       }
-
-      propGroup.name = `dungeon-prop-${spawn.type}-${objects.length}`;
+      // If model not loaded yet — empty group, will be re-placed when modelsLoaded fires again
 
       // Position: x stays, z is negated for Three.js coordinate system
       propGroup.position.set(spawn.x, 0, -spawn.z);
@@ -306,21 +330,20 @@ export function DungeonProps({ spawns }: DungeonPropsProps): null {
         propGroup.quaternion.setFromAxisAngle(_yAxis, spawn.rotation);
       }
 
-      scene.add(propGroup);
-      objects.push(propGroup);
+      propsRoot.add(propGroup);
 
-      // Point lights for fire-emitting props
+      // Point lights for fire-emitting props — added directly to scene (world space)
       if (config?.emitsLight && totalLightsPlaced < MAX_PROP_LIGHTS) {
         const light = new THREE.PointLight(
           config.lightColor ?? '#ff6600',
           config.lightIntensity ?? 1,
           config.lightDistance ?? 4,
         );
-        light.name = `prop-light-${spawn.type}-${objects.length}`;
-        // Light above the prop
+        light.name = `prop-light-${spawn.type}-${propIndex}`;
+        // Light above the prop (world-space position)
         light.position.set(spawn.x, scale + 0.3, -spawn.z);
         scene.add(light);
-        objects.push(light);
+        sceneLights.push(light);
 
         if (config.lightFlicker) {
           flickerLights.push({
@@ -335,15 +358,25 @@ export function DungeonProps({ spawns }: DungeonPropsProps): null {
       }
     }
 
-    sceneObjectsRef.current = objects;
+    scene.add(propsRoot);
+    propsRootRef.current = propsRoot;
+    sceneLightsRef.current = sceneLights;
     flickerLightsRef.current = flickerLights;
 
+    // Report any prop registration or clone errors — no fallback boxes, hard errors instead
+    if (propErrors.length > 0 && onPropErrors) {
+      onPropErrors([...new Set(propErrors)]);
+    }
+
     return () => {
-      cleanupSceneObjects(scene, sceneObjectsRef.current);
-      sceneObjectsRef.current = [];
+      cleanupPropsRoot(scene, propsRootRef.current);
+      propsRootRef.current = null;
+      cleanupLights(sceneLightsRef.current);
+      sceneLightsRef.current = [];
       flickerLightsRef.current = [];
     };
-  }, [scene, propSpawns, modelsLoaded]);
+    // biome-ignore lint/correctness/useExhaustiveDependencies: onPropErrors is a stable callback ref
+  }, [scene, propSpawns, modelsLoaded, onPropErrors]);
 
   // Per-frame flicker for atmospheric prop lights
   useFrame(({ clock }) => {
@@ -363,33 +396,41 @@ export function DungeonProps({ spawns }: DungeonPropsProps): null {
 // ---------------------------------------------------------------------------
 
 /**
- * Remove all tracked objects from the scene and dispose their resources.
- * Shared fallback geometry is NOT disposed — it's reused across levels.
+ * Remove the props root Group from the scene and dispose its resources.
+ *
+ * Geometry is NOT disposed here — prop clones share BufferGeometry with the
+ * ModelLoader template cache (cloneModel() no longer clones geometry). Only
+ * cloned materials are disposed.
  */
-function cleanupSceneObjects(scene: THREE.Scene, objects: THREE.Object3D[]): void {
-  for (const obj of objects) {
-    scene.remove(obj);
+function cleanupPropsRoot(scene: THREE.Scene, root: THREE.Group | null): void {
+  if (!root) return;
+  scene.remove(root);
 
-    if (obj instanceof THREE.PointLight) {
-      obj.dispose();
-      continue;
-    }
-
-    // Dispose geometries and materials in groups/meshes
-    obj.traverse((child) => {
-      if (child instanceof THREE.Mesh) {
-        // Don't dispose the shared fallback geometry
-        if (child.geometry && child.geometry !== sharedFallbackGeo) {
-          child.geometry.dispose();
-        }
-        if (child.material) {
-          if (Array.isArray(child.material)) {
-            for (const m of child.material) m.dispose();
-          } else {
-            child.material.dispose();
-          }
+  root.traverse((child) => {
+    if (child instanceof THREE.Mesh) {
+      // Do NOT dispose geometry — it is shared with the ModelLoader template
+      // (or is the module-scope sharedFallbackGeo). Disposing it here would
+      // corrupt other live instances and the cached template.
+      if (child.material) {
+        if (Array.isArray(child.material)) {
+          for (const m of child.material) m.dispose();
+        } else {
+          child.material.dispose();
         }
       }
-    });
+    }
+  });
+}
+
+/**
+ * Remove and dispose a list of PointLights that were added directly to the
+ * scene (not parented to the props root Group).
+ */
+function cleanupLights(lights: THREE.PointLight[]): void {
+  for (const light of lights) {
+    // Lights may have already been removed from the scene by the time this
+    // runs — removeFromParent() is safe to call regardless.
+    light.removeFromParent();
+    light.dispose();
   }
 }

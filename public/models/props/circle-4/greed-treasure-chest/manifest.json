@@ -1,0 +1,41 @@
+{
+  "id": "greed-treasure-chest",
+  "name": "Overflowing Treasure Chest",
+  "type": "prop",
+  "seed": 3123736335,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacaf-65d5-7411-9e71-7bb8a662b639",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacaf-65d5-7411-9e71-7bb8a662b639"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacb2-4d73-757b-9bda-9b31f9fb16e6",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacb2-4d73-757b-9bda-9b31f9fb16e6"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large wooden treasure chest with gold metal bands and hinges, lid open and overflowing with gold coins and jewelry, chest sitting on stone floor, dark fantasy treasure hoard, game prop, isolated object, dark background, three quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark aged wood with gold metal bands, bright gold coins overflowing, ruby and emerald jewels mixed in, brass hinges and lock",
+    "enablePbr": true
+  }
+}

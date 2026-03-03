@@ -8,6 +8,7 @@
 
 import seedrandom from 'seedrandom';
 import { create } from 'zustand';
+import { difficultyConfig } from '../config';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -44,34 +45,11 @@ export interface DifficultyModifiers {
   pickupDensityMult: number;
 }
 
+/** Difficulty presets loaded from config/difficulty.json. */
 export const DIFFICULTY_PRESETS: Record<Difficulty, DifficultyModifiers> = {
-  easy: {
-    label: 'Fledgling',
-    enemyHpMult: 0.7,
-    enemyDmgMult: 0.6,
-    enemySpeedMult: 0.85,
-    playerStartHp: 150,
-    xpMult: 1.3,
-    pickupDensityMult: 1.5,
-  },
-  normal: {
-    label: 'Condemned',
-    enemyHpMult: 1.0,
-    enemyDmgMult: 1.0,
-    enemySpeedMult: 1.0,
-    playerStartHp: 100,
-    xpMult: 1.0,
-    pickupDensityMult: 1.0,
-  },
-  hard: {
-    label: 'Forsaken',
-    enemyHpMult: 1.4,
-    enemyDmgMult: 1.5,
-    enemySpeedMult: 1.2,
-    playerStartHp: 75,
-    xpMult: 0.8,
-    pickupDensityMult: 0.85,
-  },
+  easy: difficultyConfig.easy,
+  normal: difficultyConfig.normal,
+  hard: difficultyConfig.hard,
 };
 
 export interface NightmareFlags {
@@ -115,10 +93,8 @@ export interface StageState {
   stageNumber: number;
   /** Current floor within this stage. */
   floor: number;
-  /** 'explore' = roguelike floor, 'arena' = survival wave, 'boss' = boss encounter. */
-  encounterType: 'explore' | 'arena' | 'boss';
-  /** For arena: which wave we're on. */
-  arenaWave: number;
+  /** 'explore' = dungeon circle, 'boss' = boss encounter. */
+  encounterType: 'explore' | 'boss';
   /** Boss archetype ID if encounter is 'boss'. */
   bossId: string | null;
   /** Enemies remaining on this stage. */
@@ -136,6 +112,8 @@ export interface GameStoreState {
   levelSource: 'procedural' | 'database';
   /** Current circle of Hell (1-9). Each circle is a hand-crafted DB level. */
   circleNumber: number;
+  /** Display name of the currently loaded level theme (e.g. "LIMBO — The Circle of Ignorance"). */
+  currentLevelDisplayName: string;
 
   // --- Run configuration (set during New Game) ---
   difficulty: Difficulty;
@@ -189,6 +167,10 @@ export interface GameStoreState {
   /** Whether haptic feedback is enabled. */
   hapticsEnabled: boolean;
 
+  // --- Exploration tracking ---
+  /** Rooms visited this run, keyed by circle number. Foundation for map fog-of-war. */
+  visitedRooms: Record<number, string[]>;
+
   // --- Autoplay (e2e testing) ---
   /** When true, Yuka AI governor controls the player. */
   autoplay: boolean;
@@ -208,6 +190,8 @@ export interface GameStoreState {
   setLevelSource: (source: 'procedural' | 'database') => void;
   /** Set the current circle number (1-9). */
   setCircleNumber: (n: number) => void;
+  /** Set the display name for the currently loaded level theme. */
+  setLevelDisplayName: (name: string) => void;
   /** Record a mandatory kill (arena/boss). */
   recordMandatoryKill: () => void;
   /** Record an optional kill (explore). */
@@ -216,6 +200,8 @@ export interface GameStoreState {
   addOptionalEnemies: (count: number) => void;
   /** Set partial state (for effects, kills, etc.). */
   patch: (partial: Partial<GameStoreState>) => void;
+  /** Record a room as visited this run. No-op if already recorded. */
+  addVisitedRoom: (circleNumber: number, roomId: string) => void;
   /** Full reset to main menu. */
   resetToMenu: () => void;
 
@@ -271,11 +257,10 @@ export function getLevelBonuses(level: number): LevelBonuses {
 
 /**
  * Decides the next encounter type based on stage number.
- * Pattern: 3 explore floors → 1 arena wave → boss every 5 stages.
+ * Pattern: 4 explore circles → boss every 5 stages.
  */
-function nextEncounterType(stageNumber: number): 'explore' | 'arena' | 'boss' {
+function nextEncounterType(stageNumber: number): 'explore' | 'boss' {
   if (stageNumber > 0 && stageNumber % 5 === 0) return 'boss';
-  if (stageNumber % 5 === 4) return 'arena';
   return 'explore';
 }
 
@@ -400,6 +385,11 @@ let cachedPlayerSnapshot: PlayerSnapshot = {};
 /** Called by the game engine to cache player ECS state for the next save. */
 export function savePlayerSnapshot(snapshot: PlayerSnapshot): void {
   cachedPlayerSnapshot = snapshot;
+}
+
+/** Get the cached player ECS snapshot (latest HP, weapon, ammo). */
+export function getPlayerSnapshot(): PlayerSnapshot {
+  return cachedPlayerSnapshot;
 }
 
 /** Callback invoked after a successful save. Set by BabylonHUD to show toast. */
@@ -580,7 +570,6 @@ function createInitialStage(): StageState {
     stageNumber: 1,
     floor: 1,
     encounterType: 'explore',
-    arenaWave: 0,
     bossId: null,
     enemiesRemaining: 0,
   };
@@ -605,6 +594,7 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
       ? 'procedural'
       : 'database',
   circleNumber: 1,
+  currentLevelDisplayName: 'THE FIRE PITS',
 
   difficulty: 'normal',
   nightmareFlags: { nightmare: false, permadeath: false, ultraNightmare: false },
@@ -637,6 +627,8 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
   gyroSensitivity: savedSettings?.gyroSensitivity ?? 1.0,
   gyroEnabled: savedSettings?.gyroEnabled ?? false,
   hapticsEnabled: savedSettings?.hapticsEnabled ?? true,
+
+  visitedRooms: {},
 
   autoplay:
     typeof window !== 'undefined' &&
@@ -673,6 +665,7 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
       gunFlash: 0,
       hitMarker: 0,
       restoredPlayerState: null,
+      visitedRooms: {},
     });
   },
 
@@ -700,7 +693,6 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
           stageNumber: next,
           floor: encounterType === 'explore' ? stage.floor + 1 : stage.floor,
           encounterType,
-          arenaWave: encounterType === 'arena' ? 1 : 0,
           bossId,
           enemiesRemaining: 0,
         },
@@ -717,7 +709,6 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
           stageNumber: next,
           floor: encounterType === 'explore' ? stage.floor + 1 : stage.floor,
           encounterType,
-          arenaWave: encounterType === 'arena' ? 1 : 0,
           bossId,
           enemiesRemaining: 0,
         },
@@ -754,11 +745,24 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
   setDbReady: (ready) => set({ dbReady: ready }),
   setLevelSource: (source) => set({ levelSource: source }),
   setCircleNumber: (n) => set({ circleNumber: n }),
+  setLevelDisplayName: (name) => set({ currentLevelDisplayName: name }),
 
   recordMandatoryKill: () => set((s) => ({ mandatoryKills: s.mandatoryKills + 1 })),
   recordOptionalKill: () => set((s) => ({ optionalKills: s.optionalKills + 1 })),
   addOptionalEnemies: (count) =>
     set((s) => ({ optionalEnemiesTotal: s.optionalEnemiesTotal + count })),
+
+  addVisitedRoom: (circleNumber, roomId) =>
+    set((s) => {
+      const existing = s.visitedRooms[circleNumber] ?? [];
+      if (existing.includes(roomId)) return s;
+      return {
+        visitedRooms: {
+          ...s.visitedRooms,
+          [circleNumber]: [...existing, roomId],
+        },
+      };
+    }),
 
   patch: (partial) => set(partial as any),
 
@@ -800,6 +804,7 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
       gunFlash: 0,
       hitMarker: 0,
       restoredPlayerState,
+      visitedRooms: {},
     });
   },
 

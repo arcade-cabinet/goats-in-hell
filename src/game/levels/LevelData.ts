@@ -4,6 +4,8 @@
  * Used by level generators, entity spawners, and system code that needs
  * to know about the current floor's layout.
  */
+
+import type { CompiledVisual } from '../../db/LevelEditor';
 import type { Vec3 } from '../entities/components';
 import type { FloorTheme } from './FloorThemes';
 import type { MapCell } from './LevelGenerator';
@@ -26,4 +28,6 @@ export interface LevelData {
   theme: FloorTheme;
   /** Database level ID (present when loaded from DB, undefined for procedural). */
   levelId?: string;
+  /** Compiled visual description (texture + fill-rule data per room). Null for procedural levels. */
+  compiledVisual?: CompiledVisual | null;
 }

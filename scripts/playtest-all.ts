@@ -27,6 +27,22 @@ const DIM = '\x1b[2m';
 const RESET = '\x1b[0m';
 
 // ---------------------------------------------------------------------------
+// Play time targets (min, max) per level ID prefix (circle-N-*)
+// ---------------------------------------------------------------------------
+
+const PLAY_TIME_TARGETS: Record<string, [number, number]> = {
+  'circle-1-limbo': [5, 8],
+  'circle-2-lust': [7, 11],
+  'circle-3-gluttony': [8, 12],
+  'circle-4-greed': [8, 12],
+  'circle-5-wrath': [10, 15],
+  'circle-6-heresy': [10, 15],
+  'circle-7-violence': [12, 18],
+  'circle-8-fraud': [12, 18],
+  'circle-9-treachery': [15, 22],
+};
+
+// ---------------------------------------------------------------------------
 // CLI argument parsing
 // ---------------------------------------------------------------------------
 
@@ -127,21 +143,41 @@ async function main() {
       continue;
     }
 
+    // Determine play time target for this level
+    const levelKey = Object.keys(PLAY_TIME_TARGETS).find((k) => levelId.startsWith(k));
+    const playTimeTarget = levelKey ? PLAY_TIME_TARGETS[levelKey] : null;
+    const playTimeMin = result.estimatedPlayTimeMin;
+    const playTimeStr = `~${playTimeMin} min`;
+
     if (result.passed) {
       passed++;
       const duration = `${result.duration.toFixed(1)}s`;
       const roomInfo = `rooms: ${result.roomsVisited.length}/${result.roomsTotal}`;
       const enemyInfo = `enemies: ${result.enemiesKilled}/${result.enemiesTotal}`;
       console.log(
-        `${GREEN}\u2713${RESET} ${levelId.padEnd(24)} ${DIM}${duration.padStart(7)}${RESET}  ${roomInfo}  ${enemyInfo}`,
+        `${GREEN}\u2713${RESET} ${levelId.padEnd(24)} ${DIM}${duration.padStart(7)}${RESET}  ${roomInfo}  ${enemyInfo}  ${DIM}${playTimeStr}${RESET}`,
       );
     } else {
       failed++;
       const roomInfo = `rooms: ${result.roomsVisited.length}/${result.roomsTotal}`;
       const enemyInfo = `enemies: ${result.enemiesKilled}/${result.enemiesTotal}`;
       console.log(
-        `${RED}\u2717${RESET} ${levelId.padEnd(24)} ${RED}FAIL${RESET}    ${roomInfo}  ${enemyInfo}`,
+        `${RED}\u2717${RESET} ${levelId.padEnd(24)} ${RED}FAIL${RESET}    ${roomInfo}  ${enemyInfo}  ${DIM}${playTimeStr}${RESET}`,
       );
+    }
+
+    // Print play time warnings
+    if (playTimeTarget) {
+      const [minTarget, maxTarget] = playTimeTarget;
+      if (playTimeMin < minTarget) {
+        console.log(
+          `  ${YELLOW}\u26a0 Estimated play time ${playTimeMin} min is below target minimum ${minTarget} min${RESET}`,
+        );
+      } else if (playTimeMin > maxTarget) {
+        console.log(
+          `  ${YELLOW}\u26a0 Estimated play time ${playTimeMin} min exceeds target maximum ${maxTarget} min${RESET}`,
+        );
+      }
     }
 
     // Print softlocks

@@ -1,0 +1,41 @@
+{
+  "id": "limbo-skull-pile",
+  "name": "Skull Pile",
+  "type": "prop",
+  "seed": 3837332560,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac9d-318b-7e76-81eb-3796c4b75cd1",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9d-318b-7e76-81eb-3796c4b75cd1"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac9f-ff0a-7df6-9efb-83594b37149b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9f-ff0a-7df6-9efb-83594b37149b"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A small pile of goat skulls and humanoid skulls stacked on a dungeon floor, three to five skulls with curved horns and hollow eye sockets, yellowed and cracked bone with dark staining, some partially buried in dust, ancient remains left as a warning, dark fantasy dungeon game prop, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Yellowed ancient bone, cracked skull surfaces, dark horn material, dark staining in eye sockets and crevices, dust accumulation",
+    "enablePbr": true
+  }
+}

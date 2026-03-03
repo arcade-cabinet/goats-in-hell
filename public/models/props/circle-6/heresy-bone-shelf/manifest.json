@@ -1,0 +1,41 @@
+{
+  "id": "heresy-bone-shelf",
+  "name": "Wall-Mounted Bone Shelf",
+  "type": "prop",
+  "seed": 302881713,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac6f-f4fb-7ded-8613-81cea2af837d",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac6f-f4fb-7ded-8613-81cea2af837d"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac72-8c3b-7e39-b00a-41a23c2e401c",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac72-8c3b-7e39-b00a-41a23c2e401c"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "Wall-mounted stone shelf niche filled with stacked human bones and skulls arranged in an ossuary pattern, recessed alcove carved into rough stone, femurs and tibias stacked horizontally with skulls placed at intervals, ancient and yellowed bones with some crumbling, dark fantasy dungeon game prop, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Aged yellowed bone with dark staining, rough-hewn gray stone shelf with mortar residue, deep shadows in the recessed niche, dust accumulation on bone surfaces",
+    "enablePbr": true
+  }
+}

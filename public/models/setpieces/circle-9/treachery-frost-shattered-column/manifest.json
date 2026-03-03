@@ -1,0 +1,41 @@
+{
+  "id": "treachery-frost-shattered-column",
+  "name": "Frost-Shattered Column",
+  "type": "prop",
+  "seed": 2853900063,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac82-f61f-7a20-80eb-98714832bde4",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac82-f61f-7a20-80eb-98714832bde4"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac83-fcad-7f00-9c37-8c08c20093b4",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac83-fcad-7f00-9c37-8c08c20093b4"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A classical stone column shattered by frost expansion, broken granite pillar split vertically with ice growing in the cracks, upper half tilted and crumbling, ice filling the fracture lines, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark gray granite column, frost-expanded vertical crack, blue ice filling fracture lines, crumbling broken upper section, frozen decay",
+    "enablePbr": true
+  }
+}

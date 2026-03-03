@@ -1,0 +1,41 @@
+{
+  "id": "greed-chest-pedestal",
+  "name": "Treasure Chest Pedestal",
+  "type": "prop",
+  "seed": 698077647,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac77-7ced-79c1-8066-77036cf683ec",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac77-7ced-79c1-8066-77036cf683ec"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac78-e9fb-79f3-a890-40a66684b4b7",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac78-e9fb-79f3-a890-40a66684b4b7"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A short wide stone pedestal column designed to display a treasure chest, square top with gold trim edge, fluted column shaft with gold leaf accents, heavy square stone base, museum display stand for treasure, game prop, isolated object, dark background, three quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "on"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark polished stone with gold leaf trim on edges, fluted column detail, warm golden accent highlights",
+    "enablePbr": true
+  }
+}

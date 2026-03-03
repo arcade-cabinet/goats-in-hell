@@ -9,10 +9,17 @@
  *   - <XR store={xrStore}> as the context wrapper
  *   - <XROrigin> for tracking space origin
  *   - useXRSessionModeSupported() to check VR availability
+ *
+ * On native iOS/Android, all XR functionality is disabled (Platform.OS !== 'web').
+ * Phase 2: native AR via Vision Camera / ARKit.
  */
 
-import { createXRStore, useXRSessionModeSupported, XR, XROrigin } from '@react-three/xr';
 import type React from 'react';
+import { Platform } from 'react-native';
+
+// @react-three/xr uses the browser WebXR API — only import on web.
+// On native the module import is skipped to avoid bundling WebXR code.
+const xrModule = Platform.OS === 'web' ? require('@react-three/xr') : null;
 
 // ---------------------------------------------------------------------------
 // XR Store singleton
@@ -21,15 +28,18 @@ import type React from 'react';
 /**
  * Module-level XR store. Shared across the app so that EnterVRButton,
  * XRControllerProvider, and any other XR-aware code can access it.
+ * null on native platforms.
  */
-export const xrStore = createXRStore({
-  // Disable the automatic offer-session browser prompt — we control entry
-  // via the EnterVRButton component.
-  offerSession: false,
-  // Emulate a Meta Quest 3 in development when WebXR is not natively available.
-  // Disabled in production to avoid shipping the emulator bundle.
-  emulate: process.env.NODE_ENV !== 'production' ? 'metaQuest3' : undefined,
-});
+export const xrStore = xrModule
+  ? xrModule.createXRStore({
+      // Disable the automatic offer-session browser prompt — we control entry
+      // via the EnterVRButton component.
+      offerSession: false,
+      // Emulate a Meta Quest 3 in development when WebXR is not natively available.
+      // Disabled in production to avoid shipping the emulator bundle.
+      emulate: process.env.NODE_ENV !== 'production' ? 'metaQuest3' : undefined,
+    })
+  : null;
 
 // ---------------------------------------------------------------------------
 // XRSetup component (3D context — lives inside <Canvas>)
@@ -40,8 +50,7 @@ interface XRSetupProps {
 }
 
 /**
- * Wraps children in the <XR> context and places the XROrigin for
- * tracking-space positioning.
+ * Wraps children in the <XR> context on web, or passes them through on native.
  *
  * Usage:
  * ```tsx
@@ -54,6 +63,10 @@ interface XRSetupProps {
  * ```
  */
 export function XRSetup({ children }: XRSetupProps) {
+  if (Platform.OS !== 'web' || !xrModule || !xrStore) {
+    return <>{children}</>;
+  }
+  const { XR, XROrigin } = xrModule;
   return (
     <XR store={xrStore}>
       {/* XROrigin sets the player's feet position in the tracking space.
@@ -120,7 +133,7 @@ function VRIcon() {
 
 /**
  * HTML button that enters VR mode when clicked.
- * Only renders when the browser supports immersive-vr sessions.
+ * Only renders on web when the browser supports immersive-vr sessions.
  *
  * Place this OUTSIDE the <Canvas> in your React tree:
  * ```tsx
@@ -130,16 +143,19 @@ function VRIcon() {
  * </div>
  * ```
  */
-export function EnterVRButton() {
+/**
+ * Inner component — only rendered on web, so the XR hook is always called
+ * unconditionally (satisfies React rules of hooks).
+ */
+function EnterVRButtonWeb() {
   // useXRSessionModeSupported returns true/false/undefined.
   // undefined means the check is still pending.
-  const vrSupported = useXRSessionModeSupported('immersive-vr');
+  const vrSupported = xrModule!.useXRSessionModeSupported('immersive-vr');
 
-  // Don't render if VR is not supported or check is still pending
   if (!vrSupported) return null;
 
   const handleClick = () => {
-    xrStore.enterVR();
+    xrStore?.enterVR();
   };
 
   return (
@@ -161,4 +177,9 @@ export function EnterVRButton() {
       Enter VR
     </button>
   );
+}
+
+export function EnterVRButton() {
+  if (Platform.OS !== 'web' || !xrModule) return null;
+  return <EnterVRButtonWeb />;
 }

@@ -9,6 +9,7 @@ import BetterSqlite3 from 'better-sqlite3';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import {
   CONNECTION_TYPES,
+  DECAL_TYPES,
   ENEMY_TYPES,
   ENV_TYPES,
   LevelEditor,
@@ -47,6 +48,12 @@ export async function buildCircle1(dbPath: string) {
     enemyTypes: ['hellgoat'],
     enemyDensity: 0.8, // Below average -- sparse, deliberate
     pickupDensity: 0.5, // Scarce -- first circle teaches resource awareness
+    texturePalette: {
+      exploration: 'stone',
+      arena: 'stone-dark',
+      boss: 'stone-dark',
+      secret: 'stone',
+    },
   });
 
   // =========================================================================
@@ -81,36 +88,63 @@ export async function buildCircle1(dbPath: string) {
     roomType: ROOM_TYPES.EXPLORATION,
     elevation: 0,
     sortOrder: 0,
+    floorTexture: 'stone',
+    wallTexture: 'brick',
   });
 
   const fogHallId = editor.room(LEVEL_ID, 'fog_hall', 14, 12, 12, 10, {
     roomType: ROOM_TYPES.EXPLORATION,
     elevation: 0,
     sortOrder: 1,
+    floorTexture: 'moss',
+    wallTexture: 'stone',
+    fillRule: {
+      type: 'scatter',
+      props: ['limbo-tombstone', 'limbo-bone-pile', 'limbo-vase-rubble'],
+      density: 0.08,
+    },
   });
 
   const cryptId = editor.room(LEVEL_ID, 'crypt', 30, 14, 6, 6, {
     roomType: ROOM_TYPES.SECRET,
     elevation: 0,
     sortOrder: 2,
+    floorTexture: 'stone',
+    wallTexture: 'brick',
+    fillRule: {
+      type: 'scatter',
+      props: ['limbo-sarcophagus', 'limbo-cracked-floor-slab'],
+      density: 0.06,
+    },
   });
 
   const bonePitId = editor.room(LEVEL_ID, 'bone_pit', 2, 14, 8, 8, {
     roomType: ROOM_TYPES.PLATFORMING,
     elevation: 0,
     sortOrder: 3,
+    floorTexture: 'stone-dark',
+    wallTexture: 'stone-dark',
+    fillRule: {
+      type: 'scatter',
+      props: ['limbo-inscription-tablet', 'limbo-fallen-column'],
+      density: 0.12,
+    },
   });
 
   const columnsId = editor.room(LEVEL_ID, 'columns', 15, 26, 10, 12, {
     roomType: ROOM_TYPES.ARENA,
     elevation: 0,
     sortOrder: 4,
+    floorTexture: 'stone',
+    wallTexture: 'brick',
   });
 
   const bossChamberId = editor.room(LEVEL_ID, 'il_vecchio_chamber', 14, 42, 12, 12, {
     roomType: ROOM_TYPES.BOSS,
     elevation: -1,
     sortOrder: 5,
+    floorTexture: 'stone-dark',
+    wallTexture: 'stone-dark',
   });
 
   // =========================================================================
@@ -267,8 +301,31 @@ export async function buildCircle1(dbPath: string) {
   // =========================================================================
 
   // --- Vestibule (bounds: 16, 2, 8, 6) ---
-  // 2x Torch_Metal on walls
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 17, 3, {
+  // Structural: crumbling arch + inscription tablet
+  editor.spawnProp(LEVEL_ID, 'limbo-crumbling-arch', 16, 2, {
+    roomId: vestibuleId,
+    surfaceAnchor: {
+      face: 'south',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'limbo-inscription-tablet', 20, 2, {
+    roomId: vestibuleId,
+    surfaceAnchor: {
+      face: 'south',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.8,
+    },
+  });
+  // 2x limbo-torch-bracket on walls
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 16, 3, {
     roomId: vestibuleId,
     surfaceAnchor: {
       face: 'west',
@@ -279,7 +336,7 @@ export async function buildCircle1(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 22, 3, {
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 23, 3, {
     roomId: vestibuleId,
     surfaceAnchor: {
       face: 'east',
@@ -290,15 +347,48 @@ export async function buildCircle1(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 1x Scroll_2 (inscription)
-  editor.spawnProp(LEVEL_ID, 'Scroll_2', 20, 3, { roomId: vestibuleId });
-  // 2x Vase_Rubble
-  editor.spawnProp(LEVEL_ID, 'Vase_Rubble', 18, 6, { roomId: vestibuleId });
-  editor.spawnProp(LEVEL_ID, 'Vase_Rubble', 22, 6, { roomId: vestibuleId });
+  // 2x limbo-vase-rubble flanking center
+  editor.spawnProp(LEVEL_ID, 'limbo-vase-rubble', 18, 4, { roomId: vestibuleId });
+  editor.spawnProp(LEVEL_ID, 'limbo-vase-rubble', 22, 4, { roomId: vestibuleId });
+  // 1x limbo-stone-bench near south exit
+  editor.spawnProp(LEVEL_ID, 'limbo-stone-bench', 17, 6, { roomId: vestibuleId });
+  // 2x limbo-cobweb-cluster in corners
+  editor.spawnProp(LEVEL_ID, 'limbo-cobweb-cluster', 16, 2, { roomId: vestibuleId });
+  editor.spawnProp(LEVEL_ID, 'limbo-cobweb-cluster', 23, 2, { roomId: vestibuleId });
+  // 1x limbo-cracked-floor-slab center floor
+  editor.spawnProp(LEVEL_ID, 'limbo-cracked-floor-slab', 19, 5, { roomId: vestibuleId });
+  // 2x limbo-rubble-scatter near walls
+  editor.spawnProp(LEVEL_ID, 'limbo-rubble-scatter', 17, 3, { roomId: vestibuleId });
+  editor.spawnProp(LEVEL_ID, 'limbo-rubble-scatter', 23, 5, { roomId: vestibuleId });
 
   // --- Fog Hall (bounds: 14, 12, 12, 10) ---
-  // 2x Torch_Metal
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 15, 14, {
+  // Structural: 2x ancient pillars flanking entrance, iron gate, crumbling arch
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 16, 14, { roomId: fogHallId });
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 23, 14, { roomId: fogHallId });
+  editor.spawnProp(LEVEL_ID, 'limbo-iron-gate', 14, 21, {
+    roomId: fogHallId,
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'limbo-crumbling-arch', 19, 21, {
+    roomId: fogHallId,
+    surfaceAnchor: {
+      face: 'south',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  // 2x limbo-torch-bracket on north wall
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 14, 13, {
     roomId: fogHallId,
     surfaceAnchor: {
       face: 'west',
@@ -309,7 +399,7 @@ export async function buildCircle1(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 24, 14, {
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 25, 13, {
     roomId: fogHallId,
     surfaceAnchor: {
       face: 'east',
@@ -320,17 +410,40 @@ export async function buildCircle1(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 2x Cage_Small
-  editor.spawnProp(LEVEL_ID, 'Cage_Small', 17, 18, { roomId: fogHallId });
-  editor.spawnProp(LEVEL_ID, 'Cage_Small', 23, 18, { roomId: fogHallId });
-  // 3x Vase_Rubble
-  editor.spawnProp(LEVEL_ID, 'Vase_Rubble', 16, 20, { roomId: fogHallId });
-  editor.spawnProp(LEVEL_ID, 'Vase_Rubble', 20, 13, { roomId: fogHallId });
-  editor.spawnProp(LEVEL_ID, 'Vase_Rubble', 24, 20, { roomId: fogHallId });
+  // 2x limbo-cage floor-standing
+  editor.spawnProp(LEVEL_ID, 'limbo-cage', 17, 16, { roomId: fogHallId });
+  editor.spawnProp(LEVEL_ID, 'limbo-cage', 21, 18, { roomId: fogHallId });
+  // 3x limbo-vase-rubble scattered
+  editor.spawnProp(LEVEL_ID, 'limbo-vase-rubble', 15, 15, { roomId: fogHallId });
+  editor.spawnProp(LEVEL_ID, 'limbo-vase-rubble', 20, 17, { roomId: fogHallId });
+  editor.spawnProp(LEVEL_ID, 'limbo-vase-rubble', 24, 19, { roomId: fogHallId });
+  // 1x limbo-fallen-column lying on floor
+  editor.spawnProp(LEVEL_ID, 'limbo-fallen-column', 22, 15, { roomId: fogHallId });
+  // 1x limbo-moss-growth along west wall base
+  editor.spawnProp(LEVEL_ID, 'limbo-moss-growth', 14, 18, { roomId: fogHallId });
+  // 1x limbo-bone-pile near south corridor
+  editor.spawnProp(LEVEL_ID, 'limbo-bone-pile', 18, 20, { roomId: fogHallId });
+  // 2x limbo-tombstone scattered in fog
+  editor.spawnProp(LEVEL_ID, 'limbo-tombstone', 16, 19, { roomId: fogHallId });
+  editor.spawnProp(LEVEL_ID, 'limbo-tombstone', 24, 17, { roomId: fogHallId });
+  // 1x limbo-cobweb-cluster SE corner
+  editor.spawnProp(LEVEL_ID, 'limbo-cobweb-cluster', 25, 18, { roomId: fogHallId });
 
   // --- Crypt (bounds: 30, 14, 6, 6) ---
-  // 1x Torch_Metal
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 31, 15, {
+  // Structural: crumbling arch at secret entrance
+  editor.spawnProp(LEVEL_ID, 'limbo-crumbling-arch', 30, 14, {
+    roomId: cryptId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.8,
+    },
+  });
+  // 1x limbo-torch-bracket east wall
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 31, 15, {
     roomId: cryptId,
     surfaceAnchor: {
       face: 'west',
@@ -341,27 +454,90 @@ export async function buildCircle1(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 1x BookStand (for scroll)
-  editor.spawnProp(LEVEL_ID, 'BookStand', 33, 16, { roomId: cryptId });
+  // 1x limbo-stone-lectern for scroll
+  editor.spawnProp(LEVEL_ID, 'limbo-stone-lectern', 33, 16, { roomId: cryptId });
+  // 2x limbo-moss-growth walls and floor
+  editor.spawnProp(LEVEL_ID, 'limbo-moss-growth', 30, 16, { roomId: cryptId });
+  editor.spawnProp(LEVEL_ID, 'limbo-moss-growth', 34, 18, { roomId: cryptId });
+  // 1x limbo-sarcophagus south side
+  editor.spawnProp(LEVEL_ID, 'limbo-sarcophagus', 32, 18, { roomId: cryptId });
+  // 1x limbo-cobweb-cluster NE corner
+  editor.spawnProp(LEVEL_ID, 'limbo-cobweb-cluster', 35, 14, { roomId: cryptId });
+  // 1x limbo-skull-pile near sarcophagus
+  editor.spawnProp(LEVEL_ID, 'limbo-skull-pile', 33, 18, { roomId: cryptId });
+  // 1x limbo-cobweb-cluster SW corner
+  editor.spawnProp(LEVEL_ID, 'limbo-cobweb-cluster', 30, 19, { roomId: cryptId });
 
   // --- Bone Pit (bounds: 2, 14, 8, 8) ---
-  // 3x Chain_Coil (hanging from ceiling)
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 4, 16, { roomId: bonePitId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 6, 18, { roomId: bonePitId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 8, 20, { roomId: bonePitId });
-  // 1x Barrel
-  editor.spawnProp(LEVEL_ID, 'Barrel', 5, 20, { roomId: bonePitId });
+  // Structural: crumbling arch west entrance
+  editor.spawnProp(LEVEL_ID, 'limbo-crumbling-arch', 2, 14, {
+    roomId: bonePitId,
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.9,
+    },
+  });
+  // 3x limbo-chain-cluster ceiling-hung
+  editor.spawnProp(LEVEL_ID, 'limbo-chain-cluster', 4, 15, { roomId: bonePitId });
+  editor.spawnProp(LEVEL_ID, 'limbo-chain-cluster', 7, 17, { roomId: bonePitId });
+  editor.spawnProp(LEVEL_ID, 'limbo-chain-cluster', 5, 19, { roomId: bonePitId });
+  // 3x limbo-bone-pile scattered
+  editor.spawnProp(LEVEL_ID, 'limbo-bone-pile', 3, 16, { roomId: bonePitId });
+  editor.spawnProp(LEVEL_ID, 'limbo-bone-pile', 6, 18, { roomId: bonePitId });
+  editor.spawnProp(LEVEL_ID, 'limbo-bone-pile', 8, 20, { roomId: bonePitId });
+  // 1x limbo-bone-pile center floor (larger)
+  editor.spawnProp(LEVEL_ID, 'limbo-bone-pile', 5, 17, { roomId: bonePitId });
+  // 1x limbo-torch-bracket near entrance
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 2, 15, {
+    roomId: bonePitId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  // 2x limbo-tombstone along east wall
+  editor.spawnProp(LEVEL_ID, 'limbo-tombstone', 9, 15, { roomId: bonePitId });
+  editor.spawnProp(LEVEL_ID, 'limbo-tombstone', 9, 19, { roomId: bonePitId });
+  // 1x limbo-broken-altar south center
+  editor.spawnProp(LEVEL_ID, 'limbo-broken-altar', 5, 21, { roomId: bonePitId });
+  // 1x fog-lantern ceiling-hung near entrance
+  editor.spawnProp(LEVEL_ID, 'fog-lantern', 7, 14, { roomId: bonePitId });
+  // 2x limbo-spike-cluster pit edges
+  editor.spawnProp(LEVEL_ID, 'limbo-spike-cluster', 3, 20, { roomId: bonePitId });
+  editor.spawnProp(LEVEL_ID, 'limbo-spike-cluster', 8, 16, { roomId: bonePitId });
+  // 1x limbo-skull-pile near east wall
+  editor.spawnProp(LEVEL_ID, 'limbo-skull-pile', 7, 19, { roomId: bonePitId });
 
   // --- Columns (bounds: 15, 26, 10, 12) ---
-  // 6x stone columns (structural, break LOS) in 2x3 grid
-  editor.spawnProp(LEVEL_ID, 'Column_Stone', 18, 29, { roomId: columnsId });
-  editor.spawnProp(LEVEL_ID, 'Column_Stone', 22, 29, { roomId: columnsId });
-  editor.spawnProp(LEVEL_ID, 'Column_Stone', 18, 32, { roomId: columnsId });
-  editor.spawnProp(LEVEL_ID, 'Column_Stone', 22, 32, { roomId: columnsId });
-  editor.spawnProp(LEVEL_ID, 'Column_Stone', 18, 35, { roomId: columnsId });
-  editor.spawnProp(LEVEL_ID, 'Column_Stone', 22, 35, { roomId: columnsId });
-  // 2x Torch_Metal
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 16, 28, {
+  // Structural: 6x ancient pillars in 2x3 grid (LOS blockers)
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 17, 28, { roomId: columnsId });
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 20, 28, { roomId: columnsId });
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 23, 28, { roomId: columnsId });
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 17, 33, { roomId: columnsId });
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 20, 33, { roomId: columnsId });
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 23, 33, { roomId: columnsId });
+  // Structural: crumbling arch at south exit
+  editor.spawnProp(LEVEL_ID, 'limbo-crumbling-arch', 19, 37, {
+    roomId: columnsId,
+    surfaceAnchor: {
+      face: 'south',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  // 4x limbo-torch-bracket arena lighting (N and S walls)
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 15, 27, {
     roomId: columnsId,
     surfaceAnchor: {
       face: 'west',
@@ -372,7 +548,7 @@ export async function buildCircle1(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 23, 28, {
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 24, 27, {
     roomId: columnsId,
     surfaceAnchor: {
       face: 'east',
@@ -383,10 +559,64 @@ export async function buildCircle1(dbPath: string) {
       scale: 1.0,
     },
   });
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 15, 36, {
+    roomId: columnsId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 24, 36, {
+    roomId: columnsId,
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  // 2x limbo-banner-tattered east/west walls
+  editor.spawnProp(LEVEL_ID, 'limbo-banner-tattered', 15, 30, { roomId: columnsId });
+  editor.spawnProp(LEVEL_ID, 'limbo-banner-tattered', 24, 30, { roomId: columnsId });
+  // 1x limbo-cracked-floor-slab center floor
+  editor.spawnProp(LEVEL_ID, 'limbo-cracked-floor-slab', 19, 31, { roomId: columnsId });
+  // 2x limbo-vase-rubble corners
+  editor.spawnProp(LEVEL_ID, 'limbo-vase-rubble', 16, 29, { roomId: columnsId });
+  editor.spawnProp(LEVEL_ID, 'limbo-vase-rubble', 23, 35, { roomId: columnsId });
+  // 1x limbo-stone-bench east wall alcove
+  editor.spawnProp(LEVEL_ID, 'limbo-stone-bench', 24, 28, { roomId: columnsId });
+  // 1x limbo-broken-pillar near row 1
+  editor.spawnProp(LEVEL_ID, 'limbo-broken-pillar', 18, 30, { roomId: columnsId });
+  // 2x limbo-rubble-scatter at column bases
+  editor.spawnProp(LEVEL_ID, 'limbo-rubble-scatter', 20, 31, { roomId: columnsId });
+  editor.spawnProp(LEVEL_ID, 'limbo-rubble-scatter', 22, 34, { roomId: columnsId });
 
   // --- Boss Chamber (bounds: 14, 42, 12, 12) ---
-  // 3x Torch_Metal (2 at entrance, 1 behind boss)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 16, 43, {
+  // Structural: crumbling arch north entrance
+  editor.spawnProp(LEVEL_ID, 'limbo-crumbling-arch', 19, 42, {
+    roomId: bossChamberId,
+    surfaceAnchor: {
+      face: 'south',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.2,
+    },
+  });
+  // Structural: 4x ancient pillars flanking entrance and mid-room
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 15, 44, { roomId: bossChamberId });
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 24, 44, { roomId: bossChamberId });
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 15, 51, { roomId: bossChamberId });
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 24, 51, { roomId: bossChamberId });
+  // 3x limbo-torch-bracket (2 entrance, 1 behind boss)
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 15, 43, {
     roomId: bossChamberId,
     surfaceAnchor: {
       face: 'west',
@@ -397,7 +627,7 @@ export async function buildCircle1(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 24, 43, {
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 24, 43, {
     roomId: bossChamberId,
     surfaceAnchor: {
       face: 'east',
@@ -408,7 +638,7 @@ export async function buildCircle1(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 20, 52, {
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 19, 52, {
     roomId: bossChamberId,
     surfaceAnchor: {
       face: 'south',
@@ -419,9 +649,77 @@ export async function buildCircle1(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 2x Banner_1
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 17, 52, { roomId: bossChamberId });
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 23, 52, { roomId: bossChamberId });
+  // 2x limbo-banner-tattered flanking entrance
+  editor.spawnProp(LEVEL_ID, 'limbo-banner-tattered', 16, 43, { roomId: bossChamberId });
+  editor.spawnProp(LEVEL_ID, 'limbo-banner-tattered', 23, 43, { roomId: bossChamberId });
+  // 2x limbo-sarcophagus alcoves
+  editor.spawnProp(LEVEL_ID, 'limbo-sarcophagus', 16, 50, { roomId: bossChamberId });
+  editor.spawnProp(LEVEL_ID, 'limbo-sarcophagus', 23, 50, { roomId: bossChamberId });
+  // 1x limbo-broken-altar center floor
+  editor.spawnProp(LEVEL_ID, 'limbo-broken-altar', 20, 48, { roomId: bossChamberId });
+  // 2x limbo-tombstone near boss
+  editor.spawnProp(LEVEL_ID, 'limbo-tombstone', 17, 52, { roomId: bossChamberId });
+  editor.spawnProp(LEVEL_ID, 'limbo-tombstone', 22, 52, { roomId: bossChamberId });
+  // 1x limbo-dried-fountain near entrance
+  editor.spawnProp(LEVEL_ID, 'limbo-dried-fountain', 20, 44, { roomId: bossChamberId });
+  // 1x limbo-bone-pile SE corner
+  editor.spawnProp(LEVEL_ID, 'limbo-bone-pile', 25, 52, { roomId: bossChamberId });
+  // 2x limbo-wall-sconce side walls
+  editor.spawnProp(LEVEL_ID, 'limbo-wall-sconce', 14, 47, { roomId: bossChamberId });
+  editor.spawnProp(LEVEL_ID, 'limbo-wall-sconce', 25, 47, { roomId: bossChamberId });
+  // 1x limbo-inscription-tablet near entrance
+  editor.spawnProp(LEVEL_ID, 'limbo-inscription-tablet', 16, 42, { roomId: bossChamberId });
+  // 2x limbo-skull-pile base of side pillars
+  editor.spawnProp(LEVEL_ID, 'limbo-skull-pile', 14, 50, { roomId: bossChamberId });
+  editor.spawnProp(LEVEL_ID, 'limbo-skull-pile', 25, 50, { roomId: bossChamberId });
+  // 1x limbo-ritual-circle center floor
+  editor.spawnProp(LEVEL_ID, 'limbo-ritual-circle', 20, 47, { roomId: bossChamberId });
+  // 2x limbo-rubble-scatter near entrance pillars
+  editor.spawnProp(LEVEL_ID, 'limbo-rubble-scatter', 17, 45, { roomId: bossChamberId });
+  editor.spawnProp(LEVEL_ID, 'limbo-rubble-scatter', 22, 45, { roomId: bossChamberId });
+
+  // =========================================================================
+  // 5d. DECALS (water seepage stains — Limbo's damp, foggy atmosphere)
+  // =========================================================================
+
+  // --- Vestibule (bounds: 16, 2, 8, 6) ---
+  editor.placeDecals(LEVEL_ID, vestibuleId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 16, z: 4, surface: 'wall', opacity: 0.5 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 23, z: 5, surface: 'wall', opacity: 0.4 },
+  ]);
+
+  // --- Fog Hall (bounds: 14, 12, 12, 10) ---
+  editor.placeDecals(LEVEL_ID, fogHallId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 14, z: 15, surface: 'wall', opacity: 0.5 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 25, z: 17, surface: 'wall', opacity: 0.6 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 18, z: 21, surface: 'wall', opacity: 0.4 },
+  ]);
+
+  // --- Crypt (bounds: 30, 14, 6, 6) ---
+  editor.placeDecals(LEVEL_ID, cryptId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 30, z: 17, surface: 'wall', opacity: 0.5 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 35, z: 15, surface: 'wall', opacity: 0.4 },
+  ]);
+
+  // --- Bone Pit (bounds: 2, 14, 8, 8) ---
+  editor.placeDecals(LEVEL_ID, bonePitId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 2, z: 17, surface: 'wall', opacity: 0.6 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 9, z: 16, surface: 'wall', opacity: 0.5 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 5, z: 21, opacity: 0.4 },
+  ]);
+
+  // --- Columns (bounds: 15, 26, 10, 12) ---
+  editor.placeDecals(LEVEL_ID, columnsId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 15, z: 29, surface: 'wall', opacity: 0.5 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 24, z: 34, surface: 'wall', opacity: 0.4 },
+  ]);
+
+  // --- Boss Chamber (bounds: 14, 42, 12, 12) ---
+  editor.placeDecals(LEVEL_ID, bossChamberId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 14, z: 46, surface: 'wall', opacity: 0.6 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 25, z: 49, surface: 'wall', opacity: 0.5 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 20, z: 53, opacity: 0.4 },
+  ]);
 
   // =========================================================================
   // 6. TRIGGERS (from "Triggers" table)
@@ -514,6 +812,459 @@ export async function buildCircle1(dbPath: string) {
   //   Facing: pi (south -- facing toward Fog Hall)
 
   editor.setPlayerSpawn(LEVEL_ID, 20, 5, Math.PI);
+
+  // =========================================================================
+  // EXPANSION: 4 new rooms, 20+ enemies, ambush + arena, extra props/pickups
+  // -------------------------------------------------------------------------
+  // Grid map of new rooms (no overlap with existing):
+  //
+  //  Scriptorium     x=28, z=22, w=10, h=10  → x:[28,38), z:[22,32)
+  //  Charnel Passage x=2,  z=22, w=8,  h=8   → x:[2,10),  z:[22,30)
+  //  Sunken Nave     x=2,  z=32, w=12, h=10  → x:[2,14),  z:[32,42)
+  //  Forgotten Gallery x=28, z=32, w=8, h=8  → x:[28,36), z:[32,40)
+  //
+  // Existing room occupancy reference:
+  //  Vestibule   [16,24)×[2,8)   Fog Hall [14,26)×[12,22)
+  //  Crypt       [30,36)×[14,20) Bone Pit [2,10)×[14,22)
+  //  Columns     [15,25)×[26,38) Boss     [14,26)×[42,54)
+  // =========================================================================
+
+  // ── NEW ROOM 1: Scriptorium (exploration) ──────────────────────────────
+  // East of Fog Hall; reaches into the open eastern strip.
+  // x:[28,38), z:[22,32) — clear of all existing rooms.
+  const scriptoriumId = editor.room(LEVEL_ID, 'scriptorium', 28, 22, 10, 10, {
+    roomType: ROOM_TYPES.EXPLORATION,
+    elevation: 0,
+    sortOrder: 6,
+    floorTexture: 'stone',
+    wallTexture: 'stone-dark',
+    fillRule: {
+      type: 'scatter',
+      props: ['limbo-tombstone', 'limbo-inscription-tablet', 'limbo-bone-pile'],
+      density: 0.1,
+    },
+  });
+
+  // ── NEW ROOM 2: Charnel Passage (exploration) ──────────────────────────
+  // South of Bone Pit, bridging toward the Sunken Nave.
+  // x:[2,10), z:[22,30) — directly below Bone Pit.
+  const charnelPassageId = editor.room(LEVEL_ID, 'charnel_passage', 2, 22, 8, 8, {
+    roomType: ROOM_TYPES.EXPLORATION,
+    elevation: 0,
+    sortOrder: 7,
+    floorTexture: 'stone-dark',
+    wallTexture: 'stone-dark',
+    fillRule: {
+      type: 'scatter',
+      props: ['limbo-bone-pile', 'limbo-chain-cluster', 'limbo-cobweb-cluster'],
+      density: 0.12,
+    },
+  });
+
+  // ── NEW ROOM 3: Sunken Nave (arena) ────────────────────────────────────
+  // South of Charnel Passage; a collapsed cathedral nave used as kill-box.
+  // x:[2,14), z:[32,42) — clear of Columns ([15,25)×[26,38)) and Boss ([14,26)×[42,54)).
+  const sunkenNaveId = editor.room(LEVEL_ID, 'sunken_nave', 2, 32, 12, 10, {
+    roomType: ROOM_TYPES.ARENA,
+    elevation: 0,
+    sortOrder: 8,
+    floorTexture: 'brick',
+    wallTexture: 'stone-dark',
+    fillRule: {
+      type: 'scatter',
+      props: ['limbo-fallen-column', 'limbo-cracked-floor-slab', 'limbo-rubble-scatter'],
+      density: 0.08,
+    },
+  });
+
+  // ── NEW ROOM 4: Forgotten Gallery (secret) ─────────────────────────────
+  // East of the Sunken Nave and south of Scriptorium — accessed via secret wall.
+  // x:[28,36), z:[32,40) — clear of Columns and Boss Chamber.
+  const forgottenGalleryId = editor.room(LEVEL_ID, 'forgotten_gallery', 28, 32, 8, 8, {
+    roomType: ROOM_TYPES.SECRET,
+    elevation: 0,
+    sortOrder: 9,
+    floorTexture: 'moss',
+    wallTexture: 'stone',
+    fillRule: {
+      type: 'scatter',
+      props: ['limbo-sarcophagus', 'limbo-moss-growth', 'limbo-cobweb-cluster'],
+      density: 0.15,
+    },
+  });
+
+  // ── NEW CONNECTIONS ────────────────────────────────────────────────────
+
+  // Fog Hall → Scriptorium (wide corridor — main east branch)
+  editor.corridor(LEVEL_ID, fogHallId, scriptoriumId, 2);
+
+  // Bone Pit → Charnel Passage (descent south)
+  editor.corridor(LEVEL_ID, bonePitId, charnelPassageId, 2);
+
+  // Charnel Passage → Sunken Nave (narrows into the nave)
+  editor.corridor(LEVEL_ID, charnelPassageId, sunkenNaveId, 2);
+
+  // Scriptorium → Forgotten Gallery (secret wall — reward for exploration)
+  editor.connect(LEVEL_ID, scriptoriumId, forgottenGalleryId, {
+    connectionType: CONNECTION_TYPES.SECRET,
+    corridorWidth: 2,
+  });
+
+  // ── ENEMIES: SCRIPTORIUM ──────────────────────────────────────────────
+  // Room bounds: x:[28,38), z:[22,32) — interior: x in [28,37], z in [22,31]
+  // 3 hellgoat on patrol loop + 2 triggered ambush
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 31, 24, {
+    roomId: scriptoriumId,
+    patrol: [
+      { x: 31, z: 24 },
+      { x: 36, z: 24 },
+      { x: 36, z: 30 },
+      { x: 31, z: 30 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 36, 24, {
+    roomId: scriptoriumId,
+    patrol: [
+      { x: 36, z: 24 },
+      { x: 36, z: 30 },
+      { x: 31, z: 30 },
+      { x: 31, z: 24 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 36, 30, {
+    roomId: scriptoriumId,
+    patrol: [
+      { x: 36, z: 30 },
+      { x: 31, z: 30 },
+      { x: 31, z: 24 },
+      { x: 36, z: 24 },
+    ],
+  });
+
+  // Scriptorium ambush: 2 hellgoats lurking in SE corner
+  editor.ambush(
+    LEVEL_ID,
+    { x: 29, z: 23, w: 8, h: 6 },
+    [
+      { type: ENEMY_TYPES.HELLGOAT, x: 29, z: 23 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 36, z: 23 },
+    ],
+    { roomId: scriptoriumId },
+  );
+
+  // ── ENEMIES: CHARNEL PASSAGE ──────────────────────────────────────────
+  // Room bounds: x:[2,10), z:[22,30) — interior: x in [2,9], z in [22,29]
+  // 2 roaming hellgoats
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 4, 24, { roomId: charnelPassageId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 7, 27, { roomId: charnelPassageId });
+
+  // ── ENEMIES: SUNKEN NAVE (arena waves) ───────────────────────────────
+  // Room bounds: x:[2,14), z:[32,42) — interior: x in [2,13], z in [32,41]
+  // Wave trigger zone: center band (3,33,8,6)
+  editor.setupArenaWaves(LEVEL_ID, sunkenNaveId, { x: 3, z: 33, w: 8, h: 6 }, [
+    // Wave 1: 4 hellgoats converging from all edges
+    [
+      { type: ENEMY_TYPES.HELLGOAT, x: 3, z: 33 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 12, z: 33 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 3, z: 40 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 12, z: 40 },
+    ],
+    // Wave 2: 3 hellgoats + 1 goatKnight (tougher, armored)
+    [
+      { type: ENEMY_TYPES.HELLGOAT, x: 3, z: 36 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 12, z: 36 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 8, z: 41 },
+      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 8, z: 34 },
+    ],
+  ]);
+
+  // ── ENEMIES: FORGOTTEN GALLERY ────────────────────────────────────────
+  // Room bounds: x:[28,36), z:[32,40) — interior: x in [28,35], z in [32,39]
+  // 1 goatKnight guardian + 1 hellgoat skulker
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 32, 36, { roomId: forgottenGalleryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 29, 38, { roomId: forgottenGalleryId });
+
+  // ── PICKUPS: EXPANSION ROOMS ──────────────────────────────────────────
+
+  // Scriptorium: ammo center + ammo NW + health S
+  //   x:[28,38), z:[22,32) → center (33,27), NW (29,23), S (33,30)
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 33, 27);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 29, 23);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 33, 30);
+
+  // Charnel Passage: ammo at center
+  //   x:[2,10), z:[22,30) → center (6,26)
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 6, 26);
+
+  // Sunken Nave: ammo x2 (between waves) + health
+  //   x:[2,14), z:[32,42) → N (7,33), S (7,40), center (8,37)
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 7, 33);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 7, 40);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 8, 37);
+
+  // Forgotten Gallery: weapon cannon (rare) + ammo
+  //   x:[28,36), z:[32,40) → center (32,36), N (32,33)
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.WEAPON_CANNON, 32, 36);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 30, 38);
+
+  // ── PROPS: EXPANSION ROOMS ────────────────────────────────────────────
+
+  // --- Scriptorium (x:[28,38), z:[22,32)) ---
+  // 2x ancient pillars flanking the west entrance
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 29, 23, { roomId: scriptoriumId });
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 29, 30, { roomId: scriptoriumId });
+  // 1x stone lectern near north wall (a second scroll to find)
+  editor.spawnProp(LEVEL_ID, 'limbo-stone-lectern', 33, 23, { roomId: scriptoriumId });
+  // 2x torch brackets on east wall
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 37, 24, {
+    roomId: scriptoriumId,
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 37, 30, {
+    roomId: scriptoriumId,
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  // 3x tombstones scattered
+  editor.spawnProp(LEVEL_ID, 'limbo-tombstone', 31, 26, { roomId: scriptoriumId });
+  editor.spawnProp(LEVEL_ID, 'limbo-tombstone', 35, 28, { roomId: scriptoriumId });
+  editor.spawnProp(LEVEL_ID, 'limbo-tombstone', 30, 31, { roomId: scriptoriumId });
+  // 2x bone piles
+  editor.spawnProp(LEVEL_ID, 'limbo-bone-pile', 35, 23, { roomId: scriptoriumId });
+  editor.spawnProp(LEVEL_ID, 'limbo-bone-pile', 28, 29, { roomId: scriptoriumId });
+  // 1x fallen column obstacle
+  editor.spawnProp(LEVEL_ID, 'limbo-fallen-column', 32, 27, { roomId: scriptoriumId });
+  // 1x cobweb cluster NE corner
+  editor.spawnProp(LEVEL_ID, 'limbo-cobweb-cluster', 37, 22, { roomId: scriptoriumId });
+
+  // --- Charnel Passage (x:[2,10), z:[22,30)) ---
+  // 3x chain clusters hanging from ceiling
+  editor.spawnProp(LEVEL_ID, 'limbo-chain-cluster', 3, 23, { roomId: charnelPassageId });
+  editor.spawnProp(LEVEL_ID, 'limbo-chain-cluster', 7, 26, { roomId: charnelPassageId });
+  editor.spawnProp(LEVEL_ID, 'limbo-chain-cluster', 4, 28, { roomId: charnelPassageId });
+  // 3x bone piles lining the floor
+  editor.spawnProp(LEVEL_ID, 'limbo-bone-pile', 2, 24, { roomId: charnelPassageId });
+  editor.spawnProp(LEVEL_ID, 'limbo-bone-pile', 8, 27, { roomId: charnelPassageId });
+  editor.spawnProp(LEVEL_ID, 'limbo-bone-pile', 5, 29, { roomId: charnelPassageId });
+  // 1x torch bracket west wall
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 2, 25, {
+    roomId: charnelPassageId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  // 2x cobweb clusters in corners
+  editor.spawnProp(LEVEL_ID, 'limbo-cobweb-cluster', 9, 22, { roomId: charnelPassageId });
+  editor.spawnProp(LEVEL_ID, 'limbo-cobweb-cluster', 9, 29, { roomId: charnelPassageId });
+  // 1x crumbling arch south transition
+  editor.spawnProp(LEVEL_ID, 'limbo-crumbling-arch', 5, 29, {
+    roomId: charnelPassageId,
+    surfaceAnchor: {
+      face: 'south',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.9,
+    },
+  });
+
+  // --- Sunken Nave (x:[2,14), z:[32,42)) ---
+  // 4x ancient pillars as arena cover
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 4, 34, { roomId: sunkenNaveId });
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 10, 34, { roomId: sunkenNaveId });
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 4, 39, { roomId: sunkenNaveId });
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 10, 39, { roomId: sunkenNaveId });
+  // 2x broken pillars (battle damage)
+  editor.spawnProp(LEVEL_ID, 'limbo-broken-pillar', 7, 36, { roomId: sunkenNaveId });
+  editor.spawnProp(LEVEL_ID, 'limbo-broken-pillar', 12, 40, { roomId: sunkenNaveId });
+  // 4x torch brackets (arena lighting, all four walls)
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 2, 33, {
+    roomId: sunkenNaveId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 13, 33, {
+    roomId: sunkenNaveId,
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 2, 41, {
+    roomId: sunkenNaveId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 13, 41, {
+    roomId: sunkenNaveId,
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  // 2x tattered banners on north/south walls
+  editor.spawnProp(LEVEL_ID, 'limbo-banner-tattered', 7, 32, { roomId: sunkenNaveId });
+  editor.spawnProp(LEVEL_ID, 'limbo-banner-tattered', 7, 41, { roomId: sunkenNaveId });
+  // 2x bone piles at column bases
+  editor.spawnProp(LEVEL_ID, 'limbo-bone-pile', 3, 37, { roomId: sunkenNaveId });
+  editor.spawnProp(LEVEL_ID, 'limbo-bone-pile', 11, 37, { roomId: sunkenNaveId });
+  // 1x cracked floor slab center
+  editor.spawnProp(LEVEL_ID, 'limbo-cracked-floor-slab', 8, 37, { roomId: sunkenNaveId });
+  // 1x broken altar south wall
+  editor.spawnProp(LEVEL_ID, 'limbo-broken-altar', 7, 41, { roomId: sunkenNaveId });
+
+  // --- Forgotten Gallery (x:[28,36), z:[32,40)) ---
+  // 2x sarcophagi along walls
+  editor.spawnProp(LEVEL_ID, 'limbo-sarcophagus', 28, 34, { roomId: forgottenGalleryId });
+  editor.spawnProp(LEVEL_ID, 'limbo-sarcophagus', 34, 34, { roomId: forgottenGalleryId });
+  // 1x stone lectern for lore scroll
+  editor.spawnProp(LEVEL_ID, 'limbo-stone-lectern', 32, 33, { roomId: forgottenGalleryId });
+  // 3x moss growths on walls
+  editor.spawnProp(LEVEL_ID, 'limbo-moss-growth', 28, 37, { roomId: forgottenGalleryId });
+  editor.spawnProp(LEVEL_ID, 'limbo-moss-growth', 35, 38, { roomId: forgottenGalleryId });
+  editor.spawnProp(LEVEL_ID, 'limbo-moss-growth', 31, 39, { roomId: forgottenGalleryId });
+  // 1x torch bracket west wall (single light)
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 28, 35, {
+    roomId: forgottenGalleryId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  // 2x cobweb clusters in corners
+  editor.spawnProp(LEVEL_ID, 'limbo-cobweb-cluster', 28, 32, { roomId: forgottenGalleryId });
+  editor.spawnProp(LEVEL_ID, 'limbo-cobweb-cluster', 35, 39, { roomId: forgottenGalleryId });
+  // 2x skull piles near sarcophagi
+  editor.spawnProp(LEVEL_ID, 'limbo-skull-pile', 29, 36, { roomId: forgottenGalleryId });
+  editor.spawnProp(LEVEL_ID, 'limbo-skull-pile', 34, 36, { roomId: forgottenGalleryId });
+
+  // ── DECALS: EXPANSION ROOMS ───────────────────────────────────────────
+
+  editor.placeDecals(LEVEL_ID, scriptoriumId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 28, z: 24, surface: 'wall', opacity: 0.5 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 37, z: 28, surface: 'wall', opacity: 0.4 },
+    { type: DECAL_TYPES.MOSS_PATCH, x: 33, z: 31, opacity: 0.3 },
+  ]);
+
+  editor.placeDecals(LEVEL_ID, charnelPassageId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 2, z: 25, surface: 'wall', opacity: 0.6 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 9, z: 28, surface: 'wall', opacity: 0.5 },
+  ]);
+
+  editor.placeDecals(LEVEL_ID, sunkenNaveId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 2, z: 35, surface: 'wall', opacity: 0.5 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 13, z: 39, surface: 'wall', opacity: 0.4 },
+    { type: DECAL_TYPES.BLOOD_STAIN, x: 7, z: 37, opacity: 0.5 },
+  ]);
+
+  editor.placeDecals(LEVEL_ID, forgottenGalleryId, [
+    { type: DECAL_TYPES.MOSS_PATCH, x: 28, z: 36, surface: 'wall', opacity: 0.7 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 35, z: 34, surface: 'wall', opacity: 0.6 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 31, z: 39, opacity: 0.5 },
+  ]);
+
+  // ── TRIGGERS: EXPANSION ROOMS ─────────────────────────────────────────
+
+  // Scriptorium: ambient fog thickens when you venture east
+  editor.addTrigger(LEVEL_ID, {
+    action: TRIGGER_ACTIONS.AMBIENT_CHANGE,
+    zoneX: 28,
+    zoneZ: 22,
+    zoneW: 10,
+    zoneH: 10,
+    roomId: scriptoriumId,
+    once: true,
+    actionData: { fogDensity: 0.1, fogColor: '#0c0c18' },
+  });
+
+  // Forgotten Gallery: secret reveal dialogue
+  editor.addTrigger(LEVEL_ID, {
+    action: TRIGGER_ACTIONS.SECRET_REVEAL,
+    zoneX: 28,
+    zoneZ: 32,
+    zoneW: 8,
+    zoneH: 3,
+    roomId: forgottenGalleryId,
+    once: true,
+    actionData: { text: 'A gallery of the forgotten. Their sin was not knowing they sinned.' },
+  });
+
+  // Sunken Nave: ambient change clears fog after wave completion
+  editor.addTrigger(LEVEL_ID, {
+    action: TRIGGER_ACTIONS.AMBIENT_CHANGE,
+    zoneX: 2,
+    zoneZ: 32,
+    zoneW: 12,
+    zoneH: 10,
+    roomId: sunkenNaveId,
+    once: true,
+    actionData: { fogDensity: 0.05, condition: 'allEnemiesKilled' },
+  });
+
+  // ── ENVIRONMENT ZONES: EXPANSION ──────────────────────────────────────
+
+  // Sunken Nave: additional fog density (darker, older space)
+  editor.addEnvironmentZone(LEVEL_ID, {
+    envType: ENV_TYPES.FOG,
+    boundsX: 2,
+    boundsZ: 32,
+    boundsW: 12,
+    boundsH: 10,
+    intensity: 1.0,
+  });
+
+  // Forgotten Gallery: still-air fog (undisturbed for centuries)
+  editor.addEnvironmentZone(LEVEL_ID, {
+    envType: ENV_TYPES.FOG,
+    boundsX: 28,
+    boundsZ: 32,
+    boundsW: 8,
+    boundsH: 8,
+    intensity: 1.2,
+  });
 
   // =========================================================================
   // 9. COMPILE GRID

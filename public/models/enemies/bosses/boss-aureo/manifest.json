@@ -1,0 +1,119 @@
+{
+  "id": "boss-aureo",
+  "name": "Aureo — The Golden",
+  "type": "character",
+  "seed": 1911346093,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cad41-13e9-7585-8ee3-fb2fb9688b50",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad41-13e9-7585-8ee3-fb2fb9688b50"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cad43-7915-75dc-96a9-17d989dccdf0",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad43-7915-75dc-96a9-17d989dccdf0"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cad45-07c2-7465-a6cf-b113ff22bdfc",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad45-07c2-7465-a6cf-b113ff22bdfc"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cad46-7e8a-74b6-a51a-2bd22a44bda0",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad46-7e8a-74b6-a51a-2bd22a44bda0"
+      },
+      "artifacts": {
+        "model": "model.glb"
+      }
+    },
+    "animations": {
+      "WalkAndRun.Walking.Zombie_Walk": {
+        "taskId": "019cad64-83ee-7a00-90d3-ae1f5509fc44",
+        "status": "SUCCEEDED",
+        "actionId": 112,
+        "artifact": "animations/Zombie_Walk.glb"
+      },
+      "DailyActions.Idle.Angry_Ground_Stomp": {
+        "taskId": "019cad64-86a4-78e4-b622-6bddcdc81575",
+        "status": "SUCCEEDED",
+        "actionId": 255,
+        "artifact": "animations/Angry_Ground_Stomp.glb"
+      },
+      "Fighting.AttackingwithWeapon.Charged_Axe_Chop": {
+        "taskId": "019cad64-8841-7a00-8e76-b0fcfadb14b5",
+        "status": "SUCCEEDED",
+        "actionId": 237,
+        "artifact": "animations/Charged_Axe_Chop.glb"
+      },
+      "Fighting.CastingSpell.Charged_Ground_Slam": {
+        "taskId": "019cad64-9046-7841-8887-756e8a0333d5",
+        "status": "SUCCEEDED",
+        "actionId": 127,
+        "artifact": "animations/Charged_Ground_Slam.glb"
+      },
+      "Fighting.Transitioning.Chest_Pound_Taunt": {
+        "taskId": "019cad64-91a6-7690-b752-dfea9bf4abc3",
+        "status": "SUCCEEDED",
+        "actionId": 88,
+        "artifact": "animations/Chest_Pound_Taunt.glb"
+      },
+      "Fighting.GettingHit.BeHit_FlyUp": {
+        "taskId": "019cad64-9329-78e5-9c8e-7a26f22fa595",
+        "status": "SUCCEEDED",
+        "actionId": 7,
+        "artifact": "animations/BeHit_FlyUp.glb"
+      },
+      "Fighting.Dying.Knock_Down": {
+        "taskId": "019cad64-96b6-78e5-9bcd-d0015d3c31d2",
+        "status": "SUCCEEDED",
+        "actionId": 187,
+        "artifact": "animations/Knock_Down.glb"
+      }
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 4 Boss (Greed). Living golden goat idol, half-flesh half-molten gold.",
+  "textToImageTask": {
+    "prompt": "A towering bipedal humanoid goat demon in A-pose, a living golden idol where half the body is organic dark fur and muscle and the other half is molten gold fused to the flesh with the transition line running diagonally across the torso, one horn is natural bone and the other is solid gleaming gold, the golden arm wields a massive golden mace studded with gems and the organic arm has desperate grasping claws, wearing a king's crown melted and fused to the skull, gold coins growing from the skin like tumors, digitigrade legs one golden one furred, one eye burning gold the other desperate and alive, 2.8 meters tall, stylized dark fantasy game boss character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Towering bipedal goat demon half-flesh half-molten-gold, asymmetric horn gold/bone, golden mace, melted crown, coin tumors, 2.8m, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 16000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark organic fur and muscle transitioning to molten polished gold, gem-studded golden mace, melted crown fused to skull, coin-growth tumors on skin, asymmetric gold and brown eyes",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 2.8
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Zombie_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp",
+      "Fighting.AttackingwithWeapon.Charged_Axe_Chop",
+      "Fighting.CastingSpell.Charged_Ground_Slam",
+      "Fighting.Transitioning.Chest_Pound_Taunt",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Knock_Down"
+    ]
+  }
+}

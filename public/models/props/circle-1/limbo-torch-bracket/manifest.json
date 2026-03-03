@@ -1,0 +1,41 @@
+{
+  "id": "limbo-torch-bracket",
+  "name": "Wall Torch Bracket",
+  "type": "prop",
+  "seed": 188411778,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacac-4715-74e3-8215-dcecd7ccea04",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacac-4715-74e3-8215-dcecd7ccea04"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacad-f31f-7161-a66e-72591e9b3fac",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacad-f31f-7161-a66e-72591e9b3fac"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A wrought iron wall torch bracket holding a burning torch, corroded dark iron with ornate scroll design, warm orange flame, wall-mounted bracket with two mounting bolts, dark fantasy dungeon game prop, isolated object, dark background, wall-mounted view",
+    "artStyle": "realistic",
+    "targetPolycount": 3500,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark corroded iron, warm orange torch glow, ornate scroll metalwork, soot stains near flame",
+    "enablePbr": true
+  }
+}

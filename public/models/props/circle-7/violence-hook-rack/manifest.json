@@ -1,0 +1,41 @@
+{
+  "id": "violence-hook-rack",
+  "name": "Meat Hook Rack",
+  "type": "prop",
+  "seed": 902026410,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac95-5c4f-7d82-84ef-149c8923863e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac95-5c4f-7d82-84ef-149c8923863e"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac96-6ac6-7c93-b0a8-ae58e30ffae8",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac96-6ac6-7c93-b0a8-ae58e30ffae8"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A horizontal iron bar rack with multiple hanging meat hooks, ceiling-mounted slaughterhouse chain rack holding six curved iron hooks in a row, bloodstained industrial fixture, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Rusted iron horizontal bar, dark bloodstained curved hooks in a row, chain ceiling mounts, industrial metal",
+    "enablePbr": true
+  }
+}

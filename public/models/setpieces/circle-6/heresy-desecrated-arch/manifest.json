@@ -1,0 +1,41 @@
+{
+  "id": "heresy-desecrated-arch",
+  "name": "Desecrated Temple Arch",
+  "type": "prop",
+  "seed": 2593097294,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac8f-9e33-7188-9919-6b22b15842d7",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac8f-9e33-7188-9919-6b22b15842d7"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac91-571b-7062-a8fd-8309af27c17b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac91-571b-7062-a8fd-8309af27c17b"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A large pointed gothic stone archway made of cracked white marble with dark purple veins, the keystone is carved with an inverted pentagram, cracks radiating from the top, once-sacred temple doorframe now desecrated, game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 10000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "on"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Cracked white marble with dark purple veins, inverted pentagram keystone carving, aged staining, cold stone finish",
+    "enablePbr": true
+  }
+}

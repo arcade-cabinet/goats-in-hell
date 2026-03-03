@@ -5,10 +5,11 @@
  * conflicts with Reactylon's global JSX augmentation.
  *
  * Responsibilities:
- *   - Preload enemy GLB models on mount
+ *   - Preload enemy GLB models and animation clips on mount
  *   - Spawn a cloned GLB mesh for each new enemy, falling back to a colored
  *     capsule placeholder if the model is not yet loaded or failed to load
- *   - Dispose meshes for removed enemies
+ *   - Drive per-entity AnimationMixer (walk / hit / death states)
+ *   - Dispose meshes and mixers for removed enemies
  *   - Sync positions each frame via updateEnemyMeshes()
  */
 
@@ -18,8 +19,14 @@ import * as THREE from 'three/webgpu';
 import { COLORS } from '../../constants';
 import type { Entity, EntityType } from '../../game/entities/components';
 import { world } from '../../game/entities/world';
-import { ENEMY_MODEL_ASSETS } from '../../game/systems/AssetRegistry';
-import { cloneModel, isModelLoaded, loadModels } from '../systems/ModelLoader';
+import { ENEMY_ANIMATION_ASSETS, ENEMY_MODEL_ASSETS } from '../../game/systems/AssetRegistry';
+import {
+  cloneModel,
+  getAnimationClip,
+  isModelLoaded,
+  loadAnimationClip,
+  loadModels,
+} from '../systems/ModelLoader';
 import { updateEnemyMeshes } from './EnemySystem';
 
 // ---------------------------------------------------------------------------
@@ -46,7 +53,7 @@ const ENEMY_CONFIGS: Record<string, EnemyMeshConfig> = {
     color: COLORS.goat,
     scale: 1.0,
     emissiveHex: '#440000',
-    emissiveIntensity: 0.2,
+    emissiveIntensity: 0.15,
     eyeColor: '#ff0000',
     modelKey: 'enemy-goat',
     modelScale: 0.8,
@@ -55,8 +62,8 @@ const ENEMY_CONFIGS: Record<string, EnemyMeshConfig> = {
   hellgoat: {
     color: COLORS.hellgoat,
     scale: 1.2,
-    emissiveHex: '#662200',
-    emissiveIntensity: 0.35,
+    emissiveHex: '#220011',
+    emissiveIntensity: 0.2,
     eyeColor: '#ff4400',
     modelKey: 'enemy-hellgoat',
     modelScale: 1.0,
@@ -65,8 +72,8 @@ const ENEMY_CONFIGS: Record<string, EnemyMeshConfig> = {
   fireGoat: {
     color: COLORS.fireGoat,
     scale: 1.0,
-    emissiveHex: '#663300',
-    emissiveIntensity: 0.4,
+    emissiveHex: '#330800',
+    emissiveIntensity: 0.25,
     eyeColor: '#ff8800',
     modelKey: 'enemy-fireGoat',
     modelScale: 0.8,
@@ -75,8 +82,8 @@ const ENEMY_CONFIGS: Record<string, EnemyMeshConfig> = {
   shadowGoat: {
     color: COLORS.shadowGoat,
     scale: 0.9,
-    emissiveHex: '#110033',
-    emissiveIntensity: 0.3,
+    emissiveHex: '#080015',
+    emissiveIntensity: 0.2,
     eyeColor: '#8888ff',
     baseVisibility: 0.4,
     modelKey: 'enemy-shadowGoat',
@@ -86,19 +93,29 @@ const ENEMY_CONFIGS: Record<string, EnemyMeshConfig> = {
   goatKnight: {
     color: COLORS.goatKnight,
     scale: 1.4,
-    emissiveHex: '#223344',
-    emissiveIntensity: 0.15,
+    emissiveHex: '#111a22',
+    emissiveIntensity: 0.1,
     eyeColor: '#4488ff',
     modelKey: 'enemy-goatKnight',
     modelScale: 1.1,
+    modelOffsetY: 0,
+  },
+  plagueGoat: {
+    color: COLORS.goat,
+    scale: 1.1,
+    emissiveHex: '#112200',
+    emissiveIntensity: 0.2,
+    eyeColor: '#44ff00',
+    modelKey: 'enemy-plagueGoat',
+    modelScale: 0.9,
     modelOffsetY: 0,
   },
   // Bosses — use boss color at larger scale
   archGoat: {
     color: COLORS.boss,
     scale: 2.0,
-    emissiveHex: '#550044',
-    emissiveIntensity: 0.4,
+    emissiveHex: '#280022',
+    emissiveIntensity: 0.3,
     eyeColor: '#cc00ff',
     modelKey: 'enemy-archGoat',
     modelScale: 1.6,
@@ -107,8 +124,8 @@ const ENEMY_CONFIGS: Record<string, EnemyMeshConfig> = {
   infernoGoat: {
     color: COLORS.boss,
     scale: 1.8,
-    emissiveHex: '#882200',
-    emissiveIntensity: 0.6,
+    emissiveHex: '#440800',
+    emissiveIntensity: 0.4,
     eyeColor: '#ff4400',
     modelKey: 'enemy-infernoGoat',
     modelScale: 1.4,
@@ -117,8 +134,8 @@ const ENEMY_CONFIGS: Record<string, EnemyMeshConfig> = {
   voidGoat: {
     color: COLORS.boss,
     scale: 1.6,
-    emissiveHex: '#220055',
-    emissiveIntensity: 0.5,
+    emissiveHex: '#100028',
+    emissiveIntensity: 0.35,
     eyeColor: '#aa44ff',
     baseVisibility: 0.4,
     modelKey: 'enemy-voidGoat',
@@ -128,8 +145,8 @@ const ENEMY_CONFIGS: Record<string, EnemyMeshConfig> = {
   ironGoat: {
     color: COLORS.boss,
     scale: 2.2,
-    emissiveHex: '#334455',
-    emissiveIntensity: 0.25,
+    emissiveHex: '#1a2233',
+    emissiveIntensity: 0.15,
     eyeColor: '#4488ff',
     modelKey: 'enemy-ironGoat',
     modelScale: 1.8,
@@ -144,11 +161,96 @@ const ENEMY_TYPES = new Set<EntityType>([
   'fireGoat',
   'shadowGoat',
   'goatKnight',
+  'plagueGoat',
   'archGoat',
   'infernoGoat',
   'voidGoat',
   'ironGoat',
 ]);
+
+// ---------------------------------------------------------------------------
+// Animation state machine
+// ---------------------------------------------------------------------------
+
+type AnimState = 'walk' | 'hit' | 'death';
+
+interface EnemyAnimator {
+  mixer: THREE.AnimationMixer;
+  actions: Partial<Record<AnimState, THREE.AnimationAction>>;
+  currentState: AnimState | null;
+}
+
+/** Derive desired animation state from ECS entity data. */
+function getDesiredAnimState(entity: Entity): AnimState {
+  if (!entity.enemy) return 'walk';
+  if (entity.enemy.hp <= 0) return 'death';
+  if ((entity.enemy.staggerTimer ?? 0) > 0) return 'hit';
+  return 'walk';
+}
+
+/**
+ * Transition the animator to a new state, crossfading from the previous action.
+ * One-shot states (hit, death) play once and clamp; walk loops continuously.
+ */
+function transitionAnimState(anim: EnemyAnimator, next: AnimState): void {
+  if (anim.currentState === next) return;
+
+  const prevAction = anim.currentState ? anim.actions[anim.currentState] : undefined;
+  const nextAction = anim.actions[next];
+  if (!nextAction) return;
+
+  anim.currentState = next;
+
+  if (next === 'death' || next === 'hit') {
+    nextAction.clampWhenFinished = true;
+    nextAction.loop = THREE.LoopOnce;
+    nextAction.reset().play();
+    if (prevAction && prevAction !== nextAction) prevAction.crossFadeTo(nextAction, 0.2, true);
+  } else {
+    // walk — loop
+    nextAction.loop = THREE.LoopRepeat;
+    nextAction.reset().play();
+    if (prevAction && prevAction !== nextAction) prevAction.crossFadeTo(nextAction, 0.3, true);
+  }
+}
+
+/**
+ * Async: load animation clips for a model key, attach them to a mixer,
+ * and return the animator. If a clip fails to load it's simply omitted.
+ */
+async function createAnimator(mesh: THREE.Group, modelKey: string): Promise<EnemyAnimator | null> {
+  const animDefs = ENEMY_ANIMATION_ASSETS[modelKey as keyof typeof ENEMY_ANIMATION_ASSETS];
+  if (!animDefs) return null;
+
+  // Load all clips concurrently
+  const roles: AnimState[] = ['walk', 'hit', 'death'];
+  await Promise.all(
+    roles.map((role) => {
+      const subpath = (animDefs as Record<string, string>)[role];
+      if (subpath == null) return Promise.resolve(null);
+      return loadAnimationClip(`${modelKey}:${role}`, subpath);
+    }),
+  );
+
+  const mixer = new THREE.AnimationMixer(mesh);
+  const actions: Partial<Record<AnimState, THREE.AnimationAction>> = {};
+
+  for (const role of roles) {
+    const clip = getAnimationClip(`${modelKey}:${role}`);
+    if (clip) {
+      actions[role] = mixer.clipAction(clip);
+    }
+  }
+
+  // Start walk immediately (looping)
+  const walkAction = actions.walk;
+  if (walkAction) {
+    walkAction.loop = THREE.LoopRepeat;
+    walkAction.play();
+  }
+
+  return { mixer, actions, currentState: walkAction ? 'walk' : null };
+}
 
 // ---------------------------------------------------------------------------
 // Template cache — fallback capsule meshes (used when GLB not loaded)
@@ -272,7 +374,6 @@ function buildGlbEnemyMesh(type: string): THREE.Group | null {
   cloned.scale.setScalar(uniformScale);
 
   // Shift so feet touch y=0
-  // After scaling, the bottom of the model should be at y=0
   const scaledBottom = center.y * uniformScale - (size.y * uniformScale) / 2;
   cloned.position.y = -scaledBottom + config.modelOffsetY;
 
@@ -326,11 +427,13 @@ function buildGlbEnemyMesh(type: string): THREE.Group | null {
  * Each frame:
  *   1. Check for newly spawned enemies -> clone GLB model (or fallback capsule)
  *   2. Check for removed enemies -> dispose and remove from scene
- *   3. Call updateEnemyMeshes() to sync positions from ECS
+ *   3. Update all AnimationMixers (walk/hit/death state machine)
+ *   4. Call updateEnemyMeshes() to sync positions from ECS
  */
 export function EnemyRenderer() {
   const { scene } = useThree();
   const spawnedRef = useRef<Map<string, THREE.Group>>(new Map());
+  const animatorsRef = useRef<Map<string, EnemyAnimator>>(new Map());
   const modelsLoadedRef = useRef(false);
   /** Set of entity IDs that have already been upgraded from fallback→GLB. */
   const upgradedRef = useRef<Set<string>>(new Set());
@@ -341,11 +444,10 @@ export function EnemyRenderer() {
   useEffect(() => {
     let cancelled = false;
 
-    const entries = Object.entries(ENEMY_MODEL_ASSETS) as [string, number][];
+    const entries = Object.entries(ENEMY_MODEL_ASSETS) as [string, string][];
     loadModels(entries).then(() => {
       if (!cancelled) {
         modelsLoadedRef.current = true;
-        // Reset upgrade tracking so newly loaded models trigger upgrades
         allUpgradedRef.current = false;
       }
     });
@@ -364,11 +466,17 @@ export function EnemyRenderer() {
         disposeMeshGroup(mesh);
       }
       spawned.clear();
+      // Stop all mixers
+      for (const [, anim] of animatorsRef.current) {
+        anim.mixer.stopAllAction();
+      }
+      animatorsRef.current.clear();
     };
   }, [scene]);
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     const spawned = spawnedRef.current;
+    const animators = animatorsRef.current;
 
     // --- Collect current enemy IDs from ECS ---
     const currentEnemyIds = new Set<string>();
@@ -379,7 +487,7 @@ export function EnemyRenderer() {
 
       // Spawn mesh for new enemies
       if (!spawned.has(entity.id)) {
-        spawnEnemyMesh(entity, scene, spawned, modelsLoadedRef.current);
+        spawnEnemyMesh(entity, scene, spawned, animators, modelsLoadedRef.current);
         // If a fallback capsule was created after models loaded, resume upgrade checks
         const justSpawned = spawned.get(entity.id);
         if (modelsLoadedRef.current && justSpawned && !justSpawned.userData.isGlb) {
@@ -388,25 +496,36 @@ export function EnemyRenderer() {
       }
 
       // If models just finished loading, upgrade any fallback capsules to GLB.
-      // Skip entirely once all existing fallbacks have been upgraded.
       if (modelsLoadedRef.current && !allUpgradedRef.current) {
         const existing = spawned.get(entity.id);
         if (existing && !existing.userData.isGlb && !upgradedRef.current.has(entity.id!)) {
           const type = entity.type as string;
           const config = ENEMY_CONFIGS[type] || ENEMY_CONFIGS.goat;
           if (isModelLoaded(config.modelKey)) {
-            // Replace fallback with GLB
             scene.remove(existing);
             disposeMeshGroup(existing);
             spawned.delete(entity.id);
-            spawnEnemyMesh(entity, scene, spawned, true);
+            // Dispose old animator if any
+            const oldAnim = animators.get(entity.id!);
+            if (oldAnim) {
+              oldAnim.mixer.stopAllAction();
+              animators.delete(entity.id!);
+            }
+            spawnEnemyMesh(entity, scene, spawned, animators, true);
             upgradedRef.current.add(entity.id!);
           }
         }
       }
+
+      // Drive animation state for this entity
+      const anim = animators.get(entity.id!);
+      if (anim) {
+        const desired = getDesiredAnimState(entity);
+        transitionAnimState(anim, desired);
+      }
     }
 
-    // Check if all current fallbacks have been upgraded (skip future checks)
+    // Check if all current fallbacks have been upgraded
     if (modelsLoadedRef.current && !allUpgradedRef.current) {
       let hasFallbacks = false;
       for (const [, mesh] of spawned) {
@@ -427,7 +546,18 @@ export function EnemyRenderer() {
         disposeMeshGroup(mesh);
         spawned.delete(id);
         upgradedRef.current.delete(id);
+        // Dispose animator
+        const anim = animators.get(id);
+        if (anim) {
+          anim.mixer.stopAllAction();
+          animators.delete(id);
+        }
       }
+    }
+
+    // --- Update all AnimationMixers ---
+    for (const [, anim] of animators) {
+      anim.mixer.update(delta);
     }
 
     // --- Position/rotation sync ---
@@ -444,47 +574,56 @@ export function EnemyRenderer() {
 
 /**
  * Clone a template (GLB or fallback) and add it to the scene for the given enemy entity.
+ * For GLB meshes, also kicks off async animation loading.
  */
 function spawnEnemyMesh(
   entity: Entity,
   scene: THREE.Scene,
   spawned: Map<string, THREE.Group>,
+  animators: Map<string, EnemyAnimator>,
   modelsLoaded: boolean,
 ): void {
   const type = entity.type as string;
 
   let mesh: THREE.Group;
+  let isGlb = false;
 
   // Try GLB model first
   if (modelsLoaded) {
     const glbMesh = buildGlbEnemyMesh(type);
     if (glbMesh) {
       mesh = glbMesh;
+      isGlb = true;
     } else {
-      // Model failed to load — use fallback capsule.
-      // A new fallback after models loaded means upgrade checks must resume.
       const template = getFallbackTemplate(type);
       mesh = cloneFallbackTemplate(template);
     }
   } else {
-    // Models still loading — use fallback capsule
     const template = getFallbackTemplate(type);
     mesh = cloneFallbackTemplate(template);
   }
 
   mesh.name = `mesh-enemy-${entity.id}`;
-  mesh.userData = {
-    ...mesh.userData,
-    entityId: entity.id,
-  };
+  mesh.userData = { ...mesh.userData, entityId: entity.id };
 
-  // Set initial position (negate Z for coordinate system conversion)
   if (entity.position) {
     mesh.position.set(entity.position.x, entity.position.y, -entity.position.z);
   }
 
   scene.add(mesh);
   spawned.set(entity.id!, mesh);
+
+  // Kick off animation loading for GLB models
+  if (isGlb && entity.id) {
+    const config = ENEMY_CONFIGS[type] || ENEMY_CONFIGS.goat;
+    const modelKey = config.modelKey;
+    const entityId = entity.id;
+    createAnimator(mesh, modelKey).then((anim) => {
+      if (anim && spawned.has(entityId)) {
+        animators.set(entityId, anim);
+      }
+    });
+  }
 }
 
 /**
@@ -493,7 +632,6 @@ function spawnEnemyMesh(
 function cloneFallbackTemplate(template: THREE.Group): THREE.Group {
   const mesh = template.clone(true);
 
-  // Deep clone materials so each instance can have independent opacity
   mesh.traverse((child) => {
     if (child instanceof THREE.Mesh && child.material) {
       if (Array.isArray(child.material)) {

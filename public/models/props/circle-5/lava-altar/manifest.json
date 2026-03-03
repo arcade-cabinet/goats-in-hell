@@ -1,0 +1,41 @@
+{
+  "id": "lava-altar",
+  "name": "Lava Altar",
+  "type": "prop",
+  "seed": 3525284882,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac6d-6c08-7bbe-a660-5296f0113415",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac6d-6c08-7bbe-a660-5296f0113415"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac6f-355d-7bf6-8350-6775306b6a61",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac6f-355d-7bf6-8350-6775306b6a61"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A demonic obsidian altar with channels of flowing lava carved into the surface, goat skull centerpiece, dark stone with glowing magma veins, ritual altar for hell dungeon, stylized low poly game prop, isometric view",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Black obsidian with emissive orange-red lava channels, rough volcanic rock texture",
+    "enablePbr": true
+  }
+}

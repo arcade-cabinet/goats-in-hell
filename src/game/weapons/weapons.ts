@@ -1,4 +1,6 @@
 /** Weapons -- weapon definitions and the canonical weapon registry. */
+
+import { weaponConfig } from '../../config';
 import type { WeaponId } from '../entities/components';
 
 /** Fire mode: 'projectile' fires discrete shots, 'stream' is a continuous beam/spray. */
@@ -42,77 +44,33 @@ export interface WeaponDef {
   dotDuration?: number;
 }
 
-/** Complete weapon registry — keyed by WeaponId, used by WeaponSystem and HUD. */
+/** Complete weapon registry — keyed by WeaponId, built from config/weapons.json. */
 export const weapons: Record<WeaponId, WeaponDef> = {
   hellPistol: {
     id: 'hellPistol',
-    name: 'Hell Pistol',
-    damage: 4, // reliable hitscan, ~13 DPS
-    pellets: 1,
-    spread: 0,
-    magSize: 12,
-    fireRate: 300,
-    reloadTime: 1200,
-    range: 50,
-    isProjectile: false,
-    projectileSpeed: 80,
+    ...weaponConfig.hellPistol,
+    isProjectile: weaponConfig.hellPistol.projectileSpeed > 0,
   },
   brimShotgun: {
     id: 'brimShotgun',
-    name: 'Brimstone Shotgun',
-    damage: 4, // 4×7 = 28 per shot at point-blank, ~23 DPS
-    pellets: 7,
-    spread: 0.14,
-    magSize: 6,
-    fireRate: 700,
-    reloadTime: 2200,
-    range: 12,
+    ...weaponConfig.brimShotgun,
     isProjectile: false,
-    projectileSpeed: 60,
   },
   hellfireCannon: {
     id: 'hellfireCannon',
-    name: 'Hellfire Cannon',
-    damage: 3, // rapid projectile stream, ~20 DPS
-    pellets: 1,
-    spread: 0.03,
-    magSize: 30,
-    fireRate: 150,
-    reloadTime: 3000,
-    range: 30,
+    ...weaponConfig.hellfireCannon,
     isProjectile: true,
-    projectileSpeed: 40,
   },
   goatsBane: {
     id: 'goatsBane',
-    name: "Goat's Bane",
-    damage: 60, // heavy rocket, ~40 DPS + AoE crowd clear
-    pellets: 1,
-    spread: 0,
-    magSize: 3,
-    fireRate: 1500,
-    reloadTime: 3500,
-    range: 100,
+    ...weaponConfig.goatsBane,
     isProjectile: true,
-    projectileSpeed: 20,
-    aoe: 5,
+    aoe: weaponConfig.goatsBane.aoe,
   },
   brimstoneFlamethrower: {
     id: 'brimstoneFlamethrower',
-    name: 'Brimstone Flamethrower',
-    damage: 2, // per tick — continuous stream
-    pellets: 1,
-    spread: 0.5, // wide cone (30° half-angle)
-    magSize: 0, // uses fuel, not ammo
-    fireRate: 50, // ms between damage ticks
-    reloadTime: 0, // no reload
-    range: 5, // short range
+    ...weaponConfig.brimstoneFlamethrower,
     isProjectile: false,
-    fireMode: 'stream',
-    fuelBurnRate: 5, // fuel/sec
-    fuelRegenRate: 1, // fuel/sec passive regen
-    fuelMax: 100,
-    dotDps: 2, // DOT: 2 damage/sec
-    dotDuration: 5, // DOT lasts 5 seconds
+    fireMode: 'stream' as FireMode,
   },
 };

@@ -1,0 +1,41 @@
+{
+  "id": "demon-throne",
+  "name": "Demon Throne",
+  "type": "prop",
+  "seed": 2386110896,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac6d-4ffa-7dae-9a9e-443615fcbff1",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac6d-4ffa-7dae-9a9e-443615fcbff1"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac6e-c50f-7721-996e-c3f3f240b604",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac6e-c50f-7721-996e-c3f3f240b604"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A dark throne made of twisted goat horns and blackened bone, high back with a demonic skull crest, dark leather seat with red stitching, boss room centerpiece, stylized low poly game prop, dark fantasy, isometric view",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Blackened bone and horn, dark leather with red accents, slight emissive glow in skull eyes",
+    "enablePbr": true
+  }
+}

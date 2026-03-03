@@ -1,0 +1,41 @@
+{
+  "id": "violence-fire-geyser-vent",
+  "name": "Fire Geyser Vent",
+  "type": "prop",
+  "seed": 3750816148,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac8d-5842-7c72-adb1-a90d25eda343",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac8d-5842-7c72-adb1-a90d25eda343"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac8e-c5de-716c-99ca-72db0c553e5b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac8e-c5de-716c-99ca-72db0c553e5b"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A cracked stone floor vent with scorched edges and heat-warped rock around a central opening, fire geyser eruption point on burned sandstone ground, charred and blackened perimeter, dark fantasy game prop, isolated object, dark background, top-down orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Scorched cracked sandstone, blackened charred edges around vent opening, heat-warped rock, orange glow residue",
+    "enablePbr": true
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "id": "floor-rug-tattered",
+  "name": "Tattered Floor Rug",
+  "type": "prop",
+  "seed": 3316465764,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caca0-6088-7257-b4ca-67b39093afbb",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca0-6088-7257-b4ca-67b39093afbb"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019caca1-9665-7f1d-8ac4-f6324e9f3034",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca1-9665-7f1d-8ac4-f6324e9f3034"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A rigid tattered floor rug or mat lying flat on the ground, solid sculpted worn fabric with frayed edges and holes, faded dark red and black pattern, dungeon floor decoration, dark fantasy game prop, floor-placed flat, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Faded dark crimson and black woven pattern, threadbare patches, frayed edges, dust and stains",
+    "enablePbr": true
+  }
+}

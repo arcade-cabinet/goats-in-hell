@@ -1,0 +1,119 @@
+{
+  "id": "goat-berserker",
+  "name": "Goat Berserker",
+  "type": "character",
+  "seed": 2854273654,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cad8a-7a73-70dc-a98a-fd1de7ab4cd2",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad8a-7a73-70dc-a98a-fd1de7ab4cd2"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cadd5-06be-7e56-a558-996aea2de9d1",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadd5-06be-7e56-a558-996aea2de9d1"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cadd6-92e5-7330-aaf7-c94c219ff383",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadd6-92e5-7330-aaf7-c94c219ff383"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cadd7-f32b-7379-9780-0c364e302184",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadd7-f32b-7379-9780-0c364e302184"
+      },
+      "artifacts": {
+        "model": "model.glb"
+      }
+    },
+    "animations": {
+      "WalkAndRun.Running.Lean_Forward_Sprint": {
+        "taskId": "019cadd8-7c61-790f-bc2a-23ad2524b321",
+        "status": "SUCCEEDED",
+        "actionId": 509,
+        "artifact": "animations/Lean_Forward_Sprint.glb"
+      },
+      "DailyActions.Idle.Angry_Ground_Stomp_1": {
+        "taskId": "019cadd8-bcee-738c-a483-203783f4fccd",
+        "status": "SUCCEEDED",
+        "actionId": 256,
+        "artifact": "animations/Angry_Ground_Stomp_1.glb"
+      },
+      "Fighting.AttackingwithWeapon.Axe_Spin_Attack": {
+        "taskId": "019cadd9-adc3-7986-8ead-317305ffcaed",
+        "status": "SUCCEEDED",
+        "actionId": 238,
+        "artifact": "animations/Axe_Spin_Attack.glb"
+      },
+      "Fighting.CastingSpell.Charged_Ground_Slam": {
+        "taskId": "019cadda-2771-7945-823c-d64415252ff4",
+        "status": "SUCCEEDED",
+        "actionId": 127,
+        "artifact": "animations/Charged_Ground_Slam.glb"
+      },
+      "Fighting.Transitioning.Chest_Pound_Taunt": {
+        "taskId": "019cadda-6680-7f1f-be68-44f96fa19db6",
+        "status": "SUCCEEDED",
+        "actionId": 88,
+        "artifact": "animations/Chest_Pound_Taunt.glb"
+      },
+      "Fighting.GettingHit.BeHit_FlyUp": {
+        "taskId": "019cadda-a527-79e4-aaee-1861ab1c7406",
+        "status": "SUCCEEDED",
+        "actionId": 7,
+        "artifact": "animations/BeHit_FlyUp.glb"
+      },
+      "Fighting.Dying.Knock_Down": {
+        "taskId": "019caddb-1ee1-7f34-be1a-430eedd514fa",
+        "status": "SUCCEEDED",
+        "actionId": 187,
+        "artifact": "animations/Knock_Down.glb"
+      }
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 5 (Wrath) — burning rage goat. Charges recklessly, ground slams, gets faster as damaged.",
+  "textToImageTask": {
+    "prompt": "A bipedal humanoid goat demon in A-pose, heavily muscular enraged build with veins bulging, charred black fur with cracks showing molten orange-red underneath like cooling lava, massive jagged horns with flames licking from the tips, wielding a huge flaming battle axe in both hands, no armor exposing the cracked burning hide, digitigrade goat legs with hooves leaving scorch marks, furious blazing red eyes, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Bipedal humanoid goat demon, massive muscular body, large curved horns, both arms raised at 45 degrees from sides in A-pose, digitigrade goat legs, thick fur, isolated character, A-pose, symmetrical pose",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Charred black fur with glowing orange-red lava cracks, flaming horn tips, massive iron axe head with fire, bulging veins, blazing red eyes",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 2.2
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Running.Lean_Forward_Sprint",
+      "DailyActions.Idle.Angry_Ground_Stomp_1",
+      "Fighting.AttackingwithWeapon.Axe_Spin_Attack",
+      "Fighting.CastingSpell.Charged_Ground_Slam",
+      "Fighting.Transitioning.Chest_Pound_Taunt",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Knock_Down"
+    ]
+  }
+}

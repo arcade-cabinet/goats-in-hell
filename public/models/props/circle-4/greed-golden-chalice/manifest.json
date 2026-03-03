@@ -1,0 +1,41 @@
+{
+  "id": "greed-golden-chalice",
+  "name": "Golden Chalice",
+  "type": "prop",
+  "seed": 623491968,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac94-b521-7c5b-96b9-b091d51413d8",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac94-b521-7c5b-96b9-b091d51413d8"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac96-4ecb-7da2-a342-8435d0a0ea1b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac96-4ecb-7da2-a342-8435d0a0ea1b"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "An ornate golden chalice goblet with jeweled stem, wide bowl with engraved demonic goat motifs, ruby gemstones set in the base, liturgical treasure cup, game prop, isolated object, dark background, three quarter view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "on"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Polished gold surface with engraved goat motifs, red ruby gemstones in base, warm metallic reflections",
+    "enablePbr": true
+  }
+}

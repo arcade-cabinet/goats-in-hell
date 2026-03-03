@@ -1,0 +1,41 @@
+{
+  "id": "violence-iron-railing",
+  "name": "Iron Railing Section",
+  "type": "prop",
+  "seed": 119932556,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac9f-8c62-724a-8f75-54f195c748f7",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac9f-8c62-724a-8f75-54f195c748f7"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019caca0-9400-7e09-8609-6ddc662ffe08",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca0-9400-7e09-8609-6ddc662ffe08"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A section of rusted iron pipe railing with vertical balusters, industrial safety barrier for elevated walkway, bolted floor mounts, bloodstained, dark fantasy game prop, isolated object, dark background, three-quarter orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Oxidized iron pipe railing, rust red patina, bolted floor mounts, blood splatter on horizontal rail",
+    "enablePbr": true
+  }
+}

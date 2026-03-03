@@ -3,6 +3,7 @@ import BetterSqlite3 from 'better-sqlite3';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import {
   CONNECTION_TYPES,
+  DECAL_TYPES,
   ENEMY_TYPES,
   ENV_TYPES,
   LevelEditor,
@@ -41,6 +42,7 @@ export async function buildCircle4(dbPath: string) {
     enemyTypes: ['goatKnight', 'hellgoat'],
     enemyDensity: 1.0,
     pickupDensity: 2.5,
+    texturePalette: { exploration: 'tiles', arena: 'marble', boss: 'tiles', secret: 'marble' },
   });
 
   // =========================================================================
@@ -75,36 +77,71 @@ export async function buildCircle4(dbPath: string) {
     roomType: ROOM_TYPES.EXPLORATION,
     elevation: 0,
     sortOrder: 0,
+    floorTexture: 'tiles',
+    wallTexture: 'marble',
+    fillRule: {
+      type: 'scatter',
+      props: ['coin-pile', 'greed-golden-vase', 'greed-treasure-chest'],
+      density: 0.08,
+    },
   });
 
   const treasuryId = editor.room(LEVEL_ID, 'treasury', 15, 12, 14, 12, {
     roomType: ROOM_TYPES.EXPLORATION,
     elevation: 0,
     sortOrder: 1,
+    floorTexture: 'marble',
+    wallTexture: 'tiles',
+    fillRule: {
+      type: 'scatter',
+      props: ['greed-gold-bar-stack', 'greed-coin-cascade', 'coin-pile'],
+      density: 0.1,
+    },
   });
 
   const weightRoomId = editor.room(LEVEL_ID, 'weight_room', 17, 28, 10, 10, {
     roomType: ROOM_TYPES.PUZZLE,
     elevation: 0,
     sortOrder: 2,
+    floorTexture: 'metal',
+    wallTexture: 'marble',
+    fillRule: {
+      type: 'scatter',
+      props: ['greed-gear-mechanism', 'greed-gold-chain'],
+      density: 0.1,
+    },
   });
 
   const reliquaryId = editor.room(LEVEL_ID, 'reliquary', 2, 32, 6, 6, {
     roomType: ROOM_TYPES.SECRET,
     elevation: 0,
     sortOrder: 3,
+    floorTexture: 'tiles',
+    fillRule: {
+      type: 'scatter',
+      props: ['greed-treasure-chest', 'greed-chest-pedestal', 'coin-pile'],
+      density: 0.2,
+    },
   });
 
   const auctionHallId = editor.room(LEVEL_ID, 'auction_hall', 16, 42, 12, 12, {
     roomType: ROOM_TYPES.ARENA,
     elevation: 0,
     sortOrder: 4,
+    floorTexture: 'marble',
+    fillRule: {
+      type: 'scatter',
+      props: ['golden-idol', 'greed-jeweled-pedestal', 'greed-golden-chalice'],
+      density: 0.08,
+    },
   });
 
   const aureosCourtId = editor.room(LEVEL_ID, 'aureos_court', 15, 58, 14, 14, {
     roomType: ROOM_TYPES.BOSS,
     elevation: -1,
     sortOrder: 5,
+    floorTexture: 'tiles',
+    wallTexture: 'tiles',
   });
 
   // =========================================================================
@@ -167,12 +204,12 @@ export async function buildCircle4(dbPath: string) {
   });
 
   // --- Treasury (balcony): 2 hellgoat guard balcony ramps ---
-  //   Balcony positions near ramp tops at E/W walls
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 16, 14, {
+  //   Balcony positions away from ramp walls to avoid corridor interference
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 17, 14, {
     roomId: treasuryId,
     elevation: 1,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 27, 14, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 25, 14, {
     roomId: treasuryId,
     elevation: 1,
   });
@@ -182,14 +219,8 @@ export async function buildCircle4(dbPath: string) {
   editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 22, 35, {
     roomId: weightRoomId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 20, 32, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 22, 33, {
     roomId: weightRoomId,
-    patrol: [
-      { x: 20, z: 32 },
-      { x: 24, z: 32 },
-      { x: 24, z: 34 },
-      { x: 20, z: 34 },
-    ],
   });
 
   // --- Auction Hall: 2 waves via setupArenaWaves ---
@@ -284,267 +315,142 @@ export async function buildCircle4(dbPath: string) {
   editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 22, 70);
 
   // =========================================================================
-  // 5c. ENTITIES: PROPS (from "Props" table)
+  // 5c. ENTITIES: PROPS (from 3D Spatial Design)
   // =========================================================================
 
   // --- Vault Entrance (bounds: 18, 2, 8, 6) ---
-  // 2x Torch_Metal (walls, surfaceAnchor: N/S)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 19, 3, {
-    roomId: vaultEntranceId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 24, 3, {
-    roomId: vaultEntranceId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  // 3x Coin_Pile (floor)
-  editor.spawnProp(LEVEL_ID, 'Coin_Pile', 20, 4, { roomId: vaultEntranceId });
-  editor.spawnProp(LEVEL_ID, 'Coin_Pile', 22, 6, { roomId: vaultEntranceId });
-  editor.spawnProp(LEVEL_ID, 'Coin_Pile', 24, 5, { roomId: vaultEntranceId });
-  // 1x Chest_Wood (center pedestal)
-  editor.spawnProp(LEVEL_ID, 'Chest_Wood', 22, 4, { roomId: vaultEntranceId });
-  // 2x Vase_4 (flanking entrance)
-  editor.spawnProp(LEVEL_ID, 'Vase_4', 19, 6, { roomId: vaultEntranceId });
-  editor.spawnProp(LEVEL_ID, 'Vase_4', 24, 6, { roomId: vaultEntranceId });
+  // Structural: 2x greed-vault-arch
+  editor.spawnProp(LEVEL_ID, 'greed-vault-arch', 22, 2, { roomId: vaultEntranceId });
+  editor.spawnProp(LEVEL_ID, 'greed-vault-arch', 22, 7, { roomId: vaultEntranceId });
+  // 2x greed-golden-vase (flanking entrance)
+  editor.spawnProp(LEVEL_ID, 'greed-golden-vase', 19, 4, { roomId: vaultEntranceId });
+  editor.spawnProp(LEVEL_ID, 'greed-golden-vase', 25, 4, { roomId: vaultEntranceId });
+  // 5x coin-pile (floor scatter)
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 20, 3, { roomId: vaultEntranceId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 21, 6, { roomId: vaultEntranceId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 24, 5, { roomId: vaultEntranceId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 19, 6, { roomId: vaultEntranceId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 25, 3, { roomId: vaultEntranceId });
+  // 2x greed-gold-bar-stack
+  editor.spawnProp(LEVEL_ID, 'greed-gold-bar-stack', 20, 4, { roomId: vaultEntranceId });
+  editor.spawnProp(LEVEL_ID, 'greed-gold-bar-stack', 24, 3, { roomId: vaultEntranceId });
+  // 1x greed-chest-pedestal + 1x greed-treasure-chest (center)
+  editor.spawnProp(LEVEL_ID, 'greed-chest-pedestal', 23, 4, { roomId: vaultEntranceId });
+  editor.spawnProp(LEVEL_ID, 'greed-treasure-chest', 23, 4, { roomId: vaultEntranceId });
 
   // --- Treasury (bounds: 15, 12, 14, 12) ---
-  // 8x Chest_Wood (pedestals in 2 rows of 4)
-  editor.spawnProp(LEVEL_ID, 'Chest_Wood', 18, 15, { roomId: treasuryId });
-  editor.spawnProp(LEVEL_ID, 'Chest_Wood', 21, 15, { roomId: treasuryId });
-  editor.spawnProp(LEVEL_ID, 'Chest_Wood', 24, 15, { roomId: treasuryId });
-  editor.spawnProp(LEVEL_ID, 'Chest_Wood', 27, 15, { roomId: treasuryId });
-  editor.spawnProp(LEVEL_ID, 'Chest_Wood', 18, 19, { roomId: treasuryId });
-  editor.spawnProp(LEVEL_ID, 'Chest_Wood', 21, 19, { roomId: treasuryId });
-  editor.spawnProp(LEVEL_ID, 'Chest_Wood', 24, 19, { roomId: treasuryId });
-  editor.spawnProp(LEVEL_ID, 'Chest_Wood', 27, 19, { roomId: treasuryId });
-  // 6x Coin_Pile_2 (between chests)
-  editor.spawnProp(LEVEL_ID, 'Coin_Pile_2', 19, 16, { roomId: treasuryId });
-  editor.spawnProp(LEVEL_ID, 'Coin_Pile_2', 22, 16, { roomId: treasuryId });
-  editor.spawnProp(LEVEL_ID, 'Coin_Pile_2', 25, 16, { roomId: treasuryId });
-  editor.spawnProp(LEVEL_ID, 'Coin_Pile_2', 19, 20, { roomId: treasuryId });
-  editor.spawnProp(LEVEL_ID, 'Coin_Pile_2', 22, 20, { roomId: treasuryId });
-  editor.spawnProp(LEVEL_ID, 'Coin_Pile_2', 25, 20, { roomId: treasuryId });
-  // 4x Torch_Metal (walls, surfaceAnchor: E/W)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 16, 14, {
+  // Structural: 4x greed-gold-pillar (balcony anchors)
+  editor.spawnProp(LEVEL_ID, 'greed-gold-pillar', 16, 13, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'greed-gold-pillar', 28, 13, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'greed-gold-pillar', 16, 22, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'greed-gold-pillar', 28, 22, { roomId: treasuryId });
+  // Structural: 2x greed-diamond-plate-platform (balconies)
+  editor.spawnProp(LEVEL_ID, 'greed-diamond-plate-platform', 16, 13, {
     roomId: treasuryId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.8,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    elevation: 1,
   });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 16, 20, {
+  editor.spawnProp(LEVEL_ID, 'greed-diamond-plate-platform', 27, 13, {
     roomId: treasuryId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.8,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    elevation: 1,
   });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 27, 14, {
+  // 8x greed-chest-pedestal (2 rows of 4)
+  editor.spawnProp(LEVEL_ID, 'greed-chest-pedestal', 18, 15, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'greed-chest-pedestal', 21, 15, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'greed-chest-pedestal', 24, 15, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'greed-chest-pedestal', 27, 15, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'greed-chest-pedestal', 18, 19, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'greed-chest-pedestal', 21, 19, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'greed-chest-pedestal', 24, 19, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'greed-chest-pedestal', 27, 19, { roomId: treasuryId });
+  // 8x greed-treasure-chest (on pedestals)
+  editor.spawnProp(LEVEL_ID, 'greed-treasure-chest', 18, 15, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'greed-treasure-chest', 21, 15, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'greed-treasure-chest', 24, 15, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'greed-treasure-chest', 27, 15, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'greed-treasure-chest', 18, 19, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'greed-treasure-chest', 21, 19, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'greed-treasure-chest', 24, 19, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'greed-treasure-chest', 27, 19, { roomId: treasuryId });
+  // 6x coin-pile (between chests)
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 19, 16, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 22, 16, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 25, 16, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 19, 20, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 22, 20, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 25, 20, { roomId: treasuryId });
+  // 2x greed-golden-chalice (table surfaces)
+  editor.spawnProp(LEVEL_ID, 'greed-golden-chalice', 20, 16, { roomId: treasuryId });
+  editor.spawnProp(LEVEL_ID, 'greed-golden-chalice', 24, 19, { roomId: treasuryId });
+  // 4x greed-golden-candelabra (balcony corners)
+  editor.spawnProp(LEVEL_ID, 'greed-golden-candelabra', 16, 13, {
     roomId: treasuryId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.8,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    elevation: 1,
   });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 27, 20, {
+  editor.spawnProp(LEVEL_ID, 'greed-golden-candelabra', 28, 13, {
     roomId: treasuryId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.8,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
+    elevation: 1,
   });
-  // 2x Chalice (table surfaces)
-  editor.spawnProp(LEVEL_ID, 'Chalice', 20, 17, { roomId: treasuryId });
-  editor.spawnProp(LEVEL_ID, 'Chalice', 26, 17, { roomId: treasuryId });
-
-  // --- Treasury balcony ---
-  // 4x CandleStick_Triple (balcony corners)
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 16, 13, { roomId: treasuryId, elevation: 1 });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 27, 13, { roomId: treasuryId, elevation: 1 });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 16, 22, { roomId: treasuryId, elevation: 1 });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 27, 22, { roomId: treasuryId, elevation: 1 });
-  // 2x Barrel (near ramp tops)
-  editor.spawnProp(LEVEL_ID, 'Barrel', 17, 13, { roomId: treasuryId, elevation: 1 });
-  editor.spawnProp(LEVEL_ID, 'Barrel', 26, 13, { roomId: treasuryId, elevation: 1 });
+  editor.spawnProp(LEVEL_ID, 'greed-golden-candelabra', 16, 22, {
+    roomId: treasuryId,
+    elevation: 1,
+  });
+  editor.spawnProp(LEVEL_ID, 'greed-golden-candelabra', 28, 22, {
+    roomId: treasuryId,
+    elevation: 1,
+  });
 
   // --- Weight Room (bounds: 17, 28, 10, 10) ---
-  // 4x Cabinet (walls, surfaceAnchor: N/S/E/W)
-  editor.spawnProp(LEVEL_ID, 'Cabinet', 22, 29, {
-    roomId: weightRoomId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 0.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Cabinet', 22, 36, {
-    roomId: weightRoomId,
-    surfaceAnchor: {
-      face: 'south',
-      offsetX: 0,
-      offsetY: 0.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Cabinet', 18, 33, {
-    roomId: weightRoomId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 0.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Cabinet', 25, 33, {
-    roomId: weightRoomId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 0.0,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  // 2x Torch_Metal (walls, surfaceAnchor: E/W)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 18, 30, {
-    roomId: weightRoomId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 25, 30, {
-    roomId: weightRoomId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.5,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
+  // Structural: 2x greed-safe-door
+  editor.spawnProp(LEVEL_ID, 'greed-safe-door', 22, 28, { roomId: weightRoomId });
+  editor.spawnProp(LEVEL_ID, 'greed-safe-door', 22, 37, { roomId: weightRoomId });
+  // 16x greed-pressure-plate (4x4 grid)
+  for (let pz = 29; pz <= 36; pz += 2) {
+    for (let px = 18; px <= 25; px += 2) {
+      editor.spawnProp(LEVEL_ID, 'greed-pressure-plate', px, pz, { roomId: weightRoomId });
+    }
+  }
+  // 4x greed-gear-mechanism (walls)
+  editor.spawnProp(LEVEL_ID, 'greed-gear-mechanism', 17, 30, { roomId: weightRoomId });
+  editor.spawnProp(LEVEL_ID, 'greed-gear-mechanism', 27, 30, { roomId: weightRoomId });
+  editor.spawnProp(LEVEL_ID, 'greed-gear-mechanism', 17, 34, { roomId: weightRoomId });
+  editor.spawnProp(LEVEL_ID, 'greed-gear-mechanism', 27, 34, { roomId: weightRoomId });
+  // 2x greed-gold-bar-stack (far side bait)
+  editor.spawnProp(LEVEL_ID, 'greed-gold-bar-stack', 19, 30, { roomId: weightRoomId });
+  editor.spawnProp(LEVEL_ID, 'greed-gold-bar-stack', 25, 30, { roomId: weightRoomId });
+  // 1x greed-skeletal-goat (environmental teach)
+  editor.spawnProp(LEVEL_ID, 'greed-skeletal-goat', 20, 29, { roomId: weightRoomId });
+  // 2x greed-ammo-scatter (around skeletal goat)
+  editor.spawnProp(LEVEL_ID, 'greed-ammo-scatter', 20, 29, { roomId: weightRoomId });
+  editor.spawnProp(LEVEL_ID, 'greed-ammo-scatter', 21, 30, { roomId: weightRoomId });
+  // 2x coin-pile (floor atmosphere)
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 18, 33, { roomId: weightRoomId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 25, 36, { roomId: weightRoomId });
 
   // --- Reliquary (bounds: 2, 32, 6, 6) ---
-  // 3x Key_Gold (wall display, surfaceAnchor: N)
-  editor.spawnProp(LEVEL_ID, 'Key_Gold', 3, 33, {
-    roomId: reliquaryId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 1.2,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Key_Gold', 5, 33, {
-    roomId: reliquaryId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 1.2,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Key_Gold', 6, 33, {
-    roomId: reliquaryId,
-    surfaceAnchor: {
-      face: 'north',
-      offsetX: 0,
-      offsetY: 1.2,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  // 2x Chalice (shelf)
-  editor.spawnProp(LEVEL_ID, 'Chalice', 4, 35, { roomId: reliquaryId });
-  editor.spawnProp(LEVEL_ID, 'Chalice', 6, 35, { roomId: reliquaryId });
-  // 1x Scroll_1 (pedestal)
-  editor.spawnProp(LEVEL_ID, 'Scroll_1', 5, 36, { roomId: reliquaryId });
-  // 1x Chest_Wood (center)
-  editor.spawnProp(LEVEL_ID, 'Chest_Wood', 4, 35, { roomId: reliquaryId });
+  // Structural: 1x greed-vault-arch (hidden entrance)
+  editor.spawnProp(LEVEL_ID, 'greed-vault-arch', 2, 35, { roomId: reliquaryId });
+  // 1x greed-golden-key-display (north wall)
+  editor.spawnProp(LEVEL_ID, 'greed-golden-key-display', 4, 33, { roomId: reliquaryId });
+  // 1x greed-jeweled-pedestal + 1x greed-treasure-chest (center)
+  editor.spawnProp(LEVEL_ID, 'greed-jeweled-pedestal', 4, 35, { roomId: reliquaryId });
+  editor.spawnProp(LEVEL_ID, 'greed-treasure-chest', 4, 35, { roomId: reliquaryId });
+  // 2x greed-golden-chalice (south shelf)
+  editor.spawnProp(LEVEL_ID, 'greed-golden-chalice', 3, 36, { roomId: reliquaryId });
+  editor.spawnProp(LEVEL_ID, 'greed-golden-chalice', 6, 36, { roomId: reliquaryId });
 
   // --- Auction Hall (bounds: 16, 42, 12, 12) ---
-  // 4x structural pillars with Coin_Pile at base
-  editor.spawnProp(LEVEL_ID, 'Column_Stone', 19, 45, { roomId: auctionHallId });
-  editor.spawnProp(LEVEL_ID, 'Coin_Pile', 19, 46, { roomId: auctionHallId });
-  editor.spawnProp(LEVEL_ID, 'Column_Stone', 24, 45, { roomId: auctionHallId });
-  editor.spawnProp(LEVEL_ID, 'Coin_Pile', 24, 46, { roomId: auctionHallId });
-  editor.spawnProp(LEVEL_ID, 'Column_Stone', 19, 50, { roomId: auctionHallId });
-  editor.spawnProp(LEVEL_ID, 'Coin_Pile', 19, 51, { roomId: auctionHallId });
-  editor.spawnProp(LEVEL_ID, 'Column_Stone', 24, 50, { roomId: auctionHallId });
-  editor.spawnProp(LEVEL_ID, 'Coin_Pile', 24, 51, { roomId: auctionHallId });
-  // 2x Torch_Metal (walls, surfaceAnchor: E/W)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 17, 44, {
-    roomId: auctionHallId,
-    surfaceAnchor: {
-      face: 'west',
-      offsetX: 0,
-      offsetY: 1.8,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 26, 44, {
-    roomId: auctionHallId,
-    surfaceAnchor: {
-      face: 'east',
-      offsetX: 0,
-      offsetY: 1.8,
-      offsetZ: 0,
-      rotation: [0, 0, 0],
-      scale: 1.0,
-    },
-  });
-  // 2x Banner_1 (walls, surfaceAnchor: N/S)
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 22, 43, {
+  // 4x greed-gold-pillar (structural, destructible)
+  editor.spawnProp(LEVEL_ID, 'greed-gold-pillar', 19, 45, { roomId: auctionHallId });
+  editor.spawnProp(LEVEL_ID, 'greed-gold-pillar', 25, 45, { roomId: auctionHallId });
+  editor.spawnProp(LEVEL_ID, 'greed-gold-pillar', 19, 51, { roomId: auctionHallId });
+  editor.spawnProp(LEVEL_ID, 'greed-gold-pillar', 25, 51, { roomId: auctionHallId });
+  // 4x coin-pile (at pillar bases, destructible triggers)
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 19, 45, { roomId: auctionHallId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 25, 45, { roomId: auctionHallId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 19, 51, { roomId: auctionHallId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 25, 51, { roomId: auctionHallId });
+  // 2x greed-golden-banner (walls)
+  editor.spawnProp(LEVEL_ID, 'greed-golden-banner', 17, 43, {
     roomId: auctionHallId,
     surfaceAnchor: {
       face: 'north',
@@ -555,7 +461,7 @@ export async function buildCircle4(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 22, 52, {
+  editor.spawnProp(LEVEL_ID, 'greed-golden-banner', 27, 53, {
     roomId: auctionHallId,
     surfaceAnchor: {
       face: 'south',
@@ -566,22 +472,35 @@ export async function buildCircle4(dbPath: string) {
       scale: 1.0,
     },
   });
+  // 2x greed-treasure-chest (edge decoration)
+  editor.spawnProp(LEVEL_ID, 'greed-treasure-chest', 17, 51, { roomId: auctionHallId });
+  editor.spawnProp(LEVEL_ID, 'greed-treasure-chest', 27, 45, { roomId: auctionHallId });
+  // 2x coin-pile (floor scatter, edge fill)
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 17, 48, { roomId: auctionHallId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 27, 48, { roomId: auctionHallId });
+  // 2x greed-golden-vase (corners)
+  editor.spawnProp(LEVEL_ID, 'greed-golden-vase', 16, 43, { roomId: auctionHallId });
+  editor.spawnProp(LEVEL_ID, 'greed-golden-vase', 28, 53, { roomId: auctionHallId });
 
   // --- Boss chamber: Aureo's Court (bounds: 15, 58, 14, 14) ---
-  // 6x CandleStick_Triple (ring around perimeter)
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 16, 59, { roomId: aureosCourtId });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 27, 59, { roomId: aureosCourtId });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 16, 65, { roomId: aureosCourtId });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 27, 65, { roomId: aureosCourtId });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 16, 70, { roomId: aureosCourtId });
-  editor.spawnProp(LEVEL_ID, 'CandleStick_Triple', 27, 70, { roomId: aureosCourtId });
-  // 4x Chain_Coil (hanging from ceiling, golden)
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 19, 61, { roomId: aureosCourtId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 24, 61, { roomId: aureosCourtId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 19, 68, { roomId: aureosCourtId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 24, 68, { roomId: aureosCourtId });
-  // 2x Banner_2 (flanking throne, surfaceAnchor: N)
-  editor.spawnProp(LEVEL_ID, 'Banner_2', 19, 59, {
+  // Structural: 1x greed-golden-throne (north-center dais)
+  editor.spawnProp(LEVEL_ID, 'greed-golden-throne', 22, 59, { roomId: aureosCourtId });
+  // Structural: 1x greed-vault-arch (entrance)
+  editor.spawnProp(LEVEL_ID, 'greed-vault-arch', 22, 58, { roomId: aureosCourtId });
+  // 6x greed-golden-candelabra (perimeter ring)
+  editor.spawnProp(LEVEL_ID, 'greed-golden-candelabra', 17, 60, { roomId: aureosCourtId });
+  editor.spawnProp(LEVEL_ID, 'greed-golden-candelabra', 27, 60, { roomId: aureosCourtId });
+  editor.spawnProp(LEVEL_ID, 'greed-golden-candelabra', 17, 65, { roomId: aureosCourtId });
+  editor.spawnProp(LEVEL_ID, 'greed-golden-candelabra', 27, 65, { roomId: aureosCourtId });
+  editor.spawnProp(LEVEL_ID, 'greed-golden-candelabra', 17, 70, { roomId: aureosCourtId });
+  editor.spawnProp(LEVEL_ID, 'greed-golden-candelabra', 27, 70, { roomId: aureosCourtId });
+  // 4x greed-gold-chain (hanging from ceiling)
+  editor.spawnProp(LEVEL_ID, 'greed-gold-chain', 19, 61, { roomId: aureosCourtId });
+  editor.spawnProp(LEVEL_ID, 'greed-gold-chain', 25, 61, { roomId: aureosCourtId });
+  editor.spawnProp(LEVEL_ID, 'greed-gold-chain', 19, 69, { roomId: aureosCourtId });
+  editor.spawnProp(LEVEL_ID, 'greed-gold-chain', 25, 69, { roomId: aureosCourtId });
+  // 2x greed-golden-banner (flanking throne)
+  editor.spawnProp(LEVEL_ID, 'greed-golden-banner', 20, 59, {
     roomId: aureosCourtId,
     surfaceAnchor: {
       face: 'north',
@@ -592,7 +511,7 @@ export async function buildCircle4(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'Banner_2', 24, 59, {
+  editor.spawnProp(LEVEL_ID, 'greed-golden-banner', 24, 59, {
     roomId: aureosCourtId,
     surfaceAnchor: {
       face: 'north',
@@ -603,11 +522,61 @@ export async function buildCircle4(dbPath: string) {
       scale: 1.0,
     },
   });
-  // 4x Coin_Pile (floor scatter)
-  editor.spawnProp(LEVEL_ID, 'Coin_Pile', 18, 63, { roomId: aureosCourtId });
-  editor.spawnProp(LEVEL_ID, 'Coin_Pile', 25, 63, { roomId: aureosCourtId });
-  editor.spawnProp(LEVEL_ID, 'Coin_Pile', 18, 68, { roomId: aureosCourtId });
-  editor.spawnProp(LEVEL_ID, 'Coin_Pile', 25, 68, { roomId: aureosCourtId });
+  // 8x coin-pile (floor scatter)
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 18, 63, { roomId: aureosCourtId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 26, 63, { roomId: aureosCourtId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 18, 68, { roomId: aureosCourtId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 26, 68, { roomId: aureosCourtId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 22, 62, { roomId: aureosCourtId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 22, 67, { roomId: aureosCourtId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 19, 65, { roomId: aureosCourtId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 25, 65, { roomId: aureosCourtId });
+  // 2x greed-coin-cascade (near throne dais)
+  editor.spawnProp(LEVEL_ID, 'greed-coin-cascade', 21, 59, { roomId: aureosCourtId });
+  editor.spawnProp(LEVEL_ID, 'greed-coin-cascade', 23, 59, { roomId: aureosCourtId });
+  // 2x greed-golden-vase (perimeter)
+  editor.spawnProp(LEVEL_ID, 'greed-golden-vase', 17, 60, { roomId: aureosCourtId });
+  editor.spawnProp(LEVEL_ID, 'greed-golden-vase', 27, 60, { roomId: aureosCourtId });
+
+  // =========================================================================
+  // 5d. DECALS (from design doc Scratches004 + Fingerprints002 mappings)
+  // =========================================================================
+
+  // --- Vault Entrance: fingerprint stains near coin-piles and treasure chest ---
+  editor.placeDecals(LEVEL_ID, vaultEntranceId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 20, z: 3, opacity: 0.3 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 23, z: 4, opacity: 0.3 },
+  ]);
+
+  // --- Treasury: clawing marks on walls + fingerprints near treasure chests ---
+  editor.placeDecals(LEVEL_ID, treasuryId, [
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 15, z: 16, surface: 'wall' },
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 29, z: 16, surface: 'wall' },
+    { type: DECAL_TYPES.WATER_STAIN, x: 18, z: 15, opacity: 0.3 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 27, z: 19, opacity: 0.3 },
+  ]);
+
+  // --- Weight Room: desperate clawing on walls near floor ---
+  editor.placeDecals(LEVEL_ID, weightRoomId, [
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 17, z: 32, surface: 'wall' },
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 27, z: 32, surface: 'wall' },
+  ]);
+
+  // --- Auction Hall: clawing marks + fingerprints near treasure ---
+  editor.placeDecals(LEVEL_ID, auctionHallId, [
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 16, z: 48, surface: 'wall' },
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 28, z: 48, surface: 'wall' },
+    { type: DECAL_TYPES.WATER_STAIN, x: 17, z: 51, opacity: 0.3 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 27, z: 45, opacity: 0.3 },
+  ]);
+
+  // --- Aureo's Court: clawing marks + fingerprints near coin cascades ---
+  editor.placeDecals(LEVEL_ID, aureosCourtId, [
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 15, z: 63, surface: 'wall' },
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 29, z: 63, surface: 'wall' },
+    { type: DECAL_TYPES.WATER_STAIN, x: 21, z: 59, opacity: 0.3 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 23, z: 59, opacity: 0.3 },
+  ]);
 
   // =========================================================================
   // 6. TRIGGERS (from "Triggers" table)
@@ -765,6 +734,598 @@ export async function buildCircle4(dbPath: string) {
   //   Facing: pi (south -- facing toward Treasury)
 
   editor.setPlayerSpawn(LEVEL_ID, 22, 5, Math.PI);
+
+  // =========================================================================
+  // EXPANSION: 6 NEW ROOMS + CONNECTIONS + ENEMIES + PICKUPS + TRIGGERS
+  //
+  // Existing room footprints (x_min..x_max, z_min..z_max):
+  //   vault_entrance : x=18..25, z=2..7
+  //   treasury       : x=15..28, z=12..23
+  //   weight_room    : x=17..26, z=28..37
+  //   reliquary      : x=2..7,   z=32..37
+  //   auction_hall   : x=16..27, z=42..53
+  //   aureos_court   : x=15..28, z=58..71
+  //
+  // New rooms placed in open grid areas (no overlaps):
+  //   coin_counting_room : x=30, z=12, w=10, h=10  → x=30..39, z=12..21
+  //   vault_annex        : x=0,  z=12, w=10, h=10  → x=0..9,   z=12..21
+  //   guard_barracks     : x=30, z=24, w=10, h=10  → x=30..39, z=24..33 (connected from weight_room east)
+  //   offering_chamber   : x=0,  z=22, w=10, h=10  → x=0..9,   z=22..31
+  //   smelting_chamber   : x=0,  z=42, w=12, h=12  → x=0..11,  z=42..53
+  //   deep_vault         : x=30, z=42, w=10, h=10  → x=30..39, z=42..51
+  // =========================================================================
+
+  // ── NEW ROOMS ─────────────────────────────────────────────────────────────
+
+  // Coin Counting Room (x=30, z=12, w=10, h=10)
+  // Guards count and sort the hoard. Rows of ledger-desks piled with coins.
+  const coinCountingRoomId = editor.room(LEVEL_ID, 'coin_counting_room', 30, 12, 10, 10, {
+    roomType: ROOM_TYPES.EXPLORATION,
+    elevation: 0,
+    sortOrder: 6,
+    floorTexture: 'tiles',
+    wallTexture: 'marble',
+    fillRule: {
+      type: 'scatter',
+      props: ['coin-pile', 'greed-coin-cascade', 'greed-gold-bar-stack'],
+      density: 0.35,
+    },
+  });
+
+  // Vault Annex (x=0, z=12, w=10, h=10)
+  // A dusty overflow annex crammed with confiscated treasures.
+  const vaultAnnexId = editor.room(LEVEL_ID, 'vault_annex', 0, 12, 10, 10, {
+    roomType: ROOM_TYPES.EXPLORATION,
+    elevation: 0,
+    sortOrder: 7,
+    floorTexture: 'stone',
+    wallTexture: 'tiles',
+    fillRule: {
+      type: 'scatter',
+      props: ['greed-treasure-chest', 'greed-jeweled-pedestal', 'coin-pile'],
+      density: 0.25,
+    },
+  });
+
+  // Guard Barracks (x=30, z=24, w=10, h=10)
+  // Elite goatKnight garrison connected from the Weight Room to the east.
+  // Armor racks, coin piles, the stench of gold.
+  const guardBarracksId = editor.room(LEVEL_ID, 'guard_barracks', 30, 24, 10, 10, {
+    roomType: ROOM_TYPES.EXPLORATION,
+    elevation: 0,
+    sortOrder: 8,
+    floorTexture: 'marble',
+    wallTexture: 'marble',
+    fillRule: {
+      type: 'scatter',
+      props: ['greed-weapon-pedestal', 'greed-safe-door', 'coin-pile'],
+      density: 0.15,
+    },
+  });
+
+  // Offering Chamber (x=0, z=22, w=10, h=10)
+  // Sinners left offerings here. Altars bear idols and chalices.
+  // NOTE: shifted north to z=22 to avoid overlapping reliquary (x=2..7, z=32..37)
+  const offeringChamberId = editor.room(LEVEL_ID, 'offering_chamber', 0, 22, 10, 10, {
+    roomType: ROOM_TYPES.EXPLORATION,
+    elevation: 0,
+    sortOrder: 9,
+    floorTexture: 'tiles',
+    wallTexture: 'marble',
+    fillRule: {
+      type: 'scatter',
+      props: ['golden-idol', 'greed-golden-chalice', 'greed-golden-vase'],
+      density: 0.2,
+    },
+  });
+
+  // Smelting Chamber (x=0, z=42, w=12, h=12)
+  // Molten gold poured endlessly into useless molds. Arena ambush.
+  const smeltingChamberId = editor.room(LEVEL_ID, 'smelting_chamber', 0, 42, 12, 12, {
+    roomType: ROOM_TYPES.ARENA,
+    elevation: 0,
+    sortOrder: 10,
+    floorTexture: 'metal',
+    wallTexture: 'tiles',
+    fillRule: {
+      type: 'scatter',
+      props: ['coin-pile', 'greed-gold-bar-stack', 'greed-coin-cascade'],
+      density: 0.2,
+    },
+  });
+
+  // Deep Vault (x=30, z=42, w=10, h=10)
+  // The innermost sanctum of Aureo's hoard. Heavily guarded. Weapon pickup reward.
+  const deepVaultId = editor.room(LEVEL_ID, 'deep_vault', 30, 42, 10, 10, {
+    roomType: ROOM_TYPES.SECRET,
+    elevation: 0,
+    sortOrder: 11,
+    floorTexture: 'marble',
+    wallTexture: 'marble',
+    fillRule: {
+      type: 'scatter',
+      props: ['greed-treasure-chest', 'greed-chest-pedestal', 'golden-idol'],
+      density: 0.3,
+    },
+  });
+
+  // ── NEW CONNECTIONS ───────────────────────────────────────────────────────
+
+  // Treasury (center: 22,18) -> Coin Counting Room (center: 35,17): east branch
+  editor.corridor(LEVEL_ID, treasuryId, coinCountingRoomId, 2);
+
+  // Treasury (center: 22,18) -> Vault Annex (center: 5,17): west branch
+  editor.corridor(LEVEL_ID, treasuryId, vaultAnnexId, 2);
+
+  // Weight Room (center: 22,33) -> Guard Barracks (center: 35,29): east branch
+  // NOTE: using weight_room as anchor avoids the tight z=22-23 gap issue
+  editor.corridor(LEVEL_ID, weightRoomId, guardBarracksId, 2);
+
+  // Vault Annex (center: 5,17) -> Offering Chamber (center: 5,27): south
+  editor.corridor(LEVEL_ID, vaultAnnexId, offeringChamberId, 2);
+
+  // Auction Hall (center: 22,48) -> Smelting Chamber (center: 6,48): west branch
+  editor.corridor(LEVEL_ID, auctionHallId, smeltingChamberId, 2);
+
+  // Auction Hall (center: 22,48) -> Deep Vault (center: 35,47): secret east branch
+  editor.connect(LEVEL_ID, auctionHallId, deepVaultId, {
+    connectionType: CONNECTION_TYPES.SECRET,
+    corridorWidth: 2,
+  });
+
+  // ── NEW ENEMIES ───────────────────────────────────────────────────────────
+  //
+  // Coin Counting Room (x=30, z=12, w=10, h=10) interior: x=[31..38], z=[13..20]
+  // 5 goatKnight counting guards + 2 hellgoat -- packed with hostile accountants
+
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 33, 15, {
+    roomId: coinCountingRoomId,
+    patrol: [
+      { x: 33, z: 14 },
+      { x: 33, z: 19 },
+      { x: 37, z: 19 },
+      { x: 37, z: 14 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 37, 19, {
+    roomId: coinCountingRoomId,
+    patrol: [
+      { x: 37, z: 19 },
+      { x: 37, z: 14 },
+      { x: 33, z: 14 },
+      { x: 33, z: 19 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 31, 14, {
+    roomId: coinCountingRoomId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 38, 19, {
+    roomId: coinCountingRoomId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 34, 13, {
+    roomId: coinCountingRoomId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 35, 17, {
+    roomId: coinCountingRoomId,
+    patrol: [
+      { x: 32, z: 17 },
+      { x: 38, z: 17 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 31, 19, {
+    roomId: coinCountingRoomId,
+  });
+
+  // Vault Annex (x=0, z=12, w=10, h=10) interior: x=[1..8], z=[13..20]
+  // 3 goatKnight overseers and 2 hellgoat scouts -- cramped annex patrol
+
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 3, 15, {
+    roomId: vaultAnnexId,
+    patrol: [
+      { x: 3, z: 14 },
+      { x: 3, z: 20 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 7, 18, {
+    roomId: vaultAnnexId,
+    patrol: [
+      { x: 7, z: 14 },
+      { x: 7, z: 20 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 5, 14, {
+    roomId: vaultAnnexId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 5, 17, {
+    roomId: vaultAnnexId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 8, 14, {
+    roomId: vaultAnnexId,
+  });
+
+  // Guard Barracks (x=30, z=24, w=10, h=10) interior: x=[31..38], z=[25..32]
+  // 4 goatKnight + 2 hellgoat
+  // All placed in the center of the room (x=33..36, z=26..30) away from all walls
+
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 33, 27, {
+    roomId: guardBarracksId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 36, 27, {
+    roomId: guardBarracksId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 33, 30, {
+    roomId: guardBarracksId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 36, 30, {
+    roomId: guardBarracksId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 34, 26, {
+    roomId: guardBarracksId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 35, 29, {
+    roomId: guardBarracksId,
+  });
+
+  // Offering Chamber (x=0, z=22, w=10, h=10) interior: x=[1..8], z=[23..30]
+  // 4 pre-placed guards defending the idols (no ambush trigger to avoid corridor blockage)
+
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 3, 25, {
+    roomId: offeringChamberId,
+    patrol: [
+      { x: 3, z: 24 },
+      { x: 3, z: 29 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 7, 28, {
+    roomId: offeringChamberId,
+    patrol: [
+      { x: 7, z: 24 },
+      { x: 7, z: 29 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 5, 27, {
+    roomId: offeringChamberId,
+    patrol: [
+      { x: 3, z: 27 },
+      { x: 7, z: 27 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 6, 24, {
+    roomId: offeringChamberId,
+  });
+
+  // Smelting Chamber (x=0, z=42, w=12, h=12) interior: x=[1..10], z=[43..52]
+  // 3 pre-placed smelter guards + Arena: 2 waves of greed guardians
+
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 3, 50, {
+    roomId: smeltingChamberId,
+    patrol: [
+      { x: 3, z: 44 },
+      { x: 3, z: 51 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 9, 45, {
+    roomId: smeltingChamberId,
+    patrol: [
+      { x: 9, z: 44 },
+      { x: 9, z: 51 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 6, 47, {
+    roomId: smeltingChamberId,
+  });
+
+  // Arena: 2 waves of greed guardians defending the smelters
+  editor.setupArenaWaves(LEVEL_ID, smeltingChamberId, { x: 1, z: 43, w: 10, h: 2 }, [
+    // Wave 1: 2 goatKnight (N, S) + 2 hellgoat (E, W)
+    [
+      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 6, z: 44 },
+      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 6, z: 51 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 1, z: 47 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 10, z: 47 },
+    ],
+    // Wave 2: 3 goatKnight (corners + center) + 2 hellgoat (flanking)
+    [
+      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 2, z: 44 },
+      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 10, z: 51 },
+      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 6, z: 48 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 2, z: 51 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 10, z: 44 },
+    ],
+  ]);
+
+  // Deep Vault (x=30, z=42, w=10, h=10) interior: x=[31..38], z=[43..50]
+  // No enemies — this is a pure loot room reached via secret passage.
+  // In a SECRET room the PlaytestRunner cannot path here (WALL_SECRET blocks A*),
+  // so placing enemies would keep them permanently in enemiesAlive and cause a softlock.
+  // The reward is the weapon pickup below. In real gameplay the player may find it
+  // by discovering the secret wall in the auction hall.
+
+  // ── NEW PICKUPS ───────────────────────────────────────────────────────────
+
+  // Coin Counting Room: ammo x 3 spread, health x 1
+  //   interior: x=[31..38], z=[13..20]
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 32, 14);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 36, 17);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 32, 20);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 35, 19);
+
+  // Vault Annex: ammo x 2, health x 1
+  //   interior: x=[1..8], z=[13..20]
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 3, 14);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 7, 19);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 5, 19);
+
+  // Guard Barracks: ammo x 3
+  //   interior: x=[31..38], z=[25..32]
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 32, 26);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 37, 30);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 34, 28);
+
+  // Offering Chamber: ammo x 2, health x 1
+  //   interior: x=[1..8], z=[23..30]
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 2, 25);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 7, 29);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 4, 29);
+
+  // Smelting Chamber: ammo x 3, health x 1 (between arena waves)
+  //   interior: x=[1..10], z=[43..52]
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 3, 48);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 9, 48);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 6, 52);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 6, 45);
+
+  // Deep Vault: weapon cannon reward (the point of the secret room) + ammo x 2
+  //   interior: x=[31..38], z=[43..50]
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.WEAPON_CANNON, 35, 47);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 31, 44);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 38, 49);
+
+  // ── NEW PROPS ─────────────────────────────────────────────────────────────
+
+  // --- Coin Counting Room (bounds: 30, 12, 10, 10) ---
+  // 4x greed-gold-bar-stack (counting rows)
+  editor.spawnProp(LEVEL_ID, 'greed-gold-bar-stack', 32, 14, { roomId: coinCountingRoomId });
+  editor.spawnProp(LEVEL_ID, 'greed-gold-bar-stack', 32, 17, { roomId: coinCountingRoomId });
+  editor.spawnProp(LEVEL_ID, 'greed-gold-bar-stack', 36, 14, { roomId: coinCountingRoomId });
+  editor.spawnProp(LEVEL_ID, 'greed-gold-bar-stack', 36, 17, { roomId: coinCountingRoomId });
+  // 4x coin-pile
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 33, 15, { roomId: coinCountingRoomId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 35, 19, { roomId: coinCountingRoomId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 37, 15, { roomId: coinCountingRoomId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 31, 19, { roomId: coinCountingRoomId });
+  // 2x greed-coin-cascade (corner displays)
+  editor.spawnProp(LEVEL_ID, 'greed-coin-cascade', 31, 13, { roomId: coinCountingRoomId });
+  editor.spawnProp(LEVEL_ID, 'greed-coin-cascade', 38, 20, { roomId: coinCountingRoomId });
+  // 2x greed-golden-candelabra (lighting)
+  editor.spawnProp(LEVEL_ID, 'greed-golden-candelabra', 31, 13, { roomId: coinCountingRoomId });
+  editor.spawnProp(LEVEL_ID, 'greed-golden-candelabra', 38, 13, { roomId: coinCountingRoomId });
+
+  // --- Vault Annex (bounds: 0, 12, 10, 10) ---
+  // 3x greed-treasure-chest
+  editor.spawnProp(LEVEL_ID, 'greed-treasure-chest', 2, 14, { roomId: vaultAnnexId });
+  editor.spawnProp(LEVEL_ID, 'greed-treasure-chest', 6, 14, { roomId: vaultAnnexId });
+  editor.spawnProp(LEVEL_ID, 'greed-treasure-chest', 4, 20, { roomId: vaultAnnexId });
+  // 3x greed-jeweled-pedestal
+  editor.spawnProp(LEVEL_ID, 'greed-jeweled-pedestal', 2, 18, { roomId: vaultAnnexId });
+  editor.spawnProp(LEVEL_ID, 'greed-jeweled-pedestal', 7, 17, { roomId: vaultAnnexId });
+  editor.spawnProp(LEVEL_ID, 'greed-jeweled-pedestal', 4, 15, { roomId: vaultAnnexId });
+  // 4x coin-pile
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 3, 16, { roomId: vaultAnnexId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 6, 19, { roomId: vaultAnnexId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 8, 15, { roomId: vaultAnnexId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 1, 20, { roomId: vaultAnnexId });
+  // 1x greed-golden-key-display (north wall)
+  editor.spawnProp(LEVEL_ID, 'greed-golden-key-display', 5, 13, { roomId: vaultAnnexId });
+
+  // --- Guard Barracks (bounds: 30, 24, 10, 10) ---
+  // Minimal props -- east side only to keep west/center pathways clear
+  // 4x coin-pile (east side floor scatter)
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 37, 26, { roomId: guardBarracksId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 38, 29, { roomId: guardBarracksId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 36, 31, { roomId: guardBarracksId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 35, 28, { roomId: guardBarracksId });
+  // 2x greed-golden-banner (walls)
+  editor.spawnProp(LEVEL_ID, 'greed-golden-banner', 31, 25, {
+    roomId: guardBarracksId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 2.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'greed-golden-banner', 38, 32, {
+    roomId: guardBarracksId,
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 2.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+
+  // --- Offering Chamber (bounds: 0, 22, 10, 10) interior: x=[1..8], z=[23..30] ---
+  // 3x golden-idol (altar display)
+  editor.spawnProp(LEVEL_ID, 'golden-idol', 2, 24, { roomId: offeringChamberId });
+  editor.spawnProp(LEVEL_ID, 'golden-idol', 5, 23, { roomId: offeringChamberId });
+  editor.spawnProp(LEVEL_ID, 'golden-idol', 8, 24, { roomId: offeringChamberId });
+  // 4x greed-golden-chalice
+  editor.spawnProp(LEVEL_ID, 'greed-golden-chalice', 2, 28, { roomId: offeringChamberId });
+  editor.spawnProp(LEVEL_ID, 'greed-golden-chalice', 4, 30, { roomId: offeringChamberId });
+  editor.spawnProp(LEVEL_ID, 'greed-golden-chalice', 7, 27, { roomId: offeringChamberId });
+  editor.spawnProp(LEVEL_ID, 'greed-golden-chalice', 8, 30, { roomId: offeringChamberId });
+  // 3x greed-chest-pedestal + coin-pile
+  editor.spawnProp(LEVEL_ID, 'greed-chest-pedestal', 3, 26, { roomId: offeringChamberId });
+  editor.spawnProp(LEVEL_ID, 'greed-chest-pedestal', 7, 25, { roomId: offeringChamberId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 5, 26, { roomId: offeringChamberId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 3, 29, { roomId: offeringChamberId });
+
+  // --- Smelting Chamber (bounds: 0, 42, 12, 12) ---
+  // 4x greed-gold-pillar (arena cover)
+  editor.spawnProp(LEVEL_ID, 'greed-gold-pillar', 3, 45, { roomId: smeltingChamberId });
+  editor.spawnProp(LEVEL_ID, 'greed-gold-pillar', 9, 45, { roomId: smeltingChamberId });
+  editor.spawnProp(LEVEL_ID, 'greed-gold-pillar', 3, 51, { roomId: smeltingChamberId });
+  editor.spawnProp(LEVEL_ID, 'greed-gold-pillar', 9, 51, { roomId: smeltingChamberId });
+  // 6x coin-pile
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 1, 44, { roomId: smeltingChamberId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 10, 44, { roomId: smeltingChamberId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 1, 51, { roomId: smeltingChamberId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 10, 51, { roomId: smeltingChamberId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 5, 48, { roomId: smeltingChamberId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 7, 48, { roomId: smeltingChamberId });
+  // 2x greed-gold-bar-stack (smelting output)
+  editor.spawnProp(LEVEL_ID, 'greed-gold-bar-stack', 2, 47, { roomId: smeltingChamberId });
+  editor.spawnProp(LEVEL_ID, 'greed-gold-bar-stack', 9, 50, { roomId: smeltingChamberId });
+  // 2x greed-golden-candelabra
+  editor.spawnProp(LEVEL_ID, 'greed-golden-candelabra', 1, 43, { roomId: smeltingChamberId });
+  editor.spawnProp(LEVEL_ID, 'greed-golden-candelabra', 10, 43, { roomId: smeltingChamberId });
+
+  // --- Deep Vault (bounds: 30, 42, 10, 10) ---
+  // 4x greed-treasure-chest (the prize pile)
+  editor.spawnProp(LEVEL_ID, 'greed-treasure-chest', 32, 44, { roomId: deepVaultId });
+  editor.spawnProp(LEVEL_ID, 'greed-treasure-chest', 37, 44, { roomId: deepVaultId });
+  editor.spawnProp(LEVEL_ID, 'greed-treasure-chest', 32, 49, { roomId: deepVaultId });
+  editor.spawnProp(LEVEL_ID, 'greed-treasure-chest', 37, 49, { roomId: deepVaultId });
+  // 2x greed-jeweled-pedestal (weapon display)
+  editor.spawnProp(LEVEL_ID, 'greed-jeweled-pedestal', 34, 47, { roomId: deepVaultId });
+  editor.spawnProp(LEVEL_ID, 'greed-jeweled-pedestal', 36, 47, { roomId: deepVaultId });
+  // 4x golden-idol
+  editor.spawnProp(LEVEL_ID, 'golden-idol', 31, 44, { roomId: deepVaultId });
+  editor.spawnProp(LEVEL_ID, 'golden-idol', 38, 44, { roomId: deepVaultId });
+  editor.spawnProp(LEVEL_ID, 'golden-idol', 31, 49, { roomId: deepVaultId });
+  editor.spawnProp(LEVEL_ID, 'golden-idol', 38, 49, { roomId: deepVaultId });
+  // 4x coin-pile
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 33, 46, { roomId: deepVaultId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 36, 46, { roomId: deepVaultId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 33, 49, { roomId: deepVaultId });
+  editor.spawnProp(LEVEL_ID, 'coin-pile', 36, 49, { roomId: deepVaultId });
+  // 2x greed-golden-candelabra
+  editor.spawnProp(LEVEL_ID, 'greed-golden-candelabra', 31, 43, { roomId: deepVaultId });
+  editor.spawnProp(LEVEL_ID, 'greed-golden-candelabra', 38, 43, { roomId: deepVaultId });
+  // 1x greed-golden-banner (north wall, ceremonial)
+  editor.spawnProp(LEVEL_ID, 'greed-golden-banner', 35, 42, {
+    roomId: deepVaultId,
+    surfaceAnchor: {
+      face: 'north',
+      offsetX: 0,
+      offsetY: 2.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+
+  // ── DEEP VAULT ENEMIES (jump-scare guardians behind the secret wall) ───────
+  // 4 goatKnight elite guards stationed around the hoard.
+  // These ARE correct here — PlaytestRunner now traverses WALL_SECRET cells,
+  // so the simulation agent will find and kill them through the secret passage.
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 32, 44, { roomId: deepVaultId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 37, 44, { roomId: deepVaultId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 32, 49, { roomId: deepVaultId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 37, 49, { roomId: deepVaultId });
+  // Ambush: 2 more knights emerge when player enters the inner sanctum
+  editor.ambush(
+    LEVEL_ID,
+    { x: 30, z: 42, w: 10, h: 10 },
+    [
+      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 34, z: 46 },
+      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 35, z: 46 },
+    ],
+    { roomId: deepVaultId },
+  );
+
+  // ── NEW TRIGGERS ──────────────────────────────────────────────────────────
+
+  // Coin Counting Room: dialogue hint -- "They count what can never be enough."
+  editor.addTrigger(LEVEL_ID, {
+    action: TRIGGER_ACTIONS.DIALOGUE,
+    zoneX: 31,
+    zoneZ: 13,
+    zoneW: 8,
+    zoneH: 2,
+    roomId: coinCountingRoomId,
+    once: true,
+    actionData: {
+      text: 'They count what can never be enough. Every pile is a reminder of what was stolen.',
+    },
+  });
+
+  // Offering Chamber: dialogue hint -- "They gave everything and received nothing."
+  editor.addTrigger(LEVEL_ID, {
+    action: TRIGGER_ACTIONS.DIALOGUE,
+    zoneX: 1,
+    zoneZ: 23,
+    zoneW: 8,
+    zoneH: 2,
+    roomId: offeringChamberId,
+    once: true,
+    actionData: { text: 'They gave everything and received nothing. The idols demanded more.' },
+  });
+
+  // Guard Barracks: dialogue on entry -- elite guardians alert
+  editor.addTrigger(LEVEL_ID, {
+    action: TRIGGER_ACTIONS.DIALOGUE,
+    zoneX: 31,
+    zoneZ: 25,
+    zoneW: 8,
+    zoneH: 2,
+    roomId: guardBarracksId,
+    once: true,
+    actionData: {
+      text: 'The garrison stands ready. Every coin in this vault was bought with blood.',
+    },
+  });
+
+  // Deep Vault: dialogue on entry -- "The deepest greed: to own what cannot be owned."
+  editor.addTrigger(LEVEL_ID, {
+    action: TRIGGER_ACTIONS.DIALOGUE,
+    zoneX: 31,
+    zoneZ: 43,
+    zoneW: 8,
+    zoneH: 2,
+    roomId: deepVaultId,
+    once: true,
+    actionData: {
+      text: 'The deepest greed: to own what cannot be owned. Take it. Suffer the weight.',
+    },
+  });
+
+  // ── NEW ENVIRONMENT ZONES ─────────────────────────────────────────────────
+
+  // East wing (coin counting + guard barracks): goldDust fire zone
+  editor.addEnvironmentZone(LEVEL_ID, {
+    envType: ENV_TYPES.FIRE,
+    boundsX: 30,
+    boundsZ: 12,
+    boundsW: 14,
+    boundsH: 22,
+    intensity: 0.5,
+  });
+
+  // West wing (vault annex + offering chamber): dim oppressive zone
+  editor.addEnvironmentZone(LEVEL_ID, {
+    envType: ENV_TYPES.FOG,
+    boundsX: 0,
+    boundsZ: 12,
+    boundsW: 10,
+    boundsH: 22,
+    intensity: 0.4,
+  });
+
+  // Smelting Chamber: intense fire/heat zone
+  editor.addEnvironmentZone(LEVEL_ID, {
+    envType: ENV_TYPES.FIRE,
+    boundsX: 0,
+    boundsZ: 42,
+    boundsW: 12,
+    boundsH: 12,
+    intensity: 0.8,
+  });
 
   // =========================================================================
   // 9. COMPILE GRID

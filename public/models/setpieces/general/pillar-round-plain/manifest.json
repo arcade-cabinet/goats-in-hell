@@ -1,0 +1,41 @@
+{
+  "id": "pillar-round-plain",
+  "name": "Plain Round Pillar",
+  "type": "prop",
+  "seed": 2074598317,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacbe-2c75-7381-8a01-3dc2394bbe98",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacbe-2c75-7381-8a01-3dc2394bbe98"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacbf-3199-724b-a9c4-807604da57bc",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacbf-3199-724b-a9c4-807604da57bc"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A plain round stone pillar with smooth cylindrical shaft, simple disc capital and square base, utilitarian dungeon support column, dark fantasy game prop, floor-placed, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Smooth dark gray stone with minor surface pitting, water stain streaks, worn base",
+    "enablePbr": true
+  }
+}

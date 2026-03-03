@@ -89,7 +89,7 @@ export async function buildCircleN(dbPath: string) {
   // 5. Spawn entities (enemies, pickups, props)
   editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 18, 17, { roomId: fogHallId });
   editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 20, 7);
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 17, 3, { roomId: vestibuleId });
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 17, 3, { roomId: vestibuleId });
   // ... more entities ...
 
   // 6. Create triggers
@@ -174,11 +174,11 @@ Map the ambient color hex and intensity directly. Point lights from torches are 
 
 ### "Visual Design > Props" --> `spawnProp()` calls
 
-Each prop in the table becomes one or more `spawnProp()` calls. Use the prop name as the `entityType` (e.g., `'Torch_Metal'`, `'Cage_Small'`, `'Scroll_1'`). Props are placed at grid coordinates inside the room they belong to.
+Each prop in the table becomes one or more `spawnProp()` calls. Use the Meshy AI-generated prop `id` as the `entityType` (e.g., `'torch-sconce-ornate'`, `'limbo-cage'`, `'limbo-sigil-stone'`). Prop names are lowercase, hyphenated. Circle-specific props use the pattern `{circle-name}-{prop-description}` (e.g., `limbo-broken-pillar`). General library props use short names (e.g., `torch-sconce-ornate`, `candelabrum-tall`, `chandelier-iron`). Props are placed at grid coordinates inside the room they belong to.
 
 For wall-mounted props, use the `surfaceAnchor` option:
 ```typescript
-editor.spawnProp(LEVEL_ID, 'Torch_Metal', x, z, {
+editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', x, z, {
   roomId,
   surfaceAnchor: {
     face: 'north',      // which wall face
@@ -660,92 +660,92 @@ export async function buildCircle1(dbPath: string) {
   // =========================================================================
 
   // --- Vestibule (bounds: 16, 2, 8, 6) ---
-  // 2x Torch_Metal on walls
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 17, 3, {
+  // 2x limbo-torch-bracket on walls
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 17, 3, {
     roomId: vestibuleId,
     surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 22, 3, {
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 22, 3, {
     roomId: vestibuleId,
     surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  // 1x Scroll_2 (inscription)
-  editor.spawnProp(LEVEL_ID, 'Scroll_2', 20, 3, { roomId: vestibuleId });
-  // 2x Vase_Rubble
-  editor.spawnProp(LEVEL_ID, 'Vase_Rubble', 18, 6, { roomId: vestibuleId });
-  editor.spawnProp(LEVEL_ID, 'Vase_Rubble', 22, 6, { roomId: vestibuleId });
+  // 1x limbo-inscription-tablet
+  editor.spawnProp(LEVEL_ID, 'limbo-inscription-tablet', 20, 3, { roomId: vestibuleId });
+  // 2x limbo-vase-rubble
+  editor.spawnProp(LEVEL_ID, 'limbo-vase-rubble', 18, 6, { roomId: vestibuleId });
+  editor.spawnProp(LEVEL_ID, 'limbo-vase-rubble', 22, 6, { roomId: vestibuleId });
 
   // --- Fog Hall (bounds: 14, 12, 12, 10) ---
-  // 2x Torch_Metal
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 15, 14, {
+  // 2x limbo-torch-bracket
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 15, 14, {
     roomId: fogHallId,
     surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 24, 14, {
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 24, 14, {
     roomId: fogHallId,
     surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  // 2x Cage_Small
-  editor.spawnProp(LEVEL_ID, 'Cage_Small', 17, 18, { roomId: fogHallId });
-  editor.spawnProp(LEVEL_ID, 'Cage_Small', 23, 18, { roomId: fogHallId });
-  // 3x Vase_Rubble
-  editor.spawnProp(LEVEL_ID, 'Vase_Rubble', 16, 20, { roomId: fogHallId });
-  editor.spawnProp(LEVEL_ID, 'Vase_Rubble', 20, 13, { roomId: fogHallId });
-  editor.spawnProp(LEVEL_ID, 'Vase_Rubble', 24, 20, { roomId: fogHallId });
+  // 2x limbo-cage
+  editor.spawnProp(LEVEL_ID, 'limbo-cage', 17, 18, { roomId: fogHallId });
+  editor.spawnProp(LEVEL_ID, 'limbo-cage', 23, 18, { roomId: fogHallId });
+  // 3x limbo-vase-rubble
+  editor.spawnProp(LEVEL_ID, 'limbo-vase-rubble', 16, 20, { roomId: fogHallId });
+  editor.spawnProp(LEVEL_ID, 'limbo-vase-rubble', 20, 13, { roomId: fogHallId });
+  editor.spawnProp(LEVEL_ID, 'limbo-vase-rubble', 24, 20, { roomId: fogHallId });
 
   // --- Crypt (bounds: 30, 14, 6, 6) ---
-  // 1x Torch_Metal
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 31, 15, {
+  // 1x limbo-torch-bracket
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 31, 15, {
     roomId: cryptId,
     surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  // 1x BookStand (for scroll)
-  editor.spawnProp(LEVEL_ID, 'BookStand', 33, 16, { roomId: cryptId });
+  // 1x limbo-stone-lectern (for scroll)
+  editor.spawnProp(LEVEL_ID, 'limbo-stone-lectern', 33, 16, { roomId: cryptId });
 
   // --- Bone Pit (bounds: 2, 14, 8, 8) ---
-  // 3x Chain_Coil (hanging from ceiling)
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 4, 16, { roomId: bonePitId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 6, 18, { roomId: bonePitId });
-  editor.spawnProp(LEVEL_ID, 'Chain_Coil', 8, 20, { roomId: bonePitId });
-  // 1x Barrel
-  editor.spawnProp(LEVEL_ID, 'Barrel', 5, 20, { roomId: bonePitId });
+  // 3x limbo-chain-cluster (hanging from ceiling)
+  editor.spawnProp(LEVEL_ID, 'limbo-chain-cluster', 4, 16, { roomId: bonePitId });
+  editor.spawnProp(LEVEL_ID, 'limbo-chain-cluster', 6, 18, { roomId: bonePitId });
+  editor.spawnProp(LEVEL_ID, 'limbo-chain-cluster', 8, 20, { roomId: bonePitId });
+  // 1x limbo-bone-pile
+  editor.spawnProp(LEVEL_ID, 'limbo-bone-pile', 5, 20, { roomId: bonePitId });
 
   // --- Columns (bounds: 15, 26, 10, 12) ---
-  // 6x stone columns (structural, break LOS)
+  // 6x limbo-ancient-pillar (structural, break LOS)
   //   Arranged in a 2x3 grid within the room interior
-  editor.spawnProp(LEVEL_ID, 'Column_Stone', 18, 29, { roomId: columnsId });
-  editor.spawnProp(LEVEL_ID, 'Column_Stone', 22, 29, { roomId: columnsId });
-  editor.spawnProp(LEVEL_ID, 'Column_Stone', 18, 32, { roomId: columnsId });
-  editor.spawnProp(LEVEL_ID, 'Column_Stone', 22, 32, { roomId: columnsId });
-  editor.spawnProp(LEVEL_ID, 'Column_Stone', 18, 35, { roomId: columnsId });
-  editor.spawnProp(LEVEL_ID, 'Column_Stone', 22, 35, { roomId: columnsId });
-  // 2x Torch_Metal
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 16, 28, {
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 18, 29, { roomId: columnsId });
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 22, 29, { roomId: columnsId });
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 18, 32, { roomId: columnsId });
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 22, 32, { roomId: columnsId });
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 18, 35, { roomId: columnsId });
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 22, 35, { roomId: columnsId });
+  // 2x limbo-torch-bracket
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 16, 28, {
     roomId: columnsId,
     surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 23, 28, {
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 23, 28, {
     roomId: columnsId,
     surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
 
   // --- Boss Chamber (bounds: 14, 42, 12, 12) ---
-  // 3x Torch_Metal (2 at entrance, 1 behind boss)
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 16, 43, {
+  // 3x limbo-torch-bracket (2 at entrance, 1 behind boss)
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 16, 43, {
     roomId: bossChamberId,
     surfaceAnchor: { face: 'west', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 24, 43, {
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 24, 43, {
     roomId: bossChamberId,
     surfaceAnchor: { face: 'east', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  editor.spawnProp(LEVEL_ID, 'Torch_Metal', 20, 52, {
+  editor.spawnProp(LEVEL_ID, 'limbo-torch-bracket', 20, 52, {
     roomId: bossChamberId,
     surfaceAnchor: { face: 'south', offsetX: 0, offsetY: 1.5, offsetZ: 0, rotation: [0, 0, 0], scale: 1.0 },
   });
-  // 2x Banner_1
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 17, 52, { roomId: bossChamberId });
-  editor.spawnProp(LEVEL_ID, 'Banner_1', 23, 52, { roomId: bossChamberId });
+  // 2x limbo-banner-tattered
+  editor.spawnProp(LEVEL_ID, 'limbo-banner-tattered', 17, 52, { roomId: bossChamberId });
+  editor.spawnProp(LEVEL_ID, 'limbo-banner-tattered', 23, 52, { roomId: bossChamberId });
 
   // =========================================================================
   // 6. TRIGGERS (from "Triggers" table)

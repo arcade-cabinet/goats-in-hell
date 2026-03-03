@@ -1,0 +1,7 @@
+{
+  "id": "limbo-grave-mound-1",
+  "name": "Grave Mound",
+  "type": "prop",
+  "pipeline": "graveyard-pack",
+  "source": "Graveyard Pack / PBR FBX → GLB"
+}

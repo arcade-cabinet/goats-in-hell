@@ -1,0 +1,41 @@
+{
+  "id": "skull-candelabra",
+  "name": "Skull Candelabra",
+  "type": "prop",
+  "seed": 3143928526,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cace1-b14e-79e2-aab2-cdb4460eab3a",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cace1-b14e-79e2-aab2-cdb4460eab3a"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cace3-0696-7998-83b4-915c919b03ec",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cace3-0696-7998-83b4-915c919b03ec"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A candelabra made of stacked goat skulls with three blood-red candles burning with crimson flames, bone and iron construction, hellish dungeon decoration, stylized low poly game prop, dark fantasy, isometric view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Yellowed goat bone texture, dark iron fittings, crimson wax drips, emissive red flame tips",
+    "enablePbr": true
+  }
+}

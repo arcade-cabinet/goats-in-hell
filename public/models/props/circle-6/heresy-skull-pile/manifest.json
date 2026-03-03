@@ -1,0 +1,41 @@
+{
+  "id": "heresy-skull-pile",
+  "name": "Floor Skull Pile",
+  "type": "prop",
+  "seed": 3689935711,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cacad-009b-7ff8-a09d-3da8b46b47f6",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacad-009b-7ff8-a09d-3da8b46b47f6"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacaf-3fec-7184-a0d0-dbdfb012888f",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacaf-3fec-7184-a0d0-dbdfb012888f"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "Small pile of 5-7 human skulls heaped on a stone floor, some cracked and broken, some with jawbones missing, arranged in a casual heap as if discarded, pale yellowed bone with dark eye sockets, a few loose vertebrae and finger bones scattered around the base, dark fantasy dungeon game prop, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Aged ivory-yellow bone with brown discoloration in crevices, dark empty eye sockets, hairline cracks across craniums, subtle green patina from underground damp",
+    "enablePbr": true
+  }
+}

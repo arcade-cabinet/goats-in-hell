@@ -1,0 +1,41 @@
+{
+  "id": "fraud-silhouette-prop",
+  "name": "Deceptive Silhouette Figure",
+  "type": "prop",
+  "seed": 4288417542,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caca7-946c-7012-b3b7-caa6cde0ba4c",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca7-946c-7012-b3b7-caa6cde0ba4c"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019caca8-73d8-7f3d-a8c9-6d9f14921c6c",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca8-73d8-7f3d-a8c9-6d9f14921c6c"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A flat cutout silhouette of a friendly waving humanoid figure mounted on a stand, dark wood flat shape of a welcoming person with raised arm, theatrical prop stage deception, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark painted wood cutout, friendly humanoid silhouette shape, thin flat construction on wooden stand base, theatrical deception",
+    "enablePbr": true
+  }
+}

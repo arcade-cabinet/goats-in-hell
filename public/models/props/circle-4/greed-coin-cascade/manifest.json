@@ -1,0 +1,41 @@
+{
+  "id": "greed-coin-cascade",
+  "name": "Coin Cascade Wall Feature",
+  "type": "prop",
+  "seed": 2136629677,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac7a-4168-7f98-b435-5d514c5a31b4",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac7a-4168-7f98-b435-5d514c5a31b4"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac7c-64f6-7983-9cdf-5c4581396ab9",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac7c-64f6-7983-9cdf-5c4581396ab9"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A wall-mounted decorative cascade of solid gold coins pouring from a stone spout like a frozen waterfall, coins fused together in a rigid solid mass flowing down a dark stone wall, game prop, isolated object, dark background, side orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Bright gold coins fused into solid cascade, each coin distinct with goat stamps, dark stone wall mount, metallic gold reflections",
+    "enablePbr": true
+  }
+}

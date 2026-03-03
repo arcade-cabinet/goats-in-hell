@@ -1,0 +1,41 @@
+{
+  "id": "violence-riveted-pipe-pillar",
+  "name": "Riveted Pipe Pillar",
+  "type": "prop",
+  "seed": 3758300126,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caca9-ddaf-74af-9334-70b595c145ff",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca9-ddaf-74af-9334-70b595c145ff"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cacaa-ebce-74b9-a402-e5375afe2791",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cacaa-ebce-74b9-a402-e5375afe2791"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "A tall industrial pipe pillar with riveted iron plates and rust streaks, vertical support column for slaughterhouse walkway, bolted flanges and blood drips, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 4000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark oxidized iron pipe, rust red streaks, riveted flange plates, blood drip stains on lower sections",
+    "enablePbr": true
+  }
+}

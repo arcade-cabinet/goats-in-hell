@@ -1,0 +1,41 @@
+{
+  "id": "fraud-fake-column",
+  "name": "Fake Arena Column",
+  "type": "prop",
+  "seed": 3193030364,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019cac7e-7fb7-7fe5-8473-50935bc2f62f",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac7e-7fb7-7fe5-8473-50935bc2f62f"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cac7f-d3da-7013-9d5d-8b7898c44c9c",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cac7f-d3da-7013-9d5d-8b7898c44c9c"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "An elegant marble column that conceals a mimic creature inside, classical fluted column with subtle crack lines where it will split open, arena cover that is actually a trap, dark fantasy game prop, isolated object, dark background, front orientation view",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Polished white marble with classical fluting, subtle fracture lines running vertically, slightly asymmetric proportions suggesting hidden interior",
+    "enablePbr": true
+  }
+}

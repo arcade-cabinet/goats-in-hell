@@ -1,0 +1,41 @@
+{
+  "id": "heresy-scattered-bones",
+  "name": "Scattered Loose Bones",
+  "type": "prop",
+  "seed": 4051017688,
+  "tasks": {
+    "text-to-3d-preview": {
+      "taskId": "019caca5-f1e6-7ff6-bfcb-a60a47e509c7",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca5-f1e6-7ff6-bfcb-a60a47e509c7"
+      },
+      "artifacts": {
+        "model": "preview.glb"
+      }
+    },
+    "text-to-3d-refine": {
+      "taskId": "019caca7-16f1-700c-80b8-e3f40f1687ed",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019caca7-16f1-700c-80b8-e3f40f1687ed"
+      },
+      "artifacts": {
+        "model": "refined.glb"
+      }
+    }
+  },
+  "pipeline": "prop-direct",
+  "textTo3DPreviewTask": {
+    "prompt": "Small cluster of scattered human bones on a stone floor, 3-4 femurs and tibias lying at random angles, a few ribs and vertebrae, one partial pelvis, bones appear old and dry with some cracks, spread across a small area as if tumbled from a shelf, dark fantasy dungeon game prop, isolated object, dark background",
+    "artStyle": "realistic",
+    "targetPolycount": 3000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dry aged bone with matte surface, pale yellow-white with brown spots of decay, fine crack patterns, thin layer of stone dust on lower surfaces",
+    "enablePbr": true
+  }
+}
