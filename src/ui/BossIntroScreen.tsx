@@ -72,7 +72,7 @@ export const BossIntroScreen: React.FC = () => {
   }, [pulseAnim]);
 
   const handleEnter = () => {
-    patch({ screen: 'playing', startTime: Date.now() });
+    patch({ screen: 'loading' });
   };
 
   return (

@@ -181,7 +181,7 @@ describe('settings persistence', () => {
 });
 
 describe('startNewGame', () => {
-  it('sets screen to playing and resets stats', () => {
+  it('sets screen to loading and resets stats', () => {
     useGameStore.setState({ score: 999, kills: 50 });
     useGameStore
       .getState()
@@ -192,7 +192,8 @@ describe('startNewGame', () => {
       );
 
     const state = useGameStore.getState();
-    expect(state.screen).toBe('playing');
+    // startNewGame transitions to 'loading' (asset preload gate) before 'playing'
+    expect(state.screen).toBe('loading');
     expect(state.score).toBe(0);
     expect(state.kills).toBe(0);
     expect(state.difficulty).toBe('easy');

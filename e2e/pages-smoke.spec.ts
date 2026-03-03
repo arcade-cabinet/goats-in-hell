@@ -9,7 +9,7 @@ test('GitHub Pages: main menu renders correctly', async ({ page }) => {
   });
   page.on('pageerror', (err) => errors.push(`PAGE ERROR: ${err.message}`));
 
-  await page.goto(PAGES_URL, { waitUntil: 'networkidle', timeout: 30_000 });
+  await page.goto(PAGES_URL, { waitUntil: 'load', timeout: 30_000 });
   await page.screenshot({ path: 'e2e/screenshots/pages-smoke/main-page.png' });
 
   const title = await page.title();

@@ -984,6 +984,29 @@ export async function buildCircle1(dbPath: string) {
   editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 32, 36, { roomId: forgottenGalleryId });
   editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 29, 38, { roomId: forgottenGalleryId });
 
+  // ── ENEMIES: VESTIBULE (tutorial encounter) ───────────────────────────
+  // Room bounds: x:[16,24), z:[2,8) — interior: x in [17..23], z in [3..7]
+  // 2 wandering hellgoats — first enemies the player sees
+  // Note: (18,4) is occupied by limbo-vase-rubble prop → use (19,4) and (22,6)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 19, 4, { roomId: vestibuleId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 22, 6, { roomId: vestibuleId });
+
+  // ── ENEMIES: COLUMNS (pre-wave guards) ───────────────────────────────
+  // Room bounds: x:[15,25), z:[26,38) — interior: x in [16..23], z in [27..36]
+  // 3 hellgoats pre-placed before arena waves trigger
+  // Note: (17,28) is occupied by limbo-ancient-pillar → use (18,28)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 18, 28, { roomId: columnsId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 22, 29, { roomId: columnsId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 20, 35, { roomId: columnsId });
+
+  // ── ENEMIES: SUNKEN NAVE (pre-wave guards) ───────────────────────────
+  // Room bounds: x:[2,14), z:[32,42) — interior: x in [3..13], z in [33..41]
+  // 3 hellgoats pre-placed before arena waves trigger
+  // Note: (4,34) is occupied by limbo-ancient-pillar prop; (7,40) by AMMO pickup → shifted
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 5, 34, { roomId: sunkenNaveId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 11, 34, { roomId: sunkenNaveId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 8, 40, { roomId: sunkenNaveId });
+
   // ── PICKUPS: EXPANSION ROOMS ──────────────────────────────────────────
 
   // Scriptorium: ammo center + ammo NW + health S

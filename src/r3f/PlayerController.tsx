@@ -19,6 +19,7 @@ import { setCameraForDevBridge } from './debug/GameDevBridge';
 import { inputManager } from './input/InputManager';
 import { GamepadProvider } from './input/providers/GamepadProvider';
 import { KeyboardMouseProvider } from './input/providers/KeyboardMouseProvider';
+import { getTouchProvider } from './input/providers/TouchProvider';
 import { getWindForce, getZoneSpeedMult, isOnIce } from './systems/EnvironmentZoneEffects';
 import { getScreenShakeOffset } from './systems/ScreenShake';
 import { getProjectilePool } from './weapons/Projectile';
@@ -141,13 +142,17 @@ export function PlayerController({ spawnPosition = [0, PLAYER_HEIGHT, 0] }: Play
 
     const kbm = new KeyboardMouseProvider();
     const gp = new GamepadProvider();
+    const touch = getTouchProvider();
     inputManager.register(kbm);
     inputManager.register(gp);
+    inputManager.register(touch);
     return () => {
       inputManager.unregister(kbm);
       inputManager.unregister(gp);
+      inputManager.unregister(touch);
       kbm.dispose();
       gp.dispose();
+      touch.dispose();
     };
   }, [autoplay]);
 

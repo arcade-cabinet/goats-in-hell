@@ -8,20 +8,28 @@
  * auto-advance through victory/boss-intro/game-complete) and ESC key
  * pause toggling for manual play.
  */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import R3FRoot from './R3FRoot';
 import { DevOverlay } from './r3f/debug/DevOverlay';
 import { installGameDevBridge } from './r3f/debug/GameDevBridge';
+import { TouchOverlay } from './r3f/input/providers/TouchProvider';
 import type { Difficulty } from './state/GameStore';
 import { generateSeedPhrase, useGameStore } from './state/GameStore';
 import { BossIntroScreen } from './ui/BossIntroScreen';
 import { DeathScreen } from './ui/DeathScreen';
 import { GameCompleteScreen } from './ui/GameCompleteScreen';
 import { HUD } from './ui/HUD';
+import { LoadingScreen } from './ui/LoadingScreen';
 import { MainMenu } from './ui/MainMenu';
 import { PauseMenu } from './ui/PauseMenu';
 import { VictoryScreen } from './ui/VictoryScreen';
+
+// Show touch controls on any touch-capable device (phones, tablets, foldables).
+// Evaluated once at module load — screen size may change on foldables but we
+// add a ResizeObserver at component level to re-check on fold/unfold.
+const hasTouchInput =
+  typeof window !== 'undefined' && 'ontouchstart' in window && navigator.maxTouchPoints > 0;
 
 // Detect ?devmode URL param once at module init (stable for lifetime of the page)
 const isDevMode =
@@ -32,6 +40,21 @@ const App = () => {
   const patch = useGameStore((s) => s.patch);
   const autoplay = useGameStore((s) => s.autoplay);
   const startNewGame = useGameStore((s) => s.startNewGame);
+
+  // Re-detect touch on fold/unfold (foldable phones like OnePlus Open).
+  // ResizeObserver fires when the viewport changes (e.g. the phone is unfolded),
+  // so the touch overlay appears/disappears without a page reload.
+  const [touchActive, setTouchActive] = useState(hasTouchInput);
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const updateTouch = () => {
+      setTouchActive('ontouchstart' in window && navigator.maxTouchPoints > 0);
+    };
+    if (typeof ResizeObserver === 'undefined') return;
+    const obs = new ResizeObserver(updateTouch);
+    obs.observe(document.documentElement);
+    return () => obs.disconnect();
+  }, []);
 
   // Install window.__game dev bridge once on mount (only when ?devmode is active)
   useEffect(() => {
@@ -83,14 +106,14 @@ const App = () => {
         advanceStage();
         const nextScreen = useGameStore.getState().screen;
         if (nextScreen !== 'bossIntro' && nextScreen !== 'gameComplete') {
-          patch({ screen: 'playing', startTime: Date.now() });
+          patch({ screen: 'loading' });
         }
       }, 2000);
       return () => clearTimeout(timer);
     }
     if (screen === 'bossIntro') {
       const timer = setTimeout(() => {
-        patch({ screen: 'playing', startTime: Date.now() });
+        patch({ screen: 'loading' });
       }, 2000);
       return () => clearTimeout(timer);
     }
@@ -124,6 +147,7 @@ const App = () => {
   }, [patch, autoplay]);
 
   const isGameActive =
+    screen === 'loading' ||
     screen === 'playing' ||
     screen === 'paused' ||
     screen === 'dead' ||
@@ -134,7 +158,12 @@ const App = () => {
   return (
     <View style={styles.container}>
       {isGameActive && <R3FRoot />}
+      {/* Loading screen — blocks gameplay while assets preload for the current circle */}
+      {screen === 'loading' && <LoadingScreen />}
       {screen === 'playing' && <HUD />}
+      {/* Touch overlay — shown when playing on any touch device (phone, tablet, foldable).
+          Mounted above HUD so buttons appear on top of the health/ammo overlay. */}
+      {screen === 'playing' && touchActive && <TouchOverlay />}
       {screen === 'paused' && <PauseMenu />}
       {screen === 'dead' && <DeathScreen />}
       {screen === 'victory' && <VictoryScreen />}

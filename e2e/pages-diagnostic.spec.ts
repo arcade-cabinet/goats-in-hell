@@ -44,9 +44,11 @@ test('diagnose: loading screen hang', async ({ page }) => {
   await page.goto(`${PAGES_URL}?autoplay`, { waitUntil: 'load', timeout: 60_000 });
   await page.screenshot({ path: SHOT('t0-loaded') });
 
-  // Poll for loading resolution every 10s up to 60s
+  // Poll for loading resolution at real elapsed timestamps up to 60s
+  let elapsed = 0;
   for (const secs of [10, 20, 30, 45, 60]) {
-    await page.waitForTimeout(10_000);
+    await page.waitForTimeout((secs - elapsed) * 1_000);
+    elapsed = secs;
     const shot = `t${secs}s`;
     await page.screenshot({ path: SHOT(shot) });
 

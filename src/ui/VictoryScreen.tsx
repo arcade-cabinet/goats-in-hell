@@ -116,10 +116,10 @@ export const VictoryScreen: React.FC = () => {
       showCircleHint(nextCircle);
     }
     // advanceStage may set screen to 'bossIntro' or 'gameComplete' —
-    // only transition to 'playing' if neither of those was set
+    // only go to loading if neither of those was set
     const nextScreen = useGameStore.getState().screen;
     if (nextScreen !== 'bossIntro' && nextScreen !== 'gameComplete') {
-      patch({ screen: 'playing', startTime: Date.now() });
+      patch({ screen: 'loading' });
     }
   };
 
