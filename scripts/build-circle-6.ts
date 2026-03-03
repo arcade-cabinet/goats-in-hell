@@ -1110,6 +1110,38 @@ export async function buildCircle6(dbPath: string) {
     roomId: vestibuleOfDoubtId,
   });
 
+  // ── ENEMIES: CONFESSIONAL (static lurkers) ────────────────────────────
+  // Room bounds: (8, 16, 6, 6) → interior x=[9..13], z=[17..21]
+  // 2 shadow goats hiding in confession booths
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 10, 18, {
+    roomId: confessionalId,
+    patrol: [
+      { x: 9, z: 17 },
+      { x: 13, z: 21 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 12, 20, {
+    roomId: confessionalId,
+    patrol: [
+      { x: 13, z: 17 },
+      { x: 9, z: 21 },
+    ],
+  });
+
+  // ── ENEMIES: TRIAL CHAMBER (pre-wave sentinels) ───────────────────────
+  // Room bounds: (19, 32, 12, 12) → interior x=[20..29], z=[33..42]
+  // 3 fire goat/shadow goat sentinels before the arena wave trigger
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 21, 35, { roomId: trialChamberId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 28, 35, { roomId: trialChamberId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 24, 41, { roomId: trialChamberId });
+
+  // ── ENEMIES: OSSUARY (additional tomb guardians) ──────────────────────
+  // Room bounds: (10, 40, 8, 8) → interior x=[11..16], z=[41..46]
+  // 3 more guardians among the burial niches
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 13, 42, { roomId: ossuaryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 11, 45, { roomId: ossuaryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 15, 44, { roomId: ossuaryId });
+
   // ── New Pickups ────────────────────────────────────────────────────────────
 
   // Inquisitor's Antechamber: health near entry, ammo near torture rack
