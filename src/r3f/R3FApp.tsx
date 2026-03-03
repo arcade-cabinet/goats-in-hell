@@ -16,6 +16,36 @@ import { Platform, View } from 'react-native';
 import * as THREE from 'three/webgpu';
 import { R3FScene } from './R3FScene';
 
+/**
+ * On web, probe for WebGL2 support by creating a throwaway canvas context.
+ * Used as the useState initialiser so the Canvas never mounts when WebGL2 is
+ * absent (e.g. headless CI without GPU), preventing a null-context crash
+ * inside Three.js internals (getSupportedExtensions on a null gl object).
+ * On native, react-native-wgpu provides WebGPU directly — no probe needed.
+ */
+function detectWebGLError(): string | null {
+  if (Platform.OS !== 'web') return null;
+  if (typeof document === 'undefined') return null; // SSR — defer to client
+  try {
+    const probe = document.createElement('canvas');
+    const gl = probe.getContext('webgl2');
+    if (!gl) {
+      return 'WebGL2 is not supported in this environment. Please use Chrome 113+, Firefox, or Safari 16+ to play.';
+    }
+    // Exercise the API: Three.js calls getContextAttributes() early in its
+    // WebGL2 backend. If this method is missing (e.g. incomplete software
+    // renderers like SwiftShader in headless CI), catch it here rather than
+    // letting it crash inside Three.js internals.
+    if (typeof gl.getContextAttributes !== 'function') {
+      return 'Incomplete WebGL2 implementation detected. Please use Chrome, Firefox, or Safari.';
+    }
+    gl.getContextAttributes();
+  } catch {
+    return 'WebGL2 context initialisation failed. Please try a different browser.';
+  }
+  return null;
+}
+
 // Register all Three.js classes with R3F's JSX element map for WebGPU builds.
 // This ensures <mesh>, <boxGeometry>, etc. resolve correctly when using
 // the three/webgpu entry point instead of the default 'three' export.
@@ -70,7 +100,40 @@ function PhysicsWrapper({ children }: { children: React.ReactNode }) {
  */
 export function R3FApp({ children }: { children?: React.ReactNode }) {
   const [rendererReady, setRendererReady] = useState(false);
+  // Synchronous WebGL2 probe: if the probe fails on web, skip the Canvas entirely
+  // and show an error screen rather than hanging on the loading screen forever.
+  const [webglError] = useState<string | null>(detectWebGLError);
   const onReady = useCallback(() => setRendererReady(true), []);
+
+  if (webglError) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#1a0808',
+        }}
+      >
+        <div style={{ color: '#ff4400', fontSize: 20, fontFamily: 'monospace' }}>
+          RENDERER UNAVAILABLE
+        </div>
+        <div
+          style={{
+            color: '#ff6622',
+            fontSize: 13,
+            fontFamily: 'monospace',
+            opacity: 0.8,
+            maxWidth: 420,
+            textAlign: 'center',
+            marginTop: 12,
+          }}
+        >
+          {webglError}
+        </div>
+      </View>
+    );
+  }
 
   return (
     <View style={{ flex: 1 }}>
