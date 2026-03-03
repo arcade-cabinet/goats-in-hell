@@ -116,3 +116,4 @@ assets/models/enemies/**/rigged.glb
 # Playwright screenshot playtest outputs
 e2e/screenshots/
 playwright-report/
+test-results/

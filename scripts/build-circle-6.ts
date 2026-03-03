@@ -1111,20 +1111,21 @@ export async function buildCircle6(dbPath: string) {
   });
 
   // ── ENEMIES: CONFESSIONAL (static lurkers) ────────────────────────────
-  // Room bounds: (8, 16, 6, 6) → interior x=[9..13], z=[17..21]
+  // Room bounds: (8, 16, 6, 6) → interior x=[9..12], z=[17..20] (walls at x=8,13 z=16,21)
   // 2 shadow goats hiding in confession booths
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 10, 18, {
+  // Note: (10,18) is the ambush trigger entity → use (11,18); patrol uses interior cells only
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 11, 18, {
     roomId: confessionalId,
     patrol: [
-      { x: 9, z: 17 },
-      { x: 13, z: 21 },
+      { x: 10, z: 17 },
+      { x: 12, z: 20 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 12, 20, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 12, 19, {
     roomId: confessionalId,
     patrol: [
-      { x: 13, z: 17 },
-      { x: 9, z: 21 },
+      { x: 12, z: 17 },
+      { x: 10, z: 20 },
     ],
   });
 
@@ -1139,7 +1140,7 @@ export async function buildCircle6(dbPath: string) {
   // Room bounds: (10, 40, 8, 8) → interior x=[11..16], z=[41..46]
   // 3 more guardians among the burial niches
   editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 13, 42, { roomId: ossuaryId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 11, 45, { roomId: ossuaryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 12, 45, { roomId: ossuaryId }); // (11,45) occupied by heresy-bone-urn prop
   editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 15, 44, { roomId: ossuaryId });
 
   // ── New Pickups ────────────────────────────────────────────────────────────

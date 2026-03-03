@@ -44,8 +44,11 @@ export const LoadingScreen: React.FC = () => {
     if (startedRef.current) return;
     startedRef.current = true;
 
+    let cancelled = false;
+    let transitionTimer: ReturnType<typeof setTimeout> | null = null;
     let completed = 0;
 
+    // Count each completed task (success or failure) so a bad asset never hangs the gate.
     const onOne = () => {
       completed += 1;
       setLoaded(completed);
@@ -53,22 +56,32 @@ export const LoadingScreen: React.FC = () => {
 
     // Kick off models individually so the counter ticks as each finishes.
     const modelPromises = ALL_MODEL_ENTRIES.map(([key, subpath]) =>
-      loadModels([[key, subpath]]).then(onOne),
+      loadModels([[key, subpath]])
+        .then(onOne)
+        .catch(onOne),
     );
 
     // Kick off texture preload as a single batch.
-    const texturePromise = preloadAllTextures().then(() => {
-      onOne();
-      setLoadingText('Descending...');
-    });
+    const texturePromise = preloadAllTextures()
+      .then(() => {
+        onOne();
+        setLoadingText('Descending...');
+      })
+      .catch(onOne);
 
-    Promise.all([...modelPromises, texturePromise]).then(() => {
+    // allSettled so one bad asset never deadlocks the loading gate.
+    Promise.allSettled([...modelPromises, texturePromise]).then(() => {
+      if (cancelled) return;
       // Brief delay so the "Descending..." text is visible before screen change.
-      const t = setTimeout(() => {
+      transitionTimer = setTimeout(() => {
         patch({ screen: 'playing', startTime: Date.now() });
       }, 400);
-      return () => clearTimeout(t);
     });
+
+    return () => {
+      cancelled = true;
+      if (transitionTimer !== null) clearTimeout(transitionTimer);
+    };
   }, [patch]);
 
   const pct = Math.round((loaded / TOTAL_TASKS) * 100);
