@@ -31,7 +31,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Unit tests
-        run: pnpm test -- --ci
+        run: pnpm exec jest --ci
 
       - name: TypeScript check
         run: pnpm exec tsc --noEmit
