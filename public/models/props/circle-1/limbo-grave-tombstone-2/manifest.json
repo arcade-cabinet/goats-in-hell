@@ -1,0 +1,7 @@
+{
+  "id": "limbo-grave-tombstone-2",
+  "name": "Gravestone (Variant 2)",
+  "type": "prop",
+  "pipeline": "graveyard-pack",
+  "source": "Graveyard Pack / PBR FBX → GLB"
+}

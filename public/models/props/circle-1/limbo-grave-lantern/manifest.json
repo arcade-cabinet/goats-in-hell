@@ -1,0 +1,7 @@
+{
+  "id": "limbo-grave-lantern",
+  "name": "Stone Lantern",
+  "type": "prop",
+  "pipeline": "graveyard-pack",
+  "source": "Graveyard Pack / PBR FBX → GLB"
+}

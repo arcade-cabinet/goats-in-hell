@@ -192,6 +192,64 @@ export interface ValidationResult {
 }
 
 // ---------------------------------------------------------------------------
+// Texture + fill-rule types for procedural rendering
+// ---------------------------------------------------------------------------
+
+/** Identifier for a PBR texture set from the AmbientCG library. */
+export type TextureId =
+  | 'stone'
+  | 'stone-dark'
+  | 'brick'
+  | 'concrete'
+  | 'ground'
+  | 'ice'
+  | 'ice-deep'
+  | 'lava'
+  | 'lava-dark'
+  | 'lava-cold'
+  | 'leather'
+  | 'marble'
+  | 'metal'
+  | 'metal-dark'
+  | 'moss'
+  | 'tiles';
+
+/** Procedural prop-scatter rule attached to a room. */
+export interface FillRule {
+  type: 'scatter' | 'edge' | 'none';
+  /** AssetRegistry prop keys WITHOUT the 'prop-' prefix */
+  props: string[];
+  /** 0.0–1.0: fraction of eligible floor cells that receive a prop */
+  density: number;
+  avoidSpawns?: boolean;
+  randomRotation?: boolean;
+}
+
+/** Per-room visual descriptor included in CompiledVisual. */
+export interface CompiledRoomVisual {
+  id: string;
+  name: string;
+  bounds: { x: number; z: number; w: number; h: number };
+  elevation: number;
+  roomType: string;
+  floorTexture: TextureId | null;
+  wallTexture: TextureId | null;
+  ceilingTexture: TextureId | null;
+  fillRule: FillRule | null;
+}
+
+/** Complete visual description of a compiled level, stored as JSON on the levels table. */
+export interface CompiledVisual {
+  version: 1;
+  rooms: CompiledRoomVisual[];
+  theme: {
+    primaryWall: number;
+    texturePalette: Partial<Record<string, TextureId>>;
+    roomFillRules: Partial<Record<string, FillRule>>;
+  };
+}
+
+// ---------------------------------------------------------------------------
 // LevelEditor
 // ---------------------------------------------------------------------------
 
@@ -332,6 +390,8 @@ export class LevelEditor {
       enemyTypes?: string[];
       enemyDensity?: number;
       pickupDensity?: number;
+      texturePalette?: Partial<Record<string, TextureId>>;
+      roomFillRules?: Partial<Record<string, FillRule>>;
     },
   ): void {
     const values = {
@@ -349,6 +409,8 @@ export class LevelEditor {
       enemyTypes: opts.enemyTypes ?? [],
       enemyDensity: opts.enemyDensity ?? 1.0,
       pickupDensity: opts.pickupDensity ?? 0.6,
+      texturePalette: opts.texturePalette ? JSON.stringify(opts.texturePalette) : null,
+      roomFillRules: opts.roomFillRules ? JSON.stringify(opts.roomFillRules) : null,
     };
     this.db
       .insert(schema.themes)
@@ -431,6 +493,10 @@ export class LevelEditor {
       floorCell?: number;
       wallCell?: number;
       sortOrder?: number;
+      floorTexture?: TextureId;
+      wallTexture?: TextureId;
+      ceilingTexture?: TextureId;
+      fillRule?: FillRule;
     },
   ): string {
     const id = generateId();
@@ -449,6 +515,10 @@ export class LevelEditor {
         floorCell: opts.floorCell,
         wallCell: opts.wallCell,
         sortOrder: opts.sortOrder,
+        floorTexture: opts.floorTexture ?? null,
+        wallTexture: opts.wallTexture ?? null,
+        ceilingTexture: opts.ceilingTexture ?? null,
+        fillRule: opts.fillRule ? JSON.stringify(opts.fillRule) : null,
       })
       .run();
     return id;
@@ -670,9 +740,34 @@ export class LevelEditor {
 
     const packed = packGrid(grid);
 
+    // Build CompiledVisual from rooms + theme
+    const compiledVisual: CompiledVisual = {
+      version: 1,
+      rooms: levelRooms.map((r) => ({
+        id: r.id,
+        name: r.name,
+        bounds: { x: r.boundsX, z: r.boundsZ, w: r.boundsW, h: r.boundsH },
+        elevation: r.elevation,
+        roomType: r.roomType,
+        floorTexture: (r.floorTexture as TextureId | null) ?? null,
+        wallTexture: (r.wallTexture as TextureId | null) ?? null,
+        ceilingTexture: (r.ceilingTexture as TextureId | null) ?? null,
+        fillRule: r.fillRule ? (JSON.parse(r.fillRule) as FillRule) : null,
+      })),
+      theme: {
+        primaryWall: theme.primaryWall,
+        texturePalette: theme.texturePalette
+          ? (JSON.parse(theme.texturePalette) as Partial<Record<string, TextureId>>)
+          : {},
+        roomFillRules: theme.roomFillRules
+          ? (JSON.parse(theme.roomFillRules) as Partial<Record<string, FillRule>>)
+          : {},
+      },
+    };
+
     this.db
       .update(schema.levels)
-      .set({ compiledGrid: Buffer.from(packed) })
+      .set({ compiledGrid: Buffer.from(packed), compiledVisual: JSON.stringify(compiledVisual) })
       .where(eq(schema.levels.id, levelId))
       .run();
   }
@@ -968,6 +1063,10 @@ export class LevelEditor {
       floorCell: number;
       wallCell: number;
       sortOrder: number;
+      floorTexture: TextureId;
+      wallTexture: TextureId;
+      ceilingTexture: TextureId;
+      fillRule: FillRule;
     }>,
   ): string {
     return this.addRoom(levelId, name, {
@@ -980,6 +1079,10 @@ export class LevelEditor {
       floorCell: opts?.floorCell,
       wallCell: opts?.wallCell,
       sortOrder: opts?.sortOrder,
+      floorTexture: opts?.floorTexture,
+      wallTexture: opts?.wallTexture,
+      ceilingTexture: opts?.ceilingTexture,
+      fillRule: opts?.fillRule,
     });
   }
 

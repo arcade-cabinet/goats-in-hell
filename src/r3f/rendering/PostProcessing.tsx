@@ -16,7 +16,9 @@ import {
 } from '@react-three/postprocessing';
 import { BlendFunction } from 'postprocessing';
 import React, { useMemo, useRef } from 'react';
+import { Platform } from 'react-native';
 import { Vector2 } from 'three/webgpu';
+import { renderingConfig } from '../../config';
 
 // ---------------------------------------------------------------------------
 // Error boundary — prevents postprocessing crashes from killing the game
@@ -48,17 +50,17 @@ class EffectErrorBoundary extends React.Component<
 
 /** Damage flash: 1 = full intensity, decays to 0 over ~200ms */
 let damageFlashIntensity = 0;
-const DAMAGE_FLASH_DECAY = 0.005; // per ms
+const DAMAGE_FLASH_DECAY = renderingConfig.postProcessing.damageFlashDecayPerMs; // per ms
 
 /** Sprint state */
 let sprintActiveState = false;
 let sprintBlend = 0; // 0..1 interpolated
-const SPRINT_LERP_UP = 0.06;
-const SPRINT_LERP_DOWN = 0.04;
+const SPRINT_LERP_UP = renderingConfig.postProcessing.sprintLerpUp;
+const SPRINT_LERP_DOWN = renderingConfig.postProcessing.sprintLerpDown;
 
 /** Floor fade-in: 1 = fully black, decays to 0 */
 let floorFadeIntensity = 0;
-const FLOOR_FADE_DECAY = 0.002; // per ms, ~500ms full fade
+const FLOOR_FADE_DECAY = renderingConfig.postProcessing.floorFadeDecayPerMs; // per ms, ~500ms full fade
 
 /** Circle 7 (Violence) — Bleeding: subtle pulsing red vignette */
 let bleedingActive = false;
@@ -122,24 +124,31 @@ function computeEffectState(deltaMs: number): EffectState {
   // Compute derived values
   const d = damageFlashIntensity;
   const s = sprintBlend;
+  const pp = renderingConfig.postProcessing;
 
-  // Bloom: base 0.8, boost during sprint (+0.4) or damage (+0.3)
-  const bloomIntensity = 0.8 + s * 0.4 + d * 0.3;
+  // Bloom: base, boost during sprint or damage
+  const bloomIntensity = pp.bloomIntensity + s * pp.sprintBloomBoost + d * pp.damageBloomBoost;
 
   // Circle 7 (Violence) — Bleeding: subtle pulsing red vignette
-  const bleedPulse = bleedingActive ? 0.1 + Math.sin(Date.now() * 0.003) * 0.05 : 0;
+  const bleedPulse = bleedingActive
+    ? pp.bleedingPulseBase +
+      Math.sin(Date.now() * pp.bleedingPulseSpeed) * pp.bleedingPulseAmplitude
+    : 0;
 
-  // Vignette: base offset 0.3, darkness 0.7; damage pushes darkness hard
-  const vignetteOffset = 0.3 - d * 0.15 - bleedPulse * 0.1; // tighter vignette on damage + bleed
-  const vignetteDarkness = 0.7 + d * 0.8 + floorFadeIntensity * 0.9 + bleedPulse;
+  // Vignette: base offset and darkness; damage pushes darkness hard
+  const vignetteOffset = pp.vignetteOffset - d * 0.15 - bleedPulse * 0.1; // tighter vignette on damage + bleed
+  const vignetteDarkness =
+    pp.vignetteDarkness +
+    d * pp.damageVignetteDarknessBoost +
+    floorFadeIntensity * 0.9 +
+    bleedPulse;
 
-  // Chromatic aberration: [0,0] normally, [0.003, 0.003] on damage,
-  // slight during sprint [0.001, 0.001]
-  const chromaX = d * 0.003 + s * 0.001;
-  const chromaY = d * 0.003 + s * 0.001;
+  // Chromatic aberration: [0,0] normally, max on damage, slight during sprint
+  const chromaX = d * pp.damageChromaMax + s * (pp.damageChromaMax / 3);
+  const chromaY = d * pp.damageChromaMax + s * (pp.damageChromaMax / 3);
 
-  // Noise: subtle 0.04 base
-  const noiseOpacity = 0.04 + d * 0.06;
+  // Noise: subtle base
+  const noiseOpacity = pp.noiseOpacity + d * 0.06;
 
   return {
     bloomIntensity,
@@ -206,6 +215,9 @@ export function PostProcessingEffects(): React.JSX.Element | null {
     }
   });
 
+  // Skip EffectComposer on native — @react-three/postprocessing uses WebGL APIs
+  if (Platform.OS !== 'web') return null;
+
   // Skip EffectComposer entirely on true WebGPU backend — it's WebGL-only
   if (isWebGPUBackend) {
     return null;
@@ -216,15 +228,15 @@ export function PostProcessingEffects(): React.JSX.Element | null {
       <EffectComposer multisampling={0}>
         <Bloom
           ref={bloomRef}
-          intensity={0.8}
-          luminanceThreshold={0.6}
-          luminanceSmoothing={0.3}
+          intensity={renderingConfig.postProcessing.bloomIntensity}
+          luminanceThreshold={renderingConfig.postProcessing.bloomLuminanceThreshold}
+          luminanceSmoothing={renderingConfig.postProcessing.bloomLuminanceSmoothingSmoothing}
           mipmapBlur
         />
         <Vignette
           ref={vignetteRef}
-          offset={0.3}
-          darkness={0.7}
+          offset={renderingConfig.postProcessing.vignetteOffset}
+          darkness={renderingConfig.postProcessing.vignetteDarkness}
           blendFunction={BlendFunction.NORMAL}
         />
         <ChromaticAberration
@@ -233,7 +245,11 @@ export function PostProcessingEffects(): React.JSX.Element | null {
           radialModulation={false}
           modulationOffset={0}
         />
-        <Noise ref={noiseRef} opacity={0.04} blendFunction={BlendFunction.OVERLAY} />
+        <Noise
+          ref={noiseRef}
+          opacity={renderingConfig.postProcessing.noiseOpacity}
+          blendFunction={BlendFunction.OVERLAY}
+        />
       </EffectComposer>
     </EffectErrorBoundary>
   );

@@ -151,7 +151,7 @@ export function WeaponViewModel() {
   useEffect(() => {
     let cancelled = false;
 
-    const entries = Object.entries(WEAPON_MODEL_ASSETS) as [string, number][];
+    const entries = Object.entries(WEAPON_MODEL_ASSETS) as [string, string][];
     loadModels(entries).then(() => {
       if (!cancelled) {
         modelsLoadedRef.current = true;

@@ -6,7 +6,15 @@
  */
 
 import { useFrame, useThree } from '@react-three/fiber';
-import { createContext, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { CELL_SIZE } from './constants';
 import {
   createNewRun,
@@ -46,6 +54,7 @@ import { getCircleLevel } from './levels';
 import { initAmbientSound, updateAmbientSound } from './r3f/audio/AmbientSoundSystem';
 import { getAudioContext, initAudio, loadAllSfx, setSfxBuffers } from './r3f/audio/AudioSystem';
 import { initMusic, loadAllMusic, setMusicBuffers, updateMusic } from './r3f/audio/MusicSystem';
+import { setSceneForDevBridge } from './r3f/debug/GameDevBridge';
 import {
   clearDamageNumbers,
   clearDamageNumbersSceneRef,
@@ -57,9 +66,8 @@ import { PickupRenderer } from './r3f/entities/PickupMesh';
 import { inputManager } from './r3f/input/InputManager';
 import { AIProvider } from './r3f/input/providers/AIProvider';
 import { DecalSystem } from './r3f/level/DecalSystem';
-import { DungeonProps } from './r3f/level/DungeonProps';
-import { EnvironmentZones } from './r3f/level/EnvironmentZones';
 import { extractColliderData, LevelColliders, LevelMeshes } from './r3f/level/LevelMeshes';
+import { LevelRenderer } from './r3f/level/LevelRenderer';
 import { PlayerController } from './r3f/PlayerController';
 import { R3FApp } from './r3f/R3FApp';
 import { DynamicLighting } from './r3f/rendering/Lighting';
@@ -97,12 +105,19 @@ import {
   useGameStore,
 } from './state/GameStore';
 import { FatalErrorModal } from './ui/FatalErrorModal';
+import { PropErrorModal } from './ui/PropErrorModal';
 
 // ---------------------------------------------------------------------------
 // Fatal error context — propagates init failures from inside Canvas to R3FRoot
 // ---------------------------------------------------------------------------
 
 const FatalErrorContext = createContext<(err: Error | string) => void>(() => {});
+
+// ---------------------------------------------------------------------------
+// Prop errors context — propagates missing-asset errors from DungeonProps to R3FRoot
+// ---------------------------------------------------------------------------
+
+const PropErrorsContext = createContext<(errors: string[]) => void>(() => {});
 
 // ---------------------------------------------------------------------------
 // Level generation (JSON-backed with procedural fallback)
@@ -186,12 +201,20 @@ function GameScene() {
   const diffMods = DIFFICULTY_PRESETS[difficulty];
   const nightmareDmgMult = nightmareFlags.nightmare || nightmareFlags.ultraNightmare ? 2 : 1;
 
+  const setLevelDisplayName = useGameStore((s) => s.setLevelDisplayName);
+  const reportPropErrors = useContext(PropErrorsContext);
+
   // Generate level from pre-compiled JSON (circles 1-9)
   // biome-ignore lint/correctness/useExhaustiveDependencies: circleNumber triggers re-gen
   const levelData = useMemo(
     () => generateLevelData(stage.encounterType, stage.floor, stage.bossId),
     [stage.encounterType, stage.floor, stage.bossId, circleNumber],
   );
+
+  // Sync the level theme display name to the store so HUD can show it
+  useEffect(() => {
+    setLevelDisplayName(levelData.theme.displayName);
+  }, [levelData.theme.displayName, setLevelDisplayName]);
 
   // Load environment zones from compiled JSON (empty for procedural/boss levels)
   const envZones = useMemo<RuntimeEnvZone[]>(() => {
@@ -221,11 +244,9 @@ function GameScene() {
     [levelData],
   );
 
-  // Extract prop spawns for dungeon decoration rendering
-  const propSpawns = useMemo(
-    () => levelData.spawns.filter((s) => s.type.startsWith('prop_')),
-    [levelData.spawns],
-  );
+  // Pass all spawns to DungeonProps — it filters internally via isSupportedPropType
+  // (handles both old `prop_*` and Meshy `circle-N-propname` spawn types)
+  const propSpawns = levelData.spawns;
 
   // Convert player spawn to Three.js coordinates (negate Z)
   const spawnPosition = useMemo<[number, number, number]>(
@@ -367,9 +388,10 @@ function GameScene() {
     };
   }, [autoplay, levelData]);
 
-  // Wire combat scene ref + damage callbacks
+  // Wire combat scene ref + damage callbacks + dev bridge
   useEffect(() => {
     setCombatScene(scene);
+    setSceneForDevBridge(scene);
     setDamageEnemyCallback((entityId, damage, _isAoe) => {
       damageEnemy(entityId, damage);
     });
@@ -579,8 +601,12 @@ function GameScene() {
         width={levelData.width}
         depth={levelData.depth}
       />
-      <DungeonProps key={`props-${floorKeyRef.current}`} spawns={propSpawns} />
-      <EnvironmentZones key={`envzones-${floorKeyRef.current}`} zones={envZones} />
+      <LevelRenderer
+        key={`renderer-${floorKeyRef.current}`}
+        compiledVisual={levelData.compiledVisual ?? null}
+        propSpawns={propSpawns}
+        onPropErrors={reportPropErrors}
+      />
       <DecalSystem key={`decals-${floorKeyRef.current}`} decals={levelDecals} />
       <LevelColliders
         key={`col-${floorKeyRef.current}`}
@@ -625,15 +651,26 @@ export default function R3FRoot() {
     setFatalError(e);
   }, []);
 
+  const [propErrors, setPropErrors] = useState<string[]>([]);
+  const reportPropErrors = useCallback((errors: string[]) => {
+    for (const e of errors) console.error('[DungeonProps] Asset not registered:', e);
+    setPropErrors(errors);
+  }, []);
+
   // game.db is initialized lazily when the player starts or continues a game,
   // not at app startup. See the screen-transition effect in GameScene.
 
   return (
     <FatalErrorContext.Provider value={reportFatalError}>
-      <R3FApp>
-        <GameScene />
-      </R3FApp>
-      {fatalError && <FatalErrorModal error={fatalError} />}
+      <PropErrorsContext.Provider value={reportPropErrors}>
+        <R3FApp>
+          <GameScene />
+        </R3FApp>
+        {fatalError && <FatalErrorModal error={fatalError} />}
+        {propErrors.length > 0 && (
+          <PropErrorModal errors={propErrors} onDismiss={() => setPropErrors([])} />
+        )}
+      </PropErrorsContext.Provider>
     </FatalErrorContext.Provider>
   );
 }

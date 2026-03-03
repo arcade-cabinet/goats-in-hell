@@ -1,0 +1,112 @@
+{
+  "id": "goat-siren",
+  "name": "Goat Siren",
+  "type": "character",
+  "seed": 4010923444,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cad7c-0025-799f-b206-694dc433843a",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad7c-0025-799f-b206-694dc433843a"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cad7c-9e77-7b99-b488-f07bfe8674d2",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad7c-9e77-7b99-b488-f07bfe8674d2"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cad7d-df08-7bb3-8f8a-40ff3bbf655d",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad7d-df08-7bb3-8f8a-40ff3bbf655d"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cad7f-0aa3-7bd4-9e1a-9a0a59d37fe2",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad7f-0aa3-7bd4-9e1a-9a0a59d37fe2"
+      },
+      "artifacts": {
+        "model": "model.glb"
+      }
+    },
+    "animations": {
+      "WalkAndRun.Walking.Zombie_Walk": {
+        "taskId": "019cad85-1927-7b15-8135-3cc6d5c18e83",
+        "status": "SUCCEEDED",
+        "actionId": 112,
+        "artifact": "animations/Zombie_Walk.glb"
+      },
+      "DailyActions.Idle.Angry_Ground_Stomp_1": {
+        "taskId": "019cad85-5885-7fcc-a207-a050f8be1291",
+        "status": "SUCCEEDED",
+        "actionId": 256,
+        "artifact": "animations/Angry_Ground_Stomp_1.glb"
+      },
+      "Fighting.AttackingwithWeapon.Left_Slash": {
+        "taskId": "019cad85-96d7-7fcd-9710-b09df636baca",
+        "status": "SUCCEEDED",
+        "actionId": 97,
+        "artifact": "animations/Left_Slash.glb"
+      },
+      "Fighting.Punching.Fast_Punch_Combo": {
+        "taskId": "019cad86-4b73-7ff1-a6ac-60a40fc3e134",
+        "status": "SUCCEEDED",
+        "actionId": 198,
+        "artifact": "animations/Fast_Punch_Combo.glb"
+      },
+      "Fighting.GettingHit.Face_Punch_Reaction_1": {
+        "taskId": "019cad86-c55b-7ce8-86e2-5439bdd2c82c",
+        "status": "SUCCEEDED",
+        "actionId": 175,
+        "artifact": "animations/Face_Punch_Reaction_1.glb"
+      },
+      "Fighting.Dying.Shot_and_Blown_Back": {
+        "taskId": "019cad87-7a89-702f-913a-f4f81b17ac37",
+        "status": "SUCCEEDED",
+        "actionId": 182,
+        "artifact": "animations/Shot_and_Blown_Back.glb"
+      }
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 2 (Lust) — seductive goat demon. Fast, deceptively graceful, raking claw attacks.",
+  "textToImageTask": {
+    "prompt": "A bipedal humanoid female goat demon in A-pose, lithe athletic build, sleek dark crimson fur, elegant curved horns adorned with gold rings, long razor-sharp claws on both hands, wearing a flowing torn silk dress that reveals scarred skin underneath, digitigrade goat legs with polished black hooves, hypnotic violet glowing eyes, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Lithe bipedal female goat demon, crimson fur, gold-ringed horns, razor claws, torn silk dress, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Sleek dark crimson fur, gold horn rings, razor sharp dark claws, torn crimson silk, violet glowing eyes, polished black hooves",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 1.7
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Zombie_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp_1",
+      "Fighting.AttackingwithWeapon.Left_Slash",
+      "Fighting.Punching.Fast_Punch_Combo",
+      "Fighting.GettingHit.Face_Punch_Reaction_1",
+      "Fighting.Dying.Shot_and_Blown_Back"
+    ]
+  }
+}

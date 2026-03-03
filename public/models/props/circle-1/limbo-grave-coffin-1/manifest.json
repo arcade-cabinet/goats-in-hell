@@ -1,0 +1,7 @@
+{
+  "id": "limbo-grave-coffin-1",
+  "name": "Stone Coffin",
+  "type": "prop",
+  "pipeline": "graveyard-pack",
+  "source": "Graveyard Pack / PBR FBX → GLB"
+}

@@ -73,6 +73,10 @@ function makeRoom(
     floorCell: null,
     wallCell: null,
     sortOrder: 0,
+    floorTexture: null,
+    wallTexture: null,
+    ceilingTexture: null,
+    fillRule: null,
   };
 }
 

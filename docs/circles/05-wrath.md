@@ -22,6 +22,21 @@ related:
 
 ---
 
+## Playability
+
+| Metric | Target | Notes |
+|--------|--------|-------|
+| Target play time | 10–15 min | Dense enemy encounters. Lava hazards add routing complexity. |
+| Estimated play time | TBD (computed after build) | |
+| Path distance | TBD | |
+| Room count | 8 rooms + 1 boss | from Room Placement table |
+| Enemy count | 20 enemies + boss | from enemy placement |
+
+### Pacing Notes
+Wrath is the first circle where hesitation is mechanically punished — the escalation timer means cautious players face faster enemies, extending fights. Eight rooms with 20 enemies creates a sustained combat gauntlet. Tension peaks at the War Hall arena and again at the Lava Shelf where routing around hazards is mandatory. The escalation reset mechanic creates brief breathing moments between rooms, making the rhythm: sprint to kill → brief relief → next room escalates immediately.
+
+---
+
 ## Identity
 
 **Circle:** 5 (Wrath)

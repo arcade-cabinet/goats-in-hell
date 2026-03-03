@@ -12,6 +12,7 @@
 import { Asset } from 'expo-asset';
 import * as THREE from 'three/webgpu';
 import { COLORS } from '../../constants';
+import type { TextureId } from '../../db/LevelEditor';
 import type { FloorTheme } from '../../game/levels/FloorThemes';
 import { TEXTURE_ASSETS, type TextureAssetKey } from '../../game/systems/AssetRegistry';
 
@@ -1007,6 +1008,194 @@ export function disposeCachedMaterials(): void {
 export async function preloadAllTextures(): Promise<void> {
   const allKeys = Object.keys(TEXTURE_ASSETS) as TextureAssetKey[];
   await Promise.all(allKeys.map((key) => loadTexture(key)));
+}
+
+// ---------------------------------------------------------------------------
+// Zone material (TextureId → AmbientCG PBR material)
+// ---------------------------------------------------------------------------
+
+/** Cache of zone materials by TextureId. */
+const zoneMaterialCache = new Map<TextureId, THREE.MeshStandardMaterial>();
+
+/**
+ * TextureId → { color, normal, roughness, emission? } file mapping.
+ * All files live in assets/textures/. Loaded via require() so Metro
+ * can statically bundle them at build time.
+ */
+const ZONE_TEXTURE_SOURCES: Record<
+  TextureId,
+  {
+    color: () => number;
+    normal: () => number;
+    roughness: () => number;
+    emission?: () => number;
+  }
+> = {
+  stone: {
+    color: () => require('../../../assets/textures/Rock001_Color.jpg') as number,
+    normal: () => require('../../../assets/textures/Rock001_NormalGL.jpg') as number,
+    roughness: () => require('../../../assets/textures/Rock001_Roughness.jpg') as number,
+  },
+  'stone-dark': {
+    color: () => require('../../../assets/textures/Rock022_Color.jpg') as number,
+    normal: () => require('../../../assets/textures/Rock022_NormalGL.jpg') as number,
+    roughness: () => require('../../../assets/textures/Rock022_Roughness.jpg') as number,
+  },
+  brick: {
+    color: () => require('../../../assets/textures/Bricks006_Color.jpg') as number,
+    normal: () => require('../../../assets/textures/Bricks006_NormalGL.jpg') as number,
+    roughness: () => require('../../../assets/textures/Bricks006_Roughness.jpg') as number,
+  },
+  concrete: {
+    color: () => require('../../../assets/textures/Concrete020_Color.jpg') as number,
+    normal: () => require('../../../assets/textures/Concrete020_NormalGL.jpg') as number,
+    roughness: () => require('../../../assets/textures/Concrete020_Roughness.jpg') as number,
+  },
+  ground: {
+    color: () => require('../../../assets/textures/Ground001_Color.jpg') as number,
+    normal: () => require('../../../assets/textures/Ground001_NormalGL.jpg') as number,
+    roughness: () => require('../../../assets/textures/Ground001_Roughness.jpg') as number,
+  },
+  ice: {
+    color: () => require('../../../assets/textures/Ice002_Color.jpg') as number,
+    normal: () => require('../../../assets/textures/Ice002_NormalGL.jpg') as number,
+    roughness: () => require('../../../assets/textures/Ice002_Roughness.jpg') as number,
+  },
+  'ice-deep': {
+    color: () => require('../../../assets/textures/Ice004_Color.jpg') as number,
+    normal: () => require('../../../assets/textures/Ice004_NormalGL.jpg') as number,
+    roughness: () => require('../../../assets/textures/Ice004_Roughness.jpg') as number,
+  },
+  lava: {
+    color: () => require('../../../assets/textures/Lava001_Color.jpg') as number,
+    normal: () => require('../../../assets/textures/Lava001_NormalGL.jpg') as number,
+    roughness: () => require('../../../assets/textures/Lava001_Roughness.jpg') as number,
+    emission: () => require('../../../assets/textures/Lava001_Emission.jpg') as number,
+  },
+  'lava-dark': {
+    color: () => require('../../../assets/textures/Lava003_Color.jpg') as number,
+    normal: () => require('../../../assets/textures/Lava003_NormalGL.jpg') as number,
+    roughness: () => require('../../../assets/textures/Lava003_Roughness.jpg') as number,
+  },
+  'lava-cold': {
+    color: () => require('../../../assets/textures/Lava004_Color.jpg') as number,
+    normal: () => require('../../../assets/textures/Lava004_NormalGL.jpg') as number,
+    roughness: () => require('../../../assets/textures/Lava004_Roughness.jpg') as number,
+  },
+  leather: {
+    color: () => require('../../../assets/textures/Leather026_Color.jpg') as number,
+    normal: () => require('../../../assets/textures/Leather026_NormalGL.jpg') as number,
+    roughness: () => require('../../../assets/textures/Leather026_Roughness.jpg') as number,
+  },
+  marble: {
+    color: () => require('../../../assets/textures/Marble006_Color.jpg') as number,
+    normal: () => require('../../../assets/textures/Marble006_NormalGL.jpg') as number,
+    roughness: () => require('../../../assets/textures/Marble006_Roughness.jpg') as number,
+  },
+  metal: {
+    color: () => require('../../../assets/textures/Metal001_Color.jpg') as number,
+    normal: () => require('../../../assets/textures/Metal001_NormalGL.jpg') as number,
+    roughness: () => require('../../../assets/textures/Metal001_Roughness.jpg') as number,
+  },
+  'metal-dark': {
+    color: () => require('../../../assets/textures/Metal034_Color.jpg') as number,
+    normal: () => require('../../../assets/textures/Metal034_NormalGL.jpg') as number,
+    roughness: () => require('../../../assets/textures/Metal034_Roughness.jpg') as number,
+  },
+  moss: {
+    color: () => require('../../../assets/textures/Moss001_Color.jpg') as number,
+    normal: () => require('../../../assets/textures/Moss001_NormalGL.jpg') as number,
+    roughness: () => require('../../../assets/textures/Moss001_Roughness.jpg') as number,
+  },
+  tiles: {
+    color: () => require('../../../assets/textures/Tiles074_Color.jpg') as number,
+    normal: () => require('../../../assets/textures/Tiles074_NormalGL.jpg') as number,
+    roughness: () => require('../../../assets/textures/Tiles074_Roughness.jpg') as number,
+  },
+};
+
+/**
+ * Load a raw module ID (from require()) into a Three.js texture using the
+ * same resolveAssetUri + textureLoader pipeline as loadTexture().
+ */
+function loadZoneTexture(moduleId: number, isColor: boolean, repeat: number): THREE.Texture | null {
+  try {
+    const uri = resolveAssetUri(moduleId);
+    const texture = textureLoader.load(uri);
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(repeat, repeat);
+    texture.colorSpace = isColor ? THREE.SRGBColorSpace : THREE.NoColorSpace;
+    texture.needsUpdate = true;
+    return texture;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Create (or return cached) a PBR MeshStandardMaterial for a given TextureId.
+ * Uses AmbientCG textures loaded from assets/textures/ via require().
+ *
+ * The `lava` texture gets an emissiveMap and emissive glow.
+ * All texture maps are tiled at `repeat × repeat`.
+ */
+export function createZoneMaterial(textureId: TextureId, repeat = 4): THREE.MeshStandardMaterial {
+  const cached = zoneMaterialCache.get(textureId);
+  if (cached) return cached;
+
+  const isLava = textureId === 'lava';
+
+  const mat = new THREE.MeshStandardMaterial({
+    color: new THREE.Color('#ffffff'),
+    roughness: 0.85,
+    metalness: 0.05,
+    side: THREE.DoubleSide,
+    ...(isLava
+      ? {
+          emissive: new THREE.Color('#ff6600'),
+          emissiveIntensity: 0.8,
+        }
+      : {}),
+  });
+  mat.name = `zone-${textureId}`;
+  zoneMaterialCache.set(textureId, mat);
+
+  const sources = ZONE_TEXTURE_SOURCES[textureId];
+  if (!sources) return mat;
+
+  // Load and apply color map
+  const colorTex = loadZoneTexture(sources.color(), true, repeat);
+  if (colorTex) {
+    mat.map = colorTex;
+    mat.needsUpdate = true;
+  }
+
+  // Load and apply normal map
+  const normalTex = loadZoneTexture(sources.normal(), false, repeat);
+  if (normalTex) {
+    mat.normalMap = normalTex;
+    mat.normalScale.set(1.0, 1.0);
+    mat.needsUpdate = true;
+  }
+
+  // Load and apply roughness map
+  const roughnessTex = loadZoneTexture(sources.roughness(), false, repeat);
+  if (roughnessTex) {
+    mat.roughnessMap = roughnessTex;
+    mat.needsUpdate = true;
+  }
+
+  // Load and apply emission map (lava only)
+  if (sources.emission) {
+    const emissionTex = loadZoneTexture(sources.emission(), true, repeat);
+    if (emissionTex) {
+      mat.emissiveMap = emissionTex;
+      mat.needsUpdate = true;
+    }
+  }
+
+  return mat;
 }
 
 // ---------------------------------------------------------------------------

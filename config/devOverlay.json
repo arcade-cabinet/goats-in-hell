@@ -1,0 +1,28 @@
+{
+  "_comment": "DevOverlay diagnostic panel tunables. Activated via ?devmode URL param.",
+
+  "panel": {
+    "width": 280,
+    "refreshRateMs": 500,
+    "entityScrollMaxHeight": 160,
+    "entityPanelMaxHeight": 180
+  },
+
+  "colors": {
+    "heading": "#ff6600",
+    "label": "#555",
+    "value": "#ddd",
+    "modelGlb": "#44ff44",
+    "modelLoading": "#ffaa00",
+    "modelFailed": "#ff4444",
+    "modelNA": "#555555",
+    "playerHealthOk": "#44ff44",
+    "playerHealthLow": "#ff4444",
+    "entityType": "#aaccff",
+    "entityMeta": "#888888"
+  },
+
+  "thresholds": {
+    "playerHealthLowFraction": 0.3
+  }
+}

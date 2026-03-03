@@ -48,6 +48,7 @@ export async function buildCircle2(dbPath: string) {
     enemyTypes: ['hellgoat', 'fireGoat'],
     enemyDensity: 1.0, // Standard density
     pickupDensity: 0.7, // Moderate
+    texturePalette: { exploration: 'marble', arena: 'marble', boss: 'tiles', secret: 'marble' },
   });
 
   // =========================================================================
@@ -83,6 +84,8 @@ export async function buildCircle2(dbPath: string) {
     roomType: ROOM_TYPES.EXPLORATION,
     elevation: 0,
     sortOrder: 0,
+    floorTexture: 'marble',
+    wallTexture: 'tiles',
   });
 
   // No GAUNTLET type in ROOM_TYPES, use CORRIDOR as closest match
@@ -90,36 +93,58 @@ export async function buildCircle2(dbPath: string) {
     roomType: ROOM_TYPES.CORRIDOR,
     elevation: 0,
     sortOrder: 1,
+    floorTexture: 'tiles',
+    wallTexture: 'marble',
+    fillRule: { type: 'scatter', props: ['lust-wind-banner', 'lust-bridge-railing'], density: 0.1 },
   });
 
   const galleryId = editor.room(LEVEL_ID, 'lovers_gallery', 15, 32, 14, 10, {
     roomType: ROOM_TYPES.EXPLORATION,
     elevation: 0,
     sortOrder: 2,
+    floorTexture: 'marble',
+    wallTexture: 'marble',
+    fillRule: {
+      type: 'scatter',
+      props: ['lust-marble-vase', 'lust-rose-thorn-cluster', 'silk-curtain'],
+      density: 0.08,
+    },
   });
 
   const boudoirId = editor.room(LEVEL_ID, 'boudoir', 3, 34, 6, 6, {
     roomType: ROOM_TYPES.SECRET,
     elevation: 0,
     sortOrder: 3,
+    floorTexture: 'marble',
+    fillRule: { type: 'scatter', props: ['silk-curtain', 'lust-golden-chalice'], density: 0.12 },
   });
 
   const sirenPitId = editor.room(LEVEL_ID, 'siren_pit', 16, 46, 12, 12, {
     roomType: ROOM_TYPES.PLATFORMING,
     elevation: 0,
     sortOrder: 4,
+    floorTexture: 'marble',
+    fillRule: {
+      type: 'scatter',
+      props: ['lust-ornate-bed-wrecked', 'lust-velvet-drape', 'ornate-mirror'],
+      density: 0.1,
+    },
   });
 
   const tempestHallId = editor.room(LEVEL_ID, 'tempest_hall', 15, 62, 14, 12, {
     roomType: ROOM_TYPES.ARENA,
     elevation: -1,
     sortOrder: 5,
+    floorTexture: 'tiles',
+    wallTexture: 'marble',
   });
 
   const sanctumId = editor.room(LEVEL_ID, 'caprone_sanctum', 15, 78, 14, 14, {
     roomType: ROOM_TYPES.BOSS,
     elevation: -1,
     sortOrder: 6,
+    floorTexture: 'tiles',
+    wallTexture: 'marble',
   });
 
   // =========================================================================
@@ -1269,6 +1294,609 @@ export async function buildCircle2(dbPath: string) {
   //   Facing: pi (south -- toward Wind Corridor)
 
   editor.setPlayerSpawn(LEVEL_ID, 22, 4, Math.PI);
+
+  // =========================================================================
+  // EXPANSION — Additional rooms, enemies, and encounters to reach 7-11 min
+  // =========================================================================
+  // New rooms placed entirely in the open eastern corridor (x >= 30) and the
+  // western alcove (x = 0..11) that is clear of existing rooms.
+  //
+  // Existing room extents (for reference):
+  //   antechamber    : x[18..25], z[ 2.. 7]
+  //   wind_corridor  : x[20..24], z[12..27]
+  //   lovers_gallery : x[15..28], z[32..41]
+  //   boudoir        : x[ 3.. 8], z[34..39]
+  //   siren_pit      : x[16..27], z[46..57]
+  //   tempest_hall   : x[15..28], z[62..73]
+  //   caprone_sanctum: x[15..28], z[78..91]
+  //
+  // New room placement (all on east side x>=30, or west pocket x=0..11):
+  //   crimson_baths     : x[30..41], z[ 2..15]  (w=12, h=14)
+  //   mirror_hall       : x[30..41], z[20..31]  (w=12, h=12)
+  //   torment_gallery   : x[30..41], z[36..45]  (w=12, h=10)
+  //   obsession_vault   : x[ 0..11], z[46..57]  (w=12, h=12)
+  //   desire_corridor   : x[30..41], z[50..59]  (w=12, h=10)
+  // =========================================================================
+
+  // ── NEW ROOM 1: Crimson Baths ─────────────────────────────────────────────
+  // Marble bathing hall east of antechamber. Exploration room, fireGoat ambush.
+  // Bounds: x=30, z=2, w=12, h=14 → interior x[31..40], z[3..14]
+  const crimsonBathsId = editor.room(LEVEL_ID, 'crimson_baths', 30, 2, 12, 14, {
+    roomType: ROOM_TYPES.EXPLORATION,
+    elevation: 0,
+    sortOrder: 7,
+    floorTexture: 'marble',
+    wallTexture: 'tiles',
+    fillRule: {
+      type: 'scatter',
+      props: ['lust-marble-vase', 'lust-rose-thorn-cluster', 'lust-velvet-drape'],
+      density: 0.18,
+    },
+  });
+
+  // ── NEW ROOM 2: Mirror Hall ───────────────────────────────────────────────
+  // Hall of mirrors feeding confusion. Exploration/ambush, east of wind_corridor.
+  // Bounds: x=30, z=20, w=12, h=12 → interior x[31..40], z[21..30]
+  const mirrorHallId = editor.room(LEVEL_ID, 'mirror_hall', 30, 20, 12, 12, {
+    roomType: ROOM_TYPES.EXPLORATION,
+    elevation: 0,
+    sortOrder: 8,
+    floorTexture: 'marble',
+    wallTexture: 'marble',
+    fillRule: {
+      type: 'scatter',
+      props: ['ornate-mirror', 'lust-cracked-statue', 'silk-curtain'],
+      density: 0.2,
+    },
+  });
+
+  // ── NEW ROOM 3: Torment Gallery ───────────────────────────────────────────
+  // Arena east of lovers_gallery. Wave lock with mixed enemies.
+  // Bounds: x=30, z=36, w=12, h=10 → interior x[31..40], z[37..44]
+  const tormentGalleryId = editor.room(LEVEL_ID, 'torment_gallery', 30, 36, 12, 10, {
+    roomType: ROOM_TYPES.ARENA,
+    elevation: 0,
+    sortOrder: 9,
+    floorTexture: 'tiles',
+    wallTexture: 'marble',
+    fillRule: {
+      type: 'scatter',
+      props: ['lust-gilded-pillar', 'lust-ember-brazier'],
+      density: 0.1,
+    },
+  });
+
+  // ── NEW ROOM 4: Obsession Vault ───────────────────────────────────────────
+  // Secret-ish western pocket. Exploration branching off siren_pit.
+  // Bounds: x=0, z=46, w=12, h=12 → interior x[1..10], z[47..56]
+  const obsessionVaultId = editor.room(LEVEL_ID, 'obsession_vault', 0, 46, 12, 12, {
+    roomType: ROOM_TYPES.EXPLORATION,
+    elevation: 0,
+    sortOrder: 10,
+    floorTexture: 'marble',
+    wallTexture: 'tiles',
+    fillRule: {
+      type: 'scatter',
+      props: ['lust-ornate-bed-wrecked', 'lust-golden-chalice', 'lust-chandelier'],
+      density: 0.22,
+    },
+  });
+
+  // ── NEW ROOM 5: Desire Corridor ───────────────────────────────────────────
+  // Long east-side corridor connecting mirror_hall chain to tempest_hall side.
+  // Bounds: x=30, z=50, w=12, h=10 → interior x[31..40], z[51..58]
+  const desireCorridorId = editor.room(LEVEL_ID, 'desire_corridor', 30, 50, 12, 10, {
+    roomType: ROOM_TYPES.CORRIDOR,
+    elevation: 0,
+    sortOrder: 11,
+    floorTexture: 'marble',
+    wallTexture: 'marble',
+    fillRule: {
+      type: 'scatter',
+      props: ['lust-wind-banner', 'lust-bridge-railing', 'lust-lava-rock-border'],
+      density: 0.12,
+    },
+  });
+
+  // ── CONNECTIONS: new rooms to existing layout ─────────────────────────────
+  // antechamber -> crimson_baths (east branch from entry)
+  editor.corridor(LEVEL_ID, antechamberId, crimsonBathsId, 3);
+  // crimson_baths -> mirror_hall (south through east side)
+  editor.corridor(LEVEL_ID, crimsonBathsId, mirrorHallId, 3);
+  // mirror_hall -> torment_gallery (south, east side)
+  editor.corridor(LEVEL_ID, mirrorHallId, tormentGalleryId, 3);
+  // torment_gallery -> desire_corridor (south, east side)
+  editor.corridor(LEVEL_ID, tormentGalleryId, desireCorridorId, 3);
+  // desire_corridor -> tempest_hall (west reconnect to main path)
+  editor.corridor(LEVEL_ID, desireCorridorId, tempestHallId, 3);
+  // siren_pit -> obsession_vault (west branch)
+  editor.corridor(LEVEL_ID, sirenPitId, obsessionVaultId, 3);
+
+  // ── ENEMIES: Crimson Baths (x[30..41], z[2..14]) ─────────────────────────
+  // 4 hellgoat patrolling the bath columns
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 32, 5, {
+    roomId: crimsonBathsId,
+    patrol: [
+      { x: 32, z: 5 },
+      { x: 32, z: 12 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 39, 5, {
+    roomId: crimsonBathsId,
+    patrol: [
+      { x: 39, z: 5 },
+      { x: 39, z: 12 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 35, 9, {
+    roomId: crimsonBathsId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 37, 13, {
+    roomId: crimsonBathsId,
+  });
+  // 3 fireGoat ranged -- perch on bath ledges
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 31, 3, {
+    roomId: crimsonBathsId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 40, 8, {
+    roomId: crimsonBathsId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 36, 13, {
+    roomId: crimsonBathsId,
+  });
+
+  // ── ENEMIES: Mirror Hall (x[30..41], z[20..31]) ───────────────────────────
+  // 5 hellgoat — disorienting maze fight
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 31, 22, { roomId: mirrorHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 40, 22, { roomId: mirrorHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 35, 26, { roomId: mirrorHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 31, 29, { roomId: mirrorHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 40, 29, { roomId: mirrorHallId });
+  // 3 fireGoat ranged from mirror alcoves
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 33, 21, { roomId: mirrorHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 38, 25, { roomId: mirrorHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 35, 30, { roomId: mirrorHallId });
+
+  // ── ENEMIES: Torment Gallery (x[30..41], z[36..45]) — arena waves ─────────
+  // Set up 3-wave arena lock
+  // Wave 1: 3 hellgoat charge
+  // Wave 2: 2 fireGoat + 2 hellgoat
+  // Wave 3: 4 hellgoat + 2 fireGoat surge
+  editor.setupArenaWaves(LEVEL_ID, tormentGalleryId, { x: 30, z: 36, w: 12, h: 3 }, [
+    // Wave 1
+    [
+      { type: ENEMY_TYPES.HELLGOAT, x: 31, z: 38 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 36, z: 40 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 40, z: 38 },
+    ],
+    // Wave 2
+    [
+      { type: ENEMY_TYPES.FIRE_GOAT, x: 31, z: 42 },
+      { type: ENEMY_TYPES.FIRE_GOAT, x: 40, z: 42 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 34, z: 37 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 37, z: 44 },
+    ],
+    // Wave 3
+    [
+      { type: ENEMY_TYPES.HELLGOAT, x: 31, z: 37 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 36, z: 43 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 40, z: 37 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 33, z: 44 },
+      { type: ENEMY_TYPES.FIRE_GOAT, x: 38, z: 39 },
+      { type: ENEMY_TYPES.FIRE_GOAT, x: 32, z: 42 },
+    ],
+  ]);
+
+  // ── ENEMIES: Obsession Vault (x[0..11], z[46..57]) ───────────────────────
+  // 4 hellgoat lurking among the obsession shrines
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 2, 48, { roomId: obsessionVaultId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 9, 48, { roomId: obsessionVaultId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 2, 55, { roomId: obsessionVaultId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 9, 55, { roomId: obsessionVaultId });
+  // 2 fireGoat from elevated niches
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 5, 49, { roomId: obsessionVaultId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 6, 54, { roomId: obsessionVaultId });
+
+  // ── ENEMIES: Desire Corridor (x[30..41], z[50..59]) ───────────────────────
+  // Ambush corridor — enemies lurk behind velvet drapes
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 32, 52, { roomId: desireCorridorId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 39, 52, { roomId: desireCorridorId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 35, 57, { roomId: desireCorridorId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 36, 51, { roomId: desireCorridorId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 31, 56, { roomId: desireCorridorId });
+
+  // ── PICKUPS: new rooms ────────────────────────────────────────────────────
+  // Crimson Baths
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 35, 5);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 38, 12);
+  // Mirror Hall
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 33, 26);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 38, 28);
+  // Torment Gallery (post-arena reward)
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 31, 43);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 39, 43);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 35, 44);
+  // Obsession Vault (secret cache)
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 5, 52);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 8, 50);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 3, 54);
+  // Desire Corridor
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 33, 55);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 39, 57);
+
+  // ── PROPS: new rooms (Lust theme) ─────────────────────────────────────────
+
+  // --- Crimson Baths props ---
+  // Structural arches at north and south entries
+  editor.spawnProp(LEVEL_ID, 'lust-ornate-arch', 36, 2, {
+    roomId: crimsonBathsId,
+    surfaceAnchor: {
+      face: 'south',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'lust-ornate-arch', 36, 15, {
+    roomId: crimsonBathsId,
+    surfaceAnchor: {
+      face: 'south',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  // Onyx columns flanking bath pools
+  editor.spawnProp(LEVEL_ID, 'lust-onyx-column', 31, 5, { roomId: crimsonBathsId });
+  editor.spawnProp(LEVEL_ID, 'lust-onyx-column', 40, 5, { roomId: crimsonBathsId });
+  editor.spawnProp(LEVEL_ID, 'lust-onyx-column', 31, 12, { roomId: crimsonBathsId });
+  editor.spawnProp(LEVEL_ID, 'lust-onyx-column', 40, 12, { roomId: crimsonBathsId });
+  // Ember braziers
+  editor.spawnProp(LEVEL_ID, 'lust-ember-brazier', 33, 4, { roomId: crimsonBathsId });
+  editor.spawnProp(LEVEL_ID, 'lust-ember-brazier', 38, 4, { roomId: crimsonBathsId });
+  editor.spawnProp(LEVEL_ID, 'lust-ember-brazier', 33, 13, { roomId: crimsonBathsId });
+  editor.spawnProp(LEVEL_ID, 'lust-ember-brazier', 38, 13, { roomId: crimsonBathsId });
+  // Chandeliers above
+  editor.spawnProp(LEVEL_ID, 'lust-chandelier', 36, 8, { roomId: crimsonBathsId });
+  // Rose thorn clusters
+  editor.spawnProp(LEVEL_ID, 'lust-rose-thorn-cluster', 34, 9, { roomId: crimsonBathsId });
+  editor.spawnProp(LEVEL_ID, 'lust-rose-thorn-cluster', 38, 10, { roomId: crimsonBathsId });
+  // Velvet drapes on walls
+  editor.spawnProp(LEVEL_ID, 'lust-velvet-drape', 30, 7, {
+    roomId: crimsonBathsId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 2.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'lust-velvet-drape', 41, 7, {
+    roomId: crimsonBathsId,
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 2.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+
+  // --- Mirror Hall props ---
+  // Structural arch at north entry
+  editor.spawnProp(LEVEL_ID, 'lust-ornate-arch', 36, 20, {
+    roomId: mirrorHallId,
+    surfaceAnchor: {
+      face: 'south',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  // Ornate mirrors on every wall — the hall's centerpiece
+  editor.spawnProp(LEVEL_ID, 'ornate-mirror', 31, 24, { roomId: mirrorHallId });
+  editor.spawnProp(LEVEL_ID, 'ornate-mirror', 36, 21, { roomId: mirrorHallId });
+  editor.spawnProp(LEVEL_ID, 'ornate-mirror', 40, 26, { roomId: mirrorHallId });
+  editor.spawnProp(LEVEL_ID, 'ornate-mirror', 34, 30, { roomId: mirrorHallId });
+  // Cracked statues in alcoves
+  editor.spawnProp(LEVEL_ID, 'lust-cracked-statue', 30, 22, { roomId: mirrorHallId });
+  editor.spawnProp(LEVEL_ID, 'lust-cracked-statue', 41, 28, { roomId: mirrorHallId });
+  // Silk curtains in corners
+  editor.spawnProp(LEVEL_ID, 'silk-curtain', 31, 29, { roomId: mirrorHallId });
+  editor.spawnProp(LEVEL_ID, 'silk-curtain', 39, 21, { roomId: mirrorHallId });
+  // Candelabras at room corners
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 30, 20, {
+    roomId: mirrorHallId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 41, 20, {
+    roomId: mirrorHallId,
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 30, 31, {
+    roomId: mirrorHallId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 41, 31, {
+    roomId: mirrorHallId,
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+
+  // --- Torment Gallery props ---
+  // Gilded pillars framing arena floor
+  editor.spawnProp(LEVEL_ID, 'lust-gilded-pillar', 31, 37, { roomId: tormentGalleryId });
+  editor.spawnProp(LEVEL_ID, 'lust-gilded-pillar', 40, 37, { roomId: tormentGalleryId });
+  editor.spawnProp(LEVEL_ID, 'lust-gilded-pillar', 31, 44, { roomId: tormentGalleryId });
+  editor.spawnProp(LEVEL_ID, 'lust-gilded-pillar', 40, 44, { roomId: tormentGalleryId });
+  // Ember braziers on raised platform edges
+  editor.spawnProp(LEVEL_ID, 'lust-ember-brazier', 30, 40, { roomId: tormentGalleryId });
+  editor.spawnProp(LEVEL_ID, 'lust-ember-brazier', 41, 40, { roomId: tormentGalleryId });
+  // Lava rock borders along channel edges
+  editor.spawnProp(LEVEL_ID, 'lust-lava-rock-border', 33, 41, { roomId: tormentGalleryId });
+  editor.spawnProp(LEVEL_ID, 'lust-lava-rock-border', 37, 41, { roomId: tormentGalleryId });
+  // Fallen chairs after the carnage
+  editor.spawnProp(LEVEL_ID, 'lust-fallen-chair', 34, 43, { roomId: tormentGalleryId });
+  editor.spawnProp(LEVEL_ID, 'lust-fallen-chair', 38, 37, { roomId: tormentGalleryId });
+  // Wind banners on north and south walls
+  editor.spawnProp(LEVEL_ID, 'lust-wind-banner', 31, 36, {
+    roomId: tormentGalleryId,
+    surfaceAnchor: {
+      face: 'north',
+      offsetX: 0,
+      offsetY: 2.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'lust-wind-banner', 39, 45, {
+    roomId: tormentGalleryId,
+    surfaceAnchor: {
+      face: 'south',
+      offsetX: 0,
+      offsetY: 2.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+
+  // --- Obsession Vault props ---
+  // Wrecked beds and golden chalices — objects of desire
+  editor.spawnProp(LEVEL_ID, 'lust-ornate-bed-wrecked', 2, 49, { roomId: obsessionVaultId });
+  editor.spawnProp(LEVEL_ID, 'lust-ornate-bed-wrecked', 8, 53, { roomId: obsessionVaultId });
+  editor.spawnProp(LEVEL_ID, 'lust-golden-chalice', 5, 47, { roomId: obsessionVaultId });
+  editor.spawnProp(LEVEL_ID, 'lust-golden-chalice', 9, 55, { roomId: obsessionVaultId });
+  // Chandeliers
+  editor.spawnProp(LEVEL_ID, 'lust-chandelier', 5, 51, { roomId: obsessionVaultId });
+  // Candelabras at corners
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 0, 46, {
+    roomId: obsessionVaultId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'lust-candelabra', 0, 57, {
+    roomId: obsessionVaultId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  // Velvet drapes and silk curtains
+  editor.spawnProp(LEVEL_ID, 'lust-velvet-drape', 3, 51, { roomId: obsessionVaultId });
+  editor.spawnProp(LEVEL_ID, 'silk-curtain', 8, 48, { roomId: obsessionVaultId });
+  // Perfume censers
+  editor.spawnProp(LEVEL_ID, 'lust-perfume-censer', 6, 53, { roomId: obsessionVaultId });
+
+  // --- Desire Corridor props ---
+  // Structural arches at north and south entries
+  editor.spawnProp(LEVEL_ID, 'lust-ornate-arch', 36, 50, {
+    roomId: desireCorridorId,
+    surfaceAnchor: {
+      face: 'south',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.9,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'lust-ornate-arch', 36, 59, {
+    roomId: desireCorridorId,
+    surfaceAnchor: {
+      face: 'south',
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.9,
+    },
+  });
+  // Wind banners showing the dragging wind
+  editor.spawnProp(LEVEL_ID, 'lust-wind-banner', 30, 52, {
+    roomId: desireCorridorId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 2.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.8,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'lust-wind-banner', 30, 56, {
+    roomId: desireCorridorId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 2.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.8,
+    },
+  });
+  // Bridge railings
+  editor.spawnProp(LEVEL_ID, 'lust-bridge-railing', 34, 54, { roomId: desireCorridorId });
+  editor.spawnProp(LEVEL_ID, 'lust-bridge-railing', 37, 54, { roomId: desireCorridorId });
+  // Lava rock borders at channel edges
+  editor.spawnProp(LEVEL_ID, 'lust-lava-rock-border', 31, 54, { roomId: desireCorridorId });
+  editor.spawnProp(LEVEL_ID, 'lust-lava-rock-border', 40, 54, { roomId: desireCorridorId });
+
+  // ── AMBUSH TRIGGERS: new rooms ────────────────────────────────────────────
+
+  // Crimson Baths ambush — fire goats open up when player enters deep end
+  editor.ambush(
+    LEVEL_ID,
+    { x: 30, z: 8, w: 12, h: 3 },
+    [
+      { type: ENEMY_TYPES.FIRE_GOAT, x: 31, z: 10 },
+      { type: ENEMY_TYPES.FIRE_GOAT, x: 40, z: 10 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 35, z: 11 },
+    ],
+    { roomId: crimsonBathsId },
+  );
+
+  // Desire Corridor ambush — hellgoats burst from alcoves
+  editor.ambush(
+    LEVEL_ID,
+    { x: 30, z: 53, w: 12, h: 3 },
+    [
+      { type: ENEMY_TYPES.HELLGOAT, x: 31, z: 54 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 39, z: 55 },
+      { type: ENEMY_TYPES.FIRE_GOAT, x: 35, z: 56 },
+    ],
+    { roomId: desireCorridorId },
+  );
+
+  // ── ENVIRONMENT ZONES: new rooms ─────────────────────────────────────────
+
+  // Crimson Baths: fire hazard — lava pool in center
+  editor.addEnvironmentZone(LEVEL_ID, {
+    envType: ENV_TYPES.FIRE,
+    boundsX: 33,
+    boundsZ: 7,
+    boundsW: 5,
+    boundsH: 5,
+    intensity: 1.0,
+  });
+
+  // Mirror Hall: illusion zone — mirrors distort reality
+  editor.addEnvironmentZone(LEVEL_ID, {
+    envType: ENV_TYPES.ILLUSION,
+    boundsX: 30,
+    boundsZ: 20,
+    boundsW: 12,
+    boundsH: 12,
+    intensity: 0.6,
+  });
+
+  // Torment Gallery: wind cross-blast during arena waves
+  editor.addEnvironmentZone(LEVEL_ID, {
+    envType: ENV_TYPES.WIND,
+    boundsX: 30,
+    boundsZ: 36,
+    boundsW: 12,
+    boundsH: 10,
+    intensity: 0.4,
+    directionX: 1.0,
+    directionZ: 0,
+    timerOn: 5.0,
+    timerOff: 5.0,
+  });
+
+  // Obsession Vault: heavy fog — disorienting desire haze
+  editor.addEnvironmentZone(LEVEL_ID, {
+    envType: ENV_TYPES.FOG,
+    boundsX: 0,
+    boundsZ: 46,
+    boundsW: 12,
+    boundsH: 12,
+    intensity: 0.07,
+  });
+
+  // Desire Corridor: wind pull southward
+  editor.addEnvironmentZone(LEVEL_ID, {
+    envType: ENV_TYPES.WIND,
+    boundsX: 30,
+    boundsZ: 50,
+    boundsW: 12,
+    boundsH: 10,
+    intensity: 0.35,
+    directionX: 0,
+    directionZ: 1.0,
+  });
+
+  // ── DECALS: new rooms ─────────────────────────────────────────────────────
+  editor.placeDecals(LEVEL_ID, crimsonBathsId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 33, z: 8, opacity: 0.5 },
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 38, z: 11, opacity: 0.4 },
+  ]);
+
+  editor.placeDecals(LEVEL_ID, mirrorHallId, [
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 31, z: 23, opacity: 0.4 },
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 40, z: 29, opacity: 0.4 },
+  ]);
+
+  editor.placeDecals(LEVEL_ID, tormentGalleryId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 33, z: 41, opacity: 0.5 },
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 38, z: 37, surface: 'wall', opacity: 0.5 },
+  ]);
+
+  editor.placeDecals(LEVEL_ID, obsessionVaultId, [
+    { type: DECAL_TYPES.WATER_STAIN, x: 5, z: 52, opacity: 0.5 },
+  ]);
+
+  editor.placeDecals(LEVEL_ID, desireCorridorId, [
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 30, z: 54, surface: 'wall', opacity: 0.5 },
+    { type: DECAL_TYPES.CONCRETE_CRACK, x: 41, z: 54, surface: 'wall', opacity: 0.5 },
+  ]);
 
   // =========================================================================
   // 9. COMPILE GRID

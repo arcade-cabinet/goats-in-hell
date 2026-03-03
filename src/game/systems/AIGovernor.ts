@@ -18,6 +18,7 @@
  */
 import { ArriveBehavior, EntityManager, Vehicle, WanderBehavior, Vector3 as YV3 } from 'yuka';
 import type { Entity, Vec3, WeaponId } from '../entities/components';
+import { isPlayerEntity } from '../entities/TypedEntityGuards';
 import { vec3, vec3Distance, vec3Length, vec3Scale, vec3Subtract } from '../entities/vec3';
 import { world } from '../entities/world';
 import { LevelGenerator, type MapCell } from '../levels/LevelGenerator';
@@ -231,7 +232,7 @@ export class AIGovernor {
 
   /** Call once per render frame. */
   update(dt: number): void {
-    if (!this.player.player || !this.player.position) return;
+    if (!isPlayerEntity(this.player)) return;
     this.frameCount++;
 
     // Reset per-frame output state

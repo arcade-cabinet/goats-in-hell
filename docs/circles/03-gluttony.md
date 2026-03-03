@@ -22,6 +22,21 @@ related:
 
 ---
 
+## Playability
+
+| Metric | Target | Notes |
+|--------|--------|-------|
+| Target play time | 8–12 min | Organic maze slows exploration. Acid pools force routing detours. |
+| Estimated play time | TBD (computed after build) | |
+| Path distance | TBD | |
+| Room count | 7 rooms + 1 boss | from Room Placement table |
+| Enemy count | 15 enemies + boss | from enemy placement |
+
+### Pacing Notes
+Gluttony's maze-like Gullet and the acid walkways of the Bile Cistern naturally extend traversal time as players pick careful routes around hazards. Tension peaks at the Gut Arena's concentric ring combat with the inner ring shrinking. The poisoned pickup mechanic applies constant low-level pressure throughout — players who rush and spam health pickups will hurt themselves, slowing the pace further.
+
+---
+
 ## Identity
 
 **Circle:** 3 (Gluttony)

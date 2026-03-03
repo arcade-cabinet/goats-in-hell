@@ -22,6 +22,21 @@ related:
 
 ---
 
+## Playability
+
+| Metric | Target | Notes |
+|--------|--------|-------|
+| Target play time | 12–18 min | Largest map. Blood River crossing + Industrial complex = longest traversal. |
+| Estimated play time | TBD (computed after build) | |
+| Path distance | TBD | |
+| Room count | 10 rooms + 1 boss | from Room Placement table |
+| Enemy count | 24 enemies + boss | from enemy placement |
+
+### Pacing Notes
+Violence is the first Act 3 circle and the longest map by room count. The bleeding mechanic (1 HP/sec drain) turns every traversal second into pressure — players cannot stop and breathe, forcing aggressive movement through all 10 rooms. Tension peaks three times: crossing the Blood River, navigating the Thorny Passage under bleeding pressure, and the Slaughterhouse arena before the boss. The Flamethrower weapon unlock at the Flamethrower Shrine mid-level marks the circle's turning point.
+
+---
+
 ## Identity
 
 **Circle:** 7 (Violence)

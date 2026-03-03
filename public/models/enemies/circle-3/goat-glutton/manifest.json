@@ -1,0 +1,105 @@
+{
+  "id": "goat-glutton",
+  "name": "Goat Glutton",
+  "type": "character",
+  "seed": 1898477559,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cad80-071c-7c84-b1f0-f49859291ecd",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad80-071c-7c84-b1f0-f49859291ecd"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cad85-78cb-7cb7-9177-bbce57b19a8a",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad85-78cb-7cb7-9177-bbce57b19a8a"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cad88-6cb9-703d-ae5d-c4f5b530964a",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad88-6cb9-703d-ae5d-c4f5b530964a"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cad8b-0aeb-7e85-b3f6-ae6b46e44b69",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad8b-0aeb-7e85-b3f6-ae6b46e44b69"
+      },
+      "artifacts": {
+        "model": "model.glb"
+      }
+    },
+    "animations": {
+      "WalkAndRun.Walking.Stumble_Walk": {
+        "taskId": "019cad8c-b712-7c38-8655-2295838fbaed",
+        "status": "SUCCEEDED",
+        "actionId": 562,
+        "artifact": "animations/Stumble_Walk.glb"
+      },
+      "DailyActions.Idle.Angry_Ground_Stomp_2": {
+        "taskId": "019cad8d-6c4b-7e0a-b960-8fdbc3b969b2",
+        "status": "SUCCEEDED",
+        "actionId": 257,
+        "artifact": "animations/Angry_Ground_Stomp_2.glb"
+      },
+      "Fighting.CastingSpell.mage_soell_cast": {
+        "taskId": "019cad8d-e5fb-7c5f-a0a1-c3d1e4470f02",
+        "status": "SUCCEEDED",
+        "actionId": 129,
+        "artifact": "animations/mage_soell_cast.glb"
+      },
+      "Fighting.GettingHit.BeHit_FlyUp": {
+        "taskId": "019cad8e-2479-7eed-b385-1d4199553e1e",
+        "status": "SUCCEEDED",
+        "actionId": 7,
+        "artifact": "animations/BeHit_FlyUp.glb"
+      },
+      "Fighting.Dying.Knock_Down_1": {
+        "taskId": "019cad8e-9e0b-7eef-a786-71e884cdc264",
+        "status": "SUCCEEDED",
+        "actionId": 190,
+        "artifact": "animations/Knock_Down_1.glb"
+      }
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 3 (Gluttony) — bloated vomit-spewing goat. Slow waddle, poison ranged attack.",
+  "textToImageTask": {
+    "prompt": "A bipedal humanoid goat demon in A-pose, grotesquely bloated and obese, sickly green-brown mottled fur, short stubby horns, distended belly with visible veins, mouth permanently agape showing rotten teeth with green bile dripping, holding a massive leg of meat in one hand, tattered apron stained with filth, thick stubby digitigrade goat legs barely supporting the weight, jaundiced yellow eyes, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Grotesquely bloated bipedal goat demon, green-brown fur, distended belly, bile-dripping mouth, holding meat leg, stained apron, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 10000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Sickly green-brown mottled fur, distended veiny belly, filth-stained apron, rotten yellow teeth, green bile drips, raw meat prop",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 1.6
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Stumble_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp_2",
+      "Fighting.CastingSpell.mage_soell_cast",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Knock_Down_1"
+    ]
+  }
+}

@@ -22,6 +22,21 @@ related:
 
 ---
 
+## Playability
+
+| Metric | Target | Notes |
+|--------|--------|-------|
+| Target play time | 7–11 min | First full-length circle. Wind corridors slow traversal naturally, extending time. |
+| Estimated play time | TBD (computed after build) | |
+| Path distance | TBD | |
+| Room count | 7 rooms + 1 boss | from Room Placement table |
+| Enemy count | 15 enemies + boss | from enemy placement |
+
+### Pacing Notes
+Lust's length comes from geography: the Wind Corridor gauntlet, the vertical descent of Siren Pit, and the arena waves in Tempest Hall each demand careful play rather than rushing. Tension peaks twice — first at the Siren Pit's lava core, then again at the Tempest Hall wave lock. Players who found the Boudoir secret should feel rewarded with a headstart on resources heading into the boss.
+
+---
+
 ## Identity
 
 **Circle:** 2 (Lust)

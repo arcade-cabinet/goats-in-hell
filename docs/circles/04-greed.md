@@ -22,6 +22,21 @@ related:
 
 ---
 
+## Playability
+
+| Metric | Target | Notes |
+|--------|--------|-------|
+| Target play time | 8–12 min | Hoarding penalty (overloaded ammo = slow) extends effective time. |
+| Estimated play time | TBD (computed after build) | |
+| Path distance | TBD | |
+| Room count | 6 rooms + 1 boss | from Room Placement table |
+| Enemy count | 14 enemies + boss | from enemy placement |
+
+### Pacing Notes
+Greed's hoarding mechanic is the primary pacing lever: players who collect all the tempting ammo pickups move at half speed, making goatKnight encounters more dangerous and room traversal longer. The pressure plate Weight Room creates a deliberate pacing dip — a puzzle beat — before the Auction Hall arena ramps tension back up. The boss encounter's three phases (coins, steal, strip) provide a satisfying climax to the "want less" theme.
+
+---
+
 ## Identity
 
 **Circle:** 4 (Greed)

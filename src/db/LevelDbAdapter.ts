@@ -11,8 +11,13 @@ import type { LevelData } from '../game/levels/LevelData';
 import type { RuntimeTrigger, RuntimeTriggeredEntity } from '../game/systems/TriggerSystem';
 import type { DrizzleDb } from './connection';
 import { unpackGrid } from './GridCompiler';
+import type { CompiledVisual } from './LevelEditor';
 import type { Theme } from './schema';
 import * as schema from './schema';
+
+// Re-export CompiledVisual so consumers can import from LevelDbAdapter
+export type { CompiledVisual };
+export type RuntimeCompiledVisual = CompiledVisual;
 
 /**
  * Convert a DB theme row into the FloorTheme interface used by the game.
@@ -272,6 +277,11 @@ export function toLevelData(db: DrizzleDb, levelId: string): LevelData {
 
   const theme = toFloorTheme(themeRows[0]);
 
+  // Parse compiled visual JSON if present
+  const compiledVisual: CompiledVisual | null = level.compiledVisual
+    ? (JSON.parse(level.compiledVisual) as CompiledVisual)
+    : null;
+
   return {
     width: level.width,
     depth: level.depth,
@@ -285,5 +295,6 @@ export function toLevelData(db: DrizzleDb, levelId: string): LevelData {
     spawns,
     theme,
     levelId,
+    compiledVisual,
   };
 }

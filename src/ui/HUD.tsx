@@ -13,7 +13,6 @@ import { Animated, type DimensionValue, StyleSheet, Text, View } from 'react-nat
 import type { Entity, WeaponId } from '../game/entities/components';
 import { world } from '../game/entities/world';
 import { getActiveLevel } from '../game/levels/activeLevelRef';
-import { getThemeForFloor } from '../game/levels/FloorThemes';
 import { CELL_SIZE, MapCell } from '../game/levels/LevelGenerator';
 import { consumeDamageEvents } from '../game/systems/damageEvents';
 import { getKillHint } from '../game/systems/KillHintSystem';
@@ -124,7 +123,7 @@ export const HUD: React.FC = () => {
   const leveling = storeState.leveling;
   const difficulty = storeState.difficulty;
   const nightmareFlags = storeState.nightmareFlags;
-  const theme = getThemeForFloor(floor);
+  const levelDisplayName = storeState.currentLevelDisplayName;
   const elapsed = Date.now() - storeState.startTime;
   const xpProgress = leveling.xpToNext > 0 ? leveling.xp / leveling.xpToNext : 0;
   const diffLabel = DIFFICULTY_PRESETS[difficulty].label.toUpperCase();
@@ -172,7 +171,7 @@ export const HUD: React.FC = () => {
               HP
             </Animated.Text>
             <Text style={styles.healthValue}>
-              {hp}
+              {Math.round(hp)}
               <Text style={styles.healthMax}>/{maxHp}</Text>
             </Text>
           </View>
@@ -238,7 +237,7 @@ export const HUD: React.FC = () => {
       <View style={styles.floorContainer}>
         <View style={styles.floorPanel}>
           <Text style={styles.floorNumber}>FL {floor}</Text>
-          <Text style={styles.floorTheme}>{theme.displayName}</Text>
+          <Text style={styles.floorTheme}>{levelDisplayName}</Text>
           {encounterType === 'boss' && <Text style={styles.encounterTag}>BOSS</Text>}
         </View>
         {/* Level / XP bar */}

@@ -22,6 +22,21 @@ related:
 
 ---
 
+## Playability
+
+| Metric | Target | Notes |
+|--------|--------|-------|
+| Target play time | 12–18 min | Shifting walls and illusion maze can disorient, extending exploration. |
+| Estimated play time | TBD (computed after build) | |
+| Path distance | TBD | |
+| Room count | 9 rooms + 1 boss | from Room Placement table |
+| Enemy count | 21 enemies + boss + mimics | from enemy placement |
+
+### Pacing Notes
+Fraud's mimic mechanic introduces a new layer of caution — players must sweep pickups with the flamethrower before collecting, adding time to every room. The Shifting Maze is the primary pacing wildcard: disoriented players can loop back through previously cleared rooms, significantly extending play time. Tension peaks at the Hall of Mirrors arena and at the False Treasury where every prop is potentially a mimic. The boss fight with Inganno's phase-shift deception serves as a fitting climax to a circle built on betrayed expectations.
+
+---
+
 ## Identity
 
 **Circle:** 8 (Fraud — Malebolge)

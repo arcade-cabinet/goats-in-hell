@@ -1,5 +1,5 @@
 /**
- * Asset discovery — scans the `assets/models/` directory tree for Meshy AI
+ * Asset discovery — scans the `public/models/` directory tree for Meshy AI
  * manifests and returns available asset IDs grouped by category.
  *
  * Used by LevelEditor to expose available props/enemies to agentic build scripts,
@@ -91,20 +91,20 @@ function discoverCategory(categoryDir: string): AssetManifest {
 // ---------------------------------------------------------------------------
 
 /**
- * Scan `assets/models/props/` for subdirectories containing `manifest.json`.
+ * Scan `public/models/props/` for subdirectories containing `manifest.json`.
  * Returns asset IDs grouped by general and circle-N categories.
  */
 export function discoverMeshyProps(): AssetManifest {
-  const propsDir = join(projectRoot(), 'assets', 'models', 'props');
+  const propsDir = join(projectRoot(), 'public', 'models', 'props');
   return discoverCategory(propsDir);
 }
 
 /**
- * Scan `assets/models/enemies/` for subdirectories containing `manifest.json`.
+ * Scan `public/models/enemies/` for subdirectories containing `manifest.json`.
  * Returns asset IDs grouped by general, circle-N, and bosses categories.
  */
 export function discoverMeshyEnemies(): AssetManifest {
-  const enemiesDir = join(projectRoot(), 'assets', 'models', 'enemies');
+  const enemiesDir = join(projectRoot(), 'public', 'models', 'enemies');
   return discoverCategory(enemiesDir);
 }
 

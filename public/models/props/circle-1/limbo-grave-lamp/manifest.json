@@ -1,0 +1,7 @@
+{
+  "id": "limbo-grave-lamp",
+  "name": "Grave Lamp",
+  "type": "prop",
+  "pipeline": "graveyard-pack",
+  "source": "Graveyard Pack / PBR FBX → GLB"
+}

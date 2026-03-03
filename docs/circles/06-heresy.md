@@ -22,6 +22,21 @@ related:
 
 ---
 
+## Playability
+
+| Metric | Target | Notes |
+|--------|--------|-------|
+| Target play time | 10–15 min | Tight church geometry creates chokepoints that slow progression. |
+| Estimated play time | TBD (computed after build) | |
+| Path distance | TBD | |
+| Room count | 8 rooms + 1 boss | from Room Placement table |
+| Enemy count | 16 enemies + boss | from enemy placement |
+
+### Pacing Notes
+Heresy's illusion walls are the primary pacing mechanic — players who probe every surface before moving will take longer but suffer fewer floor-collapse deaths. Eight rooms of tight ecclesiastical geometry with narrow nave corridors and confession-booth chokepoints create a stop-start rhythm that feels deliberately oppressive. Tension peaks in the Ritual Circle where illusion floors can collapse mid-combat, and again in the boss fight with Profano's phase shifts.
+
+---
+
 ## Identity
 
 **Circle:** 6 (Heresy)

@@ -189,6 +189,24 @@ export async function migrateAndSeed(db: DrizzleDb): Promise<void> {
     )
   `);
 
+  // Add new columns — idempotent via try/catch (SQLite lacks IF NOT EXISTS on ADD COLUMN)
+  const newColumns = [
+    `ALTER TABLE rooms ADD COLUMN floor_texture TEXT`,
+    `ALTER TABLE rooms ADD COLUMN wall_texture TEXT`,
+    `ALTER TABLE rooms ADD COLUMN ceiling_texture TEXT`,
+    `ALTER TABLE rooms ADD COLUMN fill_rule TEXT`,
+    `ALTER TABLE themes ADD COLUMN texture_palette TEXT`,
+    `ALTER TABLE themes ADD COLUMN room_fill_rules TEXT`,
+    `ALTER TABLE levels ADD COLUMN compiled_visual TEXT`,
+  ];
+  for (const stmt of newColumns) {
+    try {
+      db.run(sql.raw(stmt));
+    } catch {
+      /* column already exists — safe to ignore */
+    }
+  }
+
   // Create indices
   db.run(sql`CREATE INDEX IF NOT EXISTS rooms_level_idx ON rooms(level_id)`);
   db.run(

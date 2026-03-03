@@ -1,0 +1,7 @@
+{
+  "id": "limbo-grave-vase",
+  "name": "Grave Vase",
+  "type": "prop",
+  "pipeline": "graveyard-pack",
+  "source": "Graveyard Pack / PBR FBX → GLB"
+}

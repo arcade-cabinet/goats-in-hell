@@ -1,0 +1,7 @@
+{
+  "id": "limbo-grave-candle",
+  "name": "Grave Candle",
+  "type": "prop",
+  "pipeline": "graveyard-pack",
+  "source": "Graveyard Pack / PBR FBX → GLB"
+}

@@ -48,6 +48,7 @@ export async function buildCircle8(dbPath: string) {
     enemyTypes: ['shadowGoat', 'hellgoat', 'mimic'],
     enemyDensity: 1.0,
     pickupDensity: 1.5,
+    texturePalette: { exploration: 'marble', arena: 'tiles', boss: 'marble', secret: 'stone-dark' },
   });
 
   // =========================================================================
@@ -85,54 +86,104 @@ export async function buildCircle8(dbPath: string) {
     roomType: ROOM_TYPES.EXPLORATION,
     elevation: 0,
     sortOrder: 0,
+    floorTexture: 'marble',
+    wallTexture: 'tiles',
   });
 
   const hallOfMirrorsId = editor.room(LEVEL_ID, 'hall_of_mirrors', 23, 12, 14, 10, {
     roomType: ROOM_TYPES.EXPLORATION,
     elevation: 0,
     sortOrder: 1,
+    floorTexture: 'marble',
+    wallTexture: 'marble',
+    fillRule: {
+      type: 'scatter',
+      props: ['fraud-mirror-shard', 'fraud-two-faced-bust', 'fraud-fake-column'],
+      density: 0.1,
+    },
   });
 
   const bolgiaFlatId = editor.room(LEVEL_ID, 'bolgia_flatterers', 8, 26, 12, 8, {
     roomType: ROOM_TYPES.EXPLORATION,
     elevation: 0,
     sortOrder: 2,
+    floorTexture: 'tiles',
+    wallTexture: 'marble',
+    fillRule: {
+      type: 'scatter',
+      props: ['fraud-stage-curtain', 'fraud-theatrical-column', 'fraud-silhouette-prop'],
+      density: 0.08,
+    },
   });
 
   const bolgiaThievesId = editor.room(LEVEL_ID, 'bolgia_thieves', 34, 26, 10, 8, {
     roomType: ROOM_TYPES.EXPLORATION,
     elevation: 0,
     sortOrder: 3,
+    floorTexture: 'marble',
+    wallTexture: 'tiles',
+    fillRule: {
+      type: 'scatter',
+      props: ['fraud-gambling-table', 'fraud-coin-pile', 'trick-chest'],
+      density: 0.1,
+    },
   });
 
   const shiftingMazeId = editor.room(LEVEL_ID, 'shifting_maze', 32, 38, 14, 14, {
     roomType: ROOM_TYPES.EXPLORATION,
     elevation: 0,
     sortOrder: 4,
+    floorTexture: 'stone-dark',
+    wallTexture: 'marble',
+    fillRule: {
+      type: 'scatter',
+      props: ['fraud-shifting-wall-segment', 'fraud-crumbling-facade', 'fraud-fake-column'],
+      density: 0.12,
+    },
   });
 
   const counterfeitArenaId = editor.room(LEVEL_ID, 'counterfeit_arena', 22, 56, 12, 12, {
     roomType: ROOM_TYPES.ARENA,
     elevation: 0,
     sortOrder: 5,
+    floorTexture: 'marble',
+    fillRule: {
+      type: 'scatter',
+      props: ['fraud-marble-debris', 'fraud-cracked-mosaic-floor'],
+      density: 0.1,
+    },
   });
 
   const mimicDenId = editor.room(LEVEL_ID, 'mimics_den', 24, 72, 8, 8, {
     roomType: ROOM_TYPES.EXPLORATION,
     elevation: 0,
     sortOrder: 6,
+    floorTexture: 'stone-dark',
+    fillRule: {
+      type: 'scatter',
+      props: ['false-door', 'fraud-forked-tongue-relief'],
+      density: 0.1,
+    },
   });
 
   const serenissimaId = editor.room(LEVEL_ID, 'serenissima', 36, 72, 6, 6, {
     roomType: ROOM_TYPES.SECRET,
     elevation: 0,
     sortOrder: 7,
+    floorTexture: 'stone-dark',
+    fillRule: {
+      type: 'scatter',
+      props: ['fraud-onyx-wall-panel', 'fraud-marble-pedestal'],
+      density: 0.12,
+    },
   });
 
   const ingannoParlerId = editor.room(LEVEL_ID, 'inganno_parlor', 21, 84, 14, 14, {
     roomType: ROOM_TYPES.BOSS,
     elevation: -1,
     sortOrder: 8,
+    floorTexture: 'marble',
+    wallTexture: 'marble',
   });
 
   // =========================================================================
@@ -984,6 +1035,793 @@ export async function buildCircle8(dbPath: string) {
   });
 
   // =========================================================================
+  // EXPANSION — Additional rooms, connections, enemies, and triggers
+  // added to bring estimated play time from ~2.3 min to 12–18 min.
+  // =========================================================================
+
+  // ── Expansion: update level grid depth to 120 to accommodate new content ──
+  // (New rooms stay within existing z=0..98 range except for the extended
+  //  west/east corridors — grid width 60 already fits everything.)
+
+  // =========================================================================
+  // EX-1. NEW ROOMS
+  // =========================================================================
+  //
+  // Grid occupancy of existing rooms (no new rooms may overlap these):
+  //   portico          x=[25,35)  z=[2,8)
+  //   hall_of_mirrors  x=[23,37)  z=[12,22)
+  //   bolgia_flat      x=[8,20)   z=[26,34)
+  //   bolgia_thieves   x=[34,44)  z=[26,34)
+  //   shifting_maze    x=[32,46)  z=[38,52)
+  //   counterfeit_arena x=[22,34) z=[56,68)
+  //   mimics_den       x=[24,32)  z=[72,80)
+  //   serenissima      x=[36,42)  z=[72,78)
+  //   inganno_parlor   x=[21,35)  z=[84,98)
+  //
+  // New rooms placed in clear zones:
+  //   illusory_gallery      x=[2,16)   z=[12,22)  — west of hall_of_mirrors
+  //   false_treasury        x=[46,58)  z=[26,36)  — east of bolgia_thieves
+  //   mirror_labyrinth      x=[2,18)   z=[38,52)  — west of shifting_maze
+  //   deceivers_corridor    x=[46,58)  z=[40,52)  — east of shifting_maze
+  //   architects_chamber    x=[2,16)   z=[56,68)  — west of counterfeit_arena
+  //   phantom_vault         x=[36,48)  z=[56,68)  — east of counterfeit_arena
+
+  // EX-1a. Illusory Gallery — exploration, west wing mirror hall
+  // Bounds: x=2, z=12, w=14, h=10 → x=[2,16), z=[12,22)
+  const illusoryGalleryId = editor.room(LEVEL_ID, 'illusory_gallery', 2, 12, 14, 10, {
+    roomType: ROOM_TYPES.EXPLORATION,
+    elevation: 0,
+    sortOrder: 9,
+    floorTexture: 'marble',
+    wallTexture: 'marble',
+    fillRule: {
+      type: 'scatter',
+      props: ['fraud-mirror-shard', 'fraud-two-faced-bust', 'fraud-fake-column'],
+      density: 0.12,
+    },
+  });
+
+  // EX-1b. False Treasury — exploration, east wing lure room
+  // Bounds: x=46, z=26, w=12, h=10 → x=[46,58), z=[26,36)
+  const falseTreasuryId = editor.room(LEVEL_ID, 'false_treasury', 46, 26, 12, 10, {
+    roomType: ROOM_TYPES.EXPLORATION,
+    elevation: 0,
+    sortOrder: 10,
+    floorTexture: 'marble',
+    wallTexture: 'tiles',
+    fillRule: {
+      type: 'scatter',
+      props: ['fraud-gambling-table', 'fraud-coin-pile', 'trick-chest', 'fraud-marble-pedestal'],
+      density: 0.15,
+    },
+  });
+
+  // EX-1c. Mirror Labyrinth — exploration, west side maze
+  // Bounds: x=2, z=38, w=16, h=14 → x=[2,18), z=[38,52)
+  const mirrorLabyrinthId = editor.room(LEVEL_ID, 'mirror_labyrinth', 2, 38, 16, 14, {
+    roomType: ROOM_TYPES.EXPLORATION,
+    elevation: 0,
+    sortOrder: 11,
+    floorTexture: 'stone-dark',
+    wallTexture: 'marble',
+    fillRule: {
+      type: 'scatter',
+      props: ['fraud-mirror-shard', 'fraud-shifting-wall-segment', 'fraud-crumbling-facade'],
+      density: 0.14,
+    },
+  });
+
+  // EX-1d. Deceiver's Corridor — exploration, east side gauntlet
+  // Bounds: x=46, z=40, w=12, h=12 → x=[46,58), z=[40,52)
+  const deceiversCorridorId = editor.room(LEVEL_ID, 'deceivers_corridor', 46, 40, 12, 12, {
+    roomType: ROOM_TYPES.EXPLORATION,
+    elevation: 0,
+    sortOrder: 12,
+    floorTexture: 'tiles',
+    wallTexture: 'stone-dark',
+    fillRule: {
+      type: 'scatter',
+      props: ['fraud-silhouette-prop', 'fraud-forked-tongue-relief', 'false-door'],
+      density: 0.1,
+    },
+  });
+
+  // EX-1e. Architect's Chamber — arena, west side showdown
+  // Bounds: x=2, z=56, w=14, h=12 → x=[2,16), z=[56,68)
+  const architectsChamber = editor.room(LEVEL_ID, 'architects_chamber', 2, 56, 14, 12, {
+    roomType: ROOM_TYPES.ARENA,
+    elevation: 0,
+    sortOrder: 13,
+    floorTexture: 'marble',
+    wallTexture: 'marble',
+    fillRule: {
+      type: 'scatter',
+      props: ['fraud-marble-debris', 'fraud-cracked-mosaic-floor', 'fraud-fake-column'],
+      density: 0.1,
+    },
+  });
+
+  // EX-1f. Phantom Vault — secret, east side reward
+  // Bounds: x=36, z=56, w=12, h=12 → x=[36,48), z=[56,68)
+  const phantomVaultId = editor.room(LEVEL_ID, 'phantom_vault', 36, 56, 12, 12, {
+    roomType: ROOM_TYPES.SECRET,
+    elevation: 0,
+    sortOrder: 14,
+    floorTexture: 'stone-dark',
+    wallTexture: 'marble',
+    fillRule: {
+      type: 'scatter',
+      props: ['fraud-onyx-wall-panel', 'fraud-marble-pedestal', 'fraud-mirror-shard'],
+      density: 0.12,
+    },
+  });
+
+  // =========================================================================
+  // EX-2. NEW CONNECTIONS
+  // =========================================================================
+
+  // Illusory Gallery ↔ Hall of Mirrors (corridor, width 2)
+  // illusory_gallery east edge (x=16) neighbors hall_of_mirrors west edge (x=23)
+  editor.corridor(LEVEL_ID, illusoryGalleryId, hallOfMirrorsId, 2);
+
+  // False Treasury ↔ Bolgia of Thieves (corridor, width 2)
+  // bolgia_thieves east edge (x=44) neighbors false_treasury west edge (x=46)
+  editor.corridor(LEVEL_ID, falseTreasuryId, bolgiaThievesId, 2);
+
+  // Mirror Labyrinth ↔ Bolgia of Flatterers (corridor, width 2)
+  // mirror_labyrinth east edge (x=18) neighbors bolgia_flat west edge (x=8) — south
+  editor.corridor(LEVEL_ID, mirrorLabyrinthId, bolgiaFlatId, 2);
+
+  // Deceiver's Corridor ↔ Shifting Maze (corridor, width 2)
+  // shifting_maze east edge (x=46) neighbors deceivers_corridor west edge (x=46)
+  editor.corridor(LEVEL_ID, deceiversCorridorId, shiftingMazeId, 2);
+
+  // Mirror Labyrinth ↔ Architect's Chamber (corridor, width 2)
+  // mirror_labyrinth south edge (z=52) neighbors architects_chamber north edge (z=56)
+  editor.corridor(LEVEL_ID, mirrorLabyrinthId, architectsChamber, 2);
+
+  // Architect's Chamber ↔ Counterfeit Arena (corridor, width 2)
+  // architects_chamber east edge (x=16) connects to counterfeit_arena west edge (x=22)
+  editor.corridor(LEVEL_ID, architectsChamber, counterfeitArenaId, 2);
+
+  // Phantom Vault ↔ Counterfeit Arena (secret, width 2)
+  // counterfeit_arena east edge (x=34) neighbors phantom_vault west edge (x=36)
+  editor.connect(LEVEL_ID, counterfeitArenaId, phantomVaultId, {
+    connectionType: CONNECTION_TYPES.SECRET,
+    corridorWidth: 2,
+  });
+
+  // Phantom Vault ↔ Mimic's Den (corridor, width 2)
+  // phantom_vault south side (z=68) connects toward mimics_den (z=72)
+  editor.corridor(LEVEL_ID, phantomVaultId, mimicDenId, 2);
+
+  // Deceiver's Corridor ↔ False Treasury (corridor, width 2)
+  // false_treasury south edge (z=36) and deceivers_corridor north edge (z=40) — link the east wing
+  editor.corridor(LEVEL_ID, falseTreasuryId, deceiversCorridorId, 2);
+
+  // =========================================================================
+  // EX-3. NEW ENEMIES — 45+ total across 6 new rooms
+  // =========================================================================
+
+  // ── Illusory Gallery (bounds: 2, 12, 14, 10) → interior: x=[3,15], z=[13,21] ──
+  // 4x shadowGoat — patrol the mirrored alcoves
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 5, 14, {
+    roomId: illusoryGalleryId,
+    patrol: [
+      { x: 5, z: 14 },
+      { x: 13, z: 14 },
+      { x: 9, z: 20 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 13, 14, {
+    roomId: illusoryGalleryId,
+    patrol: [
+      { x: 13, z: 14 },
+      { x: 9, z: 20 },
+      { x: 5, z: 14 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 5, 20, {
+    roomId: illusoryGalleryId,
+    patrol: [
+      { x: 5, z: 20 },
+      { x: 13, z: 20 },
+      { x: 9, z: 14 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 13, 20, {
+    roomId: illusoryGalleryId,
+  });
+  // 3x hellgoat — ambush from mirror alcoves
+  editor.ambush(
+    LEVEL_ID,
+    { x: 3, z: 12, w: 12, h: 2 },
+    [
+      { type: ENEMY_TYPES.HELLGOAT, x: 5, z: 16 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 9, z: 18 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 13, z: 16 },
+    ],
+    { roomId: illusoryGalleryId },
+  );
+  // 2x mimic disguised as props
+  editor.spawnEnemy(LEVEL_ID, 'mimic', 7, 17, { roomId: illusoryGalleryId });
+  editor.spawnEnemy(LEVEL_ID, 'mimic', 12, 19, { roomId: illusoryGalleryId });
+
+  // ── False Treasury (bounds: 46, 26, 12, 10) → interior: x=[47,57], z=[27,35] ──
+  // 3x hellgoat — guarding treasure hoard
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 49, 29, {
+    roomId: falseTreasuryId,
+    patrol: [
+      { x: 49, z: 29 },
+      { x: 55, z: 29 },
+      { x: 52, z: 33 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 55, 29, {
+    roomId: falseTreasuryId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 52, 33, {
+    roomId: falseTreasuryId,
+  });
+  // 2x goatKnight — elite guards
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 48, 28, {
+    roomId: falseTreasuryId,
+    patrol: [
+      { x: 48, z: 28 },
+      { x: 48, z: 34 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 56, 28, {
+    roomId: falseTreasuryId,
+    patrol: [
+      { x: 56, z: 28 },
+      { x: 56, z: 34 },
+    ],
+  });
+  // 3x mimic — disguised among coin piles
+  editor.spawnEnemy(LEVEL_ID, 'mimic', 51, 30, { roomId: falseTreasuryId });
+  editor.spawnEnemy(LEVEL_ID, 'mimic', 53, 27, { roomId: falseTreasuryId });
+  editor.spawnEnemy(LEVEL_ID, 'mimic', 55, 33, { roomId: falseTreasuryId });
+
+  // ── Mirror Labyrinth (bounds: 2, 38, 16, 14) → interior: x=[3,17], z=[39,51] ──
+  // 4x shadowGoat — patrol the maze corridors
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 5, 41, {
+    roomId: mirrorLabyrinthId,
+    patrol: [
+      { x: 5, z: 41 },
+      { x: 15, z: 41 },
+      { x: 10, z: 46 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 15, 41, {
+    roomId: mirrorLabyrinthId,
+    patrol: [
+      { x: 15, z: 41 },
+      { x: 10, z: 46 },
+      { x: 5, z: 41 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 4, 49, {
+    roomId: mirrorLabyrinthId,
+    patrol: [
+      { x: 4, z: 49 },
+      { x: 16, z: 49 },
+      { x: 10, z: 44 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 16, 49, {
+    roomId: mirrorLabyrinthId,
+  });
+  // 3x hellgoat — ambush from wall segments
+  editor.ambush(
+    LEVEL_ID,
+    { x: 3, z: 44, w: 12, h: 4 },
+    [
+      { type: ENEMY_TYPES.HELLGOAT, x: 6, z: 44 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 10, z: 47 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 15, z: 44 },
+    ],
+    { roomId: mirrorLabyrinthId },
+  );
+  // 2x fireGoat — revealed as walls shift
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 8, 43, {
+    roomId: mirrorLabyrinthId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 13, 50, {
+    roomId: mirrorLabyrinthId,
+  });
+
+  // ── Deceiver's Corridor (bounds: 46, 40, 12, 12) → interior: x=[47,57], z=[41,51] ──
+  // 3x shadowGoat — lurking in false doorways
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 49, 43, {
+    roomId: deceiversCorridorId,
+    patrol: [
+      { x: 49, z: 43 },
+      { x: 55, z: 43 },
+      { x: 52, z: 49 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 55, 43, {
+    roomId: deceiversCorridorId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 52, 49, {
+    roomId: deceiversCorridorId,
+  });
+  // 2x goatKnight — flanking gauntlet
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 48, 42, {
+    roomId: deceiversCorridorId,
+    patrol: [
+      { x: 48, z: 42 },
+      { x: 56, z: 42 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 56, 50, {
+    roomId: deceiversCorridorId,
+  });
+  // Ambush: 3x hellgoat burst from false doors
+  editor.ambush(
+    LEVEL_ID,
+    { x: 47, z: 45, w: 8, h: 3 },
+    [
+      { type: ENEMY_TYPES.HELLGOAT, x: 49, z: 47 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 52, z: 45 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 55, z: 47 },
+    ],
+    { roomId: deceiversCorridorId },
+  );
+
+  // ── Architect's Chamber (bounds: 2, 56, 14, 12) → interior: x=[3,15], z=[57,67] ──
+  // Arena waves: Wave 1: goatKnight x2 + hellgoat x2; Wave 2: shadowGoat x3 + fireGoat x1
+  editor.setupArenaWaves(LEVEL_ID, architectsChamber, { x: 4, z: 58, w: 10, h: 8 }, [
+    [
+      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 4, z: 62 },
+      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 14, z: 62 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 4, z: 58 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 14, z: 66 },
+    ],
+    [
+      { type: ENEMY_TYPES.SHADOW_GOAT, x: 5, z: 60 },
+      { type: ENEMY_TYPES.SHADOW_GOAT, x: 13, z: 60 },
+      { type: ENEMY_TYPES.SHADOW_GOAT, x: 9, z: 65 },
+      { type: ENEMY_TYPES.FIRE_GOAT, x: 9, z: 58 },
+    ],
+  ]);
+  // 2x mimic — reward lure
+  editor.spawnEnemy(LEVEL_ID, 'mimic', 6, 64, { roomId: architectsChamber });
+  editor.spawnEnemy(LEVEL_ID, 'mimic', 12, 64, { roomId: architectsChamber });
+
+  // ── Phantom Vault (bounds: 36, 56, 12, 12) → interior: x=[37,47], z=[57,67] ──
+  // 3x goatKnight — elite vault guardians
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 39, 59, {
+    roomId: phantomVaultId,
+    patrol: [
+      { x: 39, z: 59 },
+      { x: 45, z: 59 },
+      { x: 42, z: 65 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 45, 59, {
+    roomId: phantomVaultId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 42, 65, {
+    roomId: phantomVaultId,
+  });
+  // 2x fireGoat — patrolling vault perimeter
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 38, 64, {
+    roomId: phantomVaultId,
+    patrol: [
+      { x: 38, z: 64 },
+      { x: 46, z: 64 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 46, 57, {
+    roomId: phantomVaultId,
+  });
+  // 2x mimic — disguised in treasure cluster
+  editor.spawnEnemy(LEVEL_ID, 'mimic', 41, 62, { roomId: phantomVaultId });
+  editor.spawnEnemy(LEVEL_ID, 'mimic', 43, 58, { roomId: phantomVaultId });
+
+  // =========================================================================
+  // EX-4. NEW PICKUPS
+  // =========================================================================
+
+  // Illusory Gallery
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 7, 15);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 11, 20);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 14, 18);
+
+  // False Treasury
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 50, 27);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 54, 33);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 56, 29);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.FUEL, 52, 31);
+
+  // Mirror Labyrinth
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 6, 44);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 14, 48);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 10, 50);
+
+  // Deceiver's Corridor
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 50, 44);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 54, 48);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.FUEL, 48, 50);
+
+  // Architect's Chamber
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 5, 60);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 13, 64);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 9, 66);
+
+  // Phantom Vault — generous reward for finding the secret
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 38, 60);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 45, 64);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 40, 66);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 44, 58);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.FUEL, 42, 62);
+
+  // =========================================================================
+  // EX-5. NEW PROPS
+  // =========================================================================
+
+  // ── Illusory Gallery (bounds: 2, 12, 14, 10) ──
+  editor.spawnProp(LEVEL_ID, 'fraud-mirror-shard', 6, 14, { roomId: illusoryGalleryId });
+  editor.spawnProp(LEVEL_ID, 'fraud-mirror-shard', 12, 14, { roomId: illusoryGalleryId });
+  editor.spawnProp(LEVEL_ID, 'fraud-mirror-shard', 6, 20, { roomId: illusoryGalleryId });
+  editor.spawnProp(LEVEL_ID, 'fraud-mirror-shard', 12, 20, { roomId: illusoryGalleryId });
+  editor.spawnProp(LEVEL_ID, 'fraud-two-faced-bust', 4, 17, { roomId: illusoryGalleryId });
+  editor.spawnProp(LEVEL_ID, 'fraud-two-faced-bust', 14, 17, { roomId: illusoryGalleryId });
+  editor.spawnProp(LEVEL_ID, 'fraud-ornate-arch', 9, 13, { roomId: illusoryGalleryId });
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 3, 16, {
+    roomId: illusoryGalleryId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.8,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 14, 16, {
+    roomId: illusoryGalleryId,
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.8,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+
+  // ── False Treasury (bounds: 46, 26, 12, 10) ──
+  editor.spawnProp(LEVEL_ID, 'fraud-coin-pile', 49, 28, { roomId: falseTreasuryId });
+  editor.spawnProp(LEVEL_ID, 'fraud-coin-pile', 53, 28, { roomId: falseTreasuryId });
+  editor.spawnProp(LEVEL_ID, 'fraud-coin-pile', 56, 32, { roomId: falseTreasuryId });
+  editor.spawnProp(LEVEL_ID, 'trick-chest', 50, 30, { roomId: falseTreasuryId });
+  editor.spawnProp(LEVEL_ID, 'trick-chest', 54, 34, { roomId: falseTreasuryId });
+  editor.spawnProp(LEVEL_ID, 'fraud-marble-pedestal', 52, 31, { roomId: falseTreasuryId });
+  editor.spawnProp(LEVEL_ID, 'fraud-golden-banner', 47, 27, {
+    roomId: falseTreasuryId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 2.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'fraud-golden-banner', 56, 27, {
+    roomId: falseTreasuryId,
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 2.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'fraud-ornate-arch', 52, 27, { roomId: falseTreasuryId });
+
+  // ── Mirror Labyrinth (bounds: 2, 38, 16, 14) ──
+  editor.spawnProp(LEVEL_ID, 'fraud-shifting-wall-segment', 6, 41, { roomId: mirrorLabyrinthId });
+  editor.spawnProp(LEVEL_ID, 'fraud-shifting-wall-segment', 10, 44, { roomId: mirrorLabyrinthId });
+  editor.spawnProp(LEVEL_ID, 'fraud-shifting-wall-segment', 14, 47, { roomId: mirrorLabyrinthId });
+  editor.spawnProp(LEVEL_ID, 'fraud-shifting-wall-segment', 6, 49, { roomId: mirrorLabyrinthId });
+  editor.spawnProp(LEVEL_ID, 'fraud-mirror-shard', 4, 42, { roomId: mirrorLabyrinthId });
+  editor.spawnProp(LEVEL_ID, 'fraud-mirror-shard', 15, 44, { roomId: mirrorLabyrinthId });
+  editor.spawnProp(LEVEL_ID, 'fraud-mirror-shard', 9, 50, { roomId: mirrorLabyrinthId });
+  editor.spawnProp(LEVEL_ID, 'fraud-cracked-mosaic-floor', 8, 43, { roomId: mirrorLabyrinthId });
+  editor.spawnProp(LEVEL_ID, 'fraud-cracked-mosaic-floor', 13, 47, { roomId: mirrorLabyrinthId });
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 3, 44, {
+    roomId: mirrorLabyrinthId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.8,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 16, 48, {
+    roomId: mirrorLabyrinthId,
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.8,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+
+  // ── Deceiver's Corridor (bounds: 46, 40, 12, 12) ──
+  editor.spawnProp(LEVEL_ID, 'false-door', 47, 44, { roomId: deceiversCorridorId });
+  editor.spawnProp(LEVEL_ID, 'false-door', 56, 48, { roomId: deceiversCorridorId });
+  editor.spawnProp(LEVEL_ID, 'fraud-forked-tongue-relief', 52, 41, {
+    roomId: deceiversCorridorId,
+    surfaceAnchor: {
+      face: 'north',
+      offsetX: 0,
+      offsetY: 1.2,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.8,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'fraud-silhouette-prop', 49, 46, { roomId: deceiversCorridorId });
+  editor.spawnProp(LEVEL_ID, 'fraud-silhouette-prop', 54, 49, { roomId: deceiversCorridorId });
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 47, 46, {
+    roomId: deceiversCorridorId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.8,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 57, 44, {
+    roomId: deceiversCorridorId,
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.8,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+
+  // ── Architect's Chamber (bounds: 2, 56, 14, 12) ──
+  editor.spawnProp(LEVEL_ID, 'fraud-fake-column', 5, 58, { roomId: architectsChamber });
+  editor.spawnProp(LEVEL_ID, 'fraud-fake-column', 13, 58, { roomId: architectsChamber });
+  editor.spawnProp(LEVEL_ID, 'fraud-fake-column', 5, 66, { roomId: architectsChamber });
+  editor.spawnProp(LEVEL_ID, 'fraud-fake-column', 13, 66, { roomId: architectsChamber });
+  editor.spawnProp(LEVEL_ID, 'fraud-crumbling-facade', 3, 63, { roomId: architectsChamber });
+  editor.spawnProp(LEVEL_ID, 'fraud-marble-debris', 9, 65, { roomId: architectsChamber });
+  editor.spawnProp(LEVEL_ID, 'fraud-ornate-arch', 8, 57, { roomId: architectsChamber });
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 3, 61, {
+    roomId: architectsChamber,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.8,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 14, 63, {
+    roomId: architectsChamber,
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.8,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+
+  // ── Phantom Vault (bounds: 36, 56, 12, 12) ──
+  editor.spawnProp(LEVEL_ID, 'fraud-onyx-wall-panel', 38, 58, { roomId: phantomVaultId });
+  editor.spawnProp(LEVEL_ID, 'fraud-onyx-wall-panel', 44, 58, { roomId: phantomVaultId });
+  editor.spawnProp(LEVEL_ID, 'fraud-onyx-wall-panel', 38, 66, { roomId: phantomVaultId });
+  editor.spawnProp(LEVEL_ID, 'fraud-onyx-wall-panel', 44, 66, { roomId: phantomVaultId });
+  editor.spawnProp(LEVEL_ID, 'fraud-marble-pedestal', 42, 62, { roomId: phantomVaultId });
+  editor.spawnProp(LEVEL_ID, 'fraud-mirror-shard', 39, 63, { roomId: phantomVaultId });
+  editor.spawnProp(LEVEL_ID, 'fraud-mirror-shard', 45, 61, { roomId: phantomVaultId });
+  editor.spawnProp(LEVEL_ID, 'fraud-coin-pile', 40, 65, { roomId: phantomVaultId });
+  editor.spawnProp(LEVEL_ID, 'fraud-coin-pile', 44, 57, { roomId: phantomVaultId });
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 37, 62, {
+    roomId: phantomVaultId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.8,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'torch-sconce-ornate', 47, 60, {
+    roomId: phantomVaultId,
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.8,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+
+  // =========================================================================
+  // EX-6. NEW DECALS
+  // =========================================================================
+
+  editor.placeDecals(LEVEL_ID, illusoryGalleryId, [
+    { type: DECAL_TYPES.RUST_PATCH, x: 5, z: 14, opacity: 0.35 },
+    { type: DECAL_TYPES.RUST_PATCH, x: 13, z: 20, opacity: 0.3 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 3, z: 16, surface: 'wall', opacity: 0.35 },
+  ]);
+
+  editor.placeDecals(LEVEL_ID, falseTreasuryId, [
+    { type: DECAL_TYPES.RUST_PATCH, x: 51, z: 29, opacity: 0.4 },
+    { type: DECAL_TYPES.RUST_PATCH, x: 55, z: 33, opacity: 0.3 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 47, z: 30, surface: 'wall', opacity: 0.35 },
+  ]);
+
+  editor.placeDecals(LEVEL_ID, mirrorLabyrinthId, [
+    { type: DECAL_TYPES.RUST_PATCH, x: 6, z: 41, opacity: 0.4 },
+    { type: DECAL_TYPES.RUST_PATCH, x: 14, z: 49, opacity: 0.35 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 3, z: 45, surface: 'wall', opacity: 0.3 },
+  ]);
+
+  editor.placeDecals(LEVEL_ID, deceiversCorridorId, [
+    { type: DECAL_TYPES.RUST_PATCH, x: 50, z: 43, opacity: 0.35 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 57, z: 46, surface: 'wall', opacity: 0.3 },
+  ]);
+
+  editor.placeDecals(LEVEL_ID, architectsChamber, [
+    { type: DECAL_TYPES.RUST_PATCH, x: 5, z: 58, opacity: 0.35 },
+    { type: DECAL_TYPES.RUST_PATCH, x: 13, z: 66, opacity: 0.35 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 3, z: 62, surface: 'wall', opacity: 0.3 },
+  ]);
+
+  editor.placeDecals(LEVEL_ID, phantomVaultId, [
+    { type: DECAL_TYPES.RUST_PATCH, x: 40, z: 62, opacity: 0.3 },
+    { type: DECAL_TYPES.WATER_STAIN, x: 37, z: 63, surface: 'wall', opacity: 0.25 },
+  ]);
+
+  // =========================================================================
+  // EX-7. NEW TRIGGERS — encounter sequences and ambushes
+  // =========================================================================
+
+  // Illusory Gallery: lockOnEntry to trap the player while shadowGoats patrol
+  editor.lockOnEntry(LEVEL_ID, illusoryGalleryId, { x: 3, z: 12, w: 12, h: 2 });
+
+  // False Treasury: ambush trigger — goatKnights activate when player nears center
+  editor.addTrigger(LEVEL_ID, {
+    action: TRIGGER_ACTIONS.AMBIENT_CHANGE,
+    zoneX: 49,
+    zoneZ: 29,
+    zoneW: 6,
+    zoneH: 4,
+    roomId: falseTreasuryId,
+    once: true,
+    actionData: { type: 'revealGuards', message: 'The gold is a lie.' },
+  });
+
+  // Mirror Labyrinth: shiftWalls trigger — walls rearrange every 10 seconds
+  editor.addTrigger(LEVEL_ID, {
+    action: TRIGGER_ACTIONS.AMBIENT_CHANGE,
+    zoneX: 3,
+    zoneZ: 39,
+    zoneW: 14,
+    zoneH: 12,
+    roomId: mirrorLabyrinthId,
+    once: false,
+    actionData: { type: 'shiftWalls', wallSegments: 4, maxShift: 2, cooldown: 10 },
+  });
+
+  // Deceiver's Corridor: illusion zone thickens fog on entry
+  editor.addTrigger(LEVEL_ID, {
+    action: TRIGGER_ACTIONS.AMBIENT_CHANGE,
+    zoneX: 47,
+    zoneZ: 41,
+    zoneW: 10,
+    zoneH: 2,
+    roomId: deceiversCorridorId,
+    once: true,
+    actionData: { type: 'fogThicken', fogDensity: 0.08 },
+  });
+
+  // Architect's Chamber: standard arena lock — handled by setupArenaWaves above.
+  // Add a dialogue trigger at entry to provide narrative context.
+  editor.dialogue(LEVEL_ID, { x: 3, z: 56, w: 12, h: 2 }, 'Even the pillars here are lies.', {
+    roomId: architectsChamber,
+  });
+
+  // Phantom Vault: reveal secret on entry — rewarding the observant player
+  editor.addTrigger(LEVEL_ID, {
+    action: TRIGGER_ACTIONS.SECRET_REVEAL,
+    zoneX: 37,
+    zoneZ: 57,
+    zoneW: 10,
+    zoneH: 2,
+    roomId: phantomVaultId,
+    once: true,
+  });
+
+  // =========================================================================
+  // EX-8. NEW ENVIRONMENT ZONES
+  // =========================================================================
+
+  // Illusory Gallery — high illusion intensity (mirrors confuse)
+  editor.addEnvironmentZone(LEVEL_ID, {
+    envType: ENV_TYPES.ILLUSION,
+    boundsX: 2,
+    boundsZ: 12,
+    boundsW: 14,
+    boundsH: 10,
+    intensity: 0.7,
+  });
+
+  // False Treasury — mild fog (gilded haze)
+  editor.addEnvironmentZone(LEVEL_ID, {
+    envType: ENV_TYPES.FOG,
+    boundsX: 46,
+    boundsZ: 26,
+    boundsW: 12,
+    boundsH: 10,
+    intensity: 0.4,
+  });
+
+  // Mirror Labyrinth — heavy illusion + fog overlay
+  editor.addEnvironmentZone(LEVEL_ID, {
+    envType: ENV_TYPES.ILLUSION,
+    boundsX: 2,
+    boundsZ: 38,
+    boundsW: 16,
+    boundsH: 14,
+    intensity: 0.9,
+  });
+
+  editor.addEnvironmentZone(LEVEL_ID, {
+    envType: ENV_TYPES.FOG,
+    boundsX: 2,
+    boundsZ: 38,
+    boundsW: 16,
+    boundsH: 14,
+    intensity: 0.65,
+  });
+
+  // Deceiver's Corridor — void darkness
+  editor.addEnvironmentZone(LEVEL_ID, {
+    envType: ENV_TYPES.VOID,
+    boundsX: 46,
+    boundsZ: 40,
+    boundsW: 12,
+    boundsH: 12,
+    intensity: 0.5,
+  });
+
+  // Phantom Vault — subtle illusion (things aren't what they seem)
+  editor.addEnvironmentZone(LEVEL_ID, {
+    envType: ENV_TYPES.ILLUSION,
+    boundsX: 36,
+    boundsZ: 56,
+    boundsW: 12,
+    boundsH: 12,
+    intensity: 0.6,
+  });
+
+  // =========================================================================
   // 7. ENVIRONMENT ZONES (from "Environment Zones" table)
   // =========================================================================
 
@@ -1036,6 +1874,129 @@ export async function buildCircle8(dbPath: string) {
     boundsH: 8,
     intensity: 0.8,
   });
+
+  // =========================================================================
+  // EX-9. FIX CONNECTIVITY — Phantom Vault reachability
+  // =========================================================================
+  // The phantom_vault's secret connection from counterfeit_arena is not
+  // traversed by the A* playtest.  Add a regular corridor to serenissima
+  // (x=[36,42), z=[72,78)) which is already connected to mimics_den, so the
+  // vault becomes reachable via: counterfeit_arena → mimics_den → serenissima
+  // → phantom_vault (or directly from phantom_vault → mimics_den corridor).
+  // Also add an explicit corridor from shifting_maze → phantom_vault so the
+  // east wing forms a full loop.
+  //
+  // phantom_vault: x=[36,48), z=[56,68)
+  // serenissima:   x=[36,42), z=[72,78)  — gap between them at z=[68,72)
+  // shifting_maze: x=[32,46), z=[38,52)  — gap at z=[52,56)
+  //
+  // Connect phantom_vault ↔ serenissima (corridor, width 2)
+  editor.corridor(LEVEL_ID, phantomVaultId, serenissimaId, 2);
+
+  // =========================================================================
+  // EX-10. ADDITIONAL ENEMIES — push play time above 12 min target
+  // =========================================================================
+  // Current: ~9.6 min with 32 enemies. Need ~25% more combat content.
+  // Adding 2 more waves of enemies spread across high-traffic rooms.
+
+  // Illusory Gallery bonus patrol — 2x fireGoat roaming the gallery
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 9, 15, {
+    roomId: illusoryGalleryId,
+    patrol: [
+      { x: 9, z: 15 },
+      { x: 9, z: 20 },
+      { x: 14, z: 17 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 4, 19, {
+    roomId: illusoryGalleryId,
+  });
+
+  // Mirror Labyrinth bonus — 2x goatKnight blocking the exit
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 10, 49, {
+    roomId: mirrorLabyrinthId,
+    patrol: [
+      { x: 10, z: 49 },
+      { x: 16, z: 49 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 5, 51, {
+    roomId: mirrorLabyrinthId,
+  });
+
+  // Deceiver's Corridor bonus — 2x fireGoat in the dark gauntlet
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 51, 41, {
+    roomId: deceiversCorridorId,
+    patrol: [
+      { x: 51, z: 41 },
+      { x: 51, z: 50 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 55, 50, {
+    roomId: deceiversCorridorId,
+  });
+
+  // False Treasury bonus — 1x extra goatKnight, the hidden sentinel
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 52, 35, {
+    roomId: falseTreasuryId,
+    patrol: [
+      { x: 52, z: 35 },
+      { x: 47, z: 35 },
+    ],
+  });
+
+  // Phantom Vault bonus — 1x shadowGoat lurking near the bonus loot
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 43, 63, {
+    roomId: phantomVaultId,
+    patrol: [
+      { x: 43, z: 63 },
+      { x: 38, z: 63 },
+      { x: 40, z: 58 },
+    ],
+  });
+
+  // Architect's Chamber bonus mimics — 2 additional disguised enemies
+  editor.spawnEnemy(LEVEL_ID, 'mimic', 4, 60, { roomId: architectsChamber });
+  editor.spawnEnemy(LEVEL_ID, 'mimic', 13, 62, { roomId: architectsChamber });
+
+  // ── Extra patrol enemies spread across expansion rooms ──
+  // These are always-active (not wave-gated) so the playtest counts them.
+
+  // Illusory Gallery — 2 more hellgoat sentinels at entry arch
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 5, 13, { roomId: illusoryGalleryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 13, 13, { roomId: illusoryGalleryId });
+
+  // False Treasury — 2 more hellgoat guards flanking the chest display
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 47, 31, { roomId: falseTreasuryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 57, 31, { roomId: falseTreasuryId });
+
+  // Mirror Labyrinth — 2 more shadowGoat wanderers (the maze is large)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 7, 40, {
+    roomId: mirrorLabyrinthId,
+    patrol: [
+      { x: 7, z: 40 },
+      { x: 15, z: 50 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 15, 40, {
+    roomId: mirrorLabyrinthId,
+    patrol: [
+      { x: 15, z: 40 },
+      { x: 7, z: 50 },
+    ],
+  });
+
+  // Deceiver's Corridor — 2 more shadowGoat behind false doors
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 48, 44, { roomId: deceiversCorridorId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 56, 48, { roomId: deceiversCorridorId });
+
+  // Phantom Vault — 2 more goatKnight elites guarding the true cache
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 37, 57, { roomId: phantomVaultId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 46, 66, { roomId: phantomVaultId });
+
+  // Hall of Mirrors — 2 bonus fireGoat to reinforce the opening area
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 26, 17, { roomId: hallOfMirrorsId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 34, 19, { roomId: hallOfMirrorsId });
 
   // =========================================================================
   // 8. PLAYER SPAWN (from "Player Spawn" section)

@@ -23,6 +23,21 @@ related:
 
 ---
 
+## Playability
+
+| Metric | Target | Notes |
+|--------|--------|-------|
+| Target play time | 5–8 min | Tutorial pacing — players learn movement and combat. Short is intentional; later circles scale up. |
+| Estimated play time | TBD (computed after build) | |
+| Path distance | TBD | |
+| Room count | 6 rooms + 1 boss | from Room Placement table |
+| Enemy count | 12 enemies + boss | from enemy placement |
+
+### Pacing Notes
+Limbo is intentionally brief — the player is orienting, learning to move in fog, and discovering the shotgun in the Crypt. Tension peaks at the Columns arena when doors lock and waves spawn. The boss encounter is a dramatic payoff but not overlong. The entire circle should feel like a prologue: threatening enough to establish stakes, short enough to leave the player wanting more.
+
+---
+
 ## Identity
 
 **Circle:** 1 (Limbo)

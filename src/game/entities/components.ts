@@ -24,6 +24,7 @@ export type EntityType =
   | 'fireGoat'
   | 'shadowGoat'
   | 'goatKnight'
+  | 'plagueGoat'
   | 'archGoat'
   | 'infernoGoat'
   | 'voidGoat'

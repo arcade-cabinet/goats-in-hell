@@ -12,9 +12,12 @@
     "experiments": {
       "baseUrl": "/goats-in-hell"
     },
-    "platforms": ["web", "android"],
+    "platforms": ["web", "android", "ios"],
     "android": {
       "package": "com.arcadecabinet.goatsinhell"
+    },
+    "ios": {
+      "bundleIdentifier": "com.arcadecabinet.goatsinhell"
     },
     "plugins": ["expo-sqlite"]
   }

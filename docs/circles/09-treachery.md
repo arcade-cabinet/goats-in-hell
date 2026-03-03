@@ -22,6 +22,21 @@ related:
 
 ---
 
+## Playability
+
+| Metric | Target | Notes |
+|--------|--------|-------|
+| Target play time | 15–22 min | Final circle. Ice sliding, betrayer cages, and four sub-regions compound traversal time. |
+| Estimated play time | TBD (computed after build) | |
+| Path distance | TBD | |
+| Room count | 8 rooms + 1 boss | from Room Placement table |
+| Enemy count | 20 enemies + boss | from enemy placement |
+
+### Pacing Notes
+Treachery is the longest circle by design — the reflected shots mechanic forces flamethrower-only play which has shorter range than rifles, requiring closer approach and more precise movement. The four sub-regions (Caina, Antenora, Ptolomaea, Judecca) each have a distinct threat profile, creating a four-act structure within the circle itself. Ice sliding on frozen surfaces adds unpredictable traversal time. The boss fight with Azazel is the game's climax and should feel earned — deliberately paced, not rushed.
+
+---
+
 ## Identity
 
 **Circle:** 9 (Treachery — Cocytus)

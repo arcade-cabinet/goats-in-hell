@@ -1,0 +1,7 @@
+{
+  "id": "limbo-grave-sarcophagus",
+  "name": "Ornate Sarcophagus",
+  "type": "prop",
+  "pipeline": "graveyard-pack",
+  "source": "Graveyard Pack / PBR FBX → GLB"
+}

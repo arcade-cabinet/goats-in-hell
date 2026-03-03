@@ -13,7 +13,20 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        launchOptions: {
+          args: [
+            // Enable software WebGL so THREE.WebGPURenderer forceWebGL fallback works
+            // in headless Chromium (no GPU hardware available in CI/e2e environments).
+            '--enable-webgl',
+            '--ignore-gpu-blocklist',
+            '--use-angle=swiftshader-webgl',
+            '--disable-gpu-sandbox',
+            '--enable-unsafe-webgpu', // allow WebGPU in headless if available
+          ],
+        },
+      },
     },
   ],
   // Don't start a web server — run `pnpm web:start` separately

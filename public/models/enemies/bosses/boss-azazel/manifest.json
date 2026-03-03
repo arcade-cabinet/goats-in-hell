@@ -1,0 +1,147 @@
+{
+  "id": "boss-azazel",
+  "name": "Azazel — The Scapegoat",
+  "type": "character",
+  "seed": 247382273,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cad46-f2e0-7301-86e1-c8b9179e1bb7",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad46-f2e0-7301-86e1-c8b9179e1bb7"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cad47-6a3e-764b-975a-fb15ddc5fe75",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad47-6a3e-764b-975a-fb15ddc5fe75"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cad49-0817-73f1-b09c-6a13a2376239",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad49-0817-73f1-b09c-6a13a2376239"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cad4a-4b6a-75aa-8ed8-e3bb30a63901",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cad4a-4b6a-75aa-8ed8-e3bb30a63901"
+      },
+      "artifacts": {
+        "model": "model.glb"
+      }
+    },
+    "animations": {
+      "WalkAndRun.Walking.Zombie_Walk": {
+        "taskId": "019cad67-96d0-76c4-9b80-56346f66e1a5",
+        "status": "SUCCEEDED",
+        "actionId": 112,
+        "artifact": "animations/Zombie_Walk.glb"
+      },
+      "WalkAndRun.Running.Lean_Forward_Sprint": {
+        "taskId": "019cad68-4c4a-799d-91a3-51440a6ee8ea",
+        "status": "SUCCEEDED",
+        "actionId": 509,
+        "artifact": "animations/Lean_Forward_Sprint.glb"
+      },
+      "DailyActions.Idle.Angry_Ground_Stomp": {
+        "taskId": "019cad68-8ac3-78df-b115-bee7750d1dec",
+        "status": "SUCCEEDED",
+        "actionId": 255,
+        "artifact": "animations/Angry_Ground_Stomp.glb"
+      },
+      "Fighting.AttackingwithWeapon.Axe_Spin_Attack": {
+        "taskId": "019cad68-c9b8-7af1-bf40-2deeb5e48e71",
+        "status": "SUCCEEDED",
+        "actionId": 238,
+        "artifact": "animations/Axe_Spin_Attack.glb"
+      },
+      "Fighting.AttackingwithWeapon.Charged_Axe_Chop": {
+        "taskId": "019cad69-08b2-7b19-b2e2-4973a2210f09",
+        "status": "SUCCEEDED",
+        "actionId": 237,
+        "artifact": "animations/Charged_Axe_Chop.glb"
+      },
+      "Fighting.CastingSpell.Charged_Ground_Slam": {
+        "taskId": "019cad69-be61-7a00-9f53-0db249c6b282",
+        "status": "SUCCEEDED",
+        "actionId": 127,
+        "artifact": "animations/Charged_Ground_Slam.glb"
+      },
+      "Fighting.CastingSpell.Charged_Spell_Cast": {
+        "taskId": "019cad69-fe17-7a18-a3fc-51df55bc8eb0",
+        "status": "SUCCEEDED",
+        "actionId": 125,
+        "artifact": "animations/Charged_Spell_Cast.glb"
+      },
+      "Fighting.Transitioning.Chest_Pound_Taunt": {
+        "taskId": "019cad6a-3d02-7903-aa20-1e0e6e7053ed",
+        "status": "SUCCEEDED",
+        "actionId": 88,
+        "artifact": "animations/Chest_Pound_Taunt.glb"
+      },
+      "BodyMovements.Acting.Zombie_Scream": {
+        "taskId": "019cad6a-f2c4-7b5f-bdb7-2008e6fd4604",
+        "status": "SUCCEEDED",
+        "actionId": 386,
+        "artifact": "animations/Zombie_Scream.glb"
+      },
+      "Fighting.GettingHit.BeHit_FlyUp": {
+        "taskId": "019cad6b-3464-7907-b1ff-d40761877974",
+        "status": "SUCCEEDED",
+        "actionId": 7,
+        "artifact": "animations/BeHit_FlyUp.glb"
+      },
+      "Fighting.Dying.Knock_Down": {
+        "taskId": "019cad6b-7307-7735-9e4f-2123d7112c0e",
+        "status": "SUCCEEDED",
+        "actionId": 187,
+        "artifact": "animations/Knock_Down.glb"
+      }
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 9 Final Boss (Treachery). The original scapegoat, frozen at the center of Hell, betrayer of all.",
+  "textToImageTask": {
+    "prompt": "A colossal bipedal humanoid goat demon god in A-pose, the ultimate final boss, impossibly massive frame half-encased in ancient cracking blue ice that it is breaking free from, the exposed half reveals midnight black fur over god-like musculature, a crown of twelve enormous horns arranged like a dark halo each tipped with a frozen blue flame, wielding a colossal two-handed sword of black ice with a blade that shifts between solid and crystalline, chains of frozen souls wrapped around the torso as trophies, three pairs of tattered frozen wings emerging from the back like a fallen angel, digitigrade goat legs encased in ancient ice armor cracking with every movement, three eyes in a triangular pattern on the forehead all burning cold blue above the two normal ice-white eyes, 4 meters tall, stylized dark fantasy game final boss character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Colossal goat demon god breaking from ice, twelve horns in dark halo with frozen flames, black ice greatsword, frozen soul chains, six tattered ice wings, three forehead eyes, 4m, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 22000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Midnight black divine fur, cracking ancient blue ice encasement, frozen blue flame horn tips, crystalline shifting black ice sword blade, frozen soul chain trophies, tattered ice-crystal wings, cold burning blue triangular forehead eyes",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 4
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Zombie_Walk",
+      "WalkAndRun.Running.Lean_Forward_Sprint",
+      "DailyActions.Idle.Angry_Ground_Stomp",
+      "Fighting.AttackingwithWeapon.Axe_Spin_Attack",
+      "Fighting.AttackingwithWeapon.Charged_Axe_Chop",
+      "Fighting.CastingSpell.Charged_Ground_Slam",
+      "Fighting.CastingSpell.Charged_Spell_Cast",
+      "Fighting.Transitioning.Chest_Pound_Taunt",
+      "BodyMovements.Acting.Zombie_Scream",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Knock_Down"
+    ]
+  }
+}

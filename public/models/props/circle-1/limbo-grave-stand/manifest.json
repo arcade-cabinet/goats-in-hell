@@ -1,0 +1,7 @@
+{
+  "id": "limbo-grave-stand",
+  "name": "Cemetery Stand",
+  "type": "prop",
+  "pipeline": "graveyard-pack",
+  "source": "Graveyard Pack / PBR FBX → GLB"
+}

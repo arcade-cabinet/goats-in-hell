@@ -48,6 +48,7 @@ export async function buildCircle6(dbPath: string) {
     enemyTypes: ['shadowGoat', 'fireGoat'],
     enemyDensity: 1.0, // Standard density
     pickupDensity: 0.7, // Moderate -- rewards exploration
+    texturePalette: { exploration: 'brick', arena: 'stone-dark', boss: 'tiles', secret: 'brick' },
   });
 
   // =========================================================================
@@ -90,12 +91,25 @@ export async function buildCircle6(dbPath: string) {
     roomType: ROOM_TYPES.EXPLORATION,
     elevation: 0,
     sortOrder: 1,
+    floorTexture: 'stone-dark',
+    wallTexture: 'brick',
+    fillRule: {
+      type: 'scatter',
+      props: ['heresy-church-pew', 'heresy-confessional-booth', 'heresy-torn-scripture-slab'],
+      density: 0.08,
+    },
   });
 
   const confessionalId = editor.room(LEVEL_ID, 'confessional', 8, 16, 6, 6, {
     roomType: ROOM_TYPES.EXPLORATION,
     elevation: 0,
     sortOrder: 2,
+    floorTexture: 'stone-dark',
+    fillRule: {
+      type: 'scatter',
+      props: ['heresy-corrupted-reliquary', 'heretic-tome', 'inverted-cross'],
+      density: 0.15,
+    },
   });
 
   // Catacombs: design doc says "maze" type, but no MAZE in ROOM_TYPES.
@@ -104,30 +118,60 @@ export async function buildCircle6(dbPath: string) {
     roomType: ROOM_TYPES.EXPLORATION,
     elevation: -1,
     sortOrder: 3,
+    floorTexture: 'brick',
+    wallTexture: 'brick',
+    fillRule: {
+      type: 'scatter',
+      props: ['heresy-catacomb-torch', 'heresy-bone-urn', 'heresy-cracked-marble-pillar'],
+      density: 0.1,
+    },
   });
 
   const trialChamberId = editor.room(LEVEL_ID, 'trial_chamber', 19, 32, 12, 12, {
     roomType: ROOM_TYPES.ARENA,
     elevation: 0,
     sortOrder: 4,
+    floorTexture: 'tiles',
+    wallTexture: 'stone-dark',
+    fillRule: {
+      type: 'scatter',
+      props: ['heresy-burning-pyre', 'heresy-toppled-altar', 'heresy-shattered-icon'],
+      density: 0.08,
+    },
   });
 
   const ossuaryId = editor.room(LEVEL_ID, 'ossuary', 10, 40, 8, 8, {
     roomType: ROOM_TYPES.EXPLORATION,
     elevation: -1,
     sortOrder: 5,
+    floorTexture: 'tiles',
+    wallTexture: 'stone-dark',
+    fillRule: {
+      type: 'scatter',
+      props: ['heresy-pentagram-floor-tile', 'heresy-broken-stained-glass'],
+      density: 0.1,
+    },
   });
 
   const libraryId = editor.room(LEVEL_ID, 'heretics_library', 36, 36, 6, 8, {
     roomType: ROOM_TYPES.SECRET,
     elevation: 0,
     sortOrder: 6,
+    floorTexture: 'stone-dark',
+    wallTexture: 'brick',
+    fillRule: {
+      type: 'scatter',
+      props: ['heresy-forbidden-bookcase', 'heresy-profane-symbol', 'heresy-corrupted-reliquary'],
+      density: 0.12,
+    },
   });
 
   const chapelId = editor.room(LEVEL_ID, 'profano_chapel', 18, 54, 14, 14, {
     roomType: ROOM_TYPES.BOSS,
     elevation: 0,
     sortOrder: 7,
+    floorTexture: 'tiles',
+    wallTexture: 'tiles',
   });
 
   // =========================================================================
@@ -718,6 +762,578 @@ export async function buildCircle6(dbPath: string) {
   //   Facing: pi (south -- facing toward Nave of Lies)
 
   editor.setPlayerSpawn(LEVEL_ID, 25, 5, Math.PI);
+
+  // =========================================================================
+  // EXPANSION — 6 new rooms, 35+ enemies, new encounters
+  // =========================================================================
+  //
+  // Existing room bounds (for non-overlap reference):
+  //   Narthex           (21,  2,  8,  6) → x:[21..28], z:[2..7]
+  //   Nave of Lies      (18, 12, 14, 10) → x:[18..31], z:[12..21]
+  //   Confessional      ( 8, 16,  6,  6) → x:[8..13],  z:[16..21]
+  //   Catacombs         (36, 14, 10, 10) → x:[36..45], z:[14..23]
+  //   Trial Chamber     (19, 32, 12, 12) → x:[19..30], z:[32..43]
+  //   Ossuary           (10, 40,  8,  8) → x:[10..17], z:[40..47]
+  //   Heretic's Library (36, 36,  6,  8) → x:[36..41], z:[36..43]
+  //   Profano's Chapel  (18, 54, 14, 14) → x:[18..31], z:[54..67]
+  //
+  // New rooms placed in open grid areas (level is 50 wide x 70 deep):
+  //   Inquisitor's Antechamber ( 1, 22,  9,  8) → x:[1..9],  z:[22..29] CLEAR
+  //   Forbidden Scriptorium    (32, 24, 10, 10) → x:[32..41],z:[24..33] CLEAR
+  //   Ritual Pit               ( 1, 32,  9,  8) → x:[1..9],  z:[32..39] CLEAR
+  //   Crypt of the Damned      (32, 44, 10, 10) → x:[32..41],z:[44..53] CLEAR
+  //   Penitent's Corridor      ( 1, 40,  9, 10) → x:[1..9],  z:[40..49] CLEAR
+  //   Vestibule of Doubt       (33, 54, 10, 12) → x:[33..42],z:[54..65] CLEAR
+
+  // ── New Rooms ────────────────────────────────────────────────────────────
+
+  // Inquisitor's Antechamber: interrogation room south of Confessional
+  // x:[1..9], z:[22..29]
+  const inquisitorId = editor.room(LEVEL_ID, 'inquisitors_antechamber', 1, 22, 9, 8, {
+    roomType: ROOM_TYPES.EXPLORATION,
+    elevation: 0,
+    sortOrder: 8,
+    floorTexture: 'stone-dark',
+    wallTexture: 'brick',
+    fillRule: {
+      type: 'scatter',
+      props: ['heresy-church-pew', 'heresy-bone-urn', 'heresy-confessional-booth'],
+      density: 0.2,
+    },
+  });
+
+  // Forbidden Scriptorium: secret archive east of Trial Chamber, south of Catacombs
+  // x:[32..41], z:[24..33]
+  const scriptoriumId = editor.room(LEVEL_ID, 'forbidden_scriptorium', 32, 24, 10, 10, {
+    roomType: ROOM_TYPES.EXPLORATION,
+    elevation: 0,
+    sortOrder: 9,
+    floorTexture: 'stone-dark',
+    wallTexture: 'brick',
+    fillRule: {
+      type: 'scatter',
+      props: ['heresy-forbidden-bookcase', 'heretic-tome', 'heresy-torn-scripture-slab'],
+      density: 0.18,
+    },
+  });
+
+  // Ritual Pit: sunken arena south of Inquisitor's Antechamber
+  // x:[1..9], z:[32..39]
+  const ritualPitId = editor.room(LEVEL_ID, 'ritual_pit', 1, 32, 9, 8, {
+    roomType: ROOM_TYPES.ARENA,
+    elevation: -1,
+    sortOrder: 10,
+    floorTexture: 'tiles',
+    wallTexture: 'stone-dark',
+    fillRule: {
+      type: 'scatter',
+      props: ['heresy-burning-pyre', 'heresy-pentagram-floor-tile', 'heresy-toppled-altar'],
+      density: 0.12,
+    },
+  });
+
+  // Crypt of the Damned: sealed burial vault below Heretic's Library
+  // x:[32..41], z:[44..53]
+  const cryptId = editor.room(LEVEL_ID, 'crypt_of_the_damned', 32, 44, 10, 10, {
+    roomType: ROOM_TYPES.EXPLORATION,
+    elevation: -1,
+    sortOrder: 11,
+    floorTexture: 'brick',
+    wallTexture: 'brick',
+    fillRule: {
+      type: 'scatter',
+      props: ['heresy-bone-urn', 'heresy-catacomb-torch', 'heresy-cracked-marble-pillar'],
+      density: 0.15,
+    },
+  });
+
+  // Penitent's Corridor: winding passage connecting west crypts to Ossuary
+  // x:[1..9], z:[40..49]
+  const penitentCorridorId = editor.room(LEVEL_ID, 'penitents_corridor', 1, 40, 9, 10, {
+    roomType: ROOM_TYPES.EXPLORATION,
+    elevation: 0,
+    sortOrder: 12,
+    floorTexture: 'stone-dark',
+    wallTexture: 'brick',
+    fillRule: {
+      type: 'scatter',
+      props: ['heresy-shattered-icon', 'heresy-profane-symbol', 'heresy-torn-scripture-slab'],
+      density: 0.1,
+    },
+  });
+
+  // Vestibule of Doubt: antechamber approach to Profano's Chapel from the east
+  // x:[33..42], z:[54..65]
+  const vestibuleOfDoubtId = editor.room(LEVEL_ID, 'vestibule_of_doubt', 33, 54, 10, 12, {
+    roomType: ROOM_TYPES.EXPLORATION,
+    elevation: 0,
+    sortOrder: 13,
+    floorTexture: 'tiles',
+    wallTexture: 'stone-dark',
+    fillRule: {
+      type: 'scatter',
+      props: ['heresy-broken-stained-glass', 'heresy-desecrated-arch', 'inverted-cross'],
+      density: 0.12,
+    },
+  });
+
+  // ── New Connections ───────────────────────────────────────────────────────
+
+  // Confessional south → Inquisitor's Antechamber north
+  editor.corridor(LEVEL_ID, confessionalId, inquisitorId, 2);
+
+  // Inquisitor's Antechamber south → Ritual Pit (stairs down, -1)
+  editor.connect(LEVEL_ID, inquisitorId, ritualPitId, {
+    connectionType: CONNECTION_TYPES.STAIRS,
+    corridorWidth: 2,
+    fromElevation: 0,
+    toElevation: -1,
+  });
+
+  // Catacombs south → Forbidden Scriptorium (stairs up, -1 to 0)
+  editor.connect(LEVEL_ID, catacombsId, scriptoriumId, {
+    connectionType: CONNECTION_TYPES.STAIRS,
+    corridorWidth: 2,
+    fromElevation: -1,
+    toElevation: 0,
+  });
+
+  // Trial Chamber east → Forbidden Scriptorium west (corridor)
+  editor.corridor(LEVEL_ID, trialChamberId, scriptoriumId, 2);
+
+  // Ritual Pit south → Penitent's Corridor (stairs up, -1 to 0)
+  editor.connect(LEVEL_ID, ritualPitId, penitentCorridorId, {
+    connectionType: CONNECTION_TYPES.STAIRS,
+    corridorWidth: 2,
+    fromElevation: -1,
+    toElevation: 0,
+  });
+
+  // Penitent's Corridor east → Ossuary west (corridor)
+  editor.corridor(LEVEL_ID, penitentCorridorId, ossuaryId, 2);
+
+  // Heretic's Library south → Crypt of the Damned north (stairs down, 0 to -1)
+  editor.connect(LEVEL_ID, libraryId, cryptId, {
+    connectionType: CONNECTION_TYPES.STAIRS,
+    corridorWidth: 2,
+    fromElevation: 0,
+    toElevation: -1,
+  });
+
+  // Crypt of the Damned south → Vestibule of Doubt north (stairs up, -1 to 0)
+  editor.connect(LEVEL_ID, cryptId, vestibuleOfDoubtId, {
+    connectionType: CONNECTION_TYPES.STAIRS,
+    corridorWidth: 2,
+    fromElevation: -1,
+    toElevation: 0,
+  });
+
+  // Vestibule of Doubt west → Profano's Chapel east (corridor, width 3)
+  editor.corridor(LEVEL_ID, vestibuleOfDoubtId, chapelId, 3);
+
+  // ── New Enemies ────────────────────────────────────────────────────────────
+  // Target: 35+ additional enemies spread across 6 new rooms
+  //
+  // Inquisitor's Antechamber (1, 22, 9, 8) → interior x:[2..9], z:[23..29]
+  // 4x GOAT_KNIGHT (inquisitors — heavy armored patrols)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 3, 24, {
+    roomId: inquisitorId,
+    patrol: [
+      { x: 3, z: 24 },
+      { x: 8, z: 28 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 8, 24, {
+    roomId: inquisitorId,
+    patrol: [
+      { x: 8, z: 24 },
+      { x: 3, z: 28 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 5, 26, {
+    roomId: inquisitorId,
+    patrol: [
+      { x: 2, z: 26 },
+      { x: 8, z: 26 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 5, 28, {
+    roomId: inquisitorId,
+  });
+
+  // Forbidden Scriptorium (32, 24, 10, 10) → interior x:[33..41], z:[25..33]
+  // 6x mix: corrupted scholars (HELLGOAT) + archive guards (GOAT_KNIGHT)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 34, 26, {
+    roomId: scriptoriumId,
+    patrol: [
+      { x: 34, z: 25 },
+      { x: 40, z: 25 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 34, 30, {
+    roomId: scriptoriumId,
+    patrol: [
+      { x: 34, z: 30 },
+      { x: 40, z: 30 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 37, 27, {
+    roomId: scriptoriumId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 40, 26, {
+    roomId: scriptoriumId,
+    patrol: [
+      { x: 40, z: 25 },
+      { x: 40, z: 33 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 33, 32, {
+    roomId: scriptoriumId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 37, 32, {
+    roomId: scriptoriumId,
+  });
+
+  // Ritual Pit (1, 32, 9, 8) → interior x:[2..9], z:[33..39]
+  // Arena waves: 3 waves of cultist ambush (HELLGOAT + SHADOW_GOAT)
+  editor.setupArenaWaves(LEVEL_ID, ritualPitId, { x: 2, z: 33, w: 7, h: 4 }, [
+    // Wave 1: 3x HELLGOAT (first cultists emerge from the pyre)
+    [
+      { type: ENEMY_TYPES.HELLGOAT, x: 3, z: 34 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 5, z: 33 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 8, z: 34 },
+    ],
+    // Wave 2: 2x SHADOW_GOAT flank from the walls
+    [
+      { type: ENEMY_TYPES.SHADOW_GOAT, x: 2, z: 38 },
+      { type: ENEMY_TYPES.SHADOW_GOAT, x: 8, z: 38 },
+    ],
+    // Wave 3: 1x GOAT_KNIGHT as pit champion
+    [
+      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 5, z: 36 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 3, z: 37 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 7, z: 37 },
+    ],
+  ]);
+
+  // Crypt of the Damned (32, 44, 10, 10) → interior x:[33..41], z:[45..53]
+  // 7x tomb guardians lurking among sarcophagi
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 34, 46, {
+    roomId: cryptId,
+    patrol: [
+      { x: 34, z: 45 },
+      { x: 34, z: 53 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 40, 46, {
+    roomId: cryptId,
+    patrol: [
+      { x: 40, z: 45 },
+      { x: 40, z: 53 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 37, 49, {
+    roomId: cryptId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 33, 52, {
+    roomId: cryptId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 40, 52, {
+    roomId: cryptId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 36, 51, {
+    roomId: cryptId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 38, 47, {
+    roomId: cryptId,
+  });
+
+  // Penitent's Corridor (1, 40, 9, 10) → interior x:[2..9], z:[41..49]
+  // 5x gauntlet of penitent monks (HELLGOAT patrol through corridor)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 3, 42, {
+    roomId: penitentCorridorId,
+    patrol: [
+      { x: 2, z: 42 },
+      { x: 8, z: 42 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 5, 44, {
+    roomId: penitentCorridorId,
+    patrol: [
+      { x: 2, z: 44 },
+      { x: 8, z: 44 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 3, 47, {
+    roomId: penitentCorridorId,
+    patrol: [
+      { x: 2, z: 47 },
+      { x: 8, z: 47 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 7, 45, {
+    roomId: penitentCorridorId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 4, 48, {
+    roomId: penitentCorridorId,
+  });
+
+  // Vestibule of Doubt (33, 54, 10, 12) → interior x:[34..42], z:[55..65]
+  // 7x mixed elite guard before the chapel
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 35, 56, {
+    roomId: vestibuleOfDoubtId,
+    patrol: [
+      { x: 35, z: 55 },
+      { x: 35, z: 65 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 41, 56, {
+    roomId: vestibuleOfDoubtId,
+    patrol: [
+      { x: 41, z: 55 },
+      { x: 41, z: 65 },
+    ],
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 38, 60, {
+    roomId: vestibuleOfDoubtId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 35, 63, {
+    roomId: vestibuleOfDoubtId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 41, 63, {
+    roomId: vestibuleOfDoubtId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 37, 58, {
+    roomId: vestibuleOfDoubtId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 39, 64, {
+    roomId: vestibuleOfDoubtId,
+  });
+
+  // ── New Pickups ────────────────────────────────────────────────────────────
+
+  // Inquisitor's Antechamber: health near entry, ammo near torture rack
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 4, 23);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 7, 28);
+
+  // Forbidden Scriptorium: ammo x2 (behind bookcases), health (reading table)
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 33, 25);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 40, 32);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 36, 29);
+
+  // Ritual Pit: ammo near entry (before waves lock)
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 3, 33);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 7, 39);
+
+  // Crypt of the Damned: ammo hidden in sarcophagus alcove, health near exit
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 33, 46);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 40, 50);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 37, 53);
+
+  // Penitent's Corridor: ammo scattered along gauntlet
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 5, 41);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 2, 48);
+
+  // Vestibule of Doubt: ammo x2 flanking the approach, health near chapel door
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 34, 55);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.AMMO, 41, 55);
+  editor.spawnPickup(LEVEL_ID, PICKUP_TYPES.HEALTH, 38, 64);
+
+  // ── New Props ────────────────────────────────────────────────────────────
+
+  // --- Inquisitor's Antechamber (bounds: 1, 22, 9, 8) ---
+  editor.spawnProp(LEVEL_ID, 'heresy-cracked-marble-pillar', 2, 23, { roomId: inquisitorId });
+  editor.spawnProp(LEVEL_ID, 'heresy-cracked-marble-pillar', 9, 23, { roomId: inquisitorId });
+  editor.spawnProp(LEVEL_ID, 'heresy-confessional-booth', 2, 26, { roomId: inquisitorId });
+  editor.spawnProp(LEVEL_ID, 'heresy-confessional-booth', 8, 26, { roomId: inquisitorId });
+  editor.spawnProp(LEVEL_ID, 'heresy-catacomb-torch', 1, 25, { roomId: inquisitorId });
+  editor.spawnProp(LEVEL_ID, 'heresy-catacomb-torch', 9, 25, { roomId: inquisitorId });
+  editor.spawnProp(LEVEL_ID, 'inverted-cross', 5, 22, { roomId: inquisitorId });
+  editor.spawnProp(LEVEL_ID, 'heresy-torn-scripture-slab', 5, 28, { roomId: inquisitorId });
+
+  // --- Forbidden Scriptorium (bounds: 32, 24, 10, 10) ---
+  editor.spawnProp(LEVEL_ID, 'heresy-forbidden-bookcase', 33, 25, { roomId: scriptoriumId });
+  editor.spawnProp(LEVEL_ID, 'heresy-forbidden-bookcase', 33, 29, { roomId: scriptoriumId });
+  editor.spawnProp(LEVEL_ID, 'heresy-forbidden-bookcase', 41, 25, { roomId: scriptoriumId });
+  editor.spawnProp(LEVEL_ID, 'heresy-forbidden-bookcase', 41, 29, { roomId: scriptoriumId });
+  editor.spawnProp(LEVEL_ID, 'heretic-tome', 37, 28, { roomId: scriptoriumId });
+  editor.spawnProp(LEVEL_ID, 'heresy-profane-symbol', 37, 24, { roomId: scriptoriumId });
+  editor.spawnProp(LEVEL_ID, 'heresy-catacomb-torch', 33, 27, { roomId: scriptoriumId });
+  editor.spawnProp(LEVEL_ID, 'heresy-catacomb-torch', 41, 27, { roomId: scriptoriumId });
+  editor.spawnProp(LEVEL_ID, 'heresy-bone-urn', 34, 33, { roomId: scriptoriumId });
+  editor.spawnProp(LEVEL_ID, 'heresy-bone-urn', 40, 33, { roomId: scriptoriumId });
+
+  // --- Ritual Pit (bounds: 1, 32, 9, 8) ---
+  editor.spawnProp(LEVEL_ID, 'heresy-burning-pyre', 5, 35, { roomId: ritualPitId });
+  editor.spawnProp(LEVEL_ID, 'heresy-pentagram-floor-tile', 5, 36, { roomId: ritualPitId });
+  editor.spawnProp(LEVEL_ID, 'heresy-toppled-altar', 2, 38, { roomId: ritualPitId });
+  editor.spawnProp(LEVEL_ID, 'heresy-toppled-altar', 8, 38, { roomId: ritualPitId });
+  editor.spawnProp(LEVEL_ID, 'inverted-cross', 1, 36, { roomId: ritualPitId });
+  editor.spawnProp(LEVEL_ID, 'inverted-cross', 9, 36, { roomId: ritualPitId });
+  editor.spawnProp(LEVEL_ID, 'heresy-shattered-icon', 5, 32, { roomId: ritualPitId });
+
+  // --- Crypt of the Damned (bounds: 32, 44, 10, 10) ---
+  editor.spawnProp(LEVEL_ID, 'heresy-bone-urn', 33, 45, { roomId: cryptId });
+  editor.spawnProp(LEVEL_ID, 'heresy-bone-urn', 41, 45, { roomId: cryptId });
+  editor.spawnProp(LEVEL_ID, 'heresy-bone-urn', 33, 52, { roomId: cryptId });
+  editor.spawnProp(LEVEL_ID, 'heresy-bone-urn', 41, 52, { roomId: cryptId });
+  editor.spawnProp(LEVEL_ID, 'heresy-catacomb-torch', 33, 48, { roomId: cryptId });
+  editor.spawnProp(LEVEL_ID, 'heresy-catacomb-torch', 41, 48, { roomId: cryptId });
+  editor.spawnProp(LEVEL_ID, 'heresy-cracked-marble-pillar', 34, 46, { roomId: cryptId });
+  editor.spawnProp(LEVEL_ID, 'heresy-cracked-marble-pillar', 40, 46, { roomId: cryptId });
+  editor.spawnProp(LEVEL_ID, 'heresy-corrupted-reliquary', 37, 49, { roomId: cryptId });
+  editor.spawnProp(LEVEL_ID, 'heresy-profane-symbol', 37, 44, { roomId: cryptId });
+
+  // --- Penitent's Corridor (bounds: 1, 40, 9, 10) ---
+  editor.spawnProp(LEVEL_ID, 'heresy-catacomb-torch', 1, 42, { roomId: penitentCorridorId });
+  editor.spawnProp(LEVEL_ID, 'heresy-catacomb-torch', 9, 42, { roomId: penitentCorridorId });
+  editor.spawnProp(LEVEL_ID, 'heresy-catacomb-torch', 1, 46, { roomId: penitentCorridorId });
+  editor.spawnProp(LEVEL_ID, 'heresy-catacomb-torch', 9, 46, { roomId: penitentCorridorId });
+  editor.spawnProp(LEVEL_ID, 'heresy-shattered-icon', 5, 41, { roomId: penitentCorridorId });
+  editor.spawnProp(LEVEL_ID, 'heresy-torn-scripture-slab', 3, 45, { roomId: penitentCorridorId });
+  editor.spawnProp(LEVEL_ID, 'heresy-torn-scripture-slab', 7, 48, { roomId: penitentCorridorId });
+
+  // --- Vestibule of Doubt (bounds: 33, 54, 10, 12) ---
+  editor.spawnProp(LEVEL_ID, 'heresy-cracked-marble-pillar', 34, 55, {
+    roomId: vestibuleOfDoubtId,
+  });
+  editor.spawnProp(LEVEL_ID, 'heresy-cracked-marble-pillar', 42, 55, {
+    roomId: vestibuleOfDoubtId,
+  });
+  editor.spawnProp(LEVEL_ID, 'heresy-cracked-marble-pillar', 34, 64, {
+    roomId: vestibuleOfDoubtId,
+  });
+  editor.spawnProp(LEVEL_ID, 'heresy-cracked-marble-pillar', 42, 64, {
+    roomId: vestibuleOfDoubtId,
+  });
+  editor.spawnProp(LEVEL_ID, 'heresy-desecrated-arch', 38, 54, { roomId: vestibuleOfDoubtId });
+  editor.spawnProp(LEVEL_ID, 'inverted-cross', 34, 60, { roomId: vestibuleOfDoubtId });
+  editor.spawnProp(LEVEL_ID, 'inverted-cross', 42, 60, { roomId: vestibuleOfDoubtId });
+  editor.spawnProp(LEVEL_ID, 'heresy-broken-stained-glass', 36, 57, { roomId: vestibuleOfDoubtId });
+  editor.spawnProp(LEVEL_ID, 'heresy-broken-stained-glass', 40, 57, { roomId: vestibuleOfDoubtId });
+  editor.spawnProp(LEVEL_ID, 'heresy-ritual-chandelier', 38, 60, { roomId: vestibuleOfDoubtId });
+  editor.spawnProp(LEVEL_ID, 'heresy-profane-symbol', 38, 65, { roomId: vestibuleOfDoubtId });
+
+  // ── New Triggers ───────────────────────────────────────────────────────────
+
+  // Inquisitor's Antechamber: ritual ambush when player enters (lockDoors + spawnWave)
+  editor.ambush(
+    LEVEL_ID,
+    { x: 2, z: 23, w: 7, h: 3 },
+    [
+      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 3, z: 25 },
+      { type: ENEMY_TYPES.HELLGOAT, x: 7, z: 25 },
+    ],
+    { roomId: inquisitorId },
+  );
+
+  // Forbidden Scriptorium: fog thickens on entry (archive's cold dread)
+  editor.addTrigger(LEVEL_ID, {
+    action: TRIGGER_ACTIONS.AMBIENT_CHANGE,
+    zoneX: 33,
+    zoneZ: 24,
+    zoneW: 10,
+    zoneH: 2,
+    roomId: scriptoriumId,
+    once: true,
+    actionData: { fogDensity: 0.07, fogColor: '#100c18' },
+  });
+
+  // Crypt of the Damned: tomb ambush — shadow goats awaken from sarcophagi
+  editor.ambush(
+    LEVEL_ID,
+    { x: 33, z: 45, w: 8, h: 3 },
+    [
+      { type: ENEMY_TYPES.SHADOW_GOAT, x: 35, z: 47 },
+      { type: ENEMY_TYPES.SHADOW_GOAT, x: 39, z: 47 },
+      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 37, z: 52 },
+    ],
+    { roomId: cryptId },
+  );
+
+  // Vestibule of Doubt: lockDoors + elite guard triggered on entry
+  editor.addTrigger(LEVEL_ID, {
+    action: TRIGGER_ACTIONS.LOCK_DOORS,
+    zoneX: 34,
+    zoneZ: 55,
+    zoneW: 8,
+    zoneH: 3,
+    roomId: vestibuleOfDoubtId,
+    once: true,
+    delay: 1,
+  });
+
+  // Vestibule of Doubt: dialogue — Profano taunts from across the threshold
+  editor.dialogue(
+    LEVEL_ID,
+    { x: 34, z: 55, w: 8, h: 3 },
+    'You approach the altar of truth. Let doubt be your undoing.',
+    { roomId: vestibuleOfDoubtId },
+  );
+
+  // ── New Environment Zones ─────────────────────────────────────────────────
+
+  // Inquisitor's Antechamber: oppressive incense fog
+  editor.addEnvironmentZone(LEVEL_ID, {
+    envType: ENV_TYPES.FOG,
+    boundsX: 1,
+    boundsZ: 22,
+    boundsW: 9,
+    boundsH: 8,
+    intensity: 0.5,
+  });
+
+  // Forbidden Scriptorium: cold reading-room darkness
+  editor.addEnvironmentZone(LEVEL_ID, {
+    envType: ENV_TYPES.FOG,
+    boundsX: 32,
+    boundsZ: 24,
+    boundsW: 10,
+    boundsH: 10,
+    intensity: 0.55,
+  });
+
+  // Ritual Pit: hellfire zone at the pyre center
+  editor.addEnvironmentZone(LEVEL_ID, {
+    envType: ENV_TYPES.FIRE,
+    boundsX: 3,
+    boundsZ: 34,
+    boundsW: 5,
+    boundsH: 4,
+    intensity: 0.8,
+  });
+
+  // Crypt of the Damned: underground darkness (dense fog)
+  editor.addEnvironmentZone(LEVEL_ID, {
+    envType: ENV_TYPES.FOG,
+    boundsX: 32,
+    boundsZ: 44,
+    boundsW: 10,
+    boundsH: 10,
+    intensity: 0.65,
+  });
+
+  // Penitent's Corridor: thin persistent fog throughout
+  editor.addEnvironmentZone(LEVEL_ID, {
+    envType: ENV_TYPES.FOG,
+    boundsX: 1,
+    boundsZ: 40,
+    boundsW: 9,
+    boundsH: 10,
+    intensity: 0.45,
+  });
+
+  // Vestibule of Doubt: illusion zone — Profano's mirage effect
+  editor.addEnvironmentZone(LEVEL_ID, {
+    envType: ENV_TYPES.ILLUSION,
+    boundsX: 35,
+    boundsZ: 58,
+    boundsW: 6,
+    boundsH: 6,
+    intensity: 0.8,
+  });
+
+  // END EXPANSION
 
   // =========================================================================
   // 9. COMPILE GRID

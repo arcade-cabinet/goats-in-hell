@@ -1,0 +1,105 @@
+{
+  "id": "goat-grunt",
+  "name": "Goat Grunt",
+  "type": "character",
+  "seed": 2065724009,
+  "pipeline": "enemy",
+  "description": "Basic melee foot soldier. The most common enemy across all circles.",
+  "textToImageTask": {
+    "prompt": "A bipedal humanoid goat demon standing in A-pose, muscular hunched posture, dark brown fur, curved ram horns, clawed hands gripping a rusty short sword, tattered leather loincloth, glowing amber eyes, digitigrade goat legs with cloven hooves, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Bipedal humanoid goat demon warrior, muscular, dark brown fur, ram horns, rusty short sword, tattered leather, cloven hooves, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark brown coarse fur, scarred leather armor, rusty iron blade, amber glowing eyes, pale horn keratin",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 1.8
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Zombie_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp",
+      "Fighting.AttackingwithWeapon.Left_Slash",
+      "Fighting.GettingHit.Face_Punch_Reaction",
+      "Fighting.Dying.Fall_Dead_from_Abdominal_Injury"
+    ]
+  },
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cadc9-add3-7cde-a75f-8395edf5d290",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadc9-add3-7cde-a75f-8395edf5d290"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cadca-73dc-7826-a392-f6a72bca5f78",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadca-73dc-7826-a392-f6a72bca5f78"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cadcb-a4bf-7743-b0c3-13fd86e59274",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadcb-a4bf-7743-b0c3-13fd86e59274"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cadcd-433b-7d30-983f-5c36e930dea1",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadcd-433b-7d30-983f-5c36e930dea1"
+      },
+      "artifacts": {
+        "model": "model.glb"
+      }
+    },
+    "animations": {
+      "WalkAndRun.Walking.Zombie_Walk": {
+        "taskId": "019cadcf-8bbf-7d99-99a7-76bccdd90968",
+        "status": "SUCCEEDED",
+        "actionId": 112,
+        "artifact": "animations/Zombie_Walk.glb"
+      },
+      "DailyActions.Idle.Angry_Ground_Stomp": {
+        "taskId": "019cadd0-05ff-726e-afb7-61c022a4140d",
+        "status": "SUCCEEDED",
+        "actionId": 255,
+        "artifact": "animations/Angry_Ground_Stomp.glb"
+      },
+      "Fighting.AttackingwithWeapon.Left_Slash": {
+        "taskId": "019cadd0-4510-7275-8108-fdd99f56e331",
+        "status": "SUCCEEDED",
+        "actionId": 97,
+        "artifact": "animations/Left_Slash.glb"
+      },
+      "Fighting.GettingHit.Face_Punch_Reaction": {
+        "taskId": "019cadd0-8398-7896-9f76-65989381d950",
+        "status": "SUCCEEDED",
+        "actionId": 174,
+        "artifact": "animations/Face_Punch_Reaction.glb"
+      },
+      "Fighting.Dying.Fall_Dead_from_Abdominal_Injury": {
+        "taskId": "019cadd0-c1fc-727d-95b7-867eb8b3b601",
+        "status": "SUCCEEDED",
+        "actionId": 188,
+        "artifact": "animations/Fall_Dead_from_Abdominal_Injury.glb"
+      }
+    }
+  }
+}

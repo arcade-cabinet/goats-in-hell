@@ -1,0 +1,112 @@
+{
+  "id": "goat-mimic",
+  "name": "Goat Mimic",
+  "type": "character",
+  "seed": 347775008,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cadc9-adf5-76cf-a2b7-fb8bbf137fba",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadc9-adf5-76cf-a2b7-fb8bbf137fba"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cadd5-06bc-788c-80f0-eb1b635bd69b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadd5-06bc-788c-80f0-eb1b635bd69b"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cadd6-b2c8-7331-8520-e0ba6c17f93e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadd6-b2c8-7331-8520-e0ba6c17f93e"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cadd7-d1f8-7967-9e3d-c68cbe9442d0",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cadd7-d1f8-7967-9e3d-c68cbe9442d0"
+      },
+      "artifacts": {
+        "model": "model.glb"
+      }
+    },
+    "animations": {
+      "WalkAndRun.Walking.Zombie_Walk": {
+        "taskId": "019caddb-5e09-7f35-9e2d-95a127f7fd1c",
+        "status": "SUCCEEDED",
+        "actionId": 112,
+        "artifact": "animations/Zombie_Walk.glb"
+      },
+      "DailyActions.Idle.Angry_Ground_Stomp": {
+        "taskId": "019caddb-9d22-79f2-96a2-2f64775330e9",
+        "status": "SUCCEEDED",
+        "actionId": 255,
+        "artifact": "animations/Angry_Ground_Stomp.glb"
+      },
+      "Fighting.AttackingwithWeapon.Thrust_Slash": {
+        "taskId": "019caddb-dbef-79fa-a51e-83f8fcf38f74",
+        "status": "SUCCEEDED",
+        "actionId": 240,
+        "artifact": "animations/Thrust_Slash.glb"
+      },
+      "Fighting.Punching.Fast_Punch_Combo": {
+        "taskId": "019cadde-6b18-7fd8-ba90-25035d6ec46b",
+        "status": "SUCCEEDED",
+        "actionId": 198,
+        "artifact": "animations/Fast_Punch_Combo.glb"
+      },
+      "Fighting.GettingHit.Face_Punch_Reaction_2": {
+        "taskId": "019cadde-e516-7ffd-ad47-952670167284",
+        "status": "SUCCEEDED",
+        "actionId": 176,
+        "artifact": "animations/Face_Punch_Reaction_2.glb"
+      },
+      "Fighting.Dying.Electrocuted_Fall": {
+        "taskId": "019caddf-23d8-746f-a173-067253909dd0",
+        "status": "SUCCEEDED",
+        "actionId": 181,
+        "artifact": "animations/Electrocuted_Fall.glb"
+      }
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 8 (Fraud) — shape-shifting trickster goat. Disguises as props, ambush attacker.",
+  "textToImageTask": {
+    "prompt": "A bipedal humanoid goat demon trickster in A-pose, slim angular deceptive build, patchwork multi-colored fur that shifts between wood-grain brown and stone-gray like camouflage, mismatched horns one straight one curved, multiple small arms hidden under a long chameleon-like cloak that mimics dungeon textures, one hand holds a curved dagger the other a small mirror, digitigrade goat legs, shifting heterochromatic eyes one green one yellow, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Bipedal humanoid goat demon, slim angular build, two distinct horns, arms hanging at 45 degrees from body in A-pose, digitigrade goat legs, visible torso and limbs, isolated character, clear humanoid silhouette",
+    "artStyle": "realistic",
+    "targetPolycount": 8000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "off"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Patchwork fur shifting between wood brown and stone gray, chameleon texture cloak, curved dark steel dagger, cracked mirror, heterochromatic green-yellow eyes",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 1.7
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Zombie_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp",
+      "Fighting.AttackingwithWeapon.Thrust_Slash",
+      "Fighting.Punching.Fast_Punch_Combo",
+      "Fighting.GettingHit.Face_Punch_Reaction_2",
+      "Fighting.Dying.Electrocuted_Fall"
+    ]
+  }
+}

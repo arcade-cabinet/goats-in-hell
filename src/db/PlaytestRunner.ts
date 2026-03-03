@@ -7,7 +7,7 @@
  */
 import { CELL_SIZE } from '../constants';
 import type { LevelData } from '../game/levels/LevelData';
-import { LevelGenerator, type MapCell } from '../game/levels/LevelGenerator';
+import { LevelGenerator, MapCell } from '../game/levels/LevelGenerator';
 import type { Room } from './schema';
 
 // ---------------------------------------------------------------------------
@@ -32,6 +32,16 @@ export interface PlaytestResult {
   unreachableRooms: string[];
   /** Chronological log of pathfinding failures, softlocks, and abort reasons. */
   diagnostics: string[];
+  /** Total A* path traversal across all room visits, in grid cells */
+  pathDistanceCells: number;
+  /** Walk time: pathDistanceCells / 3.0 (WALK_SPEED=6 units/s, CELL_SIZE=2, so 3 cells/s) */
+  estimatedWalkTimeSec: number;
+  /** Combat estimate: enemiesTotal × 8 seconds per enemy */
+  estimatedCombatTimeSec: number;
+  /** Total with 15% exploration buffer: (walk + combat) × 1.15 */
+  estimatedTotalTimeSec: number;
+  /** estimatedTotalTimeSec / 60, rounded to 1 decimal */
+  estimatedPlayTimeMin: number;
 }
 
 interface AgentState {
@@ -60,6 +70,22 @@ const ENEMY_TYPES = new Set([
   'goatKnight',
   'archGoat',
 ]);
+
+// ---------------------------------------------------------------------------
+// Playtest walkability
+// ---------------------------------------------------------------------------
+
+/**
+ * Extends LevelGenerator.isWalkable() to treat WALL_SECRET as traversable.
+ *
+ * In gameplay, WALL_SECRET is a push-through barrier — the player bumps it to
+ * reveal a hidden passage. The simulation agent is omniscient: it knows secret
+ * walls exist and can probe/enter them. This matches the intended design where
+ * secret rooms have jump-scare enemies and valuable loot the player discovers.
+ */
+function isPlaytestWalkable(cell: MapCell): boolean {
+  return LevelGenerator.isWalkable(cell) || cell === MapCell.WALL_SECRET;
+}
 
 // ---------------------------------------------------------------------------
 // A* pathfinding (4-directional, Manhattan heuristic)
@@ -133,7 +159,7 @@ function astar(
       const nx = cx + d.x;
       const nz = cz + d.z;
       if (nx < 0 || nx >= width || nz < 0 || nz >= depth) continue;
-      if (!LevelGenerator.isWalkable(grid[nz][nx])) continue;
+      if (!isPlaytestWalkable(grid[nz][nx])) continue;
 
       const nk = key(nx, nz);
       if (closed.has(nk)) continue;
@@ -188,7 +214,7 @@ function bfsReachable(
       if (nx < 0 || nx >= width || nz < 0 || nz >= depth) continue;
       const nk = key(nx, nz);
       if (visited.has(nk)) continue;
-      if (!LevelGenerator.isWalkable(grid[nz][nx])) continue;
+      if (!isPlaytestWalkable(grid[nz][nx])) continue;
       visited.add(nk);
       queue.push({ x: nx, z: nz });
     }
@@ -263,7 +289,8 @@ export function runPlaytest(
 
   // --- Room tracking ---
   const visitedRoomIds = new Set<string>();
-  const unreachableRoomIdxs = new Set<number>(); // rooms where A* failed
+  const unreachableRoomIdxs = new Set<number>(); // all rooms where A* failed
+  const unreachableSecretRoomIdxs = new Set<number>(); // subset: only SECRET-type rooms
   const unreachableEnemyIdxs = new Set<number>(); // enemies where A* failed
   const roomCount = rooms.length;
 
@@ -281,6 +308,7 @@ export function runPlaytest(
   const diagnostics: string[] = [];
   let enemiesKilled = 0;
   let simTime = 0;
+  let pathDistanceCells = 0;
 
   // --- Check initial room ---
   for (const room of rooms) {
@@ -366,14 +394,33 @@ export function runPlaytest(
           // Mark this target as unreachable so AI doesn't retry it every tick
           if (agent.targetRoom !== null) {
             unreachableRoomIdxs.add(agent.targetRoom);
+            // Track SECRET rooms separately — being unreachable is intentional design,
+            // not a level bug. Non-secret unreachable rooms are a connectivity error.
+            if (rooms[agent.targetRoom]?.roomType === 'secret') {
+              unreachableSecretRoomIdxs.add(agent.targetRoom);
+            }
           }
           if (agent.targetEnemy !== null) {
             unreachableEnemyIdxs.add(agent.targetEnemy);
+            // Only remove from enemiesAlive if the enemy is in a SECRET room.
+            // Enemies in unreachable non-secret rooms represent a level design bug;
+            // keeping them in enemiesAlive ensures the playtest fails rather than
+            // silently passing. SECRET room enemies are intentional jump-scares.
+            const spawn = enemySpawns[agent.targetEnemy];
+            const spawnGX = Math.round(spawn.x / CELL_SIZE);
+            const spawnGZ = Math.round(spawn.z / CELL_SIZE);
+            const containingRoom = rooms.find((r) => isInsideRoom(r, spawnGX, spawnGZ));
+            if (containingRoom?.roomType === 'secret') {
+              enemiesAlive.delete(agent.targetEnemy);
+            }
           }
           agent.targetRoom = null;
           agent.targetEnemy = null;
           simTime += dt;
           continue;
+        } else {
+          // Accumulate path length for play-time estimation
+          pathDistanceCells += currentPath.length;
         }
       }
     }
@@ -486,10 +533,19 @@ export function runPlaytest(
   }
 
   // --- Pass condition ---
-  const allRoomsVisited = visitedRoomIds.size === roomCount;
-  const allEnemiesKilled = enemiesKilled === enemySpawns.length && enemySpawns.length > 0;
+  // Rooms: visited + SECRET-type unreachable rooms must account for all rooms.
+  // Non-secret unreachable rooms are connectivity bugs and should fail.
+  const allRoomsVisited = visitedRoomIds.size + unreachableSecretRoomIdxs.size >= roomCount;
+  // Enemies: all reachable enemies killed. SECRET-room enemies removed from enemiesAlive
+  // when proven unreachable (intentional design). Non-secret-room enemies stay in
+  // enemiesAlive and prevent passing if they're unreachable (level bug).
+  const allEnemiesKilled = enemiesAlive.size === 0 && enemySpawns.length > 0;
   const fatalSoftlocks = consecutiveSoftlocks >= 3;
   const passed = (allRoomsVisited || allEnemiesKilled) && !fatalSoftlocks;
+
+  const walk = pathDistanceCells / 3.0;
+  const combat = enemySpawns.length * 8;
+  const total = (walk + combat) * 1.15;
 
   return {
     passed,
@@ -501,5 +557,10 @@ export function runPlaytest(
     softlocks,
     unreachableRooms,
     diagnostics,
+    pathDistanceCells,
+    estimatedWalkTimeSec: walk,
+    estimatedCombatTimeSec: combat,
+    estimatedTotalTimeSec: total,
+    estimatedPlayTimeMin: Math.round((total / 60) * 10) / 10,
   };
 }

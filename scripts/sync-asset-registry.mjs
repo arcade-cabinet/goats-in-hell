@@ -2,7 +2,7 @@
 /**
  * sync-asset-registry.mjs -- Sync Meshy AI prop and setpiece manifests into AssetRegistry.ts.
  *
- * Scans `assets/models/props/` and `assets/models/setpieces/` for manifests that have a
+ * Scans `public/models/props/` and `public/models/setpieces/` for manifests that have a
  * corresponding `refined.glb`, reads existing registry entries, and adds NEW entries
  * (doesn't overwrite existing ones).
  *
@@ -22,8 +22,8 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROJECT_DIR = resolve(__dirname, '..');
-const PROPS_DIR = join(PROJECT_DIR, 'assets', 'models', 'props');
-const SETPIECES_DIR = join(PROJECT_DIR, 'assets', 'models', 'setpieces');
+const PROPS_DIR = join(PROJECT_DIR, 'public', 'models', 'props');
+const SETPIECES_DIR = join(PROJECT_DIR, 'public', 'models', 'setpieces');
 const REGISTRY_PATH = join(PROJECT_DIR, 'src', 'game', 'systems', 'AssetRegistry.ts');
 
 // ── Parse args ──────────────────────────────────────────────────────────────
@@ -47,21 +47,21 @@ function scanGroup(groupDir, groupName) {
     if (!entry.isDirectory()) continue;
 
     const manifestPath = join(groupDir, entry.name, 'manifest.json');
-    const refinedPath = join(groupDir, entry.name, 'refined.glb');
+    const modelPath = join(groupDir, entry.name, 'model.glb');
 
     if (!existsSync(manifestPath)) continue;
-    if (!existsSync(refinedPath)) {
-      console.log(`  [skip] ${groupName}/${entry.name}: no refined.glb found`);
+    if (!existsSync(modelPath)) {
+      console.log(`  [skip] ${groupName}/${entry.name}: no model.glb found`);
       continue;
     }
 
     try {
       const manifest = JSON.parse(readFileSync(manifestPath, 'utf-8'));
       const id = manifest.id ?? entry.name;
-      // Build the require path relative to AssetRegistry.ts location
-      const registryDir = dirname(REGISTRY_PATH);
-      const relPath = relative(registryDir, refinedPath).replace(/\\/g, '/');
-      results.push({ id, group: groupName, glbRelPath: relPath });
+      // Build the URL subpath relative to public/ (served as static content)
+      const publicDir = join(PROJECT_DIR, 'public');
+      const urlPath = relative(publicDir, modelPath).replace(/\\/g, '/');
+      results.push({ id, group: groupName, urlPath });
     } catch (err) {
       console.warn(`  [warn] ${groupName}/${entry.name}: malformed manifest.json — ${err.message}`);
     }
@@ -103,7 +103,6 @@ function discoverAllSetpieces() {
 
 function readExistingKeysWithPrefix(registrySource, prefix) {
   const keys = new Set();
-  // Manually scan line by line to avoid regex exec() ambiguity
   const lines = registrySource.split('\n');
   const searchPrefix = `'${prefix}-`;
   for (const line of lines) {
@@ -112,12 +111,9 @@ function readExistingKeysWithPrefix(registrySource, prefix) {
     const closeQuote = trimmed.indexOf("'", searchPrefix.length);
     if (closeQuote === -1) continue;
     const key = trimmed.slice(1, closeQuote);
-    if (
-      trimmed
-        .slice(closeQuote + 1)
-        .trimStart()
-        .startsWith(': require(')
-    ) {
+    const rest = trimmed.slice(closeQuote + 1).trimStart();
+    // Match both old require() format and new string-path format
+    if (rest.startsWith(': require(') || rest.startsWith(": '") || rest.startsWith(': "')) {
       keys.add(key);
     }
   }
@@ -200,7 +196,7 @@ if (dryRun) {
 
 // Apply props
 if (newProps.length > 0) {
-  const propLines = newProps.map((e) => `  'prop-${e.id}': require('${e.glbRelPath}'),`);
+  const propLines = newProps.map((e) => `  'prop-${e.id}': '${e.urlPath}',`);
   const propBlock = `  // Meshy AI generated props\n${propLines.join('\n')}\n`;
   try {
     registrySource = insertIntoBlock(registrySource, 'PROP_MODEL_ASSETS', propBlock);
@@ -212,7 +208,7 @@ if (newProps.length > 0) {
 
 // Apply setpieces
 if (newSetpieces.length > 0) {
-  const spLines = newSetpieces.map((e) => `  'setpiece-${e.id}': require('${e.glbRelPath}'),`);
+  const spLines = newSetpieces.map((e) => `  'setpiece-${e.id}': '${e.urlPath}',`);
   const spBlock = `  // Meshy AI generated set pieces\n${spLines.join('\n')}\n`;
   try {
     registrySource = insertIntoBlock(registrySource, 'SETPIECE_MODEL_ASSETS', spBlock);

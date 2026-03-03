@@ -112,6 +112,8 @@ export interface GameStoreState {
   levelSource: 'procedural' | 'database';
   /** Current circle of Hell (1-9). Each circle is a hand-crafted DB level. */
   circleNumber: number;
+  /** Display name of the currently loaded level theme (e.g. "LIMBO — The Circle of Ignorance"). */
+  currentLevelDisplayName: string;
 
   // --- Run configuration (set during New Game) ---
   difficulty: Difficulty;
@@ -188,6 +190,8 @@ export interface GameStoreState {
   setLevelSource: (source: 'procedural' | 'database') => void;
   /** Set the current circle number (1-9). */
   setCircleNumber: (n: number) => void;
+  /** Set the display name for the currently loaded level theme. */
+  setLevelDisplayName: (name: string) => void;
   /** Record a mandatory kill (arena/boss). */
   recordMandatoryKill: () => void;
   /** Record an optional kill (explore). */
@@ -590,6 +594,7 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
       ? 'procedural'
       : 'database',
   circleNumber: 1,
+  currentLevelDisplayName: 'THE FIRE PITS',
 
   difficulty: 'normal',
   nightmareFlags: { nightmare: false, permadeath: false, ultraNightmare: false },
@@ -740,6 +745,7 @@ export const useGameStore = create<GameStoreState>()((set, get) => ({
   setDbReady: (ready) => set({ dbReady: ready }),
   setLevelSource: (source) => set({ levelSource: source }),
   setCircleNumber: (n) => set({ circleNumber: n }),
+  setLevelDisplayName: (name) => set({ currentLevelDisplayName: name }),
 
   recordMandatoryKill: () => set((s) => ({ mandatoryKills: s.mandatoryKills + 1 })),
   recordOptionalKill: () => set((s) => ({ optionalKills: s.optionalKills + 1 })),

@@ -31,8 +31,25 @@ import { buildCircle9 } from './build-circle-9';
 
 const GREEN = '\x1b[32m';
 const RED = '\x1b[31m';
+const YELLOW = '\x1b[33m';
 const DIM = '\x1b[2m';
 const RESET = '\x1b[0m';
+
+// ---------------------------------------------------------------------------
+// Play time targets (min, max) per circle number
+// ---------------------------------------------------------------------------
+
+const PLAY_TIME_TARGETS: Record<number, [number, number]> = {
+  1: [5, 8],
+  2: [7, 11],
+  3: [8, 12],
+  4: [8, 12],
+  5: [10, 15],
+  6: [10, 15],
+  7: [12, 18],
+  8: [12, 18],
+  9: [15, 22],
+};
 
 // ---------------------------------------------------------------------------
 // CLI argument parsing
@@ -120,6 +137,12 @@ async function main() {
 
   // Run playtest if not skipped
   if (!skipPlaytest) {
+    // Print play time targets for reference
+    console.log(`\n${DIM}Play time targets:${RESET}`);
+    for (const circle of toBuild) {
+      const [minT, maxT] = PLAY_TIME_TARGETS[circle.number];
+      console.log(`  ${DIM}Circle ${circle.number} ${circle.name}: ${minT}–${maxT} min${RESET}`);
+    }
     console.log(`\n${DIM}Running playtest on all built levels...${RESET}\n`);
     try {
       execFileSync('npx', ['tsx', 'scripts/playtest-all.ts'], {

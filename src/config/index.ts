@@ -9,9 +9,11 @@
  *   import { weaponConfig, enemyConfig, difficultyConfig, gameplayConfig } from '../config';
  */
 
+import rawDevOverlay from '../../config/devOverlay.json';
 import rawDifficulty from '../../config/difficulty.json';
 import rawEnemies from '../../config/enemies.json';
 import rawGameplay from '../../config/gameplay.json';
+import rawRendering from '../../config/rendering.json';
 import rawWeapons from '../../config/weapons.json';
 import rawWeaponVisuals from '../../config/weaponVisuals.json';
 
@@ -56,3 +58,15 @@ export type WeaponVisualConfig = (typeof rawWeaponVisuals)[keyof Omit<
 >];
 
 export const weaponVisualsConfig = rawWeaponVisuals as Omit<typeof rawWeaponVisuals, '_comment'>;
+
+// ---------------------------------------------------------------------------
+// Dev overlay config
+// ---------------------------------------------------------------------------
+
+export const devOverlayConfig = rawDevOverlay as Omit<typeof rawDevOverlay, '_comment'>;
+
+// ---------------------------------------------------------------------------
+// Rendering config
+// ---------------------------------------------------------------------------
+
+export const renderingConfig = rawRendering as Omit<typeof rawRendering, '_comment'>;

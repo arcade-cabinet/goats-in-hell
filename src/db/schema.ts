@@ -26,6 +26,8 @@ export const themes = sqliteTable('themes', {
   enemyTypes: text('enemy_types', { mode: 'json' }).$type<string[]>(),
   enemyDensity: real('enemy_density').notNull().default(1.0),
   pickupDensity: real('pickup_density').notNull().default(0.6),
+  texturePalette: text('texture_palette'),
+  roomFillRules: text('room_fill_rules'),
 });
 
 // ---------------------------------------------------------------------------
@@ -51,6 +53,7 @@ export const levels = sqliteTable('levels', {
     .notNull()
     .references(() => themes.id),
   compiledGrid: blob('compiled_grid', { mode: 'buffer' }),
+  compiledVisual: text('compiled_visual'),
   version: integer('version').notNull().default(1),
 });
 
@@ -73,6 +76,10 @@ export const rooms = sqliteTable('rooms', {
   floorCell: integer('floor_cell'), // Override MapCell for this room's floor
   wallCell: integer('wall_cell'), // Override MapCell for this room's walls
   sortOrder: integer('sort_order').notNull().default(0),
+  floorTexture: text('floor_texture'),
+  wallTexture: text('wall_texture'),
+  ceilingTexture: text('ceiling_texture'),
+  fillRule: text('fill_rule'),
 });
 
 // ---------------------------------------------------------------------------
