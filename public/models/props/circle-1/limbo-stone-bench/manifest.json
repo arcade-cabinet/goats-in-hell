@@ -20,7 +20,9 @@
       "outputs": {
         "taskId": "019caca5-8a7b-7435-bde5-ad0d757728b6"
       },
-      "artifacts": {}
+      "artifacts": {
+        "model": "refined.glb"
+      }
     }
   },
   "pipeline": "prop-direct",

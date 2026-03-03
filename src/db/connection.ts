@@ -111,7 +111,6 @@ async function initBetterSqlite(): Promise<DrizzleDb> {
 
 async function initSqlJs(): Promise<DrizzleDb> {
   // Dynamic import so the bundle doesn't include sql.js on native
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const initSqlJsLib = (await import('sql.js' as any)).default;
   const { drizzle: drizzleSqlJs } = await import('drizzle-orm/sql-js' as string);
 

@@ -10,7 +10,9 @@
       "outputs": {
         "taskId": "019cacac-4715-74e3-8215-dcecd7ccea04"
       },
-      "artifacts": {}
+      "artifacts": {
+        "model": "preview.glb"
+      }
     },
     "text-to-3d-refine": {
       "taskId": "019cacad-f31f-7161-a66e-72591e9b3fac",
