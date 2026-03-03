@@ -46,10 +46,12 @@ const App = () => {
   // so the touch overlay appears/disappears without a page reload.
   const [touchActive, setTouchActive] = useState(hasTouchInput);
   useEffect(() => {
-    if (!hasTouchInput) return;
-    const obs = new ResizeObserver(() => {
+    if (typeof window === 'undefined') return;
+    const updateTouch = () => {
       setTouchActive('ontouchstart' in window && navigator.maxTouchPoints > 0);
-    });
+    };
+    if (typeof ResizeObserver === 'undefined') return;
+    const obs = new ResizeObserver(updateTouch);
     obs.observe(document.documentElement);
     return () => obs.disconnect();
   }, []);

@@ -15,7 +15,7 @@ import {
   Vignette,
 } from '@react-three/postprocessing';
 import { BlendFunction } from 'postprocessing';
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Platform } from 'react-native';
 import { Vector2 } from 'three/webgpu';
 import { renderingConfig } from '../../config';
@@ -196,8 +196,14 @@ export function PostProcessingEffects(): React.JSX.Element | null {
   }, [gl]);
 
   // Skip effects on mobile browsers — bloom is the main GPU bottleneck.
-  // Evaluated once at mount (screen size is stable for the canvas lifetime).
-  const isMobile = useMemo(() => isMobileWebBrowser(), []);
+  // Stateful so it re-checks on viewport changes (fold/unfold on foldable devices).
+  const [isMobile, setIsMobile] = useState(() => isMobileWebBrowser());
+  useEffect(() => {
+    if (typeof ResizeObserver === 'undefined') return;
+    const obs = new ResizeObserver(() => setIsMobile(isMobileWebBrowser()));
+    obs.observe(document.documentElement);
+    return () => obs.disconnect();
+  }, []);
 
   useFrame((_state, delta) => {
     if (isWebGPUBackend || isMobile) return;

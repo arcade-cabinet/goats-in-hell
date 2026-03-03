@@ -181,7 +181,7 @@ describe('settings persistence', () => {
 });
 
 describe('startNewGame', () => {
-  it('sets screen to playing and resets stats', () => {
+  it('sets screen to loading and resets stats', () => {
     useGameStore.setState({ score: 999, kills: 50 });
     useGameStore
       .getState()
