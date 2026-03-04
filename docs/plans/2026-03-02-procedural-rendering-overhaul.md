@@ -1,7 +1,8 @@
 ---
 title: "Procedural Rendering Overhaul + Playability Metrics"
-status: in-progress
+status: implemented
 created: "2026-03-02"
+updated: "2026-03-04"
 domain: plans
 plan_type: implementation
 ---

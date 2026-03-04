@@ -2,7 +2,7 @@
 title: "Plans Index"
 status: implemented
 created: "2026-03-01"
-updated: "2026-03-01"
+updated: "2026-03-04"
 domain: plans
 related:
   - docs/AGENTS.md
@@ -36,6 +36,12 @@ Plan filenames follow: `YYYY-MM-DD-<topic>-<type>.md`
 | 2026-03-01 | [Circle 1: Limbo Design](2026-03-01-circle-1-limbo-design.md) | design | implemented | Duplicate of `docs/circles/01-limbo.md`. |
 | 2026-03-01 | [Circle 1: Limbo Implementation](2026-03-01-circle-1-limbo-implementation.md) | implementation | implemented | First circle build script plan. |
 | 2026-03-01 | [Open Questions Design](2026-03-01-open-questions-design.md) | design | in-progress | 10 open design questions from GAME-BIBLE. |
+| 2026-03-01 | [AI Governor Overhaul Design](2026-03-01-ai-governor-overhaul-design.md) | design | **superseded** | Folded into YUKA Brain Assembly. |
+| 2026-03-01 | [Meshy Asset Explosion Design](2026-03-01-meshy-asset-explosion-design.md) | design | implemented | Enemy asset taxonomy, Meshy API, pipeline. |
+| 2026-03-01 | [Meshy Asset Explosion Implementation](2026-03-01-meshy-asset-explosion-implementation.md) | implementation | implemented | 3-tier enemy hierarchy, animations, registry wiring. |
+| 2026-03-01 | [Ship All Nine Circles — Master Plan](2026-03-01-master-plan-ship-all-nine-circles.md) | implementation | **implemented** ✅ | WS-A ✅ propNameMap, WS-B ✅ all 9 circles overhauled, WS-C ✅ YUKA brains, WS-D ✅ 9/9 pass. |
+| 2026-03-01 | [YUKA Brain Assembly](2026-03-01-yuka-brain-assembly-implementation.md) | implementation | **implemented** ✅ | All 12 tasks complete. 344 tests pass. |
+| 2026-03-02 | [Procedural Rendering Overhaul](2026-03-02-procedural-rendering-overhaul.md) | implementation | **implemented** ✅ | LevelRenderer unified PBR + scatter, DungeonProps folded in. |
 
 ---
 
@@ -43,6 +49,7 @@ Plan filenames follow: `YYYY-MM-DD-<topic>-<type>.md`
 
 - **2026-02-26 plans** reference Babylon.js, Reactylon, and Havok physics. The project now uses Three.js, R3F v9, and Rapier. Do not use these as implementation guides.
 - **2026-03-01 circle-1 design** is a copy of the canonical `docs/circles/01-limbo.md`. Edit the canonical version, not this copy.
+- **2026-03-01 ai-governor-overhaul-design** is superseded — the autoplay governor was rebuilt as part of the YUKA Brain Assembly (PlayerBrainFactory + PlayerGoalDriver). `AIGovernor.ts` is kept but marked `@deprecated`.
 
 ---
 
