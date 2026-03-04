@@ -10,6 +10,11 @@
  */
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import {
+  exportRunReportJSON,
+  startTelemetryRun,
+  stopTelemetryRun,
+} from './game/systems/telemetry/TelemetryStore';
 import R3FRoot from './R3FRoot';
 import { DevOverlay } from './r3f/debug/DevOverlay';
 import { installGameDevBridge } from './r3f/debug/GameDevBridge';
@@ -75,11 +80,13 @@ const App = () => {
     }
 
     // Short delay so the engine wrapper mounts first
+    const seed = generateSeedPhrase();
     const timer = setTimeout(() => {
+      startTelemetryRun(seed, difficulty);
       startNewGame(
         difficulty,
         { nightmare: false, permadeath: false, ultraNightmare: false },
-        generateSeedPhrase(),
+        seed,
       );
     }, 100);
     return () => clearTimeout(timer);
@@ -118,10 +125,15 @@ const App = () => {
       return () => clearTimeout(timer);
     }
     if (screen === 'gameComplete') {
+      // Stop telemetry and log run report
+      stopTelemetryRun();
+      console.log('[Autoplay] Run complete. Report:', exportRunReportJSON());
       // Auto-restart after completing the game
       const timer = setTimeout(() => {
         const s = useGameStore.getState();
-        startNewGame(s.difficulty, s.nightmareFlags, generateSeedPhrase());
+        const newSeed = generateSeedPhrase();
+        startTelemetryRun(newSeed, s.difficulty);
+        startNewGame(s.difficulty, s.nightmareFlags, newSeed);
       }, 5000);
       return () => clearTimeout(timer);
     }
