@@ -15,6 +15,11 @@
 
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
+import {
+  MeshStandardMaterial as _BaseMat,
+  Mesh as _Mesh,
+  MeshPhysicalMaterial as _MeshPhysical,
+} from 'three';
 import * as THREE from 'three/webgpu';
 import { weaponVisualsConfig } from '../../config';
 import type { Entity, WeaponId } from '../../game/entities/components';
@@ -334,12 +339,9 @@ function buildGlbWeapon(weaponId: WeaponId, config: WeaponVisualConfig): THREE.G
 
   // Apply emissive tinting for hellish look
   cloned.traverse((child) => {
-    if (child instanceof THREE.Mesh && child.material) {
+    if (child instanceof _Mesh && child.material) {
       const applyEmissive = (mat: THREE.Material) => {
-        if (
-          mat instanceof THREE.MeshStandardMaterial ||
-          mat instanceof THREE.MeshPhysicalMaterial
-        ) {
+        if (mat instanceof _BaseMat || mat instanceof _MeshPhysical) {
           mat.emissive = new THREE.Color(config.emissive);
           mat.emissiveIntensity = 0.5;
           mat.needsUpdate = true;
@@ -388,7 +390,7 @@ function buildPlaceholderWeapon(config: WeaponVisualConfig): THREE.Mesh {
  */
 function disposeWeaponObject(obj: THREE.Object3D): void {
   obj.traverse((child) => {
-    if (child instanceof THREE.Mesh) {
+    if (child instanceof _Mesh) {
       if (child.geometry) child.geometry.dispose();
       if (child.material) {
         if (Array.isArray(child.material)) {

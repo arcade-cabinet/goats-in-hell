@@ -185,9 +185,10 @@ export async function buildCircle1(dbPath: string) {
   // 5. ENTITIES: ENEMIES (from "Enemies" table)
   // =========================================================================
 
-  // Fog Hall: 3 hellgoat patrol (pre-placed, triangle loop)
+  // Fog Hall: 3 shade whelp patrol (pre-placed, triangle loop)
   //   Room bounds: (14, 12, 12, 10) -> interior: x=[15..24], z=[13..20]
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 17, 15, {
+  //   sortOrder 1 — first enemy contact, use SHADE_WHELP (weak, wispy)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADE_WHELP, 17, 15, {
     roomId: fogHallId,
     patrol: [
       { x: 17, z: 15 },
@@ -195,7 +196,7 @@ export async function buildCircle1(dbPath: string) {
       { x: 20, z: 20 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 23, 15, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADE_WHELP, 23, 15, {
     roomId: fogHallId,
     patrol: [
       { x: 23, z: 15 },
@@ -203,7 +204,7 @@ export async function buildCircle1(dbPath: string) {
       { x: 17, z: 15 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 20, 20, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADE_WHELP, 20, 20, {
     roomId: fogHallId,
     patrol: [
       { x: 20, z: 20 },
@@ -212,35 +213,38 @@ export async function buildCircle1(dbPath: string) {
     ],
   });
 
-  // Bone Pit: 3 hellgoat ambush (trigger-spawned)
+  // Bone Pit: 3 shade ambush (trigger-spawned)
   //   Room bounds: (2, 14, 8, 8) -> interior: x=[3..8], z=[15..20]
   //   Trigger zone from table: (3, 16, 6, 4)
+  //   sortOrder 3 platforming — standard tier
   editor.ambush(
     LEVEL_ID,
     { x: 3, z: 16, w: 6, h: 4 },
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 4, z: 17 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 6, z: 19 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 8, z: 17 },
+      { type: ENEMY_TYPES.SHADE, x: 4, z: 17 },
+      { type: ENEMY_TYPES.SHADE, x: 6, z: 19 },
+      { type: ENEMY_TYPES.SHADE, x: 8, z: 17 },
     ],
     { roomId: bonePitId },
   );
 
-  // Columns: 2 waves of 3 hellgoat each (arena lock + wave pattern)
+  // Columns: 2 waves (arena lock + wave pattern)
   //   Room bounds: (15, 26, 10, 12) -> interior: x=[16..23], z=[27..36]
   //   Trigger zone from table: (17, 28, 6, 6)
+  //   Wave 1: SHADE (standard) — learning the enemy in an arena context
+  //   Wave 2: SHADE_ELDER (elder) — escalation before boss
   editor.setupArenaWaves(LEVEL_ID, columnsId, { x: 17, z: 28, w: 6, h: 6 }, [
-    // Wave 1: 3 hellgoats from edges
+    // Wave 1: 3 shades from edges
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 16, z: 32 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 20, z: 27 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 23, z: 32 },
+      { type: ENEMY_TYPES.SHADE, x: 16, z: 32 },
+      { type: ENEMY_TYPES.SHADE, x: 20, z: 27 },
+      { type: ENEMY_TYPES.SHADE, x: 23, z: 32 },
     ],
-    // Wave 2: 3 hellgoats from corners
+    // Wave 2: 3 shade elders from corners (escalation)
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 16, z: 27 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 23, z: 27 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 20, z: 36 },
+      { type: ENEMY_TYPES.SHADE_ELDER, x: 16, z: 27 },
+      { type: ENEMY_TYPES.SHADE_ELDER, x: 23, z: 27 },
+      { type: ENEMY_TYPES.SHADE_ELDER, x: 20, z: 36 },
     ],
   ]);
 
@@ -912,8 +916,9 @@ export async function buildCircle1(dbPath: string) {
 
   // ── ENEMIES: SCRIPTORIUM ──────────────────────────────────────────────
   // Room bounds: x:[28,38), z:[22,32) — interior: x in [28,37], z in [22,31]
-  // 3 hellgoat on patrol loop + 2 triggered ambush
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 31, 24, {
+  // 3 shade on patrol loop + 2 triggered ambush
+  // Mid exploration room — standard tier
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADE, 31, 24, {
     roomId: scriptoriumId,
     patrol: [
       { x: 31, z: 24 },
@@ -922,7 +927,7 @@ export async function buildCircle1(dbPath: string) {
       { x: 31, z: 30 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 36, 24, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADE, 36, 24, {
     roomId: scriptoriumId,
     patrol: [
       { x: 36, z: 24 },
@@ -931,7 +936,7 @@ export async function buildCircle1(dbPath: string) {
       { x: 31, z: 24 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 36, 30, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADE, 36, 30, {
     roomId: scriptoriumId,
     patrol: [
       { x: 36, z: 30 },
@@ -941,71 +946,71 @@ export async function buildCircle1(dbPath: string) {
     ],
   });
 
-  // Scriptorium ambush: 2 hellgoats lurking in SE corner
+  // Scriptorium ambush: 2 shades lurking in SE corner
   editor.ambush(
     LEVEL_ID,
     { x: 29, z: 23, w: 8, h: 6 },
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 29, z: 23 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 36, z: 23 },
+      { type: ENEMY_TYPES.SHADE, x: 29, z: 23 },
+      { type: ENEMY_TYPES.SHADE, x: 36, z: 23 },
     ],
     { roomId: scriptoriumId },
   );
 
   // ── ENEMIES: CHARNEL PASSAGE ──────────────────────────────────────────
   // Room bounds: x:[2,10), z:[22,30) — interior: x in [2,9], z in [22,29]
-  // 2 roaming hellgoats
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 4, 24, { roomId: charnelPassageId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 7, 27, { roomId: charnelPassageId });
+  // 2 roaming shades — mid exploration, standard tier
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADE, 4, 24, { roomId: charnelPassageId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADE, 7, 27, { roomId: charnelPassageId });
 
   // ── ENEMIES: SUNKEN NAVE (arena waves) ───────────────────────────────
   // Room bounds: x:[2,14), z:[32,42) — interior: x in [2,13], z in [32,41]
   // Wave trigger zone: center band (3,33,8,6)
   editor.setupArenaWaves(LEVEL_ID, sunkenNaveId, { x: 3, z: 33, w: 8, h: 6 }, [
-    // Wave 1: 4 hellgoats converging from all edges
+    // Wave 1: 4 shades converging from all edges (standard tier)
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 3, z: 33 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 12, z: 33 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 3, z: 40 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 12, z: 40 },
+      { type: ENEMY_TYPES.SHADE, x: 3, z: 33 },
+      { type: ENEMY_TYPES.SHADE, x: 12, z: 33 },
+      { type: ENEMY_TYPES.SHADE, x: 3, z: 40 },
+      { type: ENEMY_TYPES.SHADE, x: 12, z: 40 },
     ],
-    // Wave 2: 3 hellgoats + 1 goatKnight (tougher, armored)
+    // Wave 2: 3 shades + 1 shade elder (escalation — elder replaces goatKnight)
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 3, z: 36 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 12, z: 36 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 8, z: 41 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 8, z: 34 },
+      { type: ENEMY_TYPES.SHADE, x: 3, z: 36 },
+      { type: ENEMY_TYPES.SHADE, x: 12, z: 36 },
+      { type: ENEMY_TYPES.SHADE, x: 8, z: 41 },
+      { type: ENEMY_TYPES.SHADE_ELDER, x: 8, z: 34 },
     ],
   ]);
 
   // ── ENEMIES: FORGOTTEN GALLERY ────────────────────────────────────────
   // Room bounds: x:[28,36), z:[32,40) — interior: x in [28,35], z in [32,39]
-  // 1 goatKnight guardian + 1 hellgoat skulker
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 32, 36, { roomId: forgottenGalleryId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 29, 38, { roomId: forgottenGalleryId });
+  // 1 shade elder guardian (secret room jump-scare) + 1 shade skulker
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADE_ELDER, 32, 36, { roomId: forgottenGalleryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADE, 29, 38, { roomId: forgottenGalleryId });
 
   // ── ENEMIES: VESTIBULE (tutorial encounter) ───────────────────────────
   // Room bounds: x:[16,24), z:[2,8) — interior: x in [17..23], z in [3..7]
-  // 2 wandering hellgoats — first enemies the player sees
+  // 2 wandering shade whelps — first enemies the player sees (sortOrder 0, greeting)
   // Note: (18,4) is occupied by limbo-vase-rubble prop → use (19,4) and (22,6)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 19, 4, { roomId: vestibuleId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 22, 6, { roomId: vestibuleId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADE_WHELP, 19, 4, { roomId: vestibuleId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADE_WHELP, 22, 6, { roomId: vestibuleId });
 
   // ── ENEMIES: COLUMNS (pre-wave guards) ───────────────────────────────
   // Room bounds: x:[15,25), z:[26,38) — interior: x in [16..23], z in [27..36]
-  // 3 hellgoats pre-placed before arena waves trigger
+  // 3 shades pre-placed before arena waves trigger (arena sortOrder 4 — standard tier)
   // Note: (17,28) is occupied by limbo-ancient-pillar → use (18,28)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 18, 28, { roomId: columnsId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 22, 29, { roomId: columnsId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 20, 35, { roomId: columnsId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADE, 18, 28, { roomId: columnsId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADE, 22, 29, { roomId: columnsId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADE, 20, 35, { roomId: columnsId });
 
   // ── ENEMIES: SUNKEN NAVE (pre-wave guards) ───────────────────────────
   // Room bounds: x:[2,14), z:[32,42) — interior: x in [3..13], z in [33..41]
-  // 3 hellgoats pre-placed before arena waves trigger
+  // 3 shades pre-placed before arena waves trigger (late expansion arena — standard tier)
   // Note: (4,34) is occupied by limbo-ancient-pillar prop; (7,40) by AMMO pickup → shifted
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 5, 34, { roomId: sunkenNaveId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 11, 34, { roomId: sunkenNaveId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 8, 40, { roomId: sunkenNaveId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADE, 5, 34, { roomId: sunkenNaveId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADE, 11, 34, { roomId: sunkenNaveId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADE, 8, 40, { roomId: sunkenNaveId });
 
   // ── PICKUPS: EXPANSION ROOMS ──────────────────────────────────────────
 

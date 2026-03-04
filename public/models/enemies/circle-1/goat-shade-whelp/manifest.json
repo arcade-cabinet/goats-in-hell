@@ -1,0 +1,115 @@
+{
+  "id": "goat-shade-whelp",
+  "name": "Shade Whelp",
+  "type": "character",
+  "seed": 1162189861,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cb6f2-469c-7c5c-8e66-9398f031439f",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6f2-469c-7c5c-8e66-9398f031439f"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cb6f6-1161-7d08-b6f4-eed29dcba04e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6f6-1161-7d08-b6f4-eed29dcba04e"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cb6f7-1f10-7d27-974b-2bd794d30df4",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6f7-1f10-7d27-974b-2bd794d30df4"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cb6f8-192a-7d71-9ce4-e3c4b0671e28",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6f8-192a-7d71-9ce4-e3c4b0671e28"
+      },
+      "artifacts": {
+        "model": "model.glb"
+      }
+    },
+    "animations": {
+      "WalkAndRun.Walking.Stumble_Walk": {
+        "taskId": "019cb6fc-1e90-7097-b814-7a063a1a163b",
+        "status": "SUCCEEDED",
+        "actionId": 562,
+        "artifact": "animations/Stumble_Walk.glb"
+      },
+      "DailyActions.Idle.Angry_Ground_Stomp": {
+        "taskId": "019cb6fc-5cf4-7e1b-bfc8-8a6bba688ccf",
+        "status": "SUCCEEDED",
+        "actionId": 255,
+        "artifact": "animations/Angry_Ground_Stomp.glb"
+      },
+      "Fighting.Punching.Punch_Combo": {
+        "taskId": "019cb6fc-9b69-7f56-bb3b-460597b7520b",
+        "status": "SUCCEEDED",
+        "actionId": 198,
+        "artifact": "animations/Fast_Punch_Combo.glb"
+      },
+      "Fighting.GettingHit.Face_Punch_Reaction": {
+        "taskId": "019cb6fc-d99b-7f60-8bbe-4ea28b1b6a41",
+        "status": "SUCCEEDED",
+        "actionId": 174,
+        "artifact": "animations/Face_Punch_Reaction.glb"
+      },
+      "Fighting.Dying.Knock_Down": {
+        "taskId": "019cb6fd-180c-7e26-b45a-a6e13ee7a429",
+        "status": "SUCCEEDED",
+        "actionId": 187,
+        "artifact": "animations/Knock_Down.glb"
+      }
+    },
+    "animation": {
+      "taskId": "019cb724-0f73-723e-a4c8-1e1b8fcbd9bd",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb724-0f73-723e-a4c8-1e1b8fcbd9bd"
+      },
+      "artifacts": {
+        "animation": "animations/Fighting.Dying.Knock_Down.glb"
+      }
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 1 (Limbo) — a freshly damned soul, barely coalesced. These are the recently deceased who arrived in Limbo without time to fully form their damnation — infants, the unbaptized, souls stripped of identity before they could harden into permanence. Their goat-demon shape flickers and glitches as if their very existence is uncertain. Pitiable but dangerous in swarms; they remember enough of life to be furious at their fate.",
+  "textToImageTask": {
+    "prompt": "A small bipedal humanoid goat demon ghost in A-pose, barely-formed translucent wispy body, pale smoke-white with violet tinges, flickering half-transparent limbs that dissolve into fog at the edges, tiny nub horns barely visible through mist, hollow dark eye sockets with faint blue-white glow, childlike proportions but deeply unsettling, spectral tattered burial cloth hanging from thin frame, digitigrade goat legs fading at the hooves, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Small wispy translucent goat ghost demon, barely-formed body dissolving at edges into mist, pale smoke-white with violet fringe, tiny nub horns, hollow glowing eye sockets, childlike but unsettling, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Translucent pale smoke-white spectral flesh, violet-tinged mist at extremities, hollow eye sockets glowing blue-white, faint burial wrapping texture, barely-visible fur pattern beneath ghostly surface",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 1.3
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Stumble_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp",
+      "Fighting.Punching.Punch_Combo",
+      "Fighting.GettingHit.Face_Punch_Reaction",
+      "Fighting.Dying.Knock_Down"
+    ]
+  }
+}

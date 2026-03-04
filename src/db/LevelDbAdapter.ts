@@ -282,6 +282,20 @@ export function toLevelData(db: DrizzleDb, levelId: string): LevelData {
     ? (JSON.parse(level.compiledVisual) as CompiledVisual)
     : null;
 
+  // Find the room elevation at the player's spawn grid position so the player
+  // spawns on top of elevated floors (e.g., Circle 7's pier at elevation 2).
+  const spawnElevation = (() => {
+    if (!compiledVisual) return 0;
+    const room = compiledVisual.rooms.find(
+      (r) =>
+        level.spawnX >= r.bounds.x &&
+        level.spawnX < r.bounds.x + r.bounds.w &&
+        level.spawnZ >= r.bounds.z &&
+        level.spawnZ < r.bounds.z + r.bounds.h,
+    );
+    return room?.elevation ?? 0;
+  })();
+
   return {
     width: level.width,
     depth: level.depth,
@@ -289,7 +303,7 @@ export function toLevelData(db: DrizzleDb, levelId: string): LevelData {
     grid,
     playerSpawn: {
       x: level.spawnX * CELL_SIZE,
-      y: 1,
+      y: 1 + spawnElevation * (CELL_SIZE / 2),
       z: level.spawnZ * CELL_SIZE,
     },
     spawns,

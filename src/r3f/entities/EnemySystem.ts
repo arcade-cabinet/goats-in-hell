@@ -6,6 +6,7 @@
  *
  * Called each frame from the R3F game loop via EnemyRenderer's useFrame.
  */
+import { MeshStandardMaterial as _BaseMat, Material as _Material, Mesh as _Mesh } from 'three';
 import * as THREE from 'three/webgpu';
 import { world } from '../../game/entities/world';
 import { getEscalationMultiplier } from '../../game/systems/AISystem';
@@ -74,14 +75,14 @@ export function updateEnemyMeshes(meshMap: Map<string, THREE.Group>): void {
  * Used for Circle 5 (Wrath) escalation red glow.
  */
 function applyMeshEmissive(object: THREE.Object3D, color: THREE.Color, intensity: number): void {
-  if (object instanceof THREE.Mesh) {
+  if (object instanceof _Mesh) {
     const mat = object.material;
-    if (mat instanceof THREE.MeshStandardMaterial) {
+    if (mat instanceof _BaseMat) {
       mat.emissive.copy(color);
       mat.emissiveIntensity = intensity;
     } else if (Array.isArray(mat)) {
       for (const m of mat) {
-        if (m instanceof THREE.MeshStandardMaterial) {
+        if (m instanceof _BaseMat) {
           m.emissive.copy(color);
           m.emissiveIntensity = intensity;
         }
@@ -98,9 +99,9 @@ function applyMeshEmissive(object: THREE.Object3D, color: THREE.Color, intensity
  * Used for shadowGoat/voidGoat stealth visibility.
  */
 function applyMeshOpacity(object: THREE.Object3D, alpha: number): void {
-  if (object instanceof THREE.Mesh) {
+  if (object instanceof _Mesh) {
     const mat = object.material;
-    if (mat instanceof THREE.Material) {
+    if (mat instanceof _Material) {
       mat.transparent = true;
       mat.opacity = alpha;
     } else if (Array.isArray(mat)) {

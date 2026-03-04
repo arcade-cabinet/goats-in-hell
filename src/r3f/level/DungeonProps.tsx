@@ -114,6 +114,39 @@ const MAX_PROP_LIGHTS = 16;
 
 // Module-scope temp objects — reused each frame, never allocated in useFrame.
 const _yAxis = new THREE.Vector3(0, 1, 0);
+const _hsl = { h: 0, s: 0, l: 0 };
+
+/**
+ * Replace neon-green Meshy material artifacts with dark iron-gray.
+ * Checks BOTH base color and emissive — Meshy ritual/magic props often have
+ * bright green emissive with a near-white base color.
+ */
+function sanitizeMeshyMaterials(object: THREE.Group): void {
+  object.traverse((child) => {
+    if (!(child instanceof THREE.Mesh)) return;
+    const materials = Array.isArray(child.material) ? child.material : [child.material];
+    for (const mat of materials) {
+      if (!(mat instanceof THREE.MeshStandardMaterial)) continue;
+
+      // Check base color
+      mat.color.getHSL(_hsl);
+      const colorIsGreen = _hsl.h > 0.25 && _hsl.h < 0.45 && _hsl.s > 0.5 && _hsl.l > 0.2;
+
+      // Check emissive — ritual/magic props glow green via emissive
+      mat.emissive.getHSL(_hsl);
+      const emissiveIsGreen = _hsl.h > 0.2 && _hsl.h < 0.5 && _hsl.s > 0.4 && _hsl.l > 0.1;
+
+      if (colorIsGreen || emissiveIsGreen) {
+        mat.color.set('#2a2a2a');
+        mat.emissive.set('#000000');
+        mat.emissiveIntensity = 0;
+        mat.metalness = 0.7;
+        mat.roughness = 0.5;
+        mat.needsUpdate = true;
+      }
+    }
+  });
+}
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -212,13 +245,15 @@ function buildGlbPropMesh(assetKey: string, scale: number): THREE.Group | null {
   cloned.position.x = -center.x * normalizeScale;
   cloned.position.z = -center.z * normalizeScale;
 
-  // Ensure shadows on all child meshes
+  // Ensure shadows on all child meshes and sanitize material artifacts
   cloned.traverse((child) => {
     if (child instanceof THREE.Mesh) {
       child.castShadow = true;
       child.receiveShadow = true;
     }
   });
+
+  sanitizeMeshyMaterials(cloned);
 
   return cloned;
 }

@@ -109,7 +109,7 @@ Lust's length comes from geography: the Wind Corridor gauntlet, the vertical des
                            │ corridor (width=3)
                     ┌──────┴───────┐
               ┌─────┤LOVER'S       │  (14×10, exploration+combat, sortOrder=2)
-              │     │ GALLERY      │  Columns, banners, fireGoats.
+              │     │ GALLERY      │  Columns, banners, sirens.
               │     │ first ranged │  Wind pushes toward E lava.
               │     └──────┬───────┘
               │            │ corridor (width=3)
@@ -243,7 +243,7 @@ Lust's length comes from geography: the Wind Corridor gauntlet, the vertical des
   │ ○  ▌     ▌     ▌     ▌  ○  │   ○ = lust-candelabra (wall)
   │    ▌     ▌     ▌     ▌     │   ▌ = Onyx column (structural, LOS break)
   │                             │
-  │  ☿   ▌      ◊      ▌   ☿  │   ☿ = fireGoat spawn
+  │  ☿   ▌      ◊      ▌   ☿  │   ☿ = siren spawn
   │      ▌             ▌      ▓│   ◊ = ammo pickup
   │                            ▓│   ▓ = FLOOR_LAVA trap (E wall, 1-cell strip)
   │  ☿   ▌      ♥      ▌     ▓│   ♥ = health pickup
@@ -256,9 +256,9 @@ Lust's length comes from geography: the Wind Corridor gauntlet, the vertical des
 ```
 
 **Dimensions:** 14W × 10H, elevation 0
-**Purpose:** First real combat in Circle 2. fireGoats (ranged enemies, first appearance) shoot from behind columns while steady wind pushes the player toward lava traps on the east wall. Marble columns provide cover from projectiles AND wind resistance (breaking LOS with a column blocks wind push). The player learns to use geometry defensively.
+**Purpose:** First real combat in Circle 2. sirens (ranged enemies, first appearance) shoot from behind columns while steady wind pushes the player toward lava traps on the east wall. Marble columns provide cover from projectiles AND wind resistance (breaking LOS with a column blocks wind push). The player learns to use geometry defensively.
 
-**Elevation:** Main floor at 0. East lava strip at -0.5. A FLOOR_RAISED viewing balcony (elevation +1) runs along the north wall (2 cells deep) — fireGoats start here with height advantage.
+**Elevation:** Main floor at 0. East lava strip at -0.5. A FLOOR_RAISED viewing balcony (elevation +1) runs along the north wall (2 cells deep) — sirens start here with height advantage.
 
 **Props:**
 - 8× lust-onyx-column: structural, 2 rows of 4 at (17,33), (20,33), (23,33), (26,33) and (17,38), (20,38), (23,38), (26,38) — LOS + wind blockers
@@ -281,7 +281,7 @@ Lust's length comes from geography: the Wind Corridor gauntlet, the vertical des
   ┌────────────────────────────┐  Elevation 0 (entry ledge)
   │ ○  ramp starts here        │
   │  ╔═══╗                     │
-  │  ║   ║    ☿               ○│  ☿ = fireGoat (elevation 0, fires across)
+  │  ║   ║    ☿               ○│  ☿ = siren (elevation 0, fires across)
   │  ║ ▓▓║══╗     ramp descends│
   │  ║ ▓▓║  ║         -0.5    │  Ramp spirals clockwise around
   │  ║ ▓▓║  ║  ☿              │  central lava pit (▓▓)
@@ -341,7 +341,7 @@ Lust's length comes from geography: the Wind Corridor gauntlet, the vertical des
 ```
 
 **Dimensions:** 14W × 12H, elevation -1
-**Purpose:** Arena encounter. The room is divided into 4 north-south lanes by 3 lava channels (each 1 cell wide). Two bridges per channel cross the lava (3 cells wide each, at different Z positions). The wind shifts direction every 8 seconds — W-to-E, then E-to-W — forcing the player to use different bridges as the wind changes. Raised stone platforms (elevation -0.5) at the east and west extremes provide refuge from wind. Two waves of mixed hellgoat + fireGoat. Doors lock on entry.
+**Purpose:** Arena encounter. The room is divided into 4 north-south lanes by 3 lava channels (each 1 cell wide). Two bridges per channel cross the lava (3 cells wide each, at different Z positions). The wind shifts direction every 8 seconds — W-to-E, then E-to-W — forcing the player to use different bridges as the wind changes. Raised stone platforms (elevation -0.5) at the east and west extremes provide refuge from wind. Two waves of mixed shadowGoat + siren. Doors lock on entry.
 
 **Elevation:** Main lanes at -1. Lava channels at -1.5 (sunken). Bridges at -1 (flush with lanes). East/West raised platforms at -0.5. Third bridge (SW) at -1.5 — risky path, wind can push you off.
 
@@ -456,13 +456,13 @@ Floor cracks. Lava channels widen by 1 cell on each side (total 3 cells wide eac
 
 | Room | Type | Count | Behavior | Variant | Position Notes |
 |------|------|-------|----------|---------|----------------|
-| Lover's Gallery | fireGoat | 3 | Ranged, fire from behind columns | Crimson | N balcony (18,33), center column (22,36), SE corner (27,40) |
-| Lover's Gallery | hellgoat | 2 | Melee patrol between columns | Brown | W side (17,37), E side (26,37) |
-| Siren Pit | fireGoat | 2 | Ranged from ledge niches | Crimson | E ledge elev -0.5 (26,49), W ledge elev -1.5 (18,54) |
-| Siren Pit | hellgoat | 1 | Melee, bottom landing | Brown | Bottom (22,56), elev -2.0 |
-| Tempest Hall wave 1 | hellgoat | 3 | Melee, charge across bridges | Brown | NW platform (16,63), center lane (22,67), SE platform (27,71) |
-| Tempest Hall wave 2 | fireGoat | 2 | Ranged from elevated platforms | Crimson | W platform (16,69), E platform (27,65) |
-| Tempest Hall wave 2 | hellgoat | 2 | Melee, mixed with ranged | Brown | Center N (22,63), center S (22,71) |
+| Lover's Gallery | siren | 3 | Ranged, fire from behind columns | Crimson | N balcony (18,33), center column (22,36), SE corner (27,40) |
+| Lover's Gallery | shadowGoat | 2 | Melee patrol between columns | Brown | W side (17,37), E side (26,37) |
+| Siren Pit | siren | 2 | Ranged from ledge niches | Crimson | E ledge elev -0.5 (26,49), W ledge elev -1.5 (18,54) |
+| Siren Pit | shadowGoat | 1 | Melee, bottom landing | Brown | Bottom (22,56), elev -2.0 |
+| Tempest Hall wave 1 | shadowGoat | 3 | Melee, charge across bridges | Brown | NW platform (16,63), center lane (22,67), SE platform (27,71) |
+| Tempest Hall wave 2 | siren | 2 | Ranged from elevated platforms | Crimson | W platform (16,69), E platform (27,65) |
+| Tempest Hall wave 2 | shadowGoat | 2 | Melee, mixed with ranged | Brown | Center N (22,63), center S (22,71) |
 | Boss chamber | Caprone | 1 | Boss AI, 3 phases | boss-caprone.glb | Throne dais (22,83), elev -0.5 |
 
 ### Pickups
@@ -489,12 +489,12 @@ Floor cracks. Lava channels widen by 1 cell on each side (total 3 cells wide eac
 | ID | Room | Zone (x,z,w,h) | Action | Conditions | Data |
 |----|------|-----------------|--------|------------|------|
 | T1 | Wind Corridor | (20, 12, 5, 4) | `ambientChange` | `once: true` | `{ windActive: true, windDir: 'E', text: "The wind tugs at you..." }` |
-| T2 | Lover's Gallery | (15, 32, 14, 2) | `spawnWave` | `once: true` | `{ enemies: [{type:'fireGoat', count:3}, {type:'hellgoat', count:2}] }` |
-| T3 | Siren Pit | (16, 46, 12, 2) | `spawnWave` | `once: true` | `{ enemies: [{type:'fireGoat', count:2}, {type:'hellgoat', count:1}] }` |
+| T2 | Lover's Gallery | (15, 32, 14, 2) | `spawnWave` | `once: true` | `{ enemies: [{type:'siren', count:3}, {type:'shadowGoat', count:2}] }` |
+| T3 | Siren Pit | (16, 46, 12, 2) | `spawnWave` | `once: true` | `{ enemies: [{type:'siren', count:2}, {type:'shadowGoat', count:1}] }` |
 | T4 | Siren Pit | (16, 46, 12, 2) | `ambientChange` | `once: true` | `{ windDir: 'inward', windIntensity: 0.6 }` |
 | T5 | Tempest Hall | (17, 64, 10, 4) | `lockDoors` | `once: true` | — |
-| T6 | Tempest Hall | (17, 64, 10, 4) | `spawnWave` | `once: true` | `{ enemies: [{type:'hellgoat', count:3}] }` |
-| T7 | Tempest Hall | — | `spawnWave` | On wave 1 clear | `{ enemies: [{type:'fireGoat', count:2}, {type:'hellgoat', count:2}] }` |
+| T6 | Tempest Hall | (17, 64, 10, 4) | `spawnWave` | `once: true` | `{ enemies: [{type:'shadowGoat', count:3}] }` |
+| T7 | Tempest Hall | — | `spawnWave` | On wave 1 clear | `{ enemies: [{type:'siren', count:2}, {type:'shadowGoat', count:2}] }` |
 | T8 | Tempest Hall | — | `unlockDoors` | On wave 2 clear | — |
 | T9 | Tempest Hall | — | `ambientChange` | On wave 2 clear | `{ windActive: false, text: "The wind dies..." }` |
 | T10 | Caprone's Sanctum | (17, 79, 10, 2) | `bossIntro` | `once: true` | `{ text: "Come closer, little goat. Everyone comes closer eventually." }` |
@@ -543,7 +543,7 @@ editor.createTheme('circle-2-lust', {
   ambientIntensity: 0.20,
   skyColor: '#1a0a0a',
   particleEffect: 'embers',              // Floating ember particles from lava
-  enemyTypes: ['hellgoat', 'fireGoat'],
+  enemyTypes: ['shadowGoat', 'siren'],
   enemyDensity: 1.0,                     // Standard density
   pickupDensity: 0.7,                    // Moderate — not scarce, not generous
   windEnabled: true,
@@ -558,7 +558,7 @@ editor.createTheme('circle-2-lust', {
 
 1. **Antechamber transition:** The marble is warm to the touch. The air smells of incense and something burning. A breeze stirs from the south. Title card fades: *"CIRCLE THE SECOND — LUST"*
 2. **Wind Corridor first gust:** The wind catches the player mid-step. Banners snap taut. The lava on either side roils. The lesson is immediate: resist or burn.
-3. **Lover's Gallery — first fireGoat:** A crimson projectile streaks past the player's face. The first ranged enemy. Combat changes here — cover matters now, and the wind won't let you stand still.
+3. **Lover's Gallery — first siren:** A crimson projectile streaks past the player's face. The first ranged enemy. Combat changes here — cover matters now, and the wind won't let you stand still.
 4. **Siren Pit descent:** The player looks down into the spiraling pit and sees lava glowing at the bottom. The wind pulls inward. Enemies fire from above and below. This is the moment the player understands verticality.
 5. **Boudoir scroll (secret):** A scroll rests on the chaise lounge: *"The wind carries desire. Desire carried me to the edge. I could not let go."* — Inscription from the damned
 6. **Tempest Hall wind death:** The wind shifts mid-bridge. A player caught on a bridge during a direction change is swept toward lava. The arena teaches: anticipate the shift, don't commit to a crossing until the wind allows it.
@@ -574,7 +574,7 @@ editor.createTheme('circle-2-lust', {
 2. All 7 rooms are reachable from spawn (DAG validation passes); Boudoir via WALL_SECRET
 3. Wind zones function correctly — player is physically pushed by environment zones with timer_on/timer_off
 4. Lava channels deal damage on contact (5 DPS standard, 10 DPS Siren Pit core)
-5. fireGoat enemies fire ranged projectiles — first ranged encounter in the game
+5. siren enemies fire ranged projectiles — first ranged encounter in the game
 6. Siren Pit spiral ramp supports multi-elevation gameplay (enemies at different heights)
 7. Tempest Hall wind direction shift forces different bridge usage per cycle
 8. Boss fight wind rotation works across all 3 phases with correct period changes
@@ -673,7 +673,7 @@ editor.createTheme('circle-2-lust', {
 | lust-shattered-goblet | (19,37) and (24,36) near chairs | 0.5 | Scattered debauchery, aftermath of revelry |
 
 **Lighting:** 4x candelabra at corners, color `#ffaa55`, intensity 0.7, radius 5 cells. East lava strip emits `#ff4400`, intensity 0.4, radius 3 cells. Steady W-to-E wind at 0.35 intensity pushes toward lava.
-**Platforming:** Main floor at elevation 0. North wall has FLOOR_RAISED balcony (+1, 2 cells deep) where fireGoats start with height advantage. East lava strip at -0.5.
+**Platforming:** Main floor at elevation 0. North wall has FLOOR_RAISED balcony (+1, 2 cells deep) where sirens start with height advantage. East lava strip at -0.5.
 **Prop density:** 20 assets in 140 cells (0.14 props/cell). Dense with purpose -- every prop tells the story of interrupted revelry and hidden danger.
 
 ---

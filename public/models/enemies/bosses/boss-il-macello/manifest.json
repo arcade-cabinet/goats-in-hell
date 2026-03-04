@@ -39,7 +39,7 @@
       }
     },
     "animations": {
-      "WalkAndRun.Walking.Zombie_Walk": {
+      "WalkAndRun.Walking.Monster_Walk": {
         "taskId": "019cadb8-3592-743a-acba-de46c31f791e",
         "status": "SUCCEEDED",
         "actionId": 112,
@@ -87,6 +87,16 @@
         "actionId": 187,
         "artifact": "animations/Knock_Down.glb"
       }
+    },
+    "animation": {
+      "taskId": "019cb71c-a339-71da-9590-057de41d61fa",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb71c-a339-71da-9590-057de41d61fa"
+      },
+      "artifacts": {
+        "animation": "animations/Fighting.Dying.Knock_Down.glb"
+      }
     }
   },
   "pipeline": "enemy",
@@ -113,7 +123,7 @@
   },
   "animationTask": {
     "animations": [
-      "WalkAndRun.Walking.Zombie_Walk",
+      "WalkAndRun.Walking.Monster_Walk",
       "DailyActions.Idle.Angry_Ground_Stomp",
       "Fighting.AttackingwithWeapon.Axe_Spin_Attack",
       "Fighting.AttackingwithWeapon.Charged_Axe_Chop",

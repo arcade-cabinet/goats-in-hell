@@ -111,6 +111,7 @@ User Request
 |----------|---------|--------------|
 | `level-editor-api.md` | Complete LevelEditor API reference with examples | Before ANY level building |
 | `circle-building-guide.md` | How to translate design docs → API calls | Before building a circle |
+| `meshy-enemy-pipeline.md` | Full enemy generation pipeline — manifests, scripts, wiring | Before generating or wiring any new enemy |
 
 ### Circle Design Docs (`docs/circles/`)
 

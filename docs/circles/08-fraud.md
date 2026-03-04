@@ -179,15 +179,15 @@ All props use bespoke Meshy AI-generated models or general library assets. See *
 
 | Room | Type | Count | Behavior | Variant |
 |------|------|-------|----------|---------|
-| Hall of Mirrors | shadowGoat | 3 | Patrol near walls; visible only in "reflections" until 4-cell range | Gray, cyan eyes |
-| Bolgia of Flatterers | hellgoat | 2 | Disguised as friendly silhouettes at far end, attack when player reaches center | Green, deceptive |
+| Hall of Mirrors | mimic | 3 | Patrol near walls; visible only in "reflections" until 4-cell range | Gray, cyan eyes |
+| Bolgia of Flatterers | mimic | 2 | Disguised as friendly silhouettes at far end, attack when player reaches center | Green, deceptive |
 | Bolgia of Flatterers | mimic | 2 | Pickup disguise (health), attack within 2 cells | Pickup-shaped |
-| Bolgia of Thieves | shadowGoat | 2 | Appear when pickups "vanish," replace stolen items | Gray, cyan eyes |
-| Bolgia of Thieves | hellgoat | 1 | Patrol among shifting items | Green |
-| Shifting Maze | shadowGoat | 4 | Patrol corridors, exploit maze shifts, prevent dead time during navigation | Gray |
-| Shifting Maze | hellgoat | 3 | Guard key junctions, prevent dead time during navigation | Green |
-| Counterfeit Arena wave 1 | hellgoat | 3 | Spawn from edges, converge | Green |
-| Counterfeit Arena wave 2 | shadowGoat | 2 | Spawn during wave 2, flank from ramps | Gray |
+| Bolgia of Thieves | mimic | 2 | Appear when pickups "vanish," replace stolen items | Gray, cyan eyes |
+| Bolgia of Thieves | mimic | 1 | Patrol among shifting items | Green |
+| Shifting Maze | mimic | 4 | Patrol corridors, exploit maze shifts, prevent dead time during navigation | Gray |
+| Shifting Maze | mimic | 3 | Guard key junctions, prevent dead time during navigation | Green |
+| Counterfeit Arena wave 1 | mimic | 3 | Spawn from edges, converge | Green |
+| Counterfeit Arena wave 2 | mimic | 2 | Spawn during wave 2, flank from ramps | Gray |
 | Counterfeit Arena mimics | mimic | 4 | Disguised as 4 of 6 "columns," attack on approach | Column-shaped |
 | Mimic's Den | mimic | 4 | Mixed among 8 real pickups — 50% are mimics | Pickup-shaped |
 | Boss chamber | Inganno | 1 | Boss AI, 3 phases | boss-inganno.glb |
@@ -197,7 +197,7 @@ All props use bespoke Meshy AI-generated models or general library assets. See *
 Mimics are a special enemy type unique to Circle 8:
 - **Appearance:** Identical to health, ammo, or coin pickups until player enters 2-cell radius
 - **Reveal:** Pop animation — pickup model shatters, mimic enemy unfolds (spider-like legs from beneath)
-- **Stats:** HP 6, speed 1.5x hellgoat. First mimic encounter: 10 damage. All subsequent mimics: 15 damage.
+- **Stats:** HP 6, speed 1.5x mimic. First mimic encounter: 10 damage. All subsequent mimics: 15 damage.
 - **Counter:** Flamethrower AoE triggers mimics at safe distance (3-cell flame range > 2-cell trigger range)
 - **Total mimics in level:** 10 (2 Flatterers + 4 Arena + 4 Den)
 
@@ -278,7 +278,7 @@ Mimics are a special enemy type unique to Circle 8:
   │                              │
   │            ♦ammo             │  ← Real pickup, center
   │                              │
-  │   👻sg                       │  ← Third shadowGoat
+  │   👻sg                       │  ← Third mimic
   │                              │
   │ ◇onyx   ◇onyx   ◇onyx      │
   └──┬───────────────────────┬───┘
@@ -312,7 +312,7 @@ Mimics are a special enemy type unique to Circle 8:
 ```
 
 - **Elevation:** Flat (0), slight step-up (+0.5) at north end where silhouettes stand.
-- **Mechanic:** Four fraud-silhouette-prop "friendly NPC" cutouts at the far end wave and beckon. fraud-ornate-arch frames the north entrance. fraud-ramp-platform creates the +0.5 elevation north platform. As the player approaches center, the mimic pickups attack and the silhouettes reveal as hellgoat enemies charging. The real exit is behind --- a WALL_SECRET on the south wall that the player walked past on entry. The lesson: what invited you in wants to kill you; the way out is where you came from.
+- **Mechanic:** Four fraud-silhouette-prop "friendly NPC" cutouts at the far end wave and beckon. fraud-ornate-arch frames the north entrance. fraud-ramp-platform creates the +0.5 elevation north platform. As the player approaches center, the mimic pickups attack and the silhouettes reveal as mimic enemies charging. The real exit is behind --- a WALL_SECRET on the south wall that the player walked past on entry. The lesson: what invited you in wants to kill you; the way out is where you came from.
 - **Flamethrower counterplay teach:** After the player's first mimic encounter, a tooltip appears: *"The Flamethrower reveals what is hidden. Sweep before you reach."* The flamethrower's 3-cell range exceeds the mimic trigger radius (2 cells), allowing the player to safely expose mimics from outside their attack range.
 - **First mimic damage reduction:** The first mimic deals 10 damage (reduced from 15). Subsequent mimics deal 15 damage. This gives the player a survivable first surprise.
 - **3D elements:** fraud-ramp-platform at north end (+0.5 cells elevation) where fraud-silhouette-prop stand. fraud-golden-banner on N wall (2 positions), one concealing the real ammo pickup. fraud-forked-tongue-relief on south wall. fraud-coin-pile near table. candelabrum-tall (general) on E/W walls for warm gold lighting.
@@ -337,7 +337,7 @@ Mimics are a special enemy type unique to Circle 8:
 ```
 
 - **Elevation:** Flat (0). trick-chest props on low pedestals (0.3 cells).
-- **Mechanic:** Trigger-based entity swapping. When the player approaches a pickup location, the pickup despawns and an enemy or empty space appears. When the player turns around (facing direction > 90 degrees from pickup), remaining pickups shuffle positions. trick-chest props open to reveal nothing --- or a shadowGoat. fraud-ornate-arch frames the north entrance. false-door on east wall reinforces the deception theme.
+- **Mechanic:** Trigger-based entity swapping. When the player approaches a pickup location, the pickup despawns and an enemy or empty space appears. When the player turns around (facing direction > 90 degrees from pickup), remaining pickups shuffle positions. trick-chest props open to reveal nothing --- or a mimic. fraud-ornate-arch frames the north entrance. false-door on east wall reinforces the deception theme.
 - **3D elements:** Three fraud-coin-pile props on floor at varying heights on small raised platforms (0, 0.3, 0.5 cells). fraud-marble-pedestal at center for display. candelabrum-tall (general) on N/S walls for lighting.
 - **Flow:** Ingress from north (Hall of Mirrors), egress south to Shifting Maze.
 
@@ -492,14 +492,14 @@ Mimics are a special enemy type unique to Circle 8:
 | ID | Room | Zone (x,z,w,h) | Action | Conditions | Data |
 |----|------|-----------------|--------|------------|------|
 | T1 | Bolgia of Flatterers | (10, 28, 8, 4) | `revealMimics` | `once: true` | `{ mimicIds: ['mimic-flat-1','mimic-flat-2'] }` |
-| T2 | Bolgia of Flatterers | (10, 26, 8, 2) | `revealEnemies` | `once: true` | `{ enemies: [{type:'hellgoat', count:2, position:'north_platform'}] }` |
+| T2 | Bolgia of Flatterers | (10, 26, 8, 2) | `revealEnemies` | `once: true` | `{ enemies: [{type:'mimic', count:2, position:'north_platform'}] }` |
 | T3 | Bolgia of Thieves | (35, 27, 8, 6) | `shufflePickups` | `repeating: true, cooldown: 5` | `{ pickupIds: ['thief-hp-1','thief-am-1','thief-am-2'] }` |
-| T4 | Bolgia of Thieves | (36, 28, 4, 2) | `spawnEnemy` | `once: true` | `{ enemies: [{type:'shadowGoat', count:2}] }` |
+| T4 | Bolgia of Thieves | (36, 28, 4, 2) | `spawnEnemy` | `once: true` | `{ enemies: [{type:'mimic', count:2}] }` |
 | T5 | Shifting Maze | (33, 39, 12, 12) | `shiftWalls` | `repeating: true, cooldown: 8` | `{ wallSegments: 6, maxShift: 2 }` |
 | T6 | Counterfeit Arena | (24, 58, 8, 8) | `lockDoors` | `once: true` | — |
-| T7 | Counterfeit Arena | (24, 58, 8, 8) | `spawnWave` | `once: true` | `{ enemies: [{type:'hellgoat', count:3}] }` |
+| T7 | Counterfeit Arena | (24, 58, 8, 8) | `spawnWave` | `once: true` | `{ enemies: [{type:'mimic', count:3}] }` |
 | T8 | Counterfeit Arena | — | `revealMimics` | On wave 1 clear | `{ mimicIds: ['col-mimic-1','col-mimic-2','col-mimic-3','col-mimic-4'] }` |
-| T9 | Counterfeit Arena | — | `spawnWave` | On mimics clear | `{ enemies: [{type:'shadowGoat', count:2}] }` |
+| T9 | Counterfeit Arena | — | `spawnWave` | On mimics clear | `{ enemies: [{type:'mimic', count:2}] }` |
 | T10 | Counterfeit Arena | — | `unlockDoors` | On wave 2 clear | — |
 | T11 | Mimic's Den | (25, 73, 6, 6) | `randomizeMimics` | `once: true` | `{ totalPickups: 8, mimicCount: 4 }` |
 | T12 | Boss chamber | (25, 87, 6, 2) | `bossIntro` | `once: true` | `{ text: "Welcome, little goat. You must be so tired. Sit. Rest.", speaker: "Inganno" }` |
@@ -544,7 +544,7 @@ editor.createTheme('circle-8-fraud', {
   ambientIntensity: 0.20,
   skyColor: '#1a0e05',
   particleEffect: 'dust_motes',           // Floating golden particles — beautiful, deceptive
-  enemyTypes: ['shadowGoat', 'hellgoat', 'mimic'],
+  enemyTypes: ['mimic', 'mimic', 'mimic'],
   enemyDensity: 1.0,                      // Average density — mimics supplement
   pickupDensity: 1.5,                     // HIGH — abundance is the deception
   mimicRatio: 0.3,                        // 30% of pickups may be mimics
@@ -579,7 +579,7 @@ editor.createTheme('circle-8-fraud', {
 2. All 9 rooms are reachable from spawn (DAG validation passes, including secret room via WALL_SECRET)
 3. Mimic mechanic works (pickup appearance, 2-cell proximity trigger, reveal animation, combat)
 4. Flamethrower AoE correctly triggers mimics at safe distance (3-cell range > 2-cell trigger)
-5. Hall of Mirrors reflection system renders shadowGoat "reflections" on onyx panels
+5. Hall of Mirrors reflection system renders mimic "reflections" on onyx panels
 6. Shifting Maze walls physically reposition when player facing direction changes
 7. Counterfeit Arena correctly mimics Circle 1 Columns room layout, then subverts it
 8. Boss phase 2 mirror clone replicates player weapon and delayed movement
@@ -678,7 +678,7 @@ editor.createTheme('circle-8-fraud', {
 
 ### Room: Bolgia of Thieves (10x8, exploration, sortOrder=3)
 
-**Player Experience:** Items vanish when you approach. Coin piles sit on raised platforms, but the moment you step close, the pickups despawn and enemies appear in their place. You turn around and the remaining pickups have shuffled positions. Chests open to reveal nothing --- or a shadowGoat. The lesson: desire for loot is itself a trap.
+**Player Experience:** Items vanish when you approach. Coin piles sit on raised platforms, but the moment you step close, the pickups despawn and enemies appear in their place. You turn around and the remaining pickups have shuffled positions. Chests open to reveal nothing --- or a mimic. The lesson: desire for loot is itself a trap.
 
 **Structural Assets:**
 | Asset | Position | Scale | Rotation | Purpose |

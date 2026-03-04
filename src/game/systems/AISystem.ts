@@ -96,7 +96,12 @@ function createVehicleForEnemy(entity: Entity): Vehicle {
   v.updateOrientation = false;
 
   switch (entity.type) {
-    case 'fireGoat': {
+    case 'fireGoat':
+    case 'shaman': // Ranged caster — kiting behavior
+    case 'heretic': // Circle 6 caster — kites like fireGoat
+    case 'hereticWhelp': // Acolyte — weak ranged, same kiting
+    case 'hereticElder': {
+      // Arch-Heresiarch — powerful ranged, wider flee zone
       // Ranged: seek when far, flee when too close
       const arrive = new ArriveBehavior(playerTarget, 1.5);
       arrive.active = true;
@@ -109,7 +114,15 @@ function createVehicleForEnemy(entity: Entity): Vehicle {
       v.steering.add(flee);
       break;
     }
-    case 'shadowGoat': {
+    case 'shadowGoat':
+    case 'siren': // Fast ambusher
+    case 'sirenWhelp': // Thrall — fast but clumsy (lower speed from stats)
+    case 'sirenElder': // Storm Siren — fastest ambusher
+    case 'mimic': // Shapeshifter
+    case 'mimicWhelp': // Glitch Mimic — erratic fast
+    case 'mimicElder': // Perfect Deceiver — precise fast
+    case 'butcherWhelp': {
+      // Apprentice — reckless fast charger
       // Fast ambusher — 1.5× speed
       v.maxSpeed = enemy.speed * 1.5;
       v.maxForce = enemy.speed * 3;
@@ -553,15 +566,50 @@ export function aiSystemUpdate(deltaTime: number): void {
     switch (entity.type) {
       case 'goat':
       case 'hellgoat':
+      // Limbo tier
+      case 'shadeWhelp': // Barely-formed — melee floater
+      case 'shadeElder': // Ancient shade — slow crushing melee
+      // Gluttony tier
+      case 'gluttonWhelp': // Runt — slow biter
+      case 'glutton': // Standard bloated charger
+      case 'gluttonElder': // Titan — slow but devastating
+      // Greed tier
+      case 'hoarderWhelp': // Coin fiend — scurrying melee
+      case 'hoarder': // Standard brawler
+      // Wrath tier
+      case 'berserkerWhelp': // Fury spawn — fast melee
+      case 'berserker': // Standard rage charger
+      case 'berserkerElder': // Wrath incarnate — unstoppable melee
+      // Violence tier
+      case 'butcher': // Standard heavy chopper
+      case 'butcherElder': // Grand Carnifex — armored heavy
+      // Treachery tier
+      case 'frostWhelp': // Frozen traitor — slow ice melee
+      case 'frost': // Standard ice charger
+      case 'frostElder': // Betrayal Absolute — ice titan
         postSteeringBasicGoat(entity, player, dist);
         break;
       case 'fireGoat':
+      // Ranged caster types
+      case 'shaman':
+      case 'heretic':
+      case 'hereticWhelp': // Acolyte caster
+      case 'hereticElder': // Arch-Heresiarch caster
         postSteeringFireGoat(entity, player, dist, dtScale);
         break;
       case 'shadowGoat':
+      // Fast ambusher types
+      case 'siren':
+      case 'sirenWhelp': // Thrall — fast but weak
+      case 'sirenElder': // Storm Siren — fastest
+      case 'mimic':
+      case 'mimicWhelp': // Glitch Mimic — erratic fast
+      case 'mimicElder': // Perfect Deceiver — precise fast
+      case 'butcherWhelp': // Apprentice — reckless fast
         postSteeringShadowGoat(entity, player, dist);
         break;
       case 'goatKnight':
+      case 'hoarderElder': // Arch Miser — armored heavy
         postSteeringGoatKnight(entity, player, dist);
         break;
       case 'archGoat':

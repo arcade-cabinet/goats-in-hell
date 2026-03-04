@@ -45,7 +45,7 @@ export async function buildCircle8(dbPath: string) {
     ambientIntensity: 0.2,
     skyColor: '#1a0e05',
     particleEffect: 'dust_motes',
-    enemyTypes: ['shadowGoat', 'hellgoat', 'mimic'],
+    enemyTypes: ['mimic', 'shadowGoat'],
     enemyDensity: 1.0,
     pickupDensity: 1.5,
     texturePalette: { exploration: 'marble', arena: 'tiles', boss: 'marble', secret: 'stone-dark' },
@@ -240,9 +240,9 @@ export async function buildCircle8(dbPath: string) {
   // 5. ENTITIES: ENEMIES (from "Enemies" table)
   // =========================================================================
 
-  // --- Hall of Mirrors: 3x shadowGoat patrol near walls ---
+  // --- Hall of Mirrors: 3x mimicWhelp patrol near walls (first room, teaching encounter) ---
   // Room bounds: (23, 12, 14, 10) -> interior: x=[24..35], z=[13..20]
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 25, 15, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_WHELP, 25, 15, {
     roomId: hallOfMirrorsId,
     patrol: [
       { x: 25, z: 15 },
@@ -250,7 +250,7 @@ export async function buildCircle8(dbPath: string) {
       { x: 30, z: 20 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 34, 15, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_WHELP, 34, 15, {
     roomId: hallOfMirrorsId,
     patrol: [
       { x: 34, z: 15 },
@@ -258,7 +258,7 @@ export async function buildCircle8(dbPath: string) {
       { x: 25, z: 15 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 30, 20, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_WHELP, 30, 20, {
     roomId: hallOfMirrorsId,
     patrol: [
       { x: 30, z: 20 },
@@ -276,18 +276,18 @@ export async function buildCircle8(dbPath: string) {
     LEVEL_ID,
     { x: 10, z: 26, w: 8, h: 2 },
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 11, z: 27 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 17, z: 27 },
+      { type: ENEMY_TYPES.MIMIC_ENEMY, x: 11, z: 27 },
+      { type: ENEMY_TYPES.MIMIC_ENEMY, x: 17, z: 27 },
     ],
     { roomId: bolgiaFlatId },
   );
 
   // Bolgia of Flatterers: 2x mimic (pickup disguise)
   // Mimics are enemies that look like pickups
-  editor.spawnEnemy(LEVEL_ID, 'mimic', 12, 30, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 12, 30, {
     roomId: bolgiaFlatId,
   });
-  editor.spawnEnemy(LEVEL_ID, 'mimic', 16, 32, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 16, 32, {
     roomId: bolgiaFlatId,
   });
 
@@ -298,12 +298,12 @@ export async function buildCircle8(dbPath: string) {
     LEVEL_ID,
     { x: 36, z: 28, w: 4, h: 2 },
     [
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 37, z: 31 },
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 41, z: 31 },
+      { type: ENEMY_TYPES.MIMIC_ENEMY, x: 37, z: 31 },
+      { type: ENEMY_TYPES.MIMIC_ENEMY, x: 41, z: 31 },
     ],
     { roomId: bolgiaThievesId },
   );
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 39, 29, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 39, 29, {
     roomId: bolgiaThievesId,
     patrol: [
       { x: 39, z: 29 },
@@ -314,7 +314,7 @@ export async function buildCircle8(dbPath: string) {
 
   // --- Shifting Maze: 4x shadowGoat + 3x hellgoat ---
   // Room bounds: (32, 38, 14, 14) -> interior: x=[33..44], z=[39..50]
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 35, 41, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 35, 41, {
     roomId: shiftingMazeId,
     patrol: [
       { x: 35, z: 41 },
@@ -322,7 +322,7 @@ export async function buildCircle8(dbPath: string) {
       { x: 35, z: 47 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 42, 40, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 42, 40, {
     roomId: shiftingMazeId,
     patrol: [
       { x: 42, z: 40 },
@@ -330,7 +330,7 @@ export async function buildCircle8(dbPath: string) {
       { x: 42, z: 46 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 36, 48, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 36, 48, {
     roomId: shiftingMazeId,
     patrol: [
       { x: 36, z: 48 },
@@ -338,16 +338,16 @@ export async function buildCircle8(dbPath: string) {
       { x: 44, z: 48 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 43, 49, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 43, 49, {
     roomId: shiftingMazeId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 37, 44, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 37, 44, {
     roomId: shiftingMazeId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 41, 42, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 41, 42, {
     roomId: shiftingMazeId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 39, 48, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 39, 48, {
     roomId: shiftingMazeId,
   });
 
@@ -356,31 +356,31 @@ export async function buildCircle8(dbPath: string) {
   // Arena uses setupArenaWaves for lock/wave/unlock pattern
   // Wave 1: 3x hellgoat, Wave 2: 2x shadowGoat
   editor.setupArenaWaves(LEVEL_ID, counterfeitArenaId, { x: 24, z: 58, w: 8, h: 8 }, [
-    // Wave 1: 3 hellgoats from edges
+    // Wave 1: 3 mimic (standard) from edges
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 23, z: 62 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 28, z: 57 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 32, z: 62 },
+      { type: ENEMY_TYPES.MIMIC_ENEMY, x: 23, z: 62 },
+      { type: ENEMY_TYPES.MIMIC_ENEMY, x: 28, z: 57 },
+      { type: ENEMY_TYPES.MIMIC_ENEMY, x: 32, z: 62 },
     ],
-    // Wave 2: 2 shadowGoats flank from ramps
+    // Wave 2: 2 mimicElder flank from ramps (escalation)
     [
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 24, z: 60 },
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 31, z: 64 },
+      { type: ENEMY_TYPES.MIMIC_ELDER, x: 24, z: 60 },
+      { type: ENEMY_TYPES.MIMIC_ELDER, x: 31, z: 64 },
     ],
   ]);
 
   // Counterfeit Arena mimics: 4 of 6 "columns" are mimics
-  editor.spawnEnemy(LEVEL_ID, 'mimic', 24, 58, { roomId: counterfeitArenaId });
-  editor.spawnEnemy(LEVEL_ID, 'mimic', 28, 58, { roomId: counterfeitArenaId });
-  editor.spawnEnemy(LEVEL_ID, 'mimic', 24, 64, { roomId: counterfeitArenaId });
-  editor.spawnEnemy(LEVEL_ID, 'mimic', 28, 64, { roomId: counterfeitArenaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 24, 58, { roomId: counterfeitArenaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 28, 58, { roomId: counterfeitArenaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 24, 64, { roomId: counterfeitArenaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 28, 64, { roomId: counterfeitArenaId });
 
-  // --- Mimic's Den: 4x mimic (mixed among 8 real pickups) ---
+  // --- Mimic's Den: 4x mimicElder (mixed among 8 real pickups — late/secret room) ---
   // Room bounds: (24, 72, 8, 8) -> interior: x=[25..30], z=[73..78]
-  editor.spawnEnemy(LEVEL_ID, 'mimic', 27, 75, { roomId: mimicDenId });
-  editor.spawnEnemy(LEVEL_ID, 'mimic', 29, 77, { roomId: mimicDenId });
-  editor.spawnEnemy(LEVEL_ID, 'mimic', 26, 74, { roomId: mimicDenId });
-  editor.spawnEnemy(LEVEL_ID, 'mimic', 30, 74, { roomId: mimicDenId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 27, 75, { roomId: mimicDenId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 29, 77, { roomId: mimicDenId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 26, 74, { roomId: mimicDenId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 30, 74, { roomId: mimicDenId });
 
   // --- Boss: Inganno ---
   // Room bounds: (21, 84, 14, 14) -> center: (28, 91)
@@ -1204,8 +1204,8 @@ export async function buildCircle8(dbPath: string) {
   // =========================================================================
 
   // ── Illusory Gallery (bounds: 2, 12, 14, 10) → interior: x=[3,15], z=[13,21] ──
-  // 4x shadowGoat — patrol the mirrored alcoves
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 5, 14, {
+  // 4x mimicWhelp — patrol the mirrored alcoves (early expansion, adjacent to Hall of Mirrors)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_WHELP, 5, 14, {
     roomId: illusoryGalleryId,
     patrol: [
       { x: 5, z: 14 },
@@ -1213,7 +1213,7 @@ export async function buildCircle8(dbPath: string) {
       { x: 9, z: 20 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 13, 14, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_WHELP, 13, 14, {
     roomId: illusoryGalleryId,
     patrol: [
       { x: 13, z: 14 },
@@ -1221,7 +1221,7 @@ export async function buildCircle8(dbPath: string) {
       { x: 5, z: 14 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 5, 20, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_WHELP, 5, 20, {
     roomId: illusoryGalleryId,
     patrol: [
       { x: 5, z: 20 },
@@ -1229,27 +1229,27 @@ export async function buildCircle8(dbPath: string) {
       { x: 9, z: 14 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 13, 20, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_WHELP, 13, 20, {
     roomId: illusoryGalleryId,
   });
-  // 3x hellgoat — ambush from mirror alcoves
+  // 3x mimicWhelp — ambush from mirror alcoves
   editor.ambush(
     LEVEL_ID,
     { x: 3, z: 12, w: 12, h: 2 },
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 5, z: 16 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 9, z: 18 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 13, z: 16 },
+      { type: ENEMY_TYPES.MIMIC_WHELP, x: 5, z: 16 },
+      { type: ENEMY_TYPES.MIMIC_WHELP, x: 9, z: 18 },
+      { type: ENEMY_TYPES.MIMIC_WHELP, x: 13, z: 16 },
     ],
     { roomId: illusoryGalleryId },
   );
-  // 2x mimic disguised as props
-  editor.spawnEnemy(LEVEL_ID, 'mimic', 7, 17, { roomId: illusoryGalleryId });
-  editor.spawnEnemy(LEVEL_ID, 'mimic', 12, 19, { roomId: illusoryGalleryId });
+  // 2x mimicWhelp disguised as props
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_WHELP, 7, 17, { roomId: illusoryGalleryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_WHELP, 12, 19, { roomId: illusoryGalleryId });
 
   // ── False Treasury (bounds: 46, 26, 12, 10) → interior: x=[47,57], z=[27,35] ──
   // 3x hellgoat — guarding treasure hoard
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 49, 29, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 49, 29, {
     roomId: falseTreasuryId,
     patrol: [
       { x: 49, z: 29 },
@@ -1257,21 +1257,21 @@ export async function buildCircle8(dbPath: string) {
       { x: 52, z: 33 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 55, 29, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 55, 29, {
     roomId: falseTreasuryId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 52, 33, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 52, 33, {
     roomId: falseTreasuryId,
   });
-  // 2x goatKnight — elite guards
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 48, 28, {
+  // 2x mimicElder — elite guards (late expansion room)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 48, 28, {
     roomId: falseTreasuryId,
     patrol: [
       { x: 48, z: 28 },
       { x: 48, z: 34 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 56, 28, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 56, 28, {
     roomId: falseTreasuryId,
     patrol: [
       { x: 56, z: 28 },
@@ -1279,13 +1279,13 @@ export async function buildCircle8(dbPath: string) {
     ],
   });
   // 3x mimic — disguised among coin piles
-  editor.spawnEnemy(LEVEL_ID, 'mimic', 51, 30, { roomId: falseTreasuryId });
-  editor.spawnEnemy(LEVEL_ID, 'mimic', 53, 27, { roomId: falseTreasuryId });
-  editor.spawnEnemy(LEVEL_ID, 'mimic', 55, 33, { roomId: falseTreasuryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 51, 30, { roomId: falseTreasuryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 53, 27, { roomId: falseTreasuryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 55, 33, { roomId: falseTreasuryId });
 
   // ── Mirror Labyrinth (bounds: 2, 38, 16, 14) → interior: x=[3,17], z=[39,51] ──
   // 4x shadowGoat — patrol the maze corridors
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 5, 41, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 5, 41, {
     roomId: mirrorLabyrinthId,
     patrol: [
       { x: 5, z: 41 },
@@ -1293,7 +1293,7 @@ export async function buildCircle8(dbPath: string) {
       { x: 10, z: 46 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 15, 41, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 15, 41, {
     roomId: mirrorLabyrinthId,
     patrol: [
       { x: 15, z: 41 },
@@ -1301,7 +1301,7 @@ export async function buildCircle8(dbPath: string) {
       { x: 5, z: 41 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 4, 49, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 4, 49, {
     roomId: mirrorLabyrinthId,
     patrol: [
       { x: 4, z: 49 },
@@ -1309,7 +1309,7 @@ export async function buildCircle8(dbPath: string) {
       { x: 10, z: 44 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 16, 49, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 16, 49, {
     roomId: mirrorLabyrinthId,
   });
   // 3x hellgoat — ambush from wall segments
@@ -1317,23 +1317,23 @@ export async function buildCircle8(dbPath: string) {
     LEVEL_ID,
     { x: 3, z: 44, w: 12, h: 4 },
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 6, z: 44 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 10, z: 47 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 15, z: 44 },
+      { type: ENEMY_TYPES.MIMIC_ENEMY, x: 6, z: 44 },
+      { type: ENEMY_TYPES.MIMIC_ENEMY, x: 10, z: 47 },
+      { type: ENEMY_TYPES.MIMIC_ENEMY, x: 15, z: 44 },
     ],
     { roomId: mirrorLabyrinthId },
   );
   // 2x fireGoat — revealed as walls shift
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 8, 43, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 8, 43, {
     roomId: mirrorLabyrinthId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 13, 50, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 13, 50, {
     roomId: mirrorLabyrinthId,
   });
 
   // ── Deceiver's Corridor (bounds: 46, 40, 12, 12) → interior: x=[47,57], z=[41,51] ──
   // 3x shadowGoat — lurking in false doorways
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 49, 43, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 49, 43, {
     roomId: deceiversCorridorId,
     patrol: [
       { x: 49, z: 43 },
@@ -1341,21 +1341,21 @@ export async function buildCircle8(dbPath: string) {
       { x: 52, z: 49 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 55, 43, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 55, 43, {
     roomId: deceiversCorridorId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 52, 49, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 52, 49, {
     roomId: deceiversCorridorId,
   });
-  // 2x goatKnight — flanking gauntlet
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 48, 42, {
+  // 2x mimicElder — flanking gauntlet (late expansion room)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 48, 42, {
     roomId: deceiversCorridorId,
     patrol: [
       { x: 48, z: 42 },
       { x: 56, z: 42 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 56, 50, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 56, 50, {
     roomId: deceiversCorridorId,
   });
   // Ambush: 3x hellgoat burst from false doors
@@ -1363,36 +1363,36 @@ export async function buildCircle8(dbPath: string) {
     LEVEL_ID,
     { x: 47, z: 45, w: 8, h: 3 },
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 49, z: 47 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 52, z: 45 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 55, z: 47 },
+      { type: ENEMY_TYPES.MIMIC_ENEMY, x: 49, z: 47 },
+      { type: ENEMY_TYPES.MIMIC_ENEMY, x: 52, z: 45 },
+      { type: ENEMY_TYPES.MIMIC_ENEMY, x: 55, z: 47 },
     ],
     { roomId: deceiversCorridorId },
   );
 
   // ── Architect's Chamber (bounds: 2, 56, 14, 12) → interior: x=[3,15], z=[57,67] ──
-  // Arena waves: Wave 1: goatKnight x2 + hellgoat x2; Wave 2: shadowGoat x3 + fireGoat x1
+  // Arena waves: Wave 1: mimicElder x2 + mimic x2; Wave 2: mimicElder x4 (escalation)
   editor.setupArenaWaves(LEVEL_ID, architectsChamber, { x: 4, z: 58, w: 10, h: 8 }, [
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 4, z: 62 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 14, z: 62 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 4, z: 58 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 14, z: 66 },
+      { type: ENEMY_TYPES.MIMIC_ELDER, x: 4, z: 62 },
+      { type: ENEMY_TYPES.MIMIC_ELDER, x: 14, z: 62 },
+      { type: ENEMY_TYPES.MIMIC_ENEMY, x: 4, z: 58 },
+      { type: ENEMY_TYPES.MIMIC_ENEMY, x: 14, z: 66 },
     ],
     [
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 5, z: 60 },
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 13, z: 60 },
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 9, z: 65 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 9, z: 58 },
+      { type: ENEMY_TYPES.MIMIC_ELDER, x: 5, z: 60 },
+      { type: ENEMY_TYPES.MIMIC_ELDER, x: 13, z: 60 },
+      { type: ENEMY_TYPES.MIMIC_ELDER, x: 9, z: 65 },
+      { type: ENEMY_TYPES.MIMIC_ELDER, x: 9, z: 58 },
     ],
   ]);
   // 2x mimic — reward lure
-  editor.spawnEnemy(LEVEL_ID, 'mimic', 6, 64, { roomId: architectsChamber });
-  editor.spawnEnemy(LEVEL_ID, 'mimic', 12, 64, { roomId: architectsChamber });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 6, 64, { roomId: architectsChamber });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 12, 64, { roomId: architectsChamber });
 
   // ── Phantom Vault (bounds: 36, 56, 12, 12) → interior: x=[37,47], z=[57,67] ──
-  // 3x goatKnight — elite vault guardians
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 39, 59, {
+  // 3x mimicElder — elite vault guardians (secret room)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 39, 59, {
     roomId: phantomVaultId,
     patrol: [
       { x: 39, z: 59 },
@@ -1400,26 +1400,26 @@ export async function buildCircle8(dbPath: string) {
       { x: 42, z: 65 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 45, 59, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 45, 59, {
     roomId: phantomVaultId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 42, 65, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 42, 65, {
     roomId: phantomVaultId,
   });
-  // 2x fireGoat — patrolling vault perimeter
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 38, 64, {
+  // 2x mimicElder — patrolling vault perimeter
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 38, 64, {
     roomId: phantomVaultId,
     patrol: [
       { x: 38, z: 64 },
       { x: 46, z: 64 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 46, 57, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 46, 57, {
     roomId: phantomVaultId,
   });
-  // 2x mimic — disguised in treasure cluster
-  editor.spawnEnemy(LEVEL_ID, 'mimic', 41, 62, { roomId: phantomVaultId });
-  editor.spawnEnemy(LEVEL_ID, 'mimic', 43, 58, { roomId: phantomVaultId });
+  // 2x mimicElder — disguised in treasure cluster
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 41, 62, { roomId: phantomVaultId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 43, 58, { roomId: phantomVaultId });
 
   // =========================================================================
   // EX-4. NEW PICKUPS
@@ -1899,8 +1899,8 @@ export async function buildCircle8(dbPath: string) {
   // Current: ~9.6 min with 32 enemies. Need ~25% more combat content.
   // Adding 2 more waves of enemies spread across high-traffic rooms.
 
-  // Illusory Gallery bonus patrol — 2x fireGoat roaming the gallery
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 9, 15, {
+  // Illusory Gallery bonus patrol — 2x mimicWhelp roaming the gallery (early)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_WHELP, 9, 15, {
     roomId: illusoryGalleryId,
     patrol: [
       { x: 9, z: 15 },
@@ -1908,36 +1908,36 @@ export async function buildCircle8(dbPath: string) {
       { x: 14, z: 17 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 4, 19, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_WHELP, 4, 19, {
     roomId: illusoryGalleryId,
   });
 
-  // Mirror Labyrinth bonus — 2x goatKnight blocking the exit
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 10, 49, {
+  // Mirror Labyrinth bonus — 2x mimicElder blocking the exit (late maze)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 10, 49, {
     roomId: mirrorLabyrinthId,
     patrol: [
       { x: 10, z: 49 },
       { x: 16, z: 49 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 5, 51, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 5, 51, {
     roomId: mirrorLabyrinthId,
   });
 
-  // Deceiver's Corridor bonus — 2x fireGoat in the dark gauntlet
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 51, 41, {
+  // Deceiver's Corridor bonus — 2x mimic in the dark gauntlet (standard mid)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 51, 41, {
     roomId: deceiversCorridorId,
     patrol: [
       { x: 51, z: 41 },
       { x: 51, z: 50 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 55, 50, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 55, 50, {
     roomId: deceiversCorridorId,
   });
 
-  // False Treasury bonus — 1x extra goatKnight, the hidden sentinel
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 52, 35, {
+  // False Treasury bonus — 1x mimicElder, the hidden sentinel (late expansion)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 52, 35, {
     roomId: falseTreasuryId,
     patrol: [
       { x: 52, z: 35 },
@@ -1945,8 +1945,8 @@ export async function buildCircle8(dbPath: string) {
     ],
   });
 
-  // Phantom Vault bonus — 1x shadowGoat lurking near the bonus loot
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 43, 63, {
+  // Phantom Vault bonus — 1x mimicElder lurking near the bonus loot (secret)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 43, 63, {
     roomId: phantomVaultId,
     patrol: [
       { x: 43, z: 63 },
@@ -1955,30 +1955,30 @@ export async function buildCircle8(dbPath: string) {
     ],
   });
 
-  // Architect's Chamber bonus mimics — 2 additional disguised enemies
-  editor.spawnEnemy(LEVEL_ID, 'mimic', 4, 60, { roomId: architectsChamber });
-  editor.spawnEnemy(LEVEL_ID, 'mimic', 13, 62, { roomId: architectsChamber });
+  // Architect's Chamber bonus mimics — 2 additional mimicElder disguised enemies (late arena)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 4, 60, { roomId: architectsChamber });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 13, 62, { roomId: architectsChamber });
 
   // ── Extra patrol enemies spread across expansion rooms ──
   // These are always-active (not wave-gated) so the playtest counts them.
 
-  // Illusory Gallery — 2 more hellgoat sentinels at entry arch
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 5, 13, { roomId: illusoryGalleryId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 13, 13, { roomId: illusoryGalleryId });
+  // Illusory Gallery — 2 more mimicWhelp sentinels at entry arch (early)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_WHELP, 5, 13, { roomId: illusoryGalleryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_WHELP, 13, 13, { roomId: illusoryGalleryId });
 
-  // False Treasury — 2 more hellgoat guards flanking the chest display
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 47, 31, { roomId: falseTreasuryId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 57, 31, { roomId: falseTreasuryId });
+  // False Treasury — 2 more mimic guards flanking the chest display (standard mid)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 47, 31, { roomId: falseTreasuryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 57, 31, { roomId: falseTreasuryId });
 
-  // Mirror Labyrinth — 2 more shadowGoat wanderers (the maze is large)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 7, 40, {
+  // Mirror Labyrinth — 2 more mimic wanderers (standard mid, large maze)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 7, 40, {
     roomId: mirrorLabyrinthId,
     patrol: [
       { x: 7, z: 40 },
       { x: 15, z: 50 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 15, 40, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 15, 40, {
     roomId: mirrorLabyrinthId,
     patrol: [
       { x: 15, z: 40 },
@@ -1986,17 +1986,17 @@ export async function buildCircle8(dbPath: string) {
     ],
   });
 
-  // Deceiver's Corridor — 2 more shadowGoat behind false doors
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 48, 44, { roomId: deceiversCorridorId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 56, 48, { roomId: deceiversCorridorId });
+  // Deceiver's Corridor — 2 more mimic behind false doors (standard mid)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 48, 44, { roomId: deceiversCorridorId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ENEMY, 56, 48, { roomId: deceiversCorridorId });
 
-  // Phantom Vault — 2 more goatKnight elites guarding the true cache
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 37, 57, { roomId: phantomVaultId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 46, 66, { roomId: phantomVaultId });
+  // Phantom Vault — 2 more mimicElder elites guarding the true cache (secret)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 37, 57, { roomId: phantomVaultId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_ELDER, 46, 66, { roomId: phantomVaultId });
 
-  // Hall of Mirrors — 2 bonus fireGoat to reinforce the opening area
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 26, 17, { roomId: hallOfMirrorsId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 34, 19, { roomId: hallOfMirrorsId });
+  // Hall of Mirrors — 2 bonus mimicWhelp to reinforce the opening area (early)
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_WHELP, 26, 17, { roomId: hallOfMirrorsId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.MIMIC_WHELP, 34, 19, { roomId: hallOfMirrorsId });
 
   // =========================================================================
   // 8. PLAYER SPAWN (from "Player Spawn" section)

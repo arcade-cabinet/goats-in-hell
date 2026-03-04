@@ -192,20 +192,20 @@ All props use bespoke Meshy AI-generated models or general library assets. See *
 
 | Room | Type | Count | Behavior | Variant |
 |------|------|-------|----------|---------|
-| Glacial Stairs | shadowGoat | 2 | Ambush from landing alcoves | Gray, frost-tinged |
-| Glacial Stairs | fireGoat | 1 | Ranged from lower landing, fires upward | Dark variant, blue-white fire |
+| Glacial Stairs | frost | 2 | Ambush from landing alcoves | Gray, frost-tinged |
+| Glacial Stairs | frost | 1 | Ranged from lower landing, fires upward | Dark variant, blue-white fire |
 | Caina | goatKnight | 3 | Frozen in ice, break free on 4-cell proximity. Blue goatKnights have a unique attack: **Ice Charge** — a 2-second wind-up (frost particles gathering at hooves, audible ice-cracking sound), then a 5-cell linear charge that deals 15 damage and applies 2-second movement slow. The charge is telegraphed and dodgeable — the wind-up gives the player time to sidestep. The charge leaves an ice trail (cosmetic) on the ground. This differentiates Blue goatKnights mechanically, not just visually. | Blue, elite, armored |
-| Caina | shadowGoat | 1 | Patrols behind ice pillars | Gray |
-| Antenora | shadowGoat | 3 | Ambush from frozen alcoves in corridors | Gray |
-| Antenora | fireGoat | 1 | Ranged from corridor intersection | Dark variant |
+| Caina | frost | 1 | Patrols behind ice pillars | Gray |
+| Antenora | frost | 3 | Ambush from frozen alcoves in corridors | Gray |
+| Antenora | frost | 1 | Ranged from corridor intersection | Dark variant |
 | Ptolomea | goatKnight | 2 | Frozen at banquet table, thaw on room entry | Blue, elite |
-| Ptolomea | fireGoat | 1 | Frozen behind barrel, thaw after knights | Dark variant |
+| Ptolomea | frost | 1 | Frozen behind barrel, thaw after knights | Dark variant |
 | Giudecca wave 1 | goatKnight | 2 | Spawn from frozen waterfall, march forward | Blue, elite |
-| Giudecca wave 2 | shadowGoat | 2 | Spawn from floor cracks, flank | Gray |
-| Giudecca wave 2 | fireGoat | 1 | Spawn on elevated ice chunk, ranged | Dark variant |
+| Giudecca wave 2 | frost | 2 | Spawn from floor cracks, flank | Gray |
+| Giudecca wave 2 | frost | 1 | Spawn on elevated ice chunk, ranged | Dark variant |
 | Giudecca wave 3 | goatKnight | 1 | Final knight, center | Blue, elite |
-| Giudecca wave 3 | shadowGoat | 1 | Flanker | Gray |
-| Giudecca wave 3 | fireGoat | 1 | Ranged support | Dark variant |
+| Giudecca wave 3 | frost | 1 | Flanker | Gray |
+| Giudecca wave 3 | frost | 1 | Ranged support | Dark variant |
 | Cocytus Bridge | — | 0 | No enemies. Silence. | — |
 | Boss chamber | Azazel | 1 | Boss AI, 3 phases | boss-azazel.glb |
 
@@ -224,7 +224,7 @@ The defining combat mechanic of Circle 9:
 
 | Room | Type | Position (grid) | Notes |
 |------|------|-----------------|-------|
-| Glacial Stairs (landing 2) | ammo | (29, 8) | On second landing, guarded by shadowGoat |
+| Glacial Stairs (landing 2) | ammo | (29, 8) | On second landing, guarded by frost |
 | Glacial Stairs (landing 4) | health | (28, 14) | On fourth landing, near bottom |
 | Caina | ammo × 2 | (25, 26), (35, 32) | SW and NE of frozen lake |
 | Caina | health | (30, 28) center | Center of lake, near ice pillars — risky (goatKnights nearby) |
@@ -274,12 +274,12 @@ The defining combat mechanic of Circle 9:
   ├══════════════┤  landing 1 (elev -0.5)
   │  ~~ice~~     │  ← Slippery slope
   ├══════════════┤  landing 2 (elev -1)
-  │ 👻sg  ♦ammo │  ← shadowGoat ambush + ammo
+  │ 👻sg  ♦ammo │  ← frost ambush + ammo
   ├══════════════┤  landing 3 (elev -1.5)
   │  ~~ice~~     │
-  │      🔥fg    │  ← fireGoat fires upward from below
+  │      🔥fg    │  ← frost fires upward from below
   ├══════════════┤  landing 4 (elev -2.5)
-  │ 👻sg  ♦health│  ← shadowGoat + health
+  │ 👻sg  ♦health│  ← frost + health
   ├══════════════┤  landing 5 (elev -3)
   │              │
   └──────┬───────┘
@@ -289,7 +289,7 @@ The defining combat mechanic of Circle 9:
 - **Elevation:** Descends from 0 to -3 across 5 landings. Each landing is 2-3 cells deep, connected by icy ramps (RAMP cells, 4 cells long each).
 - **Mechanic:** Ice floor on ramps = reduced friction. Player slides downward. Missing a landing means sliding to the next one (1-2 HP fall damage). Ramps are 4 cells wide (narrower than the 8-cell room width) — edges drop off to side alcoves where enemies hide.
 - **3D elements:** treachery-frozen-stalactite hang from ceiling at landings 1/3/5 (1.5-2 cell height). treachery-unlit-lantern on alternating E/W walls mark each landing (4 positions, frost-covered, dead). treachery-frozen-chain-cluster frozen to ceiling at landings 2 and 4. treachery-ice-arch at top entrance. treachery-snow-drift-mound in landing alcove corners. treachery-ice-crack-floor on ramp surfaces. The vertical descent creates a strong sense of going deeper.
-- **Combat:** 2 shadowGoats ambush from landing alcoves (side recesses, 2×2 cells). 1 fireGoat fires from landing 3 upward at the player descending — first encounter with the dark fireGoat variant (blue-white fire projectiles). Reflected shots are immediately relevant: shooting downward at the fireGoat means missed shots hit the landing floor/back wall and bounce back up.
+- **Combat:** 2 shadowGoats ambush from landing alcoves (side recesses, 2×2 cells). 1 frost fires from landing 3 upward at the player descending — first encounter with the dark frost variant (blue-white fire projectiles). Reflected shots are immediately relevant: shooting downward at the frost means missed shots hit the landing floor/back wall and bounce back up.
 - **Flow:** Ingress at top (spawn), egress at bottom to Caina.
 
 ### Room 2: Caina — Betrayers of Family (16×14)
@@ -305,7 +305,7 @@ The defining combat mechanic of Circle 9:
   │                                        │
   │    ╬pillar     ♦health     ╬pillar    │  ← Center health (risky)
   │              (center lake)             │
-  │    👻sg                               │  ← shadowGoat patrols behind pillars
+  │    👻sg                               │  ← frost patrols behind pillars
   │                                        │
   │    ╬pillar    ❄️gkB    ♦ammo  ╬pillar │
   │                                        │
@@ -318,7 +318,7 @@ The defining combat mechanic of Circle 9:
 - **Elevation:** -3 (flat frozen lake). Ice001 floor — slippery (0.8x friction). Ice pillars rise to full ceiling height.
 - **Mechanic:** 3 Blue goatKnights stand frozen in the ice at intervals. They break free when the player enters 4-cell proximity — ice-shattering animation, 1-second stun, then they attack. The player can choose engagement order by controlling approach path. Ice pillars (6 total, 1×1 cell, full height) serve as cover but also as reflective surfaces — shots that hit pillars bounce. Strategic positioning: angle shots so reflected projectiles travel toward OTHER frozen goatKnights, pre-damaging them before they break free.
 - **3D elements:** ice-pillar (6, arranged in 2 rows of 3, staggered, reflective surfaces). treachery-betrayer-cage (3 positions) embedded in ice floor (decorative, frozen betrayers below). treachery-frozen-sword (2 positions) frozen into pillar surfaces --- inaccessible, narrative. treachery-ice-arch at south corridor exit. treachery-ice-crack-floor across center lake area. treachery-snow-drift-mound in NW/SE corners. treachery-dark-ice-monolith as hero piece at center/north edge.
-- **Combat:** HP 20 Blue goatKnights are devastating. Flamethrower is safest (no reflection risk, high DPS at close range). Using ranged weapons means managing bounce trajectories. shadowGoat (1) patrols behind pillars, flanking while player focuses on knights.
+- **Combat:** HP 20 Blue goatKnights are devastating. Flamethrower is safest (no reflection risk, high DPS at close range). Using ranged weapons means managing bounce trajectories. frost (1) patrols behind pillars, flanking while player focuses on knights.
 - **Flow:** Ingress from north (Glacial Stairs), egress south to Antenora.
 
 ### Room 3: Antenora — Betrayers of Country (12×16)
@@ -338,8 +338,8 @@ The defining combat mechanic of Circle 9:
   │    ╚════╦═════╝            │
   │  🏳     ║     🔗chain     │  ← Chain frozen to ceiling
   │    ╔════╩═════╗            │
-  │    ║   🔥fg   ║            │  ← fireGoat at intersection
-  │    ║          ║   👻sg    │  ← shadowGoat in alcove
+  │    ║   🔥fg   ║            │  ← frost at intersection
+  │    ║          ║   👻sg    │  ← frost in alcove
   │    ╚════╦═════╝            │
   │         ║     ♦health      │  ← Health near south exit
   │    ╔════╩═════╗            │
@@ -351,7 +351,7 @@ The defining combat mechanic of Circle 9:
 - **Elevation:** -3 (same as Caina). Metal037 walls with Ice002 frost overlay. Corridors are 3 cells wide, walls 1 cell thick.
 - **Mechanic:** Narrow corridors make reflected shots LETHAL. A missed pistol/cannon shot travels down the corridor, hits the far wall, and bounces straight back along the corridor's length — directly at the player. The corridors are long enough (4-6 cells) that the reflected shot has significant travel time, but in the tight space, dodging is difficult. The flamethrower is ESSENTIAL here — its 3-cell range fills the corridor width without reaching the walls.
 - **3D elements:** Corridors are 3 wide x 2.5 tall --- claustrophobic. treachery-frozen-banner (4 positions, N/S alternating walls, frozen stiff, offsetY: 2.0). treachery-ice-arch at north entrance and south exit. treachery-crystalline-spike-wall at corridor dead-end walls. treachery-frozen-chain-cluster frozen to ceiling at 2 corridor intersections. treachery-snow-drift-mound in 3 alcove recesses. stalactite-cluster (general, 2 positions) on corridor ceiling. The fortress feel is ice-encased military architecture.
-- **Combat:** 3 shadowGoats hide in frozen alcoves (2×2 cell recesses in the corridor walls). They emerge when the player passes, attacking from behind. 1 fireGoat holds a corridor intersection, forcing the player to approach under fire. Corridor combat with reflected shots and ambush enemies from behind = maximum tension.
+- **Combat:** 3 shadowGoats hide in frozen alcoves (2×2 cell recesses in the corridor walls). They emerge when the player passes, attacking from behind. 1 frost holds a corridor intersection, forcing the player to approach under fire. Corridor combat with reflected shots and ambush enemies from behind = maximum tension.
 - **Flow:** Ingress from north (Caina), egress south to Ptolomea (elevation step down from -3 to -4, short staircase).
 
 ### Room 4: Ptolomea — Betrayers of Guests (14×10)
@@ -366,7 +366,7 @@ The defining combat mechanic of Circle 9:
   │   ║  🍷 TABLE 🍷    ║ ♦ammo      │  ← treachery-frozen-feast-table with frozen feast
   │   ║  ❄️gkB  ❄️gkB   ║             │  ← 2 goatKnights frozen at table
   │   ╚══════════════════╝             │
-  │   🪑  🪑  🪑      🔥fg           │  ← fireGoat behind barrel (E)
+  │   🪑  🪑  🪑      🔥fg           │  ← frost behind barrel (E)
   │                    🛢barrel       │
   │                          ♦health  │
   └────────────┬───────────────────────┘
@@ -376,7 +376,7 @@ The defining combat mechanic of Circle 9:
 - **Elevation:** -4 (step down from Antenora). Low ceiling — 1.5 cells. Ice003 floor, Rock043 walls.
 - **Mechanic:** The frozen feast. All enemies are frozen when the player enters — a moment of eerie stillness. Chairs knocked over, chalices mid-pour, frozen in time. The Blue goatKnights sit at the table. On entry trigger (T-zone at doorway), they thaw — ice cracking, standing, table pushed aside. The low ceiling means NO arcing shots — everything is flat trajectory, maximizing reflection danger. Close quarters with low ceiling = flamethrower dominance.
 - **3D elements:** treachery-frozen-feast-table center (4x2 cells, 0.5 cell height). 6 chair (general) props around table (some knocked, some upright). treachery-frost-chalice x2 on table. broken-pot (general) x2 on table surface. treachery-ice-arch at north entrance (low-clearance). treachery-snow-drift-mound in SE corner. frozen-goat under table, partially visible (previous scapegoat). crystal (general) x2 near walls (ice crystal formations). Ceiling at 1.5 cells --- player cannot jump. Frost drips from ceiling.
-- **Combat:** 2 Blue goatKnights (thaw simultaneously, 1-second stun, then attack). 1 fireGoat thaws 3 seconds after knights (delayed, attacks from range behind barrel while player engages knights). In the low-ceiling, close-quarters space, the reflected shot mechanic is at its most dangerous — every wall is close, every miss comes back fast.
+- **Combat:** 2 Blue goatKnights (thaw simultaneously, 1-second stun, then attack). 1 frost thaws 3 seconds after knights (delayed, attacks from range behind barrel while player engages knights). In the low-ceiling, close-quarters space, the reflected shot mechanic is at its most dangerous — every wall is close, every miss comes back fast.
 - **Flow:** Ingress from north (Antenora), egress south to Giudecca.
 
 ### Room 5: Giudecca — Betrayers of Lords (18×16)
@@ -416,10 +416,10 @@ The defining combat mechanic of Circle 9:
   - Wave 1: 2 Blue goatKnights march from the frozen waterfall (north). Methodical, tanky.
   - Waterfall begins cracking. Ice chunks fall (2 chunks, random positions, every 8 seconds).
   - Wave 1 clear: resupply spawns. 15-second break.
-  - Wave 2: 2 shadowGoats spawn from floor cracks (center), 1 fireGoat spawns on elevated ice chunk (+1 cell, created from waterfall debris). Mixed tactics.
+  - Wave 2: 2 shadowGoats spawn from floor cracks (center), 1 frost spawns on elevated ice chunk (+1 cell, created from waterfall debris). Mixed tactics.
   - Floor begins cracking. 4 floor sections (3×3 cells each) break and fall over 20 seconds.
   - Wave 2 clear: resupply refreshes. 10-second break.
-  - Wave 3: 1 goatKnight + 1 shadowGoat + 1 fireGoat simultaneously. All types at once. Maximum reflected shot chaos.
+  - Wave 3: 1 goatKnight + 1 frost + 1 frost simultaneously. All types at once. Maximum reflected shot chaos.
   - Remaining floor continues fragmenting. Final fight on shrinking ice platforms.
   - Wave 3 clear: doors unlock. Waterfall stops cracking.
 - **3D elements:** treachery-frozen-waterfall (structural hero piece, south wall, 8 cells wide, full height --- animated ice flow texture). ice-pillar (6 total, 2 rows of 3, cover + reflection). treachery-frozen-stalactite (6 ceiling positions, fall as hazards during waves). treachery-glacial-platform (4+ positions forming as floor collapses). treachery-ice-crack-floor (4 positions at future collapse points, visual warning). treachery-frozen-chain-cluster (4 ceiling positions over void sections, quadrant markers). treachery-dark-ice-monolith (2, flanking entrance). treachery-snow-drift-mound (2, south corners near waterfall base). Void below is visible through cracks --- deep indigo glow.
@@ -596,19 +596,19 @@ The defining combat mechanic of Circle 9:
 
 | ID | Room | Zone (x,z,w,h) | Action | Conditions | Data |
 |----|------|-----------------|--------|------------|------|
-| T1 | Glacial Stairs | (27, 6, 6, 3) | `spawnAmbush` | `once: true` | `{ enemies: [{type:'shadowGoat', count:1, position:'landing2_alcove'}] }` |
-| T2 | Glacial Stairs | (27, 12, 6, 3) | `spawnAmbush` | `once: true` | `{ enemies: [{type:'shadowGoat', count:1, position:'landing4_alcove'}] }` |
+| T1 | Glacial Stairs | (27, 6, 6, 3) | `spawnAmbush` | `once: true` | `{ enemies: [{type:'frost', count:1, position:'landing2_alcove'}] }` |
+| T2 | Glacial Stairs | (27, 12, 6, 3) | `spawnAmbush` | `once: true` | `{ enemies: [{type:'frost', count:1, position:'landing4_alcove'}] }` |
 | T3 | Caina | (23, 23, 14, 12) | `thawEnemies` | `proximity: 4, repeating: true` | `{ enemyType: 'goatKnight', thawRadius: 4 }` |
-| T4 | Antenora | (25, 42, 10, 4) | `spawnAmbush` | `once: true` | `{ enemies: [{type:'shadowGoat', count:1}] }` |
-| T5 | Antenora | (25, 48, 10, 4) | `spawnAmbush` | `once: true` | `{ enemies: [{type:'shadowGoat', count:1}] }` |
-| T6 | Antenora | (25, 52, 10, 4) | `spawnAmbush` | `once: true` | `{ enemies: [{type:'shadowGoat', count:1}] }` |
-| T7 | Ptolomea | (24, 61, 12, 2) | `thawEnemies` | `once: true` | `{ enemies: [{type:'goatKnight', count:2, delay:0}, {type:'fireGoat', count:1, delay:3}] }` |
+| T4 | Antenora | (25, 42, 10, 4) | `spawnAmbush` | `once: true` | `{ enemies: [{type:'frost', count:1}] }` |
+| T5 | Antenora | (25, 48, 10, 4) | `spawnAmbush` | `once: true` | `{ enemies: [{type:'frost', count:1}] }` |
+| T6 | Antenora | (25, 52, 10, 4) | `spawnAmbush` | `once: true` | `{ enemies: [{type:'frost', count:1}] }` |
+| T7 | Ptolomea | (24, 61, 12, 2) | `thawEnemies` | `once: true` | `{ enemies: [{type:'goatKnight', count:2, delay:0}, {type:'frost', count:1, delay:3}] }` |
 | T8 | Giudecca | (23, 76, 14, 4) | `lockDoors` | `once: true` | — |
 | T9 | Giudecca | (23, 76, 14, 4) | `spawnWave` | `once: true` | `{ enemies: [{type:'goatKnight', count:2, spawn:'waterfall'}] }` |
 | T10 | Giudecca | — | `environmentHazard` | On wave 1 start, `delay: 5` | `{ type: 'falling_ice', interval: 8, damage: 10, aoe: 2 }` |
-| T11 | Giudecca | — | `spawnWave` | On wave 1 clear | `{ enemies: [{type:'shadowGoat', count:2, spawn:'floor_crack'}, {type:'fireGoat', count:1, spawn:'elevated'}] }` |
+| T11 | Giudecca | — | `spawnWave` | On wave 1 clear | `{ enemies: [{type:'frost', count:2, spawn:'floor_crack'}, {type:'frost', count:1, spawn:'elevated'}] }` |
 | T12 | Giudecca | — | `floorCollapse` | On wave 2 start, `delay: 5` | `{ sections: 4, sectionSize: 3, collapseInterval: 5 }` |
-| T13 | Giudecca | — | `spawnWave` | On wave 2 clear | `{ enemies: [{type:'goatKnight', count:1}, {type:'shadowGoat', count:1}, {type:'fireGoat', count:1}] }` |
+| T13 | Giudecca | — | `spawnWave` | On wave 2 clear | `{ enemies: [{type:'goatKnight', count:1}, {type:'frost', count:1}, {type:'frost', count:1}] }` |
 | T14 | Giudecca | — | `floorCollapse` | On wave 3 start | `{ sections: 2, sectionSize: 2, collapseInterval: 8 }` |
 | T15 | Giudecca | — | `unlockDoors` | On wave 3 clear | — |
 | T16 | Boss chamber | (27, 136, 6, 2) | `bossIntro` | `once: true` | `{ text: "You came.", speaker: "Azazel", delay: 2, followUp: "I have been waiting since the first goat was cast out." }` |
@@ -658,7 +658,7 @@ editor.createTheme('circle-9-treachery', {
   ambientIntensity: 0.10,
   skyColor: '#000005',                   // Near-black — the deepest point
   particleEffect: 'snow_drift',          // Horizontal snow particles, slow
-  enemyTypes: ['goatKnight', 'shadowGoat', 'fireGoat'],
+  enemyTypes: ['goatKnight', 'frost', 'frost'],
   enemyDensity: 1.2,                     // High — the finale
   pickupDensity: 0.8,                    // Moderate — enough to survive, not to hoard
   reflectedShots: {
@@ -736,7 +736,7 @@ editor.createTheme('circle-9-treachery', {
 
 ### Room: Glacial Stairs (8x16, platforming, sortOrder=0)
 
-**Player Experience:** The temperature drops. Your breath is visible. Unlit lanterns line the walls --- nothing burns this deep. The descent is steep and slippery. Five landings connected by icy ramps. You slide downward, missing a landing means fall damage. Enemies ambush from side alcoves. A fireGoat below fires upward with blue-white flames. Your reflected shots bounce off the landing floor and come back up. You are going where no warmth survives.
+**Player Experience:** The temperature drops. Your breath is visible. Unlit lanterns line the walls --- nothing burns this deep. The descent is steep and slippery. Five landings connected by icy ramps. You slide downward, missing a landing means fall damage. Enemies ambush from side alcoves. A frost below fires upward with blue-white flames. Your reflected shots bounce off the landing floor and come back up. You are going where no warmth survives.
 
 **Structural Assets:**
 | Asset | Position | Scale | Rotation | Purpose |
@@ -786,7 +786,7 @@ editor.createTheme('circle-9-treachery', {
 
 ### Room: Antenora --- Betrayers of Country (12x16, exploration, sortOrder=2)
 
-**Player Experience:** Narrow fortress corridors. Ice-encased military architecture. Frozen banners hang stiff from walls. Shields sit useless and frost-covered. The corridors are 3 cells wide and 2.5 cells tall --- claustrophobic. A missed shot travels the corridor length, hits the far wall, and bounces straight back at you. The flamethrower is essential --- its 3-cell range fills the corridor without reaching the walls. ShadowGoats emerge from frozen alcoves behind you. A fireGoat holds the intersection ahead.
+**Player Experience:** Narrow fortress corridors. Ice-encased military architecture. Frozen banners hang stiff from walls. Shields sit useless and frost-covered. The corridors are 3 cells wide and 2.5 cells tall --- claustrophobic. A missed shot travels the corridor length, hits the far wall, and bounces straight back at you. The flamethrower is essential --- its 3-cell range fills the corridor without reaching the walls. ShadowGoats emerge from frozen alcoves behind you. A frost holds the intersection ahead.
 
 **Structural Assets:**
 | Asset | Position | Scale | Rotation | Purpose |

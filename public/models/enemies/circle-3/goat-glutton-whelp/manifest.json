@@ -1,0 +1,81 @@
+{
+  "id": "goat-glutton-whelp",
+  "name": "Glutton Grub",
+  "type": "character",
+  "seed": 2892164677,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cb700-1adf-711d-b5b6-d687ae862e6b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb700-1adf-711d-b5b6-d687ae862e6b"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cb700-7677-711f-9b69-4722a9214a85",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb700-7677-711f-9b69-4722a9214a85"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cb701-e670-713d-b931-c5fdae7bfcae",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb701-e670-713d-b931-c5fdae7bfcae"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cb703-2819-7f17-9d1f-436495353369",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb703-2819-7f17-9d1f-436495353369"
+      },
+      "artifacts": {}
+    },
+    "animation": {
+      "taskId": "019cb957-7a4d-75ed-8d59-6487c56e13d5",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb957-7a4d-75ed-8d59-6487c56e13d5"
+      },
+      "artifacts": {
+        "animation": "animations/Fighting.Dying.Knock_Down.glb"
+      }
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 3 (Gluttony) — the runt of excess. A juvenile gluttony-demon barely able to support its own distended belly. In life it was the person who ate until sick, spent until bankrupt, consumed until there was nothing left. Now it wallows in the freezing filth-rain of Circle 3, perpetually snuffling for scraps in the muck. Too small to be truly dangerous but vicious when its food is threatened — and everything is its food. They come in packs because weakness finds safety in numbers. Their teeth are already blackened from consuming things that should not be consumed.",
+  "textToImageTask": {
+    "prompt": "A small bloated bipedal humanoid goat demon in A-pose, runt-sized but with grotesquely distended belly far too large for its body, mottled grey-brown matted filthy fur caked with mud and slop, tiny mean black eyes sunk into fat folds, short blunt curved horns, enormous swollen gut hanging low, short thick arms ending in blunt claws blackened with filth, thick stumpy digitigrade goat legs barely supporting its weight, vicious rodent-like expression, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Small runt-sized bloated goat demon with distended belly far too large for its body, mottled matted fur, tiny mean eyes, short horns, thick stumpy legs, grotesque excess physique, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 5000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Mottled grey-brown fur caked with freezing mud and filth, skin showing through patches of matted fur, blackened claws from consuming foul things, small piggish eyes deep in fat folds, distended belly stretched tight with grotesque excess, short blunt darkened horns",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 1.2
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Stumble_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp",
+      "Fighting.Punching.Punch_Combo",
+      "Fighting.GettingHit.Face_Punch_Reaction",
+      "Fighting.Dying.Knock_Down"
+    ]
+  }
+}

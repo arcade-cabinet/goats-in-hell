@@ -1,0 +1,81 @@
+{
+  "id": "goat-butcher-elder",
+  "name": "Grand Carnifex",
+  "type": "character",
+  "seed": 1654403624,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cb6fd-5b71-70d4-bf2d-e6cf31c185cd",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6fd-5b71-70d4-bf2d-e6cf31c185cd"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cb6fd-cc23-7fa4-87e6-7d57b7e6dade",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6fd-cc23-7fa4-87e6-7d57b7e6dade"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cb6ff-3fba-7e60-be3a-446245928553",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6ff-3fba-7e60-be3a-446245928553"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cb700-9619-7120-8854-ffc2296892a6",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb700-9619-7120-8854-ffc2296892a6"
+      },
+      "artifacts": {}
+    },
+    "animation": {
+      "taskId": "019cb957-aac8-7c03-b2f8-1d4c0861dddc",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb957-aac8-7c03-b2f8-1d4c0861dddc"
+      },
+      "artifacts": {
+        "animation": "animations/Fighting.Dying.Fall_Dead_from_Abdominal_Injury.glb"
+      }
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 7 (Violence) — the Grand Carnifex: the oldest executioner in Hell, predating most of its institutions. It has killed everything that can be killed and many things that cannot. The skulls of its ten thousand victims are fused into plates of bone-armor across its chest and shoulders — not as trophies but as material. It wears the evidence of its life's work. The Phlegethon river — the river of boiling blood in Circle 7 — boils more violently in its presence. Its weapons have absorbed so much violence they have turned black and no longer reflect light. It strikes with the economy of a master craftsman: no wasted motion, no performance. It simply ends things.",
+  "textToImageTask": {
+    "prompt": "A massive hulking bipedal humanoid goat demon in A-pose, ancient master executioner, armored in fused skull-plates covering chest and shoulders built from ten thousand victims, dark iron-red fur visible only at the limbs between bone-plate armor, ancient towering curved horns with a kill-count carved in archaic notation, deep black pit eyes steady and professional, massive build of something that has done this for millennia, digitigrade goat legs thick as columns, the posture of absolute mastery of violence, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Massive ancient goat demon executioner, chest and shoulders armored in fused victim skull-plates, iron-red fur at limbs, ancient towering curved horns with carved notation, deep black steady professional eyes, column-thick legs, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 13000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Fused victim skull-plate armor on chest and shoulders with bone texture and age cracks, dark iron-red fur visible between bone sections, ancient towering curved horns deeply scarred with carved kill tallies, deep empty black-pit professional eyes, blood so old it has turned black on every surface, thick column legs and massive executioner's shoulders suggesting absolute physical authority",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 2.5
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Monster_Walk",
+      "Fighting.Transitioning.Chest_Pound_Taunt",
+      "Fighting.AttackingwithWeapon.Charged_Axe_Chop",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Fall_Dead_from_Abdominal_Injury"
+    ]
+  }
+}

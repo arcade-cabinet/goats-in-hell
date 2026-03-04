@@ -1,0 +1,81 @@
+{
+  "id": "goat-hoarder-whelp",
+  "name": "Coin Fiend",
+  "type": "character",
+  "seed": 3481095796,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cb700-5e10-7e77-b2d2-ed4c09ed8cea",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb700-5e10-7e77-b2d2-ed4c09ed8cea"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cb700-c6af-7126-8cc8-3dda30060fb1",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb700-c6af-7126-8cc8-3dda30060fb1"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cb703-87a0-705b-a862-3e2865738c98",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb703-87a0-705b-a862-3e2865738c98"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cb705-444a-71bd-bac3-3dedb14ee73e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb705-444a-71bd-bac3-3dedb14ee73e"
+      },
+      "artifacts": {}
+    },
+    "animation": {
+      "taskId": "019cb957-6e6f-7896-8b8b-c2eba167a217",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb957-6e6f-7896-8b8b-c2eba167a217"
+      },
+      "artifacts": {
+        "animation": "animations/Fighting.Dying.Knock_Down.glb"
+      }
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 4 (Greed) — a petty thief-demon, newly damned and still in the grip of its original sin: it cannot stop taking. In its mortal life it stole small things, hoarded small things, denied small things to people who needed them. Now it skitters through Circle 4 gathering whatever it can touch — coins, bones, bullets that missed their target. It has welded found currency and trinkets directly to its skin with crude hellfire. The jangling gives it away but also partially armors it. It attacks in desperate snatching motions, trying to take from you what you have left.",
+  "textToImageTask": {
+    "prompt": "A hunched furtive bipedal humanoid goat demon in A-pose, small and scrawny, dark brownish-green mangy fur, crude coins and trinkets welded directly into its skin and bolted to its arms and shoulders as improvised armor, small darting greedy eyes, short sharp forward-curving horns, long grasping fingers ending in hook-like claws, hunched spine, bulging side-bags of stolen goods hanging from makeshift belt, digitigrade goat legs crouched in perpetual sneaking posture, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Hunched scrawny furtive goat demon, coins and trinkets embedded in its skin as crude armor, small darting eyes, forward-curving horns, grasping hook-claws, perpetually crouched sneaking posture, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark brownish-green mangy matted fur, crude copper and bronze coins fused directly into skin as improvised armor on arms and shoulders, hook-like yellowed claws, darting greedy golden eyes, stolen trinkets and bones tied with scraps of leather, hunched guilty posture",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 1.4
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Stumble_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp",
+      "Fighting.Punching.Punch_Combo",
+      "Fighting.GettingHit.Face_Punch_Reaction",
+      "Fighting.Dying.Knock_Down"
+    ]
+  }
+}

@@ -15,6 +15,7 @@
 
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
+import { MeshStandardMaterial as _BaseMat, Mesh as _Mesh } from 'three';
 import * as THREE from 'three/webgpu';
 import { COLORS } from '../../constants';
 import type { Entity, EntityType } from '../../game/entities/components';
@@ -23,7 +24,6 @@ import { ENEMY_ANIMATION_ASSETS, ENEMY_MODEL_ASSETS } from '../../game/systems/A
 import {
   cloneModel,
   getAnimationClip,
-  isModelLoaded,
   loadAnimationClip,
   loadModels,
 } from '../systems/ModelLoader';
@@ -110,6 +110,286 @@ const ENEMY_CONFIGS: Record<string, EnemyMeshConfig> = {
     modelScale: 0.9,
     modelOffsetY: 0,
   },
+  shaman: {
+    color: '#3d1a66',
+    scale: 1.0,
+    emissiveHex: '#1a0033',
+    emissiveIntensity: 0.3,
+    eyeColor: '#cc44ff',
+    modelKey: 'enemy-shaman',
+    modelScale: 0.85,
+    modelOffsetY: 0,
+  },
+  // Circle-specific enemies
+  siren: {
+    color: '#661a44',
+    scale: 0.9,
+    emissiveHex: '#330011',
+    emissiveIntensity: 0.25,
+    eyeColor: '#ff44aa',
+    modelKey: 'enemy-siren',
+    modelScale: 0.8,
+    modelOffsetY: 0,
+  },
+  glutton: {
+    color: '#2a4400',
+    scale: 1.3,
+    emissiveHex: '#0a1a00',
+    emissiveIntensity: 0.2,
+    eyeColor: '#66ff00',
+    modelKey: 'enemy-glutton',
+    modelScale: 1.0,
+    modelOffsetY: 0,
+  },
+  hoarder: {
+    color: '#665500',
+    scale: 1.1,
+    emissiveHex: '#332200',
+    emissiveIntensity: 0.15,
+    eyeColor: '#ffcc00',
+    modelKey: 'enemy-hoarder',
+    modelScale: 0.9,
+    modelOffsetY: 0,
+  },
+  berserker: {
+    color: '#660000',
+    scale: 1.1,
+    emissiveHex: '#330000',
+    emissiveIntensity: 0.35,
+    eyeColor: '#ff2200',
+    modelKey: 'enemy-berserker',
+    modelScale: 0.9,
+    modelOffsetY: 0,
+  },
+  heretic: {
+    color: '#1a1a44',
+    scale: 1.0,
+    emissiveHex: '#0a0a22',
+    emissiveIntensity: 0.3,
+    eyeColor: '#8888ff',
+    modelKey: 'enemy-heretic',
+    modelScale: 0.85,
+    modelOffsetY: 0,
+  },
+  butcher: {
+    color: '#440000',
+    scale: 1.3,
+    emissiveHex: '#220000',
+    emissiveIntensity: 0.2,
+    eyeColor: '#cc0000',
+    modelKey: 'enemy-butcher',
+    modelScale: 1.05,
+    modelOffsetY: 0,
+  },
+  mimic: {
+    color: '#002244',
+    scale: 1.0,
+    emissiveHex: '#000a22',
+    emissiveIntensity: 0.25,
+    eyeColor: '#00aaff',
+    modelKey: 'enemy-mimic',
+    modelScale: 0.85,
+    modelOffsetY: 0,
+  },
+  frost: {
+    color: '#001a44',
+    scale: 1.1,
+    emissiveHex: '#000a22',
+    emissiveIntensity: 0.3,
+    eyeColor: '#44ddff',
+    modelKey: 'enemy-frost',
+    modelScale: 0.9,
+    modelOffsetY: 0,
+  },
+  // ── Limbo whelp/elder — spectral grey palette ──────────────────────────────
+  shadeWhelp: {
+    color: '#8888aa',
+    scale: 0.65,
+    emissiveHex: '#111122',
+    emissiveIntensity: 0.2,
+    eyeColor: '#aabbff',
+    modelKey: 'enemy-shadeWhelp',
+    modelScale: 0.55,
+    modelOffsetY: 0,
+  },
+  shadeElder: {
+    color: '#aaaacc',
+    scale: 1.7,
+    emissiveHex: '#222244',
+    emissiveIntensity: 0.35,
+    eyeColor: '#cce0ff',
+    modelKey: 'enemy-shadeElder',
+    modelScale: 1.35,
+    modelOffsetY: 0,
+  },
+  // ── Lust whelp/elder — rose-crimson palette ─────────────────────────────────
+  sirenWhelp: {
+    color: '#882244',
+    scale: 0.7,
+    emissiveHex: '#330011',
+    emissiveIntensity: 0.2,
+    eyeColor: '#dd88aa',
+    modelKey: 'enemy-sirenWhelp',
+    modelScale: 0.6,
+    modelOffsetY: 0,
+  },
+  sirenElder: {
+    color: '#440022',
+    scale: 1.55,
+    emissiveHex: '#220011',
+    emissiveIntensity: 0.4,
+    eyeColor: '#ff00aa',
+    modelKey: 'enemy-sirenElder',
+    modelScale: 1.25,
+    modelOffsetY: 0,
+  },
+  // ── Gluttony whelp/elder — filth brown-green palette ───────────────────────
+  gluttonWhelp: {
+    color: '#445533',
+    scale: 0.7,
+    emissiveHex: '#111500',
+    emissiveIntensity: 0.1,
+    eyeColor: '#88aa44',
+    modelKey: 'enemy-gluttonWhelp',
+    modelScale: 0.55,
+    modelOffsetY: 0,
+  },
+  gluttonElder: {
+    color: '#334422',
+    scale: 1.75,
+    emissiveHex: '#0a1200',
+    emissiveIntensity: 0.25,
+    eyeColor: '#aadd00',
+    modelKey: 'enemy-gluttonElder',
+    modelScale: 1.4,
+    modelOffsetY: 0,
+  },
+  // ── Greed whelp/elder — tarnished gold palette ──────────────────────────────
+  hoarderWhelp: {
+    color: '#554400',
+    scale: 0.7,
+    emissiveHex: '#221a00',
+    emissiveIntensity: 0.1,
+    eyeColor: '#ccaa22',
+    modelKey: 'enemy-hoarderWhelp',
+    modelScale: 0.6,
+    modelOffsetY: 0,
+  },
+  hoarderElder: {
+    color: '#886600',
+    scale: 1.6,
+    emissiveHex: '#442200',
+    emissiveIntensity: 0.3,
+    eyeColor: '#ffdd00',
+    modelKey: 'enemy-hoarderElder',
+    modelScale: 1.3,
+    modelOffsetY: 0,
+  },
+  // ── Wrath whelp/elder — scorched orange-black palette ──────────────────────
+  berserkerWhelp: {
+    color: '#661100',
+    scale: 0.75,
+    emissiveHex: '#330800',
+    emissiveIntensity: 0.3,
+    eyeColor: '#ff6600',
+    modelKey: 'enemy-berserkerWhelp',
+    modelScale: 0.6,
+    modelOffsetY: 0,
+  },
+  berserkerElder: {
+    color: '#331100',
+    scale: 1.65,
+    emissiveHex: '#441100',
+    emissiveIntensity: 0.5,
+    eyeColor: '#ff8800',
+    modelKey: 'enemy-berserkerElder',
+    modelScale: 1.3,
+    modelOffsetY: 0,
+  },
+  // ── Heresy whelp/elder — void-blue flame palette ────────────────────────────
+  hereticWhelp: {
+    color: '#1a1a55',
+    scale: 0.7,
+    emissiveHex: '#0a0a2a',
+    emissiveIntensity: 0.25,
+    eyeColor: '#6666dd',
+    modelKey: 'enemy-hereticWhelp',
+    modelScale: 0.6,
+    modelOffsetY: 0,
+  },
+  hereticElder: {
+    color: '#110011',
+    scale: 1.6,
+    emissiveHex: '#110011',
+    emissiveIntensity: 0.5,
+    eyeColor: '#ff8800',
+    modelKey: 'enemy-hereticElder',
+    modelScale: 1.25,
+    modelOffsetY: 0,
+  },
+  // ── Violence whelp/elder — blood-iron palette ────────────────────────────────
+  butcherWhelp: {
+    color: '#550000',
+    scale: 0.75,
+    emissiveHex: '#220000',
+    emissiveIntensity: 0.2,
+    eyeColor: '#ff4422',
+    modelKey: 'enemy-butcherWhelp',
+    modelScale: 0.6,
+    modelOffsetY: 0,
+  },
+  butcherElder: {
+    color: '#220000',
+    scale: 1.75,
+    emissiveHex: '#330000',
+    emissiveIntensity: 0.3,
+    eyeColor: '#aa0000',
+    modelKey: 'enemy-butcherElder',
+    modelScale: 1.4,
+    modelOffsetY: 0,
+  },
+  // ── Fraud whelp/elder — void-black iridescent palette ───────────────────────
+  mimicWhelp: {
+    color: '#003355',
+    scale: 0.7,
+    emissiveHex: '#001122',
+    emissiveIntensity: 0.2,
+    eyeColor: '#55aaff',
+    modelKey: 'enemy-mimicWhelp',
+    modelScale: 0.6,
+    modelOffsetY: 0,
+  },
+  mimicElder: {
+    color: '#001122',
+    scale: 1.55,
+    emissiveHex: '#000a1a',
+    emissiveIntensity: 0.4,
+    eyeColor: '#00ffff',
+    modelKey: 'enemy-mimicElder',
+    modelScale: 1.25,
+    modelOffsetY: 0,
+  },
+  // ── Treachery whelp/elder — Cocytus ice palette ─────────────────────────────
+  frostWhelp: {
+    color: '#2244aa',
+    scale: 0.7,
+    emissiveHex: '#0a1a44',
+    emissiveIntensity: 0.25,
+    eyeColor: '#88bbff',
+    modelKey: 'enemy-frostWhelp',
+    modelScale: 0.6,
+    modelOffsetY: 0,
+  },
+  frostElder: {
+    color: '#001166',
+    scale: 1.7,
+    emissiveHex: '#000a33',
+    emissiveIntensity: 0.45,
+    eyeColor: '#00bbff',
+    modelKey: 'enemy-frostElder',
+    modelScale: 1.35,
+    modelOffsetY: 0,
+  },
   // Bosses — use boss color at larger scale
   archGoat: {
     color: COLORS.boss,
@@ -162,6 +442,43 @@ const ENEMY_TYPES = new Set<EntityType>([
   'shadowGoat',
   'goatKnight',
   'plagueGoat',
+  'shaman',
+  // Circle 1: Limbo
+  'shadeWhelp',
+  'shadeElder',
+  // Circle 2: Lust
+  'sirenWhelp',
+  'siren',
+  'sirenElder',
+  // Circle 3: Gluttony
+  'gluttonWhelp',
+  'glutton',
+  'gluttonElder',
+  // Circle 4: Greed
+  'hoarderWhelp',
+  'hoarder',
+  'hoarderElder',
+  // Circle 5: Wrath
+  'berserkerWhelp',
+  'berserker',
+  'berserkerElder',
+  // Circle 6: Heresy
+  'hereticWhelp',
+  'heretic',
+  'hereticElder',
+  // Circle 7: Violence
+  'butcherWhelp',
+  'butcher',
+  'butcherElder',
+  // Circle 8: Fraud
+  'mimicWhelp',
+  'mimic',
+  'mimicElder',
+  // Circle 9: Treachery
+  'frostWhelp',
+  'frost',
+  'frostElder',
+  // Bosses
   'archGoat',
   'infernoGoat',
   'voidGoat',
@@ -253,101 +570,16 @@ async function createAnimator(mesh: THREE.Group, modelKey: string): Promise<Enem
 }
 
 // ---------------------------------------------------------------------------
-// Template cache — fallback capsule meshes (used when GLB not loaded)
-// ---------------------------------------------------------------------------
-
-/** Cached fallback template meshes (capsule geometry + emissive eyes), keyed by enemy type. */
-const fallbackTemplateCache = new Map<string, THREE.Group>();
-
-/** Shared geometry instances to avoid redundant allocations. */
-let sharedCapsuleGeometry: THREE.CapsuleGeometry | null = null;
-let sharedEyeGeometry: THREE.SphereGeometry | null = null;
-
-function getSharedCapsuleGeometry(): THREE.CapsuleGeometry {
-  if (!sharedCapsuleGeometry) {
-    sharedCapsuleGeometry = new THREE.CapsuleGeometry(0.3, 0.8, 8, 12);
-  }
-  return sharedCapsuleGeometry;
-}
-
-function getSharedEyeGeometry(): THREE.SphereGeometry {
-  if (!sharedEyeGeometry) {
-    sharedEyeGeometry = new THREE.SphereGeometry(0.035, 6, 6);
-  }
-  return sharedEyeGeometry;
-}
-
-/**
- * Build a fallback capsule template Group for the given enemy type.
- * Consists of a capsule body + two emissive eye spheres.
- */
-function buildFallbackTemplate(type: string): THREE.Group {
-  const config = ENEMY_CONFIGS[type] || ENEMY_CONFIGS.goat;
-  const group = new THREE.Group();
-  group.name = `template-enemy-fallback-${type}`;
-
-  // Body — capsule
-  const bodyMat = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(config.color),
-    emissive: new THREE.Color(config.emissiveHex),
-    emissiveIntensity: config.emissiveIntensity,
-    roughness: 0.7,
-    metalness: 0.1,
-  });
-
-  if (config.baseVisibility !== undefined && config.baseVisibility < 1) {
-    bodyMat.transparent = true;
-    bodyMat.opacity = config.baseVisibility;
-  }
-
-  const body = new THREE.Mesh(getSharedCapsuleGeometry(), bodyMat);
-  body.castShadow = true;
-  body.receiveShadow = true;
-  // Capsule center is at origin; shift up so feet are at y=0
-  body.position.y = 0.7;
-  group.add(body);
-
-  // Eyes — small emissive spheres
-  const eyeMat = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(config.eyeColor),
-    emissive: new THREE.Color(config.eyeColor),
-    emissiveIntensity: 1.0,
-  });
-
-  for (const side of [-1, 1]) {
-    const eye = new THREE.Mesh(getSharedEyeGeometry(), eyeMat);
-    eye.position.set(side * 0.12, 0.9, 0.25);
-    group.add(eye);
-  }
-
-  // Apply type-specific scale
-  group.scale.setScalar(config.scale);
-
-  // Store config on group for later reference
-  group.userData = { enemyType: type, baseScale: config.scale, isGlb: false };
-
-  return group;
-}
-
-/**
- * Get or create a fallback capsule template for the given enemy type.
- */
-function getFallbackTemplate(type: string): THREE.Group {
-  let template = fallbackTemplateCache.get(type);
-  if (!template) {
-    template = buildFallbackTemplate(type);
-    fallbackTemplateCache.set(type, template);
-  }
-  return template;
-}
-
-// ---------------------------------------------------------------------------
 // GLB model template builder
 // ---------------------------------------------------------------------------
 
 /**
- * Build a GLB-based template for the given enemy type by cloning the
- * loaded model and applying enemy-specific material tinting/emissive.
+ * Build a GLB-based mesh for the given enemy type by cloning the loaded model,
+ * correcting Meshy's Z-up export orientation, sanitizing material artifacts,
+ * and applying enemy-specific emissive tinting.
+ *
+ * Returns null if the model key has no registered GLB or clone fails — callers
+ * must treat null as a hard error and NOT fall back to a capsule placeholder.
  */
 function buildGlbEnemyMesh(type: string): THREE.Group | null {
   const config = ENEMY_CONFIGS[type] || ENEMY_CONFIGS.goat;
@@ -358,60 +590,79 @@ function buildGlbEnemyMesh(type: string): THREE.Group | null {
   const group = new THREE.Group();
   group.name = `template-enemy-glb-${type}`;
 
-  // Normalize model: compute bounding box, center on origin, scale to match
-  // capsule dimensions (~1.4 units tall at scale 1.0)
+  // --- Fix Meshy Z-up exports (model lies flat on XZ plane) ---
+  // Meshy exports characters with the body along the Z axis rather than Y.
+  // In Three.js (Y-up), this makes them appear as a flat disc on the floor.
+  // Detect: if Z or X extent is significantly larger than Y, rotate -90° on X
+  // so the model's Z axis becomes Three.js Y (upright).
+  {
+    const box0 = new THREE.Box3().setFromObject(cloned);
+    const sz = new THREE.Vector3();
+    box0.getSize(sz);
+    if (sz.z > sz.y || sz.x > sz.y) {
+      cloned.rotateX(-Math.PI / 2);
+      cloned.updateMatrixWorld(true);
+    }
+  }
+
+  // --- Normalize: compute bounding box, center on origin, scale to ~1.4 units tall ---
   const box = new THREE.Box3().setFromObject(cloned);
   const size = new THREE.Vector3();
   box.getSize(size);
   const center = new THREE.Vector3();
   box.getCenter(center);
 
-  // Target height for scale 1.0 is ~1.4 units (matching capsule)
   const targetHeight = 1.4;
   const heightScale = size.y > 0 ? targetHeight / size.y : 1;
   const uniformScale = heightScale * config.modelScale;
 
-  cloned.scale.setScalar(uniformScale);
+  cloned.scale.multiplyScalar(uniformScale);
 
   // Shift so feet touch y=0
   const scaledBottom = center.y * uniformScale - (size.y * uniformScale) / 2;
-  cloned.position.y = -scaledBottom + config.modelOffsetY;
+  cloned.position.y += -scaledBottom + config.modelOffsetY;
 
   // Center horizontally
-  cloned.position.x = -center.x * uniformScale;
-  cloned.position.z = -center.z * uniformScale;
+  cloned.position.x += -center.x * uniformScale;
+  cloned.position.z += -center.z * uniformScale;
 
-  // Apply emissive tinting to all materials
+  // --- Apply material overrides and shadow casting ---
+  // three/webgpu and three ship as SEPARATE compiled bundles. GLTFLoader imports
+  // from 'three' (three.module.js), while our code imports from 'three/webgpu'
+  // (three.webgpu.js). Both bundles inline their own Mesh and MeshStandardMaterial
+  // class definitions, so instanceof THREE.Mesh fails for GLTF-loaded objects.
+  // Fix: import Mesh and MeshStandardMaterial from 'three' directly (_Mesh, _BaseMat)
+  // so the class reference matches what GLTFLoader used to construct the objects.
   cloned.traverse((child) => {
-    if (child instanceof THREE.Mesh && child.material) {
-      const applyTint = (mat: THREE.Material) => {
-        if (
-          mat instanceof THREE.MeshStandardMaterial ||
-          mat instanceof THREE.MeshPhysicalMaterial
-        ) {
-          mat.emissive = new THREE.Color(config.emissiveHex);
-          mat.emissiveIntensity = config.emissiveIntensity;
-          if (config.baseVisibility !== undefined && config.baseVisibility < 1) {
-            mat.transparent = true;
-            mat.opacity = config.baseVisibility;
-          }
-          mat.needsUpdate = true;
-        }
-      };
-      if (Array.isArray(child.material)) {
-        for (const m of child.material) applyTint(m);
-      } else {
-        applyTint(child.material);
+    if (!(child instanceof _Mesh)) return;
+    child.castShadow = true;
+    child.receiveShadow = true;
+
+    const buildMat = () => {
+      // Create a fresh MeshStandardMaterial — completely bypasses Meshy artifacts.
+      const m = new _BaseMat({
+        color: 0x1a1a1a,
+        emissive: new THREE.Color(config.emissiveHex),
+        emissiveIntensity: config.emissiveIntensity,
+        metalness: 0.4,
+        roughness: 0.7,
+      });
+      if (config.baseVisibility !== undefined && config.baseVisibility < 1) {
+        m.transparent = true;
+        m.opacity = config.baseVisibility;
       }
+      return m;
+    };
+
+    if (Array.isArray(child.material)) {
+      child.material = child.material.map(() => buildMat());
+    } else {
+      child.material = buildMat();
     }
   });
 
   group.add(cloned);
-  group.userData = {
-    enemyType: type,
-    baseScale: 1.0, // Scale already applied inside model
-    isGlb: true,
-  };
+  group.userData = { enemyType: type, baseScale: 1.0, isGlb: true };
 
   return group;
 }
@@ -435,23 +686,14 @@ export function EnemyRenderer() {
   const spawnedRef = useRef<Map<string, THREE.Group>>(new Map());
   const animatorsRef = useRef<Map<string, EnemyAnimator>>(new Map());
   const modelsLoadedRef = useRef(false);
-  /** Set of entity IDs that have already been upgraded from fallback→GLB. */
-  const upgradedRef = useRef<Set<string>>(new Set());
-  /** Once all current fallbacks have been upgraded, skip the check entirely. */
-  const allUpgradedRef = useRef(false);
 
   // Kick off model loading on mount
   useEffect(() => {
     let cancelled = false;
-
     const entries = Object.entries(ENEMY_MODEL_ASSETS) as [string, string][];
     loadModels(entries).then(() => {
-      if (!cancelled) {
-        modelsLoadedRef.current = true;
-        allUpgradedRef.current = false;
-      }
+      if (!cancelled) modelsLoadedRef.current = true;
     });
-
     return () => {
       cancelled = true;
     };
@@ -466,7 +708,6 @@ export function EnemyRenderer() {
         disposeMeshGroup(mesh);
       }
       spawned.clear();
-      // Stop all mixers
       for (const [, anim] of animatorsRef.current) {
         anim.mixer.stopAllAction();
       }
@@ -485,57 +726,15 @@ export function EnemyRenderer() {
       if (!ENEMY_TYPES.has(entity.type)) continue;
       currentEnemyIds.add(entity.id);
 
-      // Spawn mesh for new enemies
+      // Spawn mesh for new enemies (no-op if models not ready yet)
       if (!spawned.has(entity.id)) {
         spawnEnemyMesh(entity, scene, spawned, animators, modelsLoadedRef.current);
-        // If a fallback capsule was created after models loaded, resume upgrade checks
-        const justSpawned = spawned.get(entity.id);
-        if (modelsLoadedRef.current && justSpawned && !justSpawned.userData.isGlb) {
-          allUpgradedRef.current = false;
-        }
       }
 
-      // If models just finished loading, upgrade any fallback capsules to GLB.
-      if (modelsLoadedRef.current && !allUpgradedRef.current) {
-        const existing = spawned.get(entity.id);
-        if (existing && !existing.userData.isGlb && !upgradedRef.current.has(entity.id!)) {
-          const type = entity.type as string;
-          const config = ENEMY_CONFIGS[type] || ENEMY_CONFIGS.goat;
-          if (isModelLoaded(config.modelKey)) {
-            scene.remove(existing);
-            disposeMeshGroup(existing);
-            spawned.delete(entity.id);
-            // Dispose old animator if any
-            const oldAnim = animators.get(entity.id!);
-            if (oldAnim) {
-              oldAnim.mixer.stopAllAction();
-              animators.delete(entity.id!);
-            }
-            spawnEnemyMesh(entity, scene, spawned, animators, true);
-            upgradedRef.current.add(entity.id!);
-          }
-        }
-      }
-
-      // Drive animation state for this entity
+      // Drive animation state
       const anim = animators.get(entity.id!);
       if (anim) {
-        const desired = getDesiredAnimState(entity);
-        transitionAnimState(anim, desired);
-      }
-    }
-
-    // Check if all current fallbacks have been upgraded
-    if (modelsLoadedRef.current && !allUpgradedRef.current) {
-      let hasFallbacks = false;
-      for (const [, mesh] of spawned) {
-        if (!mesh.userData.isGlb) {
-          hasFallbacks = true;
-          break;
-        }
-      }
-      if (!hasFallbacks) {
-        allUpgradedRef.current = true;
+        transitionAnimState(anim, getDesiredAnimState(entity));
       }
     }
 
@@ -545,8 +744,6 @@ export function EnemyRenderer() {
         scene.remove(mesh);
         disposeMeshGroup(mesh);
         spawned.delete(id);
-        upgradedRef.current.delete(id);
-        // Dispose animator
         const anim = animators.get(id);
         if (anim) {
           anim.mixer.stopAllAction();
@@ -564,7 +761,6 @@ export function EnemyRenderer() {
     updateEnemyMeshes(spawned);
   });
 
-  // No JSX output — all meshes are managed imperatively
   return null;
 }
 
@@ -573,8 +769,9 @@ export function EnemyRenderer() {
 // ---------------------------------------------------------------------------
 
 /**
- * Clone a template (GLB or fallback) and add it to the scene for the given enemy entity.
- * For GLB meshes, also kicks off async animation loading.
+ * Build and add a GLB mesh for the given enemy entity.
+ * Does NOT fall back to a capsule — if the model is unavailable or not yet
+ * loaded, the enemy gets no mesh and an error is logged. No silent fallbacks.
  */
 function spawnEnemyMesh(
   entity: Entity,
@@ -583,42 +780,34 @@ function spawnEnemyMesh(
   animators: Map<string, EnemyAnimator>,
   modelsLoaded: boolean,
 ): void {
+  // Models not loaded yet — skip silently, retry next frame
+  if (!modelsLoaded) return;
+
   const type = entity.type as string;
+  const glbMesh = buildGlbEnemyMesh(type);
 
-  let mesh: THREE.Group;
-  let isGlb = false;
-
-  // Try GLB model first
-  if (modelsLoaded) {
-    const glbMesh = buildGlbEnemyMesh(type);
-    if (glbMesh) {
-      mesh = glbMesh;
-      isGlb = true;
-    } else {
-      const template = getFallbackTemplate(type);
-      mesh = cloneFallbackTemplate(template);
-    }
-  } else {
-    const template = getFallbackTemplate(type);
-    mesh = cloneFallbackTemplate(template);
+  if (!glbMesh) {
+    console.error(
+      `[EnemyMesh] No GLB loaded for enemy type "${type}" (modelKey: ${ENEMY_CONFIGS[type]?.modelKey ?? 'unknown'})`,
+    );
+    return;
   }
 
-  mesh.name = `mesh-enemy-${entity.id}`;
-  mesh.userData = { ...mesh.userData, entityId: entity.id };
+  glbMesh.name = `mesh-enemy-${entity.id}`;
+  glbMesh.userData = { ...glbMesh.userData, entityId: entity.id };
 
   if (entity.position) {
-    mesh.position.set(entity.position.x, entity.position.y, -entity.position.z);
+    glbMesh.position.set(entity.position.x, entity.position.y, -entity.position.z);
   }
 
-  scene.add(mesh);
-  spawned.set(entity.id!, mesh);
+  scene.add(glbMesh);
+  spawned.set(entity.id!, glbMesh);
 
-  // Kick off animation loading for GLB models
-  if (isGlb && entity.id) {
+  // Kick off animation loading
+  if (entity.id) {
     const config = ENEMY_CONFIGS[type] || ENEMY_CONFIGS.goat;
-    const modelKey = config.modelKey;
     const entityId = entity.id;
-    createAnimator(mesh, modelKey).then((anim) => {
+    createAnimator(glbMesh, config.modelKey).then((anim) => {
       if (anim && spawned.has(entityId)) {
         animators.set(entityId, anim);
       }
@@ -627,44 +816,16 @@ function spawnEnemyMesh(
 }
 
 /**
- * Clone a fallback capsule template with independent materials.
- */
-function cloneFallbackTemplate(template: THREE.Group): THREE.Group {
-  const mesh = template.clone(true);
-
-  mesh.traverse((child) => {
-    if (child instanceof THREE.Mesh && child.material) {
-      if (Array.isArray(child.material)) {
-        child.material = child.material.map((m: THREE.Material) => m.clone());
-      } else {
-        child.material = child.material.clone();
-      }
-    }
-  });
-
-  return mesh;
-}
-
-/**
- * Recursively dispose geometries and materials in a group.
- * Shared geometries (capsule, eye) are NOT disposed — they're reused.
+ * Recursively dispose materials in a GLB group.
+ * Geometry is shared via cloneModel() skeleton clone — do NOT dispose it here.
  */
 function disposeMeshGroup(group: THREE.Group): void {
   group.traverse((child) => {
-    if (child instanceof THREE.Mesh) {
-      // Dispose geometry only for GLB models (not shared capsule/eye geometries)
-      if (group.userData.isGlb && child.geometry) {
-        child.geometry.dispose();
-      }
-      // Always dispose per-instance materials
-      if (child.material) {
-        if (Array.isArray(child.material)) {
-          for (const m of child.material) {
-            m.dispose();
-          }
-        } else {
-          child.material.dispose();
-        }
+    if (child instanceof _Mesh && child.material) {
+      if (Array.isArray(child.material)) {
+        for (const m of child.material) m.dispose();
+      } else {
+        child.material.dispose();
       }
     }
   });

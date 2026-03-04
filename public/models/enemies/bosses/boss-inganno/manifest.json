@@ -39,7 +39,7 @@
       }
     },
     "animations": {
-      "WalkAndRun.Walking.Zombie_Walk": {
+      "WalkAndRun.Walking.Monster_Walk": {
         "taskId": "019cad76-e95a-78b6-be2a-f7343cf4e50c",
         "status": "SUCCEEDED",
         "actionId": 112,
@@ -81,6 +81,16 @@
         "actionId": 181,
         "artifact": "animations/Electrocuted_Fall.glb"
       }
+    },
+    "animation": {
+      "taskId": "019cb71f-4235-71fa-baa9-d7d9ec5194fe",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb71f-4235-71fa-baa9-d7d9ec5194fe"
+      },
+      "artifacts": {
+        "animation": "animations/Fighting.Dying.Electrocuted_Fall.glb"
+      }
     }
   },
   "pipeline": "enemy",
@@ -107,7 +117,7 @@
   },
   "animationTask": {
     "animations": [
-      "WalkAndRun.Walking.Zombie_Walk",
+      "WalkAndRun.Walking.Monster_Walk",
       "DailyActions.Idle.Angry_Ground_Stomp_1",
       "Fighting.AttackingwithWeapon.Left_Slash",
       "Fighting.CastingSpell.Charged_Spell_Cast_1",

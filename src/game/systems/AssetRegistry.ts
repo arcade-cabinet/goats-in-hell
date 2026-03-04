@@ -128,10 +128,47 @@ export const ENEMY_MODEL_ASSETS = {
   // General mob types — Meshy AI-generated rigged meshes
   'enemy-goat': 'models/enemies/general/goat-grunt/model.glb',
   'enemy-hellgoat': 'models/enemies/circle-1/goat-shade/model.glb',
-  'enemy-fireGoat': 'models/enemies/circle-5/goat-berserker/model.glb',
   'enemy-shadowGoat': 'models/enemies/general/goat-scout/model.glb',
   'enemy-goatKnight': 'models/enemies/general/goat-brute/model.glb',
-  'enemy-plagueGoat': 'models/enemies/circle-3/goat-glutton/model.glb',
+  'enemy-shaman': 'models/enemies/general/goat-shaman/model.glb',
+  // Circle-specific enemy types — each circle's unique Meshy model
+  'enemy-fireGoat': 'models/enemies/circle-5/goat-berserker/model.glb', // legacy alias
+  'enemy-plagueGoat': 'models/enemies/circle-3/goat-glutton/model.glb', // legacy alias
+  // Circle 1: Limbo — Shade hierarchy (3 unique Meshy models)
+  'enemy-shadeWhelp': 'models/enemies/circle-1/goat-shade-whelp/model.glb',
+  'enemy-shadeElder': 'models/enemies/circle-1/goat-shade-elder/model.glb',
+  // Circle 2: Lust — Siren hierarchy (3 unique Meshy models)
+  'enemy-sirenWhelp': 'models/enemies/circle-2/goat-siren-whelp/model.glb',
+  'enemy-siren': 'models/enemies/circle-2/goat-siren/model.glb',
+  'enemy-sirenElder': 'models/enemies/circle-2/goat-siren-elder/model.glb',
+  // Circle 3: Gluttony — Glutton hierarchy (3 unique Meshy models)
+  'enemy-gluttonWhelp': 'models/enemies/circle-3/goat-glutton-whelp/model.glb',
+  'enemy-glutton': 'models/enemies/circle-3/goat-glutton/model.glb',
+  'enemy-gluttonElder': 'models/enemies/circle-3/goat-glutton-elder/model.glb',
+  // Circle 4: Greed — Hoarder hierarchy (3 unique Meshy models)
+  'enemy-hoarderWhelp': 'models/enemies/circle-4/goat-hoarder-whelp/model.glb',
+  'enemy-hoarder': 'models/enemies/circle-4/goat-hoarder/model.glb',
+  'enemy-hoarderElder': 'models/enemies/circle-4/goat-hoarder-elder/model.glb',
+  // Circle 5: Wrath — Berserker hierarchy (3 unique Meshy models)
+  'enemy-berserkerWhelp': 'models/enemies/circle-5/goat-berserker-whelp/model.glb',
+  'enemy-berserker': 'models/enemies/circle-5/goat-berserker/model.glb',
+  'enemy-berserkerElder': 'models/enemies/circle-5/goat-berserker-elder/model.glb',
+  // Circle 6: Heresy — Heretic hierarchy (3 unique Meshy models)
+  'enemy-hereticWhelp': 'models/enemies/circle-6/goat-heretic-whelp/model.glb',
+  'enemy-heretic': 'models/enemies/circle-6/goat-heretic/model.glb',
+  'enemy-hereticElder': 'models/enemies/circle-6/goat-heretic-elder/model.glb',
+  // Circle 7: Violence — Butcher hierarchy (3 unique Meshy models)
+  'enemy-butcherWhelp': 'models/enemies/circle-7/goat-butcher-whelp/model.glb',
+  'enemy-butcher': 'models/enemies/circle-7/goat-butcher/model.glb',
+  'enemy-butcherElder': 'models/enemies/circle-7/goat-butcher-elder/model.glb',
+  // Circle 8: Fraud — Mimic hierarchy (3 unique Meshy models)
+  'enemy-mimicWhelp': 'models/enemies/circle-8/goat-mimic-whelp/model.glb',
+  'enemy-mimic': 'models/enemies/circle-8/goat-mimic/model.glb',
+  'enemy-mimicElder': 'models/enemies/circle-8/goat-mimic-elder/model.glb',
+  // Circle 9: Treachery — Frost hierarchy (3 unique Meshy models)
+  'enemy-frostWhelp': 'models/enemies/circle-9/goat-frost-whelp/model.glb',
+  'enemy-frost': 'models/enemies/circle-9/goat-frost/model.glb',
+  'enemy-frostElder': 'models/enemies/circle-9/goat-frost-elder/model.glb',
   // Boss entity models (also used via BOSS_MODEL_ASSETS for direct boss display)
   'enemy-archGoat': 'models/enemies/bosses/boss-azazel/model.glb',
   'enemy-infernoGoat': 'models/enemies/bosses/boss-furia/model.glb',
@@ -239,6 +276,188 @@ export const ENEMY_ANIMATION_ASSETS = {
     attack: 'models/enemies/bosses/boss-il-macello/animations/Charged_Axe_Chop.glb',
     hit: 'models/enemies/bosses/boss-il-macello/animations/BeHit_FlyUp.glb',
     death: 'models/enemies/bosses/boss-il-macello/animations/Knock_Down.glb',
+  },
+  // Circle 1: Limbo — Shade hierarchy (unique animations per tier)
+  'enemy-shadeWhelp': {
+    walk: 'models/enemies/circle-1/goat-shade-whelp/animations/Stumble_Walk.glb',
+    attack: 'models/enemies/circle-1/goat-shade-whelp/animations/Punch_Combo.glb',
+    hit: 'models/enemies/circle-1/goat-shade-whelp/animations/Face_Punch_Reaction.glb',
+    death: 'models/enemies/circle-1/goat-shade-whelp/animations/Knock_Down.glb',
+  },
+  'enemy-shadeElder': {
+    walk: 'models/enemies/circle-1/goat-shade-elder/animations/Monster_Walk.glb',
+    attack: 'models/enemies/circle-1/goat-shade-elder/animations/Charged_Slash.glb',
+    hit: 'models/enemies/circle-1/goat-shade-elder/animations/BeHit_FlyUp.glb',
+    death: 'models/enemies/circle-1/goat-shade-elder/animations/Shot_and_Blown_Back.glb',
+  },
+  // Circle 2: Lust — Siren hierarchy (unique animations per tier)
+  'enemy-sirenWhelp': {
+    walk: 'models/enemies/circle-2/goat-siren-whelp/animations/Stumble_Walk.glb',
+    attack: 'models/enemies/circle-2/goat-siren-whelp/animations/Punch_Combo.glb',
+    hit: 'models/enemies/circle-2/goat-siren-whelp/animations/Face_Punch_Reaction_1.glb',
+    death: 'models/enemies/circle-2/goat-siren-whelp/animations/Knock_Down.glb',
+  },
+  'enemy-sirenElder': {
+    walk: 'models/enemies/circle-2/goat-siren-elder/animations/Monster_Walk.glb',
+    attack: 'models/enemies/circle-2/goat-siren-elder/animations/Left_Slash.glb',
+    hit: 'models/enemies/circle-2/goat-siren-elder/animations/BeHit_FlyUp.glb',
+    death: 'models/enemies/circle-2/goat-siren-elder/animations/Shot_and_Blown_Back.glb',
+  },
+  // Circle 3: Gluttony — Glutton hierarchy (unique animations per tier)
+  'enemy-gluttonWhelp': {
+    walk: 'models/enemies/circle-3/goat-glutton-whelp/animations/Stumble_Walk.glb',
+    attack: 'models/enemies/circle-3/goat-glutton-whelp/animations/Punch_Combo.glb',
+    hit: 'models/enemies/circle-3/goat-glutton-whelp/animations/Face_Punch_Reaction.glb',
+    death: 'models/enemies/circle-3/goat-glutton-whelp/animations/Knock_Down.glb',
+  },
+  'enemy-gluttonElder': {
+    walk: 'models/enemies/circle-3/goat-glutton-elder/animations/Monster_Walk.glb',
+    attack: 'models/enemies/circle-3/goat-glutton-elder/animations/Charged_Axe_Chop.glb',
+    hit: 'models/enemies/circle-3/goat-glutton-elder/animations/BeHit_FlyUp.glb',
+    death:
+      'models/enemies/circle-3/goat-glutton-elder/animations/Fall_Dead_from_Abdominal_Injury.glb',
+  },
+  // Circle 4: Greed — Hoarder hierarchy (unique animations per tier)
+  'enemy-hoarderWhelp': {
+    walk: 'models/enemies/circle-4/goat-hoarder-whelp/animations/Stumble_Walk.glb',
+    attack: 'models/enemies/circle-4/goat-hoarder-whelp/animations/Punch_Combo.glb',
+    hit: 'models/enemies/circle-4/goat-hoarder-whelp/animations/Face_Punch_Reaction.glb',
+    death: 'models/enemies/circle-4/goat-hoarder-whelp/animations/Knock_Down.glb',
+  },
+  'enemy-hoarderElder': {
+    walk: 'models/enemies/circle-4/goat-hoarder-elder/animations/Monster_Walk.glb',
+    attack: 'models/enemies/circle-4/goat-hoarder-elder/animations/Charged_Axe_Chop.glb',
+    hit: 'models/enemies/circle-4/goat-hoarder-elder/animations/BeHit_FlyUp.glb',
+    death: 'models/enemies/circle-4/goat-hoarder-elder/animations/Shot_and_Blown_Back.glb',
+  },
+  // Circle 5: Wrath — Berserker hierarchy (unique animations per tier)
+  'enemy-berserkerWhelp': {
+    walk: 'models/enemies/circle-5/goat-berserker-whelp/animations/Lean_Forward_Sprint.glb',
+    attack: 'models/enemies/circle-5/goat-berserker-whelp/animations/Punch_Combo.glb',
+    hit: 'models/enemies/circle-5/goat-berserker-whelp/animations/Face_Punch_Reaction_2.glb',
+    death: 'models/enemies/circle-5/goat-berserker-whelp/animations/Knock_Down_1.glb',
+  },
+  'enemy-berserkerElder': {
+    walk: 'models/enemies/circle-5/goat-berserker-elder/animations/Monster_Walk.glb',
+    attack: 'models/enemies/circle-5/goat-berserker-elder/animations/Axe_Spin_Attack.glb',
+    hit: 'models/enemies/circle-5/goat-berserker-elder/animations/BeHit_FlyUp.glb',
+    death: 'models/enemies/circle-5/goat-berserker-elder/animations/Electrocuted_Fall.glb',
+  },
+  // Circle 6: Heresy — Heretic hierarchy (unique animations per tier)
+  'enemy-hereticWhelp': {
+    walk: 'models/enemies/circle-6/goat-heretic-whelp/animations/Stumble_Walk.glb',
+    attack: 'models/enemies/circle-6/goat-heretic-whelp/animations/mage_soell_cast.glb',
+    hit: 'models/enemies/circle-6/goat-heretic-whelp/animations/Face_Punch_Reaction_1.glb',
+    death: 'models/enemies/circle-6/goat-heretic-whelp/animations/Knock_Down.glb',
+  },
+  'enemy-hereticElder': {
+    walk: 'models/enemies/circle-6/goat-heretic-elder/animations/Monster_Walk.glb',
+    attack: 'models/enemies/circle-6/goat-heretic-elder/animations/Charged_Spell_Cast.glb',
+    hit: 'models/enemies/circle-6/goat-heretic-elder/animations/BeHit_FlyUp.glb',
+    death: 'models/enemies/circle-6/goat-heretic-elder/animations/Electrocuted_Fall.glb',
+  },
+  // Circle 7: Violence — Butcher hierarchy (unique animations per tier)
+  'enemy-butcherWhelp': {
+    walk: 'models/enemies/circle-7/goat-butcher-whelp/animations/Lean_Forward_Sprint.glb',
+    attack: 'models/enemies/circle-7/goat-butcher-whelp/animations/Left_Slash.glb',
+    hit: 'models/enemies/circle-7/goat-butcher-whelp/animations/Face_Punch_Reaction_2.glb',
+    death: 'models/enemies/circle-7/goat-butcher-whelp/animations/Knock_Down_1.glb',
+  },
+  'enemy-butcherElder': {
+    walk: 'models/enemies/circle-7/goat-butcher-elder/animations/Monster_Walk.glb',
+    attack: 'models/enemies/circle-7/goat-butcher-elder/animations/Charged_Axe_Chop.glb',
+    hit: 'models/enemies/circle-7/goat-butcher-elder/animations/BeHit_FlyUp.glb',
+    death:
+      'models/enemies/circle-7/goat-butcher-elder/animations/Fall_Dead_from_Abdominal_Injury.glb',
+  },
+  // Circle 8: Fraud — Mimic hierarchy (unique animations per tier)
+  'enemy-mimicWhelp': {
+    walk: 'models/enemies/circle-8/goat-mimic-whelp/animations/Stumble_Walk.glb',
+    attack: 'models/enemies/circle-8/goat-mimic-whelp/animations/Punch_Combo.glb',
+    hit: 'models/enemies/circle-8/goat-mimic-whelp/animations/Face_Punch_Reaction_1.glb',
+    death: 'models/enemies/circle-8/goat-mimic-whelp/animations/Knock_Down.glb',
+  },
+  'enemy-mimicElder': {
+    walk: 'models/enemies/circle-8/goat-mimic-elder/animations/Monster_Walk.glb',
+    attack: 'models/enemies/circle-8/goat-mimic-elder/animations/Thrust_Slash.glb',
+    hit: 'models/enemies/circle-8/goat-mimic-elder/animations/BeHit_FlyUp.glb',
+    death: 'models/enemies/circle-8/goat-mimic-elder/animations/Shot_and_Blown_Back.glb',
+  },
+  // Circle 9: Treachery — Frost hierarchy (unique animations per tier)
+  'enemy-frostWhelp': {
+    walk: 'models/enemies/circle-9/goat-frost-whelp/animations/Stumble_Walk.glb',
+    attack: 'models/enemies/circle-9/goat-frost-whelp/animations/Left_Slash.glb',
+    hit: 'models/enemies/circle-9/goat-frost-whelp/animations/Face_Punch_Reaction_2.glb',
+    death: 'models/enemies/circle-9/goat-frost-whelp/animations/Knock_Down.glb',
+  },
+  'enemy-frostElder': {
+    walk: 'models/enemies/circle-9/goat-frost-elder/animations/Monster_Walk.glb',
+    attack: 'models/enemies/circle-9/goat-frost-elder/animations/Charged_Slash.glb',
+    hit: 'models/enemies/circle-9/goat-frost-elder/animations/BeHit_FlyUp.glb',
+    death: 'models/enemies/circle-9/goat-frost-elder/animations/Electrocuted_Fall.glb',
+  },
+  // General mob — shaman ranged caster
+  'enemy-shaman': {
+    walk: 'models/enemies/general/goat-shaman/animations/Stumble_Walk.glb',
+    attack: 'models/enemies/general/goat-shaman/animations/mage_soell_cast.glb',
+    hit: 'models/enemies/general/goat-shaman/animations/Face_Punch_Reaction_1.glb',
+    death: 'models/enemies/general/goat-shaman/animations/Shot_and_Blown_Back.glb',
+  },
+  // Circle 2: Lust — Siren (seductive, fast melee)
+  'enemy-siren': {
+    walk: 'models/enemies/circle-2/goat-siren/animations/Zombie_Walk.glb',
+    attack: 'models/enemies/circle-2/goat-siren/animations/Left_Slash.glb',
+    hit: 'models/enemies/circle-2/goat-siren/animations/Face_Punch_Reaction_1.glb',
+    death: 'models/enemies/circle-2/goat-siren/animations/Shot_and_Blown_Back.glb',
+  },
+  // Circle 3: Gluttony — Glutton (slow, heavy, poison caster)
+  'enemy-glutton': {
+    walk: 'models/enemies/circle-3/goat-glutton/animations/Stumble_Walk.glb',
+    attack: 'models/enemies/circle-3/goat-glutton/animations/mage_soell_cast.glb',
+    hit: 'models/enemies/circle-3/goat-glutton/animations/BeHit_FlyUp.glb',
+    death: 'models/enemies/circle-3/goat-glutton/animations/Knock_Down_1.glb',
+  },
+  // Circle 4: Greed — Hoarder (carries loot, retreats)
+  'enemy-hoarder': {
+    walk: 'models/enemies/circle-4/goat-hoarder/animations/Zombie_Walk.glb',
+    attack: 'models/enemies/circle-4/goat-hoarder/animations/Charged_Slash.glb',
+    hit: 'models/enemies/circle-4/goat-hoarder/animations/Face_Punch_Reaction_2.glb',
+    death: 'models/enemies/circle-4/goat-hoarder/animations/Fall_Dead_from_Abdominal_Injury.glb',
+  },
+  // Circle 5: Wrath — Berserker (sprinting aggressor)
+  'enemy-berserker': {
+    walk: 'models/enemies/circle-5/goat-berserker/animations/Lean_Forward_Sprint.glb',
+    attack: 'models/enemies/circle-5/goat-berserker/animations/Axe_Spin_Attack.glb',
+    hit: 'models/enemies/circle-5/goat-berserker/animations/BeHit_FlyUp.glb',
+    death: 'models/enemies/circle-5/goat-berserker/animations/Knock_Down.glb',
+  },
+  // Circle 6: Heresy — Heretic (spell caster with illusions)
+  'enemy-heretic': {
+    walk: 'models/enemies/circle-6/goat-heretic/animations/Zombie_Walk.glb',
+    attack: 'models/enemies/circle-6/goat-heretic/animations/mage_soell_cast_1.glb',
+    hit: 'models/enemies/circle-6/goat-heretic/animations/Face_Punch_Reaction.glb',
+    death: 'models/enemies/circle-6/goat-heretic/animations/Dead.glb',
+  },
+  // Circle 7: Violence — Butcher (heavy chopper)
+  'enemy-butcher': {
+    walk: 'models/enemies/circle-7/goat-butcher/animations/Zombie_Walk.glb',
+    attack: 'models/enemies/circle-7/goat-butcher/animations/Charged_Axe_Chop.glb',
+    hit: 'models/enemies/circle-7/goat-butcher/animations/Face_Punch_Reaction_1.glb',
+    death: 'models/enemies/circle-7/goat-butcher/animations/Knock_Down_1.glb',
+  },
+  // Circle 8: Fraud — Mimic (shapeshifter, fast combo)
+  'enemy-mimic': {
+    walk: 'models/enemies/circle-8/goat-mimic/animations/Zombie_Walk.glb',
+    attack: 'models/enemies/circle-8/goat-mimic/animations/Fast_Punch_Combo.glb',
+    hit: 'models/enemies/circle-8/goat-mimic/animations/Face_Punch_Reaction_2.glb',
+    death: 'models/enemies/circle-8/goat-mimic/animations/Electrocuted_Fall.glb',
+  },
+  // Circle 9: Treachery — Frost (ice variant, charging attack)
+  'enemy-frost': {
+    walk: 'models/enemies/circle-9/goat-frost/animations/Stumble_Walk.glb',
+    attack: 'models/enemies/circle-9/goat-frost/animations/Charged_Slash.glb',
+    hit: 'models/enemies/circle-9/goat-frost/animations/BeHit_FlyUp.glb',
+    death: 'models/enemies/circle-9/goat-frost/animations/Knock_Down.glb',
   },
 } as const;
 

@@ -1,0 +1,81 @@
+{
+  "id": "goat-frost-elder",
+  "name": "Betrayal Absolute",
+  "type": "character",
+  "seed": 3088246793,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cb6fd-5b72-7e33-8e45-cabb3014f804",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6fd-5b72-7e33-8e45-cabb3014f804"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cb73c-6190-7668-8f53-029c9acc1d2f",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb73c-6190-7668-8f53-029c9acc1d2f"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cb73e-b7e8-7640-9dae-1cb29de76301",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb73e-b7e8-7640-9dae-1cb29de76301"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cb740-06bb-76ff-85a8-e9bd8329066d",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb740-06bb-76ff-85a8-e9bd8329066d"
+      },
+      "artifacts": {}
+    },
+    "animation": {
+      "taskId": "019cb957-8d7f-7896-a8df-30a6cff106a8",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb957-8d7f-7896-a8df-30a6cff106a8"
+      },
+      "artifacts": {
+        "animation": "animations/Fighting.Dying.Electrocuted_Fall.glb"
+      }
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 9 (Treachery) — Betrayal Absolute: a demon that was imprisoned in the Lake Cocytus for so long it RIPPED ITSELF FREE, and it brought the lake with it. It remains encased in its own eternal frost that cannot be removed — Cocytus has claimed it permanently. Within its frozen body, visible like insects in amber, are the frozen faces of everyone it ever betrayed, pressed against the ice from inside. They are still aware. They have been screaming silently for millennia. When this creature attacks, the temperature drops so catastrophically that air itself crystallizes, that breath becomes ice in the lungs. It is not cold — it IS the concept of betrayal made manifest: absolute, permanent, inescapable.",
+  "textToImageTask": {
+    "prompt": "A massive towering bipedal humanoid goat demon in A-pose, permanently encased in its own Cocytus ice that cannot be removed, body visible as dark shape within thick translucent ice casing on torso and arms, the ice contains frozen faces of betrayed victims visible as impressions pressing outward from within, massive ancient cracked ice-armored horns, deep cobalt blue glowing eyes cold as absolute zero, legs partially freed from the ice but frost still growing up them, ice and snow perpetually forming and falling around it, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Massive ancient bipedal goat demon, heavily built powerful frame, large cracked horns, thick arms and legs, digitigrade goat legs, A-pose, standing upright with arms extended horizontally",
+    "artStyle": "realistic",
+    "targetPolycount": 13000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Thick translucent blue-white Cocytus ice permanently fused to torso and arms, dark goat demon silhouette visible as shadow within the ice casing, frozen facial impressions of betrayed victims visible as raised relief pressing outward from the ice interior, massive ancient cracked horns encrusted in glacial ice formations, cobalt-blue glowing eyes of absolute zero cold, legs dark grey partially freed but frost constantly growing upward from the ground, ice crystals perpetually forming on all surfaces",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 2.6
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Monster_Walk",
+      "Fighting.Transitioning.Chest_Pound_Taunt",
+      "Fighting.AttackingwithWeapon.Charged_Slash",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Electrocuted_Fall"
+    ]
+  }
+}

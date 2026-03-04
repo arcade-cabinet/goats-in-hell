@@ -107,7 +107,7 @@ Wrath is the first circle where hesitation is mechanically punished — the esca
               ┌─────┴──────┐
               │   BLOOD    │  (16x14, exploration, sortOrder=1)
               │   MARSH    │  Waist-high blood. Raised islands.
-              │  fireGoats │  Slow movement in marsh. Fast on islands.
+              │  berserkers │  Slow movement in marsh. Fast on islands.
               └──┬──────┬──┘
                  |      | corridor (width=2)
        corridor  |      |
@@ -181,19 +181,19 @@ Wrath is the first circle where hesitation is mechanically punished — the esca
 
 | Room | Type | Count | Behavior | Variant |
 |------|------|-------|----------|---------|
-| Blood Marsh | fireGoat | 3 | Stationed on raised islands, ranged fire | Crimson |
-| Blood Marsh | hellgoat | 2 | Wade through marsh toward player | Brown goatman |
-| Rage Pit (tier 1) | hellgoat | 2 | Hold lowest tier, charge upward | Brown goatman |
-| Rage Pit (tier 2) | fireGoat | 2 | Ranged fire from middle tier | Crimson |
+| Blood Marsh | berserker | 3 | Stationed on raised islands, ranged fire | Crimson |
+| Blood Marsh | goat | 2 | Wade through marsh toward player | Brown goatman |
+| Rage Pit (tier 1) | goat | 2 | Hold lowest tier, charge upward | Brown goatman |
+| Rage Pit (tier 2) | berserker | 2 | Ranged fire from middle tier | Crimson |
 | Arsenal | goatKnight | 1 | Guards Goat's Bane pedestal | Dark, armored |
-| Arsenal | fireGoat | 1 | Ranged support from weapon displays | Crimson |
-| Berserker Arena R1 | fireGoat | 3 | Spawn from edges, ranged assault | Crimson |
+| Arsenal | berserker | 1 | Ranged support from weapon displays | Crimson |
+| Berserker Arena R1 | berserker | 3 | Spawn from edges, ranged assault | Crimson |
 | Berserker Arena R2 | goatKnight | 2 | Spawn N and S, armored advance | Dark, armored |
-| Berserker Arena R3 | hellgoat (mini-boss) | 1 | Large variant, 80 HP, center spawn. Ground pound attack (3-cell AoE, 15 damage). Takes 2 direct Goat's Bane rockets to kill. | Brown, oversized |
-| Berserker Arena R3 | fireGoat | 1 | Support spawn, ranged flanking | Crimson |
+| Berserker Arena R3 | goat (mini-boss) | 1 | Large variant, 80 HP, center spawn. Ground pound attack (3-cell AoE, 15 damage). Takes 2 direct Goat's Bane rockets to kill. | Brown, oversized |
+| Berserker Arena R3 | berserker | 1 | Support spawn, ranged flanking | Crimson |
 | Berserker Arena R3 | goatKnight | 1 | Tank spawn, blocks retreat | Dark, armored |
-| Gauntlet | hellgoat | 3 | Spawn behind player as they advance | Brown goatman |
-| Gauntlet | fireGoat | 2 | Spawn ahead on elevated sections | Crimson |
+| Gauntlet | goat | 3 | Spawn behind player as they advance | Brown goatman |
+| Gauntlet | berserker | 2 | Spawn ahead on elevated sections | Crimson |
 | Boss colosseum | Furia | 1 | Boss AI, 300 HP, 3 phases (charge, whip, berserker) | boss-furia.glb |
 
 ### Pickups
@@ -271,8 +271,8 @@ Wrath is the first circle where hesitation is mechanically punished — the esca
   +---[===door===]---+
   |  ~~~~MARSH~~~~   |  ~~~~ = marsh floor (elev -0.5, slow movement)
   | ~~ISL1~~ISL2~~~  |  ISL = wrath-stone-island (5x structural, elev 0)
-  | ~[A]RF~fG~RC~~  |  fG = fireGoat (on islands)
-  | ~~~CC~~~~CC~~~~  |  hg = hellgoat (wading in marsh)
+  | ~[A]RF~fG~RC~~  |  fG = berserker (on islands)
+  | ~~~CC~~~~CC~~~~  |  hg = goat (wading in marsh)
   | ~~hg~~~~~~~~~hg  |  RF = wrath-rage-furnace (on islands)
   | ~~~~ISL3~~CP~~~  |  RC = wrath-rusted-cage (on islands)
   | ~~~RC~RF~fG~~~  |  CC = wrath-chain-curtain (hanging)
@@ -292,7 +292,7 @@ Wrath is the first circle where hesitation is mechanically punished — the esca
 
 **Elevation:** Marsh floor at elevation -0.5 (waist-high blood/liquid, movement speed reduced to 60%). Five wrath-stone-island (structural) at elevation 0 (normal movement, safe platforms). Islands are irregular shapes, 3x3 to 4x3 cells each, scattered across the room.
 
-**Flow:** Enter from north. The floor drops immediately into the marsh -- thick, red, slow. Five wrath-stone-island rise above the liquid, populated with wrath-rusted-cage (3x) and wrath-rage-furnace (2x) for atmosphere. Six wrath-chain-curtain hang from the ceiling. Two wrath-blood-spattered-slab mark opposite walls; two wrath-corroded-pipe-pillar rise from islands and marsh edge; one wrath-smashed-barrier sits on ISL2; one wrath-iron-grate covers ISL3's center. fireGoats (3) stand on the islands, firing from safety while the player wades at reduced speed. hellgoats (2) wade toward the player through the marsh -- they are slow too, but the escalation timer is running. Every second in the marsh makes enemies faster. The player must island-hop: sprint to an island, clear the fireGoat, use it as a safe platform, then wade to the next. Pickups are distributed across different islands -- forcing full traversal. Two exits: east leads to Rage Pit, west leads toward Arsenal. The marsh teaches the escalation mechanic: if you dawdle, the wading hellgoats behind you become dangerously fast.
+**Flow:** Enter from north. The floor drops immediately into the marsh -- thick, red, slow. Five wrath-stone-island rise above the liquid, populated with wrath-rusted-cage (3x) and wrath-rage-furnace (2x) for atmosphere. Six wrath-chain-curtain hang from the ceiling. Two wrath-blood-spattered-slab mark opposite walls; two wrath-corroded-pipe-pillar rise from islands and marsh edge; one wrath-smashed-barrier sits on ISL2; one wrath-iron-grate covers ISL3's center. berserkers (3) stand on the islands, firing from safety while the player wades at reduced speed. hellgoats (2) wade toward the player through the marsh -- they are slow too, but the escalation timer is running. Every second in the marsh makes enemies faster. The player must island-hop: sprint to an island, clear the berserker, use it as a safe platform, then wade to the next. Pickups are distributed across different islands -- forcing full traversal. Two exits: east leads to Rage Pit, west leads toward Arsenal. The marsh teaches the escalation mechanic: if you dawdle, the wading hellgoats behind you become dangerously fast.
 
 ---
 
@@ -311,8 +311,8 @@ Wrath is the first circle where hesitation is mechanically punished — the esca
   |  | | |         CC CC   | | |  IG = wrath-iron-grate (pit center)
   |  | | +--fG---SB-fG----+ | |  PB = wrath-punching-bag-chain (tier 2 edge)
   |  | +---[H]--BS-[A]-----+ |
-  |  +--RC--SB--RC--PB-RC-+  |  hg = hellgoat (tier 3)
-  |  CP                  CP  |  fG = fireGoat (tier 2)
+  |  +--RC--SB--RC--PB-RC-+  |  hg = goat (tier 3)
+  |  CP                  CP  |  fG = berserker (tier 2)
   +--------[door]--------+      [H] = health, [A] = ammo
            |
            v South (to Arsenal)
@@ -327,7 +327,7 @@ Wrath is the first circle where hesitation is mechanically punished — the esca
 
 **Elevation:** The room descends in concentric wrath-pit-tier-ring (4x structural) like an amphitheater. Rim at elevation 0, then -0.5, -1, -1.5, center pit at -2. Each tier is a step down, 1-2 cells wide. The tiers are connected by the step-down itself -- no ramps needed, just drop down (or fight upward).
 
-**Flow:** Enter from north at the rim (elevation 0). Looking down, the pit descends in four tiers. Three wrath-rusted-cage sit at tier edges; four wrath-chain-curtain hang from the ceiling adding visual clutter; two wrath-smashed-barrier provide partial cover on tiers; a wrath-blood-spattered-slab marks a lower tier; two wrath-corroded-pipe-pillar stand on the rim; a wrath-iron-grate covers the pit center; and a wrath-punching-bag-chain dangles from a broken anchor at tier 2. hellgoats (2) lurk at the bottom (tier 3/pit). fireGoats (2) hold tier 2, firing upward at the player on the rim. The player must descend to fight -- dropping tier by tier. The escalation mechanic punishes slow descent -- jump down fast, clear fast, get out. Pickups are on tier 2 (midway) to reward aggressive play.
+**Flow:** Enter from north at the rim (elevation 0). Looking down, the pit descends in four tiers. Three wrath-rusted-cage sit at tier edges; four wrath-chain-curtain hang from the ceiling adding visual clutter; two wrath-smashed-barrier provide partial cover on tiers; a wrath-blood-spattered-slab marks a lower tier; two wrath-corroded-pipe-pillar stand on the rim; a wrath-iron-grate covers the pit center; and a wrath-punching-bag-chain dangles from a broken anchor at tier 2. hellgoats (2) lurk at the bottom (tier 3/pit). berserkers (2) hold tier 2, firing upward at the player on the rim. The player must descend to fight -- dropping tier by tier. The escalation mechanic punishes slow descent -- jump down fast, clear fast, get out. Pickups are on tier 2 (midway) to reward aggressive play.
 
 ---
 
@@ -341,7 +341,7 @@ Wrath is the first circle where hesitation is mechanically punished — the esca
   |                    |  AG = wrath-anger-graffiti-slab (west wall)
   | [A]   SB         |  BS = wrath-blood-spattered-slab (east wall)
   |  WR    BS   WR   |  SB = wrath-smashed-barrier (floor debris)
-  |                    |  fG = fireGoat (near entrance)
+  |                    |  fG = berserker (near entrance)
   |  fG        gK     |  gK = goatKnight (guards pedestal)
   |                    |
   |                    |  [GB] = Goat's Bane on wrath-weapon-pedestal
@@ -358,7 +358,7 @@ Wrath is the first circle where hesitation is mechanically punished — the esca
 
 **Elevation:** Flat, elevation 0. Entrance framed by wrath-jagged-arch. Four wrath-shattered-weapon-rack line both east and west walls. The Goat's Bane sits on wrath-weapon-pedestal at the far south end, elevated 0.5 (raised stone slab, 2x2 cells).
 
-**Flow:** A long, narrow armory. Four wrath-shattered-weapon-rack line the walls, creating the feel of a ransacked arsenal. A wrath-anger-graffiti-slab marks the west wall near the entry; a wrath-blood-spattered-slab marks the east; a wrath-smashed-barrier provides floor debris for partial cover. The Goat's Bane (Bazooka) sits on wrath-weapon-pedestal at the far end, glowing with pickup light. A goatKnight guards it; a fireGoat provides ranged support from near the entrance. The intended play: SPRINT past the fireGoat, dodge the goatKnight, grab the Bane, then use it to clear both enemies. The escalation mechanic makes fighting them first a losing proposition -- by the time you reach the weapon, they are dangerously fast. This room teaches the player that the Bazooka exists and rewards decisive action over cautious clearing.
+**Flow:** A long, narrow armory. Four wrath-shattered-weapon-rack line the walls, creating the feel of a ransacked arsenal. A wrath-anger-graffiti-slab marks the west wall near the entry; a wrath-blood-spattered-slab marks the east; a wrath-smashed-barrier provides floor debris for partial cover. The Goat's Bane (Bazooka) sits on wrath-weapon-pedestal at the far end, glowing with pickup light. A goatKnight guards it; a berserker provides ranged support from near the entrance. The intended play: SPRINT past the berserker, dodge the goatKnight, grab the Bane, then use it to clear both enemies. The escalation mechanic makes fighting them first a losing proposition -- by the time you reach the weapon, they are dangerously fast. This room teaches the player that the Bazooka exists and rewards decisive action over cautious clearing.
 
 If the player fights enemies in the Arsenal (instead of sprinting to the Goat's Bane), the escalation mechanic creates pressure but does NOT make the room impossible. The 4 enemies in the room can be cleared in 15-20 seconds with efficient combat. Escalation reaches +30% in that time -- challenging but survivable. The wrath-weapon-pedestal also has a health pickup next to it as a reward for reaching it.
 
@@ -392,14 +392,14 @@ If the player fights enemies in the Arsenal (instead of sprinting to the Goat's 
   - Kills nearby enemies, clears barrel from arena
   - Strategic: use barrels to nuke escalated enemies
 
-  Round 1: 3 fireGoats (spawn E, W, N edges)
+  Round 1: 3 berserkers (spawn E, W, N edges)
   Round 2: 2 goatKnights (spawn N, S)
-  Round 3: 1 mini-boss hellgoat (80HP, center, ground pound 3-cell AoE) + 1 fireGoat + 1 goatKnight
+  Round 3: 1 mini-boss goat (80HP, center, ground pound 3-cell AoE) + 1 berserker + 1 goatKnight
 ```
 
 **Elevation:** Flat arena at elevation 0. Entrance via wrath-jagged-arch, exit via wrath-dented-iron-door. Eight wrath-explosive-barrel at floor level. Two wrath-caged-lantern at elevation 2.0 on east and west walls (overhead industrial lights). Six wrath-chain-curtain hang from ceiling (elevation 3+ to 1.5, decorative).
 
-**Flow:** The main arena of Circle 5. Doors lock on entry. The room is ringed with 8 wrath-explosive-barrel -- the key tactical element. Each barrel explodes when shot (radius 2 cells, 15 damage), killing or severely damaging nearby enemies. Round 1: fireGoats -- use the Goat's Bane to clear groups before escalation ramps their speed. Round 2: goatKnights -- armored, slow initially, but escalation makes them terrifyingly fast. Use barrels to burst them down. Round 3: the mini-boss is a larger hellgoat variant with 80 HP -- it takes 2 direct Goat's Bane rockets to kill. It also has a ground pound attack (3-cell AoE, 15 damage) that the standard hellgoat doesn't have. Flanked by a fireGoat and goatKnight. By round 3, any remaining barrels are precious. The room teaches barrel management -- waste them early and round 3 is brutal. Save them and round 3 is manageable. Pickups spawn between rounds for resupply.
+**Flow:** The main arena of Circle 5. Doors lock on entry. The room is ringed with 8 wrath-explosive-barrel -- the key tactical element. Each barrel explodes when shot (radius 2 cells, 15 damage), killing or severely damaging nearby enemies. Round 1: berserkers -- use the Goat's Bane to clear groups before escalation ramps their speed. Round 2: goatKnights -- armored, slow initially, but escalation makes them terrifyingly fast. Use barrels to burst them down. Round 3: the mini-boss is a larger goat variant with 80 HP -- it takes 2 direct Goat's Bane rockets to kill. It also has a ground pound attack (3-cell AoE, 15 damage) that the standard goat doesn't have. Flanked by a berserker and goatKnight. By round 3, any remaining barrels are precious. The room teaches barrel management -- waste them early and round 3 is brutal. Save them and round 3 is manageable. Pickups spawn between rounds for resupply.
 
 ---
 
@@ -437,8 +437,8 @@ If the player fights enemies in the Arsenal (instead of sprinting to the Goat's 
   |             |  WB = wrath-war-banner (3x walls)
   |  hg→       |  SB = wrath-smashed-barrier (2x ramp tops)
   |    RAMP↓   |  BS = wrath-blood-spattered-slab (2x walls)
-  |  elev-0.5  |  hg = hellgoat (spawn behind at Z+4)
-  |  WB  BS    |  fG = fireGoat (spawn ahead on lower sections)
+  |  elev-0.5  |  hg = goat (spawn behind at Z+4)
+  |  WB  BS    |  fG = berserker (spawn ahead on lower sections)
   | fG         |
   | [H][A] CC  |  health + ammo at 1/3 mark
   |    RAMP↓ SB|  RAMP = elevation change
@@ -464,7 +464,7 @@ If the player fights enemies in the Arsenal (instead of sprinting to the Goat's 
 
 **Elevation:** Entry and exit framed by wrath-jagged-arch (2x structural). The gauntlet descends and rises: starts at elevation 0, ramps down to -0.5, then -1.0 at the midpoint, then ramps back up to -0.5 and finally 0 at the exit. Three ramp sections (2 cells long each, RAMP cells). The descent/ascent creates shooting angles -- the player can fire downhill at enemies ahead while elevated enemies behind fire downhill at the player.
 
-**Flow:** A long, narrow corridor of pure forward momentum. Six wrath-chain-curtain hang from the ceiling at intervals as pacing markers. Three wrath-war-banner hang on alternating walls. Two wrath-smashed-barrier mark ramp transition points; two wrath-blood-spattered-slab stain the walls near ramps. Enemies spawn BEHIND the player as they advance -- hellgoats (3, staggered spawns at Z+4, Z+8, Z+14 relative to player progress). fireGoats (2) spawn AHEAD on lower elevation sections, blocking forward progress. The player cannot stop -- the escalating hellgoats behind grow faster every 5 seconds. The ramps create tactical elevation: shooting downhill at fireGoats ahead is easier, but turning to shoot uphill at pursuing hellgoats is harder. Two health pickups are placed at the 1/3 and 2/3 marks of the Gauntlet's length, on the main path. The player does not need to deviate to reach them. The gauntlet is a running fight -- the embodiment of Wrath's lesson that standing still means death.
+**Flow:** A long, narrow corridor of pure forward momentum. Six wrath-chain-curtain hang from the ceiling at intervals as pacing markers. Three wrath-war-banner hang on alternating walls. Two wrath-smashed-barrier mark ramp transition points; two wrath-blood-spattered-slab stain the walls near ramps. Enemies spawn BEHIND the player as they advance -- hellgoats (3, staggered spawns at Z+4, Z+8, Z+14 relative to player progress). berserkers (2) spawn AHEAD on lower elevation sections, blocking forward progress. The player cannot stop -- the escalating hellgoats behind grow faster every 5 seconds. The ramps create tactical elevation: shooting downhill at berserkers ahead is easier, but turning to shoot uphill at pursuing hellgoats is harder. Two health pickups are placed at the 1/3 and 2/3 marks of the Gauntlet's length, on the main path. The player does not need to deviate to reach them. The gauntlet is a running fight -- the embodiment of Wrath's lesson that standing still means death.
 
 ---
 
@@ -537,16 +537,16 @@ If the player fights enemies in the Arsenal (instead of sprinting to the Goat's 
 | T4 | Arsenal | (15, 47, 10, 4) | `startEscalation` | On first enemy combat | `{ speedIncrease: 0.10, interval: 5, cap: 0.60 }` |
 | T5 | Arsenal | (19, 50, 3, 2) | `showHint` | `once: true, pickup: 'goatsBane'` | `{ text: "The Goat's Bane. For when one bullet is not enough." }` |
 | T6 | Berserker Arena | (16, 57, 12, 2) | `lockDoors` | `once: true` | -- |
-| T7 | Berserker Arena | (16, 57, 12, 2) | `spawnWave` | `once: true` | `{ enemies: [{type:'fireGoat', count:3}] }` |
+| T7 | Berserker Arena | (16, 57, 12, 2) | `spawnWave` | `once: true` | `{ enemies: [{type:'berserker', count:3}] }` |
 | T8 | Berserker Arena | -- | `spawnWave` | On wave 1 clear | `{ enemies: [{type:'goatKnight', count:2}] }` |
-| T9 | Berserker Arena | -- | `spawnWave` | On wave 2 clear | `{ enemies: [{type:'hellgoat', count:1, variant:'miniboss', hp:80, groundPound:{radius:3, damage:15}}, {type:'fireGoat', count:1}, {type:'goatKnight', count:1}] }` |
+| T9 | Berserker Arena | -- | `spawnWave` | On wave 2 clear | `{ enemies: [{type:'goat', count:1, variant:'miniboss', hp:80, groundPound:{radius:3, damage:15}}, {type:'berserker', count:1}, {type:'goatKnight', count:1}] }` |
 | T10 | Berserker Arena | -- | `unlockDoors` | On wave 3 clear | -- |
 | T11 | Berserker Arena barrel | Barrel positions | `explodeBarrel` | On barrel damage | `{ radius: 2, damage: 15 }` |
-| T12 | Gauntlet | (22, 78, 4, 2) | `spawnBehind` | Player Z > 78 | `{ type: 'hellgoat', count: 1, spawnZ: 76 }` |
-| T13 | Gauntlet | (22, 82, 4, 2) | `spawnBehind` | Player Z > 82 | `{ type: 'hellgoat', count: 1, spawnZ: 78 }` |
-| T14 | Gauntlet | (22, 88, 4, 2) | `spawnBehind` | Player Z > 88 | `{ type: 'hellgoat', count: 1, spawnZ: 84 }` |
-| T15 | Gauntlet | (22, 76, 4, 2) | `spawnAhead` | Player Z > 76 | `{ type: 'fireGoat', count: 1, spawnZ: 80 }` |
-| T16 | Gauntlet | (22, 86, 4, 2) | `spawnAhead` | Player Z > 86 | `{ type: 'fireGoat', count: 1, spawnZ: 90 }` |
+| T12 | Gauntlet | (22, 78, 4, 2) | `spawnBehind` | Player Z > 78 | `{ type: 'goat', count: 1, spawnZ: 76 }` |
+| T13 | Gauntlet | (22, 82, 4, 2) | `spawnBehind` | Player Z > 82 | `{ type: 'goat', count: 1, spawnZ: 78 }` |
+| T14 | Gauntlet | (22, 88, 4, 2) | `spawnBehind` | Player Z > 88 | `{ type: 'goat', count: 1, spawnZ: 84 }` |
+| T15 | Gauntlet | (22, 76, 4, 2) | `spawnAhead` | Player Z > 76 | `{ type: 'berserker', count: 1, spawnZ: 80 }` |
+| T16 | Gauntlet | (22, 86, 4, 2) | `spawnAhead` | Player Z > 86 | `{ type: 'berserker', count: 1, spawnZ: 90 }` |
 | T17 | Boss colosseum | (17, 99, 14, 2) | `bossIntro` | `once: true` | `{ text: "RAGE. RAGE UNTIL THERE IS NOTHING LEFT." }` |
 | T18 | Boss colosseum | (17, 99, 14, 2) | `lockDoors` | `once: true, delay: 3` | -- |
 | T19 | Boss colosseum | -- | `bossPhase2` | Boss HP < 60% (180 HP) | `{ action: 'ripChains', whipRange: 4 }` |
@@ -595,7 +595,7 @@ editor.createTheme('circle-5-wrath', {
   ambientIntensity: 0.22,
   skyColor: '#0a0000',
   particleEffect: 'embers',                   // Floating embers, sparks in air
-  enemyTypes: ['fireGoat', 'hellgoat', 'goatKnight'],
+  enemyTypes: ['berserker', 'goat', 'goatKnight'],
   enemyDensity: 1.4,                          // Above average -- this circle is aggressive
   pickupDensity: 1.0,                         // Standard -- no abundance, no scarcity
   circleSpecific: {
@@ -621,7 +621,7 @@ editor.createTheme('circle-5-wrath', {
 2. **Blood Marsh wading:** The first experience of the escalation mechanic. Enemies get faster while you wade through blood. The frustration is intentional -- wrath builds in the player too. The circle infects you.
 3. **Rage Pit descent:** Fighting downward into the amphitheater. Each tier conquered is progress. The vertical combat is unique to this room -- Wrath pushes you into the pit, forces you to claw back up.
 4. **Arsenal sprint:** The Goat's Bane on its pedestal. The player who fights their way to it slowly watches the enemies escalate to lethal speed. The player who sprints, dodges, and grabs it is rewarded. Wrath rewards decisive action, not careful planning.
-5. **Berserker Arena -- round 3 mini-boss:** The oversized hellgoat with 80 HP and a ground pound attack. The first mini-boss in the game. Takes 2 direct Goat's Bane rockets to kill. The Goat's Bane rockets are the answer -- explosive area damage before escalation makes the crowd unmanageable. Barrel explosions clear groups. The room is a symphony of destruction.
+5. **Berserker Arena -- round 3 mini-boss:** The oversized goat with 80 HP and a ground pound attack. The first mini-boss in the game. Takes 2 direct Goat's Bane rockets to kill. The Goat's Bane rockets are the answer -- explosive area damage before escalation makes the crowd unmanageable. Barrel explosions clear groups. The room is a symphony of destruction.
 6. **Gauntlet flight:** The purest expression of forward momentum in the game. Enemies behind, enemies ahead, ramps up and down. The player who hesitates is overtaken. The player who charges forward survives. Wrath's lesson crystallized into pure movement.
 7. **Furia intro:** He roars: *"RAGE. RAGE UNTIL THERE IS NOTHING LEFT."* No eloquence. No subtlety. Pure fury. The fight begins.
 8. **Furia phase 2 -- chain rip:** The moment Furia tears chains from the ceiling and swings them as weapons. The arena visually degrades around you -- chains fall, the colosseum crumbles. Wrath destroys its own stage.
@@ -808,7 +808,7 @@ editor.createTheme('circle-5-wrath', {
 
 ### Room: Berserker Arena (14x14, arena)
 
-**Player Experience:** The doors slam shut. Eight barrels ring the center of a vast industrial arena, each one a promise of explosive destruction. Caged lanterns blaze overhead, chains hang from the ceiling like a factory of pain. Round 1: fireGoats pour in from the edges. You reach for the Bazooka. Round 2: goatKnights in armor advance from north and south. Round 3: a massive hellgoat spawns in the center -- twice normal size, ground-pound attack shaking the floor. The barrels are your nuclear option. Use them wisely.
+**Player Experience:** The doors slam shut. Eight barrels ring the center of a vast industrial arena, each one a promise of explosive destruction. Caged lanterns blaze overhead, chains hang from the ceiling like a factory of pain. Round 1: berserkers pour in from the edges. You reach for the Bazooka. Round 2: goatKnights in armor advance from north and south. Round 3: a massive goat spawns in the center -- twice normal size, ground-pound attack shaking the floor. The barrels are your nuclear option. Use them wisely.
 
 **Structural Assets:**
 | Asset | Position | Scale | Rotation | Purpose |

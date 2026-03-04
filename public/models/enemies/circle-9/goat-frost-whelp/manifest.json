@@ -1,0 +1,81 @@
+{
+  "id": "goat-frost-whelp",
+  "name": "Frozen Traitor",
+  "type": "character",
+  "seed": 2582801244,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cb701-3bc2-7134-bf1b-6f1612fd2a00",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb701-3bc2-7134-bf1b-6f1612fd2a00"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cb701-acda-713b-8c58-d92dc929f026",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb701-acda-713b-8c58-d92dc929f026"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cb702-c654-7f0e-9311-113427a16734",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb702-c654-7f0e-9311-113427a16734"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cb704-4a35-717b-886d-537374dc2e38",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb704-4a35-717b-886d-537374dc2e38"
+      },
+      "artifacts": {}
+    },
+    "animation": {
+      "taskId": "019cb709-d6a0-715e-8fd8-b1befb4da14a",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb709-d6a0-715e-8fd8-b1befb4da14a"
+      },
+      "artifacts": {
+        "animation": "animations/Fighting.Dying.Knock_Down.glb"
+      }
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 9 (Treachery) — a newly frozen traitor, mid-crystallization. In life it betrayed someone who trusted it absolutely — a mentor, a family member, a friend who gave everything and received a knife. Now it is locked in the Lake Cocytus's eternal ice, but still mobile enough to be dangerous — the freezing is not yet complete. Ice crystals have begun growing from its joints and cracking through its goat-hide, and it still wears the expression it had when it committed its betrayal: not horror, not guilt, but the moment just after — the sick realization of what it has become. Its eyes are frozen open. It cannot blink. It cannot look away from what it did.",
+  "textToImageTask": {
+    "prompt": "A bipedal humanoid goat demon in A-pose, partially frozen mid-crystallization, pale blue-white skin showing through cracked grey-blue goat fur, ice crystals growing from joints elbows knees and through skin in jagged formations, eyes frozen wide open showing still-human guilt and horror unable to close, expression locked in the moment of betrayal's realization, one hand partially encased in ice formation, frost breath perpetually exhaling, digitigrade goat legs with ice forming at hooves, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Bipedal goat demon partially frozen mid-crystallization, pale blue-white skin showing through cracked grey-blue fur, ice crystals growing from joints and through skin, eyes frozen wide open with guilt expression, frost breath, one hand partially ice-encased, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 7000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Grey-blue goat fur cracked and split where ice crystals grow through from within, pale blue-white frostbitten skin visible in the cracks, translucent ice crystal formations growing from elbow knee and knuckle joints in jagged natural formations, frozen-open eyes with captured guilt expression, frost condensation on all surfaces, perpetual faint frost-breath",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 1.5
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Stumble_Walk",
+      "BodyMovements.Acting.Mummy_Stagger",
+      "Fighting.AttackingwithWeapon.Left_Slash",
+      "Fighting.GettingHit.Face_Punch_Reaction_2",
+      "Fighting.Dying.Knock_Down"
+    ]
+  }
+}

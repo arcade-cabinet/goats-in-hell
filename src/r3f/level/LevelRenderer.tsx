@@ -12,6 +12,7 @@
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import seedrandom from 'seedrandom';
+import { MeshStandardMaterial as _BaseMat, Mesh as _Mesh } from 'three';
 import * as THREE from 'three/webgpu';
 import { CELL_SIZE } from '../../constants';
 import type { CompiledVisual } from '../../db/LevelEditor';
@@ -41,6 +42,47 @@ export interface LevelRendererProps {
 // ---------------------------------------------------------------------------
 
 const _yAxis = new THREE.Vector3(0, 1, 0);
+const _hsl = { h: 0, s: 0, l: 0 };
+
+// ---------------------------------------------------------------------------
+// Meshy material sanitization
+// ---------------------------------------------------------------------------
+
+/**
+ * Some Meshy-generated GLB models have neon-green or other obviously-wrong
+ * material colors (HSL hue near green, high saturation). These render as
+ * bright artifacts in WebGPU. Replace them with dark iron-gray to match
+ * a hell-industrial aesthetic.
+ */
+function sanitizeMeshyMaterials(object: THREE.Group): void {
+  // GLTFLoader creates MeshStandardMaterial from 'three', not 'three/webgpu'.
+  // Use _BaseMat (imported from 'three') so instanceof works for GLTF-loaded mats.
+  object.traverse((child) => {
+    if (!(child instanceof _Mesh)) return;
+    const materials = Array.isArray(child.material) ? child.material : [child.material];
+    for (const mat of materials) {
+      if (!(mat instanceof _BaseMat)) continue;
+
+      // Check base color — bright pure-green artifacts from Meshy
+      mat.color.getHSL(_hsl);
+      const colorIsGreen = _hsl.h > 0.25 && _hsl.h < 0.45 && _hsl.s > 0.5 && _hsl.l > 0.2;
+
+      // Check emissive — ritual/magic props glow green via emissive (e.g. ritual-circle)
+      mat.emissive.getHSL(_hsl);
+      const emissiveIsGreen = _hsl.h > 0.2 && _hsl.h < 0.5 && _hsl.s > 0.4 && _hsl.l > 0.1;
+
+      if (colorIsGreen || emissiveIsGreen) {
+        mat.color.set('#2a2a2a');
+        mat.emissive.set('#000000');
+        mat.emissiveIntensity = 0;
+        mat.metalness = 0.7;
+        mat.roughness = 0.5;
+        mat.map = null; // Strip diffuse texture — green can't be fixed by color tinting alone
+        mat.needsUpdate = true;
+      }
+    }
+  });
+}
 
 // ---------------------------------------------------------------------------
 // Asset resolution helpers (copied verbatim from DungeonProps.tsx)
@@ -143,11 +185,13 @@ function buildGlbPropMesh(assetKey: string, scale = 0.7): THREE.Group | null {
   cloned.position.z = -center.z * normalizeScale;
 
   cloned.traverse((child) => {
-    if (child instanceof THREE.Mesh) {
+    if (child instanceof _Mesh) {
       child.castShadow = true;
       child.receiveShadow = true;
     }
   });
+
+  sanitizeMeshyMaterials(cloned);
 
   return cloned;
 }
@@ -160,7 +204,7 @@ function cleanupGroup(scene: THREE.Scene, root: THREE.Group | null): void {
   if (!root) return;
   scene.remove(root);
   root.traverse((child) => {
-    if (child instanceof THREE.Mesh) {
+    if (child instanceof _Mesh) {
       // Do NOT dispose geometry — shared with ModelLoader template cache
       if (child.material) {
         if (Array.isArray(child.material)) {

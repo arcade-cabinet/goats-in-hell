@@ -45,7 +45,7 @@ export async function buildCircle3(dbPath: string) {
     ambientIntensity: 0.18,
     skyColor: '#0a0f05',
     particleEffect: 'drips', // Green moisture dripping from ceiling
-    enemyTypes: ['hellgoat', 'fireGoat'],
+    enemyTypes: ['glutton', 'shaman'],
     enemyDensity: 1.0, // Standard density
     pickupDensity: 1.5, // HIGH -- abundance is the trap
     texturePalette: { exploration: 'leather', arena: 'leather', boss: 'ground', secret: 'leather' },
@@ -218,41 +218,41 @@ export async function buildCircle3(dbPath: string) {
   // --- Gullet: 3 hellgoat (melee, wait in wide sections) ---
   //   Room bounds: (17, 2, 6, 14) -> interior: x=[18..21], z=[3..14]
   //   Positions from table: first narrow (18, 7), second narrow (19, 11), exit wide (19, 14)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 18, 7, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 18, 7, {
     roomId: gulletId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 19, 11, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 19, 11, {
     roomId: gulletId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 19, 14, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 19, 14, {
     roomId: gulletId,
   });
 
   // --- Feast Hall: 4 hellgoat (patrol table aisles, 2 per side) ---
   //   Room bounds: (13, 20, 14, 10) -> interior: x=[14..25], z=[21..28]
   //   Positions from table: NW (14,23), NE (25,23), SW (14,27), SE (25,27)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 14, 23, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 14, 23, {
     roomId: feastHallId,
     patrol: [
       { x: 14, z: 23 },
       { x: 14, z: 27 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 25, 23, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 25, 23, {
     roomId: feastHallId,
     patrol: [
       { x: 25, z: 23 },
       { x: 25, z: 27 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 14, 27, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 14, 27, {
     roomId: feastHallId,
     patrol: [
       { x: 14, z: 27 },
       { x: 14, z: 23 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 25, 27, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 25, 27, {
     roomId: feastHallId,
     patrol: [
       { x: 25, z: 27 },
@@ -263,18 +263,18 @@ export async function buildCircle3(dbPath: string) {
   // --- Larder: 2 fireGoat (ranged, fire across vertical gap) ---
   //   Room bounds: (15, 34, 10, 12) -> interior: x=[16..23], z=[35..44]
   //   Positions from table: Platform 2 (17, 38), platform 3 (22, 41)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 17, 38, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON, 17, 38, {
     roomId: larderId,
     elevation: -0.5,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 22, 41, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON, 22, 41, {
     roomId: larderId,
     elevation: -1.0,
   });
 
   // --- Larder: 1 hellgoat (melee, guards bottom) ---
   //   Position from table: Platform 4 (19, 43)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 19, 43, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 19, 43, {
     roomId: larderId,
     elevation: -1.5,
   });
@@ -282,37 +282,37 @@ export async function buildCircle3(dbPath: string) {
   // --- Bile Cistern: 3 fireGoat (ranged from walkway segments) ---
   //   Room bounds: (14, 50, 12, 10) -> interior: x=[15..24], z=[51..58]
   //   Positions from table: NW walkway (16, 51), center (20, 54), SE walkway (24, 57)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 16, 51, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON, 16, 51, {
     roomId: bileCisternId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 20, 54, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON, 20, 54, {
     roomId: bileCisternId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 24, 57, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON, 24, 57, {
     roomId: bileCisternId,
   });
 
   // --- Gut Arena: 2 waves via setupArenaWaves ---
   //   Room bounds: (14, 64, 12, 12) -> interior: x=[15..24], z=[65..74]
   //   Trigger zone from table: (16, 66, 8, 4)
-  //   Wave 1: 4 hellgoat (melee, outer + middle rings)
+  //   Wave 1: 4 glutton whelps (outer + middle rings) — weaklings first
   //     Outer N (20,65), Outer S (20,73), Middle E (23,69), Middle W (17,69)
-  //   Wave 2: 2 fireGoat (ranged, middle ring) + 2 hellgoat (melee, outer ring flanks)
+  //   Wave 2: 2 glutton elders (escalation, middle ring) + 2 glutton whelps (flanks)
   //     Middle N (20,67), Middle S (20,71), Outer E (24,69), Outer W (16,69)
   editor.setupArenaWaves(LEVEL_ID, gutArenaId, { x: 16, z: 66, w: 8, h: 4 }, [
-    // Wave 1: 4 hellgoats on outer + middle rings
+    // Wave 1: 4 glutton whelps on outer + middle rings (weaklings first)
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 20, z: 65 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 20, z: 73 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 23, z: 69 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 17, z: 69 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 20, z: 65 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 20, z: 73 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 23, z: 69 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 17, z: 69 },
     ],
-    // Wave 2: 2 fireGoat + 2 hellgoat
+    // Wave 2: 2 glutton elders (escalation) + 2 glutton whelps (flankers)
     [
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 20, z: 67 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 20, z: 71 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 24, z: 69 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 16, z: 69 },
+      { type: ENEMY_TYPES.GLUTTON_ELDER, x: 20, z: 67 },
+      { type: ENEMY_TYPES.GLUTTON_ELDER, x: 20, z: 71 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 24, z: 69 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 16, z: 69 },
     ],
   ]);
 
@@ -1273,10 +1273,10 @@ export async function buildCircle3(dbPath: string) {
     LEVEL_ID,
     { x: 13, z: 20, w: 14, h: 2 },
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 14, z: 23 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 25, z: 23 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 14, z: 27 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 25, z: 27 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 14, z: 23 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 25, z: 23 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 14, z: 27 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 25, z: 27 },
     ],
     { roomId: feastHallId },
   );
@@ -1300,9 +1300,9 @@ export async function buildCircle3(dbPath: string) {
     LEVEL_ID,
     { x: 15, z: 34, w: 10, h: 2 },
     [
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 17, z: 38 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 22, z: 41 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 19, z: 43 },
+      { type: ENEMY_TYPES.GLUTTON, x: 17, z: 38 },
+      { type: ENEMY_TYPES.GLUTTON, x: 22, z: 41 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 19, z: 43 },
     ],
     { roomId: larderId },
   );
@@ -1313,9 +1313,9 @@ export async function buildCircle3(dbPath: string) {
     LEVEL_ID,
     { x: 14, z: 50, w: 12, h: 2 },
     [
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 16, z: 51 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 20, z: 54 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 24, z: 57 },
+      { type: ENEMY_TYPES.GLUTTON, x: 16, z: 51 },
+      { type: ENEMY_TYPES.GLUTTON, x: 20, z: 54 },
+      { type: ENEMY_TYPES.GLUTTON, x: 24, z: 57 },
     ],
     { roomId: bileCisternId },
   );
@@ -1660,29 +1660,29 @@ export async function buildCircle3(dbPath: string) {
   // Room bounds: (28, 22, 10, 8) → interior: x=[29..36], z=[23..28]
 
   // 3 hellgoats patrolling the feast overflow
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 30, 24, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 30, 24, {
     roomId: gorgePitId,
     patrol: [
       { x: 30, z: 24 },
       { x: 35, z: 24 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 33, 26, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 33, 26, {
     roomId: gorgePitId,
     patrol: [
       { x: 33, z: 26 },
       { x: 30, z: 26 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 35, 28, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 35, 28, {
     roomId: gorgePitId,
   });
 
   // 2 fire goats on elevated ledges overlooking pit
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 29, 23, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON, 29, 23, {
     roomId: gorgePitId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 36, 27, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON, 36, 27, {
     roomId: gorgePitId,
   });
 
@@ -1691,10 +1691,10 @@ export async function buildCircle3(dbPath: string) {
     LEVEL_ID,
     { x: 28, z: 22, w: 4, h: 4 },
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 30, z: 24 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 33, z: 26 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 29, z: 23 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 35, z: 28 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 30, z: 24 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 33, z: 26 },
+      { type: ENEMY_TYPES.GLUTTON, x: 29, z: 23 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 35, z: 28 },
     ],
     { roomId: gorgePitId },
   );
@@ -1703,29 +1703,29 @@ export async function buildCircle3(dbPath: string) {
   // Room bounds: (28, 34, 10, 12) → interior: x=[29..36], z=[35..44]
 
   // Goat Knights guard the narrow tunnels
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 31, 37, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 31, 37, {
     roomId: maggotTunnelsId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 34, 41, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 34, 41, {
     roomId: maggotTunnelsId,
   });
 
   // Hellgoats fill the tunnels
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 29, 36, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 29, 36, {
     roomId: maggotTunnelsId,
     patrol: [
       { x: 29, z: 36 },
       { x: 29, z: 43 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 36, 38, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 36, 38, {
     roomId: maggotTunnelsId,
     patrol: [
       { x: 36, z: 38 },
       { x: 36, z: 44 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 32, 42, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 32, 42, {
     roomId: maggotTunnelsId,
   });
 
@@ -1733,17 +1733,17 @@ export async function buildCircle3(dbPath: string) {
   editor.setupArenaWaves(LEVEL_ID, maggotTunnelsId, { x: 29, z: 34, w: 9, h: 3 }, [
     // Wave 1: hellgoats and a goat knight swarm the narrow corridor
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 30, z: 36 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 35, z: 36 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 32, z: 38 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 29, z: 40 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 30, z: 36 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 35, z: 36 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 32, z: 38 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 29, z: 40 },
     ],
     // Wave 2: fire goats add ranged harassment in tight space
     [
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 30, z: 43 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 35, z: 43 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 33, z: 40 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 31, z: 37 },
+      { type: ENEMY_TYPES.GLUTTON, x: 30, z: 43 },
+      { type: ENEMY_TYPES.GLUTTON, x: 35, z: 43 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 33, z: 40 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 31, z: 37 },
     ],
   ]);
 
@@ -1751,21 +1751,21 @@ export async function buildCircle3(dbPath: string) {
   // Room bounds: (28, 50, 10, 10) → interior: x=[29..36], z=[51..58]
 
   // Fire goats perch on raised vat rims
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 30, 52, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON, 30, 52, {
     roomId: acidVatsId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 35, 55, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON, 35, 55, {
     roomId: acidVatsId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 32, 57, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON, 32, 57, {
     roomId: acidVatsId,
   });
 
   // Goat Knights guard the vat bridges
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 29, 54, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 29, 54, {
     roomId: acidVatsId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 36, 56, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 36, 56, {
     roomId: acidVatsId,
   });
 
@@ -1774,10 +1774,10 @@ export async function buildCircle3(dbPath: string) {
     LEVEL_ID,
     { x: 28, z: 50, w: 5, h: 3 },
     [
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 30, z: 52 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 35, z: 55 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 29, z: 54 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 33, z: 53 },
+      { type: ENEMY_TYPES.GLUTTON, x: 30, z: 52 },
+      { type: ENEMY_TYPES.GLUTTON, x: 35, z: 55 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 29, z: 54 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 33, z: 53 },
     ],
     { roomId: acidVatsId },
   );
@@ -1787,50 +1787,50 @@ export async function buildCircle3(dbPath: string) {
   // Large open arena — significant enemy density
 
   // Pre-placed hellgoats patrolling the cavern floor
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 12, 102, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 12, 102, {
     roomId: bloatCavernId,
     patrol: [
       { x: 12, z: 102 },
       { x: 12, z: 110 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 20, 100, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 20, 100, {
     roomId: bloatCavernId,
     patrol: [
       { x: 20, z: 100 },
       { x: 27, z: 100 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 25, 106, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 25, 106, {
     roomId: bloatCavernId,
     patrol: [
       { x: 25, z: 106 },
       { x: 25, z: 111 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 15, 109, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 15, 109, {
     roomId: bloatCavernId,
   });
 
   // Goat Knights guarding the center formation
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 19, 104, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 19, 104, {
     roomId: bloatCavernId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 22, 108, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 22, 108, {
     roomId: bloatCavernId,
   });
 
   // Fire Goats on elevated flanks
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 10, 101, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON, 10, 101, {
     roomId: bloatCavernId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 27, 103, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON, 27, 103, {
     roomId: bloatCavernId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 10, 111, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON, 10, 111, {
     roomId: bloatCavernId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 27, 111, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON, 27, 111, {
     roomId: bloatCavernId,
   });
 
@@ -1838,31 +1838,31 @@ export async function buildCircle3(dbPath: string) {
   editor.setupArenaWaves(LEVEL_ID, bloatCavernId, { x: 16, z: 98, w: 6, h: 4 }, [
     // Wave 1: Spread hellgoats flood the open floor
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 11, z: 100 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 17, z: 100 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 23, z: 100 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 26, z: 104 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 10, z: 108 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 27, z: 110 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 11, z: 100 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 17, z: 100 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 23, z: 100 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 26, z: 104 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 10, z: 108 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 27, z: 110 },
     ],
     // Wave 2: Goat Knights and Fire Goats — elite reinforcements
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 14, z: 103 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 24, z: 103 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 10, z: 106 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 27, z: 106 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 19, z: 111 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 19, z: 106 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 14, z: 103 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 24, z: 103 },
+      { type: ENEMY_TYPES.GLUTTON, x: 10, z: 106 },
+      { type: ENEMY_TYPES.GLUTTON, x: 27, z: 106 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 19, z: 111 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 19, z: 106 },
     ],
     // Wave 3: Final surge — all enemy types converge
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 12, z: 99 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 26, z: 99 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 9, z: 104 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 28, z: 104 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 19, z: 102 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 13, z: 110 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 25, z: 110 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 12, z: 99 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 26, z: 99 },
+      { type: ENEMY_TYPES.GLUTTON, x: 9, z: 104 },
+      { type: ENEMY_TYPES.GLUTTON, x: 28, z: 104 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 19, z: 102 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 13, z: 110 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 25, z: 110 },
     ],
   ]);
 
@@ -1870,44 +1870,44 @@ export async function buildCircle3(dbPath: string) {
   // Room bounds: (13, 112, 14, 14) → interior: x=[14..25], z=[113..124]
 
   // Elite guard — Goat Knights and Fire Goats in the deepest chamber
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 16, 115, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 16, 115, {
     roomId: fleshyDescentId,
     patrol: [
       { x: 16, z: 115 },
       { x: 16, z: 122 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 23, 115, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 23, 115, {
     roomId: fleshyDescentId,
     patrol: [
       { x: 23, z: 115 },
       { x: 23, z: 122 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 19, 119, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 19, 119, {
     roomId: fleshyDescentId,
   });
 
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 14, 114, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON, 14, 114, {
     roomId: fleshyDescentId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 25, 114, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON, 25, 114, {
     roomId: fleshyDescentId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 14, 123, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON, 14, 123, {
     roomId: fleshyDescentId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 25, 123, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON, 25, 123, {
     roomId: fleshyDescentId,
   });
 
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 19, 113, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 19, 113, {
     roomId: fleshyDescentId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 14, 119, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 14, 119, {
     roomId: fleshyDescentId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 25, 119, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GLUTTON_WHELP, 25, 119, {
     roomId: fleshyDescentId,
   });
 
@@ -1916,12 +1916,12 @@ export async function buildCircle3(dbPath: string) {
     LEVEL_ID,
     { x: 14, z: 112, w: 12, h: 3 },
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 16, z: 115 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 23, z: 115 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 14, z: 114 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 25, z: 114 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 19, z: 119 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 19, z: 122 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 16, z: 115 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 23, z: 115 },
+      { type: ENEMY_TYPES.GLUTTON, x: 14, z: 114 },
+      { type: ENEMY_TYPES.GLUTTON, x: 25, z: 114 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 19, z: 119 },
+      { type: ENEMY_TYPES.GLUTTON_WHELP, x: 19, z: 122 },
     ],
     { roomId: fleshyDescentId },
   );

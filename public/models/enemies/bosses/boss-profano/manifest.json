@@ -39,7 +39,7 @@
       }
     },
     "animations": {
-      "WalkAndRun.Walking.Zombie_Walk": {
+      "WalkAndRun.Walking.Monster_Walk": {
         "taskId": "019cad80-7b64-7ca8-b406-c39f8c4996ee",
         "status": "SUCCEEDED",
         "actionId": 112,
@@ -87,6 +87,16 @@
         "actionId": 8,
         "artifact": "animations/Dead.glb"
       }
+    },
+    "animation": {
+      "taskId": "019cb720-9b5b-74f7-a8d9-239f548d52a9",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb720-9b5b-74f7-a8d9-239f548d52a9"
+      },
+      "artifacts": {
+        "animation": "animations/Fighting.Dying.Dead.glb"
+      }
     }
   },
   "pipeline": "enemy",
@@ -113,7 +123,7 @@
   },
   "animationTask": {
     "animations": [
-      "WalkAndRun.Walking.Zombie_Walk",
+      "WalkAndRun.Walking.Monster_Walk",
       "DailyActions.Idle.Angry_Ground_Stomp_2",
       "Fighting.CastingSpell.Charged_Spell_Cast",
       "Fighting.CastingSpell.Charged_Spell_Cast_1",

@@ -1,9 +1,14 @@
 /**
- * LoadingScreen — blocking per-circle asset preload before gameplay.
+ * LoadingScreen — per-circle asset preload gate before gameplay.
  *
- * Mounts when `screen === 'loading'`. Runs `preloadAllTextures()` and
- * `loadModels()` for every enemy, weapon, and projectile model in parallel.
- * Displays a progress counter, then patches `screen → 'playing'` when done.
+ * Mounts when `screen === 'loading'`. Reads the current circle's level JSON
+ * to determine exactly which textures and models are needed — no hardcoded
+ * lookup tables. The JSON is the authoritative source of what to load.
+ *
+ * Loading order:
+ *   1. Circle textures from `level.requiredTextureKeys` (computed at export time)
+ *   2. Enemy + boss models derived from `spawns[].spawnCategory` in the JSON
+ *   3. All weapon + projectile models (always needed for combat)
  *
  * R3FRoot (and the Canvas) still mounts alongside this overlay so the physics
  * world and 3D context initialise concurrently — the player enters gameplay
@@ -18,25 +23,61 @@ import {
   PROJECTILE_MODEL_ASSETS,
   WEAPON_MODEL_ASSETS,
 } from '../game/systems/AssetRegistry';
-import { preloadAllTextures } from '../r3f/level/Materials';
+import { getCircleLevel } from '../levels';
+import type { CompiledLevel } from '../levels/LevelSchema';
+import { preloadTextureKeys } from '../r3f/level/Materials';
 import { loadModels } from '../r3f/systems/ModelLoader';
 import { useGameStore } from '../state/GameStore';
 
-// All model entries to preload, in one flat list.
-const ALL_MODEL_ENTRIES: [string, string][] = [
-  ...(Object.entries(ENEMY_MODEL_ASSETS) as [string, string][]),
-  ...(Object.entries(BOSS_MODEL_ASSETS) as [string, string][]),
-  ...(Object.entries(WEAPON_MODEL_ASSETS) as [string, string][]),
-  ...(Object.entries(PROJECTILE_MODEL_ASSETS) as [string, string][]),
-];
+// ---------------------------------------------------------------------------
+// Model key derivation — from JSON data, no hardcoded lookup tables
+// ---------------------------------------------------------------------------
 
-// Total assets to load: models + textures (counted separately to drive progress).
-// Textures are loaded as a batch — we count them as a single "task" for simplicity.
-const TOTAL_TASKS = ALL_MODEL_ENTRIES.length + 1; // +1 for the texture batch
+/**
+ * Collect enemy and boss model keys from the level JSON.
+ * Uses spawnCategory exported by export-levels.ts so no runtime table lookups.
+ * Falls back gracefully for old exports without spawnCategory.
+ */
+function deriveEnemyBossModelEntries(level: CompiledLevel): [string, string][] {
+  const entries = new Map<string, string>();
+
+  const addEntityType = (entityType: string, category: string) => {
+    if (category === 'enemy') {
+      const key = `enemy-${entityType}`;
+      const path = ENEMY_MODEL_ASSETS[key as keyof typeof ENEMY_MODEL_ASSETS];
+      if (path) entries.set(key, path);
+    } else if (category === 'boss') {
+      // Boss entity types in JSON are 'il-vecchio', keys in BOSS_MODEL_ASSETS are 'boss-il-vecchio'
+      const key = `boss-${entityType}` as keyof typeof BOSS_MODEL_ASSETS;
+      const path = BOSS_MODEL_ASSETS[key];
+      if (path) entries.set(key, path);
+    }
+  };
+
+  for (const spawn of level.spawns) {
+    if (spawn.spawnCategory) {
+      addEntityType(spawn.type, spawn.spawnCategory);
+    }
+  }
+
+  for (const e of level.triggeredEntities ?? []) {
+    if (e.spawnCategory) {
+      addEntityType(e.entityType, e.spawnCategory);
+    }
+  }
+
+  return [...entries.entries()];
+}
+
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
 
 export const LoadingScreen: React.FC = () => {
   const patch = useGameStore((s) => s.patch);
+  const circleNumber = useGameStore((s) => s.circleNumber);
   const [loaded, setLoaded] = useState(0);
+  const [total, setTotal] = useState(1);
   const [loadingText, setLoadingText] = useState('Preparing...');
   const startedRef = useRef(false);
 
@@ -48,31 +89,62 @@ export const LoadingScreen: React.FC = () => {
     let transitionTimer: ReturnType<typeof setTimeout> | null = null;
     let completed = 0;
 
-    // Count each completed task (success or failure) so a bad asset never hangs the gate.
     const onOne = () => {
       completed += 1;
       setLoaded(completed);
     };
 
-    // Kick off models individually so the counter ticks as each finishes.
-    const modelPromises = ALL_MODEL_ENTRIES.map(([key, subpath]) =>
-      loadModels([[key, subpath]])
-        .then(onOne)
-        .catch(onOne),
-    );
+    // ── Resolve which assets are needed from the level JSON ──────────────
+    let level: CompiledLevel | null = null;
+    try {
+      level = getCircleLevel(circleNumber);
+    } catch (_e) {
+      console.warn(`[LoadingScreen] Could not get level for circle ${circleNumber}, loading all`);
+    }
 
-    // Kick off texture preload as a single batch.
-    const texturePromise = preloadAllTextures()
+    // Texture keys come directly from the JSON — no runtime lookup table
+    const textureKeys: string[] = level?.requiredTextureKeys ?? [];
+
+    // Enemy/boss models derived from spawnCategory in JSON; fall back to all on error
+    const enemyBossEntries = level
+      ? deriveEnemyBossModelEntries(level)
+      : ([...Object.entries(ENEMY_MODEL_ASSETS), ...Object.entries(BOSS_MODEL_ASSETS)] as [
+          string,
+          string,
+        ][]);
+
+    // Weapons + projectiles always needed for combat
+    const alwaysEntries: [string, string][] = [
+      ...(Object.entries(WEAPON_MODEL_ASSETS) as [string, string][]),
+      ...(Object.entries(PROJECTILE_MODEL_ASSETS) as [string, string][]),
+    ];
+
+    const allModelEntries = [...enemyBossEntries, ...alwaysEntries];
+
+    // Total = 1 (texture batch) + individual model count
+    const totalTasks = 1 + allModelEntries.length;
+    setTotal(totalTasks);
+
+    // ── Kick off loads ───────────────────────────────────────────────────
+
+    // Texture batch — load exactly this circle's required textures
+    const texturePromise = preloadTextureKeys(textureKeys)
       .then(() => {
         onOne();
         setLoadingText('Descending...');
       })
       .catch(onOne);
 
-    // allSettled so one bad asset never deadlocks the loading gate.
-    Promise.allSettled([...modelPromises, texturePromise]).then(() => {
+    // Models individually so the counter ticks as each finishes
+    const modelPromises = allModelEntries.map(([key, subpath]) =>
+      loadModels([[key, subpath]])
+        .then(onOne)
+        .catch(onOne),
+    );
+
+    // allSettled — one bad asset never deadlocks the loading gate
+    Promise.allSettled([texturePromise, ...modelPromises]).then(() => {
       if (cancelled) return;
-      // Brief delay so the "Descending..." text is visible before screen change.
       transitionTimer = setTimeout(() => {
         patch({ screen: 'playing', startTime: Date.now() });
       }, 400);
@@ -82,9 +154,9 @@ export const LoadingScreen: React.FC = () => {
       cancelled = true;
       if (transitionTimer !== null) clearTimeout(transitionTimer);
     };
-  }, [patch]);
+  }, [patch, circleNumber]);
 
-  const pct = Math.round((loaded / TOTAL_TASKS) * 100);
+  const pct = Math.round((loaded / total) * 100);
 
   return (
     <View style={styles.container}>
@@ -97,7 +169,7 @@ export const LoadingScreen: React.FC = () => {
       </View>
 
       <Text style={styles.counter}>
-        {loaded} / {TOTAL_TASKS} assets
+        {loaded} / {total} assets
       </Text>
     </View>
   );

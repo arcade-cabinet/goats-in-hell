@@ -110,10 +110,50 @@ export const DECAL_TYPES = {
 
 /** Canonical enemy type identifiers for use in build scripts. */
 export const ENEMY_TYPES = {
-  HELLGOAT: 'hellgoat',
+  // General mob types (used across multiple circles)
+  GOAT: 'goat', // Basic grunt — goat-grunt model
+  HELLGOAT: 'hellgoat', // Circle 1 shade — goat-shade model
+  SHADOW_GOAT: 'shadowGoat', // Scout/stealth — goat-scout model
+  GOAT_KNIGHT: 'goatKnight', // Heavy brute — goat-brute model
+  SHAMAN: 'shaman', // Ranged caster — goat-shaman model
+  // Circle 1: Limbo — Shade hierarchy
+  SHADE_WHELP: 'shadeWhelp', // weak, wispy shade (young soul)
+  SHADE: 'hellgoat', // standard shade (goat-shade model, hellgoat entity type)
+  SHADE_ELDER: 'shadeElder', // ancient lingering shade
+  // Circle 2: Lust — Siren hierarchy
+  SIREN_WHELP: 'sirenWhelp', // young thrall, frantic
+  SIREN: 'siren', // standard siren
+  SIREN_ELDER: 'sirenElder', // ancient seductress
+  // Circle 3: Gluttony — Glutton hierarchy
+  GLUTTON_WHELP: 'gluttonWhelp', // bloated runt
+  GLUTTON: 'glutton', // standard glutton
+  GLUTTON_ELDER: 'gluttonElder', // grotesque elder
+  // Circle 4: Greed — Hoarder hierarchy
+  HOARDER_WHELP: 'hoarderWhelp', // petty thief
+  HOARDER: 'hoarder', // standard hoarder
+  HOARDER_ELDER: 'hoarderElder', // gold-armored warden
+  // Circle 5: Wrath — Berserker hierarchy
+  BERSERKER_WHELP: 'berserkerWhelp', // frenzied runt
+  BERSERKER: 'berserker', // standard berserker
+  BERSERKER_ELDER: 'berserkerElder', // rage-incarnate elder
+  // Circle 6: Heresy — Heretic hierarchy
+  HERETIC_WHELP: 'hereticWhelp', // acolyte
+  HERETIC: 'heretic', // standard heretic
+  HERETIC_ELDER: 'hereticElder', // arch-heretic
+  // Circle 7: Violence — Butcher hierarchy
+  BUTCHER_WHELP: 'butcherWhelp', // apprentice butcher
+  BUTCHER: 'butcher', // standard butcher
+  BUTCHER_ELDER: 'butcherElder', // grand butcher
+  // Circle 8: Fraud — Mimic hierarchy
+  MIMIC_WHELP: 'mimicWhelp', // shapeshifter runt
+  MIMIC_ENEMY: 'mimic', // standard mimic
+  MIMIC_ELDER: 'mimicElder', // perfect deceiver
+  // Circle 9: Treachery — Frost hierarchy
+  FROST_WHELP: 'frostWhelp', // frozen shard
+  FROST: 'frost', // standard frost
+  FROST_ELDER: 'frostElder', // permafrost ancient
+  // Legacy aliases (kept for backward-compat)
   FIRE_GOAT: 'fireGoat',
-  SHADOW_GOAT: 'shadowGoat',
-  GOAT_KNIGHT: 'goatKnight',
 } as const;
 
 /** Canonical pickup type identifiers (health, ammo, weapons). */

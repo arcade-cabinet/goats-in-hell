@@ -45,7 +45,7 @@ export async function buildCircle2(dbPath: string) {
     ambientIntensity: 0.2,
     skyColor: '#1a0a0a',
     particleEffect: 'embers', // Floating ember particles from lava
-    enemyTypes: ['hellgoat', 'fireGoat'],
+    enemyTypes: ['siren', 'shadowGoat'],
     enemyDensity: 1.0, // Standard density
     pickupDensity: 0.7, // Moderate
     texturePalette: { exploration: 'marble', arena: 'marble', boss: 'tiles', secret: 'marble' },
@@ -191,26 +191,26 @@ export async function buildCircle2(dbPath: string) {
   // Lover's Gallery: 3 fireGoat (ranged, from behind columns)
   //   Room bounds: (15, 32, 14, 10) -> interior: x=[16..27], z=[33..40]
   //   Positions from design doc: N balcony (18,33), center column (22,36), SE corner (27,40)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 18, 33, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN, 18, 33, {
     roomId: galleryId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 22, 36, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN, 22, 36, {
     roomId: galleryId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 27, 40, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN, 27, 40, {
     roomId: galleryId,
   });
 
-  // Lover's Gallery: 2 hellgoat (melee patrol between columns)
+  // Lover's Gallery: 2 siren whelps (melee patrol between columns)
   //   W side (17,37), E side (26,37)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 17, 37, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN_WHELP, 17, 37, {
     roomId: galleryId,
     patrol: [
       { x: 17, z: 37 },
       { x: 17, z: 34 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 26, 37, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN_WHELP, 26, 37, {
     roomId: galleryId,
     patrol: [
       { x: 26, z: 37 },
@@ -221,18 +221,18 @@ export async function buildCircle2(dbPath: string) {
   // Siren Pit: 2 fireGoat (ranged from ledge niches)
   //   Room bounds: (16, 46, 12, 12) -> interior: x=[17..26], z=[47..56]
   //   E ledge elev -0.5 (26,49), W ledge elev -1.5 (18,54)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 26, 49, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN, 26, 49, {
     roomId: sirenPitId,
     elevation: -0.5,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 18, 54, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN, 18, 54, {
     roomId: sirenPitId,
     elevation: -1.5,
   });
 
-  // Siren Pit: 1 hellgoat (melee, bottom landing)
+  // Siren Pit: 1 siren whelp (melee, bottom landing)
   //   Bottom (22,56), elev -2.0
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 22, 56, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN_WHELP, 22, 56, {
     roomId: sirenPitId,
     elevation: -2.0,
   });
@@ -240,23 +240,23 @@ export async function buildCircle2(dbPath: string) {
   // Tempest Hall: 2 waves via setupArenaWaves
   //   Room bounds: (15, 62, 14, 12) -> interior: x=[16..27], z=[63..72]
   //   Trigger zone from table: (17, 64, 10, 4)
-  //   Wave 1: 3 hellgoat (melee, charge across bridges)
+  //   Wave 1: 3 siren whelps (flankers, charge across bridges)
   //     NW platform (16,63), center lane (22,67), SE platform (27,71)
-  //   Wave 2: 2 fireGoat + 2 hellgoat (mixed)
+  //   Wave 2: 2 siren elders (escalation) + 2 siren whelps (flankers)
   //     W platform (16,69), E platform (27,65), center N (22,63), center S (22,71)
   editor.setupArenaWaves(LEVEL_ID, tempestHallId, { x: 17, z: 64, w: 10, h: 4 }, [
-    // Wave 1: 3 hellgoats
+    // Wave 1: 3 siren whelps — flankers, frantic charge
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 16, z: 63 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 22, z: 67 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 27, z: 71 },
+      { type: ENEMY_TYPES.SIREN_WHELP, x: 16, z: 63 },
+      { type: ENEMY_TYPES.SIREN_WHELP, x: 22, z: 67 },
+      { type: ENEMY_TYPES.SIREN_WHELP, x: 27, z: 71 },
     ],
-    // Wave 2: 2 fireGoat + 2 hellgoat
+    // Wave 2: 2 siren elders (escalation) + 2 siren whelps (flankers)
     [
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 16, z: 69 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 27, z: 65 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 22, z: 63 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 22, z: 71 },
+      { type: ENEMY_TYPES.SIREN_ELDER, x: 16, z: 69 },
+      { type: ENEMY_TYPES.SIREN_ELDER, x: 27, z: 65 },
+      { type: ENEMY_TYPES.SIREN_WHELP, x: 22, z: 63 },
+      { type: ENEMY_TYPES.SIREN_WHELP, x: 22, z: 71 },
     ],
   ]);
 
@@ -1023,11 +1023,11 @@ export async function buildCircle2(dbPath: string) {
     LEVEL_ID,
     { x: 15, z: 32, w: 14, h: 2 },
     [
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 18, z: 33 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 22, z: 36 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 27, z: 40 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 17, z: 37 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 26, z: 37 },
+      { type: ENEMY_TYPES.SIREN, x: 18, z: 33 },
+      { type: ENEMY_TYPES.SIREN, x: 22, z: 36 },
+      { type: ENEMY_TYPES.SIREN, x: 27, z: 40 },
+      { type: ENEMY_TYPES.SIREN_WHELP, x: 17, z: 37 },
+      { type: ENEMY_TYPES.SIREN_WHELP, x: 26, z: 37 },
     ],
     { roomId: galleryId },
   );
@@ -1038,9 +1038,9 @@ export async function buildCircle2(dbPath: string) {
     LEVEL_ID,
     { x: 16, z: 46, w: 12, h: 2 },
     [
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 26, z: 49 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 18, z: 54 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 22, z: 56 },
+      { type: ENEMY_TYPES.SIREN, x: 26, z: 49 },
+      { type: ENEMY_TYPES.SIREN, x: 18, z: 54 },
+      { type: ENEMY_TYPES.SIREN_WHELP, x: 22, z: 56 },
     ],
     { roomId: sirenPitId },
   );
@@ -1413,97 +1413,97 @@ export async function buildCircle2(dbPath: string) {
   editor.corridor(LEVEL_ID, sirenPitId, obsessionVaultId, 3);
 
   // ── ENEMIES: Crimson Baths (x[30..41], z[2..14]) ─────────────────────────
-  // 4 hellgoat patrolling the bath columns
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 32, 5, {
+  // 4 siren whelps patrolling the bath columns
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN_WHELP, 32, 5, {
     roomId: crimsonBathsId,
     patrol: [
       { x: 32, z: 5 },
       { x: 32, z: 12 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 39, 5, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN_WHELP, 39, 5, {
     roomId: crimsonBathsId,
     patrol: [
       { x: 39, z: 5 },
       { x: 39, z: 12 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 35, 9, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN_WHELP, 35, 9, {
     roomId: crimsonBathsId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 37, 13, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN_WHELP, 37, 13, {
     roomId: crimsonBathsId,
   });
   // 3 fireGoat ranged -- perch on bath ledges
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 31, 3, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN, 31, 3, {
     roomId: crimsonBathsId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 40, 8, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN, 40, 8, {
     roomId: crimsonBathsId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 36, 13, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN, 36, 13, {
     roomId: crimsonBathsId,
   });
 
   // ── ENEMIES: Mirror Hall (x[30..41], z[20..31]) ───────────────────────────
-  // 5 hellgoat — disorienting maze fight
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 31, 22, { roomId: mirrorHallId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 40, 22, { roomId: mirrorHallId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 35, 26, { roomId: mirrorHallId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 31, 29, { roomId: mirrorHallId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 40, 29, { roomId: mirrorHallId });
+  // 5 siren whelps — disorienting maze fight
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN_WHELP, 31, 22, { roomId: mirrorHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN_WHELP, 40, 22, { roomId: mirrorHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN_WHELP, 35, 26, { roomId: mirrorHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN_WHELP, 31, 29, { roomId: mirrorHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN_WHELP, 40, 29, { roomId: mirrorHallId });
   // 3 fireGoat ranged from mirror alcoves
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 33, 21, { roomId: mirrorHallId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 38, 25, { roomId: mirrorHallId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 35, 30, { roomId: mirrorHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN, 33, 21, { roomId: mirrorHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN, 38, 25, { roomId: mirrorHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN, 35, 30, { roomId: mirrorHallId });
 
   // ── ENEMIES: Torment Gallery (x[30..41], z[36..45]) — arena waves ─────────
   // Set up 3-wave arena lock
-  // Wave 1: 3 hellgoat charge
-  // Wave 2: 2 fireGoat + 2 hellgoat
-  // Wave 3: 4 hellgoat + 2 fireGoat surge
+  // Wave 1: 3 siren whelps charge
+  // Wave 2: 2 sirens + 2 siren whelps (mixed)
+  // Wave 3: 4 siren whelps + 2 sirens surge
   editor.setupArenaWaves(LEVEL_ID, tormentGalleryId, { x: 30, z: 36, w: 12, h: 3 }, [
     // Wave 1
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 31, z: 38 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 36, z: 40 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 40, z: 38 },
+      { type: ENEMY_TYPES.SIREN_WHELP, x: 31, z: 38 },
+      { type: ENEMY_TYPES.SIREN_WHELP, x: 36, z: 40 },
+      { type: ENEMY_TYPES.SIREN_WHELP, x: 40, z: 38 },
     ],
     // Wave 2
     [
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 31, z: 42 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 40, z: 42 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 34, z: 37 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 37, z: 44 },
+      { type: ENEMY_TYPES.SIREN, x: 31, z: 42 },
+      { type: ENEMY_TYPES.SIREN, x: 40, z: 42 },
+      { type: ENEMY_TYPES.SIREN_WHELP, x: 34, z: 37 },
+      { type: ENEMY_TYPES.SIREN_WHELP, x: 37, z: 44 },
     ],
     // Wave 3
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 31, z: 37 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 36, z: 43 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 40, z: 37 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 33, z: 44 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 38, z: 39 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 32, z: 42 },
+      { type: ENEMY_TYPES.SIREN_WHELP, x: 31, z: 37 },
+      { type: ENEMY_TYPES.SIREN_WHELP, x: 36, z: 43 },
+      { type: ENEMY_TYPES.SIREN_WHELP, x: 40, z: 37 },
+      { type: ENEMY_TYPES.SIREN_WHELP, x: 33, z: 44 },
+      { type: ENEMY_TYPES.SIREN, x: 38, z: 39 },
+      { type: ENEMY_TYPES.SIREN, x: 32, z: 42 },
     ],
   ]);
 
   // ── ENEMIES: Obsession Vault (x[0..11], z[46..57]) ───────────────────────
-  // 4 hellgoat lurking among the obsession shrines
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 2, 48, { roomId: obsessionVaultId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 9, 48, { roomId: obsessionVaultId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 2, 55, { roomId: obsessionVaultId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 9, 55, { roomId: obsessionVaultId });
+  // 4 siren whelps lurking among the obsession shrines
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN_WHELP, 2, 48, { roomId: obsessionVaultId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN_WHELP, 9, 48, { roomId: obsessionVaultId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN_WHELP, 2, 55, { roomId: obsessionVaultId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN_WHELP, 9, 55, { roomId: obsessionVaultId });
   // 2 fireGoat from elevated niches
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 5, 49, { roomId: obsessionVaultId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 6, 54, { roomId: obsessionVaultId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN, 5, 49, { roomId: obsessionVaultId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN, 6, 54, { roomId: obsessionVaultId });
 
   // ── ENEMIES: Desire Corridor (x[30..41], z[50..59]) ───────────────────────
   // Ambush corridor — enemies lurk behind velvet drapes
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 32, 52, { roomId: desireCorridorId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 39, 52, { roomId: desireCorridorId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 35, 57, { roomId: desireCorridorId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 36, 51, { roomId: desireCorridorId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 31, 56, { roomId: desireCorridorId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN_WHELP, 32, 52, { roomId: desireCorridorId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN_WHELP, 39, 52, { roomId: desireCorridorId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN_WHELP, 35, 57, { roomId: desireCorridorId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN, 36, 51, { roomId: desireCorridorId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SIREN, 31, 56, { roomId: desireCorridorId });
 
   // ── PICKUPS: new rooms ────────────────────────────────────────────────────
   // Crimson Baths
@@ -1796,9 +1796,9 @@ export async function buildCircle2(dbPath: string) {
     LEVEL_ID,
     { x: 30, z: 8, w: 12, h: 3 },
     [
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 31, z: 10 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 40, z: 10 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 35, z: 11 },
+      { type: ENEMY_TYPES.SIREN, x: 31, z: 10 },
+      { type: ENEMY_TYPES.SIREN, x: 40, z: 10 },
+      { type: ENEMY_TYPES.SIREN_WHELP, x: 35, z: 11 },
     ],
     { roomId: crimsonBathsId },
   );
@@ -1808,9 +1808,9 @@ export async function buildCircle2(dbPath: string) {
     LEVEL_ID,
     { x: 30, z: 53, w: 12, h: 3 },
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 31, z: 54 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 39, z: 55 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 35, z: 56 },
+      { type: ENEMY_TYPES.SIREN_WHELP, x: 31, z: 54 },
+      { type: ENEMY_TYPES.SIREN_WHELP, x: 39, z: 55 },
+      { type: ENEMY_TYPES.SIREN, x: 35, z: 56 },
     ],
     { roomId: desireCorridorId },
   );

@@ -45,7 +45,7 @@ export async function buildCircle9(dbPath: string) {
     ambientIntensity: 0.1,
     skyColor: '#000005', // Near-black -- the deepest point
     particleEffect: 'snow_drift', // Horizontal snow particles, slow
-    enemyTypes: ['goatKnight', 'shadowGoat', 'fireGoat'],
+    enemyTypes: ['frost', 'goatKnight'],
     texturePalette: { exploration: 'ice', arena: 'ice-deep', boss: 'ice-deep', secret: 'ice' },
     enemyDensity: 1.2, // High -- the finale
     pickupDensity: 0.8, // Moderate -- enough to survive, not to hoard
@@ -232,24 +232,26 @@ export async function buildCircle9(dbPath: string) {
   // 5. ENTITIES: ENEMIES (from "Enemies" table)
   // =========================================================================
 
-  // --- Glacial Stairs: 2 shadowGoat ambush + 1 fireGoat ---
+  // --- Glacial Stairs: 2 frostWhelp ambush + 1 frostWhelp (teaching encounters) ---
   //   Room bounds: (26, 2, 8, 16) -> interior: x=[27..32], z=[3..16]
-  //   T1: shadowGoat ambush at landing 2 zone (27, 6, 6, 3)
-  //   T2: shadowGoat ambush at landing 4 zone (27, 12, 6, 3)
+  //   T1: frostWhelp ambush at landing 2 zone (27, 6, 6, 3)
+  //   T2: frostWhelp ambush at landing 4 zone (27, 12, 6, 3)
   editor.ambush(
     LEVEL_ID,
     { x: 27, z: 6, w: 6, h: 3 },
-    [{ type: ENEMY_TYPES.SHADOW_GOAT, x: 28, z: 7 }],
-    { roomId: glacialStairsId },
+    [{ type: ENEMY_TYPES.FROST_WHELP, x: 28, z: 7 }],
+    {
+      roomId: glacialStairsId,
+    },
   );
   editor.ambush(
     LEVEL_ID,
     { x: 27, z: 12, w: 6, h: 3 },
-    [{ type: ENEMY_TYPES.SHADOW_GOAT, x: 31, z: 13 }],
+    [{ type: ENEMY_TYPES.FROST_WHELP, x: 31, z: 13 }],
     { roomId: glacialStairsId },
   );
-  // fireGoat at landing 3, fires upward from below
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 30, 10, {
+  // frostWhelp at landing 3, solo learning encounter
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_WHELP, 30, 10, {
     roomId: glacialStairsId,
     facing: 0, // Facing north (upward at descending player)
   });
@@ -262,14 +264,14 @@ export async function buildCircle9(dbPath: string) {
     LEVEL_ID,
     { x: 23, z: 23, w: 14, h: 12 },
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 28, z: 25 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 34, z: 31 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 28, z: 33 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 28, z: 25 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 34, z: 31 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 28, z: 33 },
     ],
     { roomId: cainaId },
   );
   // 1 shadowGoat patrols behind ice pillars
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 24, 30, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 24, 30, {
     roomId: cainaId,
     patrol: [
       { x: 24, z: 30 },
@@ -284,23 +286,23 @@ export async function buildCircle9(dbPath: string) {
   editor.ambush(
     LEVEL_ID,
     { x: 25, z: 42, w: 10, h: 4 },
-    [{ type: ENEMY_TYPES.SHADOW_GOAT, x: 33, z: 43 }],
+    [{ type: ENEMY_TYPES.FROST, x: 33, z: 43 }],
     { roomId: antenoraId },
   );
   editor.ambush(
     LEVEL_ID,
     { x: 25, z: 48, w: 10, h: 4 },
-    [{ type: ENEMY_TYPES.SHADOW_GOAT, x: 33, z: 49 }],
+    [{ type: ENEMY_TYPES.FROST, x: 33, z: 49 }],
     { roomId: antenoraId },
   );
   editor.ambush(
     LEVEL_ID,
     { x: 25, z: 52, w: 10, h: 4 },
-    [{ type: ENEMY_TYPES.SHADOW_GOAT, x: 26, z: 53 }],
+    [{ type: ENEMY_TYPES.FROST, x: 26, z: 53 }],
     { roomId: antenoraId },
   );
   // 1 fireGoat at corridor intersection
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 30, 46, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 30, 46, {
     roomId: antenoraId,
   });
 
@@ -312,9 +314,9 @@ export async function buildCircle9(dbPath: string) {
     LEVEL_ID,
     { x: 24, z: 61, w: 12, h: 2 },
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 28, z: 63 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 32, z: 63 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 34, z: 66 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 28, z: 63 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 32, z: 63 },
+      { type: ENEMY_TYPES.FROST, x: 34, z: 66 },
     ],
     { roomId: ptolomeaId },
   );
@@ -326,22 +328,22 @@ export async function buildCircle9(dbPath: string) {
   //   Wave 2: 2 shadowGoat + 1 fireGoat
   //   Wave 3: 1 goatKnight + 1 shadowGoat + 1 fireGoat
   editor.setupArenaWaves(LEVEL_ID, giudeccaId, { x: 23, z: 76, w: 14, h: 4 }, [
-    // Wave 1: 2 goatKnights from frozen waterfall
+    // Wave 1: 2 frostElder from frozen waterfall (ancient guardians)
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 26, z: 76 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 34, z: 76 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 26, z: 76 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 34, z: 76 },
     ],
-    // Wave 2: 2 shadowGoats from floor + 1 fireGoat elevated
+    // Wave 2: 2 frost from floor + 1 frost elevated
     [
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 28, z: 82 },
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 34, z: 82 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 30, z: 78 },
+      { type: ENEMY_TYPES.FROST, x: 28, z: 82 },
+      { type: ENEMY_TYPES.FROST, x: 34, z: 82 },
+      { type: ENEMY_TYPES.FROST, x: 30, z: 78 },
     ],
     // Wave 3: mixed all types
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 30, z: 80 },
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 24, z: 84 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 36, z: 78 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 30, z: 80 },
+      { type: ENEMY_TYPES.FROST, x: 24, z: 84 },
+      { type: ENEMY_TYPES.FROST, x: 36, z: 78 },
     ],
   ]);
 
@@ -1350,22 +1352,22 @@ export async function buildCircle9(dbPath: string) {
 
   // --- Caina West Annex (bounds: 2, 20, 16, 14) → interior x: 3–16, z: 21–32 ---
   // Pre-placed enemies (non-triggered) for playtest coverage
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 4, 22, { roomId: cainaWestAnnexId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 15, 22, { roomId: cainaWestAnnexId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 9, 31, { roomId: cainaWestAnnexId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 4, 22, { roomId: cainaWestAnnexId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 15, 22, { roomId: cainaWestAnnexId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 9, 31, { roomId: cainaWestAnnexId });
   // 3x goatKnight entombed in ice, awaken on entry
   editor.ambush(
     LEVEL_ID,
     { x: 3, z: 21, w: 13, h: 2 },
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 6, z: 24 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 10, z: 28 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 15, z: 24 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 6, z: 24 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 10, z: 28 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 15, z: 24 },
     ],
     { roomId: cainaWestAnnexId },
   );
   // 2x shadow_goat patrolling the catacombs
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 5, 30, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 5, 30, {
     roomId: cainaWestAnnexId,
     patrol: [
       { x: 5, z: 30 },
@@ -1374,7 +1376,7 @@ export async function buildCircle9(dbPath: string) {
       { x: 5, z: 22 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 10, 26, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 10, 26, {
     roomId: cainaWestAnnexId,
     patrol: [
       { x: 10, z: 26 },
@@ -1383,7 +1385,7 @@ export async function buildCircle9(dbPath: string) {
     ],
   });
   // 1x fire_goat behind a monolith, fires through doorway
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 14, 32, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 14, 32, {
     roomId: cainaWestAnnexId,
     facing: 0,
   });
@@ -1394,49 +1396,49 @@ export async function buildCircle9(dbPath: string) {
     LEVEL_ID,
     { x: 39, z: 41, w: 12, h: 2 },
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 41, z: 44 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 45, z: 47 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 49, z: 44 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 41, z: 44 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 45, z: 47 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 49, z: 44 },
     ],
     { roomId: frozenGalleryId },
   );
   // 2x shadow_goat hiding behind monoliths
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 40, 48, { roomId: frozenGalleryId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 50, 42, { roomId: frozenGalleryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 40, 48, { roomId: frozenGalleryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 50, 42, { roomId: frozenGalleryId });
   // 1x fire_goat at far south end
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 45, 49, { roomId: frozenGalleryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 45, 49, { roomId: frozenGalleryId });
   // Additional pre-placed enemies (non-triggered) for playtest coverage
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 42, 43, { roomId: frozenGalleryId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 49, 49, { roomId: frozenGalleryId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 44, 46, { roomId: frozenGalleryId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 48, 44, { roomId: frozenGalleryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 42, 43, { roomId: frozenGalleryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 49, 49, { roomId: frozenGalleryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 44, 46, { roomId: frozenGalleryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 48, 44, { roomId: frozenGalleryId });
 
   // --- Frozen Passage North (bounds: 42, 56, 8, 16) → interior x: 43–48, z: 57–70 ---
   // 2x ambush at passage turns
   editor.ambush(
     LEVEL_ID,
     { x: 43, z: 58, w: 6, h: 2 },
-    [{ type: ENEMY_TYPES.SHADOW_GOAT, x: 47, z: 59 }],
+    [{ type: ENEMY_TYPES.FROST, x: 47, z: 59 }],
     { roomId: frozenPassageNorthId },
   );
   editor.ambush(
     LEVEL_ID,
     { x: 43, z: 64, w: 6, h: 2 },
-    [{ type: ENEMY_TYPES.SHADOW_GOAT, x: 44, z: 65 }],
+    [{ type: ENEMY_TYPES.FROST, x: 44, z: 65 }],
     { roomId: frozenPassageNorthId },
   );
   // 2x goatKnight blocking the passage
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 46, 60, { roomId: frozenPassageNorthId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 44, 68, { roomId: frozenPassageNorthId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 46, 60, { roomId: frozenPassageNorthId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 44, 68, { roomId: frozenPassageNorthId });
   // 1x fire_goat sniping from the bottom of the passage
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 46, 69, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 46, 69, {
     roomId: frozenPassageNorthId,
     facing: 0,
   });
   // Additional pre-placed enemies for playtest coverage
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 44, 58, { roomId: frozenPassageNorthId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 48, 63, { roomId: frozenPassageNorthId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 45, 67, { roomId: frozenPassageNorthId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 44, 58, { roomId: frozenPassageNorthId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 48, 63, { roomId: frozenPassageNorthId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 45, 67, { roomId: frozenPassageNorthId });
 
   // --- Ice Crevasse (bounds: 2, 60, 14, 16) → interior x: 3–14, z: 61–74 ---
   // 2-wave encounter: first wave patrols, second ambush on deeper entry
@@ -1444,8 +1446,8 @@ export async function buildCircle9(dbPath: string) {
     LEVEL_ID,
     { x: 3, z: 61, w: 11, h: 2 },
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 5, z: 63 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 11, z: 63 },
+      { type: ENEMY_TYPES.FROST, x: 5, z: 63 },
+      { type: ENEMY_TYPES.FROST, x: 11, z: 63 },
     ],
     { roomId: iceCrevasseId },
   );
@@ -1453,33 +1455,33 @@ export async function buildCircle9(dbPath: string) {
     LEVEL_ID,
     { x: 3, z: 68, w: 11, h: 2 },
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 7, z: 70 },
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 13, z: 72 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 7, z: 70 },
+      { type: ENEMY_TYPES.FROST, x: 13, z: 72 },
     ],
     { roomId: iceCrevasseId },
   );
   // 2x fire_goat on ledges flanking the crevasse
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 4, 72, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 4, 72, {
     roomId: iceCrevasseId,
     facing: Math.PI / 2,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 14, 68, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 14, 68, {
     roomId: iceCrevasseId,
     facing: -Math.PI / 2,
   });
   // 1x goatKnight at the far south corner
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 8, 74, { roomId: iceCrevasseId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 8, 74, { roomId: iceCrevasseId });
   // Additional pre-placed enemies for playtest coverage
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 5, 62, { roomId: iceCrevasseId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 12, 66, { roomId: iceCrevasseId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 4, 69, { roomId: iceCrevasseId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 10, 73, { roomId: iceCrevasseId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 5, 62, { roomId: iceCrevasseId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 12, 66, { roomId: iceCrevasseId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 4, 69, { roomId: iceCrevasseId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 10, 73, { roomId: iceCrevasseId });
 
   // --- Betrayer Hall (bounds: 42, 74, 12, 16) → interior x: 43–52, z: 75–88 ---
   // Pre-placed enemies (non-triggered) for playtest coverage
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 44, 76, { roomId: betrayerHallId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 52, 76, { roomId: betrayerHallId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 47, 82, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 44, 76, { roomId: betrayerHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 52, 76, { roomId: betrayerHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 47, 82, {
     roomId: betrayerHallId,
     patrol: [
       { x: 47, z: 82 },
@@ -1487,47 +1489,47 @@ export async function buildCircle9(dbPath: string) {
       { x: 44, z: 88 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 48, 87, { roomId: betrayerHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 48, 87, { roomId: betrayerHallId });
   // Full 3-wave arena: the east counterpart to Giudecca
   editor.setupArenaWaves(LEVEL_ID, betrayerHallId, { x: 43, z: 75, w: 10, h: 3 }, [
     // Wave 1: goatKnights thaw from the ice
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 45, z: 78 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 51, z: 78 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 48, z: 80 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 45, z: 78 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 51, z: 78 },
+      { type: ENEMY_TYPES.FROST, x: 48, z: 80 },
     ],
     // Wave 2: shadow goats materialise from the dark
     [
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 44, z: 84 },
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 52, z: 84 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 48, z: 80 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 45, z: 86 },
+      { type: ENEMY_TYPES.FROST, x: 44, z: 84 },
+      { type: ENEMY_TYPES.FROST, x: 52, z: 84 },
+      { type: ENEMY_TYPES.FROST, x: 48, z: 80 },
+      { type: ENEMY_TYPES.FROST, x: 45, z: 86 },
     ],
     // Wave 3: final surge
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 46, z: 82 },
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 52, z: 76 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 44, z: 86 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 50, z: 86 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 43, z: 77 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 46, z: 82 },
+      { type: ENEMY_TYPES.FROST, x: 52, z: 76 },
+      { type: ENEMY_TYPES.FROST, x: 44, z: 86 },
+      { type: ENEMY_TYPES.FROST, x: 50, z: 86 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 43, z: 77 },
     ],
   ]);
 
   // --- Cocytus West Dock (bounds: 2, 100, 14, 20) → interior x: 3–14, z: 101–118 ---
   // Pre-placed enemies (non-triggered) for playtest coverage
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 4, 102, { roomId: cocytusWestDockId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 14, 106, { roomId: cocytusWestDockId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 8, 110, { roomId: cocytusWestDockId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 4, 116, { roomId: cocytusWestDockId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 13, 114, { roomId: cocytusWestDockId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 4, 102, { roomId: cocytusWestDockId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 14, 106, { roomId: cocytusWestDockId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 8, 110, { roomId: cocytusWestDockId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 4, 116, { roomId: cocytusWestDockId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 13, 114, { roomId: cocytusWestDockId });
   // Ambush: frozen guardians block the dock approach
   editor.ambush(
     LEVEL_ID,
     { x: 3, z: 101, w: 11, h: 2 },
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 5, z: 104 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 12, z: 104 },
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 9, z: 103 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 5, z: 104 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 12, z: 104 },
+      { type: ENEMY_TYPES.FROST, x: 9, z: 103 },
     ],
     { roomId: cocytusWestDockId },
   );
@@ -1535,15 +1537,15 @@ export async function buildCircle9(dbPath: string) {
     LEVEL_ID,
     { x: 3, z: 110, w: 11, h: 2 },
     [
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 4, z: 112 },
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 14, z: 112 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 9, z: 115 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 7, z: 117 },
+      { type: ENEMY_TYPES.FROST, x: 4, z: 112 },
+      { type: ENEMY_TYPES.FROST, x: 14, z: 112 },
+      { type: ENEMY_TYPES.FROST, x: 9, z: 115 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 7, z: 117 },
     ],
     { roomId: cocytusWestDockId },
   );
   // 1x goatKnight patrolling the dock
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 7, 107, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 7, 107, {
     roomId: cocytusWestDockId,
     patrol: [
       { x: 7, z: 107 },
@@ -1555,20 +1557,20 @@ export async function buildCircle9(dbPath: string) {
 
   // --- Void Overlook (bounds: 38, 100, 14, 20) → interior x: 39–50, z: 101–118 ---
   // Pre-placed enemies (non-triggered) for playtest coverage
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 40, 102, { roomId: voidOverlookId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 51, 106, { roomId: voidOverlookId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 45, 110, { roomId: voidOverlookId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 39, 114, { roomId: voidOverlookId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 50, 116, { roomId: voidOverlookId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 41, 117, { roomId: voidOverlookId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 40, 102, { roomId: voidOverlookId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 51, 106, { roomId: voidOverlookId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 45, 110, { roomId: voidOverlookId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 39, 114, { roomId: voidOverlookId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 50, 116, { roomId: voidOverlookId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 41, 117, { roomId: voidOverlookId });
   // Ambush waves from the void-facing overlook
   editor.ambush(
     LEVEL_ID,
     { x: 39, z: 101, w: 12, h: 2 },
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 41, z: 104 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 49, z: 104 },
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 45, z: 103 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 41, z: 104 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 49, z: 104 },
+      { type: ENEMY_TYPES.FROST, x: 45, z: 103 },
     ],
     { roomId: voidOverlookId },
   );
@@ -1576,20 +1578,20 @@ export async function buildCircle9(dbPath: string) {
     LEVEL_ID,
     { x: 39, z: 112, w: 12, h: 2 },
     [
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 40, z: 114 },
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 50, z: 114 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 45, z: 116 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 42, z: 117 },
+      { type: ENEMY_TYPES.FROST, x: 40, z: 114 },
+      { type: ENEMY_TYPES.FROST, x: 50, z: 114 },
+      { type: ENEMY_TYPES.FROST, x: 45, z: 116 },
+      { type: ENEMY_TYPES.FROST_ELDER, x: 42, z: 117 },
     ],
     { roomId: voidOverlookId },
   );
   // 1x goatKnight standing at the overlook edge
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 45, 118, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 45, 118, {
     roomId: voidOverlookId,
     facing: Math.PI,
   });
   // 1x fire_goat sniping from the overlook railing
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 50, 108, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 50, 108, {
     roomId: voidOverlookId,
     facing: -Math.PI / 2,
   });
@@ -2015,70 +2017,71 @@ export async function buildCircle9(dbPath: string) {
   // the 15-22 min target. All positions verified within their room bounds.
 
   // Glacial Stairs extra enemies (bounds: 26, 2, 8, 16 → interior x: 27–32, z: 3–16)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 28, 5, { roomId: glacialStairsId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 31, 9, { roomId: glacialStairsId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 28, 14, { roomId: glacialStairsId });
+  // Still the entry area — use frostWhelp for learning escalation
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_WHELP, 28, 5, { roomId: glacialStairsId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_WHELP, 31, 9, { roomId: glacialStairsId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_WHELP, 28, 14, { roomId: glacialStairsId });
 
   // Caina extra enemies (bounds: 22, 22, 16, 14 → interior x: 23–36, z: 23–34)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 24, 24, { roomId: cainaId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 35, 24, { roomId: cainaId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 24, 33, { roomId: cainaId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 35, 33, { roomId: cainaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 24, 24, { roomId: cainaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 35, 24, { roomId: cainaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 24, 33, { roomId: cainaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 35, 33, { roomId: cainaId });
 
   // Antenora extra enemies (bounds: 24, 40, 12, 16 → interior x: 25–34, z: 41–54)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 26, 42, { roomId: antenoraId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 33, 44, { roomId: antenoraId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 26, 50, { roomId: antenoraId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 33, 52, { roomId: antenoraId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 26, 42, { roomId: antenoraId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 33, 44, { roomId: antenoraId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 26, 50, { roomId: antenoraId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 33, 52, { roomId: antenoraId });
 
   // Ptolomea extra enemies (bounds: 23, 60, 14, 10 → interior x: 24–35, z: 61–68)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 25, 62, { roomId: ptolomeaId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 34, 67, { roomId: ptolomeaId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 30, 65, { roomId: ptolomeaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 25, 62, { roomId: ptolomeaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 34, 67, { roomId: ptolomeaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 30, 65, { roomId: ptolomeaId });
 
   // Giudecca extra enemies (bounds: 21, 74, 18, 16 → interior x: 22–37, z: 75–88)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 23, 76, { roomId: giudeccaId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 36, 76, { roomId: giudeccaId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 23, 86, { roomId: giudeccaId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 36, 86, { roomId: giudeccaId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 30, 88, { roomId: giudeccaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 23, 76, { roomId: giudeccaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 36, 76, { roomId: giudeccaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 23, 86, { roomId: giudeccaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 36, 86, { roomId: giudeccaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 30, 88, { roomId: giudeccaId });
 
   // Caina West Annex extra enemies
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 7, 23, { roomId: cainaWestAnnexId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 16, 32, { roomId: cainaWestAnnexId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 11, 29, { roomId: cainaWestAnnexId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 7, 23, { roomId: cainaWestAnnexId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 16, 32, { roomId: cainaWestAnnexId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 11, 29, { roomId: cainaWestAnnexId });
 
   // Frozen Gallery extra enemies
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 40, 45, { roomId: frozenGalleryId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 50, 47, { roomId: frozenGalleryId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 45, 43, { roomId: frozenGalleryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 40, 45, { roomId: frozenGalleryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 50, 47, { roomId: frozenGalleryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 45, 43, { roomId: frozenGalleryId });
 
   // Frozen Passage North extra enemies
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 43, 61, { roomId: frozenPassageNorthId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 49, 65, { roomId: frozenPassageNorthId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 44, 70, { roomId: frozenPassageNorthId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 43, 61, { roomId: frozenPassageNorthId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 49, 65, { roomId: frozenPassageNorthId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 44, 70, { roomId: frozenPassageNorthId });
 
   // Ice Crevasse extra enemies
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 7, 64, { roomId: iceCrevasseId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 13, 67, { roomId: iceCrevasseId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 5, 72, { roomId: iceCrevasseId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 7, 64, { roomId: iceCrevasseId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 13, 67, { roomId: iceCrevasseId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 5, 72, { roomId: iceCrevasseId });
 
   // Betrayer Hall extra enemies
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 44, 79, { roomId: betrayerHallId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 52, 82, { roomId: betrayerHallId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 48, 87, { roomId: betrayerHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 44, 79, { roomId: betrayerHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 52, 82, { roomId: betrayerHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 48, 87, { roomId: betrayerHallId });
 
   // Cocytus West Dock extra enemies
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 6, 103, { roomId: cocytusWestDockId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 13, 108, { roomId: cocytusWestDockId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 9, 113, { roomId: cocytusWestDockId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 4, 117, { roomId: cocytusWestDockId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 6, 103, { roomId: cocytusWestDockId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 13, 108, { roomId: cocytusWestDockId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 9, 113, { roomId: cocytusWestDockId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 4, 117, { roomId: cocytusWestDockId });
 
   // Void Overlook extra enemies
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 41, 103, { roomId: voidOverlookId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 50, 107, { roomId: voidOverlookId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 43, 115, { roomId: voidOverlookId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 51, 111, { roomId: voidOverlookId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 41, 103, { roomId: voidOverlookId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 50, 107, { roomId: voidOverlookId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST_ELDER, 43, 115, { roomId: voidOverlookId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FROST, 51, 111, { roomId: voidOverlookId });
 
   // =========================================================================
   // 9. COMPILE GRID

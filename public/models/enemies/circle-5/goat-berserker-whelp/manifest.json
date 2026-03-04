@@ -1,0 +1,81 @@
+{
+  "id": "goat-berserker-whelp",
+  "name": "Fury Spawn",
+  "type": "character",
+  "seed": 3219150239,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cb700-d907-7013-bc59-ceb1f1b68961",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb700-d907-7013-bc59-ceb1f1b68961"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cb73c-44ba-74a6-8787-b2b24774bce1",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb73c-44ba-74a6-8787-b2b24774bce1"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cb73d-8071-7697-916c-4b3dba2ac40e",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb73d-8071-7697-916c-4b3dba2ac40e"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cb73e-b7e3-7817-bf9c-d526805146e0",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb73e-b7e3-7817-bf9c-d526805146e0"
+      },
+      "artifacts": {}
+    },
+    "animation": {
+      "taskId": "019cb957-7161-7c00-b9d5-4bf76d8a57e6",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb957-7161-7c00-b9d5-4bf76d8a57e6"
+      },
+      "artifacts": {
+        "animation": "animations/Fighting.Dying.Knock_Down_1.glb"
+      }
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 5 (Wrath) — a juvenile fury-demon already in full berserk meltdown. It was damned young — someone who raged first and thought never, who met every frustration with violence. Now it is nothing but rage. Pure, unstrategic, self-defeating rage. It attacks its own arms when there is nothing nearby to attack. It bites itself. Its wounds are self-inflicted as often as battle-given. In combat it is terrifyingly fast but completely unhinged — it might run into walls, change targets mid-strike, or spend its energy thrashing at empty air. The most dangerous thing about it is that it does not feel its own injuries until it is already dead.",
+  "textToImageTask": {
+    "prompt": "A lean frenzied bipedal humanoid goat demon in A-pose, wiry explosive musculature, scorched orange-red fur with patches burned or ripped away, covered in self-inflicted claw marks and bite wounds, small sharp horns cracked from headbutting things, eyes burning pure white-orange with unhinged rage, mouth open in permanent silent scream revealing blackened teeth, clenched fists with broken claws, digitigrade goat legs tensed for explosive sprint, fresh wounds cauterizing from body heat rather than bleeding, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Lean wiry bipedal goat demon, compact athletic build, small cracked horns, digitigrade goat legs, A-pose, standing upright with arms extended horizontally",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Scorched orange-red fur with burn patches and torn sections, fresh self-inflicted claw mark wounds across arms and chest, tiny cauterized cuts glowing orange at the edges, cracked and chipped horns from headbutting, white-orange blazing unhinged eyes, blackened teeth in permanent rage-snarl",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 1.5
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Running.Lean_Forward_Sprint",
+      "DailyActions.Idle.Angry_Ground_Stomp_1",
+      "Fighting.Punching.Punch_Combo",
+      "Fighting.GettingHit.Face_Punch_Reaction_2",
+      "Fighting.Dying.Knock_Down_1"
+    ]
+  }
+}

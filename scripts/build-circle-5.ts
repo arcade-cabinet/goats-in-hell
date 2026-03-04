@@ -39,7 +39,7 @@ export async function buildCircle5(dbPath: string) {
     ambientIntensity: 0.22,
     skyColor: '#0a0000',
     particleEffect: 'embers',
-    enemyTypes: ['fireGoat', 'hellgoat', 'goatKnight'],
+    enemyTypes: ['berserker', 'berserkerWhelp', 'berserkerElder'],
     enemyDensity: 1.4,
     pickupDensity: 1.0,
     texturePalette: {
@@ -217,9 +217,9 @@ export async function buildCircle5(dbPath: string) {
     LEVEL_ID,
     { x: 17, z: 13, w: 14, h: 4 },
     [
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 21, z: 16 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 29, z: 16 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 25, z: 21 },
+      { type: ENEMY_TYPES.BERSERKER, x: 21, z: 16 },
+      { type: ENEMY_TYPES.BERSERKER, x: 29, z: 16 },
+      { type: ENEMY_TYPES.BERSERKER_WHELP, x: 25, z: 21 },
     ],
     { roomId: bloodMarshId },
   );
@@ -227,8 +227,8 @@ export async function buildCircle5(dbPath: string) {
     LEVEL_ID,
     { x: 17, z: 18, w: 14, h: 4 },
     [
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 28, z: 23 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 22, z: 23 },
+      { type: ENEMY_TYPES.BERSERKER, x: 28, z: 23 },
+      { type: ENEMY_TYPES.BERSERKER_WHELP, x: 22, z: 23 },
     ],
     { roomId: bloodMarshId },
   );
@@ -244,8 +244,8 @@ export async function buildCircle5(dbPath: string) {
     LEVEL_ID,
     { x: 23, z: 32, w: 8, h: 2 },
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 32, z: 40 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 23, z: 38 },
+      { type: ENEMY_TYPES.BERSERKER_WHELP, x: 32, z: 40 },
+      { type: ENEMY_TYPES.BERSERKER_WHELP, x: 23, z: 38 },
     ],
     { roomId: ragePitId },
   );
@@ -255,8 +255,8 @@ export async function buildCircle5(dbPath: string) {
     LEVEL_ID,
     { x: 23, z: 36, w: 8, h: 2 },
     [
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 32, z: 32 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 23, z: 33 },
+      { type: ENEMY_TYPES.BERSERKER, x: 32, z: 32 },
+      { type: ENEMY_TYPES.BERSERKER, x: 23, z: 33 },
     ],
     { roomId: ragePitId },
   );
@@ -271,8 +271,8 @@ export async function buildCircle5(dbPath: string) {
     LEVEL_ID,
     { x: 15, z: 47, w: 10, h: 2 },
     [
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 20, z: 50 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 23, z: 49 },
+      { type: ENEMY_TYPES.BERSERKER, x: 20, z: 50 },
+      { type: ENEMY_TYPES.BERSERKER_ELDER, x: 23, z: 49 },
     ],
     { roomId: arsenalId },
   );
@@ -286,20 +286,20 @@ export async function buildCircle5(dbPath: string) {
   editor.setupArenaWaves(LEVEL_ID, berserkerArenaId, { x: 16, z: 57, w: 12, h: 2 }, [
     // Round 1: 3 fireGoats from edges
     [
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 27, z: 62 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 16, z: 62 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 22, z: 57 },
+      { type: ENEMY_TYPES.BERSERKER, x: 27, z: 62 },
+      { type: ENEMY_TYPES.BERSERKER, x: 16, z: 62 },
+      { type: ENEMY_TYPES.BERSERKER, x: 22, z: 57 },
     ],
     // Round 2: 2 goatKnights from N and S
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 22, z: 57 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 22, z: 68 },
+      { type: ENEMY_TYPES.BERSERKER_ELDER, x: 22, z: 57 },
+      { type: ENEMY_TYPES.BERSERKER_ELDER, x: 22, z: 68 },
     ],
     // Round 3: mini-boss hellgoat (center) + 1 fireGoat + 1 goatKnight
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 22, z: 62 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 16, z: 58 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 27, z: 67 },
+      { type: ENEMY_TYPES.BERSERKER_WHELP, x: 22, z: 62 },
+      { type: ENEMY_TYPES.BERSERKER, x: 16, z: 58 },
+      { type: ENEMY_TYPES.BERSERKER_ELDER, x: 27, z: 67 },
     ],
   ]);
 
@@ -311,7 +311,7 @@ export async function buildCircle5(dbPath: string) {
   editor.ambush(
     LEVEL_ID,
     { x: 22, z: 78, w: 4, h: 2 },
-    [{ type: ENEMY_TYPES.HELLGOAT, x: 23, z: 76 }],
+    [{ type: ENEMY_TYPES.BERSERKER_WHELP, x: 23, z: 76 }],
     { roomId: gauntletId },
   );
 
@@ -319,7 +319,7 @@ export async function buildCircle5(dbPath: string) {
   editor.ambush(
     LEVEL_ID,
     { x: 22, z: 82, w: 4, h: 2 },
-    [{ type: ENEMY_TYPES.HELLGOAT, x: 23, z: 78 }],
+    [{ type: ENEMY_TYPES.BERSERKER_WHELP, x: 23, z: 78 }],
     { roomId: gauntletId },
   );
 
@@ -327,7 +327,7 @@ export async function buildCircle5(dbPath: string) {
   editor.ambush(
     LEVEL_ID,
     { x: 22, z: 88, w: 4, h: 2 },
-    [{ type: ENEMY_TYPES.HELLGOAT, x: 23, z: 84 }],
+    [{ type: ENEMY_TYPES.BERSERKER_WHELP, x: 23, z: 84 }],
     { roomId: gauntletId },
   );
 
@@ -335,7 +335,7 @@ export async function buildCircle5(dbPath: string) {
   editor.ambush(
     LEVEL_ID,
     { x: 22, z: 76, w: 4, h: 2 },
-    [{ type: ENEMY_TYPES.FIRE_GOAT, x: 24, z: 80 }],
+    [{ type: ENEMY_TYPES.BERSERKER, x: 24, z: 80 }],
     { roomId: gauntletId },
   );
 
@@ -343,7 +343,7 @@ export async function buildCircle5(dbPath: string) {
   editor.ambush(
     LEVEL_ID,
     { x: 22, z: 86, w: 4, h: 2 },
-    [{ type: ENEMY_TYPES.FIRE_GOAT, x: 24, z: 90 }],
+    [{ type: ENEMY_TYPES.BERSERKER, x: 24, z: 90 }],
     { roomId: gauntletId },
   );
 
@@ -1017,10 +1017,10 @@ export async function buildCircle5(dbPath: string) {
   // --- Gate of Dis (x=19,z=2,w=10,h=6): interior x=[20..28], z=[3..7] ---
   //   South corridor to Blood Marsh exits at z=7, center x=24. Width 2 → x=[24,25].
   //   Keep enemies west (x≤22) or east (x≥27) of corridor mouth.
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 21, 5, { roomId: gateOfDisId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 27, 5, { roomId: gateOfDisId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 21, 4, { roomId: gateOfDisId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 27, 4, { roomId: gateOfDisId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_WHELP, 21, 5, { roomId: gateOfDisId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER, 27, 5, { roomId: gateOfDisId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_WHELP, 21, 4, { roomId: gateOfDisId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER, 27, 4, { roomId: gateOfDisId });
 
   // --- Berserker Arena (x=15,z=56,w=14,h=14): interior x=[16..28], z=[57..69] ---
   //   North corridor from Arsenal enters around x=22-23. East corridor to War Hall at z=63-64.
@@ -1028,67 +1028,71 @@ export async function buildCircle5(dbPath: string) {
   //   Explosive barrels: (17,58),(27,58),(20,58),(17,62),(27,62),(17,66),(27,66),(24,66)
   //   Chain curtains: (19,59),(25,59),(19,65),(25,65),(22,59),(22,65)
   //   Safe positions: center band z=60-64, clear of barrels and corridor mouths
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 18, 61, { roomId: berserkerArenaId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 26, 61, { roomId: berserkerArenaId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 21, 64, { roomId: berserkerArenaId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 23, 60, { roomId: berserkerArenaId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 18, 64, { roomId: berserkerArenaId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 26, 64, { roomId: berserkerArenaId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 21, 67, { roomId: berserkerArenaId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 23, 67, { roomId: berserkerArenaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER, 18, 61, { roomId: berserkerArenaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER, 26, 61, { roomId: berserkerArenaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_WHELP, 21, 64, { roomId: berserkerArenaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_WHELP, 23, 60, { roomId: berserkerArenaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_ELDER, 18, 64, { roomId: berserkerArenaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_ELDER, 26, 64, { roomId: berserkerArenaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER, 21, 67, { roomId: berserkerArenaId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_WHELP, 23, 67, { roomId: berserkerArenaId });
 
   // --- Forge Pit (x=34,z=30,w=12,h=12): interior x=[35..45], z=[31..41] ---
   //   Props: rage-furnace (36,32),(43,32),(36,40),(43,40); barrels (35,34),(44,34),(35,38),(44,38);
   //          iron-grate (39,36); chain-curtain (39,31),(39,40); war-banner (34,36)
   //   Safe: center x=38-44, z=33-39
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 41, 34, { roomId: forgePitId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 37, 38, { roomId: forgePitId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 44, 37, { roomId: forgePitId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 38, 34, { roomId: forgePitId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 42, 39, { roomId: forgePitId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER, 41, 34, { roomId: forgePitId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER, 37, 38, { roomId: forgePitId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_WHELP, 44, 37, { roomId: forgePitId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_ELDER, 38, 34, { roomId: forgePitId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_WHELP, 42, 39, { roomId: forgePitId });
 
   // --- Punishment Corridor (x=34,z=46,w=10,h=10): interior x=[35..43], z=[47..55] ---
   //   Props: punching-bag (36,48),(42,52); chain-curtain (38,50); smashed-barrier (39,54)
   //   Safe: x=37-41, z=48-53 with 2+ clearance from props
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 40, 48, { roomId: punishmentCorridorId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 36, 52, { roomId: punishmentCorridorId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 41, 51, { roomId: punishmentCorridorId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 37, 54, { roomId: punishmentCorridorId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER, 40, 48, { roomId: punishmentCorridorId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_WHELP, 36, 52, {
+    roomId: punishmentCorridorId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_ELDER, 41, 51, {
+    roomId: punishmentCorridorId,
+  });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER, 37, 54, { roomId: punishmentCorridorId });
 
   // --- War Hall (x=33,z=56,w=12,h=14): interior x=[34..44], z=[57..69] ---
   //   Props: rusted-cage (35,59),(43,59),(35,67),(43,67); barrels (36,58),(43,58),(36,67),(43,67);
   //          chain-curtain (37,62),(41,62); war-banner (33,63),(44,63)
   //   West entry corridor from BerserkerArena at z=63-64. North entry from PunCorridor.
   //   Safe positions avoid props and corridor mouths at z=63-64 and x=33
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 34, 58, { roomId: warHallId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 44, 58, { roomId: warHallId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 35, 62, { roomId: warHallId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 43, 62, { roomId: warHallId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 37, 65, { roomId: warHallId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 41, 65, { roomId: warHallId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 39, 58, { roomId: warHallId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 37, 68, { roomId: warHallId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 41, 68, { roomId: warHallId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 39, 60, { roomId: warHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER, 34, 58, { roomId: warHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER, 44, 58, { roomId: warHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_WHELP, 35, 62, { roomId: warHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_WHELP, 43, 62, { roomId: warHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_ELDER, 37, 65, { roomId: warHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_ELDER, 41, 65, { roomId: warHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER, 39, 58, { roomId: warHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_WHELP, 37, 68, { roomId: warHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER, 41, 68, { roomId: warHallId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_ELDER, 39, 60, { roomId: warHallId });
 
   // --- Ember Passage (x=32,z=70,w=10,h=8): interior x=[33..41], z=[71..77] ---
   //   Props: smashed-barrier (35,73), corroded-pipe-pillar (33,71),(40,75),
   //          chain-curtain (37,73), anger-graffiti-slab (33,76)
   //   Safe positions: (40,72),(34,76),(38,76),(36,72) — 2+ cells from all props
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 40, 72, { roomId: emberPassageId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 34, 76, { roomId: emberPassageId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 38, 76, { roomId: emberPassageId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 36, 72, { roomId: emberPassageId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER, 40, 72, { roomId: emberPassageId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_WHELP, 34, 76, { roomId: emberPassageId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_ELDER, 38, 76, { roomId: emberPassageId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER, 36, 72, { roomId: emberPassageId });
 
   // --- Lava Shelf (x=30,z=78,w=12,h=12): interior x=[31..41], z=[79..89] ---
   //   Props: lava-altar (33,80),(39,82); chain-curtain (36,80),(36,84); iron-grate (34,82);
   //          caged-lantern (31,81),(41,81)
   //   Safe: south quadrant (z=85-88) and east quadrant (x=38-41) clear of props
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 32, 86, { roomId: lavaShelfId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 40, 84, { roomId: lavaShelfId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 38, 87, { roomId: lavaShelfId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 32, 83, { roomId: lavaShelfId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 40, 88, { roomId: lavaShelfId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER, 32, 86, { roomId: lavaShelfId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_WHELP, 40, 84, { roomId: lavaShelfId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER, 38, 87, { roomId: lavaShelfId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_WHELP, 32, 83, { roomId: lavaShelfId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_ELDER, 40, 88, { roomId: lavaShelfId });
 
   // --- Gauntlet (x=21,z=74,w=6,h=20): interior x=[22..26], z=[75..93] ---
   //   Only 4 cells wide with ambush triggers every ~4 cells.
@@ -1097,18 +1101,18 @@ export async function buildCircle5(dbPath: string) {
   // --- Furia's Colosseum (x=16,z=98,w=16,h=16): interior x=[17..31], z=[99..113] ---
   //   Boss at (24,106). Corridor from Gauntlet at z=98, x=22-24 (width 3).
   //   Large open room — all quadrant positions safe.
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 18, 101, { roomId: colosseumId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 30, 101, { roomId: colosseumId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 18, 110, { roomId: colosseumId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 30, 110, { roomId: colosseumId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 19, 105, { roomId: colosseumId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 29, 105, { roomId: colosseumId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 20, 112, { roomId: colosseumId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 28, 112, { roomId: colosseumId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 18, 104, { roomId: colosseumId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 30, 104, { roomId: colosseumId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 22, 102, { roomId: colosseumId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 26, 108, { roomId: colosseumId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER, 18, 101, { roomId: colosseumId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER, 30, 101, { roomId: colosseumId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_WHELP, 18, 110, { roomId: colosseumId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_WHELP, 30, 110, { roomId: colosseumId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_ELDER, 19, 105, { roomId: colosseumId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_ELDER, 29, 105, { roomId: colosseumId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER, 20, 112, { roomId: colosseumId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER, 28, 112, { roomId: colosseumId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_WHELP, 18, 104, { roomId: colosseumId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_WHELP, 30, 104, { roomId: colosseumId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_ELDER, 22, 102, { roomId: colosseumId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BERSERKER_ELDER, 26, 108, { roomId: colosseumId });
 
   // ── New Enemies ───────────────────────────────────────────────────────────
 
@@ -1117,23 +1121,23 @@ export async function buildCircle5(dbPath: string) {
   editor.setupArenaWaves(LEVEL_ID, forgePitId, { x: 35, z: 31, w: 8, h: 2 }, [
     // Wave 1: 4 fireGoats from corners (fast ranged)
     [
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 35, z: 35 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 44, z: 35 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 35, z: 39 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 44, z: 39 },
+      { type: ENEMY_TYPES.BERSERKER, x: 35, z: 35 },
+      { type: ENEMY_TYPES.BERSERKER, x: 44, z: 35 },
+      { type: ENEMY_TYPES.BERSERKER, x: 35, z: 39 },
+      { type: ENEMY_TYPES.BERSERKER, x: 44, z: 39 },
     ],
     // Wave 2: 2 goatKnights charging from north + 2 fireGoat flanking
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 37, z: 32 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 42, z: 32 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 35, z: 38 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 44, z: 38 },
+      { type: ENEMY_TYPES.BERSERKER_ELDER, x: 37, z: 32 },
+      { type: ENEMY_TYPES.BERSERKER_ELDER, x: 42, z: 32 },
+      { type: ENEMY_TYPES.BERSERKER, x: 35, z: 38 },
+      { type: ENEMY_TYPES.BERSERKER, x: 44, z: 38 },
     ],
     // Wave 3: 1 hellgoat (mini) + 2 goatKnight berserkers
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 39, z: 36 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 35, z: 32 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 44, z: 40 },
+      { type: ENEMY_TYPES.BERSERKER_WHELP, x: 39, z: 36 },
+      { type: ENEMY_TYPES.BERSERKER_ELDER, x: 35, z: 32 },
+      { type: ENEMY_TYPES.BERSERKER_ELDER, x: 44, z: 40 },
     ],
   ]);
 
@@ -1143,8 +1147,8 @@ export async function buildCircle5(dbPath: string) {
     LEVEL_ID,
     { x: 35, z: 49, w: 8, h: 2 },
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 36, z: 47 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 42, z: 48 },
+      { type: ENEMY_TYPES.BERSERKER_WHELP, x: 36, z: 47 },
+      { type: ENEMY_TYPES.BERSERKER_WHELP, x: 42, z: 48 },
     ],
     { roomId: punishmentCorridorId },
   );
@@ -1152,8 +1156,8 @@ export async function buildCircle5(dbPath: string) {
     LEVEL_ID,
     { x: 35, z: 52, w: 8, h: 2 },
     [
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 38, z: 54 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 40, z: 47 },
+      { type: ENEMY_TYPES.BERSERKER, x: 38, z: 54 },
+      { type: ENEMY_TYPES.BERSERKER_ELDER, x: 40, z: 47 },
     ],
     { roomId: punishmentCorridorId },
   );
@@ -1161,8 +1165,8 @@ export async function buildCircle5(dbPath: string) {
     LEVEL_ID,
     { x: 35, z: 54, w: 8, h: 2 },
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 36, z: 54 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 42, z: 54 },
+      { type: ENEMY_TYPES.BERSERKER_WHELP, x: 36, z: 54 },
+      { type: ENEMY_TYPES.BERSERKER, x: 42, z: 54 },
     ],
     { roomId: punishmentCorridorId },
   );
@@ -1172,24 +1176,24 @@ export async function buildCircle5(dbPath: string) {
   editor.setupArenaWaves(LEVEL_ID, warHallId, { x: 34, z: 57, w: 10, h: 2 }, [
     // Wave 1: 3 hellgoats from S wall + 2 fireGoat from corners
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 36, z: 68 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 39, z: 68 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 43, z: 68 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 34, z: 62 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 44, z: 62 },
+      { type: ENEMY_TYPES.BERSERKER_WHELP, x: 36, z: 68 },
+      { type: ENEMY_TYPES.BERSERKER_WHELP, x: 39, z: 68 },
+      { type: ENEMY_TYPES.BERSERKER_WHELP, x: 43, z: 68 },
+      { type: ENEMY_TYPES.BERSERKER, x: 34, z: 62 },
+      { type: ENEMY_TYPES.BERSERKER, x: 44, z: 62 },
     ],
     // Wave 2: 3 goatKnights spread
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 35, z: 58 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 39, z: 64 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 44, z: 58 },
+      { type: ENEMY_TYPES.BERSERKER_ELDER, x: 35, z: 58 },
+      { type: ENEMY_TYPES.BERSERKER_ELDER, x: 39, z: 64 },
+      { type: ENEMY_TYPES.BERSERKER_ELDER, x: 44, z: 58 },
     ],
     // Wave 3: Berserker hellgoat + 2 fireGoat + 1 goatKnight
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 39, z: 63 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 34, z: 60 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 44, z: 60 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 39, z: 68 },
+      { type: ENEMY_TYPES.BERSERKER_WHELP, x: 39, z: 63 },
+      { type: ENEMY_TYPES.BERSERKER, x: 34, z: 60 },
+      { type: ENEMY_TYPES.BERSERKER, x: 44, z: 60 },
+      { type: ENEMY_TYPES.BERSERKER_ELDER, x: 39, z: 68 },
     ],
   ]);
 
@@ -1198,8 +1202,8 @@ export async function buildCircle5(dbPath: string) {
     LEVEL_ID,
     { x: 33, z: 72, w: 8, h: 2 },
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 34, z: 72 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 40, z: 75 },
+      { type: ENEMY_TYPES.BERSERKER_WHELP, x: 34, z: 72 },
+      { type: ENEMY_TYPES.BERSERKER, x: 40, z: 75 },
     ],
     { roomId: emberPassageId },
   );
@@ -1207,8 +1211,8 @@ export async function buildCircle5(dbPath: string) {
     LEVEL_ID,
     { x: 33, z: 75, w: 8, h: 2 },
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 38, z: 76 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 34, z: 75 },
+      { type: ENEMY_TYPES.BERSERKER_WHELP, x: 38, z: 76 },
+      { type: ENEMY_TYPES.BERSERKER_ELDER, x: 34, z: 75 },
     ],
     { roomId: emberPassageId },
   );
@@ -1217,9 +1221,9 @@ export async function buildCircle5(dbPath: string) {
     LEVEL_ID,
     { x: 33, z: 71, w: 8, h: 2 },
     [
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 36, z: 72 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 39, z: 71 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 34, z: 74 },
+      { type: ENEMY_TYPES.BERSERKER, x: 36, z: 72 },
+      { type: ENEMY_TYPES.BERSERKER_ELDER, x: 39, z: 71 },
+      { type: ENEMY_TYPES.BERSERKER_WHELP, x: 34, z: 74 },
     ],
     { roomId: emberPassageId },
   );
@@ -1238,9 +1242,9 @@ export async function buildCircle5(dbPath: string) {
     LEVEL_ID,
     { x: 1, z: 57, w: 10, h: 2 },
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 6, z: 62 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 3, z: 60 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 10, z: 66 },
+      { type: ENEMY_TYPES.BERSERKER_ELDER, x: 6, z: 62 },
+      { type: ENEMY_TYPES.BERSERKER, x: 3, z: 60 },
+      { type: ENEMY_TYPES.BERSERKER, x: 10, z: 66 },
     ],
     { roomId: bloodVaultId },
   );

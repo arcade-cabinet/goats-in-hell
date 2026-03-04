@@ -75,11 +75,11 @@
       0, 0, 0, 0, 0, 1, 1, 1, 1
     ],
     [
-      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 1, 1, 1, 0,
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 1, 1, 1, 1
     ],
     [
-      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0,
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 1, 1, 1, 1
     ],
     [
@@ -88,90 +88,90 @@
     ],
     [
       1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 1, 0, 0, 1, 1, 1, 1, 1
     ],
     [
       1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+      1, 1, 0, 0, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 1, 1
+    ],
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 1, 1, 1, 0, 0, 0,
+      0, 9, 0, 0, 0, 0, 0, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 1, 1, 1, 0, 0, 0,
+      0, 0, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 1, 1, 1, 0, 0, 0,
+      0, 0, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0,
+      0, 0, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0,
+      0, 0, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0,
+      0, 0, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0,
+      0, 0, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+      0, 0, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+      0, 0, 0, 0, 0, 1, 1, 1, 1
+    ],
+    [
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
@@ -236,582 +236,1136 @@
     {
       "type": "il-vecchio",
       "x": 40,
-      "z": 96
+      "z": 96,
+      "spawnCategory": "boss"
     },
     {
       "type": "hellgoat",
       "x": 34,
-      "z": 30
+      "z": 30,
+      "spawnCategory": "enemy"
     },
     {
       "type": "hellgoat",
       "x": 46,
-      "z": 30
+      "z": 30,
+      "spawnCategory": "enemy"
     },
     {
       "type": "hellgoat",
       "x": 40,
-      "z": 40
+      "z": 40,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 62,
+      "z": 48,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 72,
+      "z": 48,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 72,
+      "z": 60,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 8,
+      "z": 48,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 14,
+      "z": 54,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 64,
+      "z": 72,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 58,
+      "z": 76,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 38,
+      "z": 8,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 44,
+      "z": 12,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 36,
+      "z": 56,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 44,
+      "z": 58,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 40,
+      "z": 70,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 10,
+      "z": 68,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 22,
+      "z": 68,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 16,
+      "z": 80,
+      "spawnCategory": "enemy"
     },
     {
       "type": "ammo",
       "x": 40,
-      "z": 12
+      "z": 12,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 40,
-      "z": 34
+      "z": 34,
+      "spawnCategory": "pickup"
     },
     {
       "type": "weapon_shotgun",
       "x": 66,
-      "z": 34
+      "z": 34,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 68,
-      "z": 32
+      "z": 32,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 8,
-      "z": 36
+      "z": 36,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 16,
-      "z": 36
+      "z": 36,
+      "spawnCategory": "pickup"
     },
     {
       "type": "health",
       "x": 12,
-      "z": 36
+      "z": 36,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 40,
-      "z": 54
+      "z": 54,
+      "spawnCategory": "pickup"
     },
     {
       "type": "health",
       "x": 40,
-      "z": 72
+      "z": 72,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 48,
-      "z": 86
+      "z": 86,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 30,
-      "z": 104
+      "z": 104,
+      "spawnCategory": "pickup"
     },
     {
       "type": "health",
       "x": 30,
-      "z": 86
+      "z": 86,
+      "spawnCategory": "pickup"
     },
     {
       "type": "health",
       "x": 48,
-      "z": 104
+      "z": 104,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 66,
+      "z": 54,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 58,
+      "z": 46,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "health",
+      "x": 66,
+      "z": 60,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 12,
+      "z": 52,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 14,
+      "z": 66,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 14,
+      "z": 80,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "health",
+      "x": 16,
+      "z": 74,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "weapon_cannon",
+      "x": 64,
+      "z": 72,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 60,
+      "z": 76,
+      "spawnCategory": "pickup"
     },
     {
       "type": "limbo-crumbling-arch",
       "x": 32,
-      "z": 4
+      "z": 4,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-inscription-tablet",
       "x": 40,
-      "z": 4
+      "z": 4,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-torch-bracket",
       "x": 32,
-      "z": 6
+      "z": 6,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-torch-bracket",
       "x": 46,
-      "z": 6
+      "z": 6,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-vase-rubble",
       "x": 36,
-      "z": 8
+      "z": 8,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-vase-rubble",
       "x": 44,
-      "z": 8
+      "z": 8,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-stone-bench",
       "x": 34,
-      "z": 12
+      "z": 12,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-cobweb-cluster",
       "x": 32,
-      "z": 4
+      "z": 4,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-cobweb-cluster",
       "x": 46,
-      "z": 4
+      "z": 4,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-cracked-floor-slab",
       "x": 38,
-      "z": 10
+      "z": 10,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-rubble-scatter",
       "x": 34,
-      "z": 6
+      "z": 6,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-rubble-scatter",
       "x": 46,
-      "z": 10
+      "z": 10,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-ancient-pillar",
       "x": 32,
-      "z": 28
+      "z": 28,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-ancient-pillar",
       "x": 46,
-      "z": 28
+      "z": 28,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-iron-gate",
       "x": 28,
-      "z": 42
+      "z": 42,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-crumbling-arch",
       "x": 38,
-      "z": 42
+      "z": 42,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-torch-bracket",
       "x": 28,
-      "z": 26
+      "z": 26,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-torch-bracket",
       "x": 50,
-      "z": 26
+      "z": 26,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-cage",
       "x": 34,
-      "z": 32
+      "z": 32,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-cage",
       "x": 42,
-      "z": 36
+      "z": 36,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-vase-rubble",
       "x": 30,
-      "z": 30
+      "z": 30,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-vase-rubble",
       "x": 40,
-      "z": 34
+      "z": 34,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-vase-rubble",
       "x": 48,
-      "z": 38
+      "z": 38,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-fallen-column",
       "x": 44,
-      "z": 30
+      "z": 30,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-moss-growth",
       "x": 28,
-      "z": 36
+      "z": 36,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-bone-pile",
       "x": 36,
-      "z": 40
+      "z": 40,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-tombstone",
       "x": 32,
-      "z": 38
+      "z": 38,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-tombstone",
       "x": 48,
-      "z": 34
+      "z": 34,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-cobweb-cluster",
       "x": 50,
-      "z": 36
+      "z": 36,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-crumbling-arch",
       "x": 60,
-      "z": 28
+      "z": 28,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-torch-bracket",
       "x": 62,
-      "z": 30
+      "z": 30,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-stone-lectern",
       "x": 66,
-      "z": 32
+      "z": 32,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-moss-growth",
       "x": 60,
-      "z": 32
+      "z": 32,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-moss-growth",
       "x": 68,
-      "z": 36
+      "z": 36,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-sarcophagus",
       "x": 64,
-      "z": 36
+      "z": 36,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-cobweb-cluster",
       "x": 70,
-      "z": 28
+      "z": 28,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-skull-pile",
       "x": 66,
-      "z": 36
+      "z": 36,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-cobweb-cluster",
       "x": 60,
-      "z": 38
+      "z": 38,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-crumbling-arch",
       "x": 4,
-      "z": 28
+      "z": 28,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-chain-cluster",
       "x": 8,
-      "z": 30
+      "z": 30,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-chain-cluster",
       "x": 14,
-      "z": 34
+      "z": 34,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-chain-cluster",
       "x": 10,
-      "z": 38
+      "z": 38,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-bone-pile",
       "x": 6,
-      "z": 32
+      "z": 32,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-bone-pile",
       "x": 12,
-      "z": 36
+      "z": 36,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-bone-pile",
       "x": 16,
-      "z": 40
+      "z": 40,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-bone-pile",
       "x": 10,
-      "z": 34
+      "z": 34,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-torch-bracket",
       "x": 4,
-      "z": 30
+      "z": 30,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-tombstone",
       "x": 18,
-      "z": 30
+      "z": 30,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-tombstone",
       "x": 18,
-      "z": 38
+      "z": 38,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-broken-altar",
       "x": 10,
-      "z": 42
+      "z": 42,
+      "spawnCategory": "prop"
     },
     {
       "type": "fog-lantern",
       "x": 14,
-      "z": 28
+      "z": 28,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-spike-cluster",
       "x": 6,
-      "z": 40
+      "z": 40,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-spike-cluster",
       "x": 16,
-      "z": 32
+      "z": 32,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-skull-pile",
       "x": 14,
-      "z": 38
+      "z": 38,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-ancient-pillar",
       "x": 34,
-      "z": 56
+      "z": 56,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-ancient-pillar",
       "x": 40,
-      "z": 56
+      "z": 56,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-ancient-pillar",
       "x": 46,
-      "z": 56
+      "z": 56,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-ancient-pillar",
       "x": 34,
-      "z": 66
+      "z": 66,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-ancient-pillar",
       "x": 40,
-      "z": 66
+      "z": 66,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-ancient-pillar",
       "x": 46,
-      "z": 66
+      "z": 66,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-crumbling-arch",
       "x": 38,
-      "z": 74
+      "z": 74,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-torch-bracket",
       "x": 30,
-      "z": 54
+      "z": 54,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-torch-bracket",
       "x": 48,
-      "z": 54
+      "z": 54,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-torch-bracket",
       "x": 30,
-      "z": 72
+      "z": 72,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-torch-bracket",
       "x": 48,
-      "z": 72
+      "z": 72,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-banner-tattered",
       "x": 30,
-      "z": 60
+      "z": 60,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-banner-tattered",
       "x": 48,
-      "z": 60
+      "z": 60,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-cracked-floor-slab",
       "x": 38,
-      "z": 62
+      "z": 62,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-vase-rubble",
       "x": 32,
-      "z": 58
+      "z": 58,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-vase-rubble",
       "x": 46,
-      "z": 70
+      "z": 70,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-stone-bench",
       "x": 48,
-      "z": 56
+      "z": 56,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-broken-pillar",
       "x": 36,
-      "z": 60
+      "z": 60,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-rubble-scatter",
       "x": 40,
-      "z": 62
+      "z": 62,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-rubble-scatter",
       "x": 44,
-      "z": 68
+      "z": 68,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-crumbling-arch",
       "x": 38,
-      "z": 84
+      "z": 84,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-ancient-pillar",
       "x": 30,
-      "z": 88
+      "z": 88,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-ancient-pillar",
       "x": 48,
-      "z": 88
+      "z": 88,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-ancient-pillar",
       "x": 30,
-      "z": 102
+      "z": 102,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-ancient-pillar",
       "x": 48,
-      "z": 102
+      "z": 102,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-torch-bracket",
       "x": 30,
-      "z": 86
+      "z": 86,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-torch-bracket",
       "x": 48,
-      "z": 86
+      "z": 86,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-torch-bracket",
       "x": 38,
-      "z": 104
+      "z": 104,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-banner-tattered",
       "x": 32,
-      "z": 86
+      "z": 86,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-banner-tattered",
       "x": 46,
-      "z": 86
+      "z": 86,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-sarcophagus",
       "x": 32,
-      "z": 100
+      "z": 100,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-sarcophagus",
       "x": 46,
-      "z": 100
+      "z": 100,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-broken-altar",
       "x": 40,
-      "z": 96
+      "z": 96,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-tombstone",
       "x": 34,
-      "z": 104
+      "z": 104,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-tombstone",
       "x": 44,
-      "z": 104
+      "z": 104,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-dried-fountain",
       "x": 40,
-      "z": 88
+      "z": 88,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-bone-pile",
       "x": 50,
-      "z": 104
+      "z": 104,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-wall-sconce",
       "x": 28,
-      "z": 94
+      "z": 94,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-wall-sconce",
       "x": 50,
-      "z": 94
+      "z": 94,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-inscription-tablet",
       "x": 32,
-      "z": 84
+      "z": 84,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-skull-pile",
       "x": 28,
-      "z": 100
+      "z": 100,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-skull-pile",
       "x": 50,
-      "z": 100
+      "z": 100,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-ritual-circle",
       "x": 40,
-      "z": 94
+      "z": 94,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-rubble-scatter",
       "x": 34,
-      "z": 90
+      "z": 90,
+      "spawnCategory": "prop"
     },
     {
       "type": "limbo-rubble-scatter",
       "x": 44,
-      "z": 90
+      "z": 90,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-ancient-pillar",
+      "x": 58,
+      "z": 46,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-ancient-pillar",
+      "x": 58,
+      "z": 60,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-stone-lectern",
+      "x": 66,
+      "z": 46,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-torch-bracket",
+      "x": 74,
+      "z": 48,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-torch-bracket",
+      "x": 74,
+      "z": 60,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-tombstone",
+      "x": 62,
+      "z": 52,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-tombstone",
+      "x": 70,
+      "z": 56,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-tombstone",
+      "x": 60,
+      "z": 62,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-bone-pile",
+      "x": 70,
+      "z": 46,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-bone-pile",
+      "x": 56,
+      "z": 58,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-fallen-column",
+      "x": 64,
+      "z": 54,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-cobweb-cluster",
+      "x": 74,
+      "z": 44,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-chain-cluster",
+      "x": 6,
+      "z": 46,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-chain-cluster",
+      "x": 14,
+      "z": 52,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-chain-cluster",
+      "x": 8,
+      "z": 56,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-bone-pile",
+      "x": 4,
+      "z": 48,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-bone-pile",
+      "x": 16,
+      "z": 54,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-bone-pile",
+      "x": 10,
+      "z": 58,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-torch-bracket",
+      "x": 4,
+      "z": 50,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-cobweb-cluster",
+      "x": 18,
+      "z": 44,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-cobweb-cluster",
+      "x": 18,
+      "z": 58,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-crumbling-arch",
+      "x": 10,
+      "z": 58,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-ancient-pillar",
+      "x": 8,
+      "z": 68,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-ancient-pillar",
+      "x": 20,
+      "z": 68,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-ancient-pillar",
+      "x": 8,
+      "z": 78,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-ancient-pillar",
+      "x": 20,
+      "z": 78,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-broken-pillar",
+      "x": 14,
+      "z": 72,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-broken-pillar",
+      "x": 24,
+      "z": 80,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-torch-bracket",
+      "x": 4,
+      "z": 66,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-torch-bracket",
+      "x": 26,
+      "z": 66,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-torch-bracket",
+      "x": 4,
+      "z": 82,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-torch-bracket",
+      "x": 26,
+      "z": 82,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-banner-tattered",
+      "x": 14,
+      "z": 64,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-banner-tattered",
+      "x": 14,
+      "z": 82,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-bone-pile",
+      "x": 6,
+      "z": 74,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-bone-pile",
+      "x": 22,
+      "z": 74,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-cracked-floor-slab",
+      "x": 16,
+      "z": 74,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-broken-altar",
+      "x": 14,
+      "z": 82,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-sarcophagus",
+      "x": 56,
+      "z": 68,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-sarcophagus",
+      "x": 68,
+      "z": 68,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-stone-lectern",
+      "x": 64,
+      "z": 66,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-moss-growth",
+      "x": 56,
+      "z": 74,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-moss-growth",
+      "x": 70,
+      "z": 76,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-moss-growth",
+      "x": 62,
+      "z": 78,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-torch-bracket",
+      "x": 56,
+      "z": 70,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-cobweb-cluster",
+      "x": 56,
+      "z": 64,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-cobweb-cluster",
+      "x": 70,
+      "z": 78,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-skull-pile",
+      "x": 58,
+      "z": 72,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "limbo-skull-pile",
+      "x": 68,
+      "z": 72,
+      "spawnCategory": "prop"
     }
   ],
   "theme": {
@@ -824,9 +1378,27 @@
     "pickupDensity": 0.5,
     "ambientColor": "#2233aa"
   },
+  "requiredTextureKeys": [
+    "floor-color",
+    "floor-normal",
+    "floor-roughness",
+    "ceiling-color",
+    "ceiling-normal",
+    "ceiling-roughness",
+    "door-color",
+    "door-normal",
+    "door-roughness",
+    "door-metalness",
+    "limbo-color",
+    "limbo-normal",
+    "limbo-roughness",
+    "stone-color",
+    "stone-normal",
+    "stone-roughness"
+  ],
   "envZones": [
     {
-      "id": "7764d5c7-043f-4abf-94db-eb4894983025",
+      "id": "923ff2e1-0204-44f6-9a00-2f86a462096a",
       "envType": "fog",
       "x": 0,
       "z": 0,
@@ -839,7 +1411,7 @@
       "timerOff": 0
     },
     {
-      "id": "9a68add8-fde0-486c-8f48-d2388dd9477a",
+      "id": "5e63dfa3-c834-42ba-8f13-ff3bf2593dd2",
       "envType": "wind",
       "x": 4,
       "z": 28,
@@ -850,11 +1422,37 @@
       "dirZ": -1,
       "timerOn": 0,
       "timerOff": 0
+    },
+    {
+      "id": "3191e5d5-001d-4b5a-af34-eeba309c053a",
+      "envType": "fog",
+      "x": 4,
+      "z": 64,
+      "w": 24,
+      "h": 20,
+      "intensity": 1,
+      "dirX": 0,
+      "dirZ": 0,
+      "timerOn": 0,
+      "timerOff": 0
+    },
+    {
+      "id": "01f97f4e-f117-4830-998a-9672c3b3dc48",
+      "envType": "fog",
+      "x": 56,
+      "z": 64,
+      "w": 16,
+      "h": 16,
+      "intensity": 1.2,
+      "dirX": 0,
+      "dirZ": 0,
+      "timerOn": 0,
+      "timerOff": 0
     }
   ],
   "decals": [
     {
-      "id": "85c5de60-76f2-4203-b188-e6e4d7d3e11d",
+      "id": "d19cf466-d384-4558-8804-567377f2add2",
       "decalType": "water-stain",
       "x": 32,
       "z": 8,
@@ -865,7 +1463,7 @@
       "surface": "wall"
     },
     {
-      "id": "108488d7-8810-49b5-9569-ebcf7e94f9f1",
+      "id": "12cf3142-a69f-4582-bdfe-a043d473b8d3",
       "decalType": "water-stain",
       "x": 46,
       "z": 10,
@@ -876,7 +1474,7 @@
       "surface": "wall"
     },
     {
-      "id": "51b37a80-551d-4ec8-bc53-c3b7e2a5ece2",
+      "id": "dfbd3742-134d-4f50-9927-a08f07dd8771",
       "decalType": "water-stain",
       "x": 28,
       "z": 30,
@@ -887,7 +1485,7 @@
       "surface": "wall"
     },
     {
-      "id": "ea71aa7b-ae32-41db-b460-1b713525ced0",
+      "id": "d3af3490-6cc0-4378-84e9-c133ab61ef62",
       "decalType": "water-stain",
       "x": 50,
       "z": 34,
@@ -898,7 +1496,7 @@
       "surface": "wall"
     },
     {
-      "id": "2136f5da-4d6a-499c-abb6-e22720efcdbd",
+      "id": "06d0d260-d7b4-48d6-a46e-6537329c2f21",
       "decalType": "water-stain",
       "x": 36,
       "z": 42,
@@ -909,7 +1507,7 @@
       "surface": "wall"
     },
     {
-      "id": "99211ff7-0651-40a3-90af-3aace0acacf0",
+      "id": "c6ffdf23-12ea-4424-ada7-33247c104873",
       "decalType": "water-stain",
       "x": 60,
       "z": 34,
@@ -920,7 +1518,7 @@
       "surface": "wall"
     },
     {
-      "id": "ed3d2fd9-e3a1-4f0f-b635-7aa1ce2a9817",
+      "id": "c774f3f8-366c-45c3-a69f-a74a313445b7",
       "decalType": "water-stain",
       "x": 70,
       "z": 30,
@@ -931,7 +1529,7 @@
       "surface": "wall"
     },
     {
-      "id": "dfa422db-2739-4e0d-940b-53df9361296b",
+      "id": "7ee76ae2-86f9-4aa4-a8e8-afc3a70c5573",
       "decalType": "water-stain",
       "x": 4,
       "z": 34,
@@ -942,7 +1540,7 @@
       "surface": "wall"
     },
     {
-      "id": "6fcc44df-8e1d-4d67-b07b-de65df3fccb1",
+      "id": "12a35201-0c0f-4d30-9bcf-07dc09e4bcd0",
       "decalType": "water-stain",
       "x": 18,
       "z": 32,
@@ -953,7 +1551,7 @@
       "surface": "wall"
     },
     {
-      "id": "406d1471-03fb-4b64-89e2-ce6dce7aff0f",
+      "id": "a83ce6c2-c531-4948-b831-4d0ada7dbb93",
       "decalType": "water-stain",
       "x": 10,
       "z": 42,
@@ -964,7 +1562,7 @@
       "surface": "floor"
     },
     {
-      "id": "899b4afb-37dc-4b3b-8837-02275dd8c711",
+      "id": "f0f47aac-4d84-49dc-a3db-45b64e9cfb10",
       "decalType": "water-stain",
       "x": 30,
       "z": 58,
@@ -975,7 +1573,7 @@
       "surface": "wall"
     },
     {
-      "id": "7cb80039-4af1-4434-81e2-a386f8214f24",
+      "id": "6b09ad74-06d3-420e-ade1-b5906fbcdee6",
       "decalType": "water-stain",
       "x": 48,
       "z": 68,
@@ -986,7 +1584,7 @@
       "surface": "wall"
     },
     {
-      "id": "2fa974c9-b535-4175-a037-30711a39c65b",
+      "id": "cbf2ac66-00d9-416a-91aa-1065e153d452",
       "decalType": "water-stain",
       "x": 28,
       "z": 92,
@@ -997,7 +1595,7 @@
       "surface": "wall"
     },
     {
-      "id": "5fb1e65a-f907-4a25-84ae-78c5172fec53",
+      "id": "1c88d238-f92b-4ab2-9eaf-8128282933ff",
       "decalType": "water-stain",
       "x": 50,
       "z": 98,
@@ -1008,7 +1606,7 @@
       "surface": "wall"
     },
     {
-      "id": "67391b5d-6fc1-490a-8414-df9ddd91b1e1",
+      "id": "98f94363-f20e-4b6c-a1ce-90fdb3b84c00",
       "decalType": "water-stain",
       "x": 40,
       "z": 106,
@@ -1017,11 +1615,132 @@
       "rotation": 0,
       "opacity": 0.4,
       "surface": "floor"
+    },
+    {
+      "id": "07d15b33-9282-41ef-a55a-b1eec59c7c5f",
+      "decalType": "water-stain",
+      "x": 56,
+      "z": 48,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.5,
+      "surface": "wall"
+    },
+    {
+      "id": "bfd4a140-4ddd-4d92-a8f4-f8a17c29be1d",
+      "decalType": "water-stain",
+      "x": 74,
+      "z": 56,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.4,
+      "surface": "wall"
+    },
+    {
+      "id": "256713a2-ffbc-494c-8cdf-56e7386a09ef",
+      "decalType": "moss-patch",
+      "x": 66,
+      "z": 62,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.3,
+      "surface": "floor"
+    },
+    {
+      "id": "49f09703-dc57-4bfa-879c-538d02de5dd5",
+      "decalType": "water-stain",
+      "x": 4,
+      "z": 50,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.6,
+      "surface": "wall"
+    },
+    {
+      "id": "ad3d17f2-2323-45ce-8583-d33bec46b4c8",
+      "decalType": "water-stain",
+      "x": 18,
+      "z": 56,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.5,
+      "surface": "wall"
+    },
+    {
+      "id": "a11dd6ba-e9c1-42a0-8bc3-d9c6c18937ba",
+      "decalType": "water-stain",
+      "x": 4,
+      "z": 70,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.5,
+      "surface": "wall"
+    },
+    {
+      "id": "fa101365-a68e-4429-b6f1-59e4fdd5eb47",
+      "decalType": "water-stain",
+      "x": 26,
+      "z": 78,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.4,
+      "surface": "wall"
+    },
+    {
+      "id": "d86f8d50-e67b-4d25-9458-ef44115d91e1",
+      "decalType": "blood-stain",
+      "x": 14,
+      "z": 74,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.5,
+      "surface": "floor"
+    },
+    {
+      "id": "29096cd4-b800-4d77-9747-534edbca4fe2",
+      "decalType": "moss-patch",
+      "x": 56,
+      "z": 72,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.7,
+      "surface": "wall"
+    },
+    {
+      "id": "e412988a-50bb-4137-a475-274da85951d4",
+      "decalType": "water-stain",
+      "x": 70,
+      "z": 68,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.6,
+      "surface": "wall"
+    },
+    {
+      "id": "d87efd5c-1986-4f72-85fa-c51046d7ef85",
+      "decalType": "water-stain",
+      "x": 62,
+      "z": 78,
+      "w": 4,
+      "h": 4,
+      "rotation": 0,
+      "opacity": 0.5,
+      "surface": "floor"
     }
   ],
   "triggers": [
     {
-      "id": "c5cd7d57-e1cb-459a-8b5f-7c61589f1893",
+      "id": "73a539ff-30aa-43e9-9459-dcda8b4a3aa8",
       "action": "spawnWave",
       "zoneX": 6,
       "zoneZ": 32,
@@ -1048,13 +1767,13 @@
         ]
       },
       "linkedEntityIds": [
-        "0fc048e7-cbaa-4026-aac6-1fcb7b8b3f3d",
-        "ae3177c9-161a-4964-a460-22ed766db223",
-        "a1085c39-e316-416e-b0c7-85fe48b967e3"
+        "5e16032f-b7a5-4ce8-b2c4-872a62e1beb1",
+        "f6fa0f80-ddc2-4767-9e8f-d80c98de17b8",
+        "8440caf9-1fa4-4866-aa7a-4a5b280a5013"
       ]
     },
     {
-      "id": "7b7c1a1a-98ca-46c8-ba06-2ccb197f3667",
+      "id": "cba64131-9871-4dcd-92ea-2f1ee6a930db",
       "action": "lockDoors",
       "zoneX": 34,
       "zoneZ": 56,
@@ -1068,7 +1787,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "bc9a2314-bda3-4974-b521-870e81038ff9",
+      "id": "5e0f8cb3-defc-4d15-a036-ffdab0c55cdf",
       "action": "unlockDoors",
       "zoneX": 34,
       "zoneZ": 56,
@@ -1084,7 +1803,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "c4b3f614-6c9e-4e14-8ed6-ab4e0dbd1cb3",
+      "id": "eb5f8fac-8327-4137-9d83-5a4e2a1704ec",
       "action": "spawnWave",
       "zoneX": 34,
       "zoneZ": 56,
@@ -1112,13 +1831,13 @@
         ]
       },
       "linkedEntityIds": [
-        "80ccadd3-d632-464e-a1f2-1e44fe0f5900",
-        "7a9e2915-6ede-4dea-8292-6058ec0e3f17",
-        "0ac4400a-9866-4027-b6ed-ba8fc1a3cb39"
+        "ac1483bb-21a5-4208-af76-0392224a80c2",
+        "b7d3e38d-caa4-4539-bd86-492e7e42dade",
+        "cf14717e-cb45-4206-bf75-bb81b4db46f5"
       ]
     },
     {
-      "id": "a15fd92d-ff1f-4c86-accd-650878391210",
+      "id": "6711ec7d-fd1d-4084-bd8f-c633e9ccbdaa",
       "action": "spawnWave",
       "zoneX": 34,
       "zoneZ": 56,
@@ -1146,13 +1865,13 @@
         ]
       },
       "linkedEntityIds": [
-        "6345df5f-7352-4bac-9193-c6555af2e2ff",
-        "f97abaac-578d-48ca-be53-79fe9b4a47ab",
-        "7768f1fc-946a-4b69-b9de-82d2b6827bcb"
+        "68602027-d586-4f3c-bd23-7184393080e4",
+        "fd45fa2e-f44b-4aa5-8afa-5c555cee67e7",
+        "15879592-f532-47d8-9275-95a677993833"
       ]
     },
     {
-      "id": "c1c9df81-b14c-4afd-a89a-4a12e9141949",
+      "id": "8cab9907-ca42-494e-87c3-cad3dc701267",
       "action": "ambientChange",
       "zoneX": 30,
       "zoneZ": 52,
@@ -1169,7 +1888,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "12c5d44c-82a5-42b7-9673-fff4afd418a1",
+      "id": "300e0a9d-8256-4832-aa82-cf652458bc39",
       "action": "bossIntro",
       "zoneX": 30,
       "zoneZ": 86,
@@ -1185,7 +1904,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "8d46c077-c022-4f4b-b803-5d5aaa290556",
+      "id": "e0d0802d-bb18-4e50-9358-8b9d7e412e40",
       "action": "lockDoors",
       "zoneX": 30,
       "zoneZ": 86,
@@ -1199,7 +1918,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "54abff77-b461-462e-aa06-cdf088854d7e",
+      "id": "f6f660ef-a782-4f0d-86d0-e91d769042e0",
       "action": "ambientChange",
       "zoneX": 28,
       "zoneZ": 84,
@@ -1215,6 +1934,192 @@
         "condition": "bossHpBelow50"
       },
       "linkedEntityIds": []
+    },
+    {
+      "id": "8e218667-87f2-4297-9051-96eb4f7aecc2",
+      "action": "spawnWave",
+      "zoneX": 58,
+      "zoneZ": 46,
+      "zoneW": 16,
+      "zoneH": 12,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "enemies": [
+          {
+            "type": "hellgoat",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          }
+        ]
+      },
+      "linkedEntityIds": [
+        "f4c7da70-d1f7-43f1-988b-3f788bff2c7a",
+        "30b8eaf7-cf0a-4f87-b091-f93118a021e6"
+      ]
+    },
+    {
+      "id": "507e1cf5-227f-48e1-b080-73bd1fdfccc6",
+      "action": "lockDoors",
+      "zoneX": 6,
+      "zoneZ": 66,
+      "zoneW": 16,
+      "zoneH": 12,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": null,
+      "linkedEntityIds": []
+    },
+    {
+      "id": "77316fbc-80cd-48fd-9ac7-d6bf94b09014",
+      "action": "unlockDoors",
+      "zoneX": 6,
+      "zoneZ": 66,
+      "zoneW": 16,
+      "zoneH": 12,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "condition": "allEnemiesKilled"
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "aa2ff6f4-efa2-45bd-a3f7-68ad89f65ac9",
+      "action": "spawnWave",
+      "zoneX": 6,
+      "zoneZ": 66,
+      "zoneW": 16,
+      "zoneH": 12,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "waveIndex": 0,
+        "enemies": [
+          {
+            "type": "hellgoat",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          }
+        ]
+      },
+      "linkedEntityIds": [
+        "db432c42-6c65-4a3e-abd5-182e679caaeb",
+        "b0bed078-d706-4232-9ad0-a5262d88c27d",
+        "3d3b4b13-65ae-4875-878f-1a988584d0e8",
+        "a6d76387-5f04-4c8d-87ec-1285d328cf53"
+      ]
+    },
+    {
+      "id": "4aee6869-b852-43e6-b928-ec3dcd485f22",
+      "action": "spawnWave",
+      "zoneX": 6,
+      "zoneZ": 66,
+      "zoneW": 16,
+      "zoneH": 12,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "waveIndex": 1,
+        "enemies": [
+          {
+            "type": "hellgoat",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          },
+          {
+            "type": "goatKnight",
+            "count": 1
+          }
+        ]
+      },
+      "linkedEntityIds": [
+        "e0ee8d1e-c587-4aa5-b3df-f51f059e338d",
+        "b6c4ad3b-dbcc-41a0-8cf9-b02bdd5222d4",
+        "9be45d8a-6795-4f33-8ff3-c914485f55d7",
+        "a38fd660-b4b9-420a-9fca-d0d161edd007"
+      ]
+    },
+    {
+      "id": "14aa4724-353d-4dd0-86f6-fcf9c067d2c6",
+      "action": "ambientChange",
+      "zoneX": 56,
+      "zoneZ": 44,
+      "zoneW": 20,
+      "zoneH": 20,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "fogDensity": 0.1,
+        "fogColor": "#0c0c18"
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "3e7622c7-6a18-4186-b7a2-5ce56d5c4abc",
+      "action": "secretReveal",
+      "zoneX": 56,
+      "zoneZ": 64,
+      "zoneW": 16,
+      "zoneH": 6,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "text": "A gallery of the forgotten. Their sin was not knowing they sinned."
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "005b9c74-d4ac-4b4f-b223-a8b43cc8fb30",
+      "action": "ambientChange",
+      "zoneX": 4,
+      "zoneZ": 64,
+      "zoneW": 24,
+      "zoneH": 20,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "fogDensity": 0.05,
+        "condition": "allEnemiesKilled"
+      },
+      "linkedEntityIds": []
     }
   ],
   "triggeredEntities": [
@@ -1223,7 +2128,7 @@
       "x": 8,
       "z": 34,
       "facing": 0,
-      "triggerId": "c5cd7d57-e1cb-459a-8b5f-7c61589f1893",
+      "triggerId": "73a539ff-30aa-43e9-9459-dcda8b4a3aa8",
       "overrides": null,
       "spawnCategory": "enemy"
     },
@@ -1232,7 +2137,7 @@
       "x": 12,
       "z": 38,
       "facing": 0,
-      "triggerId": "c5cd7d57-e1cb-459a-8b5f-7c61589f1893",
+      "triggerId": "73a539ff-30aa-43e9-9459-dcda8b4a3aa8",
       "overrides": null,
       "spawnCategory": "enemy"
     },
@@ -1241,7 +2146,7 @@
       "x": 16,
       "z": 34,
       "facing": 0,
-      "triggerId": "c5cd7d57-e1cb-459a-8b5f-7c61589f1893",
+      "triggerId": "73a539ff-30aa-43e9-9459-dcda8b4a3aa8",
       "overrides": null,
       "spawnCategory": "enemy"
     },
@@ -1250,7 +2155,7 @@
       "x": 32,
       "z": 64,
       "facing": 0,
-      "triggerId": "c4b3f614-6c9e-4e14-8ed6-ab4e0dbd1cb3",
+      "triggerId": "eb5f8fac-8327-4137-9d83-5a4e2a1704ec",
       "overrides": null,
       "spawnCategory": "enemy"
     },
@@ -1259,7 +2164,7 @@
       "x": 40,
       "z": 54,
       "facing": 0,
-      "triggerId": "c4b3f614-6c9e-4e14-8ed6-ab4e0dbd1cb3",
+      "triggerId": "eb5f8fac-8327-4137-9d83-5a4e2a1704ec",
       "overrides": null,
       "spawnCategory": "enemy"
     },
@@ -1268,7 +2173,7 @@
       "x": 46,
       "z": 64,
       "facing": 0,
-      "triggerId": "c4b3f614-6c9e-4e14-8ed6-ab4e0dbd1cb3",
+      "triggerId": "eb5f8fac-8327-4137-9d83-5a4e2a1704ec",
       "overrides": null,
       "spawnCategory": "enemy"
     },
@@ -1277,7 +2182,7 @@
       "x": 32,
       "z": 54,
       "facing": 0,
-      "triggerId": "a15fd92d-ff1f-4c86-accd-650878391210",
+      "triggerId": "6711ec7d-fd1d-4084-bd8f-c633e9ccbdaa",
       "overrides": null,
       "spawnCategory": "enemy"
     },
@@ -1286,7 +2191,7 @@
       "x": 46,
       "z": 54,
       "facing": 0,
-      "triggerId": "a15fd92d-ff1f-4c86-accd-650878391210",
+      "triggerId": "6711ec7d-fd1d-4084-bd8f-c633e9ccbdaa",
       "overrides": null,
       "spawnCategory": "enemy"
     },
@@ -1295,7 +2200,97 @@
       "x": 40,
       "z": 72,
       "facing": 0,
-      "triggerId": "a15fd92d-ff1f-4c86-accd-650878391210",
+      "triggerId": "6711ec7d-fd1d-4084-bd8f-c633e9ccbdaa",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 58,
+      "z": 46,
+      "facing": 0,
+      "triggerId": "8e218667-87f2-4297-9051-96eb4f7aecc2",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 72,
+      "z": 46,
+      "facing": 0,
+      "triggerId": "8e218667-87f2-4297-9051-96eb4f7aecc2",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 6,
+      "z": 66,
+      "facing": 0,
+      "triggerId": "aa2ff6f4-efa2-45bd-a3f7-68ad89f65ac9",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 24,
+      "z": 66,
+      "facing": 0,
+      "triggerId": "aa2ff6f4-efa2-45bd-a3f7-68ad89f65ac9",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 6,
+      "z": 80,
+      "facing": 0,
+      "triggerId": "aa2ff6f4-efa2-45bd-a3f7-68ad89f65ac9",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 24,
+      "z": 80,
+      "facing": 0,
+      "triggerId": "aa2ff6f4-efa2-45bd-a3f7-68ad89f65ac9",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 6,
+      "z": 72,
+      "facing": 0,
+      "triggerId": "4aee6869-b852-43e6-b928-ec3dcd485f22",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 24,
+      "z": 72,
+      "facing": 0,
+      "triggerId": "4aee6869-b852-43e6-b928-ec3dcd485f22",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 16,
+      "z": 82,
+      "facing": 0,
+      "triggerId": "4aee6869-b852-43e6-b928-ec3dcd485f22",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "goatKnight",
+      "x": 16,
+      "z": 68,
+      "facing": 0,
+      "triggerId": "4aee6869-b852-43e6-b928-ec3dcd485f22",
       "overrides": null,
       "spawnCategory": "enemy"
     }

@@ -55,100 +55,96 @@
       4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
     ],
     [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
+    ],
+    [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
+    ],
+    [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
+    ],
+    [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
+    ],
+    [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
+    ],
+    [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
+    ],
+    [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
+    ],
+    [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
+    ],
+    [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
+    ],
+    [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
+    ],
+    [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
       4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
     ],
     [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
       4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
     ],
     [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
     ],
     [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
     ],
     [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
     ],
     [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
     ],
     [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
     ],
     [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
     ],
     [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
     ],
     [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
     ],
     [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+      4, 4, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
     ],
     [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+      4, 4, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
     ],
     [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
-    ],
-    [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
-    ],
-    [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
-    ],
-    [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
-    ],
-    [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
-    ],
-    [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
-    ],
-    [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
-    ],
-    [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
-    ],
-    [
-      4, 4, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
-    ],
-    [
-      4, 4, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
-    ],
-    [
-      4, 4, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 9, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
-    ],
-    [
-      4, 4, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+      4, 4, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 9, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4
     ],
     [
       4, 4, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4,
@@ -159,7 +155,7 @@
       4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
     ],
     [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 4, 4,
+      4, 4, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4,
       4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
     ],
     [
@@ -175,51 +171,55 @@
       4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
     ],
     [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4,
+      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 4, 4,
       4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
     ],
     [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
+    ],
+    [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
+    ],
+    [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
+    ],
+    [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
+    ],
+    [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
+    ],
+    [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 0, 9, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
+    ],
+    [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 4, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
+    ],
+    [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 4, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
+    ],
+    [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
+    ],
+    [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4
+    ],
+    [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4,
       4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
     ],
     [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
-    ],
-    [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
-    ],
-    [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
-    ],
-    [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 0, 4, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
-    ],
-    [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 0, 4, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
-    ],
-    [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 0, 4, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
-    ],
-    [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
-    ],
-    [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
-    ],
-    [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4,
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
-    ],
-    [
-      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4,
       4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
     ],
     [
@@ -309,782 +309,1658 @@
       "type": "boss-aureo",
       "x": 44,
       "z": 126,
-      "rotation": 3.141592653589793
+      "rotation": 3.141592653589793,
+      "spawnCategory": "boss"
     },
     {
       "type": "goatKnight",
       "x": 38,
-      "z": 32
+      "z": 32,
+      "spawnCategory": "enemy"
     },
     {
       "type": "goatKnight",
       "x": 50,
-      "z": 40
+      "z": 40,
+      "spawnCategory": "enemy"
     },
     {
       "type": "hellgoat",
-      "x": 32,
-      "z": 28
+      "x": 34,
+      "z": 28,
+      "spawnCategory": "enemy"
     },
     {
       "type": "hellgoat",
-      "x": 54,
-      "z": 28
+      "x": 50,
+      "z": 28,
+      "spawnCategory": "enemy"
     },
     {
       "type": "goatKnight",
       "x": 44,
-      "z": 70
+      "z": 70,
+      "spawnCategory": "enemy"
     },
     {
       "type": "hellgoat",
-      "x": 40,
-      "z": 64
+      "x": 44,
+      "z": 66,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 66,
+      "z": 30,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 74,
+      "z": 38,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 62,
+      "z": 28,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 76,
+      "z": 38,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 68,
+      "z": 26,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 70,
+      "z": 34,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 62,
+      "z": 38,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 6,
+      "z": 30,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 14,
+      "z": 36,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 10,
+      "z": 28,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 10,
+      "z": 34,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 16,
+      "z": 28,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 66,
+      "z": 54,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 72,
+      "z": 54,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 66,
+      "z": 60,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 72,
+      "z": 60,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 68,
+      "z": 52,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 70,
+      "z": 58,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 6,
+      "z": 50,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 14,
+      "z": 56,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 10,
+      "z": 54,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 12,
+      "z": 48,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 6,
+      "z": 100,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 18,
+      "z": 90,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 12,
+      "z": 94,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 64,
+      "z": 88,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 74,
+      "z": 88,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 64,
+      "z": 98,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 74,
+      "z": 98,
+      "spawnCategory": "enemy"
     },
     {
       "type": "ammo",
       "x": 42,
-      "z": 10
+      "z": 10,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 48,
-      "z": 8
+      "z": 8,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 34,
-      "z": 30
+      "z": 30,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 44,
-      "z": 30
+      "z": 30,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 54,
-      "z": 36
+      "z": 36,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 32,
-      "z": 26
+      "z": 26,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 32,
-      "z": 44
+      "z": 44,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 56,
-      "z": 26
+      "z": 26,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 56,
-      "z": 44
+      "z": 44,
+      "spawnCategory": "pickup"
     },
     {
       "type": "health",
       "x": 44,
-      "z": 40
+      "z": 40,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 38,
-      "z": 60
+      "z": 60,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 50,
-      "z": 60
+      "z": 60,
+      "spawnCategory": "pickup"
     },
     {
       "type": "health",
       "x": 44,
-      "z": 72
+      "z": 72,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 8,
-      "z": 68
+      "z": 68,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 12,
-      "z": 72
+      "z": 72,
+      "spawnCategory": "pickup"
     },
     {
       "type": "health",
       "x": 6,
-      "z": 72
+      "z": 72,
+      "spawnCategory": "pickup"
     },
     {
       "type": "health",
       "x": 12,
-      "z": 68
+      "z": 68,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 44,
-      "z": 92
+      "z": 92,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 40,
-      "z": 100
+      "z": 100,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 32,
-      "z": 118
+      "z": 118,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 54,
-      "z": 118
+      "z": 118,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 32,
-      "z": 140
+      "z": 140,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 54,
-      "z": 140
+      "z": 140,
+      "spawnCategory": "pickup"
     },
     {
       "type": "health",
       "x": 44,
-      "z": 118
+      "z": 118,
+      "spawnCategory": "pickup"
     },
     {
       "type": "health",
       "x": 44,
-      "z": 140
+      "z": 140,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 64,
+      "z": 28,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 72,
+      "z": 34,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 64,
+      "z": 40,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "health",
+      "x": 70,
+      "z": 38,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 6,
+      "z": 28,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 14,
+      "z": 38,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "health",
+      "x": 10,
+      "z": 38,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 64,
+      "z": 52,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 74,
+      "z": 60,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 68,
+      "z": 56,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 4,
+      "z": 50,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 14,
+      "z": 58,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "health",
+      "x": 8,
+      "z": 58,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 6,
+      "z": 96,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 18,
+      "z": 96,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 12,
+      "z": 104,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "health",
+      "x": 12,
+      "z": 90,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "weapon_cannon",
+      "x": 70,
+      "z": 94,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 62,
+      "z": 88,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 76,
+      "z": 98,
+      "spawnCategory": "pickup"
     },
     {
       "type": "greed-vault-arch",
       "x": 44,
-      "z": 4
+      "z": 4,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-vault-arch",
       "x": 44,
-      "z": 14
+      "z": 14,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-vase",
       "x": 38,
-      "z": 8
+      "z": 8,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-vase",
       "x": 50,
-      "z": 8
+      "z": 8,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 40,
-      "z": 6
+      "z": 6,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 42,
-      "z": 12
+      "z": 12,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 48,
-      "z": 10
+      "z": 10,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 38,
-      "z": 12
+      "z": 12,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 50,
-      "z": 6
+      "z": 6,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-gold-bar-stack",
       "x": 40,
-      "z": 8
+      "z": 8,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-gold-bar-stack",
       "x": 48,
-      "z": 6
+      "z": 6,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-chest-pedestal",
       "x": 46,
-      "z": 8
+      "z": 8,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-treasure-chest",
       "x": 46,
-      "z": 8
+      "z": 8,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-gold-pillar",
       "x": 32,
-      "z": 26
+      "z": 26,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-gold-pillar",
       "x": 56,
-      "z": 26
+      "z": 26,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-gold-pillar",
       "x": 32,
-      "z": 44
+      "z": 44,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-gold-pillar",
       "x": 56,
-      "z": 44
+      "z": 44,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-diamond-plate-platform",
       "x": 32,
-      "z": 26
+      "z": 26,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-diamond-plate-platform",
       "x": 54,
-      "z": 26
+      "z": 26,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-chest-pedestal",
       "x": 36,
-      "z": 30
+      "z": 30,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-chest-pedestal",
       "x": 42,
-      "z": 30
+      "z": 30,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-chest-pedestal",
       "x": 48,
-      "z": 30
+      "z": 30,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-chest-pedestal",
       "x": 54,
-      "z": 30
+      "z": 30,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-chest-pedestal",
       "x": 36,
-      "z": 38
+      "z": 38,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-chest-pedestal",
       "x": 42,
-      "z": 38
+      "z": 38,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-chest-pedestal",
       "x": 48,
-      "z": 38
+      "z": 38,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-chest-pedestal",
       "x": 54,
-      "z": 38
+      "z": 38,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-treasure-chest",
       "x": 36,
-      "z": 30
+      "z": 30,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-treasure-chest",
       "x": 42,
-      "z": 30
+      "z": 30,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-treasure-chest",
       "x": 48,
-      "z": 30
+      "z": 30,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-treasure-chest",
       "x": 54,
-      "z": 30
+      "z": 30,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-treasure-chest",
       "x": 36,
-      "z": 38
+      "z": 38,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-treasure-chest",
       "x": 42,
-      "z": 38
+      "z": 38,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-treasure-chest",
       "x": 48,
-      "z": 38
+      "z": 38,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-treasure-chest",
       "x": 54,
-      "z": 38
+      "z": 38,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 38,
-      "z": 32
+      "z": 32,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 44,
-      "z": 32
+      "z": 32,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 50,
-      "z": 32
+      "z": 32,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 38,
-      "z": 40
+      "z": 40,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 44,
-      "z": 40
+      "z": 40,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 50,
-      "z": 40
+      "z": 40,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-chalice",
       "x": 40,
-      "z": 32
+      "z": 32,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-chalice",
       "x": 48,
-      "z": 38
+      "z": 38,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-candelabra",
       "x": 32,
-      "z": 26
+      "z": 26,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-candelabra",
       "x": 56,
-      "z": 26
+      "z": 26,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-candelabra",
       "x": 32,
-      "z": 44
+      "z": 44,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-candelabra",
       "x": 56,
-      "z": 44
+      "z": 44,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-safe-door",
       "x": 44,
-      "z": 56
+      "z": 56,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-safe-door",
       "x": 44,
-      "z": 74
+      "z": 74,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-pressure-plate",
       "x": 36,
-      "z": 58
+      "z": 58,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-pressure-plate",
       "x": 40,
-      "z": 58
+      "z": 58,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-pressure-plate",
       "x": 44,
-      "z": 58
+      "z": 58,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-pressure-plate",
       "x": 48,
-      "z": 58
+      "z": 58,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-pressure-plate",
       "x": 36,
-      "z": 62
+      "z": 62,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-pressure-plate",
       "x": 40,
-      "z": 62
+      "z": 62,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-pressure-plate",
       "x": 44,
-      "z": 62
+      "z": 62,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-pressure-plate",
       "x": 48,
-      "z": 62
+      "z": 62,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-pressure-plate",
       "x": 36,
-      "z": 66
+      "z": 66,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-pressure-plate",
       "x": 40,
-      "z": 66
+      "z": 66,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-pressure-plate",
       "x": 44,
-      "z": 66
+      "z": 66,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-pressure-plate",
       "x": 48,
-      "z": 66
+      "z": 66,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-pressure-plate",
       "x": 36,
-      "z": 70
+      "z": 70,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-pressure-plate",
       "x": 40,
-      "z": 70
+      "z": 70,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-pressure-plate",
       "x": 44,
-      "z": 70
+      "z": 70,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-pressure-plate",
       "x": 48,
-      "z": 70
+      "z": 70,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-gear-mechanism",
       "x": 34,
-      "z": 60
+      "z": 60,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-gear-mechanism",
       "x": 54,
-      "z": 60
+      "z": 60,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-gear-mechanism",
       "x": 34,
-      "z": 68
+      "z": 68,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-gear-mechanism",
       "x": 54,
-      "z": 68
+      "z": 68,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-gold-bar-stack",
       "x": 38,
-      "z": 60
+      "z": 60,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-gold-bar-stack",
       "x": 50,
-      "z": 60
+      "z": 60,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-skeletal-goat",
       "x": 40,
-      "z": 58
+      "z": 58,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-ammo-scatter",
       "x": 40,
-      "z": 58
+      "z": 58,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-ammo-scatter",
       "x": 42,
-      "z": 60
+      "z": 60,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 36,
-      "z": 66
+      "z": 66,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 50,
-      "z": 72
+      "z": 72,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-vault-arch",
       "x": 4,
-      "z": 70
+      "z": 70,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-key-display",
       "x": 8,
-      "z": 66
+      "z": 66,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-jeweled-pedestal",
       "x": 8,
-      "z": 70
+      "z": 70,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-treasure-chest",
       "x": 8,
-      "z": 70
+      "z": 70,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-chalice",
       "x": 6,
-      "z": 72
+      "z": 72,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-chalice",
       "x": 12,
-      "z": 72
+      "z": 72,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-gold-pillar",
       "x": 38,
-      "z": 90
+      "z": 90,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-gold-pillar",
       "x": 50,
-      "z": 90
+      "z": 90,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-gold-pillar",
       "x": 38,
-      "z": 102
+      "z": 102,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-gold-pillar",
       "x": 50,
-      "z": 102
+      "z": 102,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 38,
-      "z": 90
+      "z": 90,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 50,
-      "z": 90
+      "z": 90,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 38,
-      "z": 102
+      "z": 102,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 50,
-      "z": 102
+      "z": 102,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-banner",
       "x": 34,
-      "z": 86
+      "z": 86,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-banner",
       "x": 54,
-      "z": 106
+      "z": 106,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-treasure-chest",
       "x": 34,
-      "z": 102
+      "z": 102,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-treasure-chest",
       "x": 54,
-      "z": 90
+      "z": 90,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 34,
-      "z": 96
+      "z": 96,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 54,
-      "z": 96
+      "z": 96,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-vase",
       "x": 32,
-      "z": 86
+      "z": 86,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-vase",
       "x": 56,
-      "z": 106
+      "z": 106,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-throne",
       "x": 44,
-      "z": 118
+      "z": 118,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-vault-arch",
       "x": 44,
-      "z": 116
+      "z": 116,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-candelabra",
       "x": 34,
-      "z": 120
+      "z": 120,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-candelabra",
       "x": 54,
-      "z": 120
+      "z": 120,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-candelabra",
       "x": 34,
-      "z": 130
+      "z": 130,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-candelabra",
       "x": 54,
-      "z": 130
+      "z": 130,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-candelabra",
       "x": 34,
-      "z": 140
+      "z": 140,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-candelabra",
       "x": 54,
-      "z": 140
+      "z": 140,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-gold-chain",
       "x": 38,
-      "z": 122
+      "z": 122,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-gold-chain",
       "x": 50,
-      "z": 122
+      "z": 122,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-gold-chain",
       "x": 38,
-      "z": 138
+      "z": 138,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-gold-chain",
       "x": 50,
-      "z": 138
+      "z": 138,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-banner",
       "x": 40,
-      "z": 118
+      "z": 118,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-banner",
       "x": 48,
-      "z": 118
+      "z": 118,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 36,
-      "z": 126
+      "z": 126,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 52,
-      "z": 126
+      "z": 126,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 36,
-      "z": 136
+      "z": 136,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 52,
-      "z": 136
+      "z": 136,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 44,
-      "z": 124
+      "z": 124,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 44,
-      "z": 134
+      "z": 134,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 38,
-      "z": 130
+      "z": 130,
+      "spawnCategory": "prop"
     },
     {
       "type": "coin-pile",
       "x": 50,
-      "z": 130
+      "z": 130,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-coin-cascade",
       "x": 42,
-      "z": 118
+      "z": 118,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-coin-cascade",
       "x": 46,
-      "z": 118
+      "z": 118,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-vase",
       "x": 34,
-      "z": 120
+      "z": 120,
+      "spawnCategory": "prop"
     },
     {
       "type": "greed-golden-vase",
       "x": 54,
-      "z": 120
+      "z": 120,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-gold-bar-stack",
+      "x": 64,
+      "z": 28,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-gold-bar-stack",
+      "x": 64,
+      "z": 34,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-gold-bar-stack",
+      "x": 72,
+      "z": 28,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-gold-bar-stack",
+      "x": 72,
+      "z": 34,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 66,
+      "z": 30,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 70,
+      "z": 38,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 74,
+      "z": 30,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 62,
+      "z": 38,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-coin-cascade",
+      "x": 62,
+      "z": 26,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-coin-cascade",
+      "x": 76,
+      "z": 40,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-golden-candelabra",
+      "x": 62,
+      "z": 26,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-golden-candelabra",
+      "x": 76,
+      "z": 26,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-treasure-chest",
+      "x": 4,
+      "z": 28,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-treasure-chest",
+      "x": 12,
+      "z": 28,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-treasure-chest",
+      "x": 8,
+      "z": 40,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-jeweled-pedestal",
+      "x": 4,
+      "z": 36,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-jeweled-pedestal",
+      "x": 14,
+      "z": 34,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-jeweled-pedestal",
+      "x": 8,
+      "z": 30,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 6,
+      "z": 32,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 12,
+      "z": 38,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 16,
+      "z": 30,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 2,
+      "z": 40,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-golden-key-display",
+      "x": 10,
+      "z": 26,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 74,
+      "z": 52,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 76,
+      "z": 58,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 72,
+      "z": 62,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 70,
+      "z": 56,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-golden-banner",
+      "x": 62,
+      "z": 50,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-golden-banner",
+      "x": 76,
+      "z": 64,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "golden-idol",
+      "x": 4,
+      "z": 48,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "golden-idol",
+      "x": 10,
+      "z": 46,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "golden-idol",
+      "x": 16,
+      "z": 48,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-golden-chalice",
+      "x": 4,
+      "z": 56,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-golden-chalice",
+      "x": 8,
+      "z": 60,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-golden-chalice",
+      "x": 14,
+      "z": 54,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-golden-chalice",
+      "x": 16,
+      "z": 60,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-chest-pedestal",
+      "x": 6,
+      "z": 52,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-chest-pedestal",
+      "x": 14,
+      "z": 50,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 10,
+      "z": 52,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 6,
+      "z": 58,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-gold-pillar",
+      "x": 6,
+      "z": 90,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-gold-pillar",
+      "x": 18,
+      "z": 90,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-gold-pillar",
+      "x": 6,
+      "z": 102,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-gold-pillar",
+      "x": 18,
+      "z": 102,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 2,
+      "z": 88,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 20,
+      "z": 88,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 2,
+      "z": 102,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 20,
+      "z": 102,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 10,
+      "z": 96,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 14,
+      "z": 96,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-gold-bar-stack",
+      "x": 4,
+      "z": 94,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-gold-bar-stack",
+      "x": 18,
+      "z": 100,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-golden-candelabra",
+      "x": 2,
+      "z": 86,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-golden-candelabra",
+      "x": 20,
+      "z": 86,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-treasure-chest",
+      "x": 64,
+      "z": 88,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-treasure-chest",
+      "x": 74,
+      "z": 88,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-treasure-chest",
+      "x": 64,
+      "z": 98,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-treasure-chest",
+      "x": 74,
+      "z": 98,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-jeweled-pedestal",
+      "x": 68,
+      "z": 94,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-jeweled-pedestal",
+      "x": 72,
+      "z": 94,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "golden-idol",
+      "x": 62,
+      "z": 88,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "golden-idol",
+      "x": 76,
+      "z": 88,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "golden-idol",
+      "x": 62,
+      "z": 98,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "golden-idol",
+      "x": 76,
+      "z": 98,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 66,
+      "z": 92,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 72,
+      "z": 92,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 66,
+      "z": 98,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "coin-pile",
+      "x": 72,
+      "z": 98,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-golden-candelabra",
+      "x": 62,
+      "z": 86,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-golden-candelabra",
+      "x": 76,
+      "z": 86,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "greed-golden-banner",
+      "x": 70,
+      "z": 84,
+      "spawnCategory": "prop"
     }
   ],
   "theme": {
@@ -1097,9 +1973,28 @@
     "pickupDensity": 2.5,
     "ambientColor": "#ffcc44"
   },
+  "requiredTextureKeys": [
+    "floor-color",
+    "floor-normal",
+    "floor-roughness",
+    "ceiling-color",
+    "ceiling-normal",
+    "ceiling-roughness",
+    "door-color",
+    "door-normal",
+    "door-roughness",
+    "door-metalness",
+    "greed-color",
+    "greed-normal",
+    "greed-roughness",
+    "greed-metalness",
+    "stone-color",
+    "stone-normal",
+    "stone-roughness"
+  ],
   "envZones": [
     {
-      "id": "7c52904e-076a-4d61-9dce-febb3247b620",
+      "id": "af66d4a5-6dc5-4ca5-93a8-c88a323ad392",
       "envType": "fire",
       "x": 0,
       "z": 0,
@@ -1112,7 +2007,7 @@
       "timerOff": 0
     },
     {
-      "id": "c8cc3017-2e89-42be-9a74-bdf78412ca66",
+      "id": "09180296-3b5a-4675-a75f-d2f3614e2091",
       "envType": "wind",
       "x": 36,
       "z": 58,
@@ -1125,7 +2020,7 @@
       "timerOff": 0
     },
     {
-      "id": "9b1f0f32-f8c9-4afa-bd4c-fc496cd95420",
+      "id": "fdc320e0-9248-4e8a-b90a-c4105898abff",
       "envType": "fire",
       "x": 30,
       "z": 116,
@@ -1136,11 +2031,50 @@
       "dirZ": 0,
       "timerOn": 0,
       "timerOff": 0
+    },
+    {
+      "id": "9cb3f139-4883-4023-9f9e-e325ca5e1c9d",
+      "envType": "fire",
+      "x": 60,
+      "z": 24,
+      "w": 28,
+      "h": 44,
+      "intensity": 0.5,
+      "dirX": 0,
+      "dirZ": 0,
+      "timerOn": 0,
+      "timerOff": 0
+    },
+    {
+      "id": "dd7185eb-3e78-4e06-9ffa-87ce2e80f727",
+      "envType": "fog",
+      "x": 0,
+      "z": 24,
+      "w": 20,
+      "h": 44,
+      "intensity": 0.4,
+      "dirX": 0,
+      "dirZ": 0,
+      "timerOn": 0,
+      "timerOff": 0
+    },
+    {
+      "id": "b54de06c-ef46-4440-8978-0ebe7452d45d",
+      "envType": "fire",
+      "x": 0,
+      "z": 84,
+      "w": 24,
+      "h": 24,
+      "intensity": 0.8,
+      "dirX": 0,
+      "dirZ": 0,
+      "timerOn": 0,
+      "timerOff": 0
     }
   ],
   "decals": [
     {
-      "id": "d45b44e3-e632-48a7-a7fe-9cc4caa4b45e",
+      "id": "c20e0477-e800-47b5-9cb5-55e14b4f8769",
       "decalType": "water-stain",
       "x": 40,
       "z": 6,
@@ -1151,7 +2085,7 @@
       "surface": "floor"
     },
     {
-      "id": "23c6c405-f4ec-4c38-b36a-576f093fb37a",
+      "id": "a4c2426f-8f05-4d62-bfbb-7a1433b1a2bf",
       "decalType": "water-stain",
       "x": 46,
       "z": 8,
@@ -1162,7 +2096,7 @@
       "surface": "floor"
     },
     {
-      "id": "dbf6eda7-2b67-462e-b10e-5375030e08ee",
+      "id": "286325e1-38c2-4365-b10b-3a2a62e1518b",
       "decalType": "concrete-crack",
       "x": 30,
       "z": 32,
@@ -1173,7 +2107,7 @@
       "surface": "wall"
     },
     {
-      "id": "6323f781-c901-44dc-be26-78d1173b7f25",
+      "id": "064b5ffc-d008-4108-9436-ba6387551cb6",
       "decalType": "concrete-crack",
       "x": 58,
       "z": 32,
@@ -1184,7 +2118,7 @@
       "surface": "wall"
     },
     {
-      "id": "c0d482c6-4380-41a1-88d0-aa40e5d927cd",
+      "id": "386f39dc-4b42-4703-895d-d01ac640ee9b",
       "decalType": "water-stain",
       "x": 36,
       "z": 30,
@@ -1195,7 +2129,7 @@
       "surface": "floor"
     },
     {
-      "id": "b4b2acad-c064-4869-8cc4-f64f68a35a53",
+      "id": "bbd8cc27-a32b-4872-8f6e-09dedb9230a0",
       "decalType": "water-stain",
       "x": 54,
       "z": 38,
@@ -1206,7 +2140,7 @@
       "surface": "floor"
     },
     {
-      "id": "fdfc83f8-feed-4204-9395-e0640bd9e86d",
+      "id": "996f5fc8-36e6-459f-87f6-c57551ca07b6",
       "decalType": "concrete-crack",
       "x": 34,
       "z": 64,
@@ -1217,7 +2151,7 @@
       "surface": "wall"
     },
     {
-      "id": "901e369d-ceb5-4df9-9350-405e9158d83d",
+      "id": "9856e9b6-17fb-445c-93a0-4a3de81d36f9",
       "decalType": "concrete-crack",
       "x": 54,
       "z": 64,
@@ -1228,7 +2162,7 @@
       "surface": "wall"
     },
     {
-      "id": "a5a02e79-6e73-4b42-981c-80b07bfb80ec",
+      "id": "8417b919-8af6-4865-a3a8-fe026801cf35",
       "decalType": "concrete-crack",
       "x": 32,
       "z": 96,
@@ -1239,7 +2173,7 @@
       "surface": "wall"
     },
     {
-      "id": "f7920ead-1737-40e1-b308-baad15481b56",
+      "id": "f59508de-0346-4b40-b2e5-8d16b7bacb52",
       "decalType": "concrete-crack",
       "x": 56,
       "z": 96,
@@ -1250,7 +2184,7 @@
       "surface": "wall"
     },
     {
-      "id": "6e62d4b8-999a-4fc4-b348-90ed3bd61fb3",
+      "id": "4c45f9e9-f905-441f-82e7-722949a58cb7",
       "decalType": "water-stain",
       "x": 34,
       "z": 102,
@@ -1261,7 +2195,7 @@
       "surface": "floor"
     },
     {
-      "id": "5fb878c5-42cf-4272-a24a-ba4474db6008",
+      "id": "567c6876-ed64-4106-bbf7-768b9cb9e60c",
       "decalType": "water-stain",
       "x": 54,
       "z": 90,
@@ -1272,7 +2206,7 @@
       "surface": "floor"
     },
     {
-      "id": "b7218448-693d-40e1-ba89-1dc82b8cc677",
+      "id": "abebadc7-5858-4d39-901a-c1c0a04ca9c9",
       "decalType": "concrete-crack",
       "x": 30,
       "z": 126,
@@ -1283,7 +2217,7 @@
       "surface": "wall"
     },
     {
-      "id": "170ffef6-a885-4544-b324-c0def541c989",
+      "id": "a25ff051-fe17-4c6f-8b97-0da983a2f6d7",
       "decalType": "concrete-crack",
       "x": 58,
       "z": 126,
@@ -1294,7 +2228,7 @@
       "surface": "wall"
     },
     {
-      "id": "1c08fd70-714e-40f6-ae5c-b963b5ea95d6",
+      "id": "f891e217-6783-4cc3-851c-dd19128d41d0",
       "decalType": "water-stain",
       "x": 42,
       "z": 118,
@@ -1305,7 +2239,7 @@
       "surface": "floor"
     },
     {
-      "id": "98fc7032-fe5f-496f-9db3-7afd0883cee4",
+      "id": "9554d011-6aea-472f-a6d5-213bf8e5a460",
       "decalType": "water-stain",
       "x": 46,
       "z": 118,
@@ -1318,7 +2252,7 @@
   ],
   "triggers": [
     {
-      "id": "ae088aad-1206-497b-8c2a-ebfdb8cd0326",
+      "id": "e9033200-0ce4-4c44-bb07-2e820d7cb20e",
       "action": "lockDoors",
       "zoneX": 34,
       "zoneZ": 86,
@@ -1332,7 +2266,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "5be6d0a0-20ff-463c-9d0a-65b78a07fa68",
+      "id": "f5613a04-949d-489f-ba2f-94a7e91144f7",
       "action": "unlockDoors",
       "zoneX": 34,
       "zoneZ": 86,
@@ -1348,7 +2282,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "9fa60620-1314-40fa-87d5-46e3c6516f59",
+      "id": "172b5754-5571-43ef-a519-970d30e5748f",
       "action": "spawnWave",
       "zoneX": 34,
       "zoneZ": 86,
@@ -1380,14 +2314,14 @@
         ]
       },
       "linkedEntityIds": [
-        "0cc131c5-d30e-46ea-8109-f8efb7d19620",
-        "fe9d4aa3-35d0-4890-89c0-2f99c293d897",
-        "68174071-eecc-49af-8ee5-df960c4891e3",
-        "0b8f7252-129e-47c8-9972-1b76dea1a17d"
+        "c3d5bb41-0156-4a5c-af88-8c157f35b486",
+        "2cb47277-fae4-40f6-b404-e050fb4aa9eb",
+        "13f56a4f-ffde-48ac-ac29-4d77855361b3",
+        "cefcd180-22bb-4986-8cb7-bd35820f3904"
       ]
     },
     {
-      "id": "618bb3cc-9f14-4fda-b982-2e1c9fc47095",
+      "id": "80175f53-2d27-4c41-a4a2-e15697506e90",
       "action": "spawnWave",
       "zoneX": 34,
       "zoneZ": 86,
@@ -1419,14 +2353,14 @@
         ]
       },
       "linkedEntityIds": [
-        "3024f866-2118-439d-91c7-5199df897190",
-        "31c636f2-52ca-45bd-98c9-0f8382f816b1",
-        "fb1782dc-da05-4d58-a98a-7be510be03ee",
-        "fed4ac00-03c8-480a-8542-402db7ce60b8"
+        "1505bf90-014b-4209-a0a9-32a9164f30f6",
+        "02ee77bf-8773-4833-b829-031cf4f7f713",
+        "001635ca-ea2a-4521-8244-4b0c12e098b8",
+        "cdfaeedd-63f7-45df-a84d-63dddde405b6"
       ]
     },
     {
-      "id": "3626c5ac-1ca0-44d1-b35c-97380250ed2f",
+      "id": "c104177e-bf76-431b-9b2d-67ad95875103",
       "action": "dialogue",
       "zoneX": 32,
       "zoneZ": 26,
@@ -1442,7 +2376,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "f44b16e4-6e72-438a-853b-e7f646ef4d54",
+      "id": "766a3960-3a8b-4d7e-96e2-49312776797b",
       "action": "platformMove",
       "zoneX": 36,
       "zoneZ": 58,
@@ -1460,7 +2394,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "04ec90a8-4de5-4d78-8884-887335c72317",
+      "id": "08975858-85a7-49f4-b51e-a12437483577",
       "action": "dialogue",
       "zoneX": 36,
       "zoneZ": 58,
@@ -1476,7 +2410,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "ac32bfa0-a806-4e8b-8f32-d17c54671244",
+      "id": "064bae1c-e141-48c5-adaf-275d867fc741",
       "action": "platformMove",
       "zoneX": 38,
       "zoneZ": 90,
@@ -1494,7 +2428,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "90c06275-fa02-4786-ac58-0d4274260b85",
+      "id": "f9e9801d-d54d-470e-81ed-3ec32fdca1c1",
       "action": "platformMove",
       "zoneX": 48,
       "zoneZ": 90,
@@ -1512,7 +2446,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "0e827524-370f-4960-876e-ebecf3f9bdf0",
+      "id": "5685a4b5-6f19-409a-9db9-da0037a083d4",
       "action": "platformMove",
       "zoneX": 38,
       "zoneZ": 100,
@@ -1530,7 +2464,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "2f3babbb-83d9-4ece-8f03-e582a9ba3590",
+      "id": "c50b090a-da75-487b-816c-bd6e60a95691",
       "action": "platformMove",
       "zoneX": 48,
       "zoneZ": 100,
@@ -1548,7 +2482,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "b8de7255-85c5-4689-b62b-fe0c683c521b",
+      "id": "8d12e5d3-8046-4663-afe5-6551e174813b",
       "action": "bossIntro",
       "zoneX": 32,
       "zoneZ": 118,
@@ -1564,7 +2498,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "79b08d35-0f1d-4aaa-9d04-f6b294983388",
+      "id": "314225ed-bfd9-4fd3-8e31-dfa500288e6a",
       "action": "lockDoors",
       "zoneX": 32,
       "zoneZ": 118,
@@ -1578,7 +2512,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "f5d631d7-0f21-4234-b807-122dcebebe90",
+      "id": "17bf7d44-0747-48db-b65b-66c5e0a697a0",
       "action": "ambientChange",
       "zoneX": 30,
       "zoneZ": 116,
@@ -1596,7 +2530,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "3da876c1-ce1a-477e-8831-9077c278b134",
+      "id": "67f40987-742a-4592-811d-d0c52eebf034",
       "action": "ambientChange",
       "zoneX": 30,
       "zoneZ": 116,
@@ -1612,6 +2546,211 @@
         "scatterPositions": [[16, 59], [27, 59], [16, 70], [27, 70]]
       },
       "linkedEntityIds": []
+    },
+    {
+      "id": "4ee950a9-8800-4b1c-8a69-292e631f6c1e",
+      "action": "lockDoors",
+      "zoneX": 2,
+      "zoneZ": 86,
+      "zoneW": 20,
+      "zoneH": 4,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": null,
+      "linkedEntityIds": []
+    },
+    {
+      "id": "0038495d-663a-48c7-8207-8ca9f3e9d3df",
+      "action": "unlockDoors",
+      "zoneX": 2,
+      "zoneZ": 86,
+      "zoneW": 20,
+      "zoneH": 4,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "condition": "allEnemiesKilled"
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "48f7cba0-168c-40a8-bc69-7269f9eec12e",
+      "action": "spawnWave",
+      "zoneX": 2,
+      "zoneZ": 86,
+      "zoneW": 20,
+      "zoneH": 4,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "waveIndex": 0,
+        "enemies": [
+          {
+            "type": "goatKnight",
+            "count": 1
+          },
+          {
+            "type": "goatKnight",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          }
+        ]
+      },
+      "linkedEntityIds": [
+        "cb3226cd-3b31-4493-ba39-49497de8a20d",
+        "d4e5e5a9-9bf5-4a77-bd3e-59653f14395a",
+        "c5901d61-06c7-426c-b96b-e83cec76852e",
+        "57e26321-430e-4d08-a5c1-c8e4669ce07f"
+      ]
+    },
+    {
+      "id": "9eed4b39-9282-4449-ab87-d828a1a904c6",
+      "action": "spawnWave",
+      "zoneX": 2,
+      "zoneZ": 86,
+      "zoneW": 20,
+      "zoneH": 4,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "waveIndex": 1,
+        "enemies": [
+          {
+            "type": "goatKnight",
+            "count": 1
+          },
+          {
+            "type": "goatKnight",
+            "count": 1
+          },
+          {
+            "type": "goatKnight",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          }
+        ]
+      },
+      "linkedEntityIds": [
+        "192fed34-f50f-40b6-881a-e0694164f84f",
+        "51da4c85-2e97-4cb6-92e8-ac95f716926c",
+        "ef39360b-994d-4daa-adbb-9c4e5535289c",
+        "237cfc5d-d36b-4840-a9f3-408b242a19fe",
+        "c5dc4ca2-eb2f-42c4-b097-770bb7625159"
+      ]
+    },
+    {
+      "id": "da647fd4-7f4d-4685-bc1b-aac05bf01a56",
+      "action": "spawnWave",
+      "zoneX": 60,
+      "zoneZ": 84,
+      "zoneW": 20,
+      "zoneH": 20,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "enemies": [
+          {
+            "type": "goatKnight",
+            "count": 1
+          },
+          {
+            "type": "goatKnight",
+            "count": 1
+          }
+        ]
+      },
+      "linkedEntityIds": [
+        "17f016e4-0695-4d36-8167-2f9df9cced73",
+        "57490aca-951f-44e0-8f1f-01eb582e7e12"
+      ]
+    },
+    {
+      "id": "2243f994-cd30-41f8-ba02-215e086d2857",
+      "action": "dialogue",
+      "zoneX": 62,
+      "zoneZ": 26,
+      "zoneW": 16,
+      "zoneH": 4,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "text": "They count what can never be enough. Every pile is a reminder of what was stolen."
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "615c9e5c-cf96-4bec-a60b-669f0a9c2c59",
+      "action": "dialogue",
+      "zoneX": 2,
+      "zoneZ": 46,
+      "zoneW": 16,
+      "zoneH": 4,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "text": "They gave everything and received nothing. The idols demanded more."
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "9c649acf-3c23-4f38-bf7a-965592839b18",
+      "action": "dialogue",
+      "zoneX": 62,
+      "zoneZ": 50,
+      "zoneW": 16,
+      "zoneH": 4,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "text": "The garrison stands ready. Every coin in this vault was bought with blood."
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "5b0ebf3f-dbb4-420f-ae4a-d7e5385f924b",
+      "action": "dialogue",
+      "zoneX": 62,
+      "zoneZ": 86,
+      "zoneW": 16,
+      "zoneH": 4,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "text": "The deepest greed: to own what cannot be owned. Take it. Suffer the weight."
+      },
+      "linkedEntityIds": []
     }
   ],
   "triggeredEntities": [
@@ -1620,7 +2759,7 @@
       "x": 44,
       "z": 86,
       "facing": 0,
-      "triggerId": "9fa60620-1314-40fa-87d5-46e3c6516f59",
+      "triggerId": "172b5754-5571-43ef-a519-970d30e5748f",
       "overrides": null,
       "spawnCategory": "enemy"
     },
@@ -1629,7 +2768,7 @@
       "x": 44,
       "z": 104,
       "facing": 0,
-      "triggerId": "9fa60620-1314-40fa-87d5-46e3c6516f59",
+      "triggerId": "172b5754-5571-43ef-a519-970d30e5748f",
       "overrides": null,
       "spawnCategory": "enemy"
     },
@@ -1638,7 +2777,7 @@
       "x": 34,
       "z": 96,
       "facing": 0,
-      "triggerId": "9fa60620-1314-40fa-87d5-46e3c6516f59",
+      "triggerId": "172b5754-5571-43ef-a519-970d30e5748f",
       "overrides": null,
       "spawnCategory": "enemy"
     },
@@ -1647,7 +2786,7 @@
       "x": 52,
       "z": 96,
       "facing": 0,
-      "triggerId": "9fa60620-1314-40fa-87d5-46e3c6516f59",
+      "triggerId": "172b5754-5571-43ef-a519-970d30e5748f",
       "overrides": null,
       "spawnCategory": "enemy"
     },
@@ -1656,7 +2795,7 @@
       "x": 34,
       "z": 86,
       "facing": 0,
-      "triggerId": "618bb3cc-9f14-4fda-b982-2e1c9fc47095",
+      "triggerId": "80175f53-2d27-4c41-a4a2-e15697506e90",
       "overrides": null,
       "spawnCategory": "enemy"
     },
@@ -1665,7 +2804,7 @@
       "x": 52,
       "z": 104,
       "facing": 0,
-      "triggerId": "618bb3cc-9f14-4fda-b982-2e1c9fc47095",
+      "triggerId": "80175f53-2d27-4c41-a4a2-e15697506e90",
       "overrides": null,
       "spawnCategory": "enemy"
     },
@@ -1674,7 +2813,7 @@
       "x": 40,
       "z": 86,
       "facing": 0,
-      "triggerId": "618bb3cc-9f14-4fda-b982-2e1c9fc47095",
+      "triggerId": "80175f53-2d27-4c41-a4a2-e15697506e90",
       "overrides": null,
       "spawnCategory": "enemy"
     },
@@ -1683,7 +2822,106 @@
       "x": 48,
       "z": 86,
       "facing": 0,
-      "triggerId": "618bb3cc-9f14-4fda-b982-2e1c9fc47095",
+      "triggerId": "80175f53-2d27-4c41-a4a2-e15697506e90",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "goatKnight",
+      "x": 12,
+      "z": 88,
+      "facing": 0,
+      "triggerId": "48f7cba0-168c-40a8-bc69-7269f9eec12e",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "goatKnight",
+      "x": 12,
+      "z": 102,
+      "facing": 0,
+      "triggerId": "48f7cba0-168c-40a8-bc69-7269f9eec12e",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 2,
+      "z": 94,
+      "facing": 0,
+      "triggerId": "48f7cba0-168c-40a8-bc69-7269f9eec12e",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 20,
+      "z": 94,
+      "facing": 0,
+      "triggerId": "48f7cba0-168c-40a8-bc69-7269f9eec12e",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "goatKnight",
+      "x": 4,
+      "z": 88,
+      "facing": 0,
+      "triggerId": "9eed4b39-9282-4449-ab87-d828a1a904c6",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "goatKnight",
+      "x": 20,
+      "z": 102,
+      "facing": 0,
+      "triggerId": "9eed4b39-9282-4449-ab87-d828a1a904c6",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "goatKnight",
+      "x": 12,
+      "z": 96,
+      "facing": 0,
+      "triggerId": "9eed4b39-9282-4449-ab87-d828a1a904c6",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 4,
+      "z": 102,
+      "facing": 0,
+      "triggerId": "9eed4b39-9282-4449-ab87-d828a1a904c6",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 20,
+      "z": 88,
+      "facing": 0,
+      "triggerId": "9eed4b39-9282-4449-ab87-d828a1a904c6",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "goatKnight",
+      "x": 68,
+      "z": 92,
+      "facing": 0,
+      "triggerId": "da647fd4-7f4d-4685-bc1b-aac05bf01a56",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "goatKnight",
+      "x": 70,
+      "z": 92,
+      "facing": 0,
+      "triggerId": "da647fd4-7f4d-4685-bc1b-aac05bf01a56",
       "overrides": null,
       "spawnCategory": "enemy"
     }

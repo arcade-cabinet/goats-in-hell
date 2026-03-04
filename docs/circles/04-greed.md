@@ -33,7 +33,7 @@ related:
 | Enemy count | 14 enemies + boss | from enemy placement |
 
 ### Pacing Notes
-Greed's hoarding mechanic is the primary pacing lever: players who collect all the tempting ammo pickups move at half speed, making goatKnight encounters more dangerous and room traversal longer. The pressure plate Weight Room creates a deliberate pacing dip — a puzzle beat — before the Auction Hall arena ramps tension back up. The boss encounter's three phases (coins, steal, strip) provide a satisfying climax to the "want less" theme.
+Greed's hoarding mechanic is the primary pacing lever: players who collect all the tempting ammo pickups move at half speed, making hoarder encounters more dangerous and room traversal longer. The pressure plate Weight Room creates a deliberate pacing dip — a puzzle beat — before the Auction Hall arena ramps tension back up. The boss encounter's three phases (coins, steal, strip) provide a satisfying climax to the "want less" theme.
 
 ---
 
@@ -160,17 +160,17 @@ Greed's hoarding mechanic is the primary pacing lever: players who collect all t
 
 | Room | Type | Count | Behavior | Variant |
 |------|------|-------|----------|---------|
-| Treasury (ground) | goatKnight | 2 | Patrol between chest rows, slow sweep | Dark, armored |
-| Treasury (balcony) | hellgoat | 2 | Guard balcony ramps, ranged positions | Brown goatman |
-| Weight Room | goatKnight | 1 | Stationed on far platform, blocks exit | Dark, armored |
-| Weight Room | hellgoat | 1 | Patrols pressure plate zone | Brown goatman |
-| Auction Hall wave 1 | goatKnight | 2 | Spawn N and S, advance through pillars | Dark, armored |
-| Auction Hall wave 1 | hellgoat | 2 | Spawn E and W, flank wide | Brown goatman |
-| Auction Hall wave 2 | goatKnight | 2 | Spawn from corners, aggressive push | Dark, armored |
-| Auction Hall wave 2 | hellgoat | 2 | Spawn from door-side, fast rush | Brown goatman |
+| Treasury (ground) | hoarder | 2 | Patrol between chest rows, slow sweep | Dark, armored |
+| Treasury (balcony) | hoarder | 2 | Guard balcony ramps, ranged positions | Brown goatman |
+| Weight Room | hoarder | 1 | Stationed on far platform, blocks exit | Dark, armored |
+| Weight Room | hoarder | 1 | Patrols pressure plate zone | Brown goatman |
+| Auction Hall wave 1 | hoarder | 2 | Spawn N and S, advance through pillars | Dark, armored |
+| Auction Hall wave 1 | hoarder | 2 | Spawn E and W, flank wide | Brown goatman |
+| Auction Hall wave 2 | hoarder | 2 | Spawn from corners, aggressive push | Dark, armored |
+| Auction Hall wave 2 | hoarder | 2 | Spawn from door-side, fast rush | Brown goatman |
 | Boss chamber | Aureo | 1 | Boss AI, 3 phases (coins, steal, strip) | boss-aureo.glb |
 
-**goatKnight Balance Note:** goatKnights have 15 HP + 5 armor = 20 effective HP. With the Hellfire Cannon (3 dmg, 150ms fire rate), they die in 7 shots (~1 second). With the Brim Shotgun at close range (28 dmg), they die in 1 shot. With the Hell Pistol (4 dmg per shot), they require 5 shots (~1.5 seconds). The armor makes them feel tanky without being bullet sponges.
+**hoarder Balance Note:** goatKnights have 15 HP + 5 armor = 20 effective HP. With the Hellfire Cannon (3 dmg, 150ms fire rate), they die in 7 shots (~1 second). With the Brim Shotgun at close range (28 dmg), they die in 1 shot. With the Hell Pistol (4 dmg per shot), they require 5 shots (~1.5 seconds). The armor makes them feel tanky without being bullet sponges.
 
 ### Pickups
 
@@ -261,8 +261,8 @@ Greed's hoarding mechanic is the primary pacing lever: players who collect all t
   GC = greed-golden-candelabra (4x, balcony corners)
   GP = greed-gold-pillar (4x structural, balcony anchors -- not shown for clarity)
   [A] = ammo pickup (balcony)    [H] = health pickup (ground)
-  goatKnight x2 patrol ground between chest rows
-  hellgoat x2 guard balcony ramp tops
+  hoarder x2 patrol ground between chest rows
+  hoarder x2 guard balcony ramp tops
 ```
 
 **Elevation:** Ground floor at elevation 0. Mezzanine balcony (greed-diamond-plate-platform) at elevation 1 runs along east and west walls, connected by ramps at NE, NW, SE, SW corners. Balcony is 2 cells wide. Ramps are 2 cells wide, 3 cells long, slope from 0 to 1. Four greed-gold-pillar structural columns anchor the balcony at corners.
@@ -283,8 +283,8 @@ Greed's hoarding mechanic is the primary pacing lever: players who collect all t
   |  SG+AS       |  SG = greed-skeletal-goat (entrance teach)
   | PP PP PP PP  |  AS = greed-ammo-scatter (around skeleton)
   | ↓↓ ↓↓ ↓↓ ↓↓ |  GBS = greed-gold-bar-stack (far side bait)
-  |  GM       GM  |  gK = goatKnight (far platform)
-  | PP PP PP PP  |  hg = hellgoat (patrols plates)
+  |  GM       GM  |  gK = hoarder (far platform)
+  | PP PP PP PP  |  hg = hoarder (patrols plates)
   | ↓↓ ↓↓ ↓↓ ↓↓ |  CP = coin-pile (floor atmosphere)
   |               |
   | PP PP PP PP  |  [A] = ammo (bait, far side)
@@ -309,7 +309,7 @@ A tooltip appears when the player first steps onto a greed-pressure-plate while 
 
 Environmental teach: a greed-skeletal-goat prop lies on a sunken plate near the entrance, surrounded by greed-ammo-scatter. The visual narrative: this goat couldn't let go.
 
-The room is a grid of greed-pressure-plate sections. If the player has hoarded ammo (>150%), plates sink beneath them. To cross, the player must DROP ammo -- the game forces you to let go of what you've collected. The goatKnight on the far platform fires while you navigate. The hellgoat patrols the plates, adding pressure. Two greed-gold-bar-stack on the far side are visual bait. The WALL_SECRET on the west wall leads to the Reliquary.
+The room is a grid of greed-pressure-plate sections. If the player has hoarded ammo (>150%), plates sink beneath them. To cross, the player must DROP ammo -- the game forces you to let go of what you've collected. The hoarder on the far platform fires while you navigate. The hoarder patrols the plates, adding pressure. Two greed-gold-bar-stack on the far side are visual bait. The WALL_SECRET on the west wall leads to the Reliquary.
 
 ---
 
@@ -339,8 +339,8 @@ The room is a grid of greed-pressure-plate sections. If the player has hoarded a
   - Collapsed pillar: cover removed, sightline opened
   - Creates rubble (elevation +0.5 debris mound, partial cover)
 
-  Wave 1: 2 goatKnight (N, S) + 2 hellgoat (E, W)
-  Wave 2: 2 goatKnight (corners) + 2 hellgoat (door-side)
+  Wave 1: 2 hoarder (N, S) + 2 hoarder (E, W)
+  Wave 2: 2 hoarder (corners) + 2 hoarder (door-side)
 ```
 
 **Elevation:** Flat arena at elevation 0. Four greed-gold-pillar are 1x1 structural columns rising to full height. When destroyed, they leave rubble mounds at elevation 0.5 (partial cover, climbable). The room starts with four cover points and ends with four rubble mounds -- the tactical landscape inverts.
@@ -428,8 +428,8 @@ The room is a grid of greed-pressure-plate sections. If the player has hoarded a
 | T2 | Weight Room | (18, 29, 8, 8) | `activatePressurePlates` | `ammo > 150%` | `{ sinkRate: 0.5, sinkDepth: -1 }` |
 | T3 | Weight Room | (18, 29, 8, 8) | `showHint` | `once: true, ammo > 150%` | `{ text: "The floor groans beneath your burden. Let go." }` |
 | T4 | Auction Hall | (17, 43, 10, 2) | `lockDoors` | `once: true` | -- |
-| T5 | Auction Hall | (17, 43, 10, 2) | `spawnWave` | `once: true` | `{ enemies: [{type:'goatKnight', count:2}, {type:'hellgoat', count:2}] }` |
-| T6 | Auction Hall | -- | `spawnWave` | On wave 1 clear | `{ enemies: [{type:'goatKnight', count:2}, {type:'hellgoat', count:2}] }` |
+| T5 | Auction Hall | (17, 43, 10, 2) | `spawnWave` | `once: true` | `{ enemies: [{type:'hoarder', count:2}, {type:'hoarder', count:2}] }` |
+| T6 | Auction Hall | -- | `spawnWave` | On wave 1 clear | `{ enemies: [{type:'hoarder', count:2}, {type:'hoarder', count:2}] }` |
 | T7 | Auction Hall | -- | `unlockDoors` | On wave 2 clear | -- |
 | T8 | Auction Hall pillar | P1-P4 positions | `destroyPillar` | coin-pile destroyed | `{ pillarId: 1-4, rubbleElevation: 0.5 }` |
 | T9 | Boss chamber | (16, 59, 12, 2) | `bossIntro` | `once: true` | `{ text: "Everything you carry was taken from another. I will take it from you." }` |
@@ -478,7 +478,7 @@ editor.createTheme('circle-4-greed', {
   ambientIntensity: 0.20,
   skyColor: '#0a0800',
   particleEffect: 'goldDust',                 // Floating gold motes in air
-  enemyTypes: ['goatKnight', 'hellgoat'],
+  enemyTypes: ['hoarder', 'hoarder'],
   enemyDensity: 1.0,                          // Standard density
   pickupDensity: 2.5,                         // VERY high -- abundance is the trap
   circleSpecific: {
