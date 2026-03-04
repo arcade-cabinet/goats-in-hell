@@ -104,15 +104,15 @@ function validateManifest(manifestPath) {
     const { status, artifacts } = taskData;
 
     // Warn if a SUCCEEDED task has empty artifacts (may indicate incomplete pipeline).
-    // Exception: enemy pipeline only keeps the final rigged model.glb — preview/refine
-    // GLBs are intermediate steps intentionally not downloaded.
+    // Exception: enemy pipeline skips artifacts on all intermediate steps (preview, refine,
+    // rigging). The rigged GLB feeds the animation API but is not a game asset itself.
     const isEnemyPipeline = data.pipeline === 'enemy';
-    const INTERMEDIATE_TASKS = ['text-to-3d-preview', 'text-to-3d-refine'];
+    const ENEMY_SKIP_ARTIFACT_TASKS = ['text-to-3d-preview', 'text-to-3d-refine', 'rigging'];
     if (status === 'SUCCEEDED' && artifacts && Object.keys(artifacts).length === 0) {
       const ARTIFACT_PRODUCING_TASKS = ['text-to-3d-preview', 'text-to-3d-refine', 'rigging'];
       if (ARTIFACT_PRODUCING_TASKS.includes(taskName)) {
-        if (isEnemyPipeline && INTERMEDIATE_TASKS.includes(taskName)) {
-          // Expected: enemy pipeline discards intermediate preview/refine GLBs
+        if (isEnemyPipeline && ENEMY_SKIP_ARTIFACT_TASKS.includes(taskName)) {
+          // Expected: enemy pipeline skips intermediate artifacts (preview, refine, rigging)
         } else {
           errors.push(`${relPath}[${taskName}]: SUCCEEDED but artifacts is empty {}`);
         }
