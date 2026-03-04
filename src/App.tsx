@@ -10,6 +10,7 @@
  */
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { screenshotService } from './game/systems/telemetry/ScreenshotService';
 import {
   exportRunReportJSON,
   startTelemetryRun,
@@ -83,6 +84,7 @@ const App = () => {
     const seed = generateSeedPhrase();
     const timer = setTimeout(() => {
       startTelemetryRun(seed, difficulty);
+      screenshotService.request('autoplay-start');
       startNewGame(
         difficulty,
         { nightmare: false, permadeath: false, ultraNightmare: false },

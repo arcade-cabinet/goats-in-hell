@@ -10,6 +10,7 @@ import { useGameStore } from '../../state/GameStore';
 import type { Entity } from '../entities/components';
 import { world } from '../entities/world';
 import { gameEventBus } from './telemetry/GameEventBus';
+import { screenshotService } from './telemetry/ScreenshotService';
 
 // ---------------------------------------------------------------------------
 // Floor completion
@@ -62,6 +63,7 @@ export function advanceFloor(): void {
     encounterType: stage.encounterType,
     timeMs: Date.now(),
   });
+  screenshotService.request(`circle-${circleNumber}-complete`);
   GameState.set({ screen: 'victory' });
 }
 

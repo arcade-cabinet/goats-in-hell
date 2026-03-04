@@ -1,11 +1,13 @@
 /**
- * LevelRenderer — unified R3F component for level visuals.
+ * LevelRenderer — unified R3F component for all level visuals.
  *
- * Renders per-room floor textures (PBR AmbientCG), procedural prop fill
- * (from CompiledVisual fill rules), and static prop placements (from DB entities).
- * Replaces EnvironmentZones.tsx (visual) and DungeonProps.tsx.
+ * Renders:
+ * 1. Per-room floor planes with PBR AmbientCG textures (from CompiledVisual).
+ * 2. Procedural prop scatter (from CompiledVisual fill rules).
+ * 3. Static prop placements from DB entities (formerly in DungeonProps.tsx).
+ * 4. Atmospheric point lights for fire/candle props (formerly in DungeonProps.tsx).
  *
- * Env zone GAMEPLAY is still handled by EnvironmentZoneEffects.ts — this
+ * Env zone GAMEPLAY is handled by EnvironmentZoneEffects.ts — this
  * component has no responsibility for damage/speed zones.
  */
 
@@ -23,12 +25,18 @@ import {
   type SetpieceModelKey,
 } from '../../game/systems/AssetRegistry';
 import { cloneModel, isModelLoaded, loadModels } from '../systems/ModelLoader';
-import type { PropSpawn } from './DungeonProps';
 import { createZoneMaterial } from './Materials';
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
+
+export interface PropSpawn {
+  x: number;
+  z: number;
+  type: string;
+  rotation?: number;
+}
 
 export interface LevelRendererProps {
   compiledVisual: CompiledVisual | null;
@@ -43,6 +51,69 @@ export interface LevelRendererProps {
 
 const _yAxis = new THREE.Vector3(0, 1, 0);
 const _hsl = { h: 0, s: 0, l: 0 };
+
+// ---------------------------------------------------------------------------
+// Per-prop-type configuration (folded from DungeonProps.tsx)
+// ---------------------------------------------------------------------------
+
+interface PropGlbConfig {
+  assetKey: PropModelKey;
+  scale: number;
+  emitsLight?: boolean;
+  lightColor?: string;
+  lightIntensity?: number;
+  lightDistance?: number;
+  lightFlicker?: boolean;
+}
+
+const PROP_GLB_CONFIGS: Record<string, PropGlbConfig> = {
+  prop_firebasket: {
+    assetKey: 'prop-firebasket',
+    scale: 0.6,
+    emitsLight: true,
+    lightColor: '#ff6600',
+    lightIntensity: 1.2,
+    lightDistance: 5,
+    lightFlicker: true,
+  },
+  prop_candle: {
+    assetKey: 'prop-candle',
+    scale: 0.5,
+    emitsLight: true,
+    lightColor: '#ffcc44',
+    lightIntensity: 0.5,
+    lightDistance: 3,
+    lightFlicker: true,
+  },
+  prop_candle_multi: {
+    assetKey: 'prop-candle-multi',
+    scale: 0.5,
+    emitsLight: true,
+    lightColor: '#ffcc44',
+    lightIntensity: 0.7,
+    lightDistance: 3.5,
+    lightFlicker: true,
+  },
+  prop_coffin: {
+    assetKey: 'prop-chest',
+    scale: 0.7,
+  },
+  prop_column: {
+    assetKey: 'prop-column',
+    scale: 1.0,
+  },
+  prop_chalice: {
+    assetKey: 'prop-chalice',
+    scale: 0.5,
+  },
+  prop_bowl: {
+    assetKey: 'prop-bowl',
+    scale: 0.5,
+  },
+};
+
+/** Maximum point lights placed for props (GPU budget). */
+const MAX_PROP_LIGHTS = 16;
 
 // ---------------------------------------------------------------------------
 // Meshy material sanitization
@@ -85,7 +156,7 @@ function sanitizeMeshyMaterials(object: THREE.Group): void {
 }
 
 // ---------------------------------------------------------------------------
-// Asset resolution helpers (copied verbatim from DungeonProps.tsx)
+// Asset resolution helpers
 // ---------------------------------------------------------------------------
 
 /**
@@ -118,7 +189,13 @@ function collectNeededAssets(spawns: PropSpawn[]): [string, string][] {
   const entries: [string, string][] = [];
 
   for (const spawn of spawns) {
-    const resolved = resolveAsset(spawn.type);
+    const config = PROP_GLB_CONFIGS[spawn.type];
+    const resolved = config
+      ? {
+          key: config.assetKey as string,
+          value: PROP_MODEL_ASSETS[config.assetKey] as string,
+        }
+      : resolveAsset(spawn.type);
     if (!resolved || seen.has(resolved.key)) continue;
     seen.add(resolved.key);
     entries.push([resolved.key, resolved.value as string]);
@@ -162,7 +239,7 @@ function collectFillAssets(compiledVisual: CompiledVisual | null): [string, stri
 
 /**
  * Clone and position a GLB model so the bottom sits at y=0.
- * Follows the same pattern as DungeonProps.tsx's buildGlbPropMesh().
+ * Normalizes scale so the model fits within the target scale factor.
  */
 function buildGlbPropMesh(assetKey: string, scale = 0.7): THREE.Group | null {
   const cloned = cloneModel(assetKey);
@@ -197,7 +274,7 @@ function buildGlbPropMesh(assetKey: string, scale = 0.7): THREE.Group | null {
 }
 
 // ---------------------------------------------------------------------------
-// Cleanup helpers (copied from DungeonProps.tsx)
+// Cleanup helpers
 // ---------------------------------------------------------------------------
 
 function cleanupGroup(scene: THREE.Scene, root: THREE.Group | null): void {
@@ -364,15 +441,17 @@ export function LevelRenderer({
     const flickerLights: typeof flickerLightsRef.current = [];
     const propErrors: string[] = [];
 
-    // --- Static props (same logic as DungeonProps.tsx) ---
+    // --- Static props (folded from DungeonProps.tsx — includes light-emitting props) ---
     const staticRoot = new THREE.Group();
     staticRoot.name = 'level-static-props';
     let propIndex = 0;
+    let totalLightsPlaced = 0;
 
     for (const spawn of renderableSpawns) {
-      const resolved = resolveAsset(spawn.type);
+      const config = PROP_GLB_CONFIGS[spawn.type];
+      const resolved = config ? { key: config.assetKey as string } : resolveAsset(spawn.type);
       const assetKey = resolved?.key ?? null;
-      const scale = 0.7;
+      const scale = config?.scale ?? 0.7;
 
       const propGroup = new THREE.Group();
       propGroup.name = `static-prop-${spawn.type}-${propIndex++}`;
@@ -396,6 +475,30 @@ export function LevelRenderer({
       }
 
       staticRoot.add(propGroup);
+
+      // Point lights for fire-emitting props (firebasket, candles)
+      if (config?.emitsLight && totalLightsPlaced < MAX_PROP_LIGHTS) {
+        const light = new THREE.PointLight(
+          config.lightColor ?? '#ff6600',
+          config.lightIntensity ?? 1,
+          config.lightDistance ?? 4,
+        );
+        light.name = `prop-light-${spawn.type}-${propIndex}`;
+        light.position.set(spawn.x, scale + 0.3, -spawn.z);
+        scene.add(light);
+        sceneLights.push(light);
+
+        if (config.lightFlicker) {
+          flickerLights.push({
+            light,
+            baseIntensity: config.lightIntensity ?? 1,
+            phase: Math.random() * Math.PI * 2,
+            speed: 3 + Math.random() * 4,
+          });
+        }
+
+        totalLightsPlaced++;
+      }
     }
 
     scene.add(staticRoot);

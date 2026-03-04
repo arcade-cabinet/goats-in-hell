@@ -425,6 +425,36 @@ export async function buildCircle4(dbPath: string) {
   // 2x coin-pile (floor atmosphere)
   editor.spawnProp(LEVEL_ID, 'coin-pile', 18, 33, { roomId: weightRoomId });
   editor.spawnProp(LEVEL_ID, 'coin-pile', 25, 36, { roomId: weightRoomId });
+  // --- Playtest density audit additions (CRITICALLY EMPTY per audit) ---
+  // 2x prop-bones (remains of crushed sinners)
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 19, 35, { roomId: weightRoomId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 24, 31, { roomId: weightRoomId });
+  // 2x prop-skull (among bones)
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 18, 31, { roomId: weightRoomId });
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 25, 35, { roomId: weightRoomId });
+  // 2x prop-torch-mounted (walls, desperately needed lighting)
+  editor.spawnProp(LEVEL_ID, 'prop-torch-mounted', 17, 32, {
+    roomId: weightRoomId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'prop-torch-mounted', 26, 32, {
+    roomId: weightRoomId,
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
 
   // --- Reliquary (bounds: 2, 32, 6, 6) ---
   // Structural: 1x greed-vault-arch (hidden entrance)
@@ -437,6 +467,9 @@ export async function buildCircle4(dbPath: string) {
   // 2x greed-golden-chalice (south shelf)
   editor.spawnProp(LEVEL_ID, 'greed-golden-chalice', 3, 36, { roomId: reliquaryId });
   editor.spawnProp(LEVEL_ID, 'greed-golden-chalice', 6, 36, { roomId: reliquaryId });
+  // --- Playtest density audit addition ---
+  // 1x prop-pedestal under treasure chest (elevates the hero piece)
+  editor.spawnProp(LEVEL_ID, 'prop-pedestal', 4, 35, { roomId: reliquaryId });
 
   // --- Auction Hall (bounds: 16, 42, 12, 12) ---
   // 4x greed-gold-pillar (structural, destructible)
@@ -481,6 +514,13 @@ export async function buildCircle4(dbPath: string) {
   // 2x greed-golden-vase (corners)
   editor.spawnProp(LEVEL_ID, 'greed-golden-vase', 16, 43, { roomId: auctionHallId });
   editor.spawnProp(LEVEL_ID, 'greed-golden-vase', 28, 53, { roomId: auctionHallId });
+  // --- Playtest density audit additions ---
+  // 1x prop-column (center north, structural accent)
+  editor.spawnProp(LEVEL_ID, 'prop-column', 22, 44, { roomId: auctionHallId });
+  // 3x prop-broken-pot (scattered debris, evidence of past violence)
+  editor.spawnProp(LEVEL_ID, 'prop-broken-pot', 18, 48, { roomId: auctionHallId });
+  editor.spawnProp(LEVEL_ID, 'prop-broken-pot', 26, 46, { roomId: auctionHallId });
+  editor.spawnProp(LEVEL_ID, 'prop-broken-pot', 21, 52, { roomId: auctionHallId });
 
   // --- Boss chamber: Aureo's Court (bounds: 15, 58, 14, 14) ---
   // Structural: 1x greed-golden-throne (north-center dais)
@@ -537,6 +577,12 @@ export async function buildCircle4(dbPath: string) {
   // 2x greed-golden-vase (perimeter)
   editor.spawnProp(LEVEL_ID, 'greed-golden-vase', 17, 60, { roomId: aureosCourtId });
   editor.spawnProp(LEVEL_ID, 'greed-golden-vase', 27, 60, { roomId: aureosCourtId });
+  // --- Playtest density audit additions ---
+  // 2x prop-column flanking throne (structural gravitas)
+  editor.spawnProp(LEVEL_ID, 'prop-column', 19, 59, { roomId: aureosCourtId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 25, 59, { roomId: aureosCourtId });
+  // 1x prop-chest-gold (throne-side treasure display)
+  editor.spawnProp(LEVEL_ID, 'prop-chest-gold', 22, 60, { roomId: aureosCourtId });
 
   // =========================================================================
   // 5d. DECALS (from design doc Scratches004 + Fingerprints002 mappings)

@@ -466,6 +466,17 @@ export async function buildCircle5(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'wrath-smashed-barrier', 26, 15, { roomId: bloodMarshId });
   // 1x wrath-iron-grate (on ISL3 center floor)
   editor.spawnProp(LEVEL_ID, 'wrath-iron-grate', 22, 20, { roomId: bloodMarshId });
+  // --- Playtest audit additions: Blood Marsh ---
+  // 3x prop-dead-tree (marsh atmosphere)
+  editor.spawnProp(LEVEL_ID, 'prop-dead-tree', 17, 16, { roomId: bloodMarshId });
+  editor.spawnProp(LEVEL_ID, 'prop-dead-tree', 30, 18, { roomId: bloodMarshId });
+  editor.spawnProp(LEVEL_ID, 'prop-dead-tree', 21, 24, { roomId: bloodMarshId });
+  // 2x prop-bones (marsh shoreline)
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 19, 22, { roomId: bloodMarshId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 28, 16, { roomId: bloodMarshId });
+  // 2x prop-rock1 (islands)
+  editor.spawnProp(LEVEL_ID, 'prop-rock1', 25, 22, { roomId: bloodMarshId });
+  editor.spawnProp(LEVEL_ID, 'prop-rock1', 20, 14, { roomId: bloodMarshId });
 
   // --- Rage Pit (bounds: 22, 30, 12, 12) ---
   // Structural: 4x wrath-pit-tier-ring
@@ -494,6 +505,17 @@ export async function buildCircle5(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'wrath-iron-grate', 27, 37, { roomId: ragePitId });
   // 1x wrath-punching-bag-chain
   editor.spawnProp(LEVEL_ID, 'wrath-punching-bag-chain', 28, 36, { roomId: ragePitId });
+  // --- Playtest audit additions: Rage Pit ---
+  // 3x prop-column-broken (rim debris)
+  editor.spawnProp(LEVEL_ID, 'prop-column-broken', 24, 31, { roomId: ragePitId });
+  editor.spawnProp(LEVEL_ID, 'prop-column-broken', 32, 35, { roomId: ragePitId });
+  editor.spawnProp(LEVEL_ID, 'prop-column-broken', 23, 40, { roomId: ragePitId });
+  // 3x prop-bones (pit floor)
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 26, 38, { roomId: ragePitId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 30, 36, { roomId: ragePitId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 25, 33, { roomId: ragePitId });
+  // 1x prop-spikes (center pit hazard)
+  editor.spawnProp(LEVEL_ID, 'prop-spikes', 28, 37, { roomId: ragePitId });
 
   // --- Arsenal (bounds: 14, 46, 12, 6) ---
   // Arsenal is narrow (12x6) with three corridors (two north, one south).
@@ -502,6 +524,12 @@ export async function buildCircle5(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'wrath-jagged-arch', 20, 46, { roomId: arsenalId });
   editor.spawnProp(LEVEL_ID, 'wrath-anger-graffiti-slab', 15, 47, { roomId: arsenalId });
   editor.spawnProp(LEVEL_ID, 'wrath-blood-spattered-slab', 25, 47, { roomId: arsenalId });
+  // --- Playtest audit additions: Arsenal ---
+  // prop-sword-wall + prop-shield-wall (weapon displays)
+  editor.spawnProp(LEVEL_ID, 'prop-sword-wall', 15, 48, { roomId: arsenalId });
+  editor.spawnProp(LEVEL_ID, 'prop-shield-wall', 25, 48, { roomId: arsenalId });
+  // 1x prop-pedestal (under Goat's Bane weapon pickup)
+  editor.spawnProp(LEVEL_ID, 'prop-pedestal', 17, 49, { roomId: arsenalId });
 
   // --- Berserker Arena (bounds: 15, 56, 14, 14) ---
   // Structural: 1x wrath-jagged-arch (entry), 1x wrath-dented-iron-door (exit)
@@ -527,6 +555,11 @@ export async function buildCircle5(dbPath: string) {
   // 2x wrath-caged-lantern (overhead, E/W walls)
   editor.spawnProp(LEVEL_ID, 'wrath-caged-lantern', 15, 60, { roomId: berserkerArenaId });
   editor.spawnProp(LEVEL_ID, 'wrath-caged-lantern', 29, 60, { roomId: berserkerArenaId });
+  // --- Playtest audit additions: Berserker Arena ---
+  // 3x prop-broken-pot at edges (arena debris)
+  editor.spawnProp(LEVEL_ID, 'prop-broken-pot', 16, 57, { roomId: berserkerArenaId });
+  editor.spawnProp(LEVEL_ID, 'prop-broken-pot', 28, 57, { roomId: berserkerArenaId });
+  editor.spawnProp(LEVEL_ID, 'prop-broken-pot', 16, 69, { roomId: berserkerArenaId });
 
   // --- Shrine of Fury (bounds: 2, 74, 6, 6) ---
   // 1x wrath-smashed-barrier (west corner, minimal)
@@ -557,6 +590,13 @@ export async function buildCircle5(dbPath: string) {
   // 2x wrath-blood-spattered-slab (walls near ramps)
   editor.spawnProp(LEVEL_ID, 'wrath-blood-spattered-slab', 22, 80, { roomId: gauntletId });
   editor.spawnProp(LEVEL_ID, 'wrath-blood-spattered-slab', 24, 88, { roomId: gauntletId });
+  // --- Playtest audit additions: Gauntlet ---
+  // 2x prop-bones (corridor floor)
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 23, 77, { roomId: gauntletId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 23, 89, { roomId: gauntletId });
+  // 2x prop-skull (ramp bases)
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 22, 83, { roomId: gauntletId });
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 25, 91, { roomId: gauntletId });
 
   // --- Boss colosseum (bounds: 16, 98, 16, 16) ---
   // Structural: 1x wrath-jagged-arch (entrance)
@@ -586,6 +626,16 @@ export async function buildCircle5(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'wrath-smashed-barrier', 29, 102, { roomId: colosseumId });
   // 1x wrath-iron-grate (center floor)
   editor.spawnProp(LEVEL_ID, 'wrath-iron-grate', 24, 106, { roomId: colosseumId });
+  // --- Playtest audit additions: Furia's Colosseum ---
+  // 4x prop-skull (sand floor, arena atmosphere)
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 19, 102, { roomId: colosseumId });
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 29, 102, { roomId: colosseumId });
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 19, 110, { roomId: colosseumId });
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 29, 110, { roomId: colosseumId });
+  // 3x prop-bones (scattered on sand)
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 22, 104, { roomId: colosseumId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 26, 108, { roomId: colosseumId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 21, 112, { roomId: colosseumId });
 
   // =========================================================================
   // 5d. DECALS (from design doc Scratches007, Rust001, Leaking001 mappings)

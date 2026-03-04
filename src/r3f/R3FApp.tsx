@@ -8,13 +8,14 @@
  * On native (iOS/Android), Rapier is disabled via PhysicsWrapper.
  * Player movement falls back to non-physical kinematic control (Phase 2).
  */
-import { Canvas, extend, type ThreeToJSXElements } from '@react-three/fiber';
+import { Canvas, extend, type ThreeToJSXElements, useFrame, useThree } from '@react-three/fiber';
 import { Physics } from '@react-three/rapier';
 import type React from 'react';
 import { Suspense, useCallback, useEffect, useState } from 'react';
 import { Platform, View } from 'react-native';
 import * as THREE from 'three/webgpu';
 import { renderingConfig } from '../config';
+import { screenshotService } from '../game/systems/telemetry/ScreenshotService';
 import { R3FScene } from './R3FScene';
 
 /**
@@ -86,6 +87,20 @@ function PhysicsWrapper({ children }: { children: React.ReactNode }) {
       </Physics>
     </Suspense>
   );
+}
+
+/**
+ * Checks for pending screenshot requests each frame and captures
+ * the canvas when one is waiting.
+ */
+function ScreenshotCapture() {
+  const { gl } = useThree();
+  useFrame(() => {
+    if (screenshotService.hasPending()) {
+      screenshotService.capture(gl.domElement);
+    }
+  });
+  return null;
 }
 
 /**
@@ -193,6 +208,7 @@ export function R3FApp({ children }: { children?: React.ReactNode }) {
         }}
         camera={{ fov: 75, near: 0.3, far: 100, position: [0, 1.6, 0] }}
       >
+        <ScreenshotCapture />
         <Suspense fallback={<LoadingFallback />}>
           <ReadySignal onReady={onReady} />
           <PhysicsWrapper>

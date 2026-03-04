@@ -510,6 +510,11 @@ export async function buildCircle3(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'gluttony-mucus-web', 22, 7, { roomId: gulletId });
   // 1x gluttony-maggot-mound (exit wide section floor)
   editor.spawnProp(LEVEL_ID, 'gluttony-maggot-mound', 18, 13, { roomId: gulletId });
+  // --- Playtest density audit additions ---
+  // 1x prop-torch-mounted (south wide section)
+  editor.spawnProp(LEVEL_ID, 'prop-torch-mounted', 21, 13, { roomId: gulletId });
+  // 1x prop-bucket (first wide section)
+  editor.spawnProp(LEVEL_ID, 'prop-bucket', 20, 5, { roomId: gulletId });
 
   // --- Feast Hall (bounds: 13, 20, 14, 10) ---
   //   Interior: x=[14..25], z=[21..28]
@@ -565,6 +570,8 @@ export async function buildCircle3(dbPath: string) {
   });
   // 1x feast-table (center, (17,24)-(25,26))
   editor.spawnProp(LEVEL_ID, 'feast-table', 20, 25, { roomId: feastHallId });
+  // 1x prop-table (secondary side table, playtest density audit)
+  editor.spawnProp(LEVEL_ID, 'prop-table', 15, 23, { roomId: feastHallId });
   // 1x lust-chandelier (ceiling center, warm overhead)
   editor.spawnProp(LEVEL_ID, 'lust-chandelier', 20, 24, { roomId: feastHallId });
   // 2x bile-cauldron (flanking table ends)
@@ -768,6 +775,13 @@ export async function buildCircle3(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'gluttony-dripping-stalactite', 21, 41, { roomId: larderId });
   // 1x gluttony-meat-carcass (hanging from ceiling)
   editor.spawnProp(LEVEL_ID, 'gluttony-meat-carcass', 23, 36, { roomId: larderId });
+  // --- Playtest density audit additions ---
+  // 1x prop-bookcase (against east wall, stores preserved supplies)
+  editor.spawnProp(LEVEL_ID, 'prop-bookcase', 23, 37, { roomId: larderId });
+  // 1x prop-barrel (floor, among rotten barrels for contrast)
+  editor.spawnProp(LEVEL_ID, 'prop-barrel', 19, 37, { roomId: larderId });
+  // 1x prop-crate (floor, supplies)
+  editor.spawnProp(LEVEL_ID, 'prop-crate', 20, 44, { roomId: larderId });
 
   // --- Bile Cistern (bounds: 14, 50, 12, 10) ---
   //   Interior: x=[15..24], z=[51..58]
@@ -837,6 +851,11 @@ export async function buildCircle3(dbPath: string) {
   // 2x gluttony-mucus-web (walkway corners)
   editor.spawnProp(LEVEL_ID, 'gluttony-mucus-web', 15, 54, { roomId: bileCisternId });
   editor.spawnProp(LEVEL_ID, 'gluttony-mucus-web', 24, 53, { roomId: bileCisternId });
+  // --- Playtest density audit additions ---
+  // 3x prop-bones along walkway edges
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 17, 53, { roomId: bileCisternId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 21, 56, { roomId: bileCisternId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 23, 58, { roomId: bileCisternId });
   // 2x gluttony-stomach-wall-growth (wall surfaces)
   editor.spawnProp(LEVEL_ID, 'gluttony-stomach-wall-growth', 14, 54, {
     roomId: bileCisternId,
@@ -916,6 +935,12 @@ export async function buildCircle3(dbPath: string) {
       scale: 1.0,
     },
   });
+  // --- Playtest density audit additions ---
+  // 4x prop-column at bridge entries (N, S, E, W ring bridges)
+  editor.spawnProp(LEVEL_ID, 'prop-column', 20, 66, { roomId: gutArenaId }); // N bridge
+  editor.spawnProp(LEVEL_ID, 'prop-column', 20, 74, { roomId: gutArenaId }); // S bridge
+  editor.spawnProp(LEVEL_ID, 'prop-column', 16, 70, { roomId: gutArenaId }); // W bridge
+  editor.spawnProp(LEVEL_ID, 'prop-column', 24, 70, { roomId: gutArenaId }); // E bridge
   // 4x gluttony-slop-bucket (outer ring, one per quadrant)
   editor.spawnProp(LEVEL_ID, 'gluttony-slop-bucket', 16, 66, { roomId: gutArenaId });
   editor.spawnProp(LEVEL_ID, 'gluttony-slop-bucket', 23, 66, { roomId: gutArenaId });
@@ -1181,6 +1206,18 @@ export async function buildCircle3(dbPath: string) {
   // 2x gluttony-organic-column (central platform edges, structural cover)
   editor.spawnProp(LEVEL_ID, 'gluttony-organic-column', 18, 85, { roomId: voragosMawId });
   editor.spawnProp(LEVEL_ID, 'gluttony-organic-column', 22, 85, { roomId: voragosMawId });
+  // --- Playtest density audit additions ---
+  // 4x prop-bones (scattered on platforms and ledges)
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 16, 82, { roomId: voragosMawId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 24, 82, { roomId: voragosMawId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 17, 90, { roomId: voragosMawId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 23, 90, { roomId: voragosMawId });
+  // 2x prop-cobweb (ceiling corners)
+  editor.spawnProp(LEVEL_ID, 'prop-cobweb', 14, 81, { roomId: voragosMawId });
+  editor.spawnProp(LEVEL_ID, 'prop-cobweb', 26, 81, { roomId: voragosMawId });
+  // 2x additional gluttony-rope-tendril (increase chain-like props from 2 to 4-6)
+  editor.spawnProp(LEVEL_ID, 'gluttony-rope-tendril', 15, 87, { roomId: voragosMawId });
+  editor.spawnProp(LEVEL_ID, 'gluttony-rope-tendril', 25, 90, { roomId: voragosMawId });
 
   // =========================================================================
   // 5d. DECALS (bile/organic seepage stains, acid erosion cracks)

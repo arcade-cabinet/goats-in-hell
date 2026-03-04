@@ -500,6 +500,25 @@ export async function buildCircle9(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'treachery-snow-drift-mound', 32, 12, { roomId: glacialStairsId });
   // 1x treachery-ice-crack-floor (ramp surfaces)
   editor.spawnProp(LEVEL_ID, 'treachery-ice-crack-floor', 30, 9, { roomId: glacialStairsId });
+  // +1x prop-torch-mounted (functional torch at top — master plan Task 10)
+  editor.spawnProp(LEVEL_ID, 'prop-torch-mounted', 27, 3, {
+    roomId: glacialStairsId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 2.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 1.0,
+    },
+  });
+  // +3x prop-crystal (ice crystal formations on stair landings)
+  editor.spawnProp(LEVEL_ID, 'prop-crystal', 28, 5, { roomId: glacialStairsId });
+  editor.spawnProp(LEVEL_ID, 'prop-crystal', 31, 9, { roomId: glacialStairsId });
+  editor.spawnProp(LEVEL_ID, 'prop-crystal', 28, 14, { roomId: glacialStairsId });
+  // +2x prop-rock1 (frozen rock outcrops)
+  editor.spawnProp(LEVEL_ID, 'prop-rock1', 27, 8, { roomId: glacialStairsId });
+  editor.spawnProp(LEVEL_ID, 'prop-rock1', 32, 15, { roomId: glacialStairsId });
 
   // --- Caina (bounds: 22, 22, 16, 14) ---
   // 6x ice-pillar (structural, 2 rows of 3, staggered, reflective surfaces)
@@ -545,6 +564,17 @@ export async function buildCircle9(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'treachery-snow-drift-mound', 36, 34, { roomId: cainaId });
   // 1x treachery-dark-ice-monolith (hero piece, center-north edge)
   editor.spawnProp(LEVEL_ID, 'treachery-dark-ice-monolith', 30, 23, { roomId: cainaId });
+  // +2x prop-column (structural, flanking entrance — master plan Task 10)
+  editor.spawnProp(LEVEL_ID, 'prop-column', 24, 23, { roomId: cainaId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 36, 23, { roomId: cainaId });
+  // +2x prop-crystal (ice crystal growths from frozen lake)
+  editor.spawnProp(LEVEL_ID, 'prop-crystal', 27, 30, { roomId: cainaId });
+  editor.spawnProp(LEVEL_ID, 'prop-crystal', 33, 28, { roomId: cainaId });
+  // +2x prop-bones (frozen remains near betrayer cages)
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 28, 27, { roomId: cainaId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 34, 32, { roomId: cainaId });
+  // +1x prop-cage (ice-encased cage)
+  editor.spawnProp(LEVEL_ID, 'prop-cage', 26, 34, { roomId: cainaId });
 
   // --- Antenora (bounds: 24, 40, 12, 16) ---
   // 2x treachery-ice-arch (north entrance, south exit)
@@ -617,19 +647,65 @@ export async function buildCircle9(dbPath: string) {
   // 2x stalactite-cluster (general, corridor ceiling)
   editor.spawnProp(LEVEL_ID, 'stalactite-cluster', 30, 42, { roomId: antenoraId });
   editor.spawnProp(LEVEL_ID, 'stalactite-cluster', 30, 52, { roomId: antenoraId });
+  // +2x prop-banner-wall (frozen battle banners — master plan Task 10)
+  editor.spawnProp(LEVEL_ID, 'prop-banner-wall', 25, 44, {
+    roomId: antenoraId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 2.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.8,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'prop-banner-wall', 34, 50, {
+    roomId: antenoraId,
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 2.0,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.8,
+    },
+  });
+  // +2x prop-shield-wall (frozen shields mounted on walls)
+  editor.spawnProp(LEVEL_ID, 'prop-shield-wall', 25, 48, {
+    roomId: antenoraId,
+    surfaceAnchor: {
+      face: 'west',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.8,
+    },
+  });
+  editor.spawnProp(LEVEL_ID, 'prop-shield-wall', 34, 44, {
+    roomId: antenoraId,
+    surfaceAnchor: {
+      face: 'east',
+      offsetX: 0,
+      offsetY: 1.5,
+      offsetZ: 0,
+      rotation: [0, 0, 0],
+      scale: 0.8,
+    },
+  });
 
   // --- Ptolomea (bounds: 23, 60, 14, 10) ---
   // 1x treachery-ice-arch (north entrance, low clearance)
   editor.spawnProp(LEVEL_ID, 'treachery-ice-arch', 30, 61, { roomId: ptolomeaId });
   // 1x treachery-frozen-feast-table (center, frost-covered banquet)
   editor.spawnProp(LEVEL_ID, 'treachery-frozen-feast-table', 30, 64, { roomId: ptolomeaId });
-  // 6x chair (general, around table, some knocked over)
-  editor.spawnProp(LEVEL_ID, 'chair', 28, 63, { roomId: ptolomeaId });
-  editor.spawnProp(LEVEL_ID, 'chair', 30, 63, { roomId: ptolomeaId });
-  editor.spawnProp(LEVEL_ID, 'chair', 32, 63, { roomId: ptolomeaId });
-  editor.spawnProp(LEVEL_ID, 'chair', 28, 66, { roomId: ptolomeaId });
-  editor.spawnProp(LEVEL_ID, 'chair', 30, 66, { roomId: ptolomeaId });
-  editor.spawnProp(LEVEL_ID, 'chair', 32, 66, { roomId: ptolomeaId });
+  // 6x prop-chair (around table, some knocked over)
+  editor.spawnProp(LEVEL_ID, 'prop-chair', 28, 63, { roomId: ptolomeaId });
+  editor.spawnProp(LEVEL_ID, 'prop-chair', 30, 63, { roomId: ptolomeaId });
+  editor.spawnProp(LEVEL_ID, 'prop-chair', 32, 63, { roomId: ptolomeaId });
+  editor.spawnProp(LEVEL_ID, 'prop-chair', 28, 66, { roomId: ptolomeaId });
+  editor.spawnProp(LEVEL_ID, 'prop-chair', 30, 66, { roomId: ptolomeaId });
+  editor.spawnProp(LEVEL_ID, 'prop-chair', 32, 66, { roomId: ptolomeaId });
   // 2x treachery-frost-chalice (on table, frozen contents)
   editor.spawnProp(LEVEL_ID, 'treachery-frost-chalice', 29, 64, { roomId: ptolomeaId });
   editor.spawnProp(LEVEL_ID, 'treachery-frost-chalice', 31, 64, { roomId: ptolomeaId });
@@ -640,9 +716,13 @@ export async function buildCircle9(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'treachery-snow-drift-mound', 35, 67, { roomId: ptolomeaId });
   // 1x frozen-goat (under table, partially visible)
   editor.spawnProp(LEVEL_ID, 'frozen-goat', 30, 65, { roomId: ptolomeaId });
-  // 2x crystal (general, ice formations growing from floor)
-  editor.spawnProp(LEVEL_ID, 'crystal', 26, 62, { roomId: ptolomeaId });
-  editor.spawnProp(LEVEL_ID, 'crystal', 34, 64, { roomId: ptolomeaId });
+  // 2x prop-crystal (ice formations growing from floor)
+  editor.spawnProp(LEVEL_ID, 'prop-crystal', 26, 62, { roomId: ptolomeaId });
+  editor.spawnProp(LEVEL_ID, 'prop-crystal', 34, 64, { roomId: ptolomeaId });
+  // +1x prop-table (side table with frozen contents — master plan Task 10)
+  editor.spawnProp(LEVEL_ID, 'prop-table', 26, 66, { roomId: ptolomeaId });
+  // +1x prop-chalice (overturned chalice on side table)
+  editor.spawnProp(LEVEL_ID, 'prop-chalice', 26, 66, { roomId: ptolomeaId });
 
   // --- Giudecca (bounds: 21, 74, 18, 16) ---
   // 1x treachery-frozen-waterfall (HERO PIECE, south/back wall, 8 cells wide, full height)
@@ -682,6 +762,18 @@ export async function buildCircle9(dbPath: string) {
   // 2x treachery-snow-drift-mound (south corners, near frozen waterfall base)
   editor.spawnProp(LEVEL_ID, 'treachery-snow-drift-mound', 22, 87, { roomId: giudeccaId });
   editor.spawnProp(LEVEL_ID, 'treachery-snow-drift-mound', 37, 87, { roomId: giudeccaId });
+  // +6x prop-column (cover columns — master plan Task 10, Giudecca was 4 props/288 cells)
+  editor.spawnProp(LEVEL_ID, 'prop-column', 23, 77, { roomId: giudeccaId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 37, 77, { roomId: giudeccaId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 23, 83, { roomId: giudeccaId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 37, 83, { roomId: giudeccaId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 23, 88, { roomId: giudeccaId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 37, 88, { roomId: giudeccaId });
+  // +4x prop-crystal (ice crystal clusters for visual spectacle)
+  editor.spawnProp(LEVEL_ID, 'prop-crystal', 26, 79, { roomId: giudeccaId });
+  editor.spawnProp(LEVEL_ID, 'prop-crystal', 34, 79, { roomId: giudeccaId });
+  editor.spawnProp(LEVEL_ID, 'prop-crystal', 26, 85, { roomId: giudeccaId });
+  editor.spawnProp(LEVEL_ID, 'prop-crystal', 34, 85, { roomId: giudeccaId });
 
   // --- Judas Trap (bounds: 12, 78, 6, 6) ---
   // 1x treachery-betrayer-cage (floor, containing frozen goat figure)
@@ -693,8 +785,12 @@ export async function buildCircle9(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'treachery-snow-drift-mound', 16, 83, { roomId: judasTrapId });
   // 1x treachery-ice-crack-floor (around cage, aged cracking)
   editor.spawnProp(LEVEL_ID, 'treachery-ice-crack-floor', 13, 80, { roomId: judasTrapId });
-  // 1x crystal (general, ice crystal growth near frozen figure)
-  editor.spawnProp(LEVEL_ID, 'crystal', 15, 80, { roomId: judasTrapId });
+  // 1x prop-crystal (ice crystal growth near frozen figure)
+  editor.spawnProp(LEVEL_ID, 'prop-crystal', 15, 80, { roomId: judasTrapId });
+  // +1x prop-cage (additional cage — master plan Task 10)
+  editor.spawnProp(LEVEL_ID, 'prop-cage', 16, 80, { roomId: judasTrapId });
+  // +1x prop-bones (frozen remains inside cage)
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 14, 82, { roomId: judasTrapId });
 
   // --- Cocytus Bridge (bounds: 28, 94, 4, 36) ---
   // NONE. Empty ice. Void below. Wind only.
@@ -798,6 +894,16 @@ export async function buildCircle9(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'treachery-snow-drift-mound', 30, 135, { roomId: azazelThroneId });
   // 1x treachery-frozen-waterfall (west wall fragment, echo of Giudecca)
   editor.spawnProp(LEVEL_ID, 'treachery-frozen-waterfall', 21, 144, { roomId: azazelThroneId });
+  // +4x prop-column (arena pillars for cover — master plan Task 10, was 4 props/400 cells)
+  editor.spawnProp(LEVEL_ID, 'prop-column', 25, 140, { roomId: azazelThroneId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 35, 140, { roomId: azazelThroneId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 25, 148, { roomId: azazelThroneId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 35, 148, { roomId: azazelThroneId });
+  // +4x prop-crystal (massive ice crystal formations — final boss must be spectacular)
+  editor.spawnProp(LEVEL_ID, 'prop-crystal', 27, 142, { roomId: azazelThroneId });
+  editor.spawnProp(LEVEL_ID, 'prop-crystal', 33, 142, { roomId: azazelThroneId });
+  editor.spawnProp(LEVEL_ID, 'prop-crystal', 27, 146, { roomId: azazelThroneId });
+  editor.spawnProp(LEVEL_ID, 'prop-crystal', 33, 146, { roomId: azazelThroneId });
 
   // =========================================================================
   // 5d. DECALS (ice frost, snow drift, concrete cracks — Treachery theme)

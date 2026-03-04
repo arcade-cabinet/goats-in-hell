@@ -518,6 +518,18 @@ export async function buildCircle7(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'violence-blood-gutter', 32, 16, { roomId: bloodRiverId });
   // 1x bone-pile (dead-end walkway)
   editor.spawnProp(LEVEL_ID, 'bone-pile', 35, 22, { roomId: bloodRiverId });
+  // +4x prop-bones (scattered along walkways — master plan Task 8)
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 24, 16, { roomId: bloodRiverId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 30, 18, { roomId: bloodRiverId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 36, 20, { roomId: bloodRiverId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 22, 22, { roomId: bloodRiverId });
+  // +3x prop-skull (along walkway edges)
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 26, 15, { roomId: bloodRiverId });
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 34, 18, { roomId: bloodRiverId });
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 28, 24, { roomId: bloodRiverId });
+  // +2x prop-column (support pillars rising from blood)
+  editor.spawnProp(LEVEL_ID, 'prop-column', 27, 14, { roomId: bloodRiverId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 33, 22, { roomId: bloodRiverId });
 
   // --- River Banks (bounds: 8, 20, 8, 6) ---
   // 1x torch-sconce-ornate (north wall)
@@ -559,6 +571,11 @@ export async function buildCircle7(dbPath: string) {
   // 2x spike-bed-small (ramp transitions)
   editor.spawnProp(LEVEL_ID, 'spike-bed-small', 45, 20, { roomId: thornyPassageId });
   editor.spawnProp(LEVEL_ID, 'spike-bed-small', 45, 32, { roomId: thornyPassageId });
+  // +4x prop-spikes (along thorn walls — master plan Task 8)
+  editor.spawnProp(LEVEL_ID, 'prop-spikes', 48, 21, { roomId: thornyPassageId });
+  editor.spawnProp(LEVEL_ID, 'prop-spikes', 48, 25, { roomId: thornyPassageId });
+  editor.spawnProp(LEVEL_ID, 'prop-spikes', 48, 29, { roomId: thornyPassageId });
+  editor.spawnProp(LEVEL_ID, 'prop-spikes', 48, 33, { roomId: thornyPassageId });
 
   // --- Thornwood (bounds: 36, 38, 14, 12) ---
   // 1x torch-sconce-simple (south exit only)
@@ -582,6 +599,19 @@ export async function buildCircle7(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'bone-pile', 44, 41, { roomId: thornwoodId });
   editor.spawnProp(LEVEL_ID, 'bone-pile', 37, 47, { roomId: thornwoodId });
   editor.spawnProp(LEVEL_ID, 'bone-pile', 43, 49, { roomId: thornwoodId });
+  // +3x prop-dead-tree (petrified thorn-trees — master plan Task 8, Thornwood was 1 prop/168 cells)
+  editor.spawnProp(LEVEL_ID, 'prop-dead-tree', 38, 40, { roomId: thornwoodId });
+  editor.spawnProp(LEVEL_ID, 'prop-dead-tree', 45, 44, { roomId: thornwoodId });
+  editor.spawnProp(LEVEL_ID, 'prop-dead-tree', 41, 48, { roomId: thornwoodId });
+  // +4x prop-bones (scattered among dead trees)
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 40, 41, { roomId: thornwoodId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 46, 43, { roomId: thornwoodId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 38, 46, { roomId: thornwoodId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 43, 48, { roomId: thornwoodId });
+  // +3x prop-skull (at base of dead trees)
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 39, 41, { roomId: thornwoodId });
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 44, 45, { roomId: thornwoodId });
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 42, 49, { roomId: thornwoodId });
 
   // --- Burning Shore (bounds: 16, 54, 18, 10) ---
   // 6x violence-fire-geyser-vent (marking geyser eruption points)
@@ -596,6 +626,10 @@ export async function buildCircle7(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'fire-pit-small', 26, 60, { roomId: burningShoreId });
   // 1x rubble-pile-small (visual break)
   editor.spawnProp(LEVEL_ID, 'rubble-pile-small', 22, 58, { roomId: burningShoreId });
+  // +3x prop-rock1 (rocky outcrops — master plan Task 8, Burning Shore was 0 props/180 cells)
+  editor.spawnProp(LEVEL_ID, 'prop-rock1', 19, 57, { roomId: burningShoreId });
+  editor.spawnProp(LEVEL_ID, 'prop-rock1', 29, 58, { roomId: burningShoreId });
+  editor.spawnProp(LEVEL_ID, 'prop-rock1', 25, 62, { roomId: burningShoreId });
 
   // --- Flamethrower Shrine (bounds: 22, 68, 6, 6) ---
   // 1x violence-stone-altar (center)
@@ -833,6 +867,13 @@ export async function buildCircle7(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'violence-industrial-arch', 25, 95, { roomId: abattoirId });
   // 1x violence-chain-conveyor (ceiling, spanning N-S)
   editor.spawnProp(LEVEL_ID, 'violence-chain-conveyor', 25, 100, { roomId: abattoirId });
+  // +3x prop-skull (boss trophies — master plan Task 8)
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 20, 97, { roomId: abattoirId });
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 30, 97, { roomId: abattoirId });
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 25, 105, { roomId: abattoirId });
+  // +2x prop-bones (scattered across abattoir floor)
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 21, 101, { roomId: abattoirId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 29, 106, { roomId: abattoirId });
 
   // =========================================================================
   // 5d. DECALS (blood stains, scorch marks — Violence theme)
