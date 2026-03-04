@@ -364,6 +364,9 @@ export async function buildCircle1(dbPath: string) {
   // 2x limbo-rubble-scatter near walls
   editor.spawnProp(LEVEL_ID, 'limbo-rubble-scatter', 17, 3, { roomId: vestibuleId });
   editor.spawnProp(LEVEL_ID, 'limbo-rubble-scatter', 23, 5, { roomId: vestibuleId });
+  // +2x prop-rock1 (playtest density audit: atmosphere rocks)
+  editor.spawnProp(LEVEL_ID, 'prop-rock1', 17, 5, { roomId: vestibuleId });
+  editor.spawnProp(LEVEL_ID, 'prop-rock1', 22, 3, { roomId: vestibuleId });
 
   // --- Fog Hall (bounds: 14, 12, 12, 10) ---
   // Structural: 2x ancient pillars flanking entrance, iron gate, crumbling arch
@@ -432,6 +435,13 @@ export async function buildCircle1(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'limbo-tombstone', 24, 17, { roomId: fogHallId });
   // 1x limbo-cobweb-cluster SE corner
   editor.spawnProp(LEVEL_ID, 'limbo-cobweb-cluster', 25, 18, { roomId: fogHallId });
+  // +3x limbo-ancient-pillar fog silhouettes (playtest density audit)
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 18, 16, { roomId: fogHallId });
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 21, 19, { roomId: fogHallId });
+  editor.spawnProp(LEVEL_ID, 'limbo-ancient-pillar', 15, 20, { roomId: fogHallId });
+  // +2x limbo-bone-pile (playtest density audit)
+  editor.spawnProp(LEVEL_ID, 'limbo-bone-pile', 16, 17, { roomId: fogHallId });
+  editor.spawnProp(LEVEL_ID, 'limbo-bone-pile', 23, 19, { roomId: fogHallId });
 
   // --- Crypt (bounds: 30, 14, 6, 6) ---
   // Structural: crumbling arch at secret entrance
@@ -471,6 +481,12 @@ export async function buildCircle1(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'limbo-skull-pile', 33, 18, { roomId: cryptId });
   // 1x limbo-cobweb-cluster SW corner
   editor.spawnProp(LEVEL_ID, 'limbo-cobweb-cluster', 30, 19, { roomId: cryptId });
+  // +1x prop-pedestal for weapon display (playtest density audit)
+  editor.spawnProp(LEVEL_ID, 'prop-pedestal', 33, 17, { roomId: cryptId });
+  // +1x limbo-skull-pile near lectern (playtest density audit)
+  editor.spawnProp(LEVEL_ID, 'limbo-skull-pile', 34, 16, { roomId: cryptId });
+  // +1x limbo-bone-pile south wall (playtest density audit)
+  editor.spawnProp(LEVEL_ID, 'limbo-bone-pile', 31, 19, { roomId: cryptId });
 
   // --- Bone Pit (bounds: 2, 14, 8, 8) ---
   // Structural: crumbling arch west entrance
@@ -600,6 +616,11 @@ export async function buildCircle1(dbPath: string) {
   // 2x limbo-rubble-scatter at column bases
   editor.spawnProp(LEVEL_ID, 'limbo-rubble-scatter', 20, 31, { roomId: columnsId });
   editor.spawnProp(LEVEL_ID, 'limbo-rubble-scatter', 22, 34, { roomId: columnsId });
+  // +1x limbo-broken-pillar (playtest density audit: add broken column pair)
+  editor.spawnProp(LEVEL_ID, 'limbo-broken-pillar', 22, 30, { roomId: columnsId });
+  // +2x prop-rock1 rubble at column bases (playtest density audit)
+  editor.spawnProp(LEVEL_ID, 'prop-rock1', 16, 35, { roomId: columnsId });
+  editor.spawnProp(LEVEL_ID, 'prop-rock1', 23, 27, { roomId: columnsId });
 
   // --- Boss Chamber (bounds: 14, 42, 12, 12) ---
   // Structural: crumbling arch north entrance
@@ -681,6 +702,12 @@ export async function buildCircle1(dbPath: string) {
   // 2x limbo-rubble-scatter near entrance pillars
   editor.spawnProp(LEVEL_ID, 'limbo-rubble-scatter', 17, 45, { roomId: bossChamberId });
   editor.spawnProp(LEVEL_ID, 'limbo-rubble-scatter', 22, 45, { roomId: bossChamberId });
+  // +2x prop-candelabrum-tall flanking altar (playtest density audit: cover + atmosphere)
+  editor.spawnProp(LEVEL_ID, 'prop-candelabrum-tall', 18, 48, { roomId: bossChamberId });
+  editor.spawnProp(LEVEL_ID, 'prop-candelabrum-tall', 22, 48, { roomId: bossChamberId });
+  // +2x limbo-skull-pile additional (playtest density audit: boss gravitas)
+  editor.spawnProp(LEVEL_ID, 'limbo-skull-pile', 17, 52, { roomId: bossChamberId });
+  editor.spawnProp(LEVEL_ID, 'limbo-skull-pile', 22, 52, { roomId: bossChamberId });
 
   // =========================================================================
   // 5d. DECALS (water seepage stains — Limbo's damp, foggy atmosphere)
