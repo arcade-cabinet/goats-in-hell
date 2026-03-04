@@ -30,20 +30,23 @@ export default defineConfig({
       },
       testIgnore: ['**/circle-assessment.spec.ts'],
     },
-    {
-      // Headed — uses real GPU/WebGL for local 3D visual testing.
-      // Run: npx playwright test --project=local
-      // Requires dev server: pnpm web:start
-      name: 'local',
-      use: {
-        ...devices['Desktop Chrome'],
-        headless: false,
-        launchOptions: {
-          args: ['--enable-webgl', '--ignore-gpu-blocklist'],
-        },
-      },
-      testMatch: ['**/circle-assessment.spec.ts', '**/playtest-screenshots.spec.ts'],
-    },
+    // Headed local project — only included when PW_LOCAL=1 to avoid CI trying
+    // to launch a headed browser. Run: PW_LOCAL=1 npx playwright test --project=local
+    ...(process.env.PW_LOCAL
+      ? [
+          {
+            name: 'local',
+            use: {
+              ...devices['Desktop Chrome'],
+              headless: false,
+              launchOptions: {
+                args: ['--enable-webgl', '--ignore-gpu-blocklist'],
+              },
+            },
+            testMatch: ['**/circle-assessment.spec.ts', '**/playtest-screenshots.spec.ts'],
+          },
+        ]
+      : []),
   ],
   // Don't start a web server — run `pnpm web:start` separately
   webServer: undefined,
