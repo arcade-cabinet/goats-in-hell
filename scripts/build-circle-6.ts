@@ -389,6 +389,9 @@ export async function buildCircle6(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'heresy-torn-scripture-slab', 24, 3, { roomId: narthexId });
   // 1x inverted-cross (near east WALL_SECRET)
   editor.spawnProp(LEVEL_ID, 'inverted-cross', 26, 4, { roomId: narthexId });
+  // --- Playtest audit additions: Narthex ---
+  // 1x prop-torch-mounted near east WALL_SECRET (critical teach fix — light draws player to secret)
+  editor.spawnProp(LEVEL_ID, 'prop-torch-mounted', 27, 4, { roomId: narthexId });
 
   // --- Nave of Lies (bounds: 18, 12, 14, 10) ---
   // Structural: 4x heresy-cracked-marble-pillar
@@ -411,6 +414,16 @@ export async function buildCircle6(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'heresy-profane-symbol', 25, 12, { roomId: naveId });
   // 1x heresy-shattered-icon (near south wall)
   editor.spawnProp(LEVEL_ID, 'heresy-shattered-icon', 22, 21, { roomId: naveId });
+  // --- Playtest audit additions: Nave of Lies ---
+  // 6x prop-column along sides (3 per side, nave colonnade)
+  editor.spawnProp(LEVEL_ID, 'prop-column', 19, 14, { roomId: naveId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 19, 17, { roomId: naveId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 19, 20, { roomId: naveId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 31, 14, { roomId: naveId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 31, 17, { roomId: naveId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 31, 20, { roomId: naveId });
+  // 1x prop-carpet (center aisle)
+  editor.spawnProp(LEVEL_ID, 'prop-carpet', 25, 16, { roomId: naveId });
 
   // --- Confessional (bounds: 8, 16, 6, 6) ---
   // 3x heresy-confessional-booth (forming booths)
@@ -446,6 +459,25 @@ export async function buildCircle6(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'heresy-scattered-bones', 39, 18, { roomId: catacombsId });
   editor.spawnProp(LEVEL_ID, 'heresy-scattered-bones', 42, 21, { roomId: catacombsId });
   editor.spawnProp(LEVEL_ID, 'heresy-scattered-bones', 38, 23, { roomId: catacombsId });
+  // --- Playtest audit additions: Catacombs ---
+  // 6x prop-bones (scattered throughout maze corridors)
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 37, 15, { roomId: catacombsId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 40, 17, { roomId: catacombsId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 43, 19, { roomId: catacombsId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 38, 21, { roomId: catacombsId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 44, 15, { roomId: catacombsId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 41, 22, { roomId: catacombsId });
+  // 2x prop-bones2 (dead-end alcoves)
+  editor.spawnProp(LEVEL_ID, 'prop-bones2', 37, 17, { roomId: catacombsId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones2', 43, 20, { roomId: catacombsId });
+  // 4x prop-skull (maze intersections)
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 38, 16, { roomId: catacombsId });
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 42, 19, { roomId: catacombsId });
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 39, 22, { roomId: catacombsId });
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 44, 16, { roomId: catacombsId });
+  // 2x prop-cobweb (ceiling corners)
+  editor.spawnProp(LEVEL_ID, 'prop-cobweb', 36, 15, { roomId: catacombsId });
+  editor.spawnProp(LEVEL_ID, 'prop-cobweb', 45, 23, { roomId: catacombsId });
 
   // --- Trial Chamber (bounds: 19, 32, 12, 12) ---
   // Structural: 2x heresy-cracked-marble-pillar
@@ -470,6 +502,14 @@ export async function buildCircle6(dbPath: string) {
   // 2x inverted-cross (walls)
   editor.spawnProp(LEVEL_ID, 'inverted-cross', 20, 38, { roomId: trialChamberId });
   editor.spawnProp(LEVEL_ID, 'inverted-cross', 30, 38, { roomId: trialChamberId });
+  // --- Playtest audit additions: Trial Chamber ---
+  // 4x prop-column flanking bench (courtroom grandeur)
+  editor.spawnProp(LEVEL_ID, 'prop-column', 21, 34, { roomId: trialChamberId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 29, 34, { roomId: trialChamberId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 21, 40, { roomId: trialChamberId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 29, 40, { roomId: trialChamberId });
+  // 1x prop-carpet (center aisle, leading to judge's bench)
+  editor.spawnProp(LEVEL_ID, 'prop-carpet', 25, 38, { roomId: trialChamberId });
 
   // --- Ossuary (bounds: 10, 40, 8, 8) ---
   // 4x heresy-bone-urn
@@ -497,6 +537,24 @@ export async function buildCircle6(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'wrath-chain-curtain', 16, 46, { roomId: ossuaryId });
   // 1x heresy-corrupted-reliquary (center floor)
   editor.spawnProp(LEVEL_ID, 'heresy-corrupted-reliquary', 14, 44, { roomId: ossuaryId });
+  // --- Playtest audit additions: Ossuary (CRITICAL — was zero bones, thematic failure) ---
+  // 8x prop-bones (walls and floor, ossuary MUST be carpeted in bones)
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 11, 42, { roomId: ossuaryId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 16, 42, { roomId: ossuaryId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 13, 43, { roomId: ossuaryId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 15, 43, { roomId: ossuaryId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 11, 46, { roomId: ossuaryId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 16, 46, { roomId: ossuaryId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 13, 45, { roomId: ossuaryId });
+  editor.spawnProp(LEVEL_ID, 'prop-bones', 15, 45, { roomId: ossuaryId });
+  // 4x prop-skull (alcove niches and floor)
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 12, 41, { roomId: ossuaryId });
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 16, 41, { roomId: ossuaryId });
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 12, 46, { roomId: ossuaryId });
+  editor.spawnProp(LEVEL_ID, 'prop-skull', 15, 44, { roomId: ossuaryId });
+  // 2x prop-cobweb (ceiling corners)
+  editor.spawnProp(LEVEL_ID, 'prop-cobweb', 10, 41, { roomId: ossuaryId });
+  editor.spawnProp(LEVEL_ID, 'prop-cobweb', 17, 47, { roomId: ossuaryId });
 
   // --- Heretic's Library (bounds: 36, 36, 6, 8) ---
   // 4x heresy-forbidden-bookcase (walls)
@@ -509,6 +567,10 @@ export async function buildCircle6(dbPath: string) {
   // 2x heresy-torn-scripture-slab (floor, scattered)
   editor.spawnProp(LEVEL_ID, 'heresy-torn-scripture-slab', 38, 42, { roomId: libraryId });
   editor.spawnProp(LEVEL_ID, 'heresy-torn-scripture-slab', 40, 43, { roomId: libraryId });
+  // --- Playtest audit additions: Heretic's Library ---
+  // prop-bookcase already present as heresy-forbidden-bookcase (4x) — no additional needed
+  // 1x prop-cobweb (dusty corner)
+  editor.spawnProp(LEVEL_ID, 'prop-cobweb', 36, 37, { roomId: libraryId });
 
   // --- Profano's Chapel (bounds: 18, 54, 14, 14) ---
   // Structural: 1x heresy-desecrated-arch (entrance)
@@ -534,6 +596,17 @@ export async function buildCircle6(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'heresy-profane-symbol', 25, 55, { roomId: chapelId });
   // 1x heresy-burning-pyre (west edge)
   editor.spawnProp(LEVEL_ID, 'heresy-burning-pyre', 19, 61, { roomId: chapelId });
+  // --- Playtest audit additions: Profano's Chapel ---
+  // 4x prop-column (chapel nave colonnade)
+  editor.spawnProp(LEVEL_ID, 'prop-column', 20, 57, { roomId: chapelId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 30, 57, { roomId: chapelId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 20, 65, { roomId: chapelId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 30, 65, { roomId: chapelId });
+  // 4x prop-candle around pentagram points (ritual atmosphere)
+  editor.spawnProp(LEVEL_ID, 'prop-candle', 23, 59, { roomId: chapelId });
+  editor.spawnProp(LEVEL_ID, 'prop-candle', 27, 59, { roomId: chapelId });
+  editor.spawnProp(LEVEL_ID, 'prop-candle', 23, 63, { roomId: chapelId });
+  editor.spawnProp(LEVEL_ID, 'prop-candle', 27, 63, { roomId: chapelId });
 
   // =========================================================================
   // 5d. DECALS (from design doc Leaking001-003, Stain001 mappings)
