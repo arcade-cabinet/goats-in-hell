@@ -2,7 +2,7 @@
 title: "Agent Infrastructure"
 status: implemented
 created: "2026-02-28"
-updated: "2026-03-01"
+updated: "2026-03-04"
 domain: agents
 related:
   - docs/AGENTS.md
@@ -128,6 +128,62 @@ User Request
 | `GAME-BIBLE.md` | Canonical design reference (theology, tone, bosses, naming) |
 | `boss-pipeline.md` | DAZ Genesis 9 rigging + ARP smart rigging |
 | `DAZ-PIPELINE.md` | Asset generation workflow |
+
+---
+
+## Brain Architecture (YUKA Goal System)
+
+Enemy and player AI uses YUKA's goal-driven architecture. Each entity gets a `Think` brain managed by the `BrainRegistry` singleton.
+
+### Enemy Brains (`src/game/systems/brains/enemy/`)
+
+| File | Description |
+|------|-------------|
+| `BrainRegistry.ts` | Singleton `Map<entityId, Think>` — register/unregister/updateAll/reset |
+| `EnemyBrainFactory.ts` | Creates `Think` brain with evaluators for each enemy type |
+| `goals/PatrolGoal.ts` | Wanders between waypoints (explore phase) |
+| `goals/ChaseGoal.ts` | Pursues player via steering behaviours |
+| `goals/AttackGoal.ts` | Melee/ranged attack at close range |
+| `goals/FleeGoal.ts` | Retreats when HP < threshold |
+| `goals/AoeAttackGoal.ts` | Boss AoE burst with cooldown |
+| `goals/TeleportGoal.ts` | Boss position teleport |
+| `goals/BossIntroGoal.ts` | Plays boss intro animation |
+| `evaluators/` | Desirability scorers per goal type |
+
+### Player Brains (`src/game/systems/brains/player/`)
+
+Used by the autoplay governor (`?autoplay` URL param) — replaces the legacy `AIGovernor.ts`.
+
+| File | Description |
+|------|-------------|
+| `PlayerGoalDriver.ts` | Interface: `execHunt/execFlee/execSeekPickup/execExplore(dt)` |
+| `PlayerBrainFactory.ts` | Creates `Think` with `PlayThroughEval` + `PlayerSurvivalEval` |
+| `goals/HuntEnemyGoal.ts` | Engages enemies via `driver.execHunt(dt)` |
+| `goals/FleeGoal.ts` | Retreats when `hpRatio < 0.15` |
+| `goals/SeekPickupGoal.ts` | Collects pickups when available |
+| `goals/ExploreLevelGoal.ts` | Opens doors/explores when no enemies |
+| `goals/WaitForTransitionGoal.ts` | Holds for floor transition delay |
+| `goals/ClearFloorGoal.ts` | CompositeGoal — clears one floor |
+| `goals/ClearCircleGoal.ts` | CompositeGoal — clears all floors of one circle |
+| `goals/PlayThroughGameGoal.ts` | CompositeGoal — plays all 9 circles |
+| `evaluators/PlayThroughEval.ts` | Always desirability = 1.0 (default goal) |
+| `evaluators/PlayerSurvivalEval.ts` | Scales with `(1 - hpRatio)` when HP < 15% |
+
+### Pathfinding (`src/game/systems/brains/pathfinding/`)
+
+| File | Description |
+|------|-------------|
+| `AStar.ts` | A* with binary min-heap open set + octile distance heuristic (3-5x faster than BFS) |
+
+### Telemetry (`src/game/systems/telemetry/`)
+
+| File | Description |
+|------|-------------|
+| `GameEventBus.ts` | Typed pub/sub — `emit({ type, ...payload })`, wildcard `'*'` subscription |
+| `TelemetryStore.ts` | Subscribes to all events on autoplay start; builds `RunReport`; exports JSON |
+| `ScreenshotService.ts` | `request(label)` / `capture(canvas)` — goals trigger, `useFrame` captures |
+
+> **`AIGovernor.ts` is `@deprecated`** — kept for the legacy exec* methods still used in R3FRoot. New code should use `PlayerGoalDriver` interface and YUKA goal classes.
 
 ---
 
