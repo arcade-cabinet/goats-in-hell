@@ -10,14 +10,15 @@
     },
     {
       "name": "action_id",
-      "source": "literal",
-      "value": "{{animationName}}"
+      "source": "lookup",
+      "table": "ANIMATION_IDS",
+      "key": "{{animationName}}"
     }
   ],
   "outputs": [
     {
       "name": "taskId",
-      "responsePath": "id"
+      "responsePath": "result"
     },
     {
       "name": "animation",

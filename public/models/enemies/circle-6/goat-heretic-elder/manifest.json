@@ -1,0 +1,108 @@
+{
+  "id": "goat-heretic-elder",
+  "name": "Arch Heresiarch",
+  "type": "character",
+  "seed": 1175793261,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cb6fd-5b68-7e50-928e-45551254b9f7",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6fd-5b68-7e50-928e-45551254b9f7"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cb73c-43b4-7668-a084-36e21b948f35",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb73c-43b4-7668-a084-36e21b948f35"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cb73d-9863-7699-89f3-4dcbb69fda5b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb73d-9863-7699-89f3-4dcbb69fda5b"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cb73f-fa1e-76fe-9794-db561b16555a",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb73f-fa1e-76fe-9794-db561b16555a"
+      },
+      "artifacts": {
+        "model": "model.glb"
+      }
+    },
+    "animations": {
+      "WalkAndRun.Walking.Monster_Walk": {
+        "taskId": "019cb740-53fb-7839-a766-3845b84a463f",
+        "status": "SUCCEEDED",
+        "artifact": "animations/Monster_Walk.glb"
+      },
+      "Fighting.Transitioning.Chest_Pound_Taunt": {
+        "taskId": "019cb740-5383-766f-9313-7e3168f52548",
+        "status": "SUCCEEDED",
+        "artifact": "animations/Chest_Pound_Taunt.glb"
+      },
+      "Fighting.CastingSpell.Charged_Spell_Cast": {
+        "taskId": "019cb740-803a-7670-9aaa-8a055a7f8430",
+        "status": "SUCCEEDED",
+        "artifact": "animations/Charged_Spell_Cast.glb"
+      },
+      "Fighting.GettingHit.BeHit_FlyUp": {
+        "taskId": "019cb740-a51f-7671-adc1-1b4a27cdd59d",
+        "status": "SUCCEEDED",
+        "artifact": "animations/BeHit_FlyUp.glb"
+      },
+      "Fighting.Dying.Electrocuted_Fall": {
+        "taskId": "019cb740-c6eb-74e1-a90c-c04b2e5995b9",
+        "status": "SUCCEEDED",
+        "artifact": "animations/Electrocuted_Fall.glb"
+      }
+    },
+    "animation": {
+      "taskId": "019cb740-ed83-7677-b55f-96bf51073ec1",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb740-ed83-7677-b55f-96bf51073ec1"
+      },
+      "artifacts": {}
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 6 (Heresy) — the Grand Arch-Heretic, a demon who was once the founder of a vast false doctrine that consumed an entire civilization. The circle's punishment — the burning tomb — has been INTERNALIZED. Stone sarcophagus plates have fused into its flesh over millennia, and the eternal flames that burn inside those tombs now erupt perpetually from its joints and eye sockets. It carries the corrupted sacred texts of five dead religions, each still burning. Its voice echoes with the borrowed authority of every false teaching it established. Where it walks, the ground scorches. It does not argue. It condemns.",
+  "textToImageTask": {
+    "prompt": "A massive towering bipedal humanoid goat demon in A-pose, ancient grand heretic, stone sarcophagus plates fused permanently into the flesh of chest back and arms as second skin, eternal orange-white flames erupting from joints shoulders and hollow eye sockets, massive ornate cracked horns carved with religious symbols of dead faiths, robes of ancient high priesthood burned to ritual ash still hanging, powerful commanding build of someone who once ruled spiritual worlds, digitigrade goat legs armored in stone-fused plating, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Massive tall bipedal goat demon, commanding powerful build, large ornate curved horns, broad shoulders, digitigrade goat legs, A-pose, standing upright with arms extended horizontally",
+    "artStyle": "realistic",
+    "targetPolycount": 11000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Stone sarcophagus plates fused directly into flesh on chest arms and back, carved ancient stone texture with old religious hieroglyphs, orange-white eternal flame erupting from shoulder joints and eye sockets, massive ornate horns covered in incised symbols of five dead religions, burned ash-robes in tattered ancient priestly style, commanding spiritual authority made monstrous",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 2.3
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Monster_Walk",
+      "Fighting.Transitioning.Chest_Pound_Taunt",
+      "Fighting.CastingSpell.Charged_Spell_Cast",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Electrocuted_Fall"
+    ]
+  }
+}

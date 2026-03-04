@@ -33,6 +33,15 @@ const THEME_LIGHTS: Record<string, ThemeLightConfig> = {
   fleshCaverns: renderingConfig.themeLights.fleshCaverns,
   obsidianFortress: renderingConfig.themeLights.obsidianFortress,
   theVoid: renderingConfig.themeLights.theVoid,
+  limbo: renderingConfig.themeLights.limbo,
+  lust: renderingConfig.themeLights.lust,
+  gluttony: renderingConfig.themeLights.gluttony,
+  greed: renderingConfig.themeLights.greed,
+  wrath: renderingConfig.themeLights.wrath,
+  heresy: renderingConfig.themeLights.heresy,
+  violence: renderingConfig.themeLights.violence,
+  fraud: renderingConfig.themeLights.fraud,
+  treachery: renderingConfig.themeLights.treachery,
 };
 
 // Default fallback for unknown themes

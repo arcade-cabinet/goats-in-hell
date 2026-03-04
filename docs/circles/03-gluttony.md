@@ -178,14 +178,14 @@ Gluttony's maze-like Gullet and the acid walkways of the Bile Cistern naturally 
   │              │   ○ = gluttony-lantern-wall-green
   └──┐        ┌──┘
      │ narrow │      Narrows to 3 cells — throat constricts
-     │  ☿     │      ☿ = hellgoat (Green) in narrow section
+     │  ☿     │      ☿ = shaman (Green) in narrow section
      │        │
   ┌──┘        └──┐   Widens again — breathing room
   │    ◊    ♥    │   ◊ = ammo, ♥ = health (MAYBE poisoned)
   │ ○          ○ │
   └──┐        ┌──┘
      │ narrow │      Narrows again, ceiling drops (elev +0.5 overhead)
-     │   ☿    │      ☿ = hellgoat (Green)
+     │   ☿    │      ☿ = shaman (Green)
      │ ═══════│      ═ = FLOOR_RAISED (+0.5) — step up
   ┌──┘        └──┐
   │    ☿      ○  │   Final wide chamber before exit
@@ -225,7 +225,7 @@ Gluttony's maze-like Gullet and the acid walkways of the Bile Cistern naturally 
   ┌──────────────────────────────────┐
   │ ○                            ○   │   Elevation 0
   │                                  │
-  │   ☿    ┌══════════════════┐  ☿  │   ☿ = hellgoat (Green), patrol table
+  │   ☿    ┌══════════════════┐  ☿  │   ☿ = shaman (Green), patrol table
   │        │ feast-table      │      │   Table runs E-W center
   │   🍎🍺 │ 🍽  🫕  🍽  🍺 │ 🍎  │   🍎=gluttony-rotten-crate, 🍺=gluttony-overflowing-goblet
   │   ♥  ♥ │  ♥  ◊  ♥  ◊  │ ♥  ♥ │   ♥=health (HALF POISONED!), ◊=ammo
@@ -326,7 +326,7 @@ Missing a platform edge means falling to the next level (or two levels), taking 
   │  walk ║  ACID   ║  walk       │  ═ / ║ = raised stone walkways (2 cells wide)
   │  ═══╗ ║  POOL   ║ ╔═══       │  ACID = FLOOR_LAVA (green acid, -0.5)
   │     ║ ║ (green) ║ ║          │
-  │  ☿  ║ ╚════╗   ║ ║  ☿       │  ☿ = fireGoat on walkways
+  │  ☿  ║ ╚════╗   ║ ║  ☿       │  ☿ = glutton on walkways
   │     ║      ║   ║ ║          │
   │     ╚══════╝   ║ ║          │  Walkways form a crisscross grid
   │         ♥*     ║ ║          │  ♥* = POISONED health on dead-end walkway
@@ -389,7 +389,7 @@ Missing a platform edge means falling to the next level (or two levels), taking 
 **Dimensions:** 12W × 12H, elevation 0
 **Purpose:** Arena encounter. Three concentric rings of walkable floor separated by 1-cell-wide acid channels. Four bridges (N, S, E, W, each 2 cells wide) connect all rings. Two waves of enemies on different rings. Between waves, the inner acid channel widens by 1 cell on each side — the inner ring shrinks from 2 cells to 0, becoming submerged. Players on the inner ring when acid rises must jump to the middle ring. Less space, more pressure.
 
-Doors lock on entry. Wave 1: green hellgoats on outer and middle rings. Wave 2: mixed fireGoat + hellgoat, inner ring gone, fighting on outer and middle only.
+Doors lock on entry. Wave 1: green hellgoats on outer and middle rings. Wave 2: mixed glutton + shaman, inner ring gone, fighting on outer and middle only.
 
 **Elevation:** All rings at 0. Acid channels at -0.5. Bridges at 0 (flush with rings).
 
@@ -520,15 +520,15 @@ Vorago inhales. A massive wind pull toward her open mouth (wind zone, intensity 
 
 | Room | Type | Count | Behavior | Variant | Position Notes |
 |------|------|-------|----------|---------|----------------|
-| Gullet | hellgoat | 3 | Melee, wait in wide sections | Green (sickly) | First narrow (18, 7), second narrow (19, 11), exit wide (19, 14) |
-| Feast Hall | hellgoat | 4 | Patrol table aisles, 2 per side | Green (sickly) | NW (14, 23), NE (25, 23), SW (14, 27), SE (25, 27) |
-| Larder | fireGoat | 2 | Ranged, fire across vertical gap | Crimson | Platform 2 (17, 38), platform 3 (22, 41) |
-| Larder | hellgoat | 1 | Melee, guards bottom | Green (sickly) | Platform 4 (19, 43) |
-| Bile Cistern | fireGoat | 3 | Ranged from walkway segments | Crimson | NW walkway (16, 51), center (20, 54), SE walkway (24, 57) |
-| Gut Arena wave 1 | hellgoat | 4 | Melee, outer + middle rings | Green (sickly) | Outer N (20, 65), outer S (20, 73), middle E (23, 69), middle W (17, 69) |
-| Gut Arena wave 2 | fireGoat | 2 | Ranged from middle ring | Crimson | Middle N (20, 67), middle S (20, 71) |
-| Gut Arena wave 2 | hellgoat | 2 | Melee, outer ring flanks | Green (sickly) | Outer E (24, 69), outer W (16, 69) |
-| Boss chamber (phase 1 add) | hellgoat | 2 | Melee, spawn on entry ledge | Green (sickly) | Entry ledge (15, 81), (25, 81) |
+| Gullet | shaman | 3 | Melee, wait in wide sections | Green (sickly) | First narrow (18, 7), second narrow (19, 11), exit wide (19, 14) |
+| Feast Hall | shaman | 4 | Patrol table aisles, 2 per side | Green (sickly) | NW (14, 23), NE (25, 23), SW (14, 27), SE (25, 27) |
+| Larder | glutton | 2 | Ranged, fire across vertical gap | Crimson | Platform 2 (17, 38), platform 3 (22, 41) |
+| Larder | shaman | 1 | Melee, guards bottom | Green (sickly) | Platform 4 (19, 43) |
+| Bile Cistern | glutton | 3 | Ranged from walkway segments | Crimson | NW walkway (16, 51), center (20, 54), SE walkway (24, 57) |
+| Gut Arena wave 1 | shaman | 4 | Melee, outer + middle rings | Green (sickly) | Outer N (20, 65), outer S (20, 73), middle E (23, 69), middle W (17, 69) |
+| Gut Arena wave 2 | glutton | 2 | Ranged from middle ring | Crimson | Middle N (20, 67), middle S (20, 71) |
+| Gut Arena wave 2 | shaman | 2 | Melee, outer ring flanks | Green (sickly) | Outer E (24, 69), outer W (16, 69) |
+| Boss chamber (phase 1 add) | shaman | 2 | Melee, spawn on entry ledge | Green (sickly) | Entry ledge (15, 81), (25, 81) |
 | Boss chamber | Vorago | 1 | Boss AI, 3 phases | boss-vorago.glb | Central platform (20, 87), elev -1 |
 
 ### Pickups
@@ -563,14 +563,14 @@ Vorago inhales. A massive wind pull toward her open mouth (wind zone, intensity 
 | ID | Room | Zone (x,z,w,h) | Action | Conditions | Data |
 |----|------|-----------------|--------|------------|------|
 | T1 | Gullet | (17, 2, 6, 4) | `ambientChange` | `once: true` | `{ poisonPickupsActive: true, text: "The air is thick with the smell of rot and plenty..." }` |
-| T2 | Feast Hall | (13, 20, 14, 2) | `spawnWave` | `once: true` | `{ enemies: [{type:'hellgoat', count:4, variant:'green'}] }` |
+| T2 | Feast Hall | (13, 20, 14, 2) | `spawnWave` | `once: true` | `{ enemies: [{type:'shaman', count:4, variant:'green'}] }` |
 | T3 | Feast Hall | (13, 20, 14, 10) | `poisonSeed` | `once: true` | `{ ratio: 0.5, seed: 'feast-hall-poison' }` — marks 50% of health pickups as poisoned |
-| T4 | Larder | (15, 34, 10, 2) | `spawnWave` | `once: true` | `{ enemies: [{type:'fireGoat', count:2}, {type:'hellgoat', count:1, variant:'green'}] }` |
-| T5 | Bile Cistern | (14, 50, 12, 2) | `spawnWave` | `once: true` | `{ enemies: [{type:'fireGoat', count:3}] }` |
+| T4 | Larder | (15, 34, 10, 2) | `spawnWave` | `once: true` | `{ enemies: [{type:'glutton', count:2}, {type:'shaman', count:1, variant:'green'}] }` |
+| T5 | Bile Cistern | (14, 50, 12, 2) | `spawnWave` | `once: true` | `{ enemies: [{type:'glutton', count:3}] }` |
 | T6 | Bile Cistern | (14, 50, 12, 10) | `poisonOverride` | `once: true` | `{ positions: [(15,55),(24,54)], forced: 'poison' }` — dead-end pickups always poison |
 | T7 | Gut Arena | (16, 66, 8, 4) | `lockDoors` | `once: true` | — |
-| T8 | Gut Arena | (16, 66, 8, 4) | `spawnWave` | `once: true` | `{ enemies: [{type:'hellgoat', count:4, variant:'green'}] }` |
-| T9 | Gut Arena | — | `spawnWave` | On wave 1 clear | `{ enemies: [{type:'fireGoat', count:2}, {type:'hellgoat', count:2, variant:'green'}] }` |
+| T8 | Gut Arena | (16, 66, 8, 4) | `spawnWave` | `once: true` | `{ enemies: [{type:'shaman', count:4, variant:'green'}] }` |
+| T9 | Gut Arena | — | `spawnWave` | On wave 1 clear | `{ enemies: [{type:'glutton', count:2}, {type:'shaman', count:2, variant:'green'}] }` |
 | T10 | Gut Arena | — | `acidRise` | On wave 1 clear | `{ innerChannel: 'widen', amount: 1, text: "The acid rises..." }` — inner ring submerges |
 | T11 | Gut Arena | — | `unlockDoors` | On wave 2 clear | — |
 | T12 | Vorago's Maw | (17, 81, 6, 2) | `bossIntro` | `once: true` | `{ text: "Hungry, little goat? Mother will feed you..." }` |
@@ -617,7 +617,7 @@ editor.createTheme('circle-3-gluttony', {
   ambientIntensity: 0.18,
   skyColor: '#0a0f05',
   particleEffect: 'drips',               // Green moisture dripping from ceiling
-  enemyTypes: ['hellgoat', 'fireGoat'],
+  enemyTypes: ['shaman', 'glutton'],
   enemyVariant: 'green',                  // Sickly green hellgoats
   enemyDensity: 1.0,                      // Standard density
   pickupDensity: 1.5,                     // HIGH — abundance is the trap

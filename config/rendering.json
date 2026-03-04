@@ -2,11 +2,11 @@
   "_comment": "Rendering pipeline tunables. All intensity values are Three.js light intensity units.",
 
   "ambient": {
-    "intensity": 2.5,
+    "intensity": 4.0,
     "comment": "AmbientLight base intensity. Higher = brighter base before point lights."
   },
   "hemisphere": {
-    "skyIntensity": 1.0,
+    "skyIntensity": 1.5,
     "groundColor": "#443333",
     "comment": "HemisphereLight for soft fill so no surface is pure black."
   },
@@ -62,6 +62,15 @@
     "fleshCaverns": { "color": "#cc3333", "intensity": 4.0, "distance": 20 },
     "obsidianFortress": { "color": "#4466aa", "intensity": 4.0, "distance": 20 },
     "theVoid": { "color": "#6600cc", "intensity": 4.5, "distance": 22 },
+    "limbo": { "color": "#8899bb", "intensity": 3.0, "distance": 22 },
+    "lust": { "color": "#cc1133", "intensity": 3.5, "distance": 20 },
+    "gluttony": { "color": "#44aa22", "intensity": 3.5, "distance": 20 },
+    "greed": { "color": "#ddaa00", "intensity": 4.5, "distance": 24 },
+    "wrath": { "color": "#ff5500", "intensity": 5.0, "distance": 24 },
+    "heresy": { "color": "#9966dd", "intensity": 7.0, "distance": 28 },
+    "violence": { "color": "#aa0011", "intensity": 3.5, "distance": 20 },
+    "fraud": { "color": "#99aabb", "intensity": 3.5, "distance": 22 },
+    "treachery": { "color": "#3366ff", "intensity": 4.0, "distance": 24 },
     "default": { "color": "#ff4400", "intensity": 3.5, "distance": 18 }
   }
 }

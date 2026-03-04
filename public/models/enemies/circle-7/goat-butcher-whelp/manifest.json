@@ -1,0 +1,81 @@
+{
+  "id": "goat-butcher-whelp",
+  "name": "Apprentice Carnifex",
+  "type": "character",
+  "seed": 464253762,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cb701-01e6-7134-a2b6-3412a8c312a8",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb701-01e6-7134-a2b6-3412a8c312a8"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cb701-74d1-7ea2-8719-37dea895a8ea",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb701-74d1-7ea2-8719-37dea895a8ea"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cb702-8a3c-7ebb-bffb-107261c455f0",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb702-8a3c-7ebb-bffb-107261c455f0"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cb704-51fd-717c-ae7e-c7d16fc5fe06",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb704-51fd-717c-ae7e-c7d16fc5fe06"
+      },
+      "artifacts": {}
+    },
+    "animation": {
+      "taskId": "019cb707-fea4-7f9c-bb8d-ca06ea75dea4",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb707-fea4-7f9c-bb8d-ca06ea75dea4"
+      },
+      "artifacts": {
+        "animation": "animations/Fighting.Dying.Knock_Down_1.glb"
+      }
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 7 (Violence) — a young butcher-demon still serving its apprenticeship in carnage. In life it committed violence enthusiastically but without mastery — bar fights, senseless assaults, cruelty that was thrilling rather than purposeful. Now it is apprenticed to something ancient and terrible, learning its trade. It carries a cleaver already too large for it that it wields with reckless abandon. It is covered in blood that is not entirely its own. Its eyes are wide — not with fear but with the sick excitement of something discovering what it is capable of. It wants to be here. That's what makes it dangerous.",
+  "textToImageTask": {
+    "prompt": "A lean eager bipedal humanoid goat demon in A-pose, wiry murderous frame, deep red-brown fur soaked dark with blood, eyes wide with bloodlust and sick excitement, medium sharp horns stained crimson, leather apron of a butcher's trade blackened with old blood, wickedly sharp claws already proven, digitigrade goat legs with blood-soaked hooves, the posture of something discovering its own violence with delight, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Lean eager wiry goat demon apprentice butcher, deep red-brown fur soaked dark with blood, wide bloodlust eyes, sharp horns stained crimson, leather apron blackened with old blood, digitigrade hooves, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Deep red-brown fur soaked dark with blood in patches, butcher leather apron texture blackened with layers of old dried blood, wide wide-open bloodlust golden eyes, sharp horns with dried blood in the grooves, wicked claws proven sharp, blood-soaked hooves, eager murderous posture of something learning its true nature",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 1.6
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Running.Lean_Forward_Sprint",
+      "DailyActions.Idle.Angry_Ground_Stomp",
+      "Fighting.AttackingwithWeapon.Left_Slash",
+      "Fighting.GettingHit.Face_Punch_Reaction_2",
+      "Fighting.Dying.Knock_Down_1"
+    ]
+  }
+}

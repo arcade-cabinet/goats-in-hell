@@ -227,7 +227,7 @@ All WALL_SECRET cells in Circle 6 have a subtle visual tell: a faint shimmer eff
 - **FLOOR_VOID trap:** 3 cells wide x 4 cells deep in the center aisle. Covered visually with PavingStones058 texture. First major trust violation. FLOOR_VOID traps deal 25 damage and teleport the player back to the last safe floor position (the cell they were standing on before stepping onto FLOOR_VOID). This is painful but not lethal --- it teaches caution without punishing with a full death-and-reload cycle.
 - **FLOOR_VOID visual tell:** The fake floor tiles have a 1-pixel gap at their edges (visible at close range) and do not produce footstep audio when the player is within 2 cells (the sound "drops out" --- absence of echo is the cue).
 - **3D elements:** Pew rows create waist-high obstacles. heresy-cracked-marble-pillar rise to ceiling (height 4 units). Ceiling is vaulted (Plaster001).
-- **Enemies:** 2x fireGoat patrol between pew rows (east and west aisles)
+- **Enemies:** 2x heretic patrol between pew rows (east and west aisles)
 - **shadowGoat detection teach:** The first shadowGoat encounter (Nave of Lies) is preceded by a visual cue: a faint cyan shimmer at the edge of the player's vision, accompanied by a whisper audio cue. This teaches the player to watch for shimmer + listen for whispers = invisible enemy nearby. After the first shadowGoat kill, a tooltip: "The pale ones hide in plain sight. Listen for the whisper."
 
 ### Room 3: Confessional
@@ -316,7 +316,7 @@ All WALL_SECRET cells in Circle 6 have a subtle visual tell: a faint shimmer eff
 
 - **Dimensions:** 12w x 12h, elevation 0 (judge's bench at elevation +1)
 - **Feel:** Church courtroom. The north half contains an elevated stone platform (FLOOR_RAISED, +1 elevation) serving as the judge's bench. Two heresy-church-pew and a heretic-tome form the judicial furniture; a heresy-torn-scripture-slab lies on the bench surface. Two heresy-cracked-marble-pillar (structural) anchor the north corners. Two heresy-broken-stained-glass hang on east and west walls. Two inverted-cross flank the walls. The south half is the open floor with a heresy-toppled-altar for cover, a heresy-shattered-icon on the floor, and a heresy-profane-symbol on the south wall. Marble006 walls, PavingStones072 floor.
-- **Arena mechanic:** Doors lock on entry (trigger T4). Wave 1: 3x fireGoat spawn on the elevated bench and fire downward. The player must find the WALL_SECRET at the back of the bench platform (center of the bench's south face) to access the hidden RAMP behind it, climbing to bench level to engage. Wave 2: 2x shadowGoat + 2x fireGoat. The shadowGoats walk THROUGH the illusory wall segments in the room, flanking the player from unexpected angles.
+- **Arena mechanic:** Doors lock on entry (trigger T4). Wave 1: 3x heretic spawn on the elevated bench and fire downward. The player must find the WALL_SECRET at the back of the bench platform (center of the bench's south face) to access the hidden RAMP behind it, climbing to bench level to engage. Wave 2: 2x shadowGoat + 2x heretic. The shadowGoats walk THROUGH the illusory wall segments in the room, flanking the player from unexpected angles.
 - **WALL_SECRET locations:** Back of bench platform at (25, 37) --- reveals ramp. East wall at (30, 43) --- leads to Heretic's Library.
 - **3D elements:** Judge's bench is a 6x3 platform at elevation +1 (2 world units above floor). RAMP cells connect floor level to bench behind the illusory wall. Stone railings (WALL_STONE, half-height) border the platform edges.
 
@@ -408,12 +408,12 @@ All WALL_SECRET cells in Circle 6 have a subtle visual tell: a faint shimmer eff
 
 | Room | Type | Count | Behavior | Variant |
 |------|------|-------|----------|---------|
-| Nave of Lies | fireGoat | 2 | Patrol pew aisles (east/west lanes) | Crimson |
+| Nave of Lies | heretic | 2 | Patrol pew aisles (east/west lanes) | Crimson |
 | Confessional | shadowGoat | 1 | Ambush in booth B (trigger on entry) | Gray, cyan eyes |
 | Catacombs | shadowGoat | 3 | Roam maze corridors, semi-invisible | Gray, cyan eyes |
-| Trial Chamber wave 1 | fireGoat | 3 | Spawn on elevated bench, fire downward | Crimson |
+| Trial Chamber wave 1 | heretic | 3 | Spawn on elevated bench, fire downward | Crimson |
 | Trial Chamber wave 2 | shadowGoat | 2 | Flank through WALL_SECRET segments | Gray, cyan eyes |
-| Trial Chamber wave 2 | fireGoat | 2 | Spawn on bench, covering fire | Crimson |
+| Trial Chamber wave 2 | heretic | 2 | Spawn on bench, covering fire | Crimson |
 | Ossuary | shadowGoat | 2 | Lurk among hanging chains | Gray, cyan eyes |
 | Profano's Chapel (pre-boss) | shadowGoat | 1 | Guard chapel entrance | Gray, cyan eyes |
 | Profano's Chapel | Profano | 1 | Boss AI, 3 phases | boss-profano.glb |
@@ -457,8 +457,8 @@ All WALL_SECRET cells in Circle 6 have a subtle visual tell: a faint shimmer eff
 | T2 | Confessional | (9, 18, 2, 2) | `spawnWave` | `once: true` | `{ enemies: [{type:'shadowGoat', count:1, position:{x:10,z:18}}] }` |
 | T3 | Catacombs | (37, 14, 10, 2) | `ambientChange` | `once: true` | `{ fogDensity: 0.06, fogColor: '#120e18' }` |
 | T4 | Trial Chamber | (21, 34, 8, 4) | `lockDoors` | `once: true` | --- |
-| T5 | Trial Chamber | (21, 34, 8, 4) | `spawnWave` | `once: true` | `{ enemies: [{type:'fireGoat', count:3, elevation:1}] }` |
-| T6 | Trial Chamber | --- | `spawnWave` | On wave 1 clear | `{ enemies: [{type:'shadowGoat', count:2}, {type:'fireGoat', count:2, elevation:1}] }` |
+| T5 | Trial Chamber | (21, 34, 8, 4) | `spawnWave` | `once: true` | `{ enemies: [{type:'heretic', count:3, elevation:1}] }` |
+| T6 | Trial Chamber | --- | `spawnWave` | On wave 1 clear | `{ enemies: [{type:'shadowGoat', count:2}, {type:'heretic', count:2, elevation:1}] }` |
 | T7 | Trial Chamber | --- | `unlockDoors` | On wave 2 clear | --- |
 | T8 | Profano's Chapel | (20, 55, 10, 3) | `bossIntro` | `once: true` | `{ text: "Truth is the first heresy. I am its priestess." }` |
 | T9 | Profano's Chapel | (20, 55, 10, 3) | `lockDoors` | `once: true, delay: 3` | --- |
@@ -502,7 +502,7 @@ editor.createTheme('circle-6-heresy', {
   ambientIntensity: 0.12,
   skyColor: '#080010',
   particleEffect: 'incense',             // Slow-drifting violet particles
-  enemyTypes: ['shadowGoat', 'fireGoat'],
+  enemyTypes: ['shadowGoat', 'heretic'],
   enemyDensity: 1.0,                     // Standard density
   pickupDensity: 0.7,                    // Moderate --- rewards exploration
   specialMechanic: 'illusion',           // WALL_SECRET and FLOOR_VOID traps

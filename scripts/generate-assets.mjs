@@ -31,7 +31,7 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROJECT_DIR = resolve(__dirname, '..');
-const ASSETS_DIR = join(PROJECT_DIR, 'assets', 'models');
+const ASSETS_DIR = join(PROJECT_DIR, 'public', 'models');
 const PIPELINE_DEFS = join(PROJECT_DIR, 'pipelines', 'definitions');
 // Local task overrides take precedence over the library defaults.
 // tasks/definitions/ contains patched versions (e.g. text-to-image without

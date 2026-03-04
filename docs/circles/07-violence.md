@@ -136,7 +136,7 @@ All props use bespoke Meshy AI-generated models or general library assets. See *
               ┌────┴────┴────┐
               │ BURNING SHORE│  (18x10, exploration, sortOrder=5)
               │  open expanse│  Fire geysers erupt periodically.
-              │  no cover    │  fireGoats have clear sightlines.
+              │  no cover    │  butchers have clear sightlines.
               └──┬───────────┘
                  |
             ┌────┴─────┐
@@ -268,7 +268,7 @@ All props use bespoke Meshy AI-generated models or general library assets. See *
   |         |
   | TS   BC |   TS = torch-sconce-ornate, BC = violence-blood-cauldron
   |         |
-  |  BP  fG |   BP = bone-pile (general), fG = fireGoat
+  |  BP  fG |   BP = bone-pile (general), fG = butcher
   |         |
   | h    RS |   h = health pickup, RS = rubble-pile-small (general)
   +----D----+
@@ -277,9 +277,9 @@ All props use bespoke Meshy AI-generated models or general library assets. See *
 ```
 
 - **Dimensions:** 8w x 6h, elevation 0
-- **Feel:** Muddy shoreline. The transition from blood river to solid ground. Ground023 floor (wet earth), Rock034 walls. violence-industrial-arch frames the north entrance from the Blood River. A violence-blood-cauldron overflows with blood near the north entrance. bone-pile (general) debris washed up on the river bank. The room is small and transitional --- a brief respite (but bleeding continues). One fireGoat patrols here, punishing players who linger.
+- **Feel:** Muddy shoreline. The transition from blood river to solid ground. Ground023 floor (wet earth), Rock034 walls. violence-industrial-arch frames the north entrance from the Blood River. A violence-blood-cauldron overflows with blood near the north entrance. bone-pile (general) debris washed up on the river bank. The room is small and transitional --- a brief respite (but bleeding continues). One butcher patrols here, punishing players who linger.
 - **3D elements:** Floor slopes slightly upward from north to south (RAMP cells, 0 to +0.25) as the terrain rises from the blood shore. The ceiling is higher here (4 units) after the low walkway-and-blood claustrophobia of the river.
-- **Enemies:** 1x fireGoat (Crimson) --- ranged attacks force the player to keep moving through this transitional space.
+- **Enemies:** 1x butcher (Crimson) --- ranged attacks force the player to keep moving through this transitional space.
 
 ### Room 4: Thorny Passage
 
@@ -297,7 +297,7 @@ All props use bespoke Meshy AI-generated models or general library assets. See *
   |TT  TT|
   |  RAMP |   RAMP = elevation change (+1 to +2)
   |TT  TT|
-  | fG    |   fG = fireGoat on elevated section
+  | fG    |   fG = butcher on elevated section
   |TT  TT|
   |  RAMP |   RAMP = elevation change (+2 to +1)
   |TT  TT|
@@ -319,8 +319,8 @@ All props use bespoke Meshy AI-generated models or general library assets. See *
   - Z+6 to Z+9: elevation +1 to +2 (ascending, highest point)
   - Z+10 to Z+11: elevation +2 to +1 (descending)
   - Z+14 to Z+15: elevation +1 to 0 (descending, exit level)
-  The vertical profile creates a hill shape. At the peak (+2 elevation), a fireGoat has a commanding sightline down the corridor in both directions.
-- **Enemies:** 2x fireGoat (Crimson) at the elevated sections. They fire downhill at the player who is navigating the narrow path. Dodging their projectiles laterally risks thorn wall contact.
+  The vertical profile creates a hill shape. At the peak (+2 elevation), a butcher has a commanding sightline down the corridor in both directions.
+- **Enemies:** 2x butcher (Crimson) at the elevated sections. They fire downhill at the player who is navigating the narrow path. Dodging their projectiles laterally risks thorn wall contact.
 
 ### Room 5: Thornwood
 
@@ -334,11 +334,11 @@ All props use bespoke Meshy AI-generated models or general library assets. See *
   | T   T  T     |   TT = thorn wall cluster (2-wide)
   |    lane    T  |   lane = open fighting lanes (2-3 cells wide)
   |TT     T   TT |
-  |  T  hG   T   |   hG = hellgoat
+  |  T  hG   T   |   hG = goat
   | T  T   TT    |
   |     lane   T  |
   | TT  T     TT |
-  |  T   fG  T   |   fG = fireGoat
+  |  T   fG  T   |   fG = butcher
   |T    T  T     |
   +----------D---+
              |
@@ -349,7 +349,7 @@ All props use bespoke Meshy AI-generated models or general library assets. See *
 - **Feel:** A dense forest of thorny columns. Structural columns (1x1 WALL_STONE with Rust007 texture) are placed irregularly throughout the room, creating narrow 2-3-cell-wide lanes between them. Every column is thorned --- 5 damage on contact, same as the passage walls. The player cannot hug cover because cover hurts. Combat must happen in the open lanes. Visibility is restricted by the column density (effective sight range ~6 cells). The bleeding mechanic punishes hesitation --- must push through.
 - **Thorn column mechanic:** Each column cell is a WALL_STONE with Rust007 texture and a 1-cell damage zone around it (environment zone, 5 damage on contact). Players must maintain 1+ cell distance from all columns while fighting.
 - **3D elements:** Columns rise to ceiling height (3.5 units). Some columns are 2-cell clusters (TT in diagram) creating wider obstacles. Floor is Ground054 (scorched earth). Ceiling is low (3.5 units) compared to temple rooms.
-- **Enemies:** 1x goatKnight (Dark, patrolling north lanes), 1x hellgoat (Brown, center), 1x fireGoat (Crimson, south). Mixed enemy types force varied combat --- goatKnight must be engaged carefully (armored), fireGoat's ranged shots ricochet between columns, hellgoat charges down lanes.
+- **Enemies:** 1x goatKnight (Dark, patrolling north lanes), 1x goat (Brown, center), 1x butcher (Crimson, south). Mixed enemy types force varied combat --- goatKnight must be engaged carefully (armored), butcher's ranged shots ricochet between columns, goat charges down lanes.
 
 ### Room 6: Burning Shore
 
@@ -361,7 +361,7 @@ All props use bespoke Meshy AI-generated models or general library assets. See *
   |                    |
   |  F     fG      F  |   F = fire geyser zone (2x2, periodic eruption)
   |                    |
-  |     fG     F      |   fG = fireGoat (ranged, open sightlines)
+  |     fG     F      |   fG = butcher (ranged, open sightlines)
   |                    |
   |  F     F      fG  |   Open expanse --- no cover, no walls to hide behind
   |                    |
@@ -374,11 +374,11 @@ All props use bespoke Meshy AI-generated models or general library assets. See *
 ```
 
 - **Dimensions:** 18w x 10h, elevation 0
-- **Feel:** A vast open expanse after the claustrophobic thorns. Ground054 (cracked sandstone) and Ground068 (heat-warped earth) floor. No walls within the room interior --- just open space stretching in every direction. The ceiling opens up (or is absent --- open to a cavern void above). The relief of open space is immediately undercut by fire geysers and fireGoats with clear sightlines across the entire room.
+- **Feel:** A vast open expanse after the claustrophobic thorns. Ground054 (cracked sandstone) and Ground068 (heat-warped earth) floor. No walls within the room interior --- just open space stretching in every direction. The ceiling opens up (or is absent --- open to a cavern void above). The relief of open space is immediately undercut by fire geysers and butchers with clear sightlines across the entire room.
 - **Fire geyser mechanic:** Six 2x2 fire geyser zones erupt on a staggered timer (timer_on: 3s, timer_off: 5s). Each eruption deals 8 damage and creates a 3-cell visual column of fire. The eruptions are staggered --- never all active simultaneously, but the player must constantly track which geysers are about to fire. The eruption positions are fixed and visible (scorch marks on floor via Stain001 decal).
 - **Fire geyser audio/visual warning:** Each fire geyser has a 1-second audio warning before eruption: a rising hiss that crescendos into the burst. The ground beneath the geyser glows orange 1 second before eruption. Both cues give the player time to dodge.
 - **3D elements:** Flat terrain. No elevation changes. The openness is the 3D element --- after cramped corridors and narrow walkways, the vast open space at ground level creates a fundamentally different spatial experience. The geyser eruptions are the vertical element --- 3-cell-high fire columns.
-- **Enemies:** 4x fireGoat (Crimson) positioned across the expanse. They have unobstructed sightlines and fire from range. The player has no cover --- must close distance or dodge in the open. The bleeding mechanic means the player cannot kite indefinitely.
+- **Enemies:** 4x butcher (Crimson) positioned across the expanse. They have unobstructed sightlines and fire from range. The player has no cover --- must close distance or dodge in the open. The bleeding mechanic means the player cannot kite indefinitely.
 
 ### Room 7: Flamethrower Shrine
 
@@ -436,8 +436,8 @@ All props use bespoke Meshy AI-generated models or general library assets. See *
 - **Arena mechanic:** Doors lock on entry (trigger T6). Three waves:
   - **Wave 1:** 3x goatKnight (Dark). Armored enemies in close quarters. Flamethrower DOT bypasses armor over time. violence-metal-crate-stack cover matters against their melee.
   - Health and ammo resupply spawns between wave 1 and wave 2 (not wave 2 and 3). The player needs HP recovery BEFORE the hardest wave, not after.
-  - **Wave 2:** 3x fireGoat (Crimson). Ranged enemies. Between waves 1 and 2, three meat-hook hooks DROP from the ceiling to floor level, becoming 1x1 obstacles (and contact hazards, 3 damage). The room's layout changes.
-  - **Wave 3:** 2x goatKnight + 2x hellgoat (Brown) + 1x fireGoat. All types simultaneously. Three MORE hooks drop. The room is increasingly cluttered with hanging and fallen hooks.
+  - **Wave 2:** 3x butcher (Crimson). Ranged enemies. Between waves 1 and 2, three meat-hook hooks DROP from the ceiling to floor level, becoming 1x1 obstacles (and contact hazards, 3 damage). The room's layout changes.
+  - **Wave 3:** 2x goatKnight + 2x goat (Brown) + 1x butcher. All types simultaneously. Three MORE hooks drop. The room is increasingly cluttered with hanging and fallen hooks.
 - **WALL_SECRET:** East wall at (31, 89) leads to Butcher's Hook secret room.
 - **3D elements:** Ceiling at 4 units. meat-hook props hang from ceiling mounts (offsetY=-0.5 initially). When hooks "drop" between waves, they descend to floor level (offsetY=0), creating 1x1 ground obstacles. violence-metal-crate-stack stacks are 2 cells high (waist cover). The Workbench and Anvil are at ground level.
 
@@ -508,17 +508,17 @@ All props use bespoke Meshy AI-generated models or general library assets. See *
 | Room | Type | Count | Behavior | Variant |
 |------|------|-------|----------|---------|
 | Blood River | goatKnight | 3 | Patrol walkway intersections, wade through blood to flank | Dark, armored |
-| River Banks | fireGoat | 1 | Patrol small room, ranged harass | Crimson |
-| Thorny Passage | fireGoat | 2 | Hold elevated positions, fire downhill | Crimson |
+| River Banks | butcher | 1 | Patrol small room, ranged harass | Crimson |
+| Thorny Passage | butcher | 2 | Hold elevated positions, fire downhill | Crimson |
 | Thornwood | goatKnight | 1 | Patrol north lanes | Dark, armored |
-| Thornwood | hellgoat | 1 | Charge through center lanes | Brown |
-| Thornwood | fireGoat | 1 | Ranged from south lanes | Crimson |
-| Burning Shore | fireGoat | 4 | Spread across expanse, long-range fire | Crimson |
+| Thornwood | goat | 1 | Charge through center lanes | Brown |
+| Thornwood | butcher | 1 | Ranged from south lanes | Crimson |
+| Burning Shore | butcher | 4 | Spread across expanse, long-range fire | Crimson |
 | Slaughterhouse wave 1 | goatKnight | 3 | Melee rush from north | Dark, armored |
-| Slaughterhouse wave 2 | fireGoat | 3 | Ranged from corners | Crimson |
+| Slaughterhouse wave 2 | butcher | 3 | Ranged from corners | Crimson |
 | Slaughterhouse wave 3 | goatKnight | 2 | Mixed assault | Dark, armored |
-| Slaughterhouse wave 3 | hellgoat | 2 | Charge down center | Brown |
-| Slaughterhouse wave 3 | fireGoat | 1 | Ranged support | Crimson |
+| Slaughterhouse wave 3 | goat | 2 | Charge down center | Brown |
+| Slaughterhouse wave 3 | butcher | 1 | Ranged support | Crimson |
 | Il Macello's Abattoir | Il Macello | 1 | Boss AI, 3 phases | boss-il-macello.glb |
 
 *Note: Enemy counts above list per-wave for the Slaughterhouse. Total unique spawns across the Slaughterhouse = 3+3+5 = 11. Grand total non-boss enemies = 3+1+2+3+4+11 = 24. With bleeding mechanic pressure, the player must kill efficiently to sustain HP.*
@@ -584,8 +584,8 @@ Flamethrower fuel pickups ("fuel" entity type) appear in every room from the Sla
 | T5 | Flamethrower Shrine | (24,70,2,2) | `weaponPickup` | `once: true` | `{ weapon: 'flamethrower', text: "The wilderness gave you fire. Use it." }` |
 | T6 | Slaughterhouse | (20,79,10,4) | `lockDoors` | `once: true` | --- |
 | T7 | Slaughterhouse | (20,79,10,4) | `spawnWave` | `once: true` | `{ enemies: [{type:'goatKnight', count:3}] }` |
-| T8 | Slaughterhouse | --- | `spawnWave` | On wave 1 clear | `{ enemies: [{type:'fireGoat', count:3}], hookDrop: [{x:22,z:81},{x:28,z:83},{x:25,z:85}] }` |
-| T9 | Slaughterhouse | --- | `spawnWave` | On wave 2 clear | `{ enemies: [{type:'goatKnight',count:2},{type:'hellgoat',count:2},{type:'fireGoat',count:1}], hookDrop: [{x:20,z:80},{x:30,z:84},{x:26,z:87}] }` |
+| T8 | Slaughterhouse | --- | `spawnWave` | On wave 1 clear | `{ enemies: [{type:'butcher', count:3}], hookDrop: [{x:22,z:81},{x:28,z:83},{x:25,z:85}] }` |
+| T9 | Slaughterhouse | --- | `spawnWave` | On wave 2 clear | `{ enemies: [{type:'goatKnight',count:2},{type:'goat',count:2},{type:'butcher',count:1}], hookDrop: [{x:20,z:80},{x:30,z:84},{x:26,z:87}] }` |
 | T10 | Slaughterhouse | --- | `unlockDoors` | On wave 3 clear | --- |
 | T11 | Il Macello's Abattoir | (19,95,12,3) | `bossIntro` | `once: true` | `{ text: "Meat. That is all you are. Meat on hooks." }` |
 | T12 | Il Macello's Abattoir | (19,95,12,3) | `lockDoors` | `once: true, delay: 3` | --- |
@@ -636,7 +636,7 @@ editor.createTheme('circle-7-violence', {
   ambientIntensity: 0.18,
   skyColor: '#0a0000',
   particleEffect: 'blood',               // Red particle motes drifting upward
-  enemyTypes: ['goatKnight', 'fireGoat', 'hellgoat'],
+  enemyTypes: ['goatKnight', 'butcher', 'goat'],
   enemyDensity: 1.4,                     // High --- all enemy types, dense encounters
   pickupDensity: 0.9,                    // Above average --- player needs HP from pickups AND kills
   specialMechanic: 'bleeding',           // 1 HP/s drain, 10 HP per kill
@@ -654,7 +654,7 @@ editor.createTheme('circle-7-violence', {
 1. **Pier arrival --- bleeding begins:** The moment the player enters, a red pulsing border appears on the HUD. HP starts ticking down. A text flash: *"Your blood remembers what you've done."* The player looks down at the Blood River --- the scale of this circle is immediately apparent.
 2. **Blood River descent:** The player descends from the elevated Pier into the crimson walkways. The goatKnights wade through blood they cannot touch. The disparity is visceral --- the enemies belong here. The player does not.
 3. **Thorny Passage elevation:** The vertical platforming through thorn-covered walls creates a unique physical challenge. Every wall is a threat. The player must navigate precisely while bleeding, while enemies fire from above.
-4. **Burning Shore relief and terror:** After the claustrophobic thorns, the open expanse is a physical relief. Then the fire geysers erupt. Then the fireGoats start shooting across 18 cells of open ground. The relief was a lie.
+4. **Burning Shore relief and terror:** After the claustrophobic thorns, the open expanse is a physical relief. Then the fire geysers erupt. Then the butchers start shooting across 18 cells of open ground. The relief was a lie.
 5. **Flamethrower Shrine --- the weapon:** *"The wilderness gave you fire. Use it."* The Brimstone Flamethrower changes the game. The scapegoat --- the one who carries sin into the wilderness --- now carries fire. The thematic resonance: the goat was always meant to burn.
 6. **Slaughterhouse --- the flamethrower excels:** Close quarters, armored enemies, tight corridors. The flamethrower's DOT shreds goatKnights. The hooks dropping between waves reshape the arena. The player learns the weapon through use.
 7. **Boss intro:** Il Macello speaks: *"Meat. That is all you are. Meat on hooks."* He hefts the cleaver. The metal grating floor vibrates.
@@ -751,7 +751,7 @@ editor.createTheme('circle-7-violence', {
 
 ### Room: River Banks (8x6, exploration, sortOrder=2)
 
-**Player Experience:** Muddy shoreline. You climb out of the blood onto wet earth and breathe --- but the bleeding does not stop. The room is small, transitional, a brief gasp between horrors. A fireGoat patrols here, punishing hesitation. Two barrels mark supplies.
+**Player Experience:** Muddy shoreline. You climb out of the blood onto wet earth and breathe --- but the bleeding does not stop. The room is small, transitional, a brief gasp between horrors. A butcher patrols here, punishing hesitation. Two barrels mark supplies.
 
 **Structural Assets:**
 | Asset | Position | Scale | Rotation | Purpose |
@@ -774,7 +774,7 @@ editor.createTheme('circle-7-violence', {
 
 ### Room: Thorny Passage (6x16, platforming, sortOrder=3)
 
-**Player Experience:** A narrow gauntlet of pain. Rust-red thorn walls press in from both sides, leaving a 3-cell-wide corridor. Every wall is a hazard --- 5 damage on contact. The passage weaves upward and then back down through four elevation changes. Missing a dodge means skidding into thorns. Two fireGoats hold the high ground, firing downhill.
+**Player Experience:** A narrow gauntlet of pain. Rust-red thorn walls press in from both sides, leaving a 3-cell-wide corridor. Every wall is a hazard --- 5 damage on contact. The passage weaves upward and then back down through four elevation changes. Missing a dodge means skidding into thorns. Two butchers hold the high ground, firing downhill.
 
 **Structural Assets:**
 | Asset | Position | Scale | Rotation | Purpose |
@@ -789,7 +789,7 @@ editor.createTheme('circle-7-violence', {
 | spike-bed-small (general) | (45, 20), (45, 32) ramp transitions | 0.6 | Spike clusters at ramp elevation changes |
 
 **Lighting:** Sparse --- 2x torch-sconce-simple (general) at passage entry and exit only, dim red `#cc3300`, radius 3 cells. Thorns obscure light.
-**Platforming:** Four RAMP elevation changes: 0->+1, +1->+2 (peak), +2->+1, +1->0. Hill-shaped profile. fireGoat at peak (+2) has commanding sightline. 3-cell-wide safe corridor throughout.
+**Platforming:** Four RAMP elevation changes: 0->+1, +1->+2 (peak), +2->+1, +1->0. Hill-shaped profile. butcher at peak (+2) has commanding sightline. 3-cell-wide safe corridor throughout.
 
 > **Playtest note:** Thorny Passage had 2 rope props in 96 cells. Now 11 props: 8 thorn-column wall protrusions (structural) visually sell the hazard, plus spikes at ramp transitions and blood puddles. The thorn columns are the key addition --- they communicate "these walls are dangerous" before the player touches them.
 
@@ -822,7 +822,7 @@ editor.createTheme('circle-7-violence', {
 
 ### Room: Burning Shore (18x10, exploration, sortOrder=5)
 
-**Player Experience:** After the claustrophobic thorns, the expanse is physical relief --- for one second. Then a fire geyser erupts 3 cells away. Then four fireGoats start shooting across 18 cells of open ground. There is no cover. No walls to hide behind. No columns to duck around. Just you, open cracked sandstone, and fire from every direction.
+**Player Experience:** After the claustrophobic thorns, the expanse is physical relief --- for one second. Then a fire geyser erupts 3 cells away. Then four butchers start shooting across 18 cells of open ground. There is no cover. No walls to hide behind. No columns to duck around. Just you, open cracked sandstone, and fire from every direction.
 
 **Structural Assets:**
 | Asset | Position | Scale | Rotation | Purpose |

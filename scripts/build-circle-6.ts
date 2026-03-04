@@ -45,7 +45,7 @@ export async function buildCircle6(dbPath: string) {
     ambientIntensity: 0.12,
     skyColor: '#080010',
     particleEffect: 'incense', // Slow-drifting violet particles
-    enemyTypes: ['shadowGoat', 'fireGoat'],
+    enemyTypes: ['heretic', 'hereticWhelp', 'hereticElder'],
     enemyDensity: 1.0, // Standard density
     pickupDensity: 0.7, // Moderate -- rewards exploration
     texturePalette: { exploration: 'brick', arena: 'stone-dark', boss: 'tiles', secret: 'brick' },
@@ -236,14 +236,14 @@ export async function buildCircle6(dbPath: string) {
 
   // --- Nave of Lies: 2x fireGoat patrol pew aisles ---
   //   Room bounds: (18, 12, 14, 10) -> interior: x=[19..30], z=[13..20]
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 20, 16, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 20, 16, {
     roomId: naveId,
     patrol: [
       { x: 20, z: 14 },
       { x: 20, z: 20 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 29, 16, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 29, 16, {
     roomId: naveId,
     patrol: [
       { x: 29, z: 14 },
@@ -257,21 +257,21 @@ export async function buildCircle6(dbPath: string) {
 
   // --- Catacombs: 3x shadowGoat roam corridors ---
   //   Room bounds: (36, 14, 10, 10) -> interior: x=[37..44], z=[15..22]
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 38, 16, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC_WHELP, 38, 16, {
     roomId: catacombsId,
     patrol: [
       { x: 38, z: 16 },
       { x: 42, z: 20 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 42, 18, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC_WHELP, 42, 18, {
     roomId: catacombsId,
     patrol: [
       { x: 42, z: 18 },
       { x: 38, z: 22 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 40, 22, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC_WHELP, 40, 22, {
     roomId: catacombsId,
     patrol: [
       { x: 40, z: 22 },
@@ -287,31 +287,31 @@ export async function buildCircle6(dbPath: string) {
   editor.setupArenaWaves(LEVEL_ID, trialChamberId, { x: 21, z: 34, w: 8, h: 4 }, [
     // Wave 1: 3x fireGoat on the elevated bench
     [
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 23, z: 35 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 25, z: 34 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 27, z: 35 },
+      { type: ENEMY_TYPES.HERETIC, x: 23, z: 35 },
+      { type: ENEMY_TYPES.HERETIC, x: 25, z: 34 },
+      { type: ENEMY_TYPES.HERETIC, x: 27, z: 35 },
     ],
     // Wave 2: 2x shadowGoat + 2x fireGoat
     [
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 20, z: 40 },
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 29, z: 40 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 24, z: 34 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 26, z: 34 },
+      { type: ENEMY_TYPES.HERETIC_WHELP, x: 20, z: 40 },
+      { type: ENEMY_TYPES.HERETIC_WHELP, x: 29, z: 40 },
+      { type: ENEMY_TYPES.HERETIC, x: 24, z: 34 },
+      { type: ENEMY_TYPES.HERETIC, x: 26, z: 34 },
     ],
   ]);
 
   // --- Ossuary: 2x shadowGoat lurk among chains ---
   //   Room bounds: (10, 40, 8, 8) -> interior: x=[11..16], z=[41..46]
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 12, 43, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC_WHELP, 12, 43, {
     roomId: ossuaryId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 16, 45, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC_WHELP, 16, 45, {
     roomId: ossuaryId,
   });
 
   // --- Profano's Chapel: 1x shadowGoat guard + boss ---
   //   Room bounds: (18, 54, 14, 14) -> interior: x=[19..30], z=[55..66]
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 25, 56, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC_WHELP, 25, 56, {
     roomId: chapelId,
   });
 
@@ -618,7 +618,7 @@ export async function buildCircle6(dbPath: string) {
   editor.ambush(
     LEVEL_ID,
     { x: 9, z: 18, w: 2, h: 2 },
-    [{ type: ENEMY_TYPES.SHADOW_GOAT, x: 10, z: 18 }],
+    [{ type: ENEMY_TYPES.HERETIC_WHELP, x: 10, z: 18 }],
     { roomId: confessionalId },
   );
 
@@ -936,61 +936,61 @@ export async function buildCircle6(dbPath: string) {
   //
   // Inquisitor's Antechamber (1, 22, 9, 8) → interior x:[2..9], z:[23..29]
   // 4x GOAT_KNIGHT (inquisitors — heavy armored patrols)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 3, 24, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 3, 24, {
     roomId: inquisitorId,
     patrol: [
       { x: 3, z: 24 },
       { x: 8, z: 28 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 8, 24, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 8, 24, {
     roomId: inquisitorId,
     patrol: [
       { x: 8, z: 24 },
       { x: 3, z: 28 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 5, 26, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 5, 26, {
     roomId: inquisitorId,
     patrol: [
       { x: 2, z: 26 },
       { x: 8, z: 26 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 5, 28, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 5, 28, {
     roomId: inquisitorId,
   });
 
   // Forbidden Scriptorium (32, 24, 10, 10) → interior x:[33..41], z:[25..33]
   // 6x mix: corrupted scholars (HELLGOAT) + archive guards (GOAT_KNIGHT)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 34, 26, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 34, 26, {
     roomId: scriptoriumId,
     patrol: [
       { x: 34, z: 25 },
       { x: 40, z: 25 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 34, 30, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 34, 30, {
     roomId: scriptoriumId,
     patrol: [
       { x: 34, z: 30 },
       { x: 40, z: 30 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 37, 27, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 37, 27, {
     roomId: scriptoriumId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 40, 26, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 40, 26, {
     roomId: scriptoriumId,
     patrol: [
       { x: 40, z: 25 },
       { x: 40, z: 33 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 33, 32, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 33, 32, {
     roomId: scriptoriumId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 37, 32, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC_WHELP, 37, 32, {
     roomId: scriptoriumId,
   });
 
@@ -999,114 +999,114 @@ export async function buildCircle6(dbPath: string) {
   editor.setupArenaWaves(LEVEL_ID, ritualPitId, { x: 2, z: 33, w: 7, h: 4 }, [
     // Wave 1: 3x HELLGOAT (first cultists emerge from the pyre)
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 3, z: 34 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 5, z: 33 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 8, z: 34 },
+      { type: ENEMY_TYPES.HERETIC, x: 3, z: 34 },
+      { type: ENEMY_TYPES.HERETIC, x: 5, z: 33 },
+      { type: ENEMY_TYPES.HERETIC, x: 8, z: 34 },
     ],
     // Wave 2: 2x SHADOW_GOAT flank from the walls
     [
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 2, z: 38 },
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 8, z: 38 },
+      { type: ENEMY_TYPES.HERETIC_WHELP, x: 2, z: 38 },
+      { type: ENEMY_TYPES.HERETIC_WHELP, x: 8, z: 38 },
     ],
     // Wave 3: 1x GOAT_KNIGHT as pit champion
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 5, z: 36 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 3, z: 37 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 7, z: 37 },
+      { type: ENEMY_TYPES.HERETIC, x: 5, z: 36 },
+      { type: ENEMY_TYPES.HERETIC, x: 3, z: 37 },
+      { type: ENEMY_TYPES.HERETIC, x: 7, z: 37 },
     ],
   ]);
 
   // Crypt of the Damned (32, 44, 10, 10) → interior x:[33..41], z:[45..53]
   // 7x tomb guardians lurking among sarcophagi
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 34, 46, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC_WHELP, 34, 46, {
     roomId: cryptId,
     patrol: [
       { x: 34, z: 45 },
       { x: 34, z: 53 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 40, 46, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC_WHELP, 40, 46, {
     roomId: cryptId,
     patrol: [
       { x: 40, z: 45 },
       { x: 40, z: 53 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 37, 49, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC_WHELP, 37, 49, {
     roomId: cryptId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 33, 52, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 33, 52, {
     roomId: cryptId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 40, 52, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 40, 52, {
     roomId: cryptId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 36, 51, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 36, 51, {
     roomId: cryptId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 38, 47, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 38, 47, {
     roomId: cryptId,
   });
 
   // Penitent's Corridor (1, 40, 9, 10) → interior x:[2..9], z:[41..49]
   // 5x gauntlet of penitent monks (HELLGOAT patrol through corridor)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 3, 42, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 3, 42, {
     roomId: penitentCorridorId,
     patrol: [
       { x: 2, z: 42 },
       { x: 8, z: 42 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 5, 44, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 5, 44, {
     roomId: penitentCorridorId,
     patrol: [
       { x: 2, z: 44 },
       { x: 8, z: 44 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 3, 47, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 3, 47, {
     roomId: penitentCorridorId,
     patrol: [
       { x: 2, z: 47 },
       { x: 8, z: 47 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 7, 45, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC_WHELP, 7, 45, {
     roomId: penitentCorridorId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 4, 48, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC_WHELP, 4, 48, {
     roomId: penitentCorridorId,
   });
 
   // Vestibule of Doubt (33, 54, 10, 12) → interior x:[34..42], z:[55..65]
   // 7x mixed elite guard before the chapel
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 35, 56, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 35, 56, {
     roomId: vestibuleOfDoubtId,
     patrol: [
       { x: 35, z: 55 },
       { x: 35, z: 65 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 41, 56, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 41, 56, {
     roomId: vestibuleOfDoubtId,
     patrol: [
       { x: 41, z: 55 },
       { x: 41, z: 65 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 38, 60, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 38, 60, {
     roomId: vestibuleOfDoubtId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 35, 63, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 35, 63, {
     roomId: vestibuleOfDoubtId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 41, 63, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 41, 63, {
     roomId: vestibuleOfDoubtId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 37, 58, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC_WHELP, 37, 58, {
     roomId: vestibuleOfDoubtId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 39, 64, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC_WHELP, 39, 64, {
     roomId: vestibuleOfDoubtId,
   });
 
@@ -1114,14 +1114,14 @@ export async function buildCircle6(dbPath: string) {
   // Room bounds: (8, 16, 6, 6) → interior x=[9..12], z=[17..20] (walls at x=8,13 z=16,21)
   // 2 shadow goats hiding in confession booths
   // Note: (10,18) is the ambush trigger entity → use (11,18); patrol uses interior cells only
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 11, 18, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC_WHELP, 11, 18, {
     roomId: confessionalId,
     patrol: [
       { x: 10, z: 17 },
       { x: 12, z: 20 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 12, 19, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC_WHELP, 12, 19, {
     roomId: confessionalId,
     patrol: [
       { x: 12, z: 17 },
@@ -1132,16 +1132,16 @@ export async function buildCircle6(dbPath: string) {
   // ── ENEMIES: TRIAL CHAMBER (pre-wave sentinels) ───────────────────────
   // Room bounds: (19, 32, 12, 12) → interior x=[20..29], z=[33..42]
   // 3 fire goat/shadow goat sentinels before the arena wave trigger
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 21, 35, { roomId: trialChamberId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 28, 35, { roomId: trialChamberId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 24, 41, { roomId: trialChamberId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 21, 35, { roomId: trialChamberId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 28, 35, { roomId: trialChamberId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC_WHELP, 24, 41, { roomId: trialChamberId });
 
   // ── ENEMIES: OSSUARY (additional tomb guardians) ──────────────────────
   // Room bounds: (10, 40, 8, 8) → interior x=[11..16], z=[41..46]
   // 3 more guardians among the burial niches
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 13, 42, { roomId: ossuaryId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 12, 45, { roomId: ossuaryId }); // (11,45) occupied by heresy-bone-urn prop
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.SHADOW_GOAT, 15, 44, { roomId: ossuaryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC_WHELP, 13, 42, { roomId: ossuaryId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC, 12, 45, { roomId: ossuaryId }); // (11,45) occupied by heresy-bone-urn prop
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HERETIC_WHELP, 15, 44, { roomId: ossuaryId });
 
   // ── New Pickups ────────────────────────────────────────────────────────────
 
@@ -1254,8 +1254,8 @@ export async function buildCircle6(dbPath: string) {
     LEVEL_ID,
     { x: 2, z: 23, w: 7, h: 3 },
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 3, z: 25 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 7, z: 25 },
+      { type: ENEMY_TYPES.HERETIC, x: 3, z: 25 },
+      { type: ENEMY_TYPES.HERETIC, x: 7, z: 25 },
     ],
     { roomId: inquisitorId },
   );
@@ -1277,9 +1277,9 @@ export async function buildCircle6(dbPath: string) {
     LEVEL_ID,
     { x: 33, z: 45, w: 8, h: 3 },
     [
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 35, z: 47 },
-      { type: ENEMY_TYPES.SHADOW_GOAT, x: 39, z: 47 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 37, z: 52 },
+      { type: ENEMY_TYPES.HERETIC_WHELP, x: 35, z: 47 },
+      { type: ENEMY_TYPES.HERETIC_WHELP, x: 39, z: 47 },
+      { type: ENEMY_TYPES.HERETIC, x: 37, z: 52 },
     ],
     { roomId: cryptId },
   );

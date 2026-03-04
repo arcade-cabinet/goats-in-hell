@@ -69,6 +69,14 @@
         "actionId": 190,
         "artifact": "animations/Knock_Down_1.glb"
       }
+    },
+    "animation": {
+      "taskId": "019cb725-be6c-7366-a211-baa087443b74",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb725-be6c-7366-a211-baa087443b74"
+      },
+      "artifacts": {}
     }
   },
   "pipeline": "enemy",

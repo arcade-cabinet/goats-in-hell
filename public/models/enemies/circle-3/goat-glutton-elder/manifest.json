@@ -1,0 +1,79 @@
+{
+  "id": "goat-glutton-elder",
+  "name": "Bloated Titan",
+  "type": "character",
+  "seed": 1079224679,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cb6fb-fac0-7084-af00-e3a66c38b7ec",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6fb-fac0-7084-af00-e3a66c38b7ec"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cb6fc-646c-7e1c-8978-901a7ba7a55c",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6fc-646c-7e1c-8978-901a7ba7a55c"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cb6fe-d69f-70fb-901e-ad69a6539394",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6fe-d69f-70fb-901e-ad69a6539394"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cb725-e5d2-7369-a715-62c3d8b5b01f",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb725-e5d2-7369-a715-62c3d8b5b01f"
+      },
+      "artifacts": {}
+    },
+    "animation": {
+      "taskId": "019cb94b-4778-767f-941e-11c99587ae61",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb94b-4778-767f-941e-11c99587ae61"
+      },
+      "artifacts": {}
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 3 (Gluttony) — an ancient engine of consumption so vast it has transcended the merely grotesque into something geological. This creature has been feeding in Circle 3 since before Dante walked through. Its body is less flesh than landscape — rolls of ancient corrupted mass layered over millennia, organs visible as dark shapes through stretched translucent skin, three heads that once corresponded to Cerberus's nature now grafted into a single body. The ground trembles when it moves. It does not run — it advances like a tide, and what it reaches, it swallows. In its belly are the remnants of things it consumed so long ago they have fossilized.",
+  "textToImageTask": {
+    "prompt": "A massive lumbering bipedal humanoid goat titan demon in A-pose, enormous grotesque beyond description, layered mountains of ancient corrupted dark grey-brown flesh, distended belly containing fossilized shapes visible as dark outlines under translucent skin, three vestigial goat heads — main head forward with two smaller merged side-heads, massive blunt ancient horns blackened and cracked with age, tiny deep-sunk eyes burning with ancient hunger, thick column legs barely mobile under the mass, short powerful arms ending in blunt crushing claws, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Massive titan goat demon, layered mountains of ancient flesh, three merged goat heads with massive blackened horns, enormous distended belly with shapes visible through skin, column-thick legs, ancient and vast, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 12000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Ancient dark grey-brown corrupted layered flesh texture, translucent patches of distended skin showing dark fossilized shapes inside belly, blackened cracked ancient horns, tiny burning-hunger eyes deep in folds, millennium of accumulated filth worked into every crevice, short crushing claws worn smooth from use",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 2.6
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Monster_Walk",
+      "Fighting.Transitioning.Chest_Pound_Taunt",
+      "Fighting.AttackingwithWeapon.Charged_Axe_Chop",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Fall_Dead_from_Abdominal_Injury"
+    ]
+  }
+}

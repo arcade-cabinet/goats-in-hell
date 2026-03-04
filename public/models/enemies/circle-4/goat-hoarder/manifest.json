@@ -39,7 +39,7 @@
       }
     },
     "animations": {
-      "WalkAndRun.Walking.Zombie_Walk": {
+      "WalkAndRun.Walking.Monster_Walk": {
         "taskId": "019cad8c-b9db-7c38-8add-3f1fe6956e6d",
         "status": "SUCCEEDED",
         "actionId": 112,
@@ -57,7 +57,7 @@
         "actionId": 242,
         "artifact": "animations/Charged_Slash.glb"
       },
-      "Fighting.Punching.Hook_Punch": {
+      "Fighting.Punching.Left_Hook_from_Guard": {
         "taskId": "019cad8f-14ca-714a-b763-c7eadb588e75",
         "status": "SUCCEEDED",
         "actionId": 193,
@@ -75,6 +75,14 @@
         "actionId": 188,
         "artifact": "animations/Fall_Dead_from_Abdominal_Injury.glb"
       }
+    },
+    "animation": {
+      "taskId": "019cb728-af6a-7493-870f-4e91ec4ae2dc",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb728-af6a-7493-870f-4e91ec4ae2dc"
+      },
+      "artifacts": {}
     }
   },
   "pipeline": "enemy",
@@ -101,10 +109,10 @@
   },
   "animationTask": {
     "animations": [
-      "WalkAndRun.Walking.Zombie_Walk",
+      "WalkAndRun.Walking.Monster_Walk",
       "DailyActions.Idle.Angry_Ground_Stomp",
       "Fighting.AttackingwithWeapon.Charged_Slash",
-      "Fighting.Punching.Hook_Punch",
+      "Fighting.Punching.Left_Hook_from_Guard",
       "Fighting.GettingHit.Face_Punch_Reaction_2",
       "Fighting.Dying.Fall_Dead_from_Abdominal_Injury"
     ]

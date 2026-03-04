@@ -39,7 +39,7 @@ export async function buildCircle4(dbPath: string) {
     ambientIntensity: 0.2,
     skyColor: '#0a0800',
     particleEffect: 'goldDust',
-    enemyTypes: ['goatKnight', 'hellgoat'],
+    enemyTypes: ['hoarder', 'hoarderWhelp', 'hoarderElder'],
     enemyDensity: 1.0,
     pickupDensity: 2.5,
     texturePalette: { exploration: 'tiles', arena: 'marble', boss: 'tiles', secret: 'marble' },
@@ -182,9 +182,9 @@ export async function buildCircle4(dbPath: string) {
   // 5. ENTITIES: ENEMIES (from "Enemies" table)
   // =========================================================================
 
-  // --- Treasury (ground): 2 goatKnight patrol between chest rows ---
+  // --- Treasury (ground): 2 hoarderWhelp patrol between chest rows ---
   //   Room bounds: (15, 12, 14, 12) -> interior: x=[16..27], z=[13..22]
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 19, 16, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_WHELP, 19, 16, {
     roomId: treasuryId,
     patrol: [
       { x: 19, z: 16 },
@@ -193,7 +193,7 @@ export async function buildCircle4(dbPath: string) {
       { x: 19, z: 20 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 25, 20, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_WHELP, 25, 20, {
     roomId: treasuryId,
     patrol: [
       { x: 25, z: 20 },
@@ -205,21 +205,21 @@ export async function buildCircle4(dbPath: string) {
 
   // --- Treasury (balcony): 2 hellgoat guard balcony ramps ---
   //   Balcony positions away from ramp walls to avoid corridor interference
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 17, 14, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER, 17, 14, {
     roomId: treasuryId,
     elevation: 1,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 25, 14, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER, 25, 14, {
     roomId: treasuryId,
     elevation: 1,
   });
 
-  // --- Weight Room: 1 goatKnight on far platform, 1 hellgoat patrolling ---
+  // --- Weight Room: 1 hoarderWhelp on far platform, 1 hellgoat patrolling ---
   //   Room bounds: (17, 28, 10, 10) -> interior: x=[18..25], z=[29..36]
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 22, 35, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_WHELP, 22, 35, {
     roomId: weightRoomId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 22, 33, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER, 22, 33, {
     roomId: weightRoomId,
   });
 
@@ -229,19 +229,19 @@ export async function buildCircle4(dbPath: string) {
   //   Wave 1: 2 goatKnight (N, S) + 2 hellgoat (E, W)
   //   Wave 2: 2 goatKnight (corners) + 2 hellgoat (door-side)
   editor.setupArenaWaves(LEVEL_ID, auctionHallId, { x: 17, z: 43, w: 10, h: 2 }, [
-    // Wave 1: 2 goatKnight (N, S) + 2 hellgoat (E, W)
+    // Wave 1: 2 hoarderWhelp (N, S) + 2 hellgoat (E, W)
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 22, z: 43 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 22, z: 52 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 17, z: 48 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 26, z: 48 },
+      { type: ENEMY_TYPES.HOARDER_WHELP, x: 22, z: 43 },
+      { type: ENEMY_TYPES.HOARDER_WHELP, x: 22, z: 52 },
+      { type: ENEMY_TYPES.HOARDER, x: 17, z: 48 },
+      { type: ENEMY_TYPES.HOARDER, x: 26, z: 48 },
     ],
-    // Wave 2: 2 goatKnight (corners) + 2 hellgoat (door-side)
+    // Wave 2: 2 hoarderElder (corners) + 2 hellgoat (door-side)
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 17, z: 43 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 26, z: 52 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 20, z: 43 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 24, z: 43 },
+      { type: ENEMY_TYPES.HOARDER_ELDER, x: 17, z: 43 },
+      { type: ENEMY_TYPES.HOARDER_ELDER, x: 26, z: 52 },
+      { type: ENEMY_TYPES.HOARDER, x: 20, z: 43 },
+      { type: ENEMY_TYPES.HOARDER, x: 24, z: 43 },
     ],
   ]);
 
@@ -876,9 +876,9 @@ export async function buildCircle4(dbPath: string) {
   // ── NEW ENEMIES ───────────────────────────────────────────────────────────
   //
   // Coin Counting Room (x=30, z=12, w=10, h=10) interior: x=[31..38], z=[13..20]
-  // 5 goatKnight counting guards + 2 hellgoat -- packed with hostile accountants
+  // 5 hoarderElder counting guards + 2 hellgoat -- packed with hostile accountants
 
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 33, 15, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_ELDER, 33, 15, {
     roomId: coinCountingRoomId,
     patrol: [
       { x: 33, z: 14 },
@@ -887,7 +887,7 @@ export async function buildCircle4(dbPath: string) {
       { x: 37, z: 14 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 37, 19, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_ELDER, 37, 19, {
     roomId: coinCountingRoomId,
     patrol: [
       { x: 37, z: 19 },
@@ -896,141 +896,141 @@ export async function buildCircle4(dbPath: string) {
       { x: 33, z: 19 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 31, 14, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_ELDER, 31, 14, {
     roomId: coinCountingRoomId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 38, 19, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_ELDER, 38, 19, {
     roomId: coinCountingRoomId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 34, 13, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_ELDER, 34, 13, {
     roomId: coinCountingRoomId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 35, 17, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER, 35, 17, {
     roomId: coinCountingRoomId,
     patrol: [
       { x: 32, z: 17 },
       { x: 38, z: 17 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 31, 19, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER, 31, 19, {
     roomId: coinCountingRoomId,
   });
 
   // Vault Annex (x=0, z=12, w=10, h=10) interior: x=[1..8], z=[13..20]
-  // 3 goatKnight overseers and 2 hellgoat scouts -- cramped annex patrol
+  // 3 hoarderElder overseers and 2 hellgoat scouts -- cramped annex patrol
 
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 3, 15, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_ELDER, 3, 15, {
     roomId: vaultAnnexId,
     patrol: [
       { x: 3, z: 14 },
       { x: 3, z: 20 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 7, 18, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_ELDER, 7, 18, {
     roomId: vaultAnnexId,
     patrol: [
       { x: 7, z: 14 },
       { x: 7, z: 20 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 5, 14, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_ELDER, 5, 14, {
     roomId: vaultAnnexId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 5, 17, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER, 5, 17, {
     roomId: vaultAnnexId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 8, 14, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER, 8, 14, {
     roomId: vaultAnnexId,
   });
 
   // Guard Barracks (x=30, z=24, w=10, h=10) interior: x=[31..38], z=[25..32]
-  // 4 goatKnight + 2 hellgoat
+  // 4 hoarderElder + 2 hellgoat
   // All placed in the center of the room (x=33..36, z=26..30) away from all walls
 
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 33, 27, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_ELDER, 33, 27, {
     roomId: guardBarracksId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 36, 27, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_ELDER, 36, 27, {
     roomId: guardBarracksId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 33, 30, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_ELDER, 33, 30, {
     roomId: guardBarracksId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 36, 30, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_ELDER, 36, 30, {
     roomId: guardBarracksId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 34, 26, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER, 34, 26, {
     roomId: guardBarracksId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 35, 29, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER, 35, 29, {
     roomId: guardBarracksId,
   });
 
   // Offering Chamber (x=0, z=22, w=10, h=10) interior: x=[1..8], z=[23..30]
   // 4 pre-placed guards defending the idols (no ambush trigger to avoid corridor blockage)
 
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 3, 25, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_ELDER, 3, 25, {
     roomId: offeringChamberId,
     patrol: [
       { x: 3, z: 24 },
       { x: 3, z: 29 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 7, 28, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_ELDER, 7, 28, {
     roomId: offeringChamberId,
     patrol: [
       { x: 7, z: 24 },
       { x: 7, z: 29 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 5, 27, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER, 5, 27, {
     roomId: offeringChamberId,
     patrol: [
       { x: 3, z: 27 },
       { x: 7, z: 27 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 6, 24, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER, 6, 24, {
     roomId: offeringChamberId,
   });
 
   // Smelting Chamber (x=0, z=42, w=12, h=12) interior: x=[1..10], z=[43..52]
   // 3 pre-placed smelter guards + Arena: 2 waves of greed guardians
 
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 3, 50, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_ELDER, 3, 50, {
     roomId: smeltingChamberId,
     patrol: [
       { x: 3, z: 44 },
       { x: 3, z: 51 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 9, 45, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_ELDER, 9, 45, {
     roomId: smeltingChamberId,
     patrol: [
       { x: 9, z: 44 },
       { x: 9, z: 51 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 6, 47, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER, 6, 47, {
     roomId: smeltingChamberId,
   });
 
   // Arena: 2 waves of greed guardians defending the smelters
   editor.setupArenaWaves(LEVEL_ID, smeltingChamberId, { x: 1, z: 43, w: 10, h: 2 }, [
-    // Wave 1: 2 goatKnight (N, S) + 2 hellgoat (E, W)
+    // Wave 1: 2 hoarderElder (N, S) + 2 hellgoat (E, W)
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 6, z: 44 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 6, z: 51 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 1, z: 47 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 10, z: 47 },
+      { type: ENEMY_TYPES.HOARDER_ELDER, x: 6, z: 44 },
+      { type: ENEMY_TYPES.HOARDER_ELDER, x: 6, z: 51 },
+      { type: ENEMY_TYPES.HOARDER, x: 1, z: 47 },
+      { type: ENEMY_TYPES.HOARDER, x: 10, z: 47 },
     ],
-    // Wave 2: 3 goatKnight (corners + center) + 2 hellgoat (flanking)
+    // Wave 2: 3 hoarderElder (corners + center) + 2 hellgoat (flanking)
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 2, z: 44 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 10, z: 51 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 6, z: 48 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 2, z: 51 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 10, z: 44 },
+      { type: ENEMY_TYPES.HOARDER_ELDER, x: 2, z: 44 },
+      { type: ENEMY_TYPES.HOARDER_ELDER, x: 10, z: 51 },
+      { type: ENEMY_TYPES.HOARDER_ELDER, x: 6, z: 48 },
+      { type: ENEMY_TYPES.HOARDER, x: 2, z: 51 },
+      { type: ENEMY_TYPES.HOARDER, x: 10, z: 44 },
     ],
   ]);
 
@@ -1221,20 +1221,20 @@ export async function buildCircle4(dbPath: string) {
   });
 
   // ── DEEP VAULT ENEMIES (jump-scare guardians behind the secret wall) ───────
-  // 4 goatKnight elite guards stationed around the hoard.
+  // 4 hoarderElder elite guards stationed around the hoard.
   // These ARE correct here — PlaytestRunner now traverses WALL_SECRET cells,
   // so the simulation agent will find and kill them through the secret passage.
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 32, 44, { roomId: deepVaultId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 37, 44, { roomId: deepVaultId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 32, 49, { roomId: deepVaultId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 37, 49, { roomId: deepVaultId });
-  // Ambush: 2 more knights emerge when player enters the inner sanctum
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_ELDER, 32, 44, { roomId: deepVaultId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_ELDER, 37, 44, { roomId: deepVaultId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_ELDER, 32, 49, { roomId: deepVaultId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HOARDER_ELDER, 37, 49, { roomId: deepVaultId });
+  // Ambush: 2 more elders emerge when player enters the inner sanctum
   editor.ambush(
     LEVEL_ID,
     { x: 30, z: 42, w: 10, h: 10 },
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 34, z: 46 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 35, z: 46 },
+      { type: ENEMY_TYPES.HOARDER_ELDER, x: 34, z: 46 },
+      { type: ENEMY_TYPES.HOARDER_ELDER, x: 35, z: 46 },
     ],
     { roomId: deepVaultId },
   );

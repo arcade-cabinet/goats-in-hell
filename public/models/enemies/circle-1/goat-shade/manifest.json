@@ -69,6 +69,16 @@
         "actionId": 8,
         "artifact": "animations/Dead.glb"
       }
+    },
+    "animation": {
+      "taskId": "019cb722-8dfb-73c4-99e7-6c0b1f4b8140",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb722-8dfb-73c4-99e7-6c0b1f4b8140"
+      },
+      "artifacts": {
+        "animation": "animations/Fighting.Dying.Dead.glb"
+      }
     }
   },
   "pipeline": "enemy",

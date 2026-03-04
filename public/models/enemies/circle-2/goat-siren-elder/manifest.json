@@ -1,0 +1,111 @@
+{
+  "id": "goat-siren-elder",
+  "name": "Storm Siren",
+  "type": "character",
+  "seed": 513081019,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cb6f8-5f88-7d8a-87bf-a94f7748dc98",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6f8-5f88-7d8a-87bf-a94f7748dc98"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cb737-9341-7564-bd88-7f6c26a3ffed",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb737-9341-7564-bd88-7f6c26a3ffed"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cb738-a777-772d-926e-fbb56d8c1b65",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb738-a777-772d-926e-fbb56d8c1b65"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cb739-d993-75b0-9e2e-7cc101d07e76",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb739-d993-75b0-9e2e-7cc101d07e76"
+      },
+      "artifacts": {}
+    },
+    "animation": {
+      "taskId": "019cb73c-ae00-77d6-9045-393abc1b4c53",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb73c-ae00-77d6-9045-393abc1b4c53"
+      },
+      "artifacts": {}
+    },
+    "animations": {
+      "Fighting.Transitioning.Chest_Pound_Taunt": {
+        "taskId": "019cb73d-f27d-74b6-8b8d-a33c5af37cfa",
+        "status": "SUCCEEDED",
+        "actionId": 88,
+        "artifact": "animations/Chest_Pound_Taunt.glb"
+      },
+      "Fighting.AttackingwithWeapon.Left_Slash": {
+        "taskId": "019cb73e-3377-76a8-8d22-1fa752780bec",
+        "status": "SUCCEEDED",
+        "actionId": 97,
+        "artifact": "animations/Left_Slash.glb"
+      },
+      "Fighting.GettingHit.BeHit_FlyUp": {
+        "taskId": "019cb73e-7244-76ae-a6be-87497e99cf6d",
+        "status": "SUCCEEDED",
+        "actionId": 7,
+        "artifact": "animations/BeHit_FlyUp.glb"
+      },
+      "Fighting.Dying.Shot_and_Blown_Back": {
+        "taskId": "019cb73e-b13f-74ba-aae1-22e7b03c5cf9",
+        "status": "SUCCEEDED",
+        "actionId": 182,
+        "artifact": "animations/Shot_and_Blown_Back.glb"
+      },
+      "WalkAndRun.Walking.Monster_Walk": {
+        "taskId": "019cb73f-218f-74d6-92a8-02fb10907c82",
+        "status": "SUCCEEDED",
+        "actionId": 112,
+        "artifact": "animations/Monster_Walk.glb"
+      }
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 2 (Lust) — an ancient demoness who has dwelt in the eternal wind so long she has BECOME the wind. She is not blown about — she commands the storm. In life she was the kind of person who destroyed empires through desire: Cleopatra's analog, Helen's shadow. Millennia of circular winds have stretched and perfected her into something beyond beauty — into a force of nature. Gold-crowned horns have grown massive, her body is written over in the sigils of every soul she has ever ensnared, and she trails a perpetual gale that scatters lesser shades before her. To look at her is to forget your purpose.",
+  "textToImageTask": {
+    "prompt": "A towering commanding bipedal humanoid female goat demon in A-pose, ancient and terrifyingly beautiful, dark crimson-black fur sleek as velvet, massive sweeping gold-plated horns adorned with rings and chains of past victims, body covered in writhing luminescent desire-sigils, long razor claws tipped with gold, regal torn silk billowing in a perpetual storm wind, violet eyes blazing with ancient predatory intelligence, digitigrade goat legs ending in polished obsidian hooves, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Towering commanding bipedal female goat demon, tall athletic build, large sweeping horns, digitigrade goat legs, A-pose, standing upright with arms extended horizontally",
+    "artStyle": "realistic",
+    "targetPolycount": 10000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark crimson-black velvet fur, massive gold-plated horns with hanging victim-chain rings, luminescent violet desire-sigils written over every inch of body, gold-tipped razor claws, blazing ancient violet eyes, obsidian polished hooves, shredded ancient silk billowing in phantom wind",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 2.1
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Monster_Walk",
+      "Fighting.Transitioning.Chest_Pound_Taunt",
+      "Fighting.AttackingwithWeapon.Left_Slash",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Shot_and_Blown_Back"
+    ]
+  }
+}

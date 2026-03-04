@@ -1,0 +1,79 @@
+{
+  "id": "goat-hoarder-elder",
+  "name": "Arch Miser",
+  "type": "character",
+  "seed": 128877778,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cb6fd-5b7b-7e50-9f6c-ad69a7ef6894",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6fd-5b7b-7e50-9f6c-ad69a7ef6894"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cb73c-24b3-7612-b5a6-e44e79ba6f3c",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb73c-24b3-7612-b5a6-e44e79ba6f3c"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cb73d-57db-77fd-92d5-c1720096ac90",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb73d-57db-77fd-92d5-c1720096ac90"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cb73e-b7ed-76b4-9142-37ec76cc7e60",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb73e-b7ed-76b4-9142-37ec76cc7e60"
+      },
+      "artifacts": {}
+    },
+    "animation": {
+      "taskId": "019cb948-ef29-7375-b74d-261f3bfc8bb5",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb948-ef29-7375-b74d-261f3bfc8bb5"
+      },
+      "artifacts": {}
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 4 (Greed) — the Arch Miser: a demon so old that wealth has literally grown INTO it. In life it was a sovereign of commerce who starved millions to accumulate. Now gold has fused with its flesh over millennia — golden veins visible under translucent skin, solid gold plate armor that is not armor but its own body, transformed. It moves slowly because it carries the weight of everything it ever refused to release. But when it strikes, it strikes with the full mass of centuries of accumulated possession. Its eyes are solid gold coins. It has not opened its hoard-fist in a thousand years.",
+  "textToImageTask": {
+    "prompt": "A massive imposing bipedal humanoid goat demon in A-pose, ancient body encased in gold that has grown into the flesh, golden veins visible as luminescent lines under translucent pale skin patches, solid gold plate armor fused directly to the body at shoulders chest and arms, massive curved golden horns grown enormous with accumulated wealth power, eyes replaced by glowing solid gold coins, thick powerful build of immovable wealth, digitigrade goat legs armored in fused golden plate, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Massive stocky bipedal goat demon, broad powerful build, enormous curved horns, thick legs and arms, digitigrade goat legs, A-pose, standing upright with arms extended horizontally",
+    "artStyle": "realistic",
+    "targetPolycount": 11000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Pale grey-gold translucent skin with luminescent golden veins visible within, solid gold plate fused into the body at chest shoulders and arms, coin-gold solid glowing eyes, ancient pitted gold surface texture on armor sections grown from within, enormous patinated golden horns with accumulated verdigris in the grooves, immense weight suggested by compressed ground posture",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 2.3
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Monster_Walk",
+      "Fighting.Transitioning.Chest_Pound_Taunt",
+      "Fighting.AttackingwithWeapon.Charged_Axe_Chop",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Shot_and_Blown_Back"
+    ]
+  }
+}

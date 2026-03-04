@@ -1,0 +1,79 @@
+{
+  "id": "goat-siren-whelp",
+  "name": "Siren Thrall",
+  "type": "character",
+  "seed": 3795983182,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cb6fc-14e8-7f52-9737-c035851fb1ab",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6fc-14e8-7f52-9737-c035851fb1ab"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cb73c-17e8-77aa-81f0-7b0fd32bbc7b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb73c-17e8-77aa-81f0-7b0fd32bbc7b"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cb73c-fc45-7682-ac9f-92ee02ca7ce3",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb73c-fc45-7682-ac9f-92ee02ca7ce3"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cb73e-b7ee-74bb-a462-e29de3ba101b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb73e-b7ee-74bb-a462-e29de3ba101b"
+      },
+      "artifacts": {}
+    },
+    "animation": {
+      "taskId": "019cb948-cfad-79b9-a76c-6ac4766f9396",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb948-cfad-79b9-a76c-6ac4766f9396"
+      },
+      "artifacts": {}
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 2 (Lust) — a freshly damned seductress, still learning her dark nature. In life she was beautiful and used that beauty carelessly, drawing others into ruin without malice — just selfishness, just thoughtlessness. Now her glamour is crude and unstable, her form caught between what she was and what damnation is making her. Her silk tears constantly. Her claw marks her own skin. She WANTS to be dangerous but the technique isn't there yet. Dangerous not from skill but from desperate hunger.",
+  "textToImageTask": {
+    "prompt": "A young bipedal humanoid female goat demon in A-pose, slender and graceful but haunted, pale rose-crimson fur with patches of raw skin showing through, small curved horns with one broken, large violet glowing eyes wide with confusion and hunger, torn dirty silk scraps barely covering her form, razor claws on both hands already scoring her own arms, digitigrade goat legs, unstable beauty on the verge of something terrible, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Young slender bipedal female goat demon, graceful slim build, small curved horns, digitigrade goat legs, A-pose, standing upright with arms extended horizontally",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Pale rose-crimson fur with patches of raw exposed skin, violet glowing eyes wide with hunger, self-inflicted claw marks on arms, one horn cracked and broken, torn dirty silk rags, delicate but desperate beauty",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 1.5
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Stumble_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp",
+      "Fighting.Punching.Punch_Combo",
+      "Fighting.GettingHit.Face_Punch_Reaction_1",
+      "Fighting.Dying.Knock_Down"
+    ]
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "id": "goat-shade-elder",
+  "name": "Ancient Shade",
+  "type": "character",
+  "seed": 1350323929,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cb6f1-bcdb-7dd7-b453-1285e5a8bcc8",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6f1-bcdb-7dd7-b453-1285e5a8bcc8"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cb6f3-4187-7c88-b098-ba72d03573a2",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6f3-4187-7c88-b098-ba72d03573a2"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cb6f4-aee0-7c9c-9dcd-3e72b1061a78",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6f4-aee0-7c9c-9dcd-3e72b1061a78"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cb6fb-fac3-7f50-8f27-f653fd61b465",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6fb-fac3-7f50-8f27-f653fd61b465"
+      },
+      "artifacts": {}
+    },
+    "animation": {
+      "taskId": "019cb723-65dd-7527-bf75-d072766d816d",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb723-65dd-7527-bf75-d072766d816d"
+      },
+      "artifacts": {
+        "animation": "animations/Fighting.Dying.Shot_and_Blown_Back.glb"
+      }
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 1 (Limbo) — a shade so ancient it predates most human civilization. These are the great philosophers, kings, and heroes of antiquity who lived virtuously but died before Christianity offered salvation. Millennia in Limbo have calcified their sorrow into something vast and terrible. Their form has grown massive — baroque with accumulated grief, layered in the residue of centuries of dignified despair. They carry themselves like fallen gods: immense, sorrowful, and utterly crushing to stand before.",
+  "textToImageTask": {
+    "prompt": "A massive towering bipedal humanoid goat demon ghost in A-pose, ancient calcified spectral form, pale grey-silver ossified flesh layered in centuries of accumulated sorrow, baroque horn formations like cathedral architecture, hollow eye sockets burning with cold ancient silver light, worn regal tattered robes of a lost civilization, chest carved with archaic runes of forgotten empires, digitigrade goat legs solid as stone despite ethereal nature, commanding sorrowful presence, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Massive ancient calcified goat ghost, towering baroque spectral form, grey-silver ossified flesh, huge cathedral-like horn formations, ancient noble bearing, hollow glowing eye sockets, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 10000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Ancient calcified pale grey-silver spectral flesh, baroque layered bone-like surface texture, archaic runes carved into chest and arms, cold silver light in hollow eye sockets, tattered regal robes of a lost empire, millennia of accumulated grief made visible as crystallized sorrow on the skin",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 2.4
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Monster_Walk",
+      "Fighting.Transitioning.Chest_Pound_Taunt",
+      "Fighting.AttackingwithWeapon.Charged_Slash",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Shot_and_Blown_Back"
+    ]
+  }
+}

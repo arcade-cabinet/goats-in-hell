@@ -21,7 +21,7 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROJECT_DIR = resolve(__dirname, '..');
-const ENEMIES_DIR = join(PROJECT_DIR, 'assets', 'models', 'enemies');
+const ENEMIES_DIR = join(PROJECT_DIR, 'public', 'models', 'enemies');
 const MESHY_API_BASE = 'https://api.meshy.ai/openapi/v1';
 
 // ── Parse args ───────────────────────────────────────────────────────────────

@@ -12,6 +12,7 @@
  *   const mesh = cloneModel('enemy-goat'); // THREE.Group or null
  */
 
+import { Mesh as _Mesh, SkinnedMesh as _SkinnedMesh } from 'three';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js';
@@ -88,7 +89,7 @@ export async function loadModel(key: string, subpath: string): Promise<THREE.Gro
 
       // Ensure all meshes cast shadows
       template.traverse((child) => {
-        if (child instanceof THREE.Mesh) {
+        if (child instanceof _Mesh) {
           child.castShadow = true;
           child.receiveShadow = true;
         }
@@ -148,7 +149,7 @@ export function cloneModel(key: string): THREE.Group | null {
   // Static models can use the cheaper template.clone(true).
   let hasSkinnedMesh = false;
   template.traverse((child) => {
-    if (child instanceof THREE.SkinnedMesh) hasSkinnedMesh = true;
+    if (child instanceof _SkinnedMesh) hasSkinnedMesh = true;
   });
 
   const clone = hasSkinnedMesh
@@ -157,7 +158,7 @@ export function cloneModel(key: string): THREE.Group | null {
 
   // Clone materials for per-instance independence (geometry stays shared).
   clone.traverse((child) => {
-    if (child instanceof THREE.Mesh && child.material) {
+    if (child instanceof _Mesh && child.material) {
       if (Array.isArray(child.material)) {
         child.material = child.material.map((m: THREE.Material) => {
           const cloned = m.clone();
@@ -219,7 +220,7 @@ export function getModelBounds(
 export function disposeAllModels(): void {
   for (const group of modelCache.values()) {
     group.traverse((child) => {
-      if (child instanceof THREE.Mesh) {
+      if (child instanceof _Mesh) {
         child.geometry?.dispose();
         if (child.material) {
           if (Array.isArray(child.material)) {

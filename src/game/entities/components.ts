@@ -25,6 +25,43 @@ export type EntityType =
   | 'shadowGoat'
   | 'goatKnight'
   | 'plagueGoat'
+  | 'shaman'
+  // Circle 2: Lust — Siren hierarchy
+  | 'sirenWhelp'
+  | 'siren'
+  | 'sirenElder'
+  // Circle 3: Gluttony — Glutton hierarchy
+  | 'gluttonWhelp'
+  | 'glutton'
+  | 'gluttonElder'
+  // Circle 4: Greed — Hoarder hierarchy
+  | 'hoarderWhelp'
+  | 'hoarder'
+  | 'hoarderElder'
+  // Circle 5: Wrath — Berserker hierarchy
+  | 'berserkerWhelp'
+  | 'berserker'
+  | 'berserkerElder'
+  // Circle 6: Heresy — Heretic hierarchy
+  | 'hereticWhelp'
+  | 'heretic'
+  | 'hereticElder'
+  // Circle 7: Violence — Butcher hierarchy
+  | 'butcherWhelp'
+  | 'butcher'
+  | 'butcherElder'
+  // Circle 8: Fraud — Mimic hierarchy
+  | 'mimicWhelp'
+  | 'mimic'
+  | 'mimicElder'
+  // Circle 9: Treachery — Frost hierarchy
+  | 'frostWhelp'
+  | 'frost'
+  | 'frostElder'
+  // Circle 1: Limbo — Shade hierarchy (hellgoat is standard, add tiers)
+  | 'shadeWhelp'
+  | 'shadeElder'
+  // Boss entity types
   | 'archGoat'
   | 'infernoGoat'
   | 'voidGoat'

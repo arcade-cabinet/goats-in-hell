@@ -45,7 +45,7 @@ export async function buildCircle7(dbPath: string) {
     ambientIntensity: 0.18,
     skyColor: '#0a0000',
     particleEffect: 'blood',
-    enemyTypes: ['goatKnight', 'fireGoat', 'hellgoat'],
+    enemyTypes: ['butcher', 'goatKnight', 'goat'],
     enemyDensity: 1.4,
     pickupDensity: 0.9,
     texturePalette: {
@@ -265,9 +265,9 @@ export async function buildCircle7(dbPath: string) {
   // 5. ENTITIES: ENEMIES (from "Enemies" table)
   // =========================================================================
 
-  // --- Blood River: 3x goatKnight patrol walkway intersections ---
+  // --- Blood River: 3x butcher patrol walkway intersections ---
   // Room bounds: (20, 12, 20, 14) -> interior: x=[21..38], z=[13..24]
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 25, 16, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 25, 16, {
     roomId: bloodRiverId,
     patrol: [
       { x: 25, z: 16 },
@@ -275,7 +275,7 @@ export async function buildCircle7(dbPath: string) {
       { x: 25, z: 24 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 32, 18, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 32, 18, {
     roomId: bloodRiverId,
     patrol: [
       { x: 32, z: 18 },
@@ -283,7 +283,7 @@ export async function buildCircle7(dbPath: string) {
       { x: 28, z: 22 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 36, 22, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 36, 22, {
     roomId: bloodRiverId,
     patrol: [
       { x: 36, z: 22 },
@@ -294,22 +294,22 @@ export async function buildCircle7(dbPath: string) {
 
   // --- River Banks: 1x fireGoat ---
   // Room bounds: (8, 20, 8, 6) -> interior: x=[9..14], z=[21..24]
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 13, 23, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 13, 23, {
     roomId: riverBanksId,
   });
 
   // --- Thorny Passage: 2x fireGoat on elevated sections ---
   // Room bounds: (44, 18, 6, 16) -> interior: x=[45..48], z=[19..32]
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 46, 24, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 46, 24, {
     roomId: thornyPassageId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 47, 28, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 47, 28, {
     roomId: thornyPassageId,
   });
 
-  // --- Thornwood: 1x goatKnight, 1x hellgoat, 1x fireGoat ---
+  // --- Thornwood: 1x butcher (standard), 1x butcherWhelp, 1x butcher ---
   // Room bounds: (36, 38, 14, 12) -> interior: x=[37..48], z=[39..48]
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 40, 40, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 40, 40, {
     roomId: thornwoodId,
     patrol: [
       { x: 40, z: 40 },
@@ -317,25 +317,25 @@ export async function buildCircle7(dbPath: string) {
       { x: 40, z: 44 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 43, 44, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_WHELP, 43, 44, {
     roomId: thornwoodId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 46, 47, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 46, 47, {
     roomId: thornwoodId,
   });
 
   // --- Burning Shore: 4x fireGoat spread across expanse ---
   // Room bounds: (16, 54, 18, 10) -> interior: x=[17..32], z=[55..62]
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 20, 56, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 20, 56, {
     roomId: burningShoreId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 28, 57, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 28, 57, {
     roomId: burningShoreId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 22, 60, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 22, 60, {
     roomId: burningShoreId,
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 30, 61, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 30, 61, {
     roomId: burningShoreId,
   });
 
@@ -343,25 +343,25 @@ export async function buildCircle7(dbPath: string) {
   // Room bounds: (18, 78, 14, 12) -> interior: x=[19..30], z=[79..88]
   // Trigger zone from T6/T7: (20, 79, 10, 4)
   editor.setupArenaWaves(LEVEL_ID, slaughterhouseId, { x: 20, z: 79, w: 10, h: 4 }, [
-    // Wave 1: 3x goatKnight
+    // Wave 1: 3x butcher (standard heavy guards)
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 20, z: 80 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 25, z: 79 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 29, z: 80 },
+      { type: ENEMY_TYPES.BUTCHER, x: 20, z: 80 },
+      { type: ENEMY_TYPES.BUTCHER, x: 25, z: 79 },
+      { type: ENEMY_TYPES.BUTCHER, x: 29, z: 80 },
     ],
-    // Wave 2: 3x fireGoat
+    // Wave 2: 3x butcher (standard)
     [
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 19, z: 82 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 30, z: 82 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 25, z: 88 },
+      { type: ENEMY_TYPES.BUTCHER, x: 19, z: 82 },
+      { type: ENEMY_TYPES.BUTCHER, x: 30, z: 82 },
+      { type: ENEMY_TYPES.BUTCHER, x: 25, z: 88 },
     ],
-    // Wave 3: 2x goatKnight + 2x hellgoat + 1x fireGoat
+    // Wave 3: 2x butcherElder + 2x butcherWhelp + 1x butcher (escalation)
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 20, z: 79 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 29, z: 79 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 22, z: 85 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 27, z: 85 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 25, z: 88 },
+      { type: ENEMY_TYPES.BUTCHER_ELDER, x: 20, z: 79 },
+      { type: ENEMY_TYPES.BUTCHER_ELDER, x: 29, z: 79 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 22, z: 85 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 27, z: 85 },
+      { type: ENEMY_TYPES.BUTCHER, x: 25, z: 88 },
     ],
   ]);
 
@@ -1289,31 +1289,31 @@ export async function buildCircle7(dbPath: string) {
   // ── Blood Processing Plant (bounds: 0, 26, 8, 12) → interior x:1-7, z:27-37
   // Ambush: 3 waves via setupArenaWaves
   editor.setupArenaWaves(LEVEL_ID, bloodProcessingPlantId, { x: 1, z: 27, w: 6, h: 4 }, [
-    // Wave 1: 3x hellgoat charging from pump stations
+    // Wave 1: 3x butcherWhelp rushing from pump stations
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 2, z: 28 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 5, z: 29 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 3, z: 32 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 2, z: 28 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 5, z: 29 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 3, z: 32 },
     ],
-    // Wave 2: 2x goatKnight + 2x fireGoat
+    // Wave 2: 2x butcherElder + 2x butcher
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 1, z: 30 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 6, z: 30 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 3, z: 35 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 5, z: 35 },
+      { type: ENEMY_TYPES.BUTCHER_ELDER, x: 1, z: 30 },
+      { type: ENEMY_TYPES.BUTCHER_ELDER, x: 6, z: 30 },
+      { type: ENEMY_TYPES.BUTCHER, x: 3, z: 35 },
+      { type: ENEMY_TYPES.BUTCHER, x: 5, z: 35 },
     ],
-    // Wave 3: 1x goatKnight + 3x hellgoat
+    // Wave 3: 1x butcherElder + 3x butcherWhelp
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 3, z: 28 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 1, z: 33 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 4, z: 36 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 6, z: 33 },
+      { type: ENEMY_TYPES.BUTCHER_ELDER, x: 3, z: 28 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 1, z: 33 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 4, z: 36 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 6, z: 33 },
     ],
   ]);
 
   // ── Bone Yard (bounds: 0, 40, 12, 12) → interior x:1-11, z:41-51
   // Heavy patrol — 5 enemies spread across bone field
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 2, 42, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_WHELP, 2, 42, {
     roomId: boneYardId,
     patrol: [
       { x: 2, z: 42 },
@@ -1321,7 +1321,7 @@ export async function buildCircle7(dbPath: string) {
       { x: 2, z: 48 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 8, 43, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_WHELP, 8, 43, {
     roomId: boneYardId,
     patrol: [
       { x: 8, z: 43 },
@@ -1329,7 +1329,7 @@ export async function buildCircle7(dbPath: string) {
       { x: 6, z: 49 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 4, 46, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_ELDER, 4, 46, {
     roomId: boneYardId,
     patrol: [
       { x: 4, z: 46 },
@@ -1337,38 +1337,38 @@ export async function buildCircle7(dbPath: string) {
       { x: 4, z: 50 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 10, 44, { roomId: boneYardId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 2, 50, { roomId: boneYardId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 10, 44, { roomId: boneYardId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 2, 50, { roomId: boneYardId });
 
   // ── Industrial Forge (bounds: 50, 34, 10, 16) → interior x:51-59, z:35-49
   // Ambush arena: 3 waves of industrial demons
   editor.setupArenaWaves(LEVEL_ID, industrialForgeId, { x: 51, z: 35, w: 8, h: 4 }, [
-    // Wave 1: 4x hellgoat swarming from forge stations
+    // Wave 1: 4x butcherWhelp swarming from forge stations
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 52, z: 36 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 56, z: 36 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 52, z: 42 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 57, z: 42 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 52, z: 36 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 56, z: 36 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 52, z: 42 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 57, z: 42 },
     ],
-    // Wave 2: 2x goatKnight flanking
+    // Wave 2: 2x butcherElder flanking
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 51, z: 38 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 58, z: 38 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 55, z: 44 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 55, z: 48 },
+      { type: ENEMY_TYPES.BUTCHER_ELDER, x: 51, z: 38 },
+      { type: ENEMY_TYPES.BUTCHER_ELDER, x: 58, z: 38 },
+      { type: ENEMY_TYPES.BUTCHER, x: 55, z: 44 },
+      { type: ENEMY_TYPES.BUTCHER, x: 55, z: 48 },
     ],
-    // Wave 3: 2x goatKnight + 2x hellgoat
+    // Wave 3: 2x butcherElder + 2x butcherWhelp
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 52, z: 35 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 58, z: 35 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 54, z: 44 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 56, z: 48 },
+      { type: ENEMY_TYPES.BUTCHER_ELDER, x: 52, z: 35 },
+      { type: ENEMY_TYPES.BUTCHER_ELDER, x: 58, z: 35 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 54, z: 44 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 56, z: 48 },
     ],
   ]);
 
   // ── Chain Works (bounds: 36, 52, 14, 14) → interior x:37-49, z:53-65
   // Mixed patrol — chain demons riding the conveyor system
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 38, 54, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_ELDER, 38, 54, {
     roomId: chainWorksId,
     patrol: [
       { x: 38, z: 54 },
@@ -1377,7 +1377,7 @@ export async function buildCircle7(dbPath: string) {
       { x: 38, z: 60 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 45, 58, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_ELDER, 45, 58, {
     roomId: chainWorksId,
     patrol: [
       { x: 45, z: 58 },
@@ -1385,52 +1385,52 @@ export async function buildCircle7(dbPath: string) {
       { x: 43, z: 64 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 40, 56, { roomId: chainWorksId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 46, 62, { roomId: chainWorksId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 43, 53, { roomId: chainWorksId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 48, 64, { roomId: chainWorksId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 37, 64, { roomId: chainWorksId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_WHELP, 40, 56, { roomId: chainWorksId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_WHELP, 46, 62, { roomId: chainWorksId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 43, 53, { roomId: chainWorksId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 48, 64, { roomId: chainWorksId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_WHELP, 37, 64, { roomId: chainWorksId });
 
   // ── Slaughter Annex (bounds: 36, 68, 10, 10) → interior x:37-45, z:69-77
   // Intense ambush — 3 wave arena before merging with Slaughterhouse
   editor.setupArenaWaves(LEVEL_ID, slaughterAnnexId, { x: 37, z: 69, w: 8, h: 4 }, [
-    // Wave 1: 3x hellgoat from hooks
+    // Wave 1: 3x butcherWhelp from hooks
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 38, z: 70 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 42, z: 71 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 44, z: 70 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 38, z: 70 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 42, z: 71 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 44, z: 70 },
     ],
-    // Wave 2: 2x goatKnight + 1x fireGoat
+    // Wave 2: 2x butcherElder + 1x butcher
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 37, z: 73 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 45, z: 73 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 41, z: 76 },
+      { type: ENEMY_TYPES.BUTCHER_ELDER, x: 37, z: 73 },
+      { type: ENEMY_TYPES.BUTCHER_ELDER, x: 45, z: 73 },
+      { type: ENEMY_TYPES.BUTCHER, x: 41, z: 76 },
     ],
-    // Wave 3: 1x goatKnight + 2x hellgoat + 1x fireGoat (bloodbath finale)
+    // Wave 3: 1x butcherElder + 2x butcherWhelp + 1x butcher (bloodbath finale)
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 41, z: 69 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 38, z: 75 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 45, z: 75 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 41, z: 76 },
+      { type: ENEMY_TYPES.BUTCHER_ELDER, x: 41, z: 69 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 38, z: 75 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 45, z: 75 },
+      { type: ENEMY_TYPES.BUTCHER, x: 41, z: 76 },
     ],
   ]);
 
   // ── Overflow Cistern (bounds: 4, 64, 12, 14) → interior x:5-15, z:65-77
   // Blood swimming hazard arena — enemies wade in blood pool
   editor.setupArenaWaves(LEVEL_ID, overflowCisternId, { x: 5, z: 65, w: 9, h: 4 }, [
-    // Wave 1: 4x hellgoat — wade through blood to reach player
+    // Wave 1: 4x butcherWhelp — wade through blood to reach player
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 6, z: 66 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 12, z: 66 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 6, z: 72 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 12, z: 72 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 6, z: 66 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 12, z: 66 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 6, z: 72 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 12, z: 72 },
     ],
-    // Wave 2: 2x goatKnight + 2x fireGoat from walls
+    // Wave 2: 2x butcherElder + 2x butcher from walls
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 5, z: 69 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 14, z: 69 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 9, z: 65 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 9, z: 76 },
+      { type: ENEMY_TYPES.BUTCHER_ELDER, x: 5, z: 69 },
+      { type: ENEMY_TYPES.BUTCHER_ELDER, x: 14, z: 69 },
+      { type: ENEMY_TYPES.BUTCHER, x: 9, z: 65 },
+      { type: ENEMY_TYPES.BUTCHER, x: 9, z: 76 },
     ],
   ]);
 
@@ -1983,7 +1983,7 @@ export async function buildCircle7(dbPath: string) {
   editor.corridor(LEVEL_ID, slaughterWingId, abattoirId, 3);
 
   // ── Bone Disposal Shaft enemies (bounds: 0, 54, 12, 10) → x:1-11, z:55-63
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 2, 56, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_WHELP, 2, 56, {
     roomId: boneDisposalShaftId,
     patrol: [
       { x: 2, z: 56 },
@@ -1991,7 +1991,7 @@ export async function buildCircle7(dbPath: string) {
       { x: 4, z: 62 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 9, 57, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_WHELP, 9, 57, {
     roomId: boneDisposalShaftId,
     patrol: [
       { x: 9, z: 57 },
@@ -1999,7 +1999,7 @@ export async function buildCircle7(dbPath: string) {
       { x: 9, z: 62 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 5, 60, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 5, 60, {
     roomId: boneDisposalShaftId,
     patrol: [
       { x: 5, z: 60 },
@@ -2007,35 +2007,38 @@ export async function buildCircle7(dbPath: string) {
       { x: 5, z: 55 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 10, 55, { roomId: boneDisposalShaftId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 2, 63, { roomId: boneDisposalShaftId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 10, 55, { roomId: boneDisposalShaftId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 2, 63, { roomId: boneDisposalShaftId });
 
   // ── Slaughter Wing enemies (bounds: 34, 90, 12, 12) → x:35-45, z:91-101
   // Arena wave — intensive final push before boss
   editor.setupArenaWaves(LEVEL_ID, slaughterWingId, { x: 35, z: 91, w: 10, h: 4 }, [
+    // Wave 1: 4x butcherWhelp — appetizer before the boss
     [
-      { type: ENEMY_TYPES.HELLGOAT, x: 36, z: 92 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 40, z: 92 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 44, z: 92 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 36, z: 97 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 36, z: 92 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 40, z: 92 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 44, z: 92 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 36, z: 97 },
     ],
+    // Wave 2: 2x butcherElder + 2x butcher
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 35, z: 94 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 44, z: 94 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 38, z: 99 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 43, z: 99 },
+      { type: ENEMY_TYPES.BUTCHER_ELDER, x: 35, z: 94 },
+      { type: ENEMY_TYPES.BUTCHER_ELDER, x: 44, z: 94 },
+      { type: ENEMY_TYPES.BUTCHER, x: 38, z: 99 },
+      { type: ENEMY_TYPES.BUTCHER, x: 43, z: 99 },
     ],
+    // Wave 3: 2x butcherElder + 2x butcherWhelp + 1x butcher (final pre-boss escalation)
     [
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 36, z: 91 },
-      { type: ENEMY_TYPES.GOAT_KNIGHT, x: 44, z: 91 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 38, z: 96 },
-      { type: ENEMY_TYPES.HELLGOAT, x: 42, z: 100 },
-      { type: ENEMY_TYPES.FIRE_GOAT, x: 40, z: 100 },
+      { type: ENEMY_TYPES.BUTCHER_ELDER, x: 36, z: 91 },
+      { type: ENEMY_TYPES.BUTCHER_ELDER, x: 44, z: 91 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 38, z: 96 },
+      { type: ENEMY_TYPES.BUTCHER_WHELP, x: 42, z: 100 },
+      { type: ENEMY_TYPES.BUTCHER, x: 40, z: 100 },
     ],
   ]);
 
   // Also add standalone patrol in Slaughter Wing for playtest coverage
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 39, 95, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_ELDER, 39, 95, {
     roomId: slaughterWingId,
     patrol: [
       { x: 39, z: 95 },
@@ -2043,13 +2046,13 @@ export async function buildCircle7(dbPath: string) {
       { x: 36, z: 98 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 35, 101, { roomId: slaughterWingId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 45, 101, { roomId: slaughterWingId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_WHELP, 35, 101, { roomId: slaughterWingId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_WHELP, 45, 101, { roomId: slaughterWingId });
 
   // ── Additional patrol enemies in existing new rooms (boosts play time estimate)
 
   // Blood Processing Plant: 2 extra standalone patrols
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 3, 30, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_ELDER, 3, 30, {
     roomId: bloodProcessingPlantId,
     patrol: [
       { x: 3, z: 30 },
@@ -2057,10 +2060,10 @@ export async function buildCircle7(dbPath: string) {
       { x: 2, z: 36 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 5, 27, { roomId: bloodProcessingPlantId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_WHELP, 5, 27, { roomId: bloodProcessingPlantId });
 
   // Bone Yard: 2 extra standalone patrols
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 5, 51, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_ELDER, 5, 51, {
     roomId: boneYardId,
     patrol: [
       { x: 5, z: 51 },
@@ -2068,10 +2071,10 @@ export async function buildCircle7(dbPath: string) {
       { x: 7, z: 44 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 1, 44, { roomId: boneYardId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_WHELP, 1, 44, { roomId: boneYardId });
 
   // Industrial Forge: 2 extra standalone patrols
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 53, 40, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_ELDER, 53, 40, {
     roomId: industrialForgeId,
     patrol: [
       { x: 53, z: 40 },
@@ -2079,10 +2082,10 @@ export async function buildCircle7(dbPath: string) {
       { x: 54, z: 47 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 57, 35, { roomId: industrialForgeId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_WHELP, 57, 35, { roomId: industrialForgeId });
 
   // Chain Works: 3 extra standalone patrols
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 42, 55, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_ELDER, 42, 55, {
     roomId: chainWorksId,
     patrol: [
       { x: 42, z: 55 },
@@ -2090,11 +2093,11 @@ export async function buildCircle7(dbPath: string) {
       { x: 42, z: 64 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 37, 60, { roomId: chainWorksId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 49, 63, { roomId: chainWorksId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_WHELP, 37, 60, { roomId: chainWorksId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_WHELP, 49, 63, { roomId: chainWorksId });
 
   // Overflow Cistern: 2 extra standalone patrols
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 6, 68, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_ELDER, 6, 68, {
     roomId: overflowCisternId,
     patrol: [
       { x: 6, z: 68 },
@@ -2102,7 +2105,7 @@ export async function buildCircle7(dbPath: string) {
       { x: 7, z: 76 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 14, 76, { roomId: overflowCisternId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_WHELP, 14, 76, { roomId: overflowCisternId });
 
   // ── Pickups for new rooms ─────────────────────────────────────────────────
 
@@ -2271,7 +2274,7 @@ export async function buildCircle7(dbPath: string) {
   // Targeting the longest rooms and thinly-covered areas.
 
   // River Banks: 2 more (original only had 1)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 10, 22, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_WHELP, 10, 22, {
     roomId: riverBanksId,
     patrol: [
       { x: 10, z: 22 },
@@ -2279,13 +2282,13 @@ export async function buildCircle7(dbPath: string) {
       { x: 9, z: 25 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 13, 24, { roomId: riverBanksId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 13, 24, { roomId: riverBanksId });
 
   // Flamethrower Shrine: 1 guardian (original had none)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 24, 71, { roomId: flamethrowerShrineId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 24, 71, { roomId: flamethrowerShrineId });
 
   // Burning Shore: 2 more patrol enemies (original had 4, add 2 more for coverage)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 18, 60, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 18, 60, {
     roomId: burningShoreId,
     patrol: [
       { x: 18, z: 60 },
@@ -2293,10 +2296,10 @@ export async function buildCircle7(dbPath: string) {
       { x: 32, z: 57 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 32, 56, { roomId: burningShoreId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_WHELP, 32, 56, { roomId: burningShoreId });
 
   // Thornwood: 2 more patrol enemies (original had 3)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.GOAT_KNIGHT, 48, 42, {
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_ELDER, 48, 42, {
     roomId: thornwoodId,
     patrol: [
       { x: 48, z: 42 },
@@ -2304,11 +2307,11 @@ export async function buildCircle7(dbPath: string) {
       { x: 38, z: 44 },
     ],
   });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 37, 48, { roomId: thornwoodId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_WHELP, 37, 48, { roomId: thornwoodId });
 
   // Blood River: 2 more patrol enemies (original had 3)
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.HELLGOAT, 21, 18, { roomId: bloodRiverId });
-  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.FIRE_GOAT, 37, 15, { roomId: bloodRiverId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER_WHELP, 21, 18, { roomId: bloodRiverId });
+  editor.spawnEnemy(LEVEL_ID, ENEMY_TYPES.BUTCHER, 37, 15, { roomId: bloodRiverId });
 
   // =========================================================================
   // 9. COMPILE GRID

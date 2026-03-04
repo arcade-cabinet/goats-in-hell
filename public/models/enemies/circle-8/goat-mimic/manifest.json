@@ -39,7 +39,7 @@
       }
     },
     "animations": {
-      "WalkAndRun.Walking.Zombie_Walk": {
+      "WalkAndRun.Walking.Monster_Walk": {
         "taskId": "019caddb-5e09-7f35-9e2d-95a127f7fd1c",
         "status": "SUCCEEDED",
         "actionId": 112,
@@ -57,7 +57,7 @@
         "actionId": 240,
         "artifact": "animations/Thrust_Slash.glb"
       },
-      "Fighting.Punching.Fast_Punch_Combo": {
+      "Fighting.Punching.Punch_Combo": {
         "taskId": "019cadde-6b18-7fd8-ba90-25035d6ec46b",
         "status": "SUCCEEDED",
         "actionId": 198,
@@ -75,6 +75,14 @@
         "actionId": 181,
         "artifact": "animations/Electrocuted_Fall.glb"
       }
+    },
+    "animation": {
+      "taskId": "019cb72e-07e5-7516-bcd7-b173a515cfff",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb72e-07e5-7516-bcd7-b173a515cfff"
+      },
+      "artifacts": {}
     }
   },
   "pipeline": "enemy",
@@ -101,10 +109,10 @@
   },
   "animationTask": {
     "animations": [
-      "WalkAndRun.Walking.Zombie_Walk",
+      "WalkAndRun.Walking.Monster_Walk",
       "DailyActions.Idle.Angry_Ground_Stomp",
       "Fighting.AttackingwithWeapon.Thrust_Slash",
-      "Fighting.Punching.Fast_Punch_Combo",
+      "Fighting.Punching.Punch_Combo",
       "Fighting.GettingHit.Face_Punch_Reaction_2",
       "Fighting.Dying.Electrocuted_Fall"
     ]

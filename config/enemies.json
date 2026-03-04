@@ -41,6 +41,214 @@
     "isArmored": true,
     "armorHp": 5
   },
+  "shaman": {
+    "hp": 5,
+    "damage": 6,
+    "speed": 0.03,
+    "attackRange": 2,
+    "scoreValue": 220,
+    "canShoot": true,
+    "shootCooldown": 80
+  },
+  "shadeWhelp": {
+    "hp": 3,
+    "damage": 3,
+    "speed": 0.035,
+    "attackRange": 1.5,
+    "scoreValue": 80
+  },
+  "shadeElder": {
+    "hp": 22,
+    "damage": 12,
+    "speed": 0.02,
+    "attackRange": 2.5,
+    "scoreValue": 500
+  },
+  "sirenWhelp": {
+    "hp": 3,
+    "damage": 5,
+    "speed": 0.05,
+    "attackRange": 1.5,
+    "scoreValue": 110
+  },
+  "siren": {
+    "hp": 6,
+    "damage": 9,
+    "speed": 0.07,
+    "attackRange": 1.5,
+    "scoreValue": 280
+  },
+  "sirenElder": {
+    "hp": 14,
+    "damage": 16,
+    "speed": 0.09,
+    "attackRange": 1.5,
+    "scoreValue": 560
+  },
+  "gluttonWhelp": {
+    "hp": 6,
+    "damage": 5,
+    "speed": 0.03,
+    "attackRange": 2,
+    "scoreValue": 120
+  },
+  "glutton": {
+    "hp": 14,
+    "damage": 10,
+    "speed": 0.025,
+    "attackRange": 2,
+    "scoreValue": 300
+  },
+  "gluttonElder": {
+    "hp": 40,
+    "damage": 18,
+    "speed": 0.015,
+    "attackRange": 3,
+    "scoreValue": 600
+  },
+  "hoarderWhelp": {
+    "hp": 5,
+    "damage": 4,
+    "speed": 0.05,
+    "attackRange": 1.5,
+    "scoreValue": 140
+  },
+  "hoarder": {
+    "hp": 10,
+    "damage": 9,
+    "speed": 0.04,
+    "attackRange": 2,
+    "scoreValue": 350
+  },
+  "hoarderElder": {
+    "hp": 28,
+    "damage": 16,
+    "speed": 0.02,
+    "attackRange": 2.5,
+    "scoreValue": 700,
+    "isArmored": true,
+    "armorHp": 10,
+    "armorMaxHp": 10
+  },
+  "berserkerWhelp": {
+    "hp": 4,
+    "damage": 6,
+    "speed": 0.07,
+    "attackRange": 1.5,
+    "scoreValue": 130
+  },
+  "berserker": {
+    "hp": 8,
+    "damage": 11,
+    "speed": 0.08,
+    "attackRange": 2,
+    "scoreValue": 320
+  },
+  "berserkerElder": {
+    "hp": 20,
+    "damage": 20,
+    "speed": 0.055,
+    "attackRange": 2.5,
+    "scoreValue": 640
+  },
+  "hereticWhelp": {
+    "hp": 3,
+    "damage": 3,
+    "speed": 0.03,
+    "attackRange": 2,
+    "scoreValue": 100,
+    "canShoot": true,
+    "shootCooldown": 130
+  },
+  "heretic": {
+    "hp": 6,
+    "damage": 5,
+    "speed": 0.035,
+    "attackRange": 2,
+    "scoreValue": 250,
+    "canShoot": true,
+    "shootCooldown": 100
+  },
+  "hereticElder": {
+    "hp": 18,
+    "damage": 10,
+    "speed": 0.025,
+    "attackRange": 3,
+    "scoreValue": 500,
+    "canShoot": true,
+    "shootCooldown": 70
+  },
+  "butcherWhelp": {
+    "hp": 7,
+    "damage": 7,
+    "speed": 0.06,
+    "attackRange": 1.5,
+    "scoreValue": 180
+  },
+  "butcher": {
+    "hp": 18,
+    "damage": 15,
+    "speed": 0.025,
+    "attackRange": 2.5,
+    "scoreValue": 450
+  },
+  "butcherElder": {
+    "hp": 50,
+    "damage": 26,
+    "speed": 0.018,
+    "attackRange": 3,
+    "scoreValue": 900,
+    "isArmored": true,
+    "armorHp": 8,
+    "armorMaxHp": 8
+  },
+  "mimicWhelp": {
+    "hp": 3,
+    "damage": 5,
+    "speed": 0.06,
+    "attackRange": 1.5,
+    "scoreValue": 140
+  },
+  "mimic": {
+    "hp": 5,
+    "damage": 11,
+    "speed": 0.075,
+    "attackRange": 1.5,
+    "scoreValue": 350
+  },
+  "mimicElder": {
+    "hp": 14,
+    "damage": 20,
+    "speed": 0.085,
+    "attackRange": 1.5,
+    "scoreValue": 700
+  },
+  "frostWhelp": {
+    "hp": 5,
+    "damage": 5,
+    "speed": 0.03,
+    "attackRange": 1.5,
+    "scoreValue": 150
+  },
+  "frost": {
+    "hp": 12,
+    "damage": 10,
+    "speed": 0.035,
+    "attackRange": 2,
+    "scoreValue": 380,
+    "isArmored": true,
+    "armorHp": 3
+  },
+  "frostElder": {
+    "hp": 36,
+    "damage": 18,
+    "speed": 0.022,
+    "attackRange": 2.5,
+    "scoreValue": 760,
+    "isArmored": true,
+    "armorHp": 8,
+    "armorMaxHp": 8
+  },
   "archGoat": {
     "hp": 100,
     "damage": 15,

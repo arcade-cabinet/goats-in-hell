@@ -29,7 +29,7 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROJECT_DIR = resolve(__dirname, '..');
-const ENEMIES_DIR = join(PROJECT_DIR, 'assets', 'models', 'enemies');
+const ENEMIES_DIR = join(PROJECT_DIR, 'public', 'models', 'enemies');
 const MESHY_API_BASE = 'https://api.meshy.ai/openapi/v1';
 
 // ── Animation ID lookup table ────────────────────────────────────────────────
@@ -42,6 +42,7 @@ const MESHY_API_BASE = 'https://api.meshy.ai/openapi/v1';
 
 const ANIMATION_IDS = {
   // Walk/Run
+  'WalkAndRun.Walking.Monster_Walk': 112,
   'WalkAndRun.Walking.Zombie_Walk': 112, // [CLOSEST MATCH] Monster_Walk
   'WalkAndRun.Walking.Stumble_Walk': 562,
   'WalkAndRun.Running.Lean_Forward_Sprint': 509,

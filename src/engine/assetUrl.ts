@@ -25,9 +25,15 @@ export function getWebBasePath(): string {
   return basePath.replace(/\/$/, '');
 }
 
-/** Resolve a web asset URL under a subdirectory (e.g. 'models', 'audio') */
-export function getAssetUrl(subdir: string, filename?: string): string {
+/**
+ * Resolve a server-relative asset subpath to a full URL.
+ *
+ * Expo web serves static files from the project root, so
+ * `'models/weapons/weapon-pistol.glb'` → `/models/weapons/weapon-pistol.glb`.
+ *
+ * On native, Metro serves assets from the bundler root — no prefix needed.
+ */
+export function getAssetUrl(subpath: string): string {
   const basePath = Platform.OS === 'web' ? getWebBasePath() : '';
-  const suffix = filename ? `${subdir}/${filename}` : `${subdir}/`;
-  return `${basePath}/${suffix}`;
+  return `${basePath}/${subpath}`;
 }

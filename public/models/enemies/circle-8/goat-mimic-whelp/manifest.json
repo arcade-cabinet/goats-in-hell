@@ -1,0 +1,79 @@
+{
+  "id": "goat-mimic-whelp",
+  "name": "Glitch Mimic",
+  "type": "character",
+  "seed": 3268169823,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cb701-0437-7134-8cc4-9bfa28b358d2",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb701-0437-7134-8cc4-9bfa28b358d2"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cb73c-5154-7613-b47a-4a7f5cd0d6b6",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb73c-5154-7613-b47a-4a7f5cd0d6b6"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cb73d-834b-762d-a1eb-8a9d3ae762f4",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb73d-834b-762d-a1eb-8a9d3ae762f4"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cb73e-b7eb-74ba-8a9e-38bc32ca0c2a",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb73e-b7eb-74ba-8a9e-38bc32ca0c2a"
+      },
+      "artifacts": {}
+    },
+    "animation": {
+      "taskId": "019cb948-e291-7635-a11c-757181f1100d",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb948-e291-7635-a11c-757181f1100d"
+      },
+      "artifacts": {}
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 8 (Fraud) — a juvenile deceiver barely in control of its shapeshifting. In life it was a petty fraud: a con artist, an impersonator, someone who lived by false face without ever developing the skill to sustain the illusion. Now its damnation forces it to be what it always tried to be — a perfect mimic — but it cannot hold any form. It tries to look like a discarded barrel. Then a dead guard. Then you. None of it holds for more than a few seconds. The constant glitching makes it MORE terrifying than a successful disguise: something that desperately wants to be something else and keeps failing, over and over, revealing what it really is underneath.",
+  "textToImageTask": {
+    "prompt": "A bipedal humanoid goat demon in A-pose caught mid-transformation, body partially shifted into two or three different forms simultaneously — parts of it solid dark grey-green flesh, patches morphing into barrel wood texture or stone, one arm melting into a different limb shape, face half-resolved with two overlapping expressions, small confused desperate eyes visible in the chaos, base goat demon form showing through the failed disguises like the truth it cannot hide, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Small lean bipedal goat demon, compact slender build, small goat horns, digitigrade goat legs, A-pose, standing upright with arms extended horizontally",
+    "artStyle": "realistic",
+    "targetPolycount": 7000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark grey-green base demon flesh with patches actively mid-transformation — some sections showing barrel wood grain texture, some stone surface, some human skin attempting to surface and failing, the different textures blending grotesquely at the seams, small desperate frightened eyes the only consistent element across all transformations",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 1.5
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Stumble_Walk",
+      "BodyMovements.Acting.Mummy_Stagger",
+      "Fighting.Punching.Punch_Combo",
+      "Fighting.GettingHit.Face_Punch_Reaction_1",
+      "Fighting.Dying.Knock_Down"
+    ]
+  }
+}

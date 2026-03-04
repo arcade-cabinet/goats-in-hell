@@ -1,0 +1,79 @@
+{
+  "id": "goat-berserker-elder",
+  "name": "Wrath Incarnate",
+  "type": "character",
+  "seed": 1599676825,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cb6fd-5b71-7f67-8ec8-0a8eeba5f296",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6fd-5b71-7f67-8ec8-0a8eeba5f296"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cb6fd-cda7-70e0-bd48-943762746e77",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6fd-cda7-70e0-bd48-943762746e77"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cb6ff-17f3-7fe8-b051-b4126f686f4d",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6ff-17f3-7fe8-b051-b4126f686f4d"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cb700-78e9-7e78-b8a3-5c31d5113d13",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb700-78e9-7e78-b8a3-5c31d5113d13"
+      },
+      "artifacts": {}
+    },
+    "animation": {
+      "taskId": "019cb94b-1aab-73a3-b628-2526f791d402",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb94b-1aab-73a3-b628-2526f791d402"
+      },
+      "artifacts": {}
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 5 (Wrath) — the ultimate expression of fury. This ancient berserker has been fighting since before recorded history — a warlord of antiquity who raged his way through an entire civilization and arrived in Hell still swinging. Millennia of combat have transformed it: it no longer bleeds, wounds cauterize instantly from its own heat, skin has cracked open in places to reveal the forge-glow beneath. It moves with the deceptive slowness of something that has NEVER needed to rush because nothing has ever escaped it. Its rage is not frantic — it is geological. Patient. Absolute. The Styx boils where it stands.",
+  "textToImageTask": {
+    "prompt": "A massive towering bipedal humanoid goat demon in A-pose, ancient unstoppable berserker, deep charcoal-black and ember-orange cracked skin revealing forge-glow beneath at the joints and wounds, ancient battle scars covering every surface layered over centuries, no bleeding only cauterized orange-glowing wound edges, massive thick horns scarred and battle-worn, deep-set molten orange eyes steady and ancient not frantic, enormous heavy musculature like cast iron, digitigrade goat legs planted like siege engines, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Massive ancient berserker goat demon, cracked charcoal-black skin with forge-glow at joints and wounds, centuries of battle scars layered over each other, thick scarred horns, molten steady eyes, immense iron-heavy build, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 11000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Charcoal-black cracked skin with orange forge-ember glow visible at every crack and wound edge, ancient layered battle scar tissue covering entire body, cauterized wounds glowing instead of bleeding, massive weathered horns deeply scarred from millennia of combat, molten steady orange eyes, massive iron-like musculature, no fur — just ancient cracked demon-iron skin",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 2.5
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Monster_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp_2",
+      "Fighting.AttackingwithWeapon.Axe_Spin_Attack",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Electrocuted_Fall"
+    ]
+  }
+}

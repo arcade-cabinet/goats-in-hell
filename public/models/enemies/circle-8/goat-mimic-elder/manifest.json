@@ -1,0 +1,79 @@
+{
+  "id": "goat-mimic-elder",
+  "name": "Perfect Deceiver",
+  "type": "character",
+  "seed": 786097134,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cb6fd-5b6a-7e33-9c9b-2979ce52c3d3",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb6fd-5b6a-7e33-9c9b-2979ce52c3d3"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cb73c-4ab0-74a7-acb3-b3e9fd7f4da6",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb73c-4ab0-74a7-acb3-b3e9fd7f4da6"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cb73d-8a68-7698-8180-593343d3efdc",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb73d-8a68-7698-8180-593343d3efdc"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cb73e-e3ba-7819-87b6-648781773264",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb73e-e3ba-7819-87b6-648781773264"
+      },
+      "artifacts": {}
+    },
+    "animation": {
+      "taskId": "019cb948-de89-7764-b503-7cb7ec435c48",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb948-de89-7764-b503-7cb7ec435c48"
+      },
+      "artifacts": {}
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 8 (Fraud) — the Perfect Deceiver: so ancient that it has forgotten its original form entirely. Its body is a PALIMPSEST of stolen identities — the faces of everyone it ever impersonated literally surface and submerge from its flesh in continuous rotation, each appearing briefly before sinking back into the mass. It can perfectly replicate any entity it has ever encountered. The tragedy of its perfection is that the faces of its victims still surface in its skin, silently screaming, still trapped inside the fraud that consumed them. It has no face of its own. There is nothing underneath. That is the most terrifying thing about it.",
+  "textToImageTask": {
+    "prompt": "A tall imposing bipedal humanoid goat demon in A-pose, ancient perfect shapeshifter, body surface shows dozens of partial faces and hands emerging and submerging from the flesh simultaneously like something pressing from inside, the underlying body is dark iridescent void-black, eyes change color and shape every few seconds visible as multiple overlapping eye pairs, form is broadly goat-demon-shaped but surface is constantly flowing and shifting, disturbing beautiful horrifying, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Tall imposing bipedal goat demon, sleek dark muscular build, curved goat horns, digitigrade goat legs, A-pose, standing upright with arms extended horizontally",
+    "artStyle": "realistic",
+    "targetPolycount": 11000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Dark iridescent void-black base flesh with dozens of partial human and demon faces pressing outward from beneath the surface as relief shapes — mouths open in silent screams, hands visible as raised impressions, the surface texture flows and ripples as if something swims beneath, multiple overlapping eye designs visible across the body, smooth liquid appearance at rest",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 2
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Monster_Walk",
+      "Fighting.Transitioning.Chest_Pound_Taunt",
+      "Fighting.AttackingwithWeapon.Thrust_Slash",
+      "Fighting.GettingHit.BeHit_FlyUp",
+      "Fighting.Dying.Shot_and_Blown_Back"
+    ]
+  }
+}

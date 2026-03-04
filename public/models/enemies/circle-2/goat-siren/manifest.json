@@ -39,7 +39,7 @@
       }
     },
     "animations": {
-      "WalkAndRun.Walking.Zombie_Walk": {
+      "WalkAndRun.Walking.Monster_Walk": {
         "taskId": "019cad85-1927-7b15-8135-3cc6d5c18e83",
         "status": "SUCCEEDED",
         "actionId": 112,
@@ -57,7 +57,7 @@
         "actionId": 97,
         "artifact": "animations/Left_Slash.glb"
       },
-      "Fighting.Punching.Fast_Punch_Combo": {
+      "Fighting.Punching.Punch_Combo": {
         "taskId": "019cad86-4b73-7ff1-a6ac-60a40fc3e134",
         "status": "SUCCEEDED",
         "actionId": 198,
@@ -74,6 +74,16 @@
         "status": "SUCCEEDED",
         "actionId": 182,
         "artifact": "animations/Shot_and_Blown_Back.glb"
+      }
+    },
+    "animation": {
+      "taskId": "019cb724-ec58-7275-88d4-802f55e8d93c",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb724-ec58-7275-88d4-802f55e8d93c"
+      },
+      "artifacts": {
+        "animation": "animations/Fighting.Dying.Shot_and_Blown_Back.glb"
       }
     }
   },
@@ -101,10 +111,10 @@
   },
   "animationTask": {
     "animations": [
-      "WalkAndRun.Walking.Zombie_Walk",
+      "WalkAndRun.Walking.Monster_Walk",
       "DailyActions.Idle.Angry_Ground_Stomp_1",
       "Fighting.AttackingwithWeapon.Left_Slash",
-      "Fighting.Punching.Fast_Punch_Combo",
+      "Fighting.Punching.Punch_Combo",
       "Fighting.GettingHit.Face_Punch_Reaction_1",
       "Fighting.Dying.Shot_and_Blown_Back"
     ]

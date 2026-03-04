@@ -63,12 +63,54 @@ interface GridPos {
 // ---------------------------------------------------------------------------
 
 const ENEMY_TYPES = new Set([
+  // General mob types
   'goat',
   'hellgoat',
   'fireGoat',
   'shadowGoat',
   'goatKnight',
+  'plagueGoat',
+  'shaman',
+  // Circle 1: Limbo
+  'shadeWhelp',
+  'shadeElder',
+  // Circle 2: Lust
+  'sirenWhelp',
+  'siren',
+  'sirenElder',
+  // Circle 3: Gluttony
+  'gluttonWhelp',
+  'glutton',
+  'gluttonElder',
+  // Circle 4: Greed
+  'hoarderWhelp',
+  'hoarder',
+  'hoarderElder',
+  // Circle 5: Wrath
+  'berserkerWhelp',
+  'berserker',
+  'berserkerElder',
+  // Circle 6: Heresy
+  'hereticWhelp',
+  'heretic',
+  'hereticElder',
+  // Circle 7: Violence
+  'butcherWhelp',
+  'butcher',
+  'butcherElder',
+  // Circle 8: Fraud
+  'mimicWhelp',
+  'mimic',
+  'mimicElder',
+  // Circle 9: Treachery
+  'frostWhelp',
+  'frost',
+  'frostElder',
+  // Boss types
   'archGoat',
+  'infernoGoat',
+  'voidGoat',
+  'ironGoat',
 ]);
 
 // ---------------------------------------------------------------------------

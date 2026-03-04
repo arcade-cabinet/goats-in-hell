@@ -1,0 +1,81 @@
+{
+  "id": "goat-heretic-whelp",
+  "name": "Blasphemy Acolyte",
+  "type": "character",
+  "seed": 2388446456,
+  "tasks": {
+    "text-to-image": {
+      "taskId": "019cb701-c78d-7eff-842d-6fc9211e7fc1",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb701-c78d-7eff-842d-6fc9211e7fc1"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-preview": {
+      "taskId": "019cb702-2de2-713d-aa04-43fe6f3c9846",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb702-2de2-713d-aa04-43fe6f3c9846"
+      },
+      "artifacts": {}
+    },
+    "text-to-3d-refine": {
+      "taskId": "019cb703-4c26-704e-a126-ad8b5146c996",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb703-4c26-704e-a126-ad8b5146c996"
+      },
+      "artifacts": {}
+    },
+    "rigging": {
+      "taskId": "019cb704-c330-7090-8878-c85a5260e51b",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb704-c330-7090-8878-c85a5260e51b"
+      },
+      "artifacts": {}
+    },
+    "animation": {
+      "taskId": "019cb707-4674-71f3-85fd-110991448e72",
+      "status": "SUCCEEDED",
+      "outputs": {
+        "taskId": "019cb707-4674-71f3-85fd-110991448e72"
+      },
+      "artifacts": {
+        "animation": "animations/Fighting.Dying.Knock_Down.glb"
+      }
+    }
+  },
+  "pipeline": "enemy",
+  "description": "Circle 6 (Heresy) — a novice apostate, fresh to damnation. In life it was a minor cleric or academic who quietly denied what it knew to be true — for comfort, for convenience, for the applause of peers who shared its comfortable lies. Its robes still carry the marks of the institution it served. Its eyes are already burned out from reading forbidden texts it knew were wrong but read anyway. It channels crude, erratic flame-hexes that fizzle half the time. Dangerous not because it is competent but because its unpredictability makes it impossible to predict. A little learning given to a cowardly soul is more dangerous than ignorance.",
+  "textToImageTask": {
+    "prompt": "A slender young bipedal humanoid goat demon in A-pose, academic build, tattered seminary robes of dark grey with burned edges and blasphemous symbols written in ash, holding a smoldering book of forbidden texts against its chest, eyes burned out replaced by blue-black flame holes where pupils should be, small sharp academic horns, thin arms with ink-stained fingers ending in claws, digitigrade goat legs in scuffed academic footwear, mix of scholar and demon still unresolved, stylized dark fantasy game character, full body front view, dark background",
+    "generateMultiView": true,
+    "poseMode": "a-pose"
+  },
+  "textTo3DPreviewTask": {
+    "prompt": "Slender young goat demon scholar-priest, tattered seminary robes with burned edges, eyes replaced by blue-black flame voids, small sharp horns, academic thin build, ink-stained hands, A-pose",
+    "artStyle": "realistic",
+    "targetPolycount": 6000,
+    "topology": "quad",
+    "shouldRemesh": true,
+    "symmetryMode": "auto"
+  },
+  "textTo3DRefineTask": {
+    "texturePrompt": "Tattered dark grey seminary robes with burned and charred hem edges, ash-written blasphemous symbols faintly visible on cloth, eye sockets filled with blue-black flame no pupils, ink stains on thin clawed fingers, small sharp polished horns of a scholar, scorch marks across chest from handling flaming texts",
+    "enablePbr": true
+  },
+  "riggingTask": {
+    "heightMeters": 1.6
+  },
+  "animationTask": {
+    "animations": [
+      "WalkAndRun.Walking.Stumble_Walk",
+      "DailyActions.Idle.Angry_Ground_Stomp",
+      "Fighting.CastingSpell.mage_soell_cast",
+      "Fighting.GettingHit.Face_Punch_Reaction_1",
+      "Fighting.Dying.Knock_Down"
+    ]
+  }
+}
