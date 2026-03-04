@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.3.0](https://github.com/arcade-cabinet/goats-in-hell/compare/v1.2.0...v1.3.0) (2026-03-04)
+
+
+### Features
+
+* 3-tier whelp/elder enemy hierarchy + full Meshy asset pipeline ([7bcb110](https://github.com/arcade-cabinet/goats-in-hell/commit/7bcb1100c9fc393662a565836acfec46f4af0a0b))
+* ship all nine circles — prop mapping, overhauls, A*, rendering, 9/9 playtests pass ([5c0e2cf](https://github.com/arcade-cabinet/goats-in-hell/commit/5c0e2cf9cddba92ed07de4db8a0a3a2ced7cf345))
+* YUKA Brain Assembly — unified goal-driven AI (Tasks 1-12) ([c8a976f](https://github.com/arcade-cabinet/goats-in-hell/commit/c8a976f0b07272ef41caa16f527443834e7da6ca))
+
 ## [1.2.0](https://github.com/arcade-cabinet/goats-in-hell/compare/v1.1.1...v1.2.0) (2026-03-03)
 
 
