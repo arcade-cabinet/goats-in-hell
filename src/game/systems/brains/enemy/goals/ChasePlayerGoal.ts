@@ -77,8 +77,19 @@ export class ChasePlayerGoal extends Goal<GameEntity> {
       const inv = step / wpDist;
       pos.x += dx * inv;
       pos.z += dz * inv;
+    } else {
+      // Fallback: A* returned no path — move directly toward player
+      const dx = this.ctx.playerPos.x - pos.x;
+      const dz = this.ctx.playerPos.z - pos.z;
+      const directDist = Math.sqrt(dx * dx + dz * dz);
+      if (directDist > 0.1) {
+        const dt = this.ctx.deltaTime / 1000;
+        const step = Math.min(CHASE_SPEED * dt, directDist);
+        const inv = step / directDist;
+        pos.x += dx * inv;
+        pos.z += dz * inv;
+      }
     }
-    // Fallback (no waypoints): stay ACTIVE, distance check above handles completion
   }
 
   terminate(): void {
