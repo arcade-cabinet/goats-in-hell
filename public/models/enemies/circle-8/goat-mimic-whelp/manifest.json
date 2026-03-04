@@ -37,12 +37,14 @@
       "artifacts": {}
     },
     "animation": {
-      "taskId": "019cb948-e291-7635-a11c-757181f1100d",
+      "taskId": "019cb957-81e0-75ed-b96a-ed3147aedd8d",
       "status": "SUCCEEDED",
       "outputs": {
-        "taskId": "019cb948-e291-7635-a11c-757181f1100d"
+        "taskId": "019cb957-81e0-75ed-b96a-ed3147aedd8d"
       },
-      "artifacts": {}
+      "artifacts": {
+        "animation": "animations/Fighting.Dying.Knock_Down.glb"
+      }
     }
   },
   "pipeline": "enemy",

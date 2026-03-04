@@ -37,12 +37,14 @@
       "artifacts": {}
     },
     "animation": {
-      "taskId": "019cb94b-4b86-77c8-b6d8-f665ac345944",
+      "taskId": "019cb957-aac8-7c03-b2f8-1d4c0861dddc",
       "status": "SUCCEEDED",
       "outputs": {
-        "taskId": "019cb94b-4b86-77c8-b6d8-f665ac345944"
+        "taskId": "019cb957-aac8-7c03-b2f8-1d4c0861dddc"
       },
-      "artifacts": {}
+      "artifacts": {
+        "animation": "animations/Fighting.Dying.Fall_Dead_from_Abdominal_Injury.glb"
+      }
     }
   },
   "pipeline": "enemy",

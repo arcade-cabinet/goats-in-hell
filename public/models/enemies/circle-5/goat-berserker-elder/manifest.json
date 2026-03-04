@@ -37,12 +37,14 @@
       "artifacts": {}
     },
     "animation": {
-      "taskId": "019cb94b-1aab-73a3-b628-2526f791d402",
+      "taskId": "019cb957-7de5-75ed-af94-5817dc65d005",
       "status": "SUCCEEDED",
       "outputs": {
-        "taskId": "019cb94b-1aab-73a3-b628-2526f791d402"
+        "taskId": "019cb957-7de5-75ed-af94-5817dc65d005"
       },
-      "artifacts": {}
+      "artifacts": {
+        "animation": "animations/Fighting.Dying.Electrocuted_Fall.glb"
+      }
     }
   },
   "pipeline": "enemy",

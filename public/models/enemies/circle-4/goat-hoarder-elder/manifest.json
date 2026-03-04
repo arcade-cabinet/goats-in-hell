@@ -37,12 +37,14 @@
       "artifacts": {}
     },
     "animation": {
-      "taskId": "019cb948-ef29-7375-b74d-261f3bfc8bb5",
+      "taskId": "019cb957-a77d-7c03-b843-49369d094383",
       "status": "SUCCEEDED",
       "outputs": {
-        "taskId": "019cb948-ef29-7375-b74d-261f3bfc8bb5"
+        "taskId": "019cb957-a77d-7c03-b843-49369d094383"
       },
-      "artifacts": {}
+      "artifacts": {
+        "animation": "animations/Fighting.Dying.Shot_and_Blown_Back.glb"
+      }
     }
   },
   "pipeline": "enemy",
