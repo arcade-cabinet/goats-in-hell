@@ -34,6 +34,8 @@ import {
 import { world } from '../entities/world';
 import { registerDamageDirection } from '../ui/HUDEvents';
 import { playSound } from './AudioSystem';
+import { brainRegistry } from './brains/BrainRegistry';
+import { createEnemyBrain } from './brains/enemy/EnemyBrainFactory';
 import { spawnEnemyProjectile } from './EnemyProjectileBridge';
 import { getGameTime } from './GameClock';
 import { bridgeDamagePlayer } from './PlayerDamageBridge';
@@ -520,6 +522,8 @@ export function aiSystemUpdate(deltaTime: number): void {
     if (!vehicle) {
       vehicle = createVehicleForEnemy(entity);
       vehicleMap.set(id, vehicle);
+      // Register goal-driven brain alongside steering (brains add decision layer)
+      brainRegistry.register(id, createEnemyBrain(entity));
     }
 
     // Sync ECS position → YUKA vehicle (in case combat knocked them around)
@@ -535,6 +539,9 @@ export function aiSystemUpdate(deltaTime: number): void {
   // Tick YUKA steering (seconds)
   const dtSec = deltaTime / 1000;
   entityManager.update(dtSec);
+
+  // Tick all entity goal-driven brains
+  brainRegistry.updateAll();
 
   // Write YUKA vehicle positions back to ECS entities + run post-steering logic
   for (const entity of world.entities) {
@@ -632,6 +639,7 @@ export function aiSystemUpdate(deltaTime: number): void {
     if (!liveEnemyIds.has(id)) {
       entityManager.remove(vehicle);
       vehicleMap.delete(id);
+      brainRegistry.unregister(id);
     }
   }
 }
@@ -642,6 +650,7 @@ export function aiSystemReset(): void {
     entityManager.remove(vehicle);
   }
   vehicleMap.clear();
+  brainRegistry.reset();
   // Reset Circle 5 escalation state
   escalationCombatTimer = 0;
   escalationSpeedMult = 1.0;

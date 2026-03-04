@@ -62,7 +62,7 @@ describe('AoeAttackGoal', () => {
       dtScale: 1,
       gameTime: 5000,
     } as any;
-    const goal = new AoeAttackGoal(boss, ctx, {
+    const goal = new AoeAttackGoal(boss, {
       projectileCount: 12,
       damage: 8,
       speed: 0.07,

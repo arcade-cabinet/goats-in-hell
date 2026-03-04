@@ -1,9 +1,8 @@
 import type { GameEntity } from 'yuka';
 import { Goal } from 'yuka';
 import type { Entity } from '../../../../entities/components';
-import { vec3, vec3Subtract } from '../../../../entities/vec3';
+import { vec3 } from '../../../../entities/vec3';
 import { spawnEnemyProjectile } from '../../../EnemyProjectileBridge';
-import type { BrainContext } from '../../BrainContext';
 
 export interface AoeAttackConfig {
   projectileCount: number;
@@ -18,13 +17,11 @@ export interface AoeAttackConfig {
  */
 export class AoeAttackGoal extends Goal<GameEntity> {
   private entity: Entity;
-  private ctx: BrainContext;
   private config: AoeAttackConfig;
 
-  constructor(entity: Entity, ctx: BrainContext, config: AoeAttackConfig) {
+  constructor(entity: Entity, config: AoeAttackConfig) {
     super();
     this.entity = entity;
-    this.ctx = ctx;
     this.config = config;
   }
 

@@ -2,7 +2,6 @@ import type { GameEntity } from 'yuka';
 import { Goal } from 'yuka';
 import { useGameStore } from '../../../../../state/GameStore';
 import type { Entity } from '../../../../entities/components';
-import { vec3 } from '../../../../entities/vec3';
 
 function rng(): number {
   return useGameStore.getState().rng();
