@@ -12,6 +12,7 @@ import { world } from '../../game/entities/world';
 import { checkKillHint } from '../../game/systems/KillHintSystem';
 import { registerKill } from '../../game/systems/KillStreakSystem';
 import { triggerDeath } from '../../game/systems/ProgressionSystem';
+import { gameEventBus } from '../../game/systems/telemetry/GameEventBus';
 import { useGameStore } from '../../state/GameStore';
 import { playSound } from '../audio/AudioSystem';
 import { spawnDamageNumber } from '../entities/DamageNumbers';
@@ -248,6 +249,18 @@ export function handleEnemyKill(entity: Entity): void {
     createDeathBurst(_particlePos, combatScene);
   }
 
+  // Emit telemetry event
+  if (entity.position) {
+    const player = world.entities.find((e: Entity) => e.type === 'player');
+    gameEventBus.emit({
+      type: 'enemy_killed',
+      entityId: entity.id ?? '',
+      enemyType: entity.type ?? 'unknown',
+      weapon: player?.player?.currentWeapon ?? 'hellPistol',
+      position: entity.position,
+    });
+  }
+
   // Remove entity from ECS world
   removeEntity(entity);
 }
@@ -272,6 +285,15 @@ export function damagePlayer(damage: number): boolean {
   if (player.player.hp <= 0) return true;
 
   player.player.hp -= damage;
+
+  if (player.position) {
+    gameEventBus.emit({
+      type: 'player_damaged',
+      amount: damage,
+      source: 'enemy',
+      position: player.position,
+    });
+  }
 
   // Audio feedback
   playSound('hurt');
