@@ -12,6 +12,7 @@ export default defineConfig({
   },
   projects: [
     {
+      // Headless — for CI, pages-smoke, pages-visual, pages-diagnostic
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
@@ -27,6 +28,21 @@ export default defineConfig({
           ],
         },
       },
+      testIgnore: ['**/circle-assessment.spec.ts'],
+    },
+    {
+      // Headed — uses real GPU/WebGL for local 3D visual testing.
+      // Run: npx playwright test --project=local
+      // Requires dev server: pnpm web:start
+      name: 'local',
+      use: {
+        ...devices['Desktop Chrome'],
+        headless: false,
+        launchOptions: {
+          args: ['--enable-webgl', '--ignore-gpu-blocklist'],
+        },
+      },
+      testMatch: ['**/circle-assessment.spec.ts', '**/playtest-screenshots.spec.ts'],
     },
   ],
   // Don't start a web server — run `pnpm web:start` separately
