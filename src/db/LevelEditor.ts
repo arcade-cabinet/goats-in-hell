@@ -19,6 +19,7 @@
 import { eq } from 'drizzle-orm';
 
 import { MapCell } from '../game/levels/LevelGenerator';
+import { resolveAssetName } from '../game/propNameMap';
 import { getAvailableEnemiesForCircle, getAvailablePropsForCircle } from './AssetDiscovery';
 import type { DrizzleDb } from './connection';
 import { compileGrid, packGrid } from './GridCompiler';
@@ -1209,8 +1210,9 @@ export class LevelEditor {
       };
     },
   ): string {
+    const resolvedType = resolveAssetName(type);
     return this.addEntity(levelId, {
-      entityType: type,
+      entityType: resolvedType,
       x,
       z,
       spawnCategory: 'prop',
