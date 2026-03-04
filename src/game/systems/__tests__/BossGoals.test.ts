@@ -56,12 +56,8 @@ describe('EnrageGoal', () => {
 describe('AoeAttackGoal', () => {
   it('fires when cooldown is ready', () => {
     const boss = mockBoss(20, 100);
-    const ctx = {
-      playerPos: vec3(12, 0, 10),
-      deltaTime: 16,
-      dtScale: 1,
-      gameTime: 5000,
-    } as any;
+    // ctx kept here for documentation — AoeAttackGoal no longer takes ctx
+    void { playerPos: vec3(12, 0, 10), deltaTime: 16, dtScale: 1, gameTime: 5000 };
     const goal = new AoeAttackGoal(boss, {
       projectileCount: 12,
       damage: 8,
