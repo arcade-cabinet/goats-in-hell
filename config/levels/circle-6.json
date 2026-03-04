@@ -80,195 +80,195 @@
     ],
     [
       1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 1, 1, 1, 1
+      0, 0, 0, 0, 0, 8, 8, 8, 0, 8, 8, 8, 0, 0, 0, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1
+      1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1
+      1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
       1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
       1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 0, 0, 0, 8, 8, 8, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 0, 0, 0, 8, 8, 8, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 0, 0, 0, 8, 8, 8, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 0, 0, 0, 8, 8, 8, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 0, 0, 0, 8, 8, 8, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 0, 0, 0, 8, 8, 8, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 8, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 8, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 8, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 1, 1, 1, 1, 8, 8, 8, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 1, 1, 1, 1, 8, 8, 8, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    [
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 8, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      1, 9, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
+      1, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
+      1, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-    ],
-    [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
     ],
     [
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1
     ],
     [
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1
     ],
     [
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1
     ],
     [
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1
     ],
     [
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1
     ],
     [
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1
     ],
     [
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1
     ],
     [
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1
     ],
     [
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1
     ],
     [
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1
     ],
     [
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1
     ],
     [
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1
     ],
     [
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -296,657 +296,1418 @@
     {
       "type": "boss-profano",
       "x": 50,
-      "z": 122
+      "z": 122,
+      "spawnCategory": "boss"
     },
     {
       "type": "fireGoat",
       "x": 40,
-      "z": 32
+      "z": 32,
+      "spawnCategory": "enemy"
     },
     {
       "type": "fireGoat",
       "x": 58,
-      "z": 32
+      "z": 32,
+      "spawnCategory": "enemy"
     },
     {
       "type": "shadowGoat",
       "x": 76,
-      "z": 32
+      "z": 32,
+      "spawnCategory": "enemy"
     },
     {
       "type": "shadowGoat",
       "x": 84,
-      "z": 36
+      "z": 36,
+      "spawnCategory": "enemy"
     },
     {
       "type": "shadowGoat",
       "x": 80,
-      "z": 44
+      "z": 44,
+      "spawnCategory": "enemy"
     },
     {
       "type": "shadowGoat",
       "x": 24,
-      "z": 86
+      "z": 86,
+      "spawnCategory": "enemy"
     },
     {
       "type": "shadowGoat",
       "x": 32,
-      "z": 90
+      "z": 90,
+      "spawnCategory": "enemy"
     },
     {
       "type": "shadowGoat",
       "x": 50,
-      "z": 112
+      "z": 112,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 6,
+      "z": 48,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 16,
+      "z": 48,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 10,
+      "z": 52,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 10,
+      "z": 56,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 68,
+      "z": 52,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 68,
+      "z": 60,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 74,
+      "z": 54,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 80,
+      "z": 52,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 66,
+      "z": 64,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "shadowGoat",
+      "x": 74,
+      "z": 64,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "shadowGoat",
+      "x": 68,
+      "z": 92,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "shadowGoat",
+      "x": 80,
+      "z": 92,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "shadowGoat",
+      "x": 74,
+      "z": 98,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 66,
+      "z": 104,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 80,
+      "z": 104,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 72,
+      "z": 102,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 76,
+      "z": 94,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 6,
+      "z": 84,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 10,
+      "z": 88,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "hellgoat",
+      "x": 6,
+      "z": 94,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "shadowGoat",
+      "x": 14,
+      "z": 90,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "shadowGoat",
+      "x": 8,
+      "z": 96,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 70,
+      "z": 112,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 82,
+      "z": 112,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 76,
+      "z": 120,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "fireGoat",
+      "x": 70,
+      "z": 126,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "fireGoat",
+      "x": 82,
+      "z": 126,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "shadowGoat",
+      "x": 74,
+      "z": 116,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "shadowGoat",
+      "x": 78,
+      "z": 128,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "shadowGoat",
+      "x": 20,
+      "z": 36,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "shadowGoat",
+      "x": 24,
+      "z": 40,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "fireGoat",
+      "x": 42,
+      "z": 70,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "fireGoat",
+      "x": 56,
+      "z": 70,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "shadowGoat",
+      "x": 48,
+      "z": 82,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "shadowGoat",
+      "x": 26,
+      "z": 84,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "goatKnight",
+      "x": 22,
+      "z": 90,
+      "spawnCategory": "enemy"
+    },
+    {
+      "type": "shadowGoat",
+      "x": 30,
+      "z": 88,
+      "spawnCategory": "enemy"
     },
     {
       "type": "ammo",
       "x": 54,
-      "z": 10
+      "z": 10,
+      "spawnCategory": "pickup"
     },
     {
       "type": "health",
       "x": 44,
-      "z": 28
+      "z": 28,
+      "spawnCategory": "pickup"
     },
     {
       "type": "health",
       "x": 20,
-      "z": 34
+      "z": 34,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 80,
-      "z": 32
+      "z": 32,
+      "spawnCategory": "pickup"
     },
     {
       "type": "health",
       "x": 88,
-      "z": 44
+      "z": 44,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 46,
-      "z": 72
+      "z": 72,
+      "spawnCategory": "pickup"
     },
     {
       "type": "health",
       "x": 54,
-      "z": 80
+      "z": 80,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 76,
-      "z": 78
+      "z": 78,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 80,
-      "z": 82
+      "z": 82,
+      "spawnCategory": "pickup"
     },
     {
       "type": "health",
       "x": 76,
-      "z": 82
+      "z": 82,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 40,
-      "z": 128
+      "z": 128,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 50,
-      "z": 128
+      "z": 128,
+      "spawnCategory": "pickup"
     },
     {
       "type": "ammo",
       "x": 60,
-      "z": 128
+      "z": 128,
+      "spawnCategory": "pickup"
     },
     {
       "type": "health",
       "x": 38,
-      "z": 110
+      "z": 110,
+      "spawnCategory": "pickup"
     },
     {
       "type": "health",
       "x": 60,
-      "z": 110
+      "z": 110,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "health",
+      "x": 8,
+      "z": 46,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 14,
+      "z": 56,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 66,
+      "z": 50,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 80,
+      "z": 64,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "health",
+      "x": 72,
+      "z": 58,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 6,
+      "z": 66,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "health",
+      "x": 14,
+      "z": 78,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 66,
+      "z": 92,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 80,
+      "z": 100,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "health",
+      "x": 74,
+      "z": 106,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 10,
+      "z": 82,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "health",
+      "x": 4,
+      "z": 96,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 68,
+      "z": 110,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "ammo",
+      "x": 82,
+      "z": 110,
+      "spawnCategory": "pickup"
+    },
+    {
+      "type": "health",
+      "x": 76,
+      "z": 128,
+      "spawnCategory": "pickup"
     },
     {
       "type": "heresy-desecrated-arch",
       "x": 50,
-      "z": 4
+      "z": 4,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-desecrated-arch",
       "x": 50,
-      "z": 14
+      "z": 14,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-bone-urn",
       "x": 44,
-      "z": 6
+      "z": 6,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-bone-urn",
       "x": 56,
-      "z": 6
+      "z": 6,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-torn-scripture-slab",
       "x": 48,
-      "z": 6
+      "z": 6,
+      "spawnCategory": "prop"
     },
     {
       "type": "inverted-cross",
       "x": 52,
-      "z": 8
+      "z": 8,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-cracked-marble-pillar",
       "x": 40,
-      "z": 26
-    },
-    {
-      "type": "heresy-cracked-marble-pillar",
-      "x": 60,
-      "z": 26
-    },
-    {
-      "type": "heresy-cracked-marble-pillar",
-      "x": 40,
-      "z": 38
+      "z": 26,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-cracked-marble-pillar",
       "x": 60,
-      "z": 38
+      "z": 26,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-cracked-marble-pillar",
+      "x": 40,
+      "z": 38,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-cracked-marble-pillar",
+      "x": 60,
+      "z": 38,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-church-pew",
       "x": 40,
-      "z": 28
+      "z": 28,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-church-pew",
       "x": 46,
-      "z": 28
+      "z": 28,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-church-pew",
       "x": 52,
-      "z": 28
+      "z": 28,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-church-pew",
       "x": 58,
-      "z": 28
+      "z": 28,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-church-pew",
       "x": 40,
-      "z": 32
+      "z": 32,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-church-pew",
       "x": 46,
-      "z": 32
+      "z": 32,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-church-pew",
       "x": 52,
-      "z": 32
+      "z": 32,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-church-pew",
       "x": 58,
-      "z": 32
+      "z": 32,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-church-pew",
       "x": 40,
-      "z": 36
+      "z": 36,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-church-pew",
       "x": 46,
-      "z": 36
+      "z": 36,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-church-pew",
       "x": 52,
-      "z": 36
+      "z": 36,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-church-pew",
       "x": 58,
-      "z": 36
+      "z": 36,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-church-pew",
       "x": 40,
-      "z": 40
+      "z": 40,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-church-pew",
       "x": 46,
-      "z": 40
+      "z": 40,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-church-pew",
       "x": 52,
-      "z": 40
+      "z": 40,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-church-pew",
       "x": 58,
-      "z": 40
+      "z": 40,
+      "spawnCategory": "prop"
     },
     {
       "type": "inverted-cross",
       "x": 36,
-      "z": 28
+      "z": 28,
+      "spawnCategory": "prop"
     },
     {
       "type": "inverted-cross",
       "x": 64,
-      "z": 28
+      "z": 28,
+      "spawnCategory": "prop"
     },
     {
       "type": "inverted-cross",
       "x": 36,
-      "z": 38
+      "z": 38,
+      "spawnCategory": "prop"
     },
     {
       "type": "inverted-cross",
       "x": 64,
-      "z": 38
+      "z": 38,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-profane-symbol",
       "x": 50,
-      "z": 24
+      "z": 24,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-shattered-icon",
       "x": 44,
-      "z": 42
+      "z": 42,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-confessional-booth",
       "x": 18,
-      "z": 34
+      "z": 34,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-confessional-booth",
       "x": 18,
-      "z": 36
+      "z": 36,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-confessional-booth",
       "x": 18,
-      "z": 38
+      "z": 38,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-catacomb-torch",
       "x": 26,
-      "z": 36
+      "z": 36,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-bone-urn",
       "x": 74,
-      "z": 36
+      "z": 36,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-bone-urn",
       "x": 90,
-      "z": 34
+      "z": 34,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-bone-urn",
       "x": 76,
-      "z": 44
+      "z": 44,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-bone-urn",
       "x": 86,
-      "z": 46
+      "z": 46,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-catacomb-torch",
       "x": 74,
-      "z": 32
+      "z": 32,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-catacomb-torch",
       "x": 84,
-      "z": 36
+      "z": 36,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-catacomb-torch",
       "x": 90,
-      "z": 46
+      "z": 46,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-catacomb-torch",
       "x": 76,
-      "z": 40
+      "z": 40,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-catacomb-torch",
       "x": 86,
-      "z": 42
+      "z": 42,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-corrupted-reliquary",
       "x": 80,
-      "z": 40
+      "z": 40,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-bone-shelf",
       "x": 76,
-      "z": 32
+      "z": 32,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-bone-shelf",
       "x": 88,
-      "z": 38
+      "z": 38,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-bone-shelf",
       "x": 82,
-      "z": 46
+      "z": 46,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-skull-pile",
       "x": 74,
-      "z": 38
+      "z": 38,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-skull-pile",
       "x": 88,
-      "z": 44
+      "z": 44,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-scattered-bones",
       "x": 78,
-      "z": 36
+      "z": 36,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-scattered-bones",
       "x": 84,
-      "z": 42
+      "z": 42,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-scattered-bones",
       "x": 76,
-      "z": 46
+      "z": 46,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-cracked-marble-pillar",
       "x": 40,
-      "z": 66
+      "z": 66,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-cracked-marble-pillar",
       "x": 60,
-      "z": 66
+      "z": 66,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-church-pew",
       "x": 46,
-      "z": 70
+      "z": 70,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-church-pew",
       "x": 54,
-      "z": 70
+      "z": 70,
+      "spawnCategory": "prop"
     },
     {
       "type": "heretic-tome",
       "x": 50,
-      "z": 70
+      "z": 70,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-broken-stained-glass",
       "x": 40,
-      "z": 76
+      "z": 76,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-broken-stained-glass",
       "x": 60,
-      "z": 76
+      "z": 76,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-toppled-altar",
       "x": 46,
-      "z": 84
+      "z": 84,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-profane-symbol",
       "x": 50,
-      "z": 86
+      "z": 86,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-torn-scripture-slab",
       "x": 44,
-      "z": 72
+      "z": 72,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-shattered-icon",
       "x": 54,
-      "z": 84
+      "z": 84,
+      "spawnCategory": "prop"
     },
     {
       "type": "inverted-cross",
       "x": 40,
-      "z": 76
+      "z": 76,
+      "spawnCategory": "prop"
     },
     {
       "type": "inverted-cross",
       "x": 60,
-      "z": 76
+      "z": 76,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-bone-urn",
       "x": 24,
-      "z": 84
+      "z": 84,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-bone-urn",
       "x": 32,
-      "z": 84
+      "z": 84,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-bone-urn",
       "x": 22,
-      "z": 90
+      "z": 90,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-bone-urn",
       "x": 34,
-      "z": 90
+      "z": 90,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-bone-shelf",
       "x": 22,
-      "z": 82
+      "z": 82,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-bone-shelf",
       "x": 34,
-      "z": 82
+      "z": 82,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-bone-shelf",
       "x": 20,
-      "z": 88
+      "z": 88,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-bone-shelf",
       "x": 36,
-      "z": 88
+      "z": 88,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-bone-shelf",
       "x": 22,
-      "z": 94
+      "z": 94,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-bone-shelf",
       "x": 34,
-      "z": 94
+      "z": 94,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-skull-pile",
       "x": 28,
-      "z": 84
+      "z": 84,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-skull-pile",
       "x": 26,
-      "z": 92
+      "z": 92,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-scattered-bones",
       "x": 24,
-      "z": 88
+      "z": 88,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-scattered-bones",
       "x": 32,
-      "z": 88
+      "z": 88,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-scattered-bones",
       "x": 28,
-      "z": 90
+      "z": 90,
+      "spawnCategory": "prop"
     },
     {
       "type": "wrath-chain-curtain",
       "x": 24,
-      "z": 82
+      "z": 82,
+      "spawnCategory": "prop"
     },
     {
       "type": "wrath-chain-curtain",
       "x": 28,
-      "z": 86
+      "z": 86,
+      "spawnCategory": "prop"
     },
     {
       "type": "wrath-chain-curtain",
       "x": 32,
-      "z": 92
+      "z": 92,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-corrupted-reliquary",
       "x": 28,
-      "z": 88
+      "z": 88,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-forbidden-bookcase",
       "x": 74,
-      "z": 74
+      "z": 74,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-forbidden-bookcase",
       "x": 82,
-      "z": 74
+      "z": 74,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-forbidden-bookcase",
       "x": 72,
-      "z": 80
+      "z": 80,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-forbidden-bookcase",
       "x": 84,
-      "z": 80
+      "z": 80,
+      "spawnCategory": "prop"
     },
     {
       "type": "heretic-tome",
       "x": 78,
-      "z": 80
+      "z": 80,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-torn-scripture-slab",
       "x": 76,
-      "z": 84
+      "z": 84,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-torn-scripture-slab",
       "x": 80,
-      "z": 86
+      "z": 86,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-desecrated-arch",
       "x": 50,
-      "z": 108
+      "z": 108,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-cracked-marble-pillar",
       "x": 38,
-      "z": 112
+      "z": 112,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-cracked-marble-pillar",
       "x": 62,
-      "z": 112
+      "z": 112,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-cracked-marble-pillar",
       "x": 38,
-      "z": 132
+      "z": 132,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-cracked-marble-pillar",
       "x": 62,
-      "z": 132
+      "z": 132,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-pentagram-floor-tile",
       "x": 50,
-      "z": 122
+      "z": 122,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-ritual-chandelier",
       "x": 50,
-      "z": 122
+      "z": 122,
+      "spawnCategory": "prop"
     },
     {
       "type": "heretic-tome",
       "x": 50,
-      "z": 122
+      "z": 122,
+      "spawnCategory": "prop"
     },
     {
       "type": "inverted-cross",
       "x": 40,
-      "z": 110
+      "z": 110,
+      "spawnCategory": "prop"
     },
     {
       "type": "inverted-cross",
       "x": 60,
-      "z": 134
+      "z": 134,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-cracked-baptismal-font",
       "x": 40,
-      "z": 132
+      "z": 132,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-cracked-baptismal-font",
       "x": 60,
-      "z": 112
+      "z": 112,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-profane-symbol",
       "x": 50,
-      "z": 110
+      "z": 110,
+      "spawnCategory": "prop"
     },
     {
       "type": "heresy-burning-pyre",
       "x": 38,
-      "z": 122
+      "z": 122,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-cracked-marble-pillar",
+      "x": 4,
+      "z": 46,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-cracked-marble-pillar",
+      "x": 18,
+      "z": 46,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-confessional-booth",
+      "x": 4,
+      "z": 52,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-confessional-booth",
+      "x": 16,
+      "z": 52,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-catacomb-torch",
+      "x": 2,
+      "z": 50,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-catacomb-torch",
+      "x": 18,
+      "z": 50,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "inverted-cross",
+      "x": 10,
+      "z": 44,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-torn-scripture-slab",
+      "x": 10,
+      "z": 56,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-forbidden-bookcase",
+      "x": 66,
+      "z": 50,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-forbidden-bookcase",
+      "x": 66,
+      "z": 58,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-forbidden-bookcase",
+      "x": 82,
+      "z": 50,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-forbidden-bookcase",
+      "x": 82,
+      "z": 58,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heretic-tome",
+      "x": 74,
+      "z": 56,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-profane-symbol",
+      "x": 74,
+      "z": 48,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-catacomb-torch",
+      "x": 66,
+      "z": 54,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-catacomb-torch",
+      "x": 82,
+      "z": 54,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-bone-urn",
+      "x": 68,
+      "z": 66,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-bone-urn",
+      "x": 80,
+      "z": 66,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-burning-pyre",
+      "x": 10,
+      "z": 70,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-pentagram-floor-tile",
+      "x": 10,
+      "z": 72,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-toppled-altar",
+      "x": 4,
+      "z": 76,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-toppled-altar",
+      "x": 16,
+      "z": 76,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "inverted-cross",
+      "x": 2,
+      "z": 72,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "inverted-cross",
+      "x": 18,
+      "z": 72,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-shattered-icon",
+      "x": 10,
+      "z": 64,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-bone-urn",
+      "x": 66,
+      "z": 90,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-bone-urn",
+      "x": 82,
+      "z": 90,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-bone-urn",
+      "x": 66,
+      "z": 104,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-bone-urn",
+      "x": 82,
+      "z": 104,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-catacomb-torch",
+      "x": 66,
+      "z": 96,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-catacomb-torch",
+      "x": 82,
+      "z": 96,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-cracked-marble-pillar",
+      "x": 68,
+      "z": 92,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-cracked-marble-pillar",
+      "x": 80,
+      "z": 92,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-corrupted-reliquary",
+      "x": 74,
+      "z": 98,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-profane-symbol",
+      "x": 74,
+      "z": 88,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-catacomb-torch",
+      "x": 2,
+      "z": 84,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-catacomb-torch",
+      "x": 18,
+      "z": 84,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-catacomb-torch",
+      "x": 2,
+      "z": 92,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-catacomb-torch",
+      "x": 18,
+      "z": 92,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-shattered-icon",
+      "x": 10,
+      "z": 82,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-torn-scripture-slab",
+      "x": 6,
+      "z": 90,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-torn-scripture-slab",
+      "x": 14,
+      "z": 96,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-cracked-marble-pillar",
+      "x": 68,
+      "z": 110,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-cracked-marble-pillar",
+      "x": 84,
+      "z": 110,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-cracked-marble-pillar",
+      "x": 68,
+      "z": 128,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-cracked-marble-pillar",
+      "x": 84,
+      "z": 128,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-desecrated-arch",
+      "x": 76,
+      "z": 108,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "inverted-cross",
+      "x": 68,
+      "z": 120,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "inverted-cross",
+      "x": 84,
+      "z": 120,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-broken-stained-glass",
+      "x": 72,
+      "z": 114,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-broken-stained-glass",
+      "x": 80,
+      "z": 114,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-ritual-chandelier",
+      "x": 76,
+      "z": 120,
+      "spawnCategory": "prop"
+    },
+    {
+      "type": "heresy-profane-symbol",
+      "x": 76,
+      "z": 130,
+      "spawnCategory": "prop"
     }
   ],
   "theme": {
@@ -959,9 +1720,27 @@
     "pickupDensity": 0.7,
     "ambientColor": "#6633aa"
   },
+  "requiredTextureKeys": [
+    "floor-color",
+    "floor-normal",
+    "floor-roughness",
+    "ceiling-color",
+    "ceiling-normal",
+    "ceiling-roughness",
+    "door-color",
+    "door-normal",
+    "door-roughness",
+    "door-metalness",
+    "heresy-color",
+    "heresy-normal",
+    "heresy-roughness",
+    "obsidian-color",
+    "obsidian-normal",
+    "obsidian-roughness"
+  ],
   "envZones": [
     {
-      "id": "52dd9225-141d-4233-b292-162d497e308f",
+      "id": "a9427c41-9564-4167-803b-6b19a3858600",
       "envType": "fog",
       "x": 0,
       "z": 0,
@@ -974,7 +1753,7 @@
       "timerOff": 0
     },
     {
-      "id": "bf23627a-4feb-4f2a-9c8f-040890b20e3c",
+      "id": "5c56cdce-2616-4f32-bbd8-a9bae78df076",
       "envType": "fog",
       "x": 72,
       "z": 28,
@@ -987,7 +1766,7 @@
       "timerOff": 0
     },
     {
-      "id": "26270fab-b321-4cb2-afb7-125f595f779f",
+      "id": "387fa66e-6dcd-4b78-a079-25194e8a10c4",
       "envType": "void",
       "x": 46,
       "z": 34,
@@ -1000,7 +1779,7 @@
       "timerOff": 0
     },
     {
-      "id": "993e5fe5-fbd7-4b62-8063-79d133db1399",
+      "id": "f3887459-3275-460b-83e6-18f6fef9af64",
       "envType": "void",
       "x": 88,
       "z": 40,
@@ -1013,7 +1792,7 @@
       "timerOff": 0
     },
     {
-      "id": "73420c9f-3fb3-4336-aba8-08e96caecfdb",
+      "id": "5022211b-52cf-40f0-9a3e-c2dc622ab417",
       "envType": "void",
       "x": 80,
       "z": 46,
@@ -1026,7 +1805,7 @@
       "timerOff": 0
     },
     {
-      "id": "eb4fffb7-a2e0-46e6-924f-4dc0500d740c",
+      "id": "5febd400-5818-4cb0-8a47-c6ad6ab3eaeb",
       "envType": "illusion",
       "x": 44,
       "z": 116,
@@ -1037,11 +1816,89 @@
       "dirZ": 0,
       "timerOn": 0,
       "timerOff": 0
+    },
+    {
+      "id": "8df2e077-3531-461e-8ca8-279e756c13da",
+      "envType": "fog",
+      "x": 2,
+      "z": 44,
+      "w": 18,
+      "h": 16,
+      "intensity": 0.5,
+      "dirX": 0,
+      "dirZ": 0,
+      "timerOn": 0,
+      "timerOff": 0
+    },
+    {
+      "id": "ea1f97fd-1ee3-42d8-8c4b-35afb96268d4",
+      "envType": "fog",
+      "x": 64,
+      "z": 48,
+      "w": 20,
+      "h": 20,
+      "intensity": 0.55,
+      "dirX": 0,
+      "dirZ": 0,
+      "timerOn": 0,
+      "timerOff": 0
+    },
+    {
+      "id": "acf3aea6-bba5-40d5-bb46-a120a8d53f66",
+      "envType": "fire",
+      "x": 6,
+      "z": 68,
+      "w": 10,
+      "h": 8,
+      "intensity": 0.8,
+      "dirX": 0,
+      "dirZ": 0,
+      "timerOn": 0,
+      "timerOff": 0
+    },
+    {
+      "id": "3ccddfe1-b392-4cc2-ad45-d79fd182c103",
+      "envType": "fog",
+      "x": 64,
+      "z": 88,
+      "w": 20,
+      "h": 20,
+      "intensity": 0.65,
+      "dirX": 0,
+      "dirZ": 0,
+      "timerOn": 0,
+      "timerOff": 0
+    },
+    {
+      "id": "8727baa3-753c-4bd2-9100-14c202b7f6f9",
+      "envType": "fog",
+      "x": 2,
+      "z": 80,
+      "w": 18,
+      "h": 20,
+      "intensity": 0.45,
+      "dirX": 0,
+      "dirZ": 0,
+      "timerOn": 0,
+      "timerOff": 0
+    },
+    {
+      "id": "2214e91b-7365-449f-88af-a4bc91b66ee3",
+      "envType": "illusion",
+      "x": 70,
+      "z": 116,
+      "w": 12,
+      "h": 12,
+      "intensity": 0.8,
+      "dirX": 0,
+      "dirZ": 0,
+      "timerOn": 0,
+      "timerOff": 0
     }
   ],
   "decals": [
     {
-      "id": "eec86ace-6f68-4d3c-9c0a-09578189cf87",
+      "id": "8f30da80-db31-4e85-b67c-65cdea05f426",
       "decalType": "water-stain",
       "x": 42,
       "z": 8,
@@ -1052,7 +1909,7 @@
       "surface": "wall"
     },
     {
-      "id": "486fd363-fa27-49e3-aba1-ffa63a2a2c1c",
+      "id": "67d1ab2d-8713-4d46-8410-8a42a1c09c9f",
       "decalType": "water-stain",
       "x": 58,
       "z": 8,
@@ -1063,7 +1920,7 @@
       "surface": "wall"
     },
     {
-      "id": "48044419-e7da-40a1-a5fa-6fc499dce477",
+      "id": "1189024e-ef74-43a9-ae23-9abb757a2cad",
       "decalType": "water-stain",
       "x": 36,
       "z": 30,
@@ -1074,7 +1931,7 @@
       "surface": "wall"
     },
     {
-      "id": "c4972e0e-64b8-492e-8404-fa5b136ecf19",
+      "id": "6fd89152-1a4b-4019-a96f-7cbc925e1d47",
       "decalType": "water-stain",
       "x": 64,
       "z": 30,
@@ -1085,7 +1942,7 @@
       "surface": "wall"
     },
     {
-      "id": "2f831ae2-ab8f-4d1d-8bc5-fca91398926b",
+      "id": "547335c0-e503-4ccf-9ec0-c09754594657",
       "decalType": "scorch-mark",
       "x": 46,
       "z": 34,
@@ -1096,7 +1953,7 @@
       "surface": "floor"
     },
     {
-      "id": "2df7d74b-ca68-4810-9585-4e5010071e2b",
+      "id": "1d565280-bd9f-4ec5-b716-0920210bb504",
       "decalType": "scorch-mark",
       "x": 52,
       "z": 36,
@@ -1107,7 +1964,7 @@
       "surface": "floor"
     },
     {
-      "id": "bab724a8-4570-4ada-98c5-9593c858c869",
+      "id": "7fdee526-7a7b-44fd-94ca-ec5c59e106d1",
       "decalType": "scorch-mark",
       "x": 46,
       "z": 40,
@@ -1118,7 +1975,7 @@
       "surface": "floor"
     },
     {
-      "id": "1196716b-871c-46cb-8fa2-0d3973d51780",
+      "id": "0b6eb0f1-ca0b-41e4-be3d-19e35895d789",
       "decalType": "water-stain",
       "x": 16,
       "z": 36,
@@ -1129,7 +1986,7 @@
       "surface": "wall"
     },
     {
-      "id": "9921ab10-49a8-4ec0-b88a-263e848cae90",
+      "id": "f30b3771-6577-403f-8b89-2f6bb45331bc",
       "decalType": "water-stain",
       "x": 72,
       "z": 32,
@@ -1140,7 +1997,7 @@
       "surface": "wall"
     },
     {
-      "id": "6a0529cc-167e-4592-bd7c-ec1e0064e96e",
+      "id": "72e7b5a8-3ef3-4cc5-8d30-e15e6912f6b2",
       "decalType": "water-stain",
       "x": 92,
       "z": 32,
@@ -1151,7 +2008,7 @@
       "surface": "wall"
     },
     {
-      "id": "126473b8-94a9-4d3d-9a2a-662be8bdabb6",
+      "id": "3080ab1b-0488-4a02-8315-aebb44494d3d",
       "decalType": "scorch-mark",
       "x": 86,
       "z": 40,
@@ -1162,7 +2019,7 @@
       "surface": "floor"
     },
     {
-      "id": "ecc59a68-fa1a-4faa-a693-6f0428eb7a66",
+      "id": "f0d35f68-2a79-4047-8f82-aa30cf7b9c6a",
       "decalType": "scorch-mark",
       "x": 78,
       "z": 46,
@@ -1173,7 +2030,7 @@
       "surface": "floor"
     },
     {
-      "id": "79c4c18c-20cc-4cc4-9d6d-0073833cbd25",
+      "id": "ecfac82c-cd9c-4b1d-8428-502caa6b6be2",
       "decalType": "water-stain",
       "x": 38,
       "z": 72,
@@ -1184,7 +2041,7 @@
       "surface": "wall"
     },
     {
-      "id": "18977c18-338f-4030-8684-6517c4eae5b1",
+      "id": "bfb72567-2472-47ab-b903-fd352bab7f81",
       "decalType": "water-stain",
       "x": 62,
       "z": 72,
@@ -1195,7 +2052,7 @@
       "surface": "wall"
     },
     {
-      "id": "929c852a-5241-4382-adb1-114dddcaf2ab",
+      "id": "8b597432-f411-4239-acdd-ca32dfd15083",
       "decalType": "water-stain",
       "x": 36,
       "z": 116,
@@ -1206,7 +2063,7 @@
       "surface": "wall"
     },
     {
-      "id": "e7b9f266-4491-4caa-b1c7-6b9a87d647ef",
+      "id": "bb30993f-b1c5-4c94-bd31-9c5e20063ff4",
       "decalType": "water-stain",
       "x": 64,
       "z": 116,
@@ -1217,7 +2074,7 @@
       "surface": "wall"
     },
     {
-      "id": "1c7dd048-cc37-4cc3-a5c4-e4ffd5901165",
+      "id": "7ff932b2-38ce-48ca-aa3e-b9453cdcfd33",
       "decalType": "water-stain",
       "x": 36,
       "z": 128,
@@ -1228,7 +2085,7 @@
       "surface": "wall"
     },
     {
-      "id": "7f65b46e-6014-4e42-b586-2155fb87cf92",
+      "id": "d1bdae08-57a4-43a5-8807-e736ea7251b8",
       "decalType": "water-stain",
       "x": 64,
       "z": 128,
@@ -1241,7 +2098,7 @@
   ],
   "triggers": [
     {
-      "id": "3864444a-5148-483a-9304-3e7563191e81",
+      "id": "910fb2b1-6b13-42d5-a144-6db73549b701",
       "action": "lockDoors",
       "zoneX": 42,
       "zoneZ": 68,
@@ -1255,7 +2112,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "1cc1a95a-288a-49ac-9295-d317fd424b73",
+      "id": "7a968deb-27e9-4b62-881e-b058aeb6ff66",
       "action": "unlockDoors",
       "zoneX": 42,
       "zoneZ": 68,
@@ -1271,7 +2128,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "c96c3971-92c8-42c6-9790-994e2bca3494",
+      "id": "b989dd75-ba2e-4c03-b371-97737f980e0a",
       "action": "spawnWave",
       "zoneX": 42,
       "zoneZ": 68,
@@ -1299,13 +2156,13 @@
         ]
       },
       "linkedEntityIds": [
-        "593465fc-6287-4e97-b8cc-bb875e3e8f2b",
-        "7370a454-599f-48c4-aba4-48474f05720b",
-        "4f52a07b-8437-4638-a383-a9affd495f85"
+        "89d46080-4763-4c36-9789-bae9cd3fa6e4",
+        "ca9c2bcf-1700-4a8a-9fa1-4feb96a1d390",
+        "25017286-73ba-44a6-b377-8dc4172c282e"
       ]
     },
     {
-      "id": "14f4eb48-ef65-4c19-b2a5-602428ad45c9",
+      "id": "3ec152e7-305b-46e8-b451-4054ec399cd7",
       "action": "spawnWave",
       "zoneX": 42,
       "zoneZ": 68,
@@ -1337,14 +2194,14 @@
         ]
       },
       "linkedEntityIds": [
-        "d92a65c3-dae4-4230-b458-2636f397026b",
-        "4dd4f716-6737-477a-bec8-ed541328af64",
-        "dc57bbdd-1d00-4898-9d9a-1c06cc92f185",
-        "cab2d913-a92f-4173-9909-ac314ab7e50e"
+        "eb0152c2-aa88-4d2a-ba1f-438783f0e319",
+        "93d8255d-583d-4795-962a-894c62251ed8",
+        "86065b43-9603-4293-b5a6-a55121dea890",
+        "0336bcdf-928b-4aca-82ae-87c73833f171"
       ]
     },
     {
-      "id": "0a28ceb1-f0b4-47b5-bbb6-f1472c553d01",
+      "id": "959ce8ac-176b-479f-a5f0-d09594f0b0cc",
       "action": "ambientChange",
       "zoneX": 46,
       "zoneZ": 34,
@@ -1387,7 +2244,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "5c37a811-5552-4c72-a9c7-b4df93ab3f40",
+      "id": "edc5a87f-6768-4610-b509-ab8baef2006b",
       "action": "spawnWave",
       "zoneX": 18,
       "zoneZ": 36,
@@ -1405,10 +2262,10 @@
           }
         ]
       },
-      "linkedEntityIds": ["377b0474-fd57-42ab-a0de-6a4729ee93a1"]
+      "linkedEntityIds": ["18001c4d-7e90-4cfc-bf8c-72f6111de2bd"]
     },
     {
-      "id": "c5a02fd8-8145-4c73-9a69-6e8ac5856e12",
+      "id": "a1ab4cb4-953c-43ab-b540-82e968eb59c8",
       "action": "ambientChange",
       "zoneX": 74,
       "zoneZ": 28,
@@ -1425,7 +2282,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "b248a81e-6237-4dce-b921-0d378aed7a6c",
+      "id": "8eece15e-5c27-4790-a458-c0bdee60b235",
       "action": "bossIntro",
       "zoneX": 40,
       "zoneZ": 110,
@@ -1441,7 +2298,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "9ef3efe4-7aba-49ae-9a3d-d32f0724852a",
+      "id": "fab76c5c-7e24-41c2-9e85-ededdfdd01cb",
       "action": "lockDoors",
       "zoneX": 40,
       "zoneZ": 110,
@@ -1455,7 +2312,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "19bd9dd3-1031-4469-891f-461e4f4ebdb0",
+      "id": "42bdcb22-f88b-4eef-866c-6f79418a060b",
       "action": "ambientChange",
       "zoneX": 36,
       "zoneZ": 108,
@@ -1475,7 +2332,7 @@
       "linkedEntityIds": []
     },
     {
-      "id": "552c55a9-f011-4585-bc65-57399940c286",
+      "id": "99b2d264-0a82-4c7e-b8a6-a8031b171c8d",
       "action": "ambientChange",
       "zoneX": 36,
       "zoneZ": 108,
@@ -1494,6 +2351,241 @@
         "collapseDuration": 3000
       },
       "linkedEntityIds": []
+    },
+    {
+      "id": "e9cc5e70-17d2-4656-bbb5-77c898437860",
+      "action": "lockDoors",
+      "zoneX": 4,
+      "zoneZ": 66,
+      "zoneW": 14,
+      "zoneH": 8,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": null,
+      "linkedEntityIds": []
+    },
+    {
+      "id": "a174b930-438f-44c2-8a34-c1f6373cc10b",
+      "action": "unlockDoors",
+      "zoneX": 4,
+      "zoneZ": 66,
+      "zoneW": 14,
+      "zoneH": 8,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "condition": "allEnemiesKilled"
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "4e64f88b-232b-4baf-b4af-0e8d610485e2",
+      "action": "spawnWave",
+      "zoneX": 4,
+      "zoneZ": 66,
+      "zoneW": 14,
+      "zoneH": 8,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "waveIndex": 0,
+        "enemies": [
+          {
+            "type": "hellgoat",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          }
+        ]
+      },
+      "linkedEntityIds": [
+        "47f97f03-d373-484f-86bc-69c26f40bce9",
+        "3f417c7a-8ce6-4424-bdf0-73c88100e94c",
+        "c80f5f0b-d50b-4930-8c48-dff45c013ddc"
+      ]
+    },
+    {
+      "id": "de51e876-2ed9-41b3-a523-5e4b91dc5f4a",
+      "action": "spawnWave",
+      "zoneX": 4,
+      "zoneZ": 66,
+      "zoneW": 14,
+      "zoneH": 8,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "waveIndex": 1,
+        "enemies": [
+          {
+            "type": "shadowGoat",
+            "count": 1
+          },
+          {
+            "type": "shadowGoat",
+            "count": 1
+          }
+        ]
+      },
+      "linkedEntityIds": [
+        "7b69d6d6-8c06-470c-8aa9-f4d043425da0",
+        "e8ae23c6-376a-48a5-ade7-cbaecbe4ad9c"
+      ]
+    },
+    {
+      "id": "e162e8df-d43e-46f2-8bb4-c2ebf262f5d8",
+      "action": "spawnWave",
+      "zoneX": 4,
+      "zoneZ": 66,
+      "zoneW": 14,
+      "zoneH": 8,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "waveIndex": 2,
+        "enemies": [
+          {
+            "type": "goatKnight",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          }
+        ]
+      },
+      "linkedEntityIds": [
+        "69f30f19-da0e-416c-a977-1b4bf0e26bd3",
+        "41ba55ae-ccd6-4ed4-aa03-35135a2dfe92",
+        "318357dc-ce46-4f8e-be6f-b49722c894b0"
+      ]
+    },
+    {
+      "id": "9f16df01-ea1e-4e6c-a78f-8bd5c4297e42",
+      "action": "spawnWave",
+      "zoneX": 4,
+      "zoneZ": 46,
+      "zoneW": 14,
+      "zoneH": 6,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "enemies": [
+          {
+            "type": "goatKnight",
+            "count": 1
+          },
+          {
+            "type": "hellgoat",
+            "count": 1
+          }
+        ]
+      },
+      "linkedEntityIds": [
+        "49e0e28f-17e1-4c39-8ace-7054605ee11d",
+        "9ab7c360-0155-4475-b9be-be11fd803c63"
+      ]
+    },
+    {
+      "id": "474902d9-6723-4e40-811d-55488be22215",
+      "action": "ambientChange",
+      "zoneX": 66,
+      "zoneZ": 48,
+      "zoneW": 20,
+      "zoneH": 4,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "fogDensity": 0.07,
+        "fogColor": "#100c18"
+      },
+      "linkedEntityIds": []
+    },
+    {
+      "id": "73fe1d89-16d3-429e-a4e4-6ae16d402c4d",
+      "action": "spawnWave",
+      "zoneX": 66,
+      "zoneZ": 90,
+      "zoneW": 16,
+      "zoneH": 6,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "enemies": [
+          {
+            "type": "shadowGoat",
+            "count": 1
+          },
+          {
+            "type": "shadowGoat",
+            "count": 1
+          },
+          {
+            "type": "goatKnight",
+            "count": 1
+          }
+        ]
+      },
+      "linkedEntityIds": [
+        "cf4eaa67-0858-4937-9fc2-85fd5fa45ecb",
+        "feb92fdf-2ca2-4ab0-b2bc-a83acc6fb7bf",
+        "c69fec43-7846-435f-a164-c6b2a030553d"
+      ]
+    },
+    {
+      "id": "35f1b455-955a-4345-8b38-d14b608b8db5",
+      "action": "lockDoors",
+      "zoneX": 68,
+      "zoneZ": 110,
+      "zoneW": 16,
+      "zoneH": 6,
+      "once": true,
+      "fired": false,
+      "delay": 1000,
+      "pendingFireTime": 0,
+      "actionData": null,
+      "linkedEntityIds": []
+    },
+    {
+      "id": "ee460a5e-575b-4cb8-8b59-6f0eb7893036",
+      "action": "dialogue",
+      "zoneX": 68,
+      "zoneZ": 110,
+      "zoneW": 16,
+      "zoneH": 6,
+      "once": true,
+      "fired": false,
+      "delay": 0,
+      "pendingFireTime": 0,
+      "actionData": {
+        "text": "You approach the altar of truth. Let doubt be your undoing."
+      },
+      "linkedEntityIds": []
     }
   ],
   "triggeredEntities": [
@@ -1502,7 +2594,7 @@
       "x": 46,
       "z": 70,
       "facing": 0,
-      "triggerId": "c96c3971-92c8-42c6-9790-994e2bca3494",
+      "triggerId": "b989dd75-ba2e-4c03-b371-97737f980e0a",
       "overrides": null,
       "spawnCategory": "enemy"
     },
@@ -1511,7 +2603,7 @@
       "x": 50,
       "z": 68,
       "facing": 0,
-      "triggerId": "c96c3971-92c8-42c6-9790-994e2bca3494",
+      "triggerId": "b989dd75-ba2e-4c03-b371-97737f980e0a",
       "overrides": null,
       "spawnCategory": "enemy"
     },
@@ -1520,7 +2612,7 @@
       "x": 54,
       "z": 70,
       "facing": 0,
-      "triggerId": "c96c3971-92c8-42c6-9790-994e2bca3494",
+      "triggerId": "b989dd75-ba2e-4c03-b371-97737f980e0a",
       "overrides": null,
       "spawnCategory": "enemy"
     },
@@ -1529,7 +2621,7 @@
       "x": 40,
       "z": 80,
       "facing": 0,
-      "triggerId": "14f4eb48-ef65-4c19-b2a5-602428ad45c9",
+      "triggerId": "3ec152e7-305b-46e8-b451-4054ec399cd7",
       "overrides": null,
       "spawnCategory": "enemy"
     },
@@ -1538,7 +2630,7 @@
       "x": 58,
       "z": 80,
       "facing": 0,
-      "triggerId": "14f4eb48-ef65-4c19-b2a5-602428ad45c9",
+      "triggerId": "3ec152e7-305b-46e8-b451-4054ec399cd7",
       "overrides": null,
       "spawnCategory": "enemy"
     },
@@ -1547,7 +2639,7 @@
       "x": 48,
       "z": 68,
       "facing": 0,
-      "triggerId": "14f4eb48-ef65-4c19-b2a5-602428ad45c9",
+      "triggerId": "3ec152e7-305b-46e8-b451-4054ec399cd7",
       "overrides": null,
       "spawnCategory": "enemy"
     },
@@ -1556,7 +2648,7 @@
       "x": 52,
       "z": 68,
       "facing": 0,
-      "triggerId": "14f4eb48-ef65-4c19-b2a5-602428ad45c9",
+      "triggerId": "3ec152e7-305b-46e8-b451-4054ec399cd7",
       "overrides": null,
       "spawnCategory": "enemy"
     },
@@ -1565,7 +2657,124 @@
       "x": 20,
       "z": 36,
       "facing": 0,
-      "triggerId": "5c37a811-5552-4c72-a9c7-b4df93ab3f40",
+      "triggerId": "edc5a87f-6768-4610-b509-ab8baef2006b",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 6,
+      "z": 68,
+      "facing": 0,
+      "triggerId": "4e64f88b-232b-4baf-b4af-0e8d610485e2",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 10,
+      "z": 66,
+      "facing": 0,
+      "triggerId": "4e64f88b-232b-4baf-b4af-0e8d610485e2",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 16,
+      "z": 68,
+      "facing": 0,
+      "triggerId": "4e64f88b-232b-4baf-b4af-0e8d610485e2",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "shadowGoat",
+      "x": 4,
+      "z": 76,
+      "facing": 0,
+      "triggerId": "de51e876-2ed9-41b3-a523-5e4b91dc5f4a",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "shadowGoat",
+      "x": 16,
+      "z": 76,
+      "facing": 0,
+      "triggerId": "de51e876-2ed9-41b3-a523-5e4b91dc5f4a",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "goatKnight",
+      "x": 10,
+      "z": 72,
+      "facing": 0,
+      "triggerId": "e162e8df-d43e-46f2-8bb4-c2ebf262f5d8",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 6,
+      "z": 74,
+      "facing": 0,
+      "triggerId": "e162e8df-d43e-46f2-8bb4-c2ebf262f5d8",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 14,
+      "z": 74,
+      "facing": 0,
+      "triggerId": "e162e8df-d43e-46f2-8bb4-c2ebf262f5d8",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "goatKnight",
+      "x": 6,
+      "z": 50,
+      "facing": 0,
+      "triggerId": "9f16df01-ea1e-4e6c-a78f-8bd5c4297e42",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "hellgoat",
+      "x": 14,
+      "z": 50,
+      "facing": 0,
+      "triggerId": "9f16df01-ea1e-4e6c-a78f-8bd5c4297e42",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "shadowGoat",
+      "x": 70,
+      "z": 94,
+      "facing": 0,
+      "triggerId": "73fe1d89-16d3-429e-a4e4-6ae16d402c4d",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "shadowGoat",
+      "x": 78,
+      "z": 94,
+      "facing": 0,
+      "triggerId": "73fe1d89-16d3-429e-a4e4-6ae16d402c4d",
+      "overrides": null,
+      "spawnCategory": "enemy"
+    },
+    {
+      "entityType": "goatKnight",
+      "x": 74,
+      "z": 104,
+      "facing": 0,
+      "triggerId": "73fe1d89-16d3-429e-a4e4-6ae16d402c4d",
       "overrides": null,
       "spawnCategory": "enemy"
     }

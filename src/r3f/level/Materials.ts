@@ -1005,6 +1005,16 @@ export function disposeCachedMaterials(): void {
  * Call this during the loading screen. Returns a promise that resolves once
  * all textures are loaded (or have failed gracefully).
  */
+/**
+ * Preload a specific list of TEXTURE_ASSETS keys.
+ * Called by LoadingScreen with keys read directly from the level JSON
+ * so only the textures needed for the current circle are loaded.
+ */
+export async function preloadTextureKeys(keys: string[]): Promise<void> {
+  const validKeys = keys.filter((k): k is TextureAssetKey => k in TEXTURE_ASSETS);
+  await Promise.allSettled(validKeys.map((key) => loadTexture(key)));
+}
+
 export async function preloadAllTextures(): Promise<void> {
   const allKeys = Object.keys(TEXTURE_ASSETS) as TextureAssetKey[];
   await Promise.all(allKeys.map((key) => loadTexture(key)));

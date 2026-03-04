@@ -22,6 +22,8 @@ const SpawnDataSchema = z.object({
   z: z.number(),
   weaponId: z.string().optional(),
   rotation: z.number().optional(),
+  /** Entity category — used by LoadingScreen to derive model keys without runtime lookup tables. */
+  spawnCategory: z.string().optional(),
 });
 
 const FloorThemeSchema = z.object({
@@ -105,6 +107,12 @@ export const LevelSchema = z.object({
   decals: z.array(RuntimeDecalSchema).optional(),
   triggers: z.array(RuntimeTriggerSchema).optional(),
   triggeredEntities: z.array(RuntimeTriggeredEntitySchema).optional(),
+  /**
+   * TEXTURE_ASSETS keys required by this circle's walls, floors, ceilings,
+   * doors, and decals. Computed at export time by export-levels.ts so the
+   * LoadingScreen can load exactly the right textures with no runtime lookup tables.
+   */
+  requiredTextureKeys: z.array(z.string()).optional().default([]),
 });
 
 export type CompiledLevel = z.infer<typeof LevelSchema>;
