@@ -699,13 +699,13 @@ export async function buildCircle9(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'treachery-ice-arch', 30, 61, { roomId: ptolomeaId });
   // 1x treachery-frozen-feast-table (center, frost-covered banquet)
   editor.spawnProp(LEVEL_ID, 'treachery-frozen-feast-table', 30, 64, { roomId: ptolomeaId });
-  // 6x chair (general, around table, some knocked over)
-  editor.spawnProp(LEVEL_ID, 'chair', 28, 63, { roomId: ptolomeaId });
-  editor.spawnProp(LEVEL_ID, 'chair', 30, 63, { roomId: ptolomeaId });
-  editor.spawnProp(LEVEL_ID, 'chair', 32, 63, { roomId: ptolomeaId });
-  editor.spawnProp(LEVEL_ID, 'chair', 28, 66, { roomId: ptolomeaId });
-  editor.spawnProp(LEVEL_ID, 'chair', 30, 66, { roomId: ptolomeaId });
-  editor.spawnProp(LEVEL_ID, 'chair', 32, 66, { roomId: ptolomeaId });
+  // 6x prop-chair (around table, some knocked over)
+  editor.spawnProp(LEVEL_ID, 'prop-chair', 28, 63, { roomId: ptolomeaId });
+  editor.spawnProp(LEVEL_ID, 'prop-chair', 30, 63, { roomId: ptolomeaId });
+  editor.spawnProp(LEVEL_ID, 'prop-chair', 32, 63, { roomId: ptolomeaId });
+  editor.spawnProp(LEVEL_ID, 'prop-chair', 28, 66, { roomId: ptolomeaId });
+  editor.spawnProp(LEVEL_ID, 'prop-chair', 30, 66, { roomId: ptolomeaId });
+  editor.spawnProp(LEVEL_ID, 'prop-chair', 32, 66, { roomId: ptolomeaId });
   // 2x treachery-frost-chalice (on table, frozen contents)
   editor.spawnProp(LEVEL_ID, 'treachery-frost-chalice', 29, 64, { roomId: ptolomeaId });
   editor.spawnProp(LEVEL_ID, 'treachery-frost-chalice', 31, 64, { roomId: ptolomeaId });
@@ -716,9 +716,9 @@ export async function buildCircle9(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'treachery-snow-drift-mound', 35, 67, { roomId: ptolomeaId });
   // 1x frozen-goat (under table, partially visible)
   editor.spawnProp(LEVEL_ID, 'frozen-goat', 30, 65, { roomId: ptolomeaId });
-  // 2x crystal (general, ice formations growing from floor)
-  editor.spawnProp(LEVEL_ID, 'crystal', 26, 62, { roomId: ptolomeaId });
-  editor.spawnProp(LEVEL_ID, 'crystal', 34, 64, { roomId: ptolomeaId });
+  // 2x prop-crystal (ice formations growing from floor)
+  editor.spawnProp(LEVEL_ID, 'prop-crystal', 26, 62, { roomId: ptolomeaId });
+  editor.spawnProp(LEVEL_ID, 'prop-crystal', 34, 64, { roomId: ptolomeaId });
   // +1x prop-table (side table with frozen contents — master plan Task 10)
   editor.spawnProp(LEVEL_ID, 'prop-table', 26, 66, { roomId: ptolomeaId });
   // +1x prop-chalice (overturned chalice on side table)
@@ -785,8 +785,8 @@ export async function buildCircle9(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'treachery-snow-drift-mound', 16, 83, { roomId: judasTrapId });
   // 1x treachery-ice-crack-floor (around cage, aged cracking)
   editor.spawnProp(LEVEL_ID, 'treachery-ice-crack-floor', 13, 80, { roomId: judasTrapId });
-  // 1x crystal (general, ice crystal growth near frozen figure)
-  editor.spawnProp(LEVEL_ID, 'crystal', 15, 80, { roomId: judasTrapId });
+  // 1x prop-crystal (ice crystal growth near frozen figure)
+  editor.spawnProp(LEVEL_ID, 'prop-crystal', 15, 80, { roomId: judasTrapId });
   // +1x prop-cage (additional cage — master plan Task 10)
   editor.spawnProp(LEVEL_ID, 'prop-cage', 16, 80, { roomId: judasTrapId });
   // +1x prop-bones (frozen remains inside cage)

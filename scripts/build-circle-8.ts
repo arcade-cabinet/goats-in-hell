@@ -722,14 +722,14 @@ export async function buildCircle8(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'chest-gold', 39, 75, { roomId: serenissimaId });
   // 1x book-open (beside chest, lore scroll)
   editor.spawnProp(LEVEL_ID, 'book-open', 39, 76, { roomId: serenissimaId });
-  // 2x candle (flanking chest, warm light)
-  editor.spawnProp(LEVEL_ID, 'candle', 38, 74, { roomId: serenissimaId });
-  editor.spawnProp(LEVEL_ID, 'candle', 40, 74, { roomId: serenissimaId });
-  // 1x carpet (floor, under chest, warmth)
-  editor.spawnProp(LEVEL_ID, 'carpet', 39, 75, { roomId: serenissimaId });
-  // 2x cobweb (upper corners, undisturbed)
-  editor.spawnProp(LEVEL_ID, 'cobweb', 37, 73, { roomId: serenissimaId });
-  editor.spawnProp(LEVEL_ID, 'cobweb', 41, 73, { roomId: serenissimaId });
+  // 2x prop-candle (flanking chest, warm light)
+  editor.spawnProp(LEVEL_ID, 'prop-candle', 38, 74, { roomId: serenissimaId });
+  editor.spawnProp(LEVEL_ID, 'prop-candle', 40, 74, { roomId: serenissimaId });
+  // 1x prop-carpet (floor, under chest, warmth)
+  editor.spawnProp(LEVEL_ID, 'prop-carpet', 39, 75, { roomId: serenissimaId });
+  // 2x prop-cobweb (upper corners, undisturbed)
+  editor.spawnProp(LEVEL_ID, 'prop-cobweb', 37, 73, { roomId: serenissimaId });
+  editor.spawnProp(LEVEL_ID, 'prop-cobweb', 41, 73, { roomId: serenissimaId });
 
   // --- Inganno's Parlor (bounds: 21, 84, 14, 14) ---
   // 1x fraud-ornate-arch (north entrance, grand stairway descent)
@@ -738,8 +738,8 @@ export async function buildCircle8(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'fraud-ornate-railing', 28, 86, { roomId: ingannoParlerId });
   // 1x fraud-broken-chandelier (ceiling, grand, damages in phase 3)
   editor.spawnProp(LEVEL_ID, 'fraud-broken-chandelier', 28, 91, { roomId: ingannoParlerId });
-  // 2x bookcase (E/W walls)
-  editor.spawnProp(LEVEL_ID, 'bookcase', 22, 89, {
+  // 2x prop-bookcase (E/W walls)
+  editor.spawnProp(LEVEL_ID, 'prop-bookcase', 22, 89, {
     roomId: ingannoParlerId,
     surfaceAnchor: {
       face: 'west',
@@ -750,7 +750,7 @@ export async function buildCircle8(dbPath: string) {
       scale: 1.0,
     },
   });
-  editor.spawnProp(LEVEL_ID, 'bookcase', 33, 89, {
+  editor.spawnProp(LEVEL_ID, 'prop-bookcase', 33, 89, {
     roomId: ingannoParlerId,
     surfaceAnchor: {
       face: 'east',
