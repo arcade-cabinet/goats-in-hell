@@ -521,6 +521,16 @@ export async function buildCircle8(dbPath: string) {
   // 2x fraud-marble-pedestal (near columns)
   editor.spawnProp(LEVEL_ID, 'fraud-marble-pedestal', 25, 14, { roomId: hallOfMirrorsId });
   editor.spawnProp(LEVEL_ID, 'fraud-marble-pedestal', 35, 14, { roomId: hallOfMirrorsId });
+  // +4x prop-column (structural columns — master plan Task 9)
+  editor.spawnProp(LEVEL_ID, 'prop-column', 26, 16, { roomId: hallOfMirrorsId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 34, 16, { roomId: hallOfMirrorsId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 26, 19, { roomId: hallOfMirrorsId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 34, 19, { roomId: hallOfMirrorsId });
+  // +2x prop-pedestal with prop-chalice (display pedestals)
+  editor.spawnProp(LEVEL_ID, 'prop-pedestal', 28, 14, { roomId: hallOfMirrorsId });
+  editor.spawnProp(LEVEL_ID, 'prop-chalice', 28, 14, { roomId: hallOfMirrorsId });
+  editor.spawnProp(LEVEL_ID, 'prop-pedestal', 32, 14, { roomId: hallOfMirrorsId });
+  editor.spawnProp(LEVEL_ID, 'prop-chalice', 32, 14, { roomId: hallOfMirrorsId });
 
   // --- Bolgia of Flatterers (bounds: 8, 26, 12, 8) ---
   // 1x fraud-ornate-arch (north entrance)
@@ -574,6 +584,10 @@ export async function buildCircle8(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'fraud-marble-pedestal', 38, 30, { roomId: bolgiaThievesId });
   // 1x false-door (east wall, deception)
   editor.spawnProp(LEVEL_ID, 'false-door', 42, 30, { roomId: bolgiaThievesId });
+  // +1x prop-chest (real chest, among trick chests — master plan Task 9)
+  editor.spawnProp(LEVEL_ID, 'prop-chest', 38, 32, { roomId: bolgiaThievesId });
+  // +1x prop-chest-gold (gilded bait — master plan Task 9)
+  editor.spawnProp(LEVEL_ID, 'prop-chest-gold', 41, 29, { roomId: bolgiaThievesId });
 
   // --- Shifting Maze (bounds: 32, 38, 14, 14) ---
   // 6x fraud-shifting-wall-segment (moveable walls)
@@ -611,6 +625,9 @@ export async function buildCircle8(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'fraud-cracked-mosaic-floor', 40, 45, { roomId: shiftingMazeId });
   editor.spawnProp(LEVEL_ID, 'fraud-cracked-mosaic-floor', 37, 49, { roomId: shiftingMazeId });
   editor.spawnProp(LEVEL_ID, 'fraud-cracked-mosaic-floor', 43, 41, { roomId: shiftingMazeId });
+  // +2x prop-broken-pot (maze debris — master plan Task 9)
+  editor.spawnProp(LEVEL_ID, 'prop-broken-pot', 38, 43, { roomId: shiftingMazeId });
+  editor.spawnProp(LEVEL_ID, 'prop-broken-pot', 42, 48, { roomId: shiftingMazeId });
 
   // --- Counterfeit Arena (bounds: 22, 56, 12, 12) ---
   // 6x fraud-fake-column (2 rows of 3; 4 are mimic hosts, 2 real)
@@ -652,6 +669,11 @@ export async function buildCircle8(dbPath: string) {
   editor.spawnProp(LEVEL_ID, 'fraud-cracked-mosaic-floor', 28, 61, { roomId: counterfeitArenaId });
   // 1x fraud-crumbling-facade (near entrance, visual decay)
   editor.spawnProp(LEVEL_ID, 'fraud-crumbling-facade', 22, 57, { roomId: counterfeitArenaId });
+  // +2x prop-column (real columns among fakes — master plan Task 9)
+  editor.spawnProp(LEVEL_ID, 'prop-column', 23, 60, { roomId: counterfeitArenaId });
+  editor.spawnProp(LEVEL_ID, 'prop-column', 32, 63, { roomId: counterfeitArenaId });
+  // +1x prop-column-broken (collapsed column, arena debris)
+  editor.spawnProp(LEVEL_ID, 'prop-column-broken', 27, 66, { roomId: counterfeitArenaId });
 
   // --- Mimic's Den (bounds: 24, 72, 8, 8) ---
   // 2x torch-sconce-ornate (E/W walls)
@@ -803,6 +825,8 @@ export async function buildCircle8(dbPath: string) {
       scale: 0.6,
     },
   });
+  // +1x prop-carpet (rich carpet under boss throne — master plan Task 9)
+  editor.spawnProp(LEVEL_ID, 'prop-carpet', 28, 90, { roomId: ingannoParlerId });
   // 4x candelabrum-tall (all faces)
   editor.spawnProp(LEVEL_ID, 'candelabrum-tall', 22, 86, {
     roomId: ingannoParlerId,
