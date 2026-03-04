@@ -114,7 +114,7 @@ import { PropErrorModal } from './ui/PropErrorModal';
 const FatalErrorContext = createContext<(err: Error | string) => void>(() => {});
 
 // ---------------------------------------------------------------------------
-// Prop errors context — propagates missing-asset errors from DungeonProps to R3FRoot
+// Prop errors context — propagates missing-asset errors from LevelRenderer to R3FRoot
 // ---------------------------------------------------------------------------
 
 const PropErrorsContext = createContext<(errors: string[]) => void>(() => {});
@@ -244,7 +244,7 @@ function GameScene() {
     [levelData],
   );
 
-  // Pass all spawns to DungeonProps — it filters internally via isSupportedPropType
+  // Pass all spawns to LevelRenderer — it filters internally via isSupportedPropType
   // (handles both old `prop_*` and Meshy `circle-N-propname` spawn types)
   const propSpawns = levelData.spawns;
 
@@ -655,7 +655,7 @@ export default function R3FRoot() {
 
   const [propErrors, setPropErrors] = useState<string[]>([]);
   const reportPropErrors = useCallback((errors: string[]) => {
-    for (const e of errors) console.error('[DungeonProps] Asset not registered:', e);
+    for (const e of errors) console.error('[LevelRenderer] Asset not registered:', e);
     setPropErrors(errors);
   }, []);
 
