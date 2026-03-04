@@ -2,7 +2,7 @@
 title: "Documentation Index"
 status: implemented
 created: "2026-03-01"
-updated: "2026-03-01"
+updated: "2026-03-04"
 domain: agents
 related:
   - AGENTS.md
@@ -80,7 +80,7 @@ Every markdown doc in `docs/` has YAML frontmatter with these base fields:
 |-----------|-------|-----------|-------------|
 | `docs/agents/` | [agents/AGENTS.md](agents/AGENTS.md) | 2 | Agent API reference and building guide |
 | `docs/circles/` | [circles/AGENTS.md](circles/AGENTS.md) | 13 | Circle design docs and playtest reports |
-| `docs/plans/` | [plans/AGENTS.md](plans/AGENTS.md) | 7 | Design and implementation plans |
+| `docs/plans/` | [plans/AGENTS.md](plans/AGENTS.md) | 13 | Design and implementation plans |
 | `docs/roadmap/` | [roadmap/AGENTS.md](roadmap/AGENTS.md) | 7 | Development roadmap domains |
 
 ---
@@ -92,6 +92,7 @@ Every markdown doc in `docs/` has YAML frontmatter with these base fields:
 - **Working on boss assets?** Read [boss-pipeline.md](boss-pipeline.md) and [DAZ-PIPELINE.md](DAZ-PIPELINE.md)
 - **Planning new work?** Check [plans/AGENTS.md](plans/AGENTS.md) for existing plans, [roadmap/AGENTS.md](roadmap/AGENTS.md) for priorities
 - **Looking for API reference?** See [agents/level-editor-api.md](agents/level-editor-api.md)
+- **Working on AI/autoplay?** See Brain Architecture section in [root AGENTS.md](../AGENTS.md) — YUKA goal system, `PlayerGoalDriver`, `BrainRegistry`, A* pathfinding
 
 ---
 

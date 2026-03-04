@@ -14,6 +14,7 @@ import { playSound } from './AudioSystem';
 import { removeEntity } from './CombatSystem';
 import { pushDamageEvent } from './damageEvents';
 import { getGameTime } from './GameClock';
+import { gameEventBus } from './telemetry/GameEventBus';
 
 const SPIKE_RANGE = 1.2;
 const SPIKE_COOLDOWN_MS = 1500;
@@ -45,6 +46,11 @@ export function hazardSystemUpdate(): void {
         if (now - lastHit > SPIKE_COOLDOWN_MS) {
           player.player.hp -= hz.damage;
           hazardCooldowns.set(hazard.id!, now);
+          gameEventBus.emit({
+            type: 'hazard_activated',
+            hazardType: 'spikes',
+            entityId: hazard.id!,
+          });
           GameState.set({ damageFlash: 0.5, screenShake: 4 });
           playSound('hurt');
           triggerBloodSplatter(Math.min(1, hz.damage / 20));
@@ -74,6 +80,7 @@ function explodeBarrel(barrel: Entity): void {
   const pos = barrel.position!;
   const damage = barrel.hazard!.damage;
 
+  gameEventBus.emit({ type: 'hazard_activated', hazardType: 'barrel', entityId: barrel.id! });
   playSound('explosion');
 
   // Damage all entities in blast radius

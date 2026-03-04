@@ -1,10 +1,14 @@
 /**
- * Yuka-based AI Governor for automated e2e playtesting.
+ * @deprecated AIGovernor — flat state-machine autoplay controller.
  *
- * Uses a YUKA Vehicle with steering behaviors to control the player camera,
- * and a simple state machine to choose between hunting enemies, healing,
- * fleeing, and exploring. Bridges YUKA's coordinate system to Babylon.js
- * and handles grid-based wall avoidance.
+ * SUPERSEDED by the YUKA Brain Assembly (src/game/systems/brains/).
+ * - Enemy AI → EnemyBrainFactory + BrainRegistry wired into AISystem
+ * - Player autoplay → PlayerBrainFactory (PlayerGoalDriver interface)
+ * - Pathfinding → AStar (src/game/systems/brains/pathfinding/AStar.ts)
+ *
+ * AIGovernor is kept here because AIProvider.ts (R3FRoot) still depends
+ * on it. Full replacement is Phase 2 — wire PlayerBrainFactory as the
+ * AIProvider's brain and implement AIGovernor as PlayerGoalDriver.
  *
  * Supports two modes:
  *   1. Direct camera mode (legacy Babylon.js) — manipulates camera directly

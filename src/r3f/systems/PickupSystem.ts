@@ -7,6 +7,7 @@
  */
 import type { Entity, WeaponId } from '../../game/entities/components';
 import { world } from '../../game/entities/world';
+import { gameEventBus } from '../../game/systems/telemetry/GameEventBus';
 import { useGameStore } from '../../state/GameStore';
 import { playSound } from '../audio/AudioSystem';
 import { HapticEvent, haptics } from '../input/HapticsService';
@@ -131,6 +132,15 @@ export function pickupSystemUpdate(): void {
       ammoSlot.reserve = Math.min(ammoSlot.reserve + WEAPON_PICKUP_RESERVE[weaponId], 999);
     }
     // Note: powerup pickups would be handled via a future PowerUpSystem port
+
+    if (entity.position) {
+      gameEventBus.emit({
+        type: 'pickup_collected',
+        pickupType: pickup.pickupType,
+        value: pickup.value,
+        position: entity.position,
+      });
+    }
 
     // Audio feedback
     playSound('pickup');

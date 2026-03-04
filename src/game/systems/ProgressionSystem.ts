@@ -9,6 +9,7 @@ import { GameState } from '../../state/GameState';
 import { useGameStore } from '../../state/GameStore';
 import type { Entity } from '../entities/components';
 import { world } from '../entities/world';
+import { gameEventBus } from './telemetry/GameEventBus';
 
 // ---------------------------------------------------------------------------
 // Floor completion
@@ -54,6 +55,13 @@ export function checkFloorComplete(): boolean {
  * when the player clicks DESCEND on the VictoryScreen.
  */
 export function advanceFloor(): void {
+  const { circleNumber, stage } = useGameStore.getState();
+  gameEventBus.emit({
+    type: 'floor_complete',
+    circleNumber,
+    encounterType: stage.encounterType,
+    timeMs: Date.now(),
+  });
   GameState.set({ screen: 'victory' });
 }
 
@@ -79,6 +87,7 @@ export function checkPlayerDeath(): boolean {
  * Transition to the death screen so the UI can display a game-over overlay.
  */
 export function triggerDeath(): void {
+  gameEventBus.emit({ type: 'player_death', circleNumber: useGameStore.getState().circleNumber });
   GameState.set({ screen: 'dead' });
 
   // Permadeath: delete save on death

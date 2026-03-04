@@ -15,6 +15,7 @@ import { vec3 } from '../entities/vec3';
 import { world } from '../entities/world';
 import type { MapCell } from '../levels/LevelGenerator';
 import { trackEnemySpawn } from './ProgressionSystem';
+import { gameEventBus } from './telemetry/GameEventBus';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -136,6 +137,7 @@ export function triggerSystemUpdate(playerX: number, playerZ: number, _deltaMs: 
     }
     trigger.pendingFireTime = 0;
 
+    gameEventBus.emit({ type: 'trigger_fired', triggerId: trigger.id, action: trigger.action });
     executeTriggerAction(trigger);
   }
 }
@@ -286,6 +288,7 @@ function lockAllDoors(): void {
   // by removing any entities near doors and blocking their opening.
   // For now, we store a flag that the DoorSystem can check.
   _doorsLocked = true;
+  gameEventBus.emit({ type: 'door_locked' });
 }
 
 function handleUnlockDoors(trigger: RuntimeTrigger): void {
@@ -296,6 +299,7 @@ function handleUnlockDoors(trigger: RuntimeTrigger): void {
     _unlockWhenClear = true;
   } else {
     _doorsLocked = false;
+    gameEventBus.emit({ type: 'door_unlocked' });
   }
 }
 

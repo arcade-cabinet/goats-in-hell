@@ -59,6 +59,23 @@ The level system uses a SQLite database as both the authoring and runtime format
 - X increases eastward, Z increases southward (top-left origin)
 - Three.js is right-handed: positive Z points toward camera
 
+### Brain Architecture (YUKA Goal System)
+
+All AI — enemies, bosses, and autoplay player — uses a unified YUKA `Think` brain:
+
+- `src/game/systems/brains/BrainContext.ts` — Shared read-only game state snapshot
+- `src/game/systems/brains/BrainRegistry.ts` — Manages Think brain lifecycle per entity
+- `src/game/systems/brains/enemy/EnemyBrainFactory.ts` — Creates per-enemy Think brain
+- `src/game/systems/brains/enemy/goals/` — Leaf goals: Attack, Chase, Idle, AoE, Summon, Teleport, Enrage
+- `src/game/systems/brains/enemy/evaluators/` — Aggression, Survival, BossPhase evaluators
+- `src/game/systems/brains/player/PlayerBrainFactory.ts` — Creates autoplay Think brain
+- `src/game/systems/brains/player/goals/` — Hunt, Flee, Seek, Explore, ClearFloor, ClearCircle, PlayThrough, Wait
+- `src/game/systems/brains/player/evaluators/` — PlayThrough (1.0), PlayerSurvival
+- `src/game/systems/brains/pathfinding/AStar.ts` — A* with octile heuristic + binary min-heap
+- `src/game/systems/telemetry/` — GameEventBus, TelemetryStore, ScreenshotService, RunReport
+
+**Event bus**: `gameEventBus.emit()` in CombatSystem, TriggerSystem, HazardSystem, ProgressionSystem, PickupSystem produces rich telemetry. Autoplay runs log a full RunReport JSON to console on game completion.
+
 ### Key Patterns
 
 - **Per-frame allocation avoidance:** Module-scope temp vectors reused each frame
