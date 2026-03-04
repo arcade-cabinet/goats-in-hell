@@ -37,7 +37,7 @@ export function buildBrainContext(
     playerMaxHp,
     playerWeapon,
     grid,
-    gridW: grid[0]?.length ?? 0,
+    gridW: grid.length > 0 ? (grid[0]?.length ?? 0) : 0,
     gridH: grid.length,
     cellSize,
     circleNumber,

@@ -25,6 +25,7 @@ class MinHeap {
   }
 
   pop(): HeapNode | undefined {
+    if (this.data.length === 0) return undefined;
     const top = this.data[0];
     const last = this.data.pop()!;
     if (this.data.length > 0) {
@@ -104,7 +105,9 @@ export function astar(
   ey: number,
 ): [number, number][] {
   const gridH = grid.length;
+  if (gridH === 0) return [];
   const gridW = grid[0]?.length ?? 0;
+  if (gridW === 0) return [];
 
   if (sx < 0 || sx >= gridW || sy < 0 || sy >= gridH) return [];
   if (ex < 0 || ex >= gridW || ey < 0 || ey >= gridH) return [];
@@ -114,6 +117,7 @@ export function astar(
 
   const gCost = new Map<number, number>();
   const parent = new Map<number, number>();
+  const closed = new Set<number>();
   const open = new MinHeap();
 
   const startKey = key(sx, sy);
@@ -123,6 +127,9 @@ export function astar(
   while (open.size > 0) {
     const { x: cx, y: cy } = open.pop()!;
     const ck = key(cx, cy);
+
+    if (closed.has(ck)) continue;
+    closed.add(ck);
 
     if (cx === ex && cy === ey) {
       // Reconstruct
