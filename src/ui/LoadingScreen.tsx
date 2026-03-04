@@ -47,9 +47,10 @@ function deriveEnemyBossModelEntries(level: CompiledLevel): [string, string][] {
       const path = ENEMY_MODEL_ASSETS[key as keyof typeof ENEMY_MODEL_ASSETS];
       if (path) entries.set(key, path);
     } else if (category === 'boss') {
-      // Boss entity types are already 'boss-xxx'
-      const path = BOSS_MODEL_ASSETS[entityType as keyof typeof BOSS_MODEL_ASSETS];
-      if (path) entries.set(entityType, path);
+      // Boss entity types in JSON are 'il-vecchio', keys in BOSS_MODEL_ASSETS are 'boss-il-vecchio'
+      const key = `boss-${entityType}` as keyof typeof BOSS_MODEL_ASSETS;
+      const path = BOSS_MODEL_ASSETS[key];
+      if (path) entries.set(key, path);
     }
   };
 
@@ -104,8 +105,13 @@ export const LoadingScreen: React.FC = () => {
     // Texture keys come directly from the JSON — no runtime lookup table
     const textureKeys: string[] = level?.requiredTextureKeys ?? [];
 
-    // Enemy/boss models derived from spawnCategory in JSON
-    const enemyBossEntries = level ? deriveEnemyBossModelEntries(level) : [];
+    // Enemy/boss models derived from spawnCategory in JSON; fall back to all on error
+    const enemyBossEntries = level
+      ? deriveEnemyBossModelEntries(level)
+      : ([...Object.entries(ENEMY_MODEL_ASSETS), ...Object.entries(BOSS_MODEL_ASSETS)] as [
+          string,
+          string,
+        ][]);
 
     // Weapons + projectiles always needed for combat
     const alwaysEntries: [string, string][] = [

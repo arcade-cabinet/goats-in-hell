@@ -23,7 +23,7 @@ const SpawnDataSchema = z.object({
   weaponId: z.string().optional(),
   rotation: z.number().optional(),
   /** Entity category — used by LoadingScreen to derive model keys without runtime lookup tables. */
-  spawnCategory: z.string().optional(),
+  spawnCategory: z.enum(['enemy', 'boss', 'prop', 'pickup', 'hazard', 'unknown']).optional(),
 });
 
 const FloorThemeSchema = z.object({

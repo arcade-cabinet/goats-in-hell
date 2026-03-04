@@ -179,8 +179,9 @@ async function main() {
       const decals = toDecals(db, levelId);
 
       // ── Build spawnCategory map for non-triggered entities ──────────────
-      // Key: "entityType:gridX:gridZ" — matches how toLevelData builds spawns
-      // but in grid coords (levelData.spawns use world coords = grid * CELL_SIZE).
+      // DB stores entities at grid coords (e.x, e.z). toLevelData converts to
+      // world coords (grid * CELL_SIZE), so spawns are world-space in the JSON.
+      // We build the lookup key in grid coords to match the DB.
       const entityRows = db
         .select()
         .from(schema.entities)

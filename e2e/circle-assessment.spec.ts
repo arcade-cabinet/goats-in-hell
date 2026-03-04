@@ -171,17 +171,17 @@ async function gameSnapshot(page: Page) {
   return page.evaluate(() => (window as any).__game?.snapshot()).catch(() => null);
 }
 
-async function pollForKills(page: Page, timeoutMs: number): Promise<number> {
+async function pollForKills(page: Page, timeoutMs: number, baseKills = 0): Promise<number> {
   const deadline = Date.now() + timeoutMs;
-  let kills = 0;
+  let newKills = 0;
   while (Date.now() < deadline) {
     const s = await gameSnapshot(page);
-    const k = s?.kills ?? 0;
-    if (k > kills) kills = k;
-    if (kills >= 1) break;
+    const delta = (s?.kills ?? 0) - baseKills;
+    if (delta > newKills) newKills = delta;
+    if (newKills >= 1) break;
     await page.waitForTimeout(500);
   }
-  return kills;
+  return newKills;
 }
 
 // ---------------------------------------------------------------------------
@@ -229,8 +229,12 @@ test('9-circle assessment: YUKA combat + screenshot capture', async ({ page }) =
     };
 
     try {
-      // Jump directly to this circle
-      await page.evaluate((n) => (window as any).__game?.jumpTo(n), spec.number);
+      // Jump directly to this circle — throw if game API is unavailable
+      await page.evaluate((n) => {
+        const g = (window as any).__game;
+        if (!g?.jumpTo) throw new Error('__game.jumpTo is not available');
+        g.jumpTo(n);
+      }, spec.number);
 
       // Give the scene 3s to reload level geometry, textures, and enemy spawns
       await page.waitForTimeout(3_000);
@@ -238,11 +242,12 @@ test('9-circle assessment: YUKA combat + screenshot capture', async ({ page }) =
       // Top up HP so YUKA survives the full 30s window
       await page.evaluate(() => (window as any).__game?.setHp(200));
 
-      // Initial state snapshot
+      // Initial state snapshot — capture kills baseline BEFORE fighting starts
       const initial = await gameSnapshot(page);
       result.initialEnemies = initial?.enemiesAlive ?? 0;
       result.modelsLoaded = initial?.models?.loaded?.length ?? 0;
       result.modelsFailed = initial?.models?.failed ?? [];
+      const killsBaseline = initial?.kills ?? 0;
 
       console.log(
         `  State: ${result.initialEnemies} enemies, ` +
@@ -254,9 +259,9 @@ test('9-circle assessment: YUKA combat + screenshot capture', async ({ page }) =
       const initShot = await snap(page, runDir, `circle-${spec.number}-initial`, 'initial');
       result.screenshots.push(initShot);
 
-      // Let YUKA fight for up to 30s, polling for kills
+      // Let YUKA fight for up to 30s, polling for new kills this circle
       console.log(`  YUKA fighting...`);
-      result.killsAt30s = await pollForKills(page, 30_000);
+      result.killsAt30s = await pollForKills(page, 30_000, killsBaseline);
 
       // Refresh HP in case it dropped mid-fight
       await page.evaluate(() => (window as any).__game?.setHp(200));
@@ -269,7 +274,7 @@ test('9-circle assessment: YUKA combat + screenshot capture', async ({ page }) =
       const final = await gameSnapshot(page);
       result.playerHpAtEnd = final?.player?.hp ?? null;
       result.playerSurvived = (final?.player?.hp ?? 0) > 0;
-      result.killsAt30s = Math.max(result.killsAt30s, final?.kills ?? 0);
+      result.killsAt30s = Math.max(result.killsAt30s, (final?.kills ?? 0) - killsBaseline);
       result.combatPassed = result.initialEnemies > 0 || result.killsAt30s > 0;
 
       console.log(
